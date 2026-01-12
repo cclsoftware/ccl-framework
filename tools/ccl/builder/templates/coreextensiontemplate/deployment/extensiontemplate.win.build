@@ -1,0 +1,20 @@
+setOutputDir: ./~install/extensiontemplate
+
+print: Preparing extension...
+setInputDir: ./extensiontemplate
+copyFile: metainfo.xml
+copyFile: installdata.xml
+
+setInputDir: ./extensiontemplate
+setOutputDir: ./~install/extensiontemplate
+setFilter: true
+addFilter: <win_x86>
+addFilter: <win_x64>
+addFilter: *.dll
+copyFolder-r: extensiondir
+resetFilter
+
+print: Packaging extension...
+setInputDir: ./~install/extensiontemplate
+setOutputDir: ../
+packageFolder-r-z: ExtensionFileName.win.unsigned

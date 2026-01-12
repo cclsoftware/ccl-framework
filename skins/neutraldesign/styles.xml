@@ -1,0 +1,842 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Skin>
+
+	<ThemeElements>
+		<Color name="HyperlinkColor"        color="@Main.HyperLinkColor"/>
+		<Color name="TooltipBackColor"      color="hsl(0,0,85)"/>
+		<Color name="TooltipTextColor"      color="black"/>
+		<Color name="SelectionColor"        color="@Main.SelectionBackColor"/>
+		<Color name="SelectionTextColor"    color="@Main.LabelColor"/>
+		<Color name="AlphaSelectionColor"   color="@Main.AlphaSelectionColor"/>
+		<Color name="AlphaCursorColor"      color="@Main.AlphaCursorColor"/>
+		<Color name="ListViewBackColor"     color="@Main.ListBackgroundColor"/>
+		<Color name="PushButtonTextColor"   color="@Main.LabelColor"/>
+		
+		<?defined mobileapp?>
+		
+			<Metric name="ButtonWidth"         	value="100"/>
+			<Metric name="ButtonHeight"         value="40"/>
+			<Metric name="SliderHandleSize"     value="40"/>
+			<Metric name="CheckBoxSize"        	value="40"/>
+			<Metric name="TextBoxHeight"        value="40"/>
+			<Metric name="HeaderHeight"         value="40"/>
+			<Metric name="Margin"               value="10"/>
+			<Metric name="Spacing"              value="10"/>
+			<Metric name="ScrollBarSize"        value="16"/>
+			<Metric name="DividerSize"          value="4"/>
+			<Metric name="DividerOutreach"     	value="4"/>
+			<Metric name="Border"               value="4"/>
+			
+			<Font name="MenuFont" 				themeid="StandardUI" size="14"/>
+			
+		<?defined desktopapp?>
+		
+			<Metric name="ButtonWidth"         	value="80"/>
+			<Metric name="ButtonHeight"         value="26"/>
+			<Metric name="SliderHandleSize"     value="20"/>
+			<Metric name="CheckBoxSize"        	value="20"/>
+			<Metric name="TextBoxHeight"        value="24"/>
+			<Metric name="HeaderHeight"         value="24"/>
+			<Metric name="Margin"               value="10"/>
+			<Metric name="Spacing"              value="10"/>
+			<Metric name="ScrollBarSize"        value="16"/>
+			<Metric name="DividerSize"          value="4"/>
+			<Metric name="DividerOutreach"     	value="3"/>
+			<Metric name="Border"               value="4"/>
+			
+			<Font name="MenuFont" 				themeid="StandardUI" size="12"/>
+		<?defined?>
+		
+	</ThemeElements>
+
+	<Styles>
+		<!-- ******************************************************************************************** -->
+		<!-- Styles for default look -->
+		<!-- ******************************************************************************************** -->
+		
+		<Style name="Neutral.Button">
+			<?defined mobileapp?>
+				<Font  name="textfont"    			themeid="StandardUI" size="+2"/>
+				<Color name="textcolor"				color="@Main.MobileControlTextColor"/>
+				<Color name="textcolor.on"			color="@Main.MobileButtonTextColor"/>
+				<Color name="textcolor.pressed"		color="@Main.MobileButtonTextColor"/>
+				<Color name="textcolor.disabled"	color="@Main.LabelColor.Disabled"/>
+				<Color name="iconcolor.on"			color="@Main.MobileButtonTextColor"/>
+				<Color name="iconcolor.pressed"		color="@Main.MobileButtonTextColor"/>
+				<Image name="background"			image="MobileButton"/>
+				<Image name="left"       			image="MobileButtonL"/>
+				<Image name="right"       			image="MobileButtonR"/>
+				<Image name="middle"       			image="MobileButtonM"/>
+				<Metric name="padding.left"			value="10"/>
+				<Metric name="padding.right"		value="10"/>
+				<Metric name="padding.top"			value="1"/>
+			<?defined desktopapp?>
+				<Font  name="textfont"         		themeid="StandardUI"/>
+				<Color name="textcolor"        		color="@Main.LabelColor.Secondary"/>
+				<Color name="textcolor.on"        	color="@Main.LabelColor.Primary.NoInvert"/>
+				<Color name="textcolor.pressed"		color="@Main.LabelColor.Primary.NoInvert"/>
+				<Color name="textcolor.disabled"	color="@Main.LabelColor.Disabled"/>
+				<Color name="iconcolor.on"			color="@Main.LabelColor.Primary.NoInvert"/>
+				<Image name="background"       		image="Button"/>
+				<Image name="left"       			image="ButtonL"/>
+				<Image name="right"       			image="ButtonR"/>
+				<Image name="middle"       			image="ButtonM"/>
+				<Metric name="padding.left"			value="6"/>
+				<Metric name="padding.right"		value="6"/>
+			<?defined?>
+			<Metric name="useButtonMinSize"		value="1"/>
+			<Metric name="buttonstyle"    		value="1"/>
+			<Metric name="fill.icon"    		value="1"/>
+		</Style>
+		
+		<Style name="Neutral.TabButton" inherit="Neutral.Button">
+			<Image name="left"            	image="TabButtonL"/>
+			<Image name="middle"           	image="TabButtonM"/>
+			<Image name="right"            	image="TabButtonR"/>
+			<Image name="background"       	image="TabButton"/>
+		</Style>
+		
+		<Style name="Neutral.CheckBox">
+			<?defined mobileapp?>
+				<Font  name="textfont"         		themeid="StandardUI" size="+2"/>
+				<Color name="textcolor"        		color="@Main.MobileControlTextColor"/>
+				<Color name="textcolor.disabled"	color="@Main.LabelColor.Disabled"/>
+				<Image name="background"			image="MobileCheckSlider"/>
+<!--				<Image name="icon"					image="MobileCheckBoxIcon"/>   no icon (the slider is in background image) -->
+				<Color name="iconcolor"				color="@Main.MobileControlTextOnColor"/>
+				<Align name="textalign"				align="left vcenter"/>
+				<Color name="iconcolor.disabled"	color="@Main.CheckMark.DisabledColor"/>
+			<?defined desktopapp?>
+				<Font  name="textfont"         		themeid="StandardUI"/>
+				<Color name="textcolor"        		color="@Main.LabelColor"/>
+				<Color name="textcolor.disabled"	color="@Main.LabelColor.Disabled"/>
+				<Image name="background"			image="CheckBoxBackground"/>
+				<Image name="icon"					image="CheckBoxIcon"/>
+				<Image name="iconmixed"				image="CheckBoxIconMixed"/>
+				<Align name="textalign"				align="left vcenter"/>
+				<Color name="iconcolor.disabled"	color="@Main.CheckMark.DisabledColor"/>
+			<?defined?>
+		</Style>
+			
+		<Style name="Neutral.RadioButton">
+			<?defined mobileapp?>
+				<Font  name="textfont"         		themeid="StandardUI" size="+2"/>
+				<Color name="textcolor"        		color="@Main.MobileControlTextColor"/>
+				<Color name="textcolor.disabled"	color="@Main.LabelColor.Disabled"/>
+				<Image name="background"       		image="MobileRadioButtonBackground"/>
+				<Image name="icon"					image="MobileRadioButtonDotIcon"/>
+				<Color name="iconcolor"				color="@Main.MobileControlTextOnColor"/>
+				<Align name="textalign"				align="left vcenter"/>
+				<Color name="iconcolor.disabled"	color="@Main.CheckMark.DisabledColor"/>
+			<?defined desktopapp?>
+				<Font  name="textfont"         		themeid="StandardUI"/>
+				<Color name="textcolor"        		color="@Main.LabelColor"/>
+				<Color name="textcolor.disabled"	color="@Main.LabelColor.Disabled"/>
+				<Image name="background"       		image="RadioButtonBackground"/>
+				<Image name="icon"					image="RadioButtonDotIcon"/>
+				<Align name="textalign"				align="left vcenter"/>
+				<Color name="iconcolor.disabled"	color="@Main.CheckMark.DisabledColor"/>
+			<?defined?>
+		</Style>
+
+		<Style name="Neutral.Slider">
+			<?defined mobileapp?>
+				<Image name="hBack"            	image="MobileSliderBackH"/>
+				<Image name="vBack"            	image="MobileSliderBackV"/>
+				<Image name="hHandle"          	image="MobileSliderRoundHandleH"/>
+				<Image name="vHandle"          	image="MobileSliderRoundHandleV"/>
+				<Image name="hSmallBack"       	image="MobileSliderBackH"/>
+				<Image name="hSmallHandle"     	image="MobileSliderRoundHandleH"/>
+				<Image name="vSmallBack"       	image="MobileSliderBackV"/>
+				<Image name="vSmallHandle"     	image="MobileSliderRoundHandleV"/>
+				<Metric name="bargraph"        	value="1"/>
+			<?defined desktopapp?>
+				<Image name="hBack"            	image="SliderBackHMk2"/>
+				<Image name="vBack"            	image="SliderBackVMk2"/>
+				<Image name="hHandle"          	image="SliderHandleHMk2"/>
+				<Image name="vHandle"          	image="SliderHandleVMk2"/>
+				<Image name="hSmallBack"       	image="SliderBackSmallHMk2"/>
+				<Image name="hSmallHandle"     	image="SliderHandleSmallHMk2"/>
+				<Image name="vSmallBack"       	image="SliderBackSmallVMk2"/>
+				<Image name="vSmallHandle"     	image="SliderHandleSmallVMk2"/>
+				<Metric name="bargraph"        	value="1"/>
+			<?defined?>
+		</Style>
+		
+		<Style name="Neutral.RangeSlider" inherit="Neutral.Slider">
+			<?defined mobileapp?>
+				<Image name="hHandle2"         	image="MobileSliderRoundHandleH"/>
+				<Image name="vHandle2"         	image="MobileSliderRoundHandleV"/>
+				<Image name="hSmallHandle2"    	image="MobileSliderRoundHandleH"/>
+				<Image name="vSmallHandle2"    	image="MobileSliderRoundHandleV"/>
+				<Image name="hInvertedBack"     image="MobileRangeSliderInvertedBack"/>
+				<Image name="vInvertedBack"     image="MobileRangeSliderInvertedBack"/>
+			<?defined desktopapp?>
+				<Image name="hHandle2"         	image="SliderHandleHMk2"/>
+				<Image name="vHandle2"         	image="SliderHandleVMk2"/>
+				<Image name="hSmallHandle2"    	image="SliderHandleSmallHMk2"/>
+				<Image name="vSmallHandle2"    	image="SliderHandleSmallVMk2"/>
+				<Image name="hInvertedBack"     image="RangeSliderInvertedBackHMk2"/>
+				<Image name="vInvertedBack"     image="RangeSliderInvertedBackVMk2"/>
+				<Image name="hSmallInvertedBack"     image="RangeSliderInvertedBackSmallHMk2"/>
+				<Image name="vSmallInvertedBack"     image="RangeSliderInvertedBackSmallVMk2"/>
+
+			<?defined?>
+		</Style>
+		
+		<Style name="StdKnobBase">
+			<Metric name="margin" value="0"/>
+			<Metric name="circle" value="1"/>
+			<Metric name="strokewidth" value="5"/>
+			<Metric name="topoverlay" value="1"/>
+			<Metric name="indicator" value="1"/>
+			<Metric name="range" value="270"/>
+			<Metric name="indicatorwidth" value="2"/>
+			<Color name="indicatorcolor" 	color="@Main.LabelColor.NoInvert"/>
+			<Color name="hilitecolor" 		color="@Main.KnobHighlightColor"/>
+			<Color name="forecolor" 		color="hsl(0,0,0,30)"/>
+			<Color name="backcolor" color="hsla(0,0,0,0)"/>
+			<Color name="state1" color="hsl(212,10,70)"/> <!-- gray - AutoOffStateColor -->
+			<Color name="state2" color="hsl(105,41,64)"/> <!-- green - AutoReadStateColor -->
+			<Color name="state3" color="hsl(30,69,63)"/> <!-- orange - AutoTouchStateColor -->
+			<Color name="state4" color="hsl(359,72,64)"/> <!-- red - AutoLatchStateColor -->
+			<Color name="state5" color="hsl(359,93,61)"/> <!-- red - AutoWriteStateColor -->
+			<Color name="stateborder" color="#404040"/>
+		</Style>
+		<Style name="Neutral.Knob.Big" inherit="StdKnobBase">
+			<Metric name="margin" value="0"/>
+			<Image name="background" image="StdKnobABack"/>
+			<Image name="foreground" image="StdKnobA"/>
+			<Image name="topoverlay" image="StdKnobAMask"/>
+			<Image name="disabledoverlay" image="StdKnobADisabled"/>
+			<Metric name="indicatormargin" value="6"/>
+		</Style>
+		<Style name="Neutral.Knob" inherit="StdKnobBase">
+			<Metric name="margin" value="2"/>
+			<Image name="background" image="StdKnobBBack"/>
+			<Image name="foreground" image="StdKnobB"/>
+			<Image name="topoverlay" image="StdKnobBMask"/>
+			<Image name="disabledoverlay" image="StdKnobBDisabled"/>
+			<Metric name="indicatormargin" value="7"/>
+		</Style>
+		<Style name="Neutral.Knob.Small" inherit="StdKnobBase">
+			<Metric name="margin" value="1"/>
+			<Image name="background" image="StdKnobDBack"/>
+			<Image name="foreground" image="StdKnobD"/>
+			<Image name="topoverlay" image="StdKnobDMask"/>
+			<Image name="disabledoverlay" image="StdKnobDDisabled"/>
+			<Metric name="indicatormargin" value="6"/>
+		</Style>
+		<Style name="Neutral.Knob.Medium" inherit="StdKnobBase">
+			<Metric name="margin" value="2"/>
+			<Image name="background" image="StdKnobFBack"/>
+			<Image name="foreground" image="StdKnobF"/>
+			<Image name="topoverlay" image="StdKnobFMask"/>
+			<Image name="disabledoverlay" image="StdKnobFDisabled"/>
+			<Metric name="indicatormargin" value="7"/>
+		</Style>
+		
+		<Style name="Neutral.ScrollBar">
+			<Image name="hButtonDown"      	image="HScrollButtonDown"/>
+			<Image name="hButtonUp"        	image="HScrollButtonUp"/>
+			<Image name="hThumb"           	image="HScrollThumb"/>
+			<Image name="hBack"            	image="ScrollBack"/>
+			<Image name="hSmallThumb"      	image="HSmallListScrollThumb"/>
+			<Image name="hSmallBack"       	image="ScrollBackSmall"/>
+
+			<Image name="vButtonDown"      	image="VScrollButtonDown"/>
+			<Image name="vButtonUp"        	image="VScrollButtonUp"/>
+			<Image name="vThumb"           	image="VScrollThumb"/>
+			<Image name="vBack"            	image="ScrollBackSmall"/>
+			<Image name="vSmallThumb"      	image="VSmallListScrollThumb"/>
+			<Image name="vSmallBack"       	image="ScrollBack"/>
+		</Style>
+
+		<Style name="Neutral.ScrollButton">
+			<Image name="hButtonDown"      	image="ScrollBack"/>
+			<Image name="hButtonUp"        	image="ScrollBack"/>
+		</Style>
+
+		<Style name="Neutral.ProgressBar">
+			<Image name="background"       	image="ProgressBarBackground"/>
+			<Image name="foreground"       	image="ProgressForeground"/>
+			<Image name="indicator"        	image="ProgressBarIndicator"/>
+		</Style>
+
+		<Style name="Neutral.TextBox"     	 textoptions="wordbreak"> <!-- default for multiline -->
+			<?defined mobileapp?>
+				<Font  name="textfont"         		themeid="StandardUI" size="+2"/>
+				<Color name="textcolor"        		color="@Main.MobileControlTextColor"/>
+				<Image name="background"        	image="MobileTextBox"/>
+				<Color name="forecolor"				color="hsl(0,0,0,25)"/>
+				<Color name="textcolor.disabled"	color="@Main.LabelColor.Disabled"/>
+				<Metric name="padding.left"    		value="10"/>
+				<Metric name="padding.right"   		value="10"/>
+
+				<Metric name="native.padding.left"  value="4"/>
+				<Metric name="native.padding.right" value="4"/>
+			<?defined desktopapp?>
+				<Font  name="textfont"         		themeid="StandardUI"/>
+				<Color name="textcolor"        		color="@Main.LabelColor"/>
+				<Image name="background"        	image="TextBoxBackground"/>
+				<Color name="forecolor"				color="hsl(0,0,0,25)"/>
+				<Color name="textcolor.disabled"	color="@Main.LabelColor.Disabled"/>
+				<Metric name="padding.left"    		value="5"/>
+				<Metric name="padding.right"   		value="5"/>
+
+				<?platform win?>
+					<Metric name="native.padding.left"  value="2"/>
+					<Metric name="native.padding.right" value="2"/>
+				<?platform?>
+			<?defined?>
+		</Style>
+				
+		<Style name="Neutral.EditBox"     	 inherit="Neutral.TextBox">
+			<?defined mobileapp?>
+				<Image name="background"        	image="MobileControl"/>
+				<Color name="backcolor"        		color="@Main.MobileControlColor"/>
+				<Align name="textalign"        		align="center"/>
+			<?defined desktopapp?>
+				<Image name="background"        	image="EditFocusBoxBackground"/>
+				<Color name="backcolor"        		color="@Main.EditBoxBackColor"/>
+				<Align name="textalign"        		align="center"/>
+			<?defined?>
+			<Color name="textcolor.placeholder"	color="@Main.LabelColor.Dimmed"/>
+		</Style>
+		
+		<Style name="Neutral.ValueBox"      inherit="Neutral.EditBox">
+			<?defined mobileapp?>
+			<?defined desktopapp?>
+				<Image name="background"			image="EditBoxBackground"/><!-- valuebox has system focus -->
+			<?defined?>
+		</Style>
+
+		<Style name="Neutral.SegmentBox"  	 inherit="Neutral.EditBox">
+			<?defined mobileapp?>
+				<Image name="background"        	image="MobileControl"/>
+			<?defined desktopapp?>
+				<Image name="background"			image="EditBoxBackground"/><!-- segments are focussed  / no focus frame for the box -->
+			<?defined?>
+		</Style>
+
+		<Style name="Neutral.SelectBox"     inherit="Neutral.EditBox">
+			<?defined mobileapp?>
+				<Image name="button"           		image="MobileSelectBoxButton"/>
+				<Metric name="padding.right"   		value="5"/>
+			<?defined desktopapp?>
+				<Image name="button"           		image="SelectBoxButton"/>
+			<?defined?>
+		</Style>
+		
+		<Style name="Neutral.ComboBox" 	 inherit="Neutral.SelectBox">
+			<?defined mobileapp?>
+				<Image name="button"           		image="MobileComboBoxButton"/>
+			<?defined?>
+		</Style>
+
+		<Style name="Neutral.TabView">
+			<?defined mobileapp?>
+				<Font name="textfont"         	themeid="StandardUI" size="+2"/>
+				<Metric name="tabHeight"       	value="40"/>
+				<Image name="background"       	image="TabBackground"/>
+				<Image name="first"            	image="MobileRadioTabControlLeft"/>
+				<Image name="middle"           	image="MobileRadioTabControl"/>
+				<Image name="last"             	image="MobileRadioTabControlRight"/>
+				<Image name="single"           	image="MobileRadioTabControl"/>
+				<Image name="menuIcon"		   	image="SelectBoxButton"/>
+				<Metric name="tabSpacing"		value="0"/>
+			<?defined desktopapp?>
+				<Font name="textfont"         	themeid="StandardUI"/>
+				<Metric name="tabHeight"       	value="26"/>
+				<Image name="background"       	image="TabBackground"/>
+				<Image name="first"            	image="TabButtonL"/>
+				<Image name="middle"           	image="TabButtonM"/>
+				<Image name="last"             	image="TabButtonR"/>
+				<Image name="single"           	image="TabButton"/>
+				<Image name="menuIcon"		   	image="SelectBoxButton"/>
+				<Metric name="tabSpacing"	value="1"/>
+			<?defined?>
+			
+			<Color name="textcolor"        	color="@Main.TabView.Inactive"/>
+			<Color name="activetextcolor"  	color="@Main.TabView.Active.NoInvert"/>
+			<Color name="forecolor"        	color="hsl(210,2,21)"/>
+			<Color name="backcolor"        	color="@Main.TabViewBackColor"/>
+			<Color name="activecolor"      	color="hsl(201,75,61)"/>
+			
+			<Metric name="contentmargin"	value="0"/>
+			<Metric name="tabmargin"		value="9"/>
+		</Style>
+		
+		<Style name="Neutral.MenuBarControl">
+			<?defined mobileapp?>
+				<Font name="textfont"         	themeid="StandardUI" size="+2"/>
+				<Metric name="menuHeight"      	value="40"/>
+			<?defined desktopapp?>
+				<Font name="textfont"         	themeid="StandardUI"/>
+				<Metric name="menuHeight"      	value="23"/>
+			<?defined?>
+            
+            <Image name="background"       	image="MenuBackground"/>
+            <Image name="menuButton"       	image="MenuButton"/>
+            <Metric name="menuSpacing"		value="0"/>
+        
+			<Color name="textcolor"        	color="@Main.LabelColor.Secondary"/>
+			<Color name="activetextcolor"  	color="@Main.LabelColor.Primary.NoInvert"/>
+
+			<Metric name="menuMargin"		value="8"/>
+		</Style>
+
+		<Style name="Neutral.HeaderView">
+			<?defined mobileapp?>
+				<Font  name="textfont"         	themeid="StandardUI" size="+2"/>
+			<?defined desktopapp?>
+				<Font  name="textfont"         	themeid="StandardUI"/>
+			<?defined?>
+			<Color name="textcolor"        	color="@Main.LabelColor"/>
+<!--			<Color name="backcolor"       	color="@Main.HeaderViewColor"/>-->
+			<Image name="background"		image="HeaderBackground"/>
+			<Color name="backcolor.spacing"	color="@Main.HeaderViewSpacingColor"/>
+			<Metric name="spacing"			value="1"/>
+		</Style>
+
+		<Style name="Neutral.Divider">
+			<Image name="hImage"           	image="DividerBackgroundH"/>
+			<Image name="vImage"			image="DividerBackgroundV"/>
+			<Image name="hGrip"            	image="HDividerThumb"/>
+			<Image name="vGrip"            	image="VDividerThumb"/>			
+<!--			<Image name="hGrip"            	image="HDividerGrip"/>-->
+<!--			<Image name="vGrip"			   	image="VDividerGrip"/>-->
+		</Style>
+		
+		<Style name="Neutral.WindowBackground">
+			<Image name="DialogBack"       	image="DialogBackground"/>
+			<Image name="WindowBack"      	image="WindowBackground"/>
+			<Color name="backcolor" 		color="@Main.WindowBackgroundColor"/>
+		</Style>
+	
+		<Style name="Neutral.DialogGroup">
+			<?defined mobileapp?>
+				<Font  name="textfont"         	themeid="StandardUI" size="+2"/>
+				<Image name="Image"            	image="MobileDialogGroup"/>
+				<Image name="SecondaryImage"   	image="MobileDialogGroup"/>
+			<?defined desktopapp?>
+				<Font  name="textfont"         	themeid="StandardUI"/>
+				<Image name="Image"            	image="DialogGroup"/>
+				<Image name="SecondaryImage"   	image="SecondaryDialogGroup"/>
+			<?defined?>
+			<Color name="textcolor"        	color="@Main.LabelColor"/>
+			<Color name="headerlinecolor"	color="@Main.DialogHeaderLineColor"/>
+		</Style>
+
+		<Style name="Neutral.Label"       	textoptions="wordbreak"> <!-- default for multiline -->
+			<?defined mobileapp?>
+				<Font  name="textfont"         	themeid="StandardUI" size="+2"/>
+			<?defined desktopapp?>
+				<Font  name="textfont"         	themeid="StandardUI"/>
+			<?defined?>
+			<Color name="textcolor"        	color="@Main.LabelColor"/>
+			<Color name="backcolor"        	color="@Main.TextBoxBackColor"/>
+			<Align name="textalign"        	align="left vcenter"/>
+		</Style>
+
+		<Style name="Neutral.DialogTitle">
+			<?defined mobileapp?>
+				<Font  name="textfont"         	themeid="StandardUI" size="+6" style="bold"/>
+			<?defined desktopapp?>
+				<Font  name="textfont"         	themeid="StandardUI" size="+4" style="bold"/>
+			<?defined?>
+			<Color name="textcolor"        	color="@Main.LabelColor.Primary"/>
+			<Color name="backcolor"        	color="@Main.TextBoxBackColor"/>
+			<Align name="textalign"        	align="center"/>
+		</Style>
+
+		<Style name="Neutral.H1"  inherit="Neutral.Label">
+			<?defined mobileapp?>
+				<Font  name="textfont"         	themeid="StandardUI" size="+8"/>
+			<?defined desktopapp?>
+				<Font  name="textfont"         	themeid="StandardUI" size="+6"/>
+			<?defined?>
+		</Style>
+
+		<Style name="Neutral.H2"  inherit="Neutral.Label">
+			<?defined mobileapp?>
+				<Font  name="textfont"         	themeid="StandardUI" size="+6"/>
+			<?defined desktopapp?>
+				<Font  name="textfont"         	themeid="StandardUI" size="+4"/>
+			<?defined?>
+		</Style>
+
+		<Style name="Neutral.H3"  inherit="Neutral.Label">
+			<?defined mobileapp?>
+				<Font  name="textfont"         	themeid="StandardUI" size="+4"/>
+			<?defined desktopapp?>
+				<Font  name="textfont"         	themeid="StandardUI" size="+2"/>
+			<?defined?>
+		</Style>
+		
+		<Style name="Neutral.ListViewBase">
+			
+			<?defined mobileapp?>
+				<Font name="textfont"    	themeid="StandardUI" size="+2"/>
+				<Metric name="rowHeight" 	value="40"/><!-- 34 -->
+				<Metric name="iconSize" 	value="36"/>
+			<?defined desktopapp?>
+				<Font name="textfont"      themeid="StandardUI"/>
+				<Metric name="rowHeight" 	value="22"/>
+				<Metric name="iconSize" 	value="16"/>
+			<?defined?>
+			
+			<Color name="backcolor"	       	color="@Main.MenuControlBackColor"/>
+			<!--Color name="backcolor2"	   	color="@Main.ListBackgroundColor"/-->
+			<Color name="textcolor"	   		color="@Main.LabelColor.Secondary"/>
+			<Color name="selectedtextcolor"	color="@Main.LabelColor.Primary.NoInvert"/>
+			<Color name="selectionColor"   	color="@Main.SelectionBackColor"/>
+			<Color name="focusColor"       	color="@Main.ListFocusColor"/>
+
+			<Color name="iconcolor"			color="@Main.WeakContextTemplateColor"/>
+			<Color name="selectediconcolor"	color="@Main.LabelColor.Primary.NoInvert"/>
+			
+			<Color name="thumbnailFrameColor" 	color="hsl(0,0,0,0)"/>
+
+			<Metric name="itemInset"      	value="12"/>
+			<Metric name="border"			value="2"/>
+			<Metric name="marginV"         	value="0"/>
+		</Style>
+		
+		<Style name="Neutral.ListView"     inherit="Neutral.ListViewBase"> <!-- todo: use menuControl colors -->
+			<Image name="background"		image="ListBackground"/>
+			<Color name="backcolor"	       	color="@Main.ListBackgroundColor"/>
+		</Style>
+		
+		<Style name="Neutral.ListViewIcons" inherit="Neutral.ListView">
+			
+			<Metric name="marginH"	value="6"/>
+			<Metric name="marginV"	value="6"/>
+
+			<Metric name="highQualityMode" 	value="1"/>
+			<Image name="icons.background"	image="IconsTileBackground"/>
+			<Image name="icons.overlay"		image="IconsTileOverlayFrame"/>
+			<Image name="icons.overlayfolder" image="IconsFolderTileOverlay"/>
+			<Image name="icons.focusframe"	image="IconsTileFocusFrame"/>
+			<Color name="icons.selectediconcolor"	color="@Main.WeakContextTemplateColor"/>
+			
+			<Metric name="icons.width"		value="134"/>
+			<Metric name="icons.height"		value="145"/>
+			
+			<Metric name="icons.dataleft"	value="19"/>
+			<Metric name="icons.datatop"	value="8"/>
+			<Metric name="icons.datawidth"	value="96"/>
+			<Metric name="icons.dataheight"	value="96"/>
+			
+			<Metric name="icons.textleft"	value="3"/>
+			<Metric name="icons.texttop"	value="111"/>
+			<Metric name="icons.textwidth"	value="128"/>
+			
+			<?platform win?>
+			<Metric name="icons.textheight"	value="31"/>
+			<?platform?>
+			<?not:platform win?>
+			<Metric name="icons.textheight"	value="33"/>
+			<?platform?>
+			
+			<Metric name="icons.showthumbnails"	value="1"/>
+			<Metric name="icons.multiLineTitle"	value="1"/>
+			
+		</Style>
+
+		<Style name="Neutral.TreeView"		inherit="Neutral.ListView">
+			<!-- auto lookup for default expand icon with name:  TreeViewExpandButton -->
+		</Style>
+
+		<Style name="Neutral.PopupMenu"   	inherit="Neutral.ListView">
+			<Color name="menu.separatorcolor" color="@Main.MenuControlSeparatorColor"/>
+			<?defined mobileapp?>
+				<Image name="background"       	image="MenuControlBackground"/>
+				<Color name="backcolor"	       	color="@Main.MenuControlBackColor"/>
+				<Image name="checkmarkicon" 	image="MobileCheckBoxIcon"/>
+				<Image name="selectionbarimage"	image="MobileSelectionBar"/>
+			<?defined desktopapp?>
+				<Image name="background"       	image="PopupMenuBackground"/>
+				<Image name="checkmarkicon" 	image="CheckMarkIcon"/>
+				<Image name="selectionbarimage"	image="DesktopSelectionBar"/>
+			<?defined?>
+			<Metric name="border"          		value="2"/>
+			<Metric name="maxH"					value="660"/>
+			<Metric name="separator.rowHeight"	value="8"/>
+		</Style>
+
+		<Style name="Neutral.PopupMenuLarge" 	inherit="Neutral.PopupMenu">
+			<?defined mobileapp?>
+				<Metric name="iconSize" 	value="64"/>
+			<?defined desktopapp?>
+				<Metric name="rowHeight" 	value="26"/>
+				<Metric name="iconSize" 	value="24"/>
+			<?defined?>
+		</Style>
+
+		<Style name="Neutral.PalettePopup" 	inherit="Neutral.ListView">
+			<Color name="backcolor"	       		color="@Main.PopupMenuBackgroundColor"/>
+			<Image name="background"       		image="PopupMenuBackground"/>
+			<Color name="textcolor" 			color="@Main.LabelColor"/>
+<!--			<Color name="selectionColor"   		color="white"/>-->
+			<Metric name="border"          		value="2"/>
+		</Style>
+		
+		<Style name="Neutral.MenuControl" 		inherit="Neutral.PopupMenu">
+			<Image name="background"       		image="MenuControlBackground"/>
+			<Color name="separatorcolor"   		color="@Main.MenuControlSeparatorColor"/>
+			<Color name="headercolor" 			color="@Main.MenuControlHeaderColor"/>
+			<Color name="textcolor" 			color="@Main.LabelColor"/>
+			<Color name="headertextcolor" 		color="@Main.LabelColor"/>
+			<Color name="selectedtextcolor" 	color="@Main.LabelColor.Primary.NoInvert"/>
+			<Color name="disabledtextcolor" 	color="@Main.LabelColor.Disabled"/>
+
+			<Color name="backcolor"        		color="@Main.MenuControlBackColor"/>
+			<Color name="clip.backcolor"        color="@Main.MenuControlBackColor"/>
+			<Color name="secondarybackcolor"	color="@Main.MenuControlBackColor"/>
+			<Color name="selectionbackcolor" 	color="hsl(0,0,0,0)"/>
+			<Color name="selectionframecolor" 	color="hsl(0,0,0,0)"/>
+			<Color name="bordercolor" 			color="hsl(0,0,0,0)"/>
+
+			<?defined mobileapp?>
+				<Image name="checkmarkicon" 		image="MobileCheckBoxIcon"/>
+				<Image name="selectionbarimage"		image="MobileSelectionBar"/>
+				<Image name="menuarrow"				image="MobileMenuArrow"/>
+				<Image name="closeicon"				image="MobileWindowCloseIcon"/>
+				<Metric name="closeiconwidth"		value="26"/>
+				<Metric name="margin"          		value="2"/>
+				<Metric name="segmentmargin"   		value="2"/>
+				<Metric name="spacing"				value="2"/>
+				<Metric name="explicitrowheight"	value="42"/>
+				<Metric name="separatorspacing"		value="10"/>
+				<Metric name="fixedsubmenuwidth"	value="0"/>
+			<?defined desktopapp?>
+				<Image name="selectionbarimage"		image="DesktopSelectionBar"/>
+				<Image name="checkmarkicon" 		image="CheckMarkIcon"/>
+				<Metric name="margin"          		value="4"/>
+				<Metric name="segmentmargin"   		value="4"/>
+				<Metric name="headerspacing"   		value="6"/>
+				<Metric name="fixedsubmenuwidth"	value="0"/>
+			<?defined?>
+			
+			<Color name="iconcolor"				color="@Main.ContextTemplateColor"/>
+			<Color name="selectediconcolor"		color="@Main.LabelColor.Primary.NoInvert"/>
+		</Style>
+		
+		<Style name="Neutral.ContextMenu"	inherit="Neutral.MenuControl">
+			<?defined mobileapp?>
+				<Metric name="singleColumnCloseButton"	value="1"/>
+			<?defined?>
+		</Style>
+
+		<Style name="Neutral.PerspectiveSwitcher"	inherit="Neutral.ListView">
+			<Image name="background"			image="ListBackground"/>
+			<Metric name="rowHeight"       		value="42"/>
+		</Style>
+		
+		<Style name="Neutral.UpDownBox">
+			<Image name="buttonUp"       	image="UpDownBoxR"/>
+			<Image name="buttonDown"     	image="UpDownBoxL"/>
+		</Style>
+		
+		<Style name="Neutral.ValueBar">
+			<?defined mobileapp?>
+				<Image name="background" image="MobileValueBarBack"/>
+<!--				<Metric name="hMargin" value="3"/>-->
+			<?defined desktopapp?>
+				<Color name="forecolor"			color="@Main.ValueBarForecolor"/>
+				<Color name="backcolor"			color="@Main.ValueBarBackcolor"/>
+			<?defined?>
+		</Style>
+				
+		<Style name="Neutral.PageControl">
+			<Image name="dot"			image="PageIndicatorDot"/>
+			<Metric name="spacing"		value="10"/>
+		</Style>
+					
+		<Style name="Neutral.ScrollPicker">
+			<Color name="textcolor" color="@Main.LabelColor"/>
+			<Color name="barrelTextColor" color="@Main.LabelColor.Tertiary"/>
+			<Color name="backcolor" color="@Main.ScrollPickerBackcolor"/>
+			<Color name="centerBackcolor" color="@Main.ScrollPickerCenterColor"/>
+			<Image name="centerOverlayImage" image="ScrollPickerOverlay"/>
+			<Metric name="padding.left"			value="10"/>
+			<Metric name="padding.right"		value="10"/>
+			<Align name="textalign"        		align="center"/>
+			<?defined mobileapp?>
+				<Metric name="itemSize" value="30"/>
+				<Metric name="centerSize" value="30"/>
+				<Font name="barrelTextFont" themeid="StandardUI" size="+1"/>
+				<Font name="centerTextFont" themeid="StandardUI" size="+2"/>
+				<Font name="textfont" themeid="StandardUI" size="+2"/>
+			<?defined desktopapp?>
+				<Metric name="itemSize" value="22"/>
+				<Metric name="centerSize" value="20"/>
+				<Font name="barrelTextFont" themeid="StandardUI" size="-1"/>
+				<Font name="centerTextFont" themeid="StandardUI"/>
+				<Font name="textfont" themeid="StandardUI"/>
+			<?defined?>
+		</Style>
+
+		<Style name="Neutral.VectorPad">
+			<Image name="back"	image="VectorPadBackground"/>
+			<Image name="handle"	image="VectorPadHandle"/>
+			<Color name="textcolor" color="@Main.LabelColor"/>
+			<Metric name="crosshair"	value="1"/>
+			<Color name="crosshair.color"	color="hsl(0,0,0,20)"/>
+			<Metric name="drawlabels" value="1" />
+		</Style>
+		
+		<Style name="Neutral.TriVectorPad">
+			<Color name="backcolor" color="@Main.WindowBackgroundColor"/>
+			<Image name="handle"	image="VectorPadHandle"/>
+			<Color name="triangleColor" color="@Main.VectorPadBackcolor"/>
+			<Metric name="padding" value="10"/>
+			<Metric name="snapsize" value="11"/>
+		</Style>
+		
+<!-- ******************************************************************************************** -->
+<!-- NON Standard Elements -->
+<!-- ******************************************************************************************** -->
+		<Style name="Neutral.ScrollBar.NoInvert" inherit="Neutral.ScrollBar">
+			<Image name="hButtonDown"      	image="HScrollButtonDown.NoInvert"/>
+			<Image name="hButtonUp"        	image="HScrollButtonUp.NoInvert"/>
+			<Image name="hThumb"           	image="HScrollThumb.NoInvert"/>
+			<Image name="vButtonDown"      	image="VScrollButtonDown.NoInvert"/>
+			<Image name="vButtonUp"        	image="VScrollButtonUp.NoInvert"/>
+			<Image name="vThumb"           	image="VScrollThumb.NoInvert"/>
+		</Style>
+		
+		<Style name="Neutral.Sprite">
+			<Color name="backcolor"	       	color="hsl(213,22,92)"/>
+			<Color name="bordercolor"      	color="hsl(0,0,13,50)"/>
+			<Color name="textcolor"        	color="black"/>
+			<?defined mobileapp?>
+				<Font  name="textfont"         	themeid="StandardUI" size="+2"/>
+			<?defined desktopapp?>
+				<Font  name="textfont"         	themeid="StandardUI"/>
+			<?defined?>
+			<Metric name="border"          	value="1"/>
+			<Metric name="margin"          	value="3"/>
+			<Metric name="spacing"         	value="2"/>
+			<Image name="warningicon"      	image="WarningIcon"/>
+		</Style>
+		
+		<Style name="Neutral.CommandButton">
+			<?defined mobileapp?>
+				<Image name="background" image="MobileCommandButton"/>
+				<Font name="textfont" themeid="StandardUI" size="+3" style="bold"/>
+				<Color name="textcolor"	color="@Main.ButtonBlueTextColor"/>
+				<Metric name="padding.left"			value="10"/>
+				<Metric name="padding.right"		value="10"/>
+				<Metric name="padding.top"			value="1"/>
+			<?defined desktopapp?>
+<!--				<Image name="background" image="Button"/>-->
+				<Image name="background"	image="ButtonSpecialBlue"/>
+				<Font name="textfont" themeid="StandardUI" size="+1"/>
+				<Color name="textcolor"	color="@Main.LabelColor.Primary.NoInvert"/>
+				<Metric name="padding.left"			value="6"/>
+				<Metric name="padding.right"		value="6"/>
+			<?defined?>
+			<Color name="textcolor.disabled" color="@Main.LabelColor.Disabled"/>
+			<Metric name="buttonMinWidth" value="60"/>
+		</Style>
+		
+		<Style name="Neutral.WindowCloseButton">
+			<?defined mobileapp?>
+				<Image name="icon" image="MobileWindowCloseIcon"/>
+				<Metric name="colorize.icon" value="1"/>
+				<Color name="iconcolor" color="@Main.ButtonBlueTextColor"/>
+				<Color name="iconcolor.mouseover" color="@Main.MobileButtonBlueMOColor"/>
+				<Color name="iconcolor.pressed" color="@Main.MobileButtonBluePressedColor"/>
+				<Color name="iconcolor.on" color="@Main.LabelColor.Primary"/>
+			<?defined desktopapp?>
+				<Image name="icon" image="WindowCloseIcon"/>
+				<Metric name="colorize.icon" value="1"/>
+				<Color name="iconcolor" color="@Main.LabelColor.Secondary"/>
+				<Color name="iconcolor.mouseover" color="@Main.LabelColor"/>
+				<Color name="iconcolor.pressed" color="@Main.LabelColor.Primary"/>
+				<Color name="iconcolor.on" color="@Main.LabelColor.Primary"/>
+			<?defined?>
+		</Style>
+		<Style name="Neutral.WindowMaximizeButton" inherit="Neutral.WindowCloseButton">
+			<Image name="icon" image="WindowMaximizeIcon"/>
+		</Style>
+		<Style name="Neutral.WindowMinimizeButton" inherit="Neutral.WindowCloseButton">
+			<Image name="icon" image="WindowMinimizeIcon"/>
+		</Style>
+		<Style name="Neutral.WindowHeaderView">
+			<Image name="background" image="WindowHeaderView"/>
+		</Style>
+		
+		<Style name="Neutral.ColorPickerMetrics">
+			<Metric name="cellwidth" value="30"/>
+			<Metric name="cellheight" value="20"/>
+			<!-- autoLast -2 ignores last transparent color, which is added by CustomColorPresets -->
+			<Metric name="autoLast" value="-2"/>
+			<Metric name="columns" value="16"/>
+			<Metric name="rows" value="8"/>
+			<Metric name="margin" value="0"/>
+			<Metric name="spacing" value="0"/>
+		</Style>
+		
+		<Style name="Neutral.ColorPickerPalette" inherit="Neutral.ColorPickerMetrics">
+			<Image name="palette" image="ColorPickerPalette"/>
+			<Metric name="maxColors" value="127"/>
+		</Style>
+		
+		<Style name="Neutral.ButtonTabView" inherit="Neutral.TabView">
+			<Image name="background"       		image="Button"/>
+			<Image name="first"       			image="ButtonL"/>
+			<Image name="middle"       			image="ButtonM"/>
+			<Image name="last"       			image="ButtonR"/>
+			<Image name="single"           		image="Button"/>
+		</Style>
+		
+		<Style name="Neutral.LabelDimmed" inherit="Neutral.Label">
+			<Color name="textcolor" color="@Main.LabelColor.Dimmed"/>
+		</Style>
+		
+		<Style name="Neutral.SearchBox" inherit="Neutral.EditBox">
+			<Image name="background"	image="SearchBoxBack"/>
+			<Image name="icon"		image="SearchClearIcon"/>
+			<Metric name="border" value="5"/>
+		</Style>
+
+		<Style name="Neutral.ColorPopupBox">
+			<Color name="backcolor"	color="@Main.ColorPaletteBackcolor"/>
+			<Metric name="border"	value="2"/>
+			<Color name="selectionColor"	color="white"/>
+		</Style>
+
+		<Style name="Neutral.PopupMenuDecorStyle">
+			<Image name="background" image="PopupMenuDecor"/>
+		</Style>
+		
+		<Style name="Neutral.MenuBackcolorStyle">
+			<Color name="backcolor" color="@Main.MenuControlBackColor"/>
+		</Style>
+
+		<Style name="Neutral.ViewHighlights">
+			<Color name="frameColor" color="@Main.SelectionBackColor"/>
+<!--			<Color name="dimColor" color="hsl(0,0,0,50)"/>-->
+<!--			<Metric name="circleExpand" value="10"/>-->
+<!--			<Metric name="rectRadius" value="10"/>-->
+<!--			<Metric name="rectExpand" value="3"/>-->
+		</Style>
+
+		<Style name="Neutral.ProgressAnimationTrigger">
+			<Triggers>
+				<Trigger event="onAttached">
+					<StartAnimation>
+						<Animation property="children[progressState].phase" from="0" to="1" duration="2500 ms"/>
+					</StartAnimation>
+				</Trigger>
+				<Trigger event="onRemoved">
+					<StopAnimation property="children[progressState].phase"/>
+				</Trigger>
+			</Triggers>
+		</Style>
+	</Styles>
+
+</Skin>

@@ -1,0 +1,10 @@
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: .\localize.nsh
+msgctxt "Installer"
+msgid "The installer is unable to configure the firewall because a third party firewall ($0) is installed on this system. This may limit the network connectivity of this application."
+msgstr "Bu sistemde üçüncü taraf bir güvenlik duvarı ($0) yüklü olduğu için yükleyici güvenlik duvarını yapılandıramıyor. Bu durum uygulamanın ağ bağlantılarını kısıtlayabilir."

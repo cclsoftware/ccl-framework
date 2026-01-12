@@ -1,0 +1,5 @@
+
+set_target_properties (${cclspy_target} PROPERTIES INSTALL_RPATH "$ORIGIN/..;${CMAKE_INSTALL_RPATH}")
+
+#install (TARGETS ${cclspy_target} LIBRARY DESTINATION ${VENDOR_PLUGINS_RUNTIME_DIRECTORY})
+

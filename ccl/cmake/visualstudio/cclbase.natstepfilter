@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<StepFilter xmlns="http://schemas.microsoft.com/vstudio/debugger/natstepfilter/2010">
+  <Function><Name>CCL::AutoPtr&lt;.*&gt;.*</Name><Action>NoStepInto</Action></Function>
+  <Function><Name>CCL::SharedPtr&lt;.*&gt;.*</Name><Action>NoStepInto</Action></Function>
+  <Function><Name>CCL::UnknownPtr&lt;.*&gt;.*</Name><Action>NoStepInto</Action></Function>
+	
+  <Function><Name>CCL::Singleton&lt;.*&gt;.*</Name><Action>NoStepInto</Action></Function>
+  <Function><Name>CCL::StaticSingleton&lt;.*&gt;.*</Name><Action>NoStepInto</Action></Function>
+  <Function><Name>CCL::ExternalSingleton&lt;.*&gt;.*</Name><Action>NoStepInto</Action></Function>
+  <Function><Name>CCL::SharedSingleton&lt;.*&gt;.*</Name><Action>NoStepInto</Action></Function>
+  <Function><Name>CCL::UnmanagedSingleton&lt;.*&gt;.*</Name><Action>NoStepInto</Action></Function>
+  <Function><Name>CCL::ComponentSingleton&lt;.*&gt;.*</Name><Action>NoStepInto</Action></Function>
+
+  <Function><Name>CCL::String::String</Name><Action>NoStepInto</Action></Function>
+  <Function><Name>CCL::CString::CString</Name><Action>NoStepInto</Action></Function>
+
+  <Function><Name>CCL::LocalString::getText </Name><Action>NoStepInto</Action></Function>
+
+  <Function><Name>CCL::Url::getParameters</Name><Action>NoStepInto</Action></Function>
+
+  <Function><Name>CCL::Message::.*</Name><Action>NoStepInto</Action></Function>
+
+  <Function><Name>CCL::Variant::Variant</Name><Action>NoStepInto</Action></Function>
+  <Function><Name>CCL::Variant::asDouble</Name><Action>NoStepInto</Action></Function>
+
+  <Function><Name>CCL::Serialization::makeItem&lt;.*&gt;</Name><Action>NoStepInto</Action></Function>
+</StepFilter>

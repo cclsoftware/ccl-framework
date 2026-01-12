@@ -1,0 +1,94 @@
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: skin.xml
+msgctxt "AlertBox"
+msgid "$buttonTitle"
+msgstr "$buttonTitle"
+
+#: skin.xml
+msgctxt "AlertBox"
+msgid "$text"
+msgstr "$text"
+
+#: skin.xml
+msgctxt "CommandSelectorDialog"
+msgid "Clear"
+msgstr "클리어"
+
+#: skin.xml
+msgctxt "CommandSelectorDialog"
+msgid "Search"
+msgstr "검색"
+
+#: skin.xml
+msgctxt "CommandSelectorDialog"
+msgid "Select Command"
+msgstr "커맨드 선택"
+
+#: skin.xml
+msgctxt "FontSelectorDialog"
+msgid "Font"
+msgstr "폰트"
+
+#: skin.xml
+msgctxt "FontSelectorDialog"
+msgid "Select Font"
+msgstr "폰트 선택"
+
+#: skin.xml
+msgctxt "FontSelectorDialog"
+msgid "Size"
+msgstr "사이즈"
+
+#: skin.xml
+msgctxt "FontSelectorDialog"
+msgid "Style"
+msgstr "스타일"
+
+#: skin.xml
+msgctxt "HelpViewer"
+msgid "Help Viewer"
+msgstr "도움말 뷰어"
+
+#: skin.xml
+msgctxt "MenuEditor"
+msgid "Edit Menu"
+msgstr "편집 메뉴"
+
+#: skin.xml
+msgctxt "ProgressDialogView"
+msgid "Cancel"
+msgstr "취소"
+
+#: skin.xml
+msgctxt "ProgressDialogView"
+msgid "Please wait..."
+msgstr "잠시만 기다려 주십시오..."
+
+#: skin.xml
+msgctxt "UserOptionDialog"
+msgid "Options"
+msgstr "옵션"
+
+#: skin.xml
+msgctxt "WindowTitleBar"
+msgid "Close"
+msgstr "닫기"
+
+#: skin.xml
+msgctxt "WindowTitleBar"
+msgid "Maximize"
+msgstr "최대화"
+
+#: skin.xml
+msgctxt "WindowTitleBar"
+msgid "Minimize"
+msgstr "최소화"
+
+#~ msgctxt "CommandSelectorDialog"
+#~ msgid "Search:"
+#~ msgstr "검색:"

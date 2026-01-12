@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="100%" height="100%" viewBox="0 0 40 40" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
+    <g transform="matrix(2.19842e-17,-0.359029,0.359029,2.19842e-17,12.5628,27.0091)">
+        <g id="DropDownArrow">
+            <path d="M40.532,5.547C41.124,6.126 41.458,6.92 41.458,7.748C41.458,8.571 41.128,9.36 40.543,9.938C35.903,14.549 25.413,24.891 21.342,28.932C20.445,29.818 18.985,29.824 18.08,28.947C13.938,24.907 3.243,14.547 -1.483,9.938C-2.077,9.363 -2.413,8.57 -2.413,7.743C-2.413,6.924 -2.083,6.138 -1.499,5.564C-0.265,4.357 1.732,4.351 2.973,5.551C6.913,9.385 14.782,16.972 18.165,20.264C19.019,21.089 20.395,21.081 21.24,20.246C24.546,16.953 32.215,9.403 36.068,5.565C37.293,4.353 39.291,4.347 40.523,5.552L40.532,5.547Z" style="fill:rgb(242,13,13);"/>
+        </g>
+    </g>
+</svg>

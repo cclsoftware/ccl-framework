@@ -1,0 +1,18 @@
+android {
+    /* Disable linter for now as we have a known issue that throws an error otherwise.
+     */
+    lintOptions {
+        checkReleaseBuilds = false
+    }
+}
+
+if (!tasks.findByName('copyCCLResources')) {
+	task copyCCLResources(type: Copy) {
+		from("${buildscript.sourceFile.getParentFile()}/resource") {
+            rename "strings.xml", "strings.ccl.xml"
+        }
+		into "build/res"
+	}
+
+	preBuild.dependsOn(copyCCLResources)
+}

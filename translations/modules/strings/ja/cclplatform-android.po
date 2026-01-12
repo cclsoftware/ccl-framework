@@ -1,0 +1,20 @@
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: strings.xml
+msgctxt "init_failed_message"
+msgid "The app could not be initialized properly."
+msgstr "アプリを正しく初期化できませんでした。"
+
+#: strings.xml
+msgctxt "launch_failed"
+msgid "Launch failed"
+msgstr "起動に失敗しました"
+
+#: strings.xml
+msgctxt "load_failed_message"
+msgid "The app is not installed correctly or the operating system is not supported."
+msgstr "アプリが正しくインストールされていないか、オペレーティングシステムに対応していません。"

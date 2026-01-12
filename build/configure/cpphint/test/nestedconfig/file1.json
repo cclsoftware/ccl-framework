@@ -1,0 +1,21 @@
+{
+	"description": "cpphint.py config for nested config test",
+	"output": "out/cpp.hint",
+	"extends":
+	[
+		"file2.json"
+	],
+	"sources":
+	[
+		{
+			"path": "file1.h"
+		}
+	],
+	"conditions":
+	[
+		{
+			"name":  "FILE1_CONDITION",
+			"value": false
+		}
+	]
+}

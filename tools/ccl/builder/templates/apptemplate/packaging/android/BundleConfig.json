@@ -1,0 +1,5 @@
+{
+  "compression": {
+    "uncompressedGlob": ["assets/**.skin", "assets/**.langpack", "assets/**.package"]
+  }
+}

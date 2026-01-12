@@ -1,0 +1,16 @@
+{% for enum in enums %}
+	// ***********************************************************************************************
+	// Source: {{ enum.name }}
+{% if enum.brief %}
+	// {{ enum.brief }}
+{% endif %}
+	// ***********************************************************************************************
+
+{% for enumerator in enum.enumerators %}
+{% if enumerator.brief %}
+	/** {{ enumerator.brief | sentence }} */
+{% endif %}
+	public static final {{ enumerator.type || javatype}} {{ enumerator.name }} = {{ enumerator.value | javavalue }};
+{% endfor %}
+
+{% endfor %}

@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Skin>
+
+	<!-- ******************************************************************************************** -->
+	<!-- Resources -->
+	<!-- ******************************************************************************************** -->
+
+	<Resources>
+		<ShapeImage name="TutorialViewer.BackgroundImage" url="RoundedRectangleShape"/>
+		<ShapeImage name="TutorialViewer.CoverMask" url="RoundedCornersBottomShape"/>
+		<ShapeImage name="TutorialViewer.CloseButtonBackground" url="FilledCircleShape"/>
+		<ShapeImage name="TutorialViewer.OutlineImage" url="OutlineRectangle"/>
+	</Resources>
+
+	<!-- ******************************************************************************************** -->
+	<!-- Shapes -->
+	<!-- ******************************************************************************************** -->
+
+	<Shapes>
+		<!-- Semi-transparent, white-ish rectangle with rounded corners and outline. -->
+		<Shape name="RoundedRectangleShape" size="0,0,20,20" style="scale">
+			<Rectangle size="0,0,20,20" style="fill stroke tiled" Brush.color="hsl(0,0,100,95)" Pen.color="hsl(0,0,100,95)" radius="7"/>
+			<Rectangle size="0,0,20,20" style="stroke tiled" Pen.color="hsl(0,0,0,0)" radius="7"/>
+		</Shape>
+		<!-- Outline rectangle with rounded corners. -->
+		<Shape name="OutlineRectangle" size="0,0,20,20" style="scale">
+			<Rectangle size="0,0,20,20" style="stroke tiled margin" Pen.color="hsl(0,0,100,10)" radius="8"/><!-- yes 8 - for now -->
+		</Shape>
+		<!-- White backdrop for lower half of cover image. -->
+		<Shape name="RoundedCornersBottomShape" size="0,0,600,200">
+			<Rectangle size="0,-7,600,207" style="fill stroke tiled margin" Brush.color="hsl(0,0,100,92)" Pen.color="hsl(0,0,100,92)" radius="7"/>
+			<Rectangle size="0,-7,600,207" style="stroke tiled margin" Pen.color="hsl(0,0,0,10)" radius="7"/>
+		</Shape>
+		<!-- Reminder: same size as close button, do not resize close button. -->
+		<Shape name="FilledCircleShape" size="0,0,26,26">
+			<Ellipse size="0,0,26,26" style="fill" Brush.color="hsl(0,0,100,85)"/>
+		</Shape>
+	</Shapes>
+
+	<!-- ******************************************************************************************** -->
+	<!-- Styles -->
+	<!-- ******************************************************************************************** -->
+
+	<Styles>
+
+		<Style name="TutorialViewer.IconColors" inherit="Standard.Button">
+			<Metric name="colorize.icon" value="1"/>
+			<Color name="iconcolor" color="hsl(0,0,20,100)"/>
+			<Color name="iconcolor.mouseover" color="hsl(0,0,60,100)"/>
+			<Color name="iconcolor.pressed" color="hsl(0,0,80,100)"/>
+			<Color name="iconcolor.on" color="hsl(0,0,20,100)"/>
+			<Color name="iconcolor.disabled" color="hsl(0,0,60,100)"/>
+		</Style>
+		
+		<Style name="TutorialViewer.WindowCloseButton" inherit="TutorialViewer.IconColors" appstyle="true" override="true">
+			<Image name="icon" image="WindowCloseIcon"/>
+		</Style>
+		
+		<Style name="TutorialViewer.ArrowDoubleLeftButton" inherit="TutorialViewer.IconColors" appstyle="true" override="true">
+			<Image name="icon" image="Standard/ArrowDoubleLeft"/>
+		</Style>
+		
+		<Style name="TutorialViewer.ArrowLeftButton" inherit="TutorialViewer.IconColors" appstyle="true" override="true">
+			<Image name="icon" image="Standard/ArrowLeft"/>
+		</Style>
+		
+		<Style name="TutorialViewer.ArrowRightButton" inherit="TutorialViewer.IconColors" appstyle="true" override="true">
+			<Image name="icon" image="Standard/ArrowRight"/>
+		</Style>
+		
+		<Style name="TutorialViewer.ArrowDoubleRightButton" inherit="TutorialViewer.IconColors" appstyle="true" override="true">
+			<Image name="icon" image="Standard/ArrowDoubleRight"/>
+		</Style>
+
+		<!-- Slide base foreground color. -->
+		<Style name="TutorialViewer.ForegroundColor">
+			<Color name="textcolor" color="hsl(0,0,20,100)"/>
+		</Style>
+
+		<!-- Step caption: use larger, heading-style text. -->
+		<Style name="TutorialViewer.SkinContent.Heading" inherit="TutorialViewer.ForegroundColor">
+			<Font name="textfont" themeid="StandardUI" size="+7"/>
+		</Style>
+
+		<!-- Must use wordbreak to work with options="multiline". -->
+		<Style name="TutorialViewer.SkinContent.Primary" textoptions="wordbreak" inherit="TutorialViewer.ForegroundColor">
+			<Font name="textfont" themeid="StandardUI" size="+4"/>
+		</Style>
+
+		<!-- Link may be full sentence, use wordbreak. Use textcolor that contrasts RoundedRectangleShape. -->
+		<Style name="TutorialViewer.SkinContent.Link" textoptions="wordbreak">
+			<Font name="textfont" themeid="StandardUI" size="+4"/>
+			<Color name="textcolor" color="hsl(218,100,29)"/>
+		</Style>
+
+		<!-- Match arrow buttons: enlarge text, use gray-ish textcolor. -->
+		<Style name="TutorialViewer.StepInfo" inherit="TutorialViewer.ForegroundColor">
+			<Font name="textfont" themeid="StandardUI" size="+4"/>
+		</Style>
+
+		<!-- Make form transparent. -->
+		<Style name="TutorialViewer.TransparentWindow">
+			<Color name="backcolor" color="hsl(0,0,0,0)"/>
+		</Style>
+
+		<!-- Solid color, semi-transparent background, used as windowframe. -->
+		<Style name="TutorialViewer.Background">
+			<Image name="background" image="TutorialViewer.BackgroundImage"/>
+		</Style>
+		
+		<!-- Outline for Cover Content only (first slide) -->
+		<Style name="TutorialViewer.ContentCoverOutline">
+			<Image name="background" image="TutorialViewer.OutlineImage"/>
+		</Style>
+
+	</Styles>
+
+	<!-- ******************************************************************************************** -->
+	<!-- Forms -->
+	<!-- ******************************************************************************************** -->
+
+	<Forms>
+
+		<!-- ******************************************************************************************** -->
+		<!-- Form: TutorialViewer -->
+		<!-- Used with dynamic content height, requires autoSize () when content is replaced. -->
+		<!-- ******************************************************************************************** -->
+
+		<Form name="TutorialViewer" width="600" style="TutorialViewer.TransparentWindow" title="Tutorial" windowstyle="customframe center translucent" options="colorize windowmovable" attach="fitsize">
+			<!-- "content" view must keep a minimum sizelimit.
+				Otherwise, when views are removed and "fitsize" mode is active,
+				Window::setSize() skips resizing (due to `if(size.isEmpty())`). -->
+			<View name="content" sizelimits="1,1,-1,-1" attach="fitsize"/>
+		</Form>
+
+		<!-- ******************************************************************************************** -->
+		<!-- Form: TutorialViewer.SkinContent -->
+		<!-- Content area: close button, step content, navigation buttons. -->
+		<!-- May have background spanning entire form area. -->
+		<!-- ******************************************************************************************** -->
+
+		<Form name="TutorialViewer.SkinContent" attach="vcenter">
+
+			<!-- ******************************************************************************************** -->
+			<!-- Title slide, fixed size at 600x400 - contains text only. -->
+			<!-- ******************************************************************************************** -->
+
+			<if property="hasCover" value="1">
+				<!-- Stack elements here so 'content' can span entire form (reminder: cover image is provided by step, i.e. 'content'). -->
+				<ImageView size="0,0,600,400" provider="cover">
+					<ImageView size="0,0,600,400" style="TutorialViewer.ContentCoverOutline"/>
+					<ImageView rect="0,200,600,400" image="TutorialViewer.CoverMask">
+						<Vertical rect="0,0,600,200" margin="10">
+							<define textareawidth="540">
+								<View name="TutorialViewer.SkinContent.StepData.Text" attach="hcenter"/>
+							</define>
+						</Vertical>
+					</ImageView>
+				</ImageView>
+				<if not.defined="hideTutorialCloseButton">
+					<ImageView size="561,9" image="TutorialViewer.CloseButtonBackground"/>
+				</if>
+				<Button name="close" style="TutorialViewer.WindowCloseButton" size="544,10,60,24" options="hidefocus transparent" tooltip="Close"/>
+				<!-- Position adjusted to match content slide position and bottom margin which results from a vertical layout. -->
+				<View name="TutorialViewer.Navigation" size="10,363"/>
+			</if>
+
+			<!-- ******************************************************************************************** -->
+			<!-- Content slide, fixed width 600 but expands vertically - contains text and/or images. -->
+			<!-- ******************************************************************************************** -->
+
+			<if property="hasCover" value="0">
+				<ImageView width="600" style="TutorialViewer.Background" attach="vfit">
+					<!-- Reminder: Keep buttons outside vertical layout to have more vertical space for the content area. -->
+					<Button name="close" style="TutorialViewer.WindowCloseButton" size="544,10,60,24" options="hidefocus transparent" tooltip="Close"/>
+					<Vertical width="600" margin="10" attach="vfit">
+						<View name="TutorialViewer.SkinContent.StepData" width="580" attach="hcenter vfit"/>
+						<View name="TutorialViewer.Navigation"/>
+					</Vertical>
+				</ImageView>
+			</if>
+		</Form>
+
+		<!-- ******************************************************************************************** -->
+		<!-- Form: TutorialViewer.Navigation -->
+		<!-- ******************************************************************************************** -->
+
+		<Form name="TutorialViewer.Navigation">
+			<Horizontal margin="0" spacing="10">
+				<!-- Span 580 pixels. -->
+				<Button name="firstStep" style="TutorialViewer.ArrowDoubleLeftButton" size="0,0,80,22" options="hidefocus transparent" attach="left vcenter" tooltip="First Step"/>
+				<Button name="prevStep" style="TutorialViewer.ArrowLeftButton" size="0,0,80,22" options="hidefocus transparent" attach="left vcenter" tooltip="Previous Step"/>
+				<TextBox name="stepInfo" style="TutorialViewer.StepInfo" width="220" height="26" options="transparent" attach="left right fill vcenter"/>
+				<Button name="nextStep" style="TutorialViewer.ArrowRightButton" size="0,0,80,22" options="hidefocus transparent" attach="right vcenter" tooltip="Next Step"/>
+				<Button name="lastStep" style="TutorialViewer.ArrowDoubleRightButton" size="0,0,80,22" options="hidefocus transparent" attach="right vcenter" tooltip="Last Step"/>
+			</Horizontal>
+		</Form>
+
+		<!-- ******************************************************************************************** -->
+		<!-- Form: TutorialViewer.SkinContent.StepData -->
+		<!-- ******************************************************************************************** -->
+
+		<Form name="TutorialViewer.SkinContent.StepData">
+			<if property="hasHorizontalContentImage" value="0">
+				<if property="hasVerticalContentImage" value="0">
+					<!-- No content image: show text data only.-->
+					<define textareawidth="500">
+						<View name="TutorialViewer.SkinContent.StepData.Text" attach="hcenter vcenter"/>
+					</define>
+				</if>
+				<if property="hasVerticalContentImage" value="1">
+					<!-- Vertical image only: show image right to text. -->
+					<Horizontal attach="hcenter vcenter">
+						<define textareawidth="280">
+							<View name="TutorialViewer.SkinContent.StepData.Text" attach="vcenter"/>
+						</define>
+						<ImageView width="190" height="280" provider="vertical" attach="hcenter vcenter" options="fitimage"/>
+					</Horizontal>
+				</if>
+			</if>
+			<if property="hasHorizontalContentImage" value="1">
+				<if property="hasVerticalContentImage" value="0">
+					<!-- Horizontal image only: show image below text. -->
+					<Vertical attach="hcenter vcenter" spacing="10">
+						<ImageView width="500" height="160" provider="horizontal" attach="hcenter vcenter" options="fitimage"/>
+						<define textareawidth="500">
+							<View name="TutorialViewer.SkinContent.StepData.Text" attach="vcenter"/>
+						</define>
+					</Vertical>
+				</if>
+				<if property="hasVerticalContentImage" value="1">
+					<!-- Both images: show text in upper left quarter. -->
+					<Vertical attach="hcenter vcenter" spacing="10">
+						<!-- top row -->
+						<Horizontal attach="hcenter">
+							<define textareawidth="260">
+								<View name="TutorialViewer.SkinContent.StepData.Text" attach="vcenter"/>
+							</define>
+							<ImageView width="190" height="200" provider="vertical" attach="hcenter vcenter" options="fitimage"/>
+						</Horizontal>
+						<!-- bottom row -->
+						<ImageView width="550" height="140" provider="horizontal" attach="hcenter vcenter" options="fitimage"/>
+					</Vertical>
+				</if>
+			</if>
+		</Form>
+
+		<!-- ******************************************************************************************** -->
+		<!-- Form: TutorialViewer.SkinContent.StepData.Text -->
+		<!-- ******************************************************************************************** -->
+
+		<Form name="TutorialViewer.SkinContent.StepData.Text">
+			<Vertical>
+				<TextBox name="heading" height="30" options="transparent nocontextmenu fittext" style="TutorialViewer.SkinContent.Heading" attach="hcenter"/>
+				<if property="hasPrimaryText" value="1">
+					<TextBox name="primary" options="transparent nocontextmenu multiline" style="TutorialViewer.SkinContent.Primary" width="$textareawidth" attach="hcenter"/>
+				</if>
+				<if property="hasLink" value="1">
+					<Link name="linkUrl" attach="hcenter">
+						<TextBox name="linkTitle" options="transparent nocontextmenu multiline" style="TutorialViewer.SkinContent.Link" width="$textareawidth" attach="hcenter"/>
+					</Link>
+				</if>
+			</Vertical>
+		</Form>
+
+	</Forms>
+</Skin>
+

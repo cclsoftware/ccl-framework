@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="100%" height="100%" viewBox="0 0 26 40" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
+    <g transform="matrix(0.315673,0,0,0.309942,7.58523,15.5202)">
+        <g>
+            <g id="DropDownArrow">
+            </g>
+        </g>
+    </g>
+    <g transform="matrix(0.286239,0,0,0.281043,3.59935,14.4445)">
+        <path d="M36.097,9.934C36.91,9.934 37.023,11.307 37.023,12.135C37.023,12.958 36.693,13.747 36.108,14.325C31.468,18.936 25.413,24.891 21.342,28.932C20.445,29.818 18.985,29.824 18.08,28.947C13.938,24.907 7.63,18.934 2.904,14.325C2.31,13.75 1.974,12.957 1.974,12.13C1.974,11.311 2.076,9.951 2.888,9.951C5.238,9.951 32.366,9.939 36.088,9.939L36.097,9.934Z" style="fill:rgb(242,13,13);"/>
+    </g>
+</svg>

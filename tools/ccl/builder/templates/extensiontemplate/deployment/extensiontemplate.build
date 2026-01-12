@@ -1,0 +1,3 @@
+setInputDir: ./extensiontemplate
+setOutputDir: ../
+packageFolder-r-z: ExtensionFileName.unsigned

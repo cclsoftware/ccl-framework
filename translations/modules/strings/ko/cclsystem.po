@@ -1,0 +1,279 @@
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: nativefilesystem.cpp
+msgctxt "FileErrors"
+msgid "Access is denied"
+msgstr "액세스가 거부되었습니다."
+
+#: nativefilesystem.cpp
+msgctxt "FileErrors"
+msgid "Invalid Argument"
+msgstr "유효하지 않은 인수"
+
+#: nativefilesystem.cpp
+msgctxt "FileErrors"
+msgid "The file exists"
+msgstr "존재하는 파일입니다."
+
+#: nativefilesystem.cpp
+msgctxt "FileErrors"
+msgid "The file is in use"
+msgstr "파일이 사용중입니다."
+
+#: nativefilesystem.cpp
+msgctxt "FileErrors"
+msgid "The file is write protected"
+msgstr "쓰기 보호된 파일입니다."
+
+#: nativefilesystem.cpp
+msgctxt "FileErrors"
+msgid "The system cannot find the file specified"
+msgstr "시스템이 지정된 파일을 찾지 못했습니다."
+
+#: nativefilesystem.cpp
+msgctxt "FileErrors"
+msgid "There is not enough space on the disk"
+msgstr "디스크에 공간이 부족합니다."
+
+#: nativefilesystem.cpp
+msgctxt "FileErrors"
+msgid "Too many open files"
+msgstr "열린 파일이 너무 많습니다."
+
+#: nativefilesystem.cpp
+msgctxt "FileErrors"
+msgid "Unknown Error"
+msgstr "알 수 없는 오류"
+
+#: fileutilities.cpp
+msgctxt "FileType"
+msgid "Application"
+msgstr "어플리케이션"
+
+#: fileutilities.cpp
+msgctxt "FileType"
+msgid "Application Extension"
+msgstr "어플리케이션 확장자"
+
+#: fileutilities.cpp
+msgctxt "FileType"
+msgid "Binary File"
+msgstr "바이너리 파일"
+
+#: fileutilities.cpp
+msgctxt "FileType"
+msgid "HTML File"
+msgstr "HTML 파일"
+
+#: fileutilities.cpp
+msgctxt "FileType"
+msgid "JSON File"
+msgstr "JSON 파일"
+
+#: fileutilities.cpp
+msgctxt "FileType"
+msgid "Java Properties File"
+msgstr "Java 속성파일"
+
+#: localization/languagepack.cpp
+msgctxt "FileType"
+msgid "Language Pack"
+msgstr "언어팩"
+
+#: fileutilities.cpp
+msgctxt "FileType"
+msgid "PDF File"
+msgstr "PDF 파일"
+
+#: fileutilities.cpp
+msgctxt "FileType"
+msgid "Package File"
+msgstr "패키지 파일"
+
+#: fileutilities.cpp
+msgctxt "FileType"
+msgid "Rich Text Format"
+msgstr "리치 텍스트 포맷"
+
+#: fileutilities.cpp
+msgctxt "FileType"
+msgid "Spreadsheet"
+msgstr "스프레드시트"
+
+#: fileutilities.cpp
+msgctxt "FileType"
+msgid "Text File"
+msgstr "텍스트 파일"
+
+#: fileutilities.cpp
+msgctxt "FileType"
+msgid "UBJSON File"
+msgstr "UBJSON 파일"
+
+#: fileutilities.cpp
+msgctxt "FileType"
+msgid "XML File"
+msgstr "XML 파일"
+
+#: fileutilities.cpp
+msgctxt "FileType"
+msgid "ZIP File"
+msgstr "Zip 파일"
+
+#: localization/localeinfo.cpp
+msgctxt "Locales"
+msgid "%(1) days ago"
+msgstr "%(1)일 전"
+
+#: localization/localeinfo.cpp
+msgctxt "Locales"
+msgid "%(1) months ago"
+msgstr "%(1)개월 전"
+
+#: localization/localeinfo.cpp
+msgctxt "Locales"
+msgid "%(1) weeks ago"
+msgstr "%(1)주 전"
+
+#: localization/localeinfo.cpp
+msgctxt "Locales"
+msgid "%(1) years ago"
+msgstr "%(1)년 전"
+
+#: localization/localeinfo.cpp
+msgctxt "Locales"
+msgid "GB"
+msgstr "GB"
+
+#: localization/localeinfo.cpp
+msgctxt "Locales"
+msgid "In %(1) days"
+msgstr "%(1)일"
+
+#: localization/localeinfo.cpp
+msgctxt "Locales"
+msgid "In %(1) hours"
+msgstr "%(1)시간"
+
+#: localization/localeinfo.cpp
+msgctxt "Locales"
+msgid "In less than one hour"
+msgstr "1시간 미만"
+
+#: localization/localeinfo.cpp
+msgctxt "Locales"
+msgid "In one day"
+msgstr "1일"
+
+#: localization/localeinfo.cpp
+msgctxt "Locales"
+msgid "In one hour"
+msgstr "1시간"
+
+#: localization/localeinfo.cpp
+msgctxt "Locales"
+msgid "KB"
+msgstr "KB"
+
+#: localization/localeinfo.cpp
+msgctxt "Locales"
+msgid "KB/sec"
+msgstr "KB/초"
+
+#: localization/localeinfo.cpp
+msgctxt "Locales"
+msgid "Last month"
+msgstr "지난 달"
+
+#: localization/localeinfo.cpp
+msgctxt "Locales"
+msgid "Last week"
+msgstr "지난 주"
+
+#: localization/localeinfo.cpp
+msgctxt "Locales"
+msgid "Last year"
+msgstr "작년"
+
+#: localization/localeinfo.cpp
+msgctxt "Locales"
+msgid "MB"
+msgstr "MB"
+
+#: localization/localeinfo.cpp
+msgctxt "Locales"
+msgid "MB/sec"
+msgstr "MB/초"
+
+#: localization/localeinfo.cpp
+msgctxt "Locales"
+msgid "TB"
+msgstr "TB"
+
+#: localization/localeinfo.cpp
+msgctxt "Locales"
+msgid "Today"
+msgstr "오늘"
+
+#: localization/localeinfo.cpp
+msgctxt "Locales"
+msgid "Yesterday"
+msgstr "어제"
+
+#: localization/localeinfo.cpp
+msgctxt "Locales"
+msgid "bytes"
+msgstr "바이트"
+
+#: localization/localeinfo.cpp
+msgctxt "Locales"
+msgid "days"
+msgstr "일"
+
+#: localization/localeinfo.cpp
+msgctxt "Locales"
+msgid "hours"
+msgstr "시간"
+
+#: localization/localeinfo.cpp
+msgctxt "Locales"
+msgid "min"
+msgstr "분"
+
+#: localization/localeinfo.cpp
+msgctxt "Locales"
+msgid "sec"
+msgstr "초"
+
+#: packaging/filearchive.cpp
+msgctxt "PackageFile"
+msgid "Packaging: %(1)"
+msgstr "패키징: %(1)"
+
+#: plugins/plugmanager.cpp
+msgctxt "PlugInManager"
+msgid "Deleted script object from \"%(1)\" is still referenced."
+msgstr "\"%(1)\" 의 삭제된 스크립트 오브젝트가 여전히 참조되고 있습니다."
+
+#: plugins/plugcollect.cpp
+msgctxt "PlugIns"
+msgid "%(1) has been blocked."
+msgstr "%(1)(이)가 블록되었습니다."
+
+#: plugins/servicemanager.cpp
+msgctxt "ServiceManager"
+msgid "%(1) failed!"
+msgstr "%(1) 실패!"
+
+#: plugins/servicemanager.cpp
+msgctxt "ServiceManager"
+msgid "Starting %(1)..."
+msgstr "%(1) 시작하는 중..."
+
+#~ msgctxt "ServiceManager"
+#~ msgid "Stopping %(1)..."
+#~ msgstr "%(1) 멈추는 중..."

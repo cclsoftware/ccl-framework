@@ -1,0 +1,212 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Locales>
+	<!-- ******************************************************************************************** -->
+	<!-- English (en) -->
+	<!-- ******************************************************************************************** -->
+
+	<LocaleInfo	language="en" title="English">
+		<String x:id="dateFormat" text="%int(3).%int(2).%int(1)"/>				<!-- 9.3.2008 -->
+		<String x:id="friendlyDateFormat" text="%(5), %(4) %int(3) %int(1)"/>	<!-- Sunday, March 9 2008 -->
+		<String x:id="timeFormat" text="%int(1:2):%int(2:2):%int(3:2)"/>		<!-- 01:42:00 -->
+		
+		<Attributes x:id="weekdays">
+			<Association key="Sun" value="Sunday"/>
+			<Association key="Mon" value="Monday"/>
+			<Association key="Tue" value="Tuesday"/>
+			<Association key="Wed" value="Wednesday"/>
+			<Association key="Thu" value="Thursday"/>
+			<Association key="Fri" value="Friday"/>
+			<Association key="Sat" value="Saturday"/>
+		</Attributes>
+		
+		<Attributes x:id="months">
+			<Association key="Jan" value="January"/>
+			<Association key="Feb" value="February"/>
+			<Association key="Mar" value="March"/>
+			<Association key="Apr" value="April"/>
+			<Association key="May" value="May"/>
+			<Association key="Jun" value="June"/>
+			<Association key="Jul" value="July"/>
+			<Association key="Aug" value="August"/>
+			<Association key="Sep" value="September"/>
+			<Association key="Oct" value="October"/>
+			<Association key="Nov" value="November"/>
+			<Association key="Dec" value="December"/>
+		</Attributes>
+	</LocaleInfo>
+
+	<!-- ******************************************************************************************** -->
+	<!-- German (de) -->
+	<!-- ******************************************************************************************** -->
+
+	<LocaleInfo	language="de" title="Deutsch">
+		<String x:id="dateFormat" text="%int(3).%int(2).%int(1)"/>				<!-- 9.3.2008 -->
+		<String x:id="friendlyDateFormat" text="%(5), %int(3). %(4) %int(1)"/>	<!-- Sonntag, 9. März 2008 -->
+		<String x:id="timeFormat" text="%int(1:2):%int(2:2):%int(3:2)"/>		<!-- 01:42:00 -->
+		
+		<Attributes x:id="weekdays">
+			<Association key="Sun" value="Sonntag"/>
+			<Association key="Mon" value="Montag"/>
+			<Association key="Tue" value="Dienstag"/>
+			<Association key="Wed" value="Mittwoch"/>
+			<Association key="Thu" value="Donnerstag"/>
+			<Association key="Fri" value="Freitag"/>
+			<Association key="Sat" value="Samstag"/>
+		</Attributes>
+		
+		<Attributes x:id="months">
+			<Association key="Jan" value="Januar"/>
+			<Association key="Feb" value="Februar"/>
+			<Association key="Mar" value="März"/>
+			<Association key="Apr" value="April"/>
+			<Association key="May" value="Mai"/>
+			<Association key="Jun" value="Juni"/>
+			<Association key="Jul" value="Juli"/>
+			<Association key="Aug" value="August"/>
+			<Association key="Sep" value="September"/>
+			<Association key="Oct" value="Oktober"/>
+			<Association key="Nov" value="November"/>
+			<Association key="Dec" value="Dezember"/>
+		</Attributes>
+	</LocaleInfo>
+
+	<!-- ******************************************************************************************** -->
+	<!-- French (fr) -->
+	<!-- ******************************************************************************************** -->
+	
+	<LocaleInfo	language="fr" title="Français">
+		<String x:id="dateFormat" text="%int(3).%int(2).%int(1)"/>				<!-- 9.3.2008 -->
+		<String x:id="friendlyDateFormat" text="%(5), %int(3). %(4) %int(1)"/>	<!-- Sonntag, 9. März 2008 -->
+		<String x:id="timeFormat" text="%int(1:2):%int(2:2):%int(3:2)"/>		<!-- 01:42:00 -->
+
+		<Attributes x:id="weekdays">
+			<Association key="Sun" value="dimanche"/>
+			<Association key="Mon" value="lundi"/>
+			<Association key="Tue" value="mardi"/>
+			<Association key="Wed" value="mercredi"/>
+			<Association key="Thu" value="jeudi"/>
+			<Association key="Fri" value="vendredi"/>
+			<Association key="Sat" value="samedi"/>
+		</Attributes>	
+		
+		<Attributes x:id="months">
+			<Association key="Jan" value="janvier"/>
+			<Association key="Feb" value="février"/>
+			<Association key="Mar" value="mars"/>
+			<Association key="Apr" value="avril"/>
+			<Association key="May" value="mai"/>
+			<Association key="Jun" value="juin"/>
+			<Association key="Jul" value="juillet"/>
+			<Association key="Aug" value="août"/>
+			<Association key="Sep" value="septembre"/>
+			<Association key="Oct" value="octobre"/>
+			<Association key="Nov" value="novembre"/>
+			<Association key="Dec" value="décembre"/>
+		</Attributes>
+	</LocaleInfo>
+
+	<!-- ******************************************************************************************** -->
+	<!-- Spanish (es) -->
+	<!-- ******************************************************************************************** -->
+
+	<LocaleInfo	language="es" title="Español">
+		<String x:id="dateFormat" text="%int(3).%int(2).%int(1)"/>				<!-- 9.3.2008 -->
+		<String x:id="friendlyDateFormat" text="%(5), %int(3). %(4) %int(1)"/>	<!-- Sonntag, 9. März 2008 -->
+		<String x:id="timeFormat" text="%int(1:2):%int(2:2):%int(3:2)"/>		<!-- 01:42:00 -->
+
+		<Attributes x:id="weekdays">
+			<Association key="Sun" value="domingo"/>
+			<Association key="Mon" value="lunes"/>
+			<Association key="Tue" value="martes"/>
+			<Association key="Wed" value="miércoles"/>
+			<Association key="Thu" value="jueves"/>
+			<Association key="Fri" value="viernes"/>
+			<Association key="Sat" value="sábado"/>
+		</Attributes>	
+
+		<Attributes x:id="months">
+			<Association key="Jan" value="enero"/>
+			<Association key="Feb" value="febrero"/>
+			<Association key="Mar" value="marzo"/>
+			<Association key="Apr" value="abril"/>
+			<Association key="May" value="mayo"/>
+			<Association key="Jun" value="junio"/>
+			<Association key="Jul" value="julio"/>
+			<Association key="Aug" value="agosto"/>
+			<Association key="Sep" value="septiembre"/>
+			<Association key="Oct" value="octubre"/>
+			<Association key="Nov" value="noviembre"/>
+			<Association key="Dec" value="diciembre"/>
+		</Attributes>
+	</LocaleInfo>
+		
+	<!-- ******************************************************************************************** -->
+	<!-- Japanese (ja) -->
+	<!-- ******************************************************************************************** -->
+
+	<LocaleInfo	language="ja" title="日本語">
+		<String x:id="dateFormat" text="%int(1)/%int(2)/%int(3)"/>					<!-- 2008/3/9 -->
+		<String x:id="friendlyDateFormat" text="%int(1) 年%(4)%int(3)日 (%(5))"/>		<!-- Sonntag, 9. März 2008 -->
+		<String x:id="timeFormat" text="%int(1:2):%int(2:2):%int(3:2)"/>		<!-- 01:42:00 -->
+
+		<Attributes x:id="weekdays">
+			<Association key="Sun" value="日曜日"/>
+			<Association key="Mon" value="月曜日"/>
+			<Association key="Tue" value="火曜日"/>
+			<Association key="Wed" value="水曜日"/>
+			<Association key="Thu" value="木曜日"/>
+			<Association key="Fri" value="金曜日"/>
+			<Association key="Sat" value="土曜日"/>
+		</Attributes>	
+
+		<Attributes x:id="months">
+			<Association key="Jan" value="1月"/>
+			<Association key="Feb" value="2月"/>
+			<Association key="Mar" value="3月"/>
+			<Association key="Apr" value="4月"/>
+			<Association key="May" value="5月"/>
+			<Association key="Jun" value="6月"/>
+			<Association key="Jul" value="7月"/>
+			<Association key="Aug" value="8月"/>
+			<Association key="Sep" value="9月"/>
+			<Association key="Oct" value="10月"/>
+			<Association key="Nov" value="11月"/>
+			<Association key="Dec" value="12月"/>
+		</Attributes>
+	</LocaleInfo>
+	
+	<!-- ******************************************************************************************** -->
+	<!-- Chinese (zh) -->
+	<!-- ******************************************************************************************** -->
+
+	<LocaleInfo	language="zh" title="简体中文">
+		<String x:id="dateFormat" text="%int(1)/%int(2)/%int(3)"/>					<!-- 2008/3/9 -->
+		<String x:id="friendlyDateFormat" text="%int(1)年%int(4)%int(3)日"/>			<!-- 2010年9月3日 -->
+		<String x:id="timeFormat" text="%int(1:2):%int(2:2):%int(3:2)"/>		<!-- 01:42:00 -->
+
+		<Attributes x:id="weekdays">
+			<Association key="Sun" value="星期日"/>
+			<Association key="Mon" value="星期一"/>
+			<Association key="Tue" value="星期二"/>
+			<Association key="Wed" value="星期三"/>
+			<Association key="Thu" value="星期四"/>
+			<Association key="Fri" value="星期五"/>
+			<Association key="Sat" value="星期六"/>
+		</Attributes>	
+
+		<Attributes x:id="months">
+			<Association key="Jan" value="一月"/>
+			<Association key="Feb" value="二月"/>
+			<Association key="Mar" value="三月"/>
+			<Association key="Apr" value="四月"/>
+			<Association key="May" value="五月"/>
+			<Association key="Jun" value="六月"/>
+			<Association key="Jul" value="七月"/>
+			<Association key="Aug" value="八月"/>
+			<Association key="Sep" value="九月"/>
+			<Association key="Oct" value="十月"/>
+			<Association key="Nov" value="十一月"/>
+			<Association key="Dec" value="十二月"/>
+		</Attributes>
+	</LocaleInfo>
+</Locales>

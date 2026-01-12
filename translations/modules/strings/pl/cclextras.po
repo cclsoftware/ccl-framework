@@ -1,0 +1,934 @@
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: extensions/backupmanager.cpp
+msgctxt "BackupManager"
+msgid "Backup"
+msgstr "Kopia zapasowa"
+
+#: extensions/backupmanager.cpp
+msgctxt "BackupManager"
+msgid "Backup is too large."
+msgstr "Kopia zapasowa jest zbyt duża."
+
+#: extensions/backupmanager.cpp
+msgctxt "BackupManager"
+msgid "Backup restored successfully."
+msgstr "Kopia zapasowa została pomyślnie przywrócona."
+
+#: extensions/backupmanager.cpp
+msgctxt "BackupManager"
+msgid "Backup uploaded successfully."
+msgstr "Kopia zapasowa został pomyślnie wysłany."
+
+#: extensions/backupmanager.cpp
+msgctxt "BackupManager"
+msgid "Backup will be restored next time you start $APPNAME."
+msgstr "Kopia zapasowa zostanie przywrócona przy następnym uruchomieniu $APPNAME."
+
+#: extensions/backupmanager.cpp
+msgctxt "BackupManager"
+msgid "Computer"
+msgstr "Komputer"
+
+#: extensions/backupmanager.cpp
+msgctxt "BackupManager"
+msgid "Date & Time"
+msgstr "Data i czas"
+
+#: extensions/backupmanager.cpp
+msgctxt "BackupManager"
+msgid "Failed to create backup."
+msgstr "Nie udało się utworzyć z kopii zapasowej."
+
+#: extensions/backupmanager.cpp
+msgctxt "BackupManager"
+msgid "Failed to restore from backup."
+msgstr "Nie udało się przywrócić z kopii zapasowej."
+
+#: extensions/backupmanager.cpp
+msgctxt "BackupManager"
+msgid "Failed to upload backup."
+msgstr "Nie udało się wysłać kopii zapasowej."
+
+#: extensions/backupmanager.cpp
+msgctxt "BackupManager"
+msgid "Never"
+msgstr "Nigdy"
+
+#: extensions/backupmanager.cpp
+msgctxt "BackupManager"
+msgid "No backups found."
+msgstr "Ne znaleziono kopii zapasowych."
+
+#: extensions/backupmanager.cpp
+msgctxt "BackupManager"
+msgid "Program Settings"
+msgstr "Ustawienia programu"
+
+#: extensions/backupmanager.cpp
+msgctxt "BackupManager"
+msgid "Restore"
+msgstr "Przywróć"
+
+#: extensions/backupmanager.cpp
+msgctxt "BackupManager"
+msgid "Size"
+msgstr "Rozmiar"
+
+#: extensions/backupmanager.cpp
+msgctxt "BackupManager"
+msgid "Unknown"
+msgstr "Nieznany"
+
+#: extensions/backupmanager.cpp
+msgctxt "BackupManager"
+msgid "Version"
+msgstr "Wersja"
+
+#: extensions/backupmanager.cpp
+msgctxt "Command"
+msgid "Application"
+msgstr "Aplikacja"
+
+#: extensions/backupmanager.cpp
+msgctxt "Command"
+msgid "Backup and Restore"
+msgstr "Kopie zapasowe i przywracanie"
+
+#: extensions/appupdater.cpp
+msgctxt "Command"
+msgid "Check for Updates"
+msgstr "Sprawdź aktualizacje"
+
+#: analytics/apptrackinghandler.cpp extensions/appupdater.cpp
+msgctxt "Command"
+msgid "Help"
+msgstr "Pomoc"
+
+#: analytics/apptrackinghandler.cpp
+msgctxt "Command"
+msgid "Usage Data Settings"
+msgstr "Ustawienia danych użytkowania"
+
+#: extensions/appupdater.cpp
+msgctxt "Command"
+msgid "View Release Notes"
+msgstr "Pokaż informacje o wersji"
+
+#: packages/contentpackagemanager.cpp
+msgctxt "ContentPackageManager"
+msgid "%(1) is now available!"
+msgstr "%(1) jest teraz dostępny!"
+
+#: packages/contentpackagemanager.cpp
+msgctxt "ContentPackageManager"
+msgid "Do you want to continue installation anyway?"
+msgstr "Czy mimo to chcesz kontynuować instalację?"
+
+#: packages/contentpackagemanager.cpp
+msgctxt "ContentPackageManager"
+msgid "Download from $APPCOMPANY Account"
+msgstr "Pobierz z konta $APPCOMPANY"
+
+#: packages/contentpackagemanager.cpp
+msgctxt "ContentPackageManager"
+msgid "Install"
+msgstr "Zainstaluj"
+
+#: packages/contentpackagemanager.cpp
+msgctxt "ContentPackageManager"
+msgid "New content is available!"
+msgstr "Dostępna jest nowa zawartość!"
+
+#: packages/contentpackagemanager.cpp
+msgctxt "ContentPackageManager"
+msgid "Not enough free disk space. %(1) are required, but only %(2) are available on the selected volume."
+msgstr "Za mało wolnego miejsca na dysku. Wymagane jest %(1), ale tylko %(2) jest dostępne na wybranym woluminie."
+
+#: extensions/extensionmanager.cpp
+msgctxt "ExtensionManager"
+msgid "%(1) is not compatible with $APPNAME!"
+msgstr "%(1) nie jest kompatybilny z $APPNAME!"
+
+#: extensions/extensionmanager.cpp
+msgctxt "ExtensionManager"
+msgid "Built-in Extensions can not be uninstalled or updated."
+msgstr "Wbudowane rozszerzenia nie mogą być odinstalowane lub aktualizowane."
+
+#: extensions/extensionmanager.cpp
+msgctxt "ExtensionManager"
+msgid "Do you want to install these updates now?"
+msgstr "Czy chcesz teraz zainstalować te aktualizacje?"
+
+#: extensions/extensionmanager.cpp
+msgctxt "ExtensionManager"
+msgid "Install Extension"
+msgstr "Zainstaluj rozszerzenie"
+
+#: extensions/extensionmanager.cpp
+msgctxt "ExtensionManager"
+msgid "Migrating Extension %(1)..."
+msgstr "Migracja rozszerzenia %(1)..."
+
+#: extensions/extensionmanager.cpp
+msgctxt "ExtensionManager"
+msgid "Removing Extension %(1)..."
+msgstr "Usuwanie rozszerzenia %(1)..."
+
+#: extensions/extensionmanager.cpp
+msgctxt "ExtensionManager"
+msgid "Scanning Extensions..."
+msgstr "Skanowanie rozszerzeń..."
+
+#: extensions/extensionmanager.cpp
+msgctxt "ExtensionManager"
+msgid "Scanning Plug-Ins..."
+msgstr "Skanowanie wtyczek..."
+
+#: extensions/extensionmanager.cpp
+msgctxt "ExtensionManager"
+msgid "Updating Extension %(1)..."
+msgstr "Aktualizacja rozszerzenia %(1)..."
+
+#: extensions/extensionmanager.cpp
+msgctxt "ExtensionManager"
+msgid "You need a newer version of $APPNAME."
+msgstr "Wymagana jest nowsza wersja $APPNAME."
+
+#: extensions/extensiondescription.cpp
+msgctxt "Extensions"
+msgid "%(1) is already installed!"
+msgstr "%(1) jest już zainstalowany!"
+
+#: extensions/extensiondescription.cpp
+msgctxt "Extensions"
+msgid "Developer Extension"
+msgstr "Rozszerzenie deweloperskie"
+
+#: extensions/extensiondescription.cpp
+msgctxt "Extensions"
+msgid "Extension"
+msgstr "Rozszerzenie"
+
+#: extensions/extensiondescription.cpp
+msgctxt "Extensions"
+msgid "Failed to uninstall %(1)!"
+msgstr "Nie udało się odinstalować %(1)!"
+
+#: extensions/extensiondescription.cpp
+msgctxt "Extensions"
+msgid "Installation failed!"
+msgstr "Instalacja nie powiodła się!"
+
+#: extensions/extensiondescription.cpp
+msgctxt "Extensions"
+msgid "Invalid Installation File!"
+msgstr "Nieprawidłowy plik instalacyjny!"
+
+#: extensions/extensiondescription.cpp
+msgctxt "Extensions"
+msgid "No updates found for your Extensions."
+msgstr "Nie znaleziono aktualizacji dla Twoich rozszerzeń."
+
+#: extensions/extensiondescription.cpp
+msgctxt "Extensions"
+msgid "Program Extension"
+msgstr "Rozszerzenie programu"
+
+#: extensions/extensiondescription.cpp
+msgctxt "Extensions"
+msgid "Shared Extension"
+msgstr "Rozszerzenie udostępnione"
+
+#: extensions/extensiondescription.cpp
+msgctxt "Extensions"
+msgid "Signature Verification"
+msgstr "Weryfikacja podpisu"
+
+#: extensions/extensiondescription.cpp
+msgctxt "Extensions"
+msgid "Target directory is locked by %(1)."
+msgstr "Docelowy katalog jest zablokowany przez %(1)."
+
+#: extensions/extensiondescription.cpp
+msgctxt "Extensions"
+msgid "The installation file is not compatible with this application."
+msgstr "Plik instalatora nie jest kompatybilny z tą aplikacją."
+
+#: extensions/extensiondescription.cpp
+msgctxt "Extensions"
+msgid "The installation file is not compatible with this platform."
+msgstr "Plik instalatora nie jest kompatybilny z tą platformą."
+
+#: extensions/extensiondescription.cpp
+msgctxt "Extensions"
+msgid "There are updates available for your Extensions."
+msgstr "Są dostępne aktualizacje dla Twoich rozszerzeń."
+
+#: extensions/extensiondescription.cpp
+msgctxt "Extensions"
+msgid "This file does not have a valid digital signature."
+msgstr "Ten plik nie ma prawidłowego podpisu cyfrowego."
+
+#: extensions/extensiondescription.cpp
+msgctxt "Extensions"
+msgid "User Extension"
+msgstr "Rozszerzenie użytkownika"
+
+#: web/webelements.cpp
+msgctxt "Feed"
+msgid "Refresh"
+msgstr "Odśwież"
+
+#: extensions/extensiondescription.cpp
+msgctxt "FileType"
+msgid "Installation File"
+msgstr "Plik instalacyjny"
+
+#: gadgets/gadgetmanager.cpp
+msgctxt "GadgetManager"
+msgid "Gadgets"
+msgstr "Gadżety"
+
+#: gadgets/gadgetmanager.cpp
+msgctxt "GadgetManager"
+msgid "No Gadgets installed"
+msgstr "Brak zainstalowanych gadżetów"
+
+#: packages/extensionmanagerpackages.cpp
+msgctxt "PackageActions"
+msgid "Abort Uninstall"
+msgstr "Przerwij deinstalację"
+
+#: packages/installdatapackages.cpp
+msgctxt "PackageActions"
+msgid "Claim %(1) Product Keys"
+msgstr "Uzyskaj klucze produktu %(1)"
+
+#: packages/installdatapackages.cpp
+msgctxt "PackageActions"
+msgid "Claim Product Key"
+msgstr "Uzyskaj klucz produktu"
+
+#: packages/unifiedpackageaction.cpp
+msgctxt "PackageActions"
+msgid "Disable"
+msgstr "Wyłącz"
+
+#: packages/unifiedpackageaction.cpp
+msgctxt "PackageActions"
+msgid "Disable %(1) items"
+msgstr "Wyłącz %(1) elementów"
+
+#: packages/unifiedpackageaction.cpp
+msgctxt "PackageActions"
+msgid "Disable All"
+msgstr "Wyłącz wszystkie"
+
+#: packages/unifiedpackageaction.cpp
+msgctxt "PackageActions"
+msgid "Disabled"
+msgstr "Wyłączone"
+
+#: packages/unifiedpackageaction.cpp
+msgctxt "PackageActions"
+msgid "Enable"
+msgstr "Włącz"
+
+#: packages/unifiedpackageaction.cpp
+msgctxt "PackageActions"
+msgid "Enable %(1) items"
+msgstr "Włącz %(1) elementów"
+
+#: packages/unifiedpackageaction.cpp
+msgctxt "PackageActions"
+msgid "Enable All"
+msgstr "Włącz wszystkie"
+
+#: packages/unifiedpackageaction.cpp
+msgctxt "PackageActions"
+msgid "Enabled"
+msgstr "Włączone"
+
+#: packages/unifiedpackageaction.cpp
+msgctxt "PackageActions"
+msgid "Install"
+msgstr "Zainstaluj"
+
+#: packages/unifiedpackageaction.cpp
+msgctxt "PackageActions"
+msgid "Install %(1) items"
+msgstr "Zainstaluj %(1) elementów"
+
+#: packages/unifiedpackageaction.cpp
+msgctxt "PackageActions"
+msgid "Install %(1) items (%(2))"
+msgstr "Zainstaluj %(1) elementów (%(2))"
+
+#: packages/unifiedpackageaction.cpp
+msgctxt "PackageActions"
+msgid "Install All"
+msgstr "Zainstaluj wszystko"
+
+#: packages/unifiedpackageaction.cpp
+msgctxt "PackageActions"
+msgid "Installed"
+msgstr "Zainstalowane"
+
+#: packages/unifiedpackageaction.cpp
+msgctxt "PackageActions"
+msgid "Not Installed"
+msgstr "Niezainstalowane"
+
+#: packages/unifiedpackageaction.cpp
+msgctxt "PackageActions"
+msgid "Restart"
+msgstr "Restartuj"
+
+#: packages/unifiedpackageaction.cpp
+msgctxt "PackageActions"
+msgid "Restart Required"
+msgstr "Wymagany jest restart"
+
+#: packages/unifiedpackageaction.cpp
+msgctxt "PackageActions"
+msgid "Uninstall"
+msgstr "Odinstaluj"
+
+#: packages/unifiedpackageaction.cpp
+msgctxt "PackageActions"
+msgid "Uninstall %(1) items"
+msgstr "Odinstaluj %(1) elementów"
+
+#: packages/unifiedpackageaction.cpp
+msgctxt "PackageActions"
+msgid "Uninstall All"
+msgstr "Odinstaluj wszystko"
+
+#: packages/unifiedpackageaction.cpp
+msgctxt "PackageActions"
+msgid "Update"
+msgstr "Aktualizuj"
+
+#: packages/unifiedpackageaction.cpp
+msgctxt "PackageActions"
+msgid "Update %(1) items"
+msgstr "Aktualizuj %(1) elementów"
+
+#: packages/unifiedpackageaction.cpp
+msgctxt "PackageActions"
+msgid "Update All"
+msgstr "Aktualizuj wszystko"
+
+#: packages/packagefilter.cpp
+msgctxt "PackageFilter"
+msgid "Any"
+msgstr "Dowolny"
+
+#: packages/packagefilter.cpp
+msgctxt "PackageFilter"
+msgid "Available"
+msgstr "Dostępne"
+
+#: packages/packagefilter.cpp
+msgctxt "PackageFilter"
+msgid "File Type"
+msgstr "Typ pliku"
+
+#: packages/packagefilter.cpp
+msgctxt "PackageFilter"
+msgid "Installed"
+msgstr "Zainstalowane"
+
+#: packages/packagefilter.cpp
+msgctxt "PackageFilter"
+msgid "Name"
+msgstr "Nazwa"
+
+#: packages/packagefilter.cpp
+msgctxt "PackageFilter"
+msgid "Origin"
+msgstr "Źródło"
+
+#: packages/packagefilter.cpp
+msgctxt "PackageFilter"
+msgid "Other"
+msgstr "Pozostałe"
+
+#: packages/packagefilter.cpp
+msgctxt "PackageFilter"
+msgid "Search"
+msgstr "Szukaj"
+
+#: packages/packagefilter.cpp
+msgctxt "PackageFilter"
+msgid "State"
+msgstr "Stan"
+
+#: packages/packagefilter.cpp
+msgctxt "PackageFilter"
+msgid "Tags"
+msgstr "Tagi"
+
+#: packages/packagefilter.cpp
+msgctxt "PackageFilter"
+msgid "Type"
+msgstr "Typ"
+
+#: packages/packagemanager.cpp
+msgctxt "PackageManager"
+msgid "$APPNAME Installation"
+msgstr "Instalacja $APPNAME"
+
+#: packages/packagemanager.cpp
+msgctxt "PackageManager"
+msgid "%(2)/%(3) %(1)"
+msgstr "%(2)/%(3) %(1)"
+
+#: packages/packagemanager.cpp
+msgctxt "PackageManager"
+msgid "Action Required"
+msgstr "Wymagane działanie"
+
+#: packages/packagemanager.cpp
+msgctxt "PackageManager"
+msgid "Active"
+msgstr "Aktywne"
+
+#: packages/packagemanager.cpp
+msgctxt "PackageManager"
+msgid "Available"
+msgstr "Dostępne"
+
+#: packages/packagemanager.cpp
+msgctxt "PackageManager"
+msgid "Available Packages"
+msgstr "Dostępne pakiety"
+
+#: packages/packagemanager.cpp
+msgctxt "PackageManager"
+msgid "Contains %(1) items"
+msgstr "Zawiera %(1) elementów"
+
+#: packages/packagemanager.cpp
+msgctxt "PackageManager"
+msgid "Custom Installation"
+msgstr "Własna instalacja"
+
+#: packages/packagemanager.cpp
+msgctxt "PackageManager"
+msgid "Full Installation"
+msgstr "Pełna instalacja"
+
+#: packages/packagemanager.cpp
+msgctxt "PackageManager"
+msgid "Installed Packages"
+msgstr "Zainstalowane pakiety"
+
+#: packages/packagemanager.cpp
+msgctxt "PackageManager"
+msgid "Minimal Installation"
+msgstr "Minimalna instalacja"
+
+#: packages/packagemanager.cpp
+msgctxt "PackageManager"
+msgid "Recommended Installation"
+msgstr "Zalecana instalacja"
+
+#: packages/packagemanager.cpp
+msgctxt "PackageManager"
+msgid "Restart Now"
+msgstr "Zrestartuj"
+
+#: packages/packagemanager.cpp
+msgctxt "PackageManager"
+msgid "Updates Available"
+msgstr "Dostępne aktualizacje"
+
+#: packages/packagesorter.cpp
+msgctxt "PackageSorter"
+msgid "File Type"
+msgstr "Typ pliku"
+
+#: packages/packagesorter.cpp
+msgctxt "PackageSorter"
+msgid "Name"
+msgstr "Nazwa"
+
+#: packages/packagesorter.cpp
+msgctxt "PackageSorter"
+msgid "Type"
+msgstr "Typ"
+
+#: packages/unifiedpackagesource.cpp
+msgctxt "PackageSource"
+msgid "$APPNAME Content"
+msgstr "Zawartość $APPNAME"
+
+#: packages/unifiedpackagesource.cpp
+msgctxt "PackageSource"
+msgid "Development Content"
+msgstr "Zawartość deweloperska"
+
+#: packages/unifiedpackagesource.cpp
+msgctxt "PackageSource"
+msgid "Other"
+msgstr "Inne"
+
+#: packages/unifiedpackagesource.cpp
+msgctxt "PackageSource"
+msgid "Purchased Content"
+msgstr "Zakupiona zawartość"
+
+#: stores/storepurchasehandler.cpp
+msgctxt "StorePurchaseHandler"
+msgid "Could not complete the purchase."
+msgstr "Nie można dokończyć zakupu."
+
+#: stores/storepurchasehandler.cpp
+msgctxt "StorePurchaseHandler"
+msgid "Could not restore purchases. Please try again in a few minutes."
+msgstr "Nie można przywrócić zakupu. Spróbuj za kilka minut."
+
+#: web/transfermanagerui.cpp
+msgctxt "TransferManager"
+msgid "%(1) of %(2)"
+msgstr "%(1) z %(2)"
+
+#: web/transfermanagerui.cpp
+msgctxt "TransferManager"
+msgid "Cancel"
+msgstr "Anuluj"
+
+#: web/transfermanagerui.cpp
+msgctxt "TransferManager"
+msgid "Canceled!"
+msgstr "Anulowano!"
+
+#: web/transfermanagerui.cpp
+msgctxt "TransferManager"
+msgid "Copying..."
+msgstr "Kopiowanie..."
+
+#: web/transfermanagerui.cpp
+msgctxt "TransferManager"
+msgid "Download"
+msgstr "Pobierz"
+
+#: web/transfermanagerui.cpp
+msgctxt "TransferManager"
+msgid "Downloading..."
+msgstr "Pobieranie..."
+
+#: web/transfermanagerui.cpp
+msgctxt "TransferManager"
+msgid "Failed!"
+msgstr "Nie powiodło się!"
+
+#: web/transfermanagerui.cpp
+msgctxt "TransferManager"
+msgid "Files are being transferred in background."
+msgstr "Pliki są przesyłane w tle."
+
+#: web/transfermanagerui.cpp
+msgctxt "TransferManager"
+msgid "New File"
+msgstr "Nowy plik"
+
+#: web/transfermanagerui.cpp
+msgctxt "TransferManager"
+msgid "Pause"
+msgstr "Wstrzymaj"
+
+#: web/transfermanagerui.cpp
+msgctxt "TransferManager"
+msgid "Paused"
+msgstr "Wstrzymane"
+
+#: web/transfermanagerui.cpp
+msgctxt "TransferManager"
+msgid "Queued"
+msgstr "W kolejce"
+
+#: web/transfermanagerui.cpp
+msgctxt "TransferManager"
+msgid "Remove From History"
+msgstr "Usuń z historii"
+
+#: web/transfermanagerui.cpp
+msgctxt "TransferManager"
+msgid "Restart"
+msgstr "Restartuj"
+
+#: web/transfermanagerui.cpp
+msgctxt "TransferManager"
+msgid "Resume"
+msgstr "Wznów"
+
+#: web/transfermanagerui.cpp
+msgctxt "TransferManager"
+msgid "Uploading..."
+msgstr "Wysyłanie..."
+
+#: packages/unifiedpackageinstaller.cpp
+msgctxt "UnifiedPackageInstaller"
+msgid "Installation failed for %(1)."
+msgstr "Instalacja %(1) nie powiodła się."
+
+#: packages/unifiedpackageinstaller.cpp
+msgctxt "UnifiedPackageInstaller"
+msgid "The installed content will be available next time you start $APPNAME."
+msgstr "Zainstalowana zawartość będzie dostępna po następnym uruchomieniu $APPNAME."
+
+#: extensions/appupdater.cpp
+msgctxt "Updater"
+msgid "Check for Updates"
+msgstr "Sprawdź aktualizacje"
+
+#: extensions/appupdater.cpp
+msgctxt "Updater"
+msgid "Check for Updates failed!"
+msgstr "Nie udało się sprawdzić aktualizacji!"
+
+#: extensions/appupdater.cpp
+msgctxt "Updater"
+msgid "Checking version of %(1)"
+msgstr "Sprawdzanie wersji %(1)"
+
+#: extensions/appupdater.cpp
+msgctxt "Updater"
+msgid "Current version: %(1)"
+msgstr "Bieżąca wersja: %(1)"
+
+#: extensions/appupdater.cpp
+msgctxt "Updater"
+msgid "Installed version: %(1)"
+msgstr "Zainstalowana wersja: %(1)"
+
+#: extensions/appupdater.cpp
+msgctxt "Updater"
+msgid "The version could not be identified!"
+msgstr "Nie można zidentyfikować wersji!"
+
+#: extensions/appupdater.cpp
+msgctxt "Updater"
+msgid "There is a new version available."
+msgstr "Dostępna jest nowa wersja."
+
+#: extensions/appupdater.cpp
+msgctxt "Updater"
+msgid "Update Now"
+msgstr "Zaktualizuj"
+
+#: extensions/appupdater.cpp
+msgctxt "Updater"
+msgid "View Release Notes"
+msgstr "Pokaż informacje o wersji"
+
+#: extensions/appupdater.cpp
+msgctxt "Updater"
+msgid "Your version is up-to-date."
+msgstr "Twoja wersja jest aktualna."
+
+#: webfs/webfilenodes.cpp
+msgctxt "WebFS"
+msgid "Cloud"
+msgstr "Chmura"
+
+#: webfs/downloaddraghandler.cpp
+msgctxt "WebFS"
+msgid "Download"
+msgstr "Pobierz"
+
+#: webfs/webfsbrowserextension.cpp
+msgctxt "WebFS"
+msgid "Upload To"
+msgstr "Wyślij do"
+
+#~ msgctxt "Command"
+#~ msgid "Extensions"
+#~ msgstr "Rozszerzenia"
+
+#~ msgctxt "Command"
+#~ msgid "Installation"
+#~ msgstr "Instalacja"
+
+#~ msgctxt "ExtensionManager"
+#~ msgid "%(1) Extensions installed."
+#~ msgstr "Liczba zainstalowanych rozszerzeń: %(1)."
+
+#~ msgctxt "ExtensionManager"
+#~ msgid "(Developer Mode)"
+#~ msgstr "(tryb deweloperski)"
+
+#~ msgctxt "ExtensionManager"
+#~ msgid "(disabled)"
+#~ msgstr "(wyłączone)"
+
+#~ msgctxt "ExtensionManager"
+#~ msgid "Do you want to uninstall these Extensions?"
+#~ msgstr "Czy chcesz odinstalować te rozszerzenia?"
+
+#~ msgctxt "ExtensionManager"
+#~ msgid "Do you want to uninstall this Extension?"
+#~ msgstr "Czy chcesz odinstalować to rozszerzenie?"
+
+#~ msgctxt "ExtensionManager"
+#~ msgid "Installation canceled!"
+#~ msgstr "Anulowano instalację!"
+
+#~ msgctxt "ExtensionManager"
+#~ msgid "No Extensions installed."
+#~ msgstr "Brak zainstalowanych rozszerzeń."
+
+#~ msgctxt "ExtensionManager"
+#~ msgid "No updates found for your Extensions."
+#~ msgstr "Nie znaleziono aktualizacji dla Twoich rozszerzeń."
+
+#~ msgctxt "ExtensionManager"
+#~ msgid "There are updates available for your Extensions."
+#~ msgstr "Są dostępne aktualizacje dla Twoich rozszerzeń."
+
+#~ msgctxt "ExtensionManager"
+#~ msgid "Waiting for uninstall"
+#~ msgstr "Odczekiwanie na deinstalację"
+
+#~ msgctxt "ExtensionManager"
+#~ msgid "Waiting for update"
+#~ msgstr "Oczekiwanie na aktualizację"
+
+#~ msgctxt "Installer"
+#~ msgid "%(1) of %(2) packages already exist on your system."
+#~ msgstr "%(1) z %(2) pakietów jest już zainstalowanych."
+
+#~ msgctxt "Installer"
+#~ msgid "Claim Product Key"
+#~ msgstr "Prośba o klucz produktu"
+
+#~ msgctxt "Installer"
+#~ msgid "Copy"
+#~ msgstr "Kopiuj"
+
+#~ msgctxt "Installer"
+#~ msgid "Custom Installation"
+#~ msgstr "Instalacja niestandardowa"
+
+#~ msgctxt "Installer"
+#~ msgid "Do you want to install the missing packages only?"
+#~ msgstr "Czy chcesz zainstalować tylko brakujące pakiety?"
+
+#~ msgctxt "Installer"
+#~ msgid "Download from $APPCOMPANY Account"
+#~ msgstr "Pobierz z konta $APPCOMPANY"
+
+#~ msgctxt "Installer"
+#~ msgid "Full Installation"
+#~ msgstr "Pełna instalacja"
+
+#~ msgctxt "Installer"
+#~ msgid "Install All"
+#~ msgstr "Zainstaluj wszystko"
+
+#~ msgctxt "Installer"
+#~ msgid "Install Missing"
+#~ msgstr "Zainstaluj brakujące"
+
+#~ msgctxt "Installer"
+#~ msgid "Installed"
+#~ msgstr "Zainstalowane"
+
+#~ msgctxt "Installer"
+#~ msgid "License"
+#~ msgstr "Licencja"
+
+#~ msgctxt "Installer"
+#~ msgid "Minimal Installation"
+#~ msgstr "Instalacja minimalna"
+
+#~ msgctxt "Installer"
+#~ msgid "My Purchased Items"
+#~ msgstr "Zakupione pozycje"
+
+#~ msgctxt "Installer"
+#~ msgid "Package"
+#~ msgstr "Pakiet"
+
+#~ msgctxt "Installer"
+#~ msgid "Recommended Installation"
+#~ msgstr "Zalecana instalacja"
+
+#~ msgctxt "Installer"
+#~ msgid "Size"
+#~ msgstr "Rozmiar"
+
+#~ msgctxt "Installer"
+#~ msgid "Status"
+#~ msgstr "Status"
+
+#~ msgctxt "Installer"
+#~ msgid "The installed content will be available next time you start $APPNAME."
+#~ msgstr "Zainstalowana zawartość będzie dostępna po następnym uruchomieniu $APPNAME."
+
+#~ msgctxt "PackageFilter"
+#~ msgid "Installable"
+#~ msgstr "Instalowalne"
+
+#~ msgctxt "PackageSource"
+#~ msgid "Factory Content"
+#~ msgstr "Zawartość fabryczna"
+
+#~ msgctxt "PackageSource"
+#~ msgid "Unknown"
+#~ msgstr "Nieznany"
+
+#~ msgctxt "PackageSource"
+#~ msgid "User Content"
+#~ msgstr "Zawartość użytkownika"
+
+#~ msgctxt "TagCategory"
+#~ msgid "Type"
+#~ msgstr "Typ"
+
+#~ msgctxt "TagStore"
+#~ msgid "Add Tag"
+#~ msgstr "Dodaj tag"
+
+#~ msgctxt "TagStore"
+#~ msgid "Adding Tags..."
+#~ msgstr "Dodawanie tagów…"
+
+#~ msgctxt "TagStore"
+#~ msgid "All tags are valid."
+#~ msgstr "Wszystkie tagi są poprawne."
+
+#~ msgctxt "TagStore"
+#~ msgid "Checking files in \"%(1)\""
+#~ msgstr "Sprawdzanie plików w \"%(1)\""
+
+#~ msgctxt "TagStore"
+#~ msgid "Cleanup Tags of Missing Files"
+#~ msgstr "Wyczyść tagi brakujących plików"
+
+#~ msgctxt "TagStore"
+#~ msgid "Clear Tags"
+#~ msgstr "Wyczyść tagi"
+
+#~ msgctxt "TagStore"
+#~ msgid "Do you want to remove these tag entries for non-existing files?"
+#~ msgstr "Czy chcesz usunąć te wpisy tagów nieistniejący6ch plików?"
+
+#~ msgctxt "TagStore"
+#~ msgid "Remove Tag"
+#~ msgstr "Usuń tag"
+
+#~ msgctxt "TagStore"
+#~ msgid "Updated tags in %(1)\n"
+#~ msgstr "Zaktualizowane tagi w %(1)\n"
+
+#~ msgctxt "TagStore"
+#~ msgid "other"
+#~ msgstr "Inne"

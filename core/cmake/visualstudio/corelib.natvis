@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<AutoVisualizer xmlns="http://schemas.microsoft.com/vstudio/debugger/natvis/2010">
+  <Type Name="Core::ConstString">
+    <DisplayString>{text,s}</DisplayString>
+    <StringView>text,s</StringView>
+  </Type>
+
+  <Type Name="Core::CStringBuffer&lt;*&gt;">
+    <DisplayString>{(char*)buffer,s}</DisplayString>
+    <StringView>(char*)buffer,s</StringView>
+  </Type>
+
+  <Type Name="Core::Vector&lt;*&gt;">
+    <AlternativeType Name="CCL::Vector&lt;*&gt;"/>
+    <DisplayString>capacity={capacity} total={total}</DisplayString>
+    <Expand>
+      <IndexListItems>
+        <Size>total</Size>
+        <ValueNode>(($T1*) items)[$i]</ValueNode>
+      </IndexListItems>
+    </Expand>
+  </Type>
+
+  <Type Name="Core::ConstVector&lt;*&gt;">
+    <AlternativeType Name="CCL::ConstVector&lt;*&gt;"/>
+    <DisplayString>total={total}</DisplayString>
+    <Expand>
+      <IndexListItems>
+        <Size>total</Size>
+        <ValueNode>(($T1*) items)[$i]</ValueNode>
+      </IndexListItems>
+    </Expand>
+  </Type>
+
+  <Type Name="Core::Plugins::ClassInfoBundle">
+    <DisplayString>numClasses={numClasses}</DisplayString>
+    <Expand>
+      <IndexListItems>
+        <Size>numClasses</Size>
+        <ValueNode>((Core::Plugins::ClassInfo**) classInfos)[$i]</ValueNode>
+      </IndexListItems>
+    </Expand>
+  </Type>
+  
+  <Type Name="Core::Plugins::ClassInfo">
+    <DisplayString>classType={classType} displayName={displayName} classID={classID}</DisplayString>
+  </Type>
+  
+  <Type Name="Core::UIDBytes">
+    <DisplayString>{*(GUID*) this}</DisplayString>
+  </Type>
+
+  <Type Name="Core::TRect&lt;*&gt;">
+    <DisplayString>{{ {left}, {top}, {right}, {bottom} ({right-left} x {bottom-top})}}</DisplayString>
+  </Type>
+  
+  <Type Name="Core::Portable::ProfilingData">
+    <Expand>
+      <IndexListItems>
+        <Size>numberOfCounters</Size>
+        <ValueNode>counters[$i]</ValueNode>
+      </IndexListItems>
+    </Expand>
+  </Type>
+  
+  <Type Name="Core::Portable::ProfilingData::Counter">
+    <DisplayString>{cpuUsage}&#37; {(char*)label.buffer,s}, avg {avgInterval}µs, min {minInterval}µs, max {maxInterval}µs</DisplayString>
+  </Type>
+  
+</AutoVisualizer>

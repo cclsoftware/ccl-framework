@@ -1,0 +1,2542 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Model.ClassRepository xmlns:x="https://ccl.dev/xml" name="Visual Styles">
+	<List x:id="classes">
+		<Model.Class name="BasicStyle">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text="Basic visual style attributes inherited by all other styles"/>
+			</Model.Documentation>
+			<List x:id="members">
+				<Model.Member name="forecolor" type="string" typeName="color">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="color used for foreground elements"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="hilitecolor" type="string" typeName="color">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="color used for a hilite state"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="backcolor" type="string" typeName="color">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="backgound color"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="textcolor" type="string" typeName="color">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="color used for drawing text"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="strokewidth" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="width in pixels used when lines are drawn"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="textfont" type="string" typeName="string">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="font used for drawing text"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="textalign" type="int" typeName="enum">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="alignment of text"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="textoptions" type="int" typeName="enum">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="additional options for drawing text"/>
+						<String x:id="detailed" text="Supported option: &quot;wordbreak&quot; (for multiline text)"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="background" type="string" typeName="image">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="background image"/>
+					</Model.Documentation>
+				</Model.Member>
+			</List>
+		</Model.Class>
+		<Model.Class name="ButtonStyle" parent="BasicStyle">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text="A button draws a background and some content"/>
+				<String x:id="detailed" text="The background is not drawn when the option &quot;transparent&quot; is set.&#10;The background can be an image &quot;background&quot; (or &quot;left&quot; or &quot;right&quot; when the correspending option is set).&#10;&#10;A frame of the image is chosen depending on the mouse state and parameter value.&#10;Supported frame names are &quot;normal[On]&quot;, &quot;pressed[On]&quot;, &quot;mouseover[On]&quot;, &quot;disabled[On]&quot;, &quot;focus[On]&quot;.&#10;&#10;When an image is used, an additonal background color &quot;backcolor.on&quot; or &quot;backcolor.off&quot; can be drawn underneath the button image.&#10;When no image is specified, a rectangular frame in color &quot;forecolor&quot; can be drawn with option &quot;border&quot;.&#10;For the content, a padding can be specified. The content can be an &quot;icon&quot;, &quot;title&quot; or both."/>
+				<List x:id="links">
+					<String text="Button"/>
+				</List>
+			</Model.Documentation>
+			<List x:id="members">
+				<Model.Member name="left" type="string" typeName="image">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="used instead of &quot;background&quot; image when button has option &quot;left&quot;"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="right" type="string" typeName="image">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="used instead of &quot;background&quot; image when button has option &quot;right&quot;"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="single" type="string" typeName="image">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="used instead of &quot;background&quot; image when button has option &quot;left&quot; and &quot;right&quot;"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="middle" type="string" typeName="image">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="used instead of &quot;background&quot; image when button has option &quot;middle&quot;"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="icon" type="string" typeName="image">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="fallback when no icon at the button is defined"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="textcolor" type="string" typeName="color">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="textcolor for the button title"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="textcolor.on" type="string" typeName="color">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="used instead of &quot;textcolor&quot; when button is switched on"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="textcolor.pressed" type="string" typeName="color">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="used instead of &quot;textcolor.on&quot; when button is pressed and off"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="textcolor.pressedOn" type="string" typeName="color">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="used instead of &quot;textcolor.pressed&quot; when button is pressed and on"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="textcolor.mouseover" type="string" typeName="color">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="used instead of &quot;textcolor&quot; when mouse is over button"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="textcolor.mouseoverOn" type="string" typeName="color">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="used instead of &quot;textcolor.on&quot; when mouse is over button"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="textcolor.disabled" type="string" typeName="color">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="used instead of &quot;textcolor&quot; when button is disabled"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="textcolor.disabledOn" type="string" typeName="color">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="used instead of &quot;textcolor.disabled&quot; when button is disabled and on"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="textcolor.transparent" type="string" typeName="color">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="used when the current color from colorparam is transparent"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="textcolor.transparentOn" type="string" typeName="color">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="used when the parameter is on and the current color from colorparam is transparent"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="textcolor.bright" type="string" typeName="color">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="used when the current luminance of the &quot;colorname&quot; color is below the &quot;textcolor.threshold&quot;"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="textcolor.brightOn" type="string" typeName="color">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="used when the parameter is on and the current colorparam luminance is below the &quot;textcolor.threshold&quot;"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="textcolor.dark" type="string" typeName="color">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="used when the current luminance of the &quot;colorname&quot; color is above the &quot;textcolor.threshold&quot; (using &quot;textcolor&quot; as fallback, needs definition of textcolor"/>
+						<String x:id="detailed" text="bright)"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="textcolor.darkOn" type="string" typeName="color">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="used when the current luminance of the &quot;colorname&quot; color is above the &quot;textcolor.threshold&quot; (using &quot;textcolor&quot; as fallback, needs definition of textcolor"/>
+						<String x:id="detailed" text="bright)"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="textcolor.alphablend" type="string" typeName="color">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="the non-transparent &quot;colorname&quot; color will be alphablended with this color (using &quot;color.alphablend&quot; as fallback) and used as textcolor"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="textcolor.phaseOn" type="string" typeName="color">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="used instead of &quot;textcolor&quot; when phase is on and button is disabled"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="textcolor.threshold" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="used instead of &quot;textcolor&quot; if the luminance threshold for the current &quot;colorname&quot; color is below this value - default is 0"/>
+						<String x:id="detailed" text="35"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="text.width" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="truncate title to fit into this width"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="backcolor.on" type="string" typeName="color">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="background color drawn underneath button image when button is switched on (overwritten by opaque colorParam color)"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="backcolor.off" type="string" typeName="color">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="background color drawn underneath button image when button is switched off (even when a colorParam is used)"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="backcolor.transparent" type="string" typeName="color">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="background color drawn underneath button image when button is switched off (when colorParam color is transparent)"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="padding.left" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="left padding for title and/or icon"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="padding.top" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="top padding for title and/or icon"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="padding.right" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="right padding for title and/or icon"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="padding.bottom" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="bottom padding for title and/or icon"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="padding" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="padding for icon &amp; title, used if one of the paddings for left, top, right, bottom is not specified"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="spacing.icon" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="customizable space between icon and the text (default is 3 points)"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="fill.icon" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="scalable icons (shapes/svgs) are resized to fill out the button size (aspect ratio is kept) value: ]0-1]"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="colorize.icon" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="set to use &quot;iconcolor&quot; / &quot;iconcolor.on&quot; to colorize the icon (checkmark of CheckBox is always colorized!)"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="lightadapt.icon" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="set to use &quot;iconcolor&quot; / &quot;iconcolor.on&quot; to modify the icon and adapt the luminance of dark/light pixels to the iconcolor"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="iconcolor" type="string" typeName="color">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="used when &quot;colorize.icon&quot; is set (&quot;iconcolor&quot; is CheckBox&apos;s &quot;checkmark&quot; color)"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="iconcolor.pressed" type="string" typeName="color">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="used when &quot;colorize.icon&quot; is set"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="iconcolor.pressedOn" type="string" typeName="color">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="used when &quot;colorize.icon&quot; is set"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="iconcolor.mouseover" type="string" typeName="color">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="used when &quot;colorize.icon&quot; is set"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="iconcolor.mouseoverOn" type="string" typeName="color">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="used when &quot;colorize.icon&quot; is set"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="iconcolor.on" type="string" typeName="color">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="used when &quot;colorize.icon&quot; is set and button is switched on"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="iconcolor.disabled" type="string" typeName="color">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="used when button is disabled"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="iconcolor.transparent" type="string" typeName="color">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="used when &quot;colorize.icon&quot; is set and the current color from colorparam is transparent"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="iconcolor.transparentOn" type="string" typeName="color">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="used when &quot;colorize.icon&quot; is set, the parameter is on and the current color from colorparam is transparent"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="iconcolor.bright" type="string" typeName="color">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="used when &quot;colorize.icon&quot; is set and the current colorparam luminance is below the &quot;textcolor.threshold&quot;"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="iconcolor.brightOn" type="string" typeName="color">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="used when &quot;colorize.icon&quot; is set, the parameter is on and the current colorparam luminance is below the &quot;textcolor.threshold&quot;"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="iconcolor.dark" type="string" typeName="color">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="used when &quot;colorize.icon&quot; is set and the current colorparam luminance is above the &quot;textcolor.threshold&quot; (using &quot;textcolor&quot; as fallback, needs definition of textcolor"/>
+						<String x:id="detailed" text="bright)"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="iconcolor.darkOn" type="string" typeName="color">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="used when &quot;colorize.icon&quot; is set, the parameter is on and the current colorparam luminance is above the &quot;textcolor.threshold&quot; (using &quot;textcolor&quot; as fallback, needs definition of textcolor"/>
+						<String x:id="detailed" text="bright)"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="iconcolor.alphablend" type="string" typeName="color">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="the non-transparent &quot;colorname&quot; color will be alphablended with this color (using &quot;color.alphablend&quot; as fallback) and used as iconcolor"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="useButtonMinSize" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="use minimal button size (uses theme size as default)"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="buttonMinWidth" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="use minimal button width"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="buttonMinHeight" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="use minimal button height"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="backcolor.radius" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="radius for backcolor / forcolor"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="animation.filmstrip" type="string" typeName="image">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="an animation filmstrip could be used to show intermediate button states - the visualstyle is responisble to define the appropriate animiation triggers for the phase property"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="scaletext.maxfont" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="explicit maximal fontsize when scaletext option is set"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="scaletext.minfont" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="explicit minimal fontsize when scaletext option is set"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="textshiftdown" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="the text baseline will be offsetted by one point if the button is on"/>
+					</Model.Documentation>
+				</Model.Member>
+			</List>
+		</Model.Class>
+		<Model.Class name="CheckBoxStyle" parent="ButtonStyle">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text="Draws an image that shows the parameter state (typically a checkmark) and an additional title besides the image"/>
+				<List x:id="links">
+					<String text="CheckBox"/>
+				</List>
+			</Model.Documentation>
+			<List x:id="members">
+				<Model.Member name="buttonstyle" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="if this is set (&quot;1&quot;), the control is drawn like a button"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="checkboxrightside" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="if this is set (&quot;1&quot;), the checkbox is drawn algined to the right side of the view rect"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="mixedicon" type="string" typeName="image">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="fallback when no mixedicon at the checkbox is defined"/>
+					</Model.Documentation>
+				</Model.Member>
+			</List>
+		</Model.Class>
+		<Model.Class name="ComboBoxStyle" parent="BasicStyle">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text="If option &quot;transparent&quot; is not set, a ComboBox draws a background image"/>
+				<String x:id="detailed" text="When no image is specified, it is filled in &quot;backcolor, and a rectangular frame in color &quot;forecolor&quot; can be drawn with option &quot;border&quot;.&#10;&#10;The &quot;button&quot; image is drawn at the right. The remaining space shows the text field to edit the parameter value with an optional padding."/>
+				<List x:id="links">
+					<String text="ComboBox"/>
+				</List>
+			</Model.Documentation>
+			<List x:id="members">
+				<Model.Member name="button" type="string" typeName="image">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="image used to draw the button that indicates that something can popup"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="padding.left" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="left padding for the text"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="padding.top" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="top padding for the text"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="padding.right" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="right padding for the text"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="padding.bottom" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="bottom padding for the text"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="padding" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="padding for title, used if one of the paddings for left, top, right, bottom is not specified"/>
+					</Model.Documentation>
+				</Model.Member>
+			</List>
+		</Model.Class>
+		<Model.Class name="DialogBuilderStyle" parent="BasicStyle">
+			<List x:id="members">
+				<Model.Member name="noDialogFrame" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="overrides the global configuration variable GUI"/>
+						<String x:id="detailed" text="StandardDialog.UseDialogFrame for a dialog"/>
+					</Model.Documentation>
+				</Model.Member>
+			</List>
+		</Model.Class>
+		<Model.Class name="DialogGroupStyle" parent="BasicStyle">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text="A dialog group draws a background image and optional title"/>
+				<String x:id="detailed" text="The style contains 2 images &quot;Image&quot; and &quot;SecondaryImage&quot;, that can be selected via the option &quot;primary&quot; or &quot;secondary&quot;.&#10;If the DialogGroup has a title, it is drawn at the top edge."/>
+				<List x:id="links">
+					<String text="DialogGroup"/>
+				</List>
+			</Model.Documentation>
+			<List x:id="members">
+				<Model.Member name="Image" type="string" typeName="image">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="used when options &quot;primary&quot; is set (or as default)"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="SecondaryImage" type="string" typeName="image">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="used when options &quot;secondary&quot; is set"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="headerheight" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="height of text rectangle when title is drawn"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="headergap" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="a gap between the header and body is left of &quot;headergap&quot; pixels"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="headerlinecolor" type="string" typeName="color">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="color for simple divider line between header and body when there is no headergap"/>
+					</Model.Documentation>
+				</Model.Member>
+			</List>
+		</Model.Class>
+		<Model.Class name="DividerStyle" parent="BasicStyle">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text="A divider draws a background image, and optionally a handle centered on top"/>
+				<List x:id="links">
+					<String text="Divider"/>
+				</List>
+			</Model.Documentation>
+			<List x:id="members">
+				<Model.Member name="hImage" type="string" typeName="image">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="background for a horizontal divider"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="vImage" type="string" typeName="image">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="background for a vertical divider"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="hGrip" type="string" typeName="image">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="handle for a horizontal divider"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="vGrip" type="string" typeName="image">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="handle for a vertical divider"/>
+					</Model.Documentation>
+				</Model.Member>
+			</List>
+		</Model.Class>
+		<Model.Class name="DropBoxStyle" parent="BasicStyle">
+			<List x:id="members">
+				<Model.Member name="noSnap" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="don&apos;t snap to views size"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="spacing" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="spacing between items"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="freespace" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="free space after last item"/>
+					</Model.Documentation>
+				</Model.Member>
+			</List>
+		</Model.Class>
+		<Model.Class name="EditBoxStyle" parent="TextBoxStyle">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text="An EditBox is drawn just like a TextBox"/>
+				<List x:id="links">
+					<String text="EditBox"/>
+				</List>
+			</Model.Documentation>
+			<List x:id="members">
+				<Model.Member name="selectioncolor" type="string" typeName="color">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="background color for selected ranges"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="textcolor.placeholder" type="string" typeName="color">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="dedicated color for optional placeholder string"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="textfont.placeholder" type="string" typeName="string">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="dedicated font for optional placeholder string"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="native.padding.left" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="left padding for the native text control"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="native.padding.top" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="top padding for the native text control"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="native.padding.right" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="right padding for the native text control"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="native.padding.bottom" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="bottom padding for the native text control"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="native.padding" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="padding for the native text control, used if one of the paddings for left, top, right, bottom is not specified"/>
+					</Model.Documentation>
+				</Model.Member>
+			</List>
+		</Model.Class>
+		<Model.Class name="HeaderViewStyle" parent="BasicStyle">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text="A headerView draws column headers for each column of a column list"/>
+				<String x:id="detailed" text="The &quot;backgound&quot; image is draw in each column rectangle, and the column title is drawn in top."/>
+			</Model.Documentation>
+			<List x:id="members">
+				<Model.Member name="spacing" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="space between two columns"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="backcolor.spacing" type="string" typeName="color">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="color for the space between two columns"/>
+					</Model.Documentation>
+				</Model.Member>
+			</List>
+		</Model.Class>
+		<Model.Class name="ImageViewStyle" parent="BasicStyle">
+			<Model.Documentation x:id="doc">
+				<List x:id="links">
+					<String text="ImageView"/>
+				</List>
+			</Model.Documentation>
+			<List x:id="members">
+				<Model.Member name="background" type="string" typeName="image">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="the image to be drawn"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="border" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="(set automatically for tiled images) - used to optimize redraws when the ImageView is resized"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="fill.image" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="image is resized to fill out the ImageView size (aspectratio is kept) value: ]0-1]"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="backcolor" type="string" typeName="color">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="fill the view when &quot;selectname&quot; is off (colorize option set) and no image is available"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="forecolor" type="string" typeName="color">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="fill the view when &quot;selectname&quot; is on (colorize option set) and no image is available"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="imagecolor" type="string" typeName="color">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="imagecolor is used to colorize the image (colorize option set)"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="imagecolor.on" type="string" typeName="color">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="imagecolor"/>
+						<String x:id="detailed" text="on is used to colorize the image when the &quot;selectname&quot; is on (colorize option set)"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="imagecolor.context" type="string" typeName="color">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="imagecolor"/>
+						<String x:id="detailed" text="context is used (colorize option NOT set) to modify the image automatically when supported - needs to be a template/monochrome image (colorize filter is used) or an adaptive image (lightadapt filter is used)"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="imagecolor.transparent" type="string" typeName="color">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="imagecolor"/>
+						<String x:id="detailed" text="transparent is used (colorize option set) when current colorparam color is transparent"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="imagecolor.alphablend" type="string" typeName="color">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="the non-transparent &quot;colorname&quot; color will be alphablended with this color (using &quot;color.alphablend&quot; as fallback) and used as imagecolor"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="imagecolor.bright" type="string" typeName="color">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="imagecolor"/>
+						<String x:id="detailed" text="bright is used when colorize option is set and the current luminance of the &quot;colorname&quot; color is below the &quot;imagecolor.threshold&quot;"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="imagecolor.threshold" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="imagecolor"/>
+						<String x:id="detailed" text="bright is used instead of &quot;imagecolor&quot; if the luminance threshold for the current &quot;colorname&quot; color is below this value - default is 0.35"/>
+					</Model.Documentation>
+				</Model.Member>
+			</List>
+		</Model.Class>
+		<Model.Class name="ItemViewStyle" parent="BasicStyle">
+			<List x:id="members">
+				<Model.Member name="folderIcon" type="string" typeName="image">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="icon for folder items (closed)"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="openFolderIcon" type="string" typeName="image">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="icon for open folder items"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="scrolling.background" type="string" typeName="image">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="background for the whole view"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="selectionColor" type="string" typeName="color">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="used to fill a rectangle around selected items"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="selectedtextcolor" type="string" typeName="color">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="used instead of &quot;textcolor&quot; for selected items"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="iconcolor" type="string" typeName="color">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="color to colorize icons of unselected items"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="selectediconcolor" type="string" typeName="color">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="color to colorize icons of selected items"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="backcolor2" type="string" typeName="color">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="used to draw alternating backgrounds, the other color is &quot;backcolor&quot;"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="separatorcolor" type="string" typeName="color">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="color of separating line between rows"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="menu.separatorcolor" type="string" typeName="color">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="color of separating line for menu separators"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="margin" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="margin (in pixels) of itemview content"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="rowHeight" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="height of rows (in pixels)"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="scrollRows" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="how many rows should scroll on mousewheel"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="thumbnailMarginV" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="additional vertical margin for itemContent if thumbnails available"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="thumbnailPadding.left" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="left padding for thumbnails"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="thumbnailPadding.top" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="top padding for thumbnails"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="thumbnailPadding.bottom" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="bottom padding for thumbnails"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="thumbnailLimit.height" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="thumbnails will be scaled down to (at least) this limit"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="thumbnailLimit.width" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="thumbnails will be scaled down to (at least) this limit"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="thumbnailFactor" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="thumbnails exceeding the thumbnail limits will be scaled with this factor"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="thumbnailFrameColor" type="string" typeName="color">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="color of separating frame around thumbnails"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="columnWidth.xxx" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="overrides the default width (in pixels) for the column with name &quot;xxx&quot;"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="xxx.backcolor" type="string" typeName="color">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="custom background color for items of kind &quot;xxx&quot;"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="xxx.backcolor2" type="string" typeName="color">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="custom alternating background color for items of kind &quot;xxx&quot;"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="xxx.separatorcolor" type="string" typeName="color">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="custom separator line color for items of kind &quot;xxx&quot;"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="xxx.rowHeight" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="custom rowHeight for items of kind &quot;xxx&quot;"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="separatorBeneath" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="draw one pixel separator beneath items (on the bottom border - not below)"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="highQualityMode" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="set highQualityMode for image interpolations"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="vSnapEnabled" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="enable snapping to itemSize after scrolling"/>
+					</Model.Documentation>
+				</Model.Member>
+			</List>
+		</Model.Class>
+		<Model.Class name="KnobStyle" parent="BasicStyle">
+			<Model.Documentation x:id="doc">
+				<List x:id="links">
+					<String text="Knob"/>
+				</List>
+			</Model.Documentation>
+			<List x:id="members">
+				<Model.Member name="background" type="string" typeName="image">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="background image"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="foreground" type="string" typeName="image">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="overlay image above the circle (alternative name &quot;overlay&quot; can be used)"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="topoverlay" type="string" typeName="image">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="topoverlay image (above the indicator)"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="filmstrip" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="specifies that the &quot;background&quot; image should be used as a filmstrip"/>
+						<String x:id="detailed" text="Same as Knob option &quot;filmstrip&quot;."/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="overlay.filmstrip" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="specifies that the &quot;foreground&quot; image should be used as a filmstrip"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="topoverlay.filmstrip" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="specifies that the &quot;topoverlay&quot; image should be used as a filmstrip"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="framecount" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="an external framecount can be used to repeat the existing filmstrip frames and reduce the overall memory footprint"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="circle" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="a partial circle around the center is drawn"/>
+						<String x:id="detailed" text="Same as Knob option &quot;circle&quot;. the circle color is the &quot;hilitecolor&quot; or set from the &quot;colorname&quot; parameter"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="circle.indicatorwidth" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="draw a partial circle indicator with the given width in degrees around the center"/>
+						<String x:id="detailed" text="The circle indicator uses &quot;indicatorcolor&quot;."/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="circle.reversecolor" type="string" typeName="color">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="color used to draw a circle from the current position to range end"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="forecolor" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="color used to draw a circle from the range start to range end (when no overlay is used)"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="strokewidth" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="strokewidth of the optional circle"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="hilitecolor" type="string" typeName="color">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="color used to draw a circle from range start to the current position"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="althilitecolor" type="string" typeName="color">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="color used to draw a circle from the current position to the current position of an optional offset parameter"/>
+						<String x:id="detailed" text="Set via Knob attribute &quot;referencename&quot;."/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="indicator" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="a line from the center to the end of the circle is drawn"/>
+						<String x:id="detailed" text="Same as Knob option &quot;indicator&quot;. Color &quot;indicatorcolor&quot; is used."/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="disabledoverlay" type="string" typeName="image">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="optional disabled overlay image to show an individual disabled state"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="margin" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="margin between view boudaries and circle"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="indicatormargin" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="margin between view boudaries and indicator"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="indicatorcolor" type="string" typeName="color">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="color used for drawing the &quot;indicator&quot;"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="indicatorwidth" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="used when it should be different from the strokewidth (which is the default)"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="range" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="the range in degrees for circle and indicator"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="state1" type="string" typeName="color">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="color used for drawing a special marker when the knob&apos;s visual state is 1"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="state2" type="string" typeName="color">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="color used for drawing a special marker when the knob&apos;s visual state is 2"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="state3" type="string" typeName="color">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="color used for drawing a special marker when the knob&apos;s visual state is 3"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="allowstretch" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="allowstretch of background image (default is TRUE)"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="linearScaler" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="used to remap filmstrip frames"/>
+						<String x:id="detailed" text="linearScaler is the slope used to transform the normalized value"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="linearOffset" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="used to remap filmstrip frames"/>
+						<String x:id="detailed" text="linearOffset is the optional offset used to transform the normalized value"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="logscaler" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="used to remap filmstrip frames"/>
+						<String x:id="detailed" text="1/logscaler * log(normalizedValue) is used to map frames onto a logarithmic curve"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="padding.left" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="left padding for background image"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="padding.top" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="top padding for background image"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="padding.right" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="right padding for background image"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="padding.bottom" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="bottom padding for background image"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="padding" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="padding for background image, used if one of the paddings for left, top, right, bottom is not specified"/>
+					</Model.Documentation>
+				</Model.Member>
+			</List>
+		</Model.Class>
+		<Model.Class name="LabelStyle" parent="BasicStyle">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text="A label draws it&apos;s title using the style&apos;s &quot;textfont&quot;, &quot;textcolor&quot;, and &quot;textalignment&quot; (for single line text) or &quot;textoptions&quot; (for multiline text)"/>
+				<List x:id="links">
+					<String text="Label"/>
+				</List>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="ListViewStyle" parent="BasicStyle">
+			<List x:id="members">
+				<Model.Member name="icons.width" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="for &quot;viewtype=&quot;icons&quot;: total width of one item"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="icons.height" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="for &quot;viewtype=&quot;icons&quot;: total height of one item"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="icons.dataleft" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="for &quot;viewtype=&quot;icons&quot;: left of icon inside item rectangle"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="icons.datatop" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="for &quot;viewtype=&quot;icons&quot;: top of icon inside item rectangle"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="icons.datawidth" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="for &quot;viewtype=&quot;icons&quot;: width of icon"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="icons.dataheight" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="for &quot;viewtype=&quot;icons&quot;: height of icon"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="icons.textleft" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="for &quot;viewtype=&quot;icons&quot;: left of title inside item rectangle"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="icons.texttop" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="for &quot;viewtype=&quot;icons&quot;: top of title inside item rectangle"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="icons.textwidth" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="for &quot;viewtype=&quot;icons&quot;: width of title"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="icons.textheight" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="for &quot;viewtype=&quot;icons&quot;: height of title"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="icons.multiLineTitle" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="for &quot;viewtype=&quot;icons&quot;: draw title as multiline text"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="icons.mirrored" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="for &quot;viewtype=&quot;icons&quot;: draw icon columns in reverse order"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="icons.showthumbnails" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="for &quot;viewtype=&quot;icons&quot;: draw thumbnails (if available) instead of icons,"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="icons.background" type="string" typeName="image">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="for &quot;viewtype=&quot;icons&quot;: draw background for each cell (use second frame for selection)"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="icons.textfont" type="string" typeName="string">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="for &quot;viewtype=&quot;icons&quot;: optional alternative font in icons mode (falls back to &quot;textfont&quot; if not specified)"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="icons.iconsethalfsize" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="for &quot;viewtype=&quot;icons&quot;: alternative way of displaying iconset images in half-size"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="icons.fixedColumns" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="for &quot;viewtype=&quot;icons&quot;: use a fixed number of columns"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="list.dataleft" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="for &quot;viewtype=&quot;list&quot;: left of list inside item rectangle"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="list.datatop" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="for &quot;viewtype=&quot;list&quot;: top of list inside item rectangle"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="list.datawidth" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="for &quot;viewtype=&quot;list&quot;: width of list"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="list.dataheight" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="for &quot;viewtype=&quot;list&quot;: height of list"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="list.padding.bottom" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="for &quot;viewtype=&quot;list&quot;: bottom padding of list"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="list.textmargin" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="for &quot;viewtype=&quot;list&quot;: left text margin in cell"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="list.selectionbackground" type="string" typeName="image">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="for &quot;viewtype=&quot;list&quot;: draw background for a selected item as an image"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="list.itembackground" type="string" typeName="image">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="for &quot;viewtype=&quot;list&quot;: draw background for every unselected item in the list as an image"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="list.textalign" type="int" typeName="enum">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="for &quot;viewtype=&quot;list&quot;: set text alignment for cells (default: kLeftCenter)"/>
+					</Model.Documentation>
+				</Model.Member>
+			</List>
+		</Model.Class>
+		<Model.Class name="MenuBarControlStyle" parent="BasicStyle">
+			<List x:id="members">
+				<Model.Member name="menuButton" type="string" typeName="image">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="background for menu buttons"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="menuHeight" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="height of menu buttons"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="activecolor" type="string" typeName="color">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="used to draw instead of &quot;backcolor&quot; for the active menu (when no button image available)"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="activetextcolor" type="string" typeName="color">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="used instead of &quot;textcolor&quot; for the active menu"/>
+					</Model.Documentation>
+				</Model.Member>
+			</List>
+		</Model.Class>
+		<Model.Class name="MenuControlStyle" parent="BasicStyle">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text="A MenuControl is a custom implementation of a menu (e.g. a context menu)"/>
+			</Model.Documentation>
+			<List x:id="members">
+				<Model.Member name="smallfont" type="string" typeName="string">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="used for menu item descriptions"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="bordercolor" type="string" typeName="color">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="used to draw a border around the whole menu"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="separatorcolor" type="string" typeName="color">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="used to draw separator lines"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="headercolor" type="string" typeName="color">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="used to fill the header area"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="selectionbackcolor" type="string" typeName="color">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="used to hihlite selected items, if no &quot;selectionbarimage&quot; is available"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="selectionframecolor" type="string" typeName="color">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="used to draw a frame around selected items"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="disabledtextcolor" type="string" typeName="color">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="used instead of &quot;textcolor&quot; for disabled items"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="headertextcolor" type="string" typeName="color">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="used instead of &quot;textcolor&quot; in the header area"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="selectedtextcolor" type="string" typeName="color">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="used instead of &quot;textcolor&quot; for the currently selected item"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="checkmarkicon" type="string" typeName="image">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="a checkmark icon drawn after a checked item"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="iconcolor" type="string" typeName="color">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="color to colorize icons of unselected items"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="selectediconcolor" type="string" typeName="color">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="used instead of &quot;iconcolor&quot; to colorize icons of selected items"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="selectionbarimage" type="string" typeName="image">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="background image for a selected item"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="normaliconsize" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="icon size (in points) for a normal menu"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="largeiconsize" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="icon size (in points) for a large menu"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="spacing" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="spacing (in points) between items"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="separatorSpacing" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="optional spacing definition for spacing (in points) between separated items"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="segmentspacing" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="spacing (in points) between segments of an item (icon, title, key, arrow)"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="segmentmargin" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="margin (in points) between left border and first segment of an item (icon, title, key, arrow)"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="explicitrowheight" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="row height (in points) is not determined by the iconsize and spacing anymore"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="menuarrowwidth" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="width (in points) of the arrow that indicates a sub menu"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="checkmarkwidth" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="width (in points) used to draw the checkmark icon"/>
+					</Model.Documentation>
+				</Model.Member>
+			</List>
+		</Model.Class>
+		<Model.Class name="PageControlStyle" parent="BasicStyle">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text="A PageControl draws a row of dots, with one dot per scroll page"/>
+				<List x:id="links">
+					<String text="PageControl"/>
+				</List>
+			</Model.Documentation>
+			<List x:id="members">
+				<Model.Member name="background" type="string" typeName="image">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="image drawn undeneath the dots"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="dot" type="string" typeName="image">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="dot image with frames &quot;normal&quot; and &quot;normalOn&quot; for the current page"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="spacing" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="spacing (in pixels) between the dots"/>
+					</Model.Documentation>
+				</Model.Member>
+			</List>
+		</Model.Class>
+		<Model.Class name="PopupSelectorStyle" parent="BasicStyle">
+			<List x:id="members">
+				<Model.Member name="popup.offset.x" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="an additional horizontal offset to the popup position, applied when opened from SelectBox or PopupBox"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="popup.offset.y" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="an additional vertical offset to the popup position, applied when opened from SelectBox or PopupBox"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="popup.minwidth" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="the popup&apos;s minwidth sizelimit - used to override the default sizelimit (the width of the PopupBox)"/>
+					</Model.Documentation>
+				</Model.Member>
+			</List>
+		</Model.Class>
+		<Model.Class name="ProgressBarStyle" parent="BasicStyle">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text="A Progres bar draws a bar that reflects the parameter value over a background"/>
+				<List x:id="links">
+					<String text="ProgressBar"/>
+				</List>
+			</Model.Documentation>
+			<List x:id="members">
+				<Model.Member name="foreground" type="string" typeName="image">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="used to draw a bar over the background that reflects the parameter value"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="indicator" type="string" typeName="image">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="drawn at the boundary between the background and the bar"/>
+					</Model.Documentation>
+				</Model.Member>
+			</List>
+		</Model.Class>
+		<Model.Class name="RangeSliderStyle" parent="BasicStyle">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text="A Range Slider draws two handle moving over a background"/>
+				<List x:id="links">
+					<String text="RangeSlider"/>
+				</List>
+			</Model.Documentation>
+			<List x:id="members">
+				<Model.Member name="hHandle2" type="string" typeName="image">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="handle (horizontal slider)"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="vHandle2" type="string" typeName="image">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="handle (vertical slider)"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="hSmallHandle2" type="string" typeName="image">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="handle (horizontal slider with option &quot;small&quot;)"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="vSmallHandle2" type="string" typeName="image">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="handle (vertical slider with option &quot;small&quot;)"/>
+					</Model.Documentation>
+				</Model.Member>
+			</List>
+		</Model.Class>
+		<Model.Class name="SceneView3DStyle" parent="BasicStyle">
+			<List x:id="members">
+				<Model.Member name="camera" type="string" typeName="string"/>
+				<Model.Member name="multisamplingfactor" type="float" typeName="metric"/>
+			</List>
+		</Model.Class>
+		<Model.Class name="ScrollBarStyle" parent="BasicStyle">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text="A Scrollbar indicates the scrolling position of a scroll view"/>
+				<String x:id="detailed" text="A scroll bar has a background, up/down buttons (vertical) and a handle (thumb)."/>
+				<List x:id="links">
+					<String text="ScrollBar"/>
+				</List>
+			</Model.Documentation>
+			<List x:id="members">
+				<Model.Member name="vButtonUp" type="string" typeName="image">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="&quot;up&quot; button (vertical bar)"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="vButtonDown" type="string" typeName="image">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="&quot;down&quot; button (vertical bar)"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="vThumb" type="string" typeName="image">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="handle (vertical bar)"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="vBack" type="string" typeName="image">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="background (vertical bar)"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="vSmallThumb" type="string" typeName="image">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="small handle (vertical bar with option &quot;small&quot;)"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="vSmallBack" type="string" typeName="image">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="background (vertical bar with option &quot;small&quot;)"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="hButtonUp" type="string" typeName="image">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="&quot;left&quot; button (horizontal bar)"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="hButtonDown" type="string" typeName="image">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="&quot;right&quot; button (horizontal bar)"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="hThumb" type="string" typeName="image">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="handle (horizontal bar)"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="hBack" type="string" typeName="image">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="background (horizontal bar)"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="hSmallThumb" type="string" typeName="image">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="small handle (horizontal bar with option &quot;small&quot;)"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="hSmallBack" type="string" typeName="image">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="background (horizontal bar with option &quot;small&quot;)"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="clipBackground" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="background is only drawn outside of handle area"/>
+					</Model.Documentation>
+				</Model.Member>
+			</List>
+		</Model.Class>
+		<Model.Class name="ScrollButtonStyle" parent="BasicStyle">
+			<Model.Documentation x:id="doc">
+				<List x:id="links">
+					<String text="ScrollButton"/>
+				</List>
+			</Model.Documentation>
+			<List x:id="members">
+				<Model.Member name="hButtonDown" type="string" typeName="image">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="&quot;left&quot; button background (horizontal button)"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="hButtonUp" type="string" typeName="image">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="&quot;right&quot; button background (horizontal button)"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="hIconDown" type="string" typeName="image">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="&quot;left&quot; icon (horizontal button)"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="hIconUp" type="string" typeName="image">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="&quot;right&quot; icon (horizontal button)"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="vButtonDown" type="string" typeName="image">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="&quot;down&quot; button background (vertical button)"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="vButtonUp" type="string" typeName="image">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="&quot;up&quot; button background (vertical button)"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="vIconDown" type="string" typeName="image">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="&quot;down&quot; icon (vertical button)"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="vIconUp" type="string" typeName="image">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="&quot;up&quot; icon (vertical button)"/>
+					</Model.Documentation>
+				</Model.Member>
+			</List>
+		</Model.Class>
+		<Model.Class name="ScrollPickerStyle" parent="BasicStyle">
+			<List x:id="members">
+				<Model.Member name="itemSize" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="optional explicit item size (height/width in vertical/horizontal case)"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="backcolor" type="string" typeName="color">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="backcolor for the control"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="centerBackcolor" type="string" typeName="color">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="backcolor for the center view"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="centerSize" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="optional height/width of the vertical/horizontal center view, where the current value is displayed"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="minimalEditWidth" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="optional minimal width for the horizontal scrollpicker edit control"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="centerOffset" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="optional vertical/horizontal offset of the center view - default is (clientSize - centerSize) / 2"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="gradientThickness" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="thickness of the fade-out area at the border of the barrel"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="centerTextColor" type="string" typeName="color">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="textcolor for the center view"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="barrelTextColor" type="string" typeName="color">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="textcolor for the neighboring unselected values on the barrel"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="centerTextFont" type="string" typeName="string">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="center view font"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="barrelTextFont" type="string" typeName="string">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="barrel font"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="centerOverlayImage" type="string" typeName="image">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="additional optional overlay for the center view"/>
+					</Model.Documentation>
+				</Model.Member>
+			</List>
+		</Model.Class>
+		<Model.Class name="ScrollViewStyle" parent="BasicStyle">
+			<List x:id="members">
+				<Model.Member name="scrollBarSize" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="size of scrollbars in pixels"/>
+						<String x:id="detailed" text="For example: width for a vertical bar"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="buttonSize" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="size of scroll buttons in pixels"/>
+						<String x:id="detailed" text="For example: width for a vertical button"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="buttonSpacing" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="spacing between scroll buttons and scrollview edge"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="borderSize" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="size (in pixels) of an optional border"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="inertialDuration" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="duration in seconds for inertial motion after user release the scrollview (not supported on all platforms)"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="snapDepth" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="limits the view recursion depth for option &quot;snapviewsdeep&quot; (default: unlimited)"/>
+					</Model.Documentation>
+				</Model.Member>
+			</List>
+		</Model.Class>
+		<Model.Class name="SegmentBox" parent="BasicStyle">
+			<Model.Documentation x:id="doc">
+				<List x:id="links">
+					<String text="SegmentBox"/>
+				</List>
+			</Model.Documentation>
+			<List x:id="members">
+				<Model.Member name="state1" type="string" typeName="color">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="alternative text color when the parameter&apos;s visual state is 1"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="state2" type="string" typeName="color">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="alternative text color when the parameter&apos;s visual state is 2"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="state3" type="string" typeName="color">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="alternative text color when the parameter&apos;s visual state is 3"/>
+					</Model.Documentation>
+				</Model.Member>
+			</List>
+		</Model.Class>
+		<Model.Class name="SelectBoxStyle" parent="BasicStyle">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text="If option &quot;transparent&quot; is not set, a SelectBox draws a background image"/>
+				<String x:id="detailed" text="When no image is specified, it is filled in &quot;backcolor, and a rectangular frame in color &quot;forecolor&quot; can be drawn with option &quot;border&quot;.&#10;&#10;An image &quot;states&quot; can be used to show a different frame for (integer) each parameter value.&#10;&#10;The &quot;button&quot; image is drawn at the right (can be changed with option &quot;leadingbutton&quot;).&#10;The remaining space shows the text representation of the parameter, with an optional &quot;padding&quot;."/>
+				<List x:id="links">
+					<String text="SelectBox"/>
+				</List>
+			</Model.Documentation>
+			<List x:id="members">
+				<Model.Member name="button" type="string" typeName="image">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="image used to draw the button that indicates that somthing can popup"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="states" type="string" typeName="image">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="image with frames for each (integer) parameter state"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="padding.left" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="left padding for the text"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="padding.top" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="top padding for the text"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="padding.right" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="right padding for the text"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="padding.bottom" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="bottom padding for the text"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="padding" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="padding for title, used if one of the paddings for left, top, right, bottom is not specified"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="fill.image" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="image from imageprovider is resized to fill out the selectbox size (aspectratio is kept) value: ]0-1]"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="fill.button" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="button image is resized to fill out the selectbox height (aspectratio is kept) value: ]0-1]"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="contextcolor" type="string" typeName="color">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="if set, used to create a modified version of the image given by the imageprovider"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="scaletext.maxfont" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="explicit maximal fontsize when scaletext option is set"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="scaletext.minfont" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="explicit minimal fontsize when scaletext option is set"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="button.beneath" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="button image is drawn beneath text or state images and doesn&apos;t affect their drawrect"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="button.leading" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="button image is drawn before the text - set can also be set with button-option &quot;leadingbutton&quot;"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="button.trailing" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="button image is drawn after the text - can also be set with button-option &quot;trailingbutton&quot;"/>
+					</Model.Documentation>
+				</Model.Member>
+			</List>
+		</Model.Class>
+		<Model.Class name="SliderStyle" parent="BasicStyle">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text="A Slider draws handle moving over a background"/>
+				<List x:id="links">
+					<String text="Slider"/>
+				</List>
+			</Model.Documentation>
+			<List x:id="members">
+				<Model.Member name="vBack" type="string" typeName="image">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="background image (vertical slider) - can have optional second frame for on-state of style &quot;bargraph&quot; - optional &quot;disabled&quot; on-state frame cannot be the first one"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="vHandle" type="string" typeName="image">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="handle (vertical slider) - can have optional second &quot;pressed&quot; frame - and optional third &quot;mouseover&quot; frame - optional &quot;disabled&quot; frame cannot be the first one"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="vDeepBack" type="string" typeName="image">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="additional background (vertical slider)"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="vSmallBack" type="string" typeName="image">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="background image (vertical slider with option &quot;small&quot;) - with optional frames (see above)"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="vSmallHandle" type="string" typeName="image">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="handle (vertical slider with option &quot;small&quot;) - with optional frames (see above)"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="hBack" type="string" typeName="image">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="background image (horizontal slider) - with optional frames (see above)"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="hHandle" type="string" typeName="image">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="handle (horizontal slider) - with optional frames (see above)"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="hDeepBack" type="string" typeName="image">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="additional background (horizontal slider)"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="hSmallBack" type="string" typeName="image">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="background image (horizontal slider with option &quot;small&quot;) - with optional frames (see above)"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="hSmallHandle" type="string" typeName="image">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="handle (horizontal slider with option &quot;small&quot;) - with optional frames (see above)"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="scaleHandle" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="when handles are too big or small they are scaled with respect to their aspectratio"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="margin" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="margin between handle and view edges in min/max handle positions"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="touchFineMinScale" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="min finescale factor (0...1)"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="touchFineMaxScale" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="max finescale factor (0...1)"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="touchFineMinSpeed" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="lower bound for finescale factor interpolation"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="touchFineMaxSpeed" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="upper bound for finescale factor interpolation"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="centerlinecolor" type="string" typeName="color">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="color for a centerline, when the parameter is bipolar and style is &quot;bargraph&quot;"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="centerlinewidth" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="width for the centerline"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="handleColor" type="string" typeName="color">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="color to colorize the handle, when the parameter is bipolar and style is &quot;bargraph&quot;"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="disabledHandleColor" type="string" typeName="color">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="color to colorize the handle, when the parameter is disabled (usually handles are not drawn in this case)"/>
+					</Model.Documentation>
+				</Model.Member>
+			</List>
+		</Model.Class>
+		<Model.Class name="TabViewStyle" parent="BasicStyle">
+			<Model.Documentation x:id="doc">
+				<List x:id="links">
+					<String text="TabView"/>
+				</List>
+			</Model.Documentation>
+			<List x:id="members">
+				<Model.Member name="background" type="string" typeName="image">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="background for content rect"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="headerBackground" type="string" typeName="image">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="background for header rect"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="first" type="string" typeName="image">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="background for the first of multiple buttons"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="middle" type="string" typeName="image">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="background for the middle buttons"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="last" type="string" typeName="image">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="background for the last of multiple buttons"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="single" type="string" typeName="image">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="background for a single button"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="menuIcon" type="string" typeName="image">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="icon shown on menu button"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="menuBackground" type="string" typeName="image">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="background for menu button (shown when not all tabs fit in the view)"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="tabHeight" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="height of tab buttons"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="borderColor" type="string" typeName="color">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="color of border frame, drawn when no&quot;background&quot; image is available"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="activecolor" type="string" typeName="color">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="used to draw instead of &quot;backcolor&quot; for the active tab (when no button image available)"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="activetextcolor" type="string" typeName="color">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="used instead of &quot;textcolor&quot; for the active tab"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="prefericon" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="in case of an icon and a title - only show the icon"/>
+					</Model.Documentation>
+				</Model.Member>
+			</List>
+		</Model.Class>
+		<Model.Class name="TextBoxStyle" parent="BasicStyle">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text="If option &quot;transparent&quot; is not set, a TextBox draws a background image"/>
+				<String x:id="detailed" text="When no image is specified, it is filled in &quot;backcolor, and a rectangular frame in color &quot;forecolor&quot; can be drawn with option &quot;border&quot;.&#10;&#10;The text is drawn with an optional &quot;padding&quot;."/>
+				<List x:id="links">
+					<String text="TextBox"/>
+				</List>
+			</Model.Documentation>
+			<List x:id="members">
+				<Model.Member name="textcolor" type="string" typeName="color">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="textcolor for the displayed string"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="textcolor.transparent" type="string" typeName="color">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="used instead of &quot;textcolor&quot; if the TextBox&apos;s option &quot;transparent&quot; is set or &quot;colorname&quot; color is transparent"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="textcolor.bright" type="string" typeName="color">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="used instead of &quot;textcolor&quot; if the current luminance of the &quot;colorname&quot; color is below the &quot;textcolor.threshold&quot;"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="textcolor.dark" type="string" typeName="color">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="used when the current luminance of the &quot;colorname&quot; color is above the &quot;textcolor.threshold&quot; (using &quot;textcolor&quot; as fallback, needs definition of textcolor"/>
+						<String x:id="detailed" text="bright)"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="textcolor.alphablend" type="string" typeName="color">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="the non-transparent &quot;colorname&quot; color will be alphablended with this color (using &quot;color.alphablend&quot; as fallback) and used as textcolor"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="textcolor.threshold" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="&quot;textcolor.bright&quot; is used instead of &quot;textcolor&quot; if the luminance threshold for the current &quot;colorname&quot; color is below this value - default is 0"/>
+						<String x:id="detailed" text="35"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="textcolor.disabled" type="string" typeName="color">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="text color used (instead of &quot;textcolor&quot;) when control is disabled"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="padding.left" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="left padding for the text"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="padding.top" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="top padding for the text"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="padding.right" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="right padding for the text"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="padding.bottom" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="bottom padding for the text"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="padding" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="padding for the text, used if one of the paddings for left, top, right, bottom is not specified"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="scaletext.maxfont" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="explicit maximal fontsize when scaletext option is set"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="scaletext.minfont" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="explicit minimal fontsize when scaletext option is set"/>
+					</Model.Documentation>
+				</Model.Member>
+			</List>
+		</Model.Class>
+		<Model.Class name="ToolButtonStyle" parent="BasicStyle">
+			<List x:id="members">
+				<Model.Member name="popup.offset.x" type="float" typeName="metric"/>
+				<Model.Member name="popup.offset.y" type="float" typeName="metric"/>
+				<Model.Member name="popupstyle" type="float" typeName="metric"/>
+				<Model.Member name="decorform" type="string" typeName="string"/>
+				<Model.Member name="popup.palette.right" type="float" typeName="metric"/>
+				<Model.Member name="popup.palette.bottom" type="float" typeName="metric"/>
+			</List>
+		</Model.Class>
+		<Model.Class name="TreeViewStyle" parent="ItemViewStyle">
+			<List x:id="members">
+				<Model.Member name="itemInset" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="inset (in pixels) per tree depth level"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="iconSize" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="size of item icons (same width &amp; height)"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="expandSize" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="size of expand symbol (same width &amp; height)"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="leafInset" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="additional inset for leaf items"/>
+					</Model.Documentation>
+				</Model.Member>
+			</List>
+		</Model.Class>
+		<Model.Class name="TriVectorPadStyle" parent="BasicStyle">
+			<Model.Documentation x:id="doc">
+				<List x:id="links">
+					<String text="TriVectorPad"/>
+				</List>
+			</Model.Documentation>
+			<List x:id="members">
+				<Model.Member name="peakpadding.left" type="string" typeName="image">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="left padding for triangle peak"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="background" type="string" typeName="image">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="background image"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="triangle" type="string" typeName="image">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="triangle image"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="handle" type="string" typeName="image">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="handle image"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="backcolor" type="string" typeName="color">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="backcolor when no image is provided"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="triangleColor" type="string" typeName="color">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="color of the triangle when no image is provided"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="handleColor" type="string" typeName="color">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="color for the handle when no image is provided"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="snapPointColor" type="string" typeName="color">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="color for the snap point highlights"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="padding.left" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="left padding for triangle base"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="padding.top" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="top padding triangle peak (or base if upside down)"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="padding.right" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="right padding for triangle base"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="padding.bottom" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="bottom padding triangle base (or peak if upside down)"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="padding" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="padding fallback"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="handlesize" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="size where handle can be clicked (in pixels) when handle is drawn as a circle (no &quot;handle&quot; image)"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="snapsize" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="size of the snappoint at corner (or at the edge-center when &quot;invert&quot; option is set)"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="handlethickness" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="width of pen in pixels when handle is drawn as a circle (no &quot;handle&quot; image)"/>
+					</Model.Documentation>
+				</Model.Member>
+			</List>
+		</Model.Class>
+		<Model.Class name="UpDownButtonStyle" parent="BasicStyle">
+			<Model.Documentation x:id="doc">
+				<List x:id="links">
+					<String text="UpDownButton"/>
+				</List>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="ValueBarStyle" parent="BasicStyle">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text="Displays a value as a horizontal or verical bar"/>
+				<String x:id="detailed" text="If no image is specified, &quot;forecolor&quot; and &quot;backcolor&quot; are used to draw the bar and the background as a filled rectangle."/>
+				<List x:id="links">
+					<String text="ValueBar"/>
+				</List>
+			</Model.Documentation>
+			<List x:id="members">
+				<Model.Member name="background" type="string" typeName="image">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="used to draw the background (frame &quot;normal&quot;) and bar (frame &quot;normalOn&quot;)"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="centerlinecolor" type="string" typeName="color">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="color for a centerline, when the parameter is bipolar"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="centerlinewidth" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="width for the centerline"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="colorize.hilite" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="use hilitecolor or colorparam color if applicable to colorize the hiliteimage"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="backcolor" type="string" typeName="color">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="the background valuebar color when no valueBarImage is available"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="hilitecolor" type="string" typeName="color">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="the active valuebar color (using &quot;forecolor&quot; as fallback) - also used to colorize the valueBarImage when &quot;colorize.hilite&quot; is true"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="hilitecolor.transparent" type="string" typeName="color">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="hilitecolor"/>
+						<String x:id="detailed" text="transparent is used when colorize.hilite is set and the current color from colorparam is transparent"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="hilitecolor.alphablend" type="string" typeName="color">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="the non-transparent &quot;colorname&quot; color will be alphablended with this color (using &quot;color.alphablend&quot; as fallback) and used to colorize the hiliteimage"/>
+					</Model.Documentation>
+				</Model.Member>
+			</List>
+		</Model.Class>
+		<Model.Class name="ValueBoxStyle" parent="EditBoxStyle">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text="Drawn like an EditBox"/>
+				<List x:id="links">
+					<String text="ValueBox"/>
+				</List>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="VectorPadStyle" parent="BasicStyle">
+			<Model.Documentation x:id="doc">
+				<List x:id="links">
+					<String text="VectorPad"/>
+				</List>
+			</Model.Documentation>
+			<List x:id="members">
+				<Model.Member name="background" type="string" typeName="image">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="background image"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="handle" type="string" typeName="image">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="handle"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="handlesize" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="size where handle can be clicked (in pixels) when handle is drawn as a circle (no &quot;handle&quot; image)"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="handlethickness" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="width of line in pixels) when handle is drawn as a circle (no &quot;handle&quot; image)"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="drawlabels" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="draws labels with min / max values for both parameters"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="backcolor" type="string" typeName="color">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="used when &quot;back&quot; image is not available"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="handlecolor" type="string" typeName="color">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="used when &quot;handle&quot; image is not available"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="textcolor" type="string" typeName="color">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="used for &quot;drawlabels&quot;"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="crosshair" type="string" typeName="color">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="draw crosshair"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="crosshair.color" type="string" typeName="color">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="color for crosshair"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="reference.color" type="string" typeName="color">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="used to draw the second frame of the &quot;background&quot; image, when the luminacnce of this &quot;reference.color&quot; is &gt; 0"/>
+						<String x:id="detailed" text="5f"/>
+					</Model.Documentation>
+				</Model.Member>
+			</List>
+		</Model.Class>
+		<Model.Class name="WindowBackgroundStyle" parent="BasicStyle">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text="Draws a background image"/>
+				<String x:id="detailed" text="Two separate images can be specified for normal windows and dialogs.&#10;if no image is available, &quot;backcolor&quot; is used."/>
+			</Model.Documentation>
+			<List x:id="members">
+				<Model.Member name="DialogBack" type="string" typeName="image">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="used when window is a dialog"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="WindowBack" type="string" typeName="image">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="used when window is not a dialog"/>
+					</Model.Documentation>
+				</Model.Member>
+			</List>
+		</Model.Class>
+	</List>
+	<List x:id="enums">
+		<Model.Enumeration name="DefaultColors">
+			<List x:id="enumerators">
+				<Model.Enumerator name="aliceblue" value="#F0F8FFFF"/>
+				<Model.Enumerator name="antiquewhite" value="#FAEBD7FF"/>
+				<Model.Enumerator name="aqua" value="#00FFFFFF"/>
+				<Model.Enumerator name="aquamarine" value="#7FFFD4FF"/>
+				<Model.Enumerator name="azure" value="#F0FFFFFF"/>
+				<Model.Enumerator name="beige" value="#F5F5DCFF"/>
+				<Model.Enumerator name="bisque" value="#FFE4C4FF"/>
+				<Model.Enumerator name="black" value="#000000FF"/>
+				<Model.Enumerator name="blanchedalmond" value="#FFEBCDFF"/>
+				<Model.Enumerator name="blue" value="#0000FFFF"/>
+				<Model.Enumerator name="blueviolet" value="#8A2BE2FF"/>
+				<Model.Enumerator name="brown" value="#A52A2AFF"/>
+				<Model.Enumerator name="burlywood" value="#DEB887FF"/>
+				<Model.Enumerator name="cadetblue" value="#5F9EA0FF"/>
+				<Model.Enumerator name="chartreuse" value="#7FFF00FF"/>
+				<Model.Enumerator name="chocolate" value="#D2691EFF"/>
+				<Model.Enumerator name="coral" value="#FF7F50FF"/>
+				<Model.Enumerator name="cornflowerblue" value="#6495EDFF"/>
+				<Model.Enumerator name="cornsilk" value="#FFF8DCFF"/>
+				<Model.Enumerator name="crimson" value="#DC143CFF"/>
+				<Model.Enumerator name="cyan" value="#00FFFFFF"/>
+				<Model.Enumerator name="darkblue" value="#00008BFF"/>
+				<Model.Enumerator name="darkcyan" value="#008B8BFF"/>
+				<Model.Enumerator name="darkgoldenrod" value="#B8840BFF"/>
+				<Model.Enumerator name="darkgray" value="#A9A9A8FF"/>
+				<Model.Enumerator name="darkgreen" value="#006400FF"/>
+				<Model.Enumerator name="darkgrey" value="#A9A9A9FF"/>
+				<Model.Enumerator name="darkkhaki" value="#BDB76BFF"/>
+				<Model.Enumerator name="darkmagenta" value="#8B008BFF"/>
+				<Model.Enumerator name="darkolivegreen" value="#556B2FFF"/>
+				<Model.Enumerator name="darkorange" value="#FF8C00FF"/>
+				<Model.Enumerator name="darkorchid" value="#9932CCFF"/>
+				<Model.Enumerator name="darkred" value="#8B0000FF"/>
+				<Model.Enumerator name="darksalmon" value="#E9967AFF"/>
+				<Model.Enumerator name="darkseagreen" value="#8FBC8FFF"/>
+				<Model.Enumerator name="darkslateblue" value="#483D8BFF"/>
+				<Model.Enumerator name="darkslategray" value="#2F4F4FFF"/>
+				<Model.Enumerator name="darkslategrey" value="#2F4F4FFF"/>
+				<Model.Enumerator name="darkturquoise" value="#00CED1FF"/>
+				<Model.Enumerator name="darkviolet" value="#9400D3FF"/>
+				<Model.Enumerator name="deeppink" value="#FF1493FF"/>
+				<Model.Enumerator name="deepskyblue" value="#00BFFFFF"/>
+				<Model.Enumerator name="dimgray" value="#696969FF"/>
+				<Model.Enumerator name="dimgrey" value="#696969FF"/>
+				<Model.Enumerator name="dodgerblue" value="#1E90FFFF"/>
+				<Model.Enumerator name="firebrick" value="#B22222FF"/>
+				<Model.Enumerator name="floralwhite" value="#FFFFF0FF"/>
+				<Model.Enumerator name="forestgreen" value="#228B22FF"/>
+				<Model.Enumerator name="fuchsia" value="#FF00FFFF"/>
+				<Model.Enumerator name="gainsboro" value="#DCDCDCFF"/>
+				<Model.Enumerator name="ghostwhite" value="#F8F8FFFF"/>
+				<Model.Enumerator name="gold" value="#D7D700FF"/>
+				<Model.Enumerator name="goldenrod" value="#DAA520FF"/>
+				<Model.Enumerator name="gray" value="#808080FF"/>
+				<Model.Enumerator name="grey" value="#808080FF"/>
+				<Model.Enumerator name="green" value="#008000FF"/>
+				<Model.Enumerator name="greenyellow" value="#ADFF2FFF"/>
+				<Model.Enumerator name="honeydew" value="#F0FFF0FF"/>
+				<Model.Enumerator name="hotpink" value="#FF69B4FF"/>
+				<Model.Enumerator name="indianred" value="#CD5C5CFF"/>
+				<Model.Enumerator name="indigo" value="#4B0082FF"/>
+				<Model.Enumerator name="ivory" value="#FFFFF0FF"/>
+				<Model.Enumerator name="khaki" value="#F0E68CFF"/>
+				<Model.Enumerator name="lavender" value="#E6E6FAFF"/>
+				<Model.Enumerator name="lavenderblush" value="#FFF0F5FF"/>
+				<Model.Enumerator name="lawngreen" value="#7CFC00FF"/>
+				<Model.Enumerator name="lemonchiffon" value="#FFFACDFF"/>
+				<Model.Enumerator name="lightblue" value="#ADD8E6FF"/>
+				<Model.Enumerator name="lightcoral" value="#F08080FF"/>
+				<Model.Enumerator name="lightcyan" value="#E0FFFFFF"/>
+				<Model.Enumerator name="lightgoldenrodyellow" value="#FAFAD2FF"/>
+				<Model.Enumerator name="lightgray" value="#D3D3D3FF"/>
+				<Model.Enumerator name="lightgreen" value="#90EE90FF"/>
+				<Model.Enumerator name="lightgrey" value="#D3D3D3FF"/>
+				<Model.Enumerator name="lightpink" value="#FFB6C1FF"/>
+				<Model.Enumerator name="lightsalmon" value="#FFA07AFF"/>
+				<Model.Enumerator name="lightseagreen" value="#20B2AAFF"/>
+				<Model.Enumerator name="lightskyblue" value="#87CEFAFF"/>
+				<Model.Enumerator name="lightslategray" value="#778899FF"/>
+				<Model.Enumerator name="lightslategrey" value="#778899FF"/>
+				<Model.Enumerator name="lightsteelblue" value="#B0C4DEFF"/>
+				<Model.Enumerator name="lightyellow" value="#FFFFE0FF"/>
+				<Model.Enumerator name="lime" value="#00FF00FF"/>
+				<Model.Enumerator name="limegreen" value="#32CD32FF"/>
+				<Model.Enumerator name="linen" value="#FAF0E6FF"/>
+				<Model.Enumerator name="magenta" value="#FF00FFFF"/>
+				<Model.Enumerator name="maroon" value="#800000FF"/>
+				<Model.Enumerator name="mediumaquamarine" value="#66CDAAFF"/>
+				<Model.Enumerator name="mediumblue" value="#0000CDFF"/>
+				<Model.Enumerator name="mediumorchid" value="#BA55D3FF"/>
+				<Model.Enumerator name="mediumpurple" value="#9370DBFF"/>
+				<Model.Enumerator name="mediumseagreen" value="#3CB371FF"/>
+				<Model.Enumerator name="mediumslateblue" value="#7B68EEFF"/>
+				<Model.Enumerator name="mediumspringgreen" value="#00FA9AFF"/>
+				<Model.Enumerator name="mediumturquoise" value="#48D1CCFF"/>
+				<Model.Enumerator name="mediumvioletred" value="#C71585FF"/>
+				<Model.Enumerator name="mediumnightblue" value="#191970FF"/>
+				<Model.Enumerator name="mintcream" value="#F5FFFAFF"/>
+				<Model.Enumerator name="mintyrose" value="#FFE4E1FF"/>
+				<Model.Enumerator name="moccasin" value="#FFE4B5FF"/>
+				<Model.Enumerator name="navajowhite" value="#FFDEADFF"/>
+				<Model.Enumerator name="navy" value="#000080FF"/>
+				<Model.Enumerator name="oldlace" value="#FDF5E6FF"/>
+				<Model.Enumerator name="olive" value="#808000FF"/>
+				<Model.Enumerator name="olivedrab" value="#6B8E23FF"/>
+				<Model.Enumerator name="orange" value="#FFA500FF"/>
+				<Model.Enumerator name="orangered" value="#FF4500FF"/>
+				<Model.Enumerator name="orchid" value="#DA70D6FF"/>
+				<Model.Enumerator name="palegoldenrod" value="#EEE8AAFF"/>
+				<Model.Enumerator name="palegreen" value="#98FB98FF"/>
+				<Model.Enumerator name="paleturquoise" value="#AFEEEEFF"/>
+				<Model.Enumerator name="palevioletred" value="#DB7093FF"/>
+				<Model.Enumerator name="papayawhip" value="#FFEFD5FF"/>
+				<Model.Enumerator name="peachpuff" value="#FFDAB9FF"/>
+				<Model.Enumerator name="peru" value="#CD853FFF"/>
+				<Model.Enumerator name="pink" value="#FFC0CBFF"/>
+				<Model.Enumerator name="plum" value="#DDA0CBFF"/>
+				<Model.Enumerator name="powderblue" value="#B0E0E6FF"/>
+				<Model.Enumerator name="purple" value="#800080FF"/>
+				<Model.Enumerator name="red" value="#FF0000FF"/>
+				<Model.Enumerator name="rosybrown" value="#BC8F8FFF"/>
+				<Model.Enumerator name="royalblue" value="#4169E1FF"/>
+				<Model.Enumerator name="saddlebrown" value="#8B4513FF"/>
+				<Model.Enumerator name="salmon" value="#FA8072FF"/>
+				<Model.Enumerator name="sandybrown" value="#F4A460FF"/>
+				<Model.Enumerator name="seagreen" value="#2E8B57FF"/>
+				<Model.Enumerator name="seashell" value="#FFF5EEFF"/>
+				<Model.Enumerator name="sienna" value="#A0522DFF"/>
+				<Model.Enumerator name="silver" value="#C0C0C0FF"/>
+				<Model.Enumerator name="skyblue" value="#87CEEBFF"/>
+				<Model.Enumerator name="slateblue" value="#6A5ACDFF"/>
+				<Model.Enumerator name="slategray" value="#708090FF"/>
+				<Model.Enumerator name="slategrey" value="#708072FF"/>
+				<Model.Enumerator name="snow" value="#FFFFFAFF"/>
+				<Model.Enumerator name="springgreen" value="#00FF7FFF"/>
+				<Model.Enumerator name="steelblue" value="#4682B4FF"/>
+				<Model.Enumerator name="tan" value="#D2B48CFF"/>
+				<Model.Enumerator name="teal" value="#008080FF"/>
+				<Model.Enumerator name="thistle" value="#D8BFD8FF"/>
+				<Model.Enumerator name="tomato" value="#FF6347FF"/>
+				<Model.Enumerator name="turquoise" value="#40E0D0FF"/>
+				<Model.Enumerator name="violet" value="#EE82EEFF"/>
+				<Model.Enumerator name="wheat" value="#F5DEB3FF"/>
+				<Model.Enumerator name="white" value="#FFFFFFFF"/>
+				<Model.Enumerator name="whitesmoke" value="#F5F5F5FF"/>
+				<Model.Enumerator name="yellow" value="#FFFF00FF"/>
+				<Model.Enumerator name="yellowgreen" value="#9ACD32FF"/>
+			</List>
+		</Model.Enumeration>
+		<Model.Enumeration name="StandardStyles">
+			<List x:id="enumerators">
+				<Model.Enumerator name="Slider" value="0"/>
+				<Model.Enumerator name="ScrollBar" value="1"/>
+				<Model.Enumerator name="ScrollButton" value="2"/>
+				<Model.Enumerator name="PageControl" value="3"/>
+				<Model.Enumerator name="ValueBar" value="4"/>
+				<Model.Enumerator name="ProgressBar" value="5"/>
+				<Model.Enumerator name="TextBox" value="6"/>
+				<Model.Enumerator name="EditBox" value="7"/>
+				<Model.Enumerator name="ComboBox" value="8"/>
+				<Model.Enumerator name="SelectBox" value="9"/>
+				<Model.Enumerator name="Button" value="10"/>
+				<Model.Enumerator name="TabView" value="11"/>
+				<Model.Enumerator name="HeaderView" value="12"/>
+				<Model.Enumerator name="Divider" value="13"/>
+				<Model.Enumerator name="WindowBackground" value="14"/>
+				<Model.Enumerator name="DialogGroup" value="15"/>
+				<Model.Enumerator name="Label" value="16"/>
+				<Model.Enumerator name="CheckBox" value="17"/>
+				<Model.Enumerator name="RadioButton" value="18"/>
+				<Model.Enumerator name="Knob" value="19"/>
+				<Model.Enumerator name="VectorPad" value="20"/>
+				<Model.Enumerator name="TriVectorPad" value="21"/>
+				<Model.Enumerator name="ValueBox" value="22"/>
+				<Model.Enumerator name="UpDownBox" value="23"/>
+				<Model.Enumerator name="RangeSlider" value="24"/>
+				<Model.Enumerator name="ScrollPicker" value="25"/>
+				<Model.Enumerator name="MenuBarControl" value="26"/>
+				<Model.Enumerator name="ListView" value="27"/>
+				<Model.Enumerator name="TreeView" value="28"/>
+				<Model.Enumerator name="PopupMenu" value="29"/>
+				<Model.Enumerator name="PopupMenuLarge" value="30"/>
+				<Model.Enumerator name="PalettePopup" value="31"/>
+				<Model.Enumerator name="MenuControl" value="32"/>
+				<Model.Enumerator name="ContextMenu" value="33"/>
+				<Model.Enumerator name="PerspectiveSwitcher" value="34"/>
+				<Model.Enumerator name="SegmentBox" value="35"/>
+				<Model.Enumerator name="H1" value="36"/>
+				<Model.Enumerator name="H2" value="37"/>
+				<Model.Enumerator name="H3" value="38"/>
+				<Model.Enumerator name="H4" value="39"/>
+				<Model.Enumerator name="H5" value="40"/>
+				<Model.Enumerator name="H6" value="41"/>
+			</List>
+		</Model.Enumeration>
+		<Model.Enumeration name="ThemeColors">
+			<List x:id="enumerators">
+				<Model.Enumerator name="SelectionColor" value="0"/>
+				<Model.Enumerator name="SelectionTextColor" value="1"/>
+				<Model.Enumerator name="AlphaSelectionColor" value="2"/>
+				<Model.Enumerator name="AlphaCursorColor" value="3"/>
+				<Model.Enumerator name="HyperlinkColor" value="4"/>
+				<Model.Enumerator name="TooltipBackColor" value="5"/>
+				<Model.Enumerator name="TooltipTextColor" value="6"/>
+				<Model.Enumerator name="ListViewBackColor" value="7"/>
+				<Model.Enumerator name="PushButtonTextColor" value="8"/>
+			</List>
+		</Model.Enumeration>
+		<Model.Enumeration name="ThemeCursors">
+			<List x:id="enumerators">
+				<Model.Enumerator name="ArrowCursor" value="0"/>
+				<Model.Enumerator name="WaitCursor" value="1"/>
+				<Model.Enumerator name="CrosshairCursor" value="2"/>
+				<Model.Enumerator name="PointhandCursor" value="3"/>
+				<Model.Enumerator name="SizeHorizontalCursor" value="4"/>
+				<Model.Enumerator name="SizeVerticalCursor" value="5"/>
+				<Model.Enumerator name="SizeLeftUpRightDownCursor" value="6"/>
+				<Model.Enumerator name="SizeLeftDownRightUpCursor" value="7"/>
+				<Model.Enumerator name="TextCursor" value="8"/>
+				<Model.Enumerator name="SizeUpCursor" value="9"/>
+				<Model.Enumerator name="SizeRightCursor" value="10"/>
+				<Model.Enumerator name="SizeDownCursor" value="11"/>
+				<Model.Enumerator name="SizeLeftCursor" value="12"/>
+				<Model.Enumerator name="SizeLeftUpCursor" value="13"/>
+				<Model.Enumerator name="SizeLeftDownCursor" value="14"/>
+				<Model.Enumerator name="SizeRightUpCursor" value="15"/>
+				<Model.Enumerator name="SizeRightDownCursor" value="16"/>
+				<Model.Enumerator name="CopyCursor" value="17"/>
+				<Model.Enumerator name="NoDropCursor" value="18"/>
+				<Model.Enumerator name="GrabCursor" value="19"/>
+				<Model.Enumerator name="GrabbingCursor" value="20"/>
+				<Model.Enumerator name="ZoomInCursor" value="21"/>
+				<Model.Enumerator name="ZoomOutCursor" value="22"/>
+			</List>
+		</Model.Enumeration>
+		<Model.Enumeration name="ThemeElementImages">
+			<List x:id="enumerators">
+				<Model.Enumerator name="Button" value="0"/>
+				<Model.Enumerator name="CheckBox" value="1"/>
+				<Model.Enumerator name="RadioButton" value="2"/>
+				<Model.Enumerator name="TreeViewExpandButton" value="3"/>
+			</List>
+		</Model.Enumeration>
+		<Model.Enumeration name="ThemeElementStates">
+			<List x:id="enumerators">
+				<Model.Enumerator name="normal" value="0"/>
+				<Model.Enumerator name="pressed" value="1"/>
+				<Model.Enumerator name="mouseover" value="2"/>
+				<Model.Enumerator name="disabled" value="3"/>
+				<Model.Enumerator name="focus" value="4"/>
+			</List>
+		</Model.Enumeration>
+		<Model.Enumeration name="ThemeElementStatesOn">
+			<List x:id="enumerators">
+				<Model.Enumerator name="normalOn" value="0"/>
+				<Model.Enumerator name="pressedOn" value="1"/>
+				<Model.Enumerator name="mouseoverOn" value="2"/>
+				<Model.Enumerator name="disabledOn" value="3"/>
+				<Model.Enumerator name="focus" value="4"/>
+			</List>
+		</Model.Enumeration>
+		<Model.Enumeration name="ThemeFonts">
+			<List x:id="enumerators">
+				<Model.Enumerator name="MenuFont" value="0"/>
+			</List>
+		</Model.Enumeration>
+		<Model.Enumeration name="ThemeMetrics">
+			<List x:id="enumerators">
+				<Model.Enumerator name="Margin" value="0"/>
+				<Model.Enumerator name="Spacing" value="1"/>
+				<Model.Enumerator name="ButtonWidth" value="2"/>
+				<Model.Enumerator name="ButtonHeight" value="3"/>
+				<Model.Enumerator name="TextBoxHeight" value="4"/>
+				<Model.Enumerator name="CheckBoxSize" value="5"/>
+				<Model.Enumerator name="ScrollBarSize" value="6"/>
+				<Model.Enumerator name="SliderHandleSize" value="7"/>
+				<Model.Enumerator name="DividerSize" value="8"/>
+				<Model.Enumerator name="DividerOutreach" value="9"/>
+				<Model.Enumerator name="HeaderHeight" value="10"/>
+				<Model.Enumerator name="Border" value="11"/>
+				<Model.Enumerator name="SystemStatusBarHeight" value="12"/>
+				<Model.Enumerator name="SystemNavigationBarHeight" value="13"/>
+				<Model.Enumerator name="SystemMarginLeft" value="14"/>
+				<Model.Enumerator name="SystemMarginRight" value="15"/>
+				<Model.Enumerator name="TitleBarHeight" value="16"/>
+			</List>
+		</Model.Enumeration>
+	</List>
+</Model.ClassRepository>

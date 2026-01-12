@@ -1,0 +1,11 @@
+{% include ../cclfileheader.in %}
+
+package dev.ccl.cclgui;
+
+/**
+ * CCL graphics constants.
+ */
+public class GraphicsConstants
+{
+{% include ../../../../core/meta/templates/java/shared/enumsflat.java.in %}
+}

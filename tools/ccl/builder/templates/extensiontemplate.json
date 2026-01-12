@@ -1,0 +1,91 @@
+{
+	"name": "extensiontemplate",
+	"description": "Empty Extension",
+	"destination": "extensions/deployment/@ShortID",
+	"platforms":
+	[
+		"win",
+		"mac",
+		"linux"
+	],
+	"variables":
+	[
+		{
+			"key": "ProjectTitle",
+			"defaultValue": "My Extension",
+			"description": "extension title, name of the generated IDE project"
+		},
+		{
+			"key": "ShortID",
+			"defaultValue": "myextension",
+			"description": "readable extension ID"
+		},
+		{
+			"key": "FileName",
+			"defaultValue": "MyExtension",
+			"description": "extension file name (without extension)"
+		},
+		{
+			"key": "PackageID",
+			"defaultValue": "@VendorPackageDomain.@ShortID",
+			"description": "extension package ID"
+		}
+	],
+	"replacements": 
+	[
+		{
+			"searchString": "extensiontemplate",
+			"replaceString": "@ShortID",
+			"filter": "*.cpp;*.h;*.cmake;*.txt;*.json;*.in;*.bat;*.template;*.xml"
+		},
+		{
+			"searchString": "Extension Template",
+			"replaceString": "@ProjectTitle",
+			"filter": "*.cpp;*.h;*.cmake;*.txt;*.json;*.in;*.nsi;*.bat;build.sh;*.template;*.xml"
+		},
+		{
+			"searchString": "Extension Template",
+			"replaceString": "@ProjectTitle",
+			"filter": "*.cpp;*.h;*.cmake;*.txt;*.json;*.in;*.nsi;*.bat;build.sh;*.template;*.xml"
+		},
+		{
+			"searchString": "ExtensionFileName",
+			"replaceString": "@FileName",
+			"filter": "*.build"
+		},
+		{
+			"searchString": "(Vendor Name)",
+			"replaceString": "@VendorName",
+			"filter": "*.txt;*.xml"
+		},
+		{
+			"searchString": "(Vendor Website)",
+			"replaceString": "@VendorWebsite",
+			"filter": "*.txt;*.xml"
+		},
+		{
+			"searchString": "(ProjectPackageID)",
+			"replaceString": "@PackageID",
+			"filter": "*.xml"
+		}
+	],
+	"files":
+	[
+		{
+			"source": "extensiontemplate/deployment/extensiontemplate.build",
+			"destination": "@Destination/../@ShortID.build"
+		},
+		{
+			"source": "extensiontemplate/deployment/extensiontemplate/installdata.xml",
+			"destination": "@Destination/installdata.xml"
+		},
+		{
+			"source": "extensiontemplate/deployment/extensiontemplate/metainfo.xml",
+			"destination": "@Destination/metainfo.xml"
+		},
+		{
+			"source": "extensiontemplate/security/extensiontemplate.policy.xml",
+			"destination": "@Destination/../../security/@ShortID.policy.xml"
+		}
+	]
+}

@@ -1,0 +1,11 @@
+{% include ../../../../../ccl/meta/templates/cclfileheader.in %}
+
+package dev.ccl.services.bluetooth;
+
+/**
+ * Bluetooth constants.
+ */
+public class BluetoothConstants
+{
+{% include ../../../../../core/meta/templates/java/shared/enumsflat.java.in %}
+}

@@ -1,0 +1,13 @@
+{% include ../../../../../ccl/meta/templates/cclfileheader.in %}
+
+#ifndef _bluetooth_constants_generated_h
+#define _bluetooth_constants_generated_h
+
+namespace CCL {
+namespace Bluetooth {
+
+{% include ../../../../../core/meta/templates/cpp/shared/enums.h.in %}
+} // namespace Bluetooth
+} // namespace CCL
+
+#endif // _bluetooth_constants_generated_h

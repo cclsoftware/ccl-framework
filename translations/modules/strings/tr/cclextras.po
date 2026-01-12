@@ -1,0 +1,882 @@
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: extensions/backupmanager.cpp
+msgctxt "BackupManager"
+msgid "Backup"
+msgstr "Yedekle"
+
+#: extensions/backupmanager.cpp
+msgctxt "BackupManager"
+msgid "Backup is too large."
+msgstr "Yedek çok büyük."
+
+#: extensions/backupmanager.cpp
+msgctxt "BackupManager"
+msgid "Backup restored successfully."
+msgstr "Yedek başarıyla geri yüklendi."
+
+#: extensions/backupmanager.cpp
+msgctxt "BackupManager"
+msgid "Backup uploaded successfully."
+msgstr "Yedek başarıyla karşıya yüklendi."
+
+#: extensions/backupmanager.cpp
+msgctxt "BackupManager"
+msgid "Backup will be restored next time you start $APPNAME."
+msgstr "Yedekleme, $APPNAME bir sonraki başlatıldığında geri yüklenecek."
+
+#: extensions/backupmanager.cpp
+msgctxt "BackupManager"
+msgid "Computer"
+msgstr "Bilgisayar"
+
+#: extensions/backupmanager.cpp
+msgctxt "BackupManager"
+msgid "Date & Time"
+msgstr "Tarih ve Saat"
+
+#: extensions/backupmanager.cpp
+msgctxt "BackupManager"
+msgid "Failed to create backup."
+msgstr "Yedek oluşturulamadı."
+
+#: extensions/backupmanager.cpp
+msgctxt "BackupManager"
+msgid "Failed to restore from backup."
+msgstr "Yedekten geri yükleme başarısız oldu."
+
+#: extensions/backupmanager.cpp
+msgctxt "BackupManager"
+msgid "Failed to upload backup."
+msgstr "Yedek karşıya yüklenemedi!"
+
+#: extensions/backupmanager.cpp
+msgctxt "BackupManager"
+msgid "Never"
+msgstr "Asla"
+
+#: extensions/backupmanager.cpp
+msgctxt "BackupManager"
+msgid "No backups found."
+msgstr "Yedek Bulunamadı"
+
+#: extensions/backupmanager.cpp
+msgctxt "BackupManager"
+msgid "Program Settings"
+msgstr "Program Ayarları"
+
+#: extensions/backupmanager.cpp
+msgctxt "BackupManager"
+msgid "Restore"
+msgstr "Geri Yükle"
+
+#: extensions/backupmanager.cpp
+msgctxt "BackupManager"
+msgid "Size"
+msgstr "Boyut"
+
+#: extensions/backupmanager.cpp
+msgctxt "BackupManager"
+msgid "Unknown"
+msgstr "Bilinmiyor"
+
+#: extensions/backupmanager.cpp
+msgctxt "BackupManager"
+msgid "Version"
+msgstr "Sürüm"
+
+#: extensions/backupmanager.cpp
+msgctxt "Command"
+msgid "Application"
+msgstr "Uygulama"
+
+#: extensions/backupmanager.cpp
+msgctxt "Command"
+msgid "Backup and Restore"
+msgstr "Yedekle ve Geri Yükle"
+
+#: extensions/appupdater.cpp
+msgctxt "Command"
+msgid "Check for Updates"
+msgstr "Güncelleme varmı kontrol et."
+
+#: analytics/apptrackinghandler.cpp extensions/appupdater.cpp
+msgctxt "Command"
+msgid "Help"
+msgstr "Yardım"
+
+#: analytics/apptrackinghandler.cpp
+msgctxt "Command"
+msgid "Usage Data Settings"
+msgstr "Kullanım Verisi Ayarları"
+
+#: extensions/appupdater.cpp
+msgctxt "Command"
+msgid "View Release Notes"
+msgstr "Sürüm notlarına göz at"
+
+#: packages/contentpackagemanager.cpp
+msgctxt "ContentPackageManager"
+msgid "%(1) is now available!"
+msgstr "%(1) artık kullanılabilir!"
+
+#: packages/contentpackagemanager.cpp
+msgctxt "ContentPackageManager"
+msgid "Do you want to continue installation anyway?"
+msgstr "Kuruluma yine de devam etmek istiyor musunuz?"
+
+#: packages/contentpackagemanager.cpp
+msgctxt "ContentPackageManager"
+msgid "Download from $APPCOMPANY Account"
+msgstr "$APPCOMPANY Hesabından İndir"
+
+#: packages/contentpackagemanager.cpp
+msgctxt "ContentPackageManager"
+msgid "Install"
+msgstr "Kur"
+
+#: packages/contentpackagemanager.cpp
+msgctxt "ContentPackageManager"
+msgid "New content is available!"
+msgstr "Yeni içerik mevcut!"
+
+#: packages/contentpackagemanager.cpp
+msgctxt "ContentPackageManager"
+msgid "Not enough free disk space. %(1) are required, but only %(2) are available on the selected volume."
+msgstr "Yeterli boş disk alanı yok. %(1) gerekli, ancak seçilen birimde yalnızca %(2) mevcut."
+
+#: extensions/extensionmanager.cpp
+msgctxt "ExtensionManager"
+msgid "%(1) is not compatible with $APPNAME!"
+msgstr "%(1), $APPNAME ile uyumlu değil!"
+
+#: extensions/extensionmanager.cpp
+msgctxt "ExtensionManager"
+msgid "Built-in Extensions can not be uninstalled or updated."
+msgstr "Gömülü uzantılar kaldırılamaz veya güncellenemez."
+
+#: extensions/extensionmanager.cpp
+msgctxt "ExtensionManager"
+msgid "Do you want to install these updates now?"
+msgstr "Bu güncellemeleri şimdi kurmak istiyor musunuz?"
+
+#: extensions/extensionmanager.cpp
+msgctxt "ExtensionManager"
+msgid "Install Extension"
+msgstr "Genişletme Kur"
+
+#: extensions/extensionmanager.cpp
+msgctxt "ExtensionManager"
+msgid "Migrating Extension %(1)..."
+msgstr "Genişletme %(1) taşınıyor..."
+
+#: extensions/extensionmanager.cpp
+msgctxt "ExtensionManager"
+msgid "Removing Extension %(1)..."
+msgstr "%(1) Genişletmesi Kaldırılıyor..."
+
+#: extensions/extensionmanager.cpp
+msgctxt "ExtensionManager"
+msgid "Scanning Extensions..."
+msgstr "Genişletmeler Taranıyor..."
+
+#: extensions/extensionmanager.cpp
+msgctxt "ExtensionManager"
+msgid "Scanning Plug-Ins..."
+msgstr "Plug-In'ler Taranıyor..."
+
+#: extensions/extensionmanager.cpp
+msgctxt "ExtensionManager"
+msgid "Updating Extension %(1)..."
+msgstr "%(1) genişletmesi güncelleniyor..."
+
+#: extensions/extensionmanager.cpp
+msgctxt "ExtensionManager"
+msgid "You need a newer version of $APPNAME."
+msgstr "$APPNAME'in daha yeni bir sürümüne ihtiyacınız var"
+
+#: extensions/extensiondescription.cpp
+msgctxt "Extensions"
+msgid "%(1) is already installed!"
+msgstr "%(1) zaten kurulu!"
+
+#: extensions/extensiondescription.cpp
+msgctxt "Extensions"
+msgid "Developer Extension"
+msgstr "Geliştirici Uzantısı"
+
+#: extensions/extensiondescription.cpp
+msgctxt "Extensions"
+msgid "Extension"
+msgstr "Genişletme"
+
+#: extensions/extensiondescription.cpp
+msgctxt "Extensions"
+msgid "Failed to uninstall %(1)!"
+msgstr "%(1) kaldırılamadı!"
+
+#: extensions/extensiondescription.cpp
+msgctxt "Extensions"
+msgid "Installation failed!"
+msgstr "Kurulum başarısız oldu!"
+
+#: extensions/extensiondescription.cpp
+msgctxt "Extensions"
+msgid "Invalid Installation File!"
+msgstr "Geçersiz Kurulum Dosyası!"
+
+#: extensions/extensiondescription.cpp
+msgctxt "Extensions"
+msgid "No updates found for your Extensions."
+msgstr "Genişletmeleriniz için güncelleme bulunamadı."
+
+#: extensions/extensiondescription.cpp
+msgctxt "Extensions"
+msgid "Program Extension"
+msgstr "Program Genişletmesi"
+
+#: extensions/extensiondescription.cpp
+msgctxt "Extensions"
+msgid "Shared Extension"
+msgstr "Paylaşılan Genişletme"
+
+#: extensions/extensiondescription.cpp
+msgctxt "Extensions"
+msgid "Signature Verification"
+msgstr "İmza Doğrulama"
+
+#: extensions/extensiondescription.cpp
+msgctxt "Extensions"
+msgid "Target directory is locked by %(1)."
+msgstr "Hedef klasör %(1) tarafından kilitlenmiş."
+
+#: extensions/extensiondescription.cpp
+msgctxt "Extensions"
+msgid "The installation file is not compatible with this application."
+msgstr "Kurulum dosyası bu uygulama ile uyumlu değil."
+
+#: extensions/extensiondescription.cpp
+msgctxt "Extensions"
+msgid "The installation file is not compatible with this platform."
+msgstr "Kurulum dosyası bu platform ile uyumlu değil."
+
+#: extensions/extensiondescription.cpp
+msgctxt "Extensions"
+msgid "There are updates available for your Extensions."
+msgstr "Genişletmeleriniz için güncellemeler mevcut."
+
+#: extensions/extensiondescription.cpp
+msgctxt "Extensions"
+msgid "This file does not have a valid digital signature."
+msgstr "Bu dosyada geçerli bir dijital imza bulunmuyor."
+
+#: extensions/extensiondescription.cpp
+msgctxt "Extensions"
+msgid "User Extension"
+msgstr "Kullanıcı Genişletmesi"
+
+#: web/webelements.cpp
+msgctxt "Feed"
+msgid "Refresh"
+msgstr "Tazele"
+
+#: extensions/extensiondescription.cpp
+msgctxt "FileType"
+msgid "Installation File"
+msgstr "Kurulum Dosyası"
+
+#: gadgets/gadgetmanager.cpp
+msgctxt "GadgetManager"
+msgid "Gadgets"
+msgstr "Ivır zıvırlar"
+
+#: gadgets/gadgetmanager.cpp
+msgctxt "GadgetManager"
+msgid "No Gadgets installed"
+msgstr "Kurulu IvırZıvır (Gadget) Yok"
+
+#: packages/extensionmanagerpackages.cpp
+msgctxt "PackageActions"
+msgid "Abort Uninstall"
+msgstr "Kaldırmayı İptal Et"
+
+#: packages/installdatapackages.cpp
+msgctxt "PackageActions"
+msgid "Claim %(1) Product Keys"
+msgstr "%(1) Ürün Anahtarını Talep Et"
+
+#: packages/installdatapackages.cpp
+msgctxt "PackageActions"
+msgid "Claim Product Key"
+msgstr "Ürün Anahtarını Talep Et"
+
+#: packages/unifiedpackageaction.cpp
+msgctxt "PackageActions"
+msgid "Disable"
+msgstr "Devre Dışı Bırak"
+
+#: packages/unifiedpackageaction.cpp
+msgctxt "PackageActions"
+msgid "Disable %(1) items"
+msgstr "%(1) öğeyi devre dışı bırak"
+
+#: packages/unifiedpackageaction.cpp
+msgctxt "PackageActions"
+msgid "Disable All"
+msgstr "Tümünü Devre Dışı Bırak"
+
+#: packages/unifiedpackageaction.cpp
+msgctxt "PackageActions"
+msgid "Disabled"
+msgstr "Devre Dışı"
+
+#: packages/unifiedpackageaction.cpp
+msgctxt "PackageActions"
+msgid "Enable"
+msgstr "Etkinleştir"
+
+#: packages/unifiedpackageaction.cpp
+msgctxt "PackageActions"
+msgid "Enable %(1) items"
+msgstr "%(1) öğeyi etkinleştir"
+
+#: packages/unifiedpackageaction.cpp
+msgctxt "PackageActions"
+msgid "Enable All"
+msgstr "Tümünü Etkinleştir"
+
+#: packages/unifiedpackageaction.cpp
+msgctxt "PackageActions"
+msgid "Enabled"
+msgstr "Etkin"
+
+#: packages/unifiedpackageaction.cpp
+msgctxt "PackageActions"
+msgid "Install"
+msgstr "Kur"
+
+#: packages/unifiedpackageaction.cpp
+msgctxt "PackageActions"
+msgid "Install %(1) items"
+msgstr "%(1) öğeyi kur"
+
+#: packages/unifiedpackageaction.cpp
+msgctxt "PackageActions"
+msgid "Install %(1) items (%(2))"
+msgstr "%(1) öğeyi kur (%(2))"
+
+#: packages/unifiedpackageaction.cpp
+msgctxt "PackageActions"
+msgid "Install All"
+msgstr "Tümünü Kur"
+
+#: packages/unifiedpackageaction.cpp
+msgctxt "PackageActions"
+msgid "Installed"
+msgstr "Kuruldu"
+
+#: packages/unifiedpackageaction.cpp
+msgctxt "PackageActions"
+msgid "Not Installed"
+msgstr "Kurulu Değil"
+
+#: packages/unifiedpackageaction.cpp
+msgctxt "PackageActions"
+msgid "Restart"
+msgstr "Tekrar Başlat"
+
+#: packages/unifiedpackageaction.cpp
+msgctxt "PackageActions"
+msgid "Restart Required"
+msgstr "Yeniden Başlatma Gerekli"
+
+#: packages/unifiedpackageaction.cpp
+msgctxt "PackageActions"
+msgid "Uninstall"
+msgstr "Kaldır"
+
+#: packages/unifiedpackageaction.cpp
+msgctxt "PackageActions"
+msgid "Uninstall %(1) items"
+msgstr "%(1) öğeyi kaldır"
+
+#: packages/unifiedpackageaction.cpp
+msgctxt "PackageActions"
+msgid "Uninstall All"
+msgstr "Tümünü Kaldır"
+
+#: packages/unifiedpackageaction.cpp
+msgctxt "PackageActions"
+msgid "Update"
+msgstr "Güncelle"
+
+#: packages/unifiedpackageaction.cpp
+msgctxt "PackageActions"
+msgid "Update %(1) items"
+msgstr "%(1) öğeyi güncelle"
+
+#: packages/unifiedpackageaction.cpp
+msgctxt "PackageActions"
+msgid "Update All"
+msgstr "Tümünü Güncelle"
+
+#: packages/packagefilter.cpp
+msgctxt "PackageFilter"
+msgid "Any"
+msgstr "Herhangi"
+
+#: packages/packagefilter.cpp
+msgctxt "PackageFilter"
+msgid "Available"
+msgstr "Müsait"
+
+#: packages/packagefilter.cpp
+msgctxt "PackageFilter"
+msgid "File Type"
+msgstr "Dosya Türü"
+
+#: packages/packagefilter.cpp
+msgctxt "PackageFilter"
+msgid "Installed"
+msgstr "Kuruldu"
+
+#: packages/packagefilter.cpp
+msgctxt "PackageFilter"
+msgid "Name"
+msgstr "İsim"
+
+#: packages/packagefilter.cpp
+msgctxt "PackageFilter"
+msgid "Origin"
+msgstr "Orijin"
+
+#: packages/packagefilter.cpp
+msgctxt "PackageFilter"
+msgid "Other"
+msgstr "Diğer"
+
+#: packages/packagefilter.cpp
+msgctxt "PackageFilter"
+msgid "Search"
+msgstr "Ara"
+
+#: packages/packagefilter.cpp
+msgctxt "PackageFilter"
+msgid "State"
+msgstr "Durum"
+
+#: packages/packagefilter.cpp
+msgctxt "PackageFilter"
+msgid "Tags"
+msgstr "Etiketler"
+
+#: packages/packagefilter.cpp
+msgctxt "PackageFilter"
+msgid "Type"
+msgstr "Tür"
+
+#: packages/packagemanager.cpp
+msgctxt "PackageManager"
+msgid "$APPNAME Installation"
+msgstr "$APPNAME Kurulumu"
+
+#: packages/packagemanager.cpp
+msgctxt "PackageManager"
+msgid "%(2)/%(3) %(1)"
+msgstr "%(2)/%(3) %(1)"
+
+#: packages/packagemanager.cpp
+msgctxt "PackageManager"
+msgid "Action Required"
+msgstr "İşlem Gerekli"
+
+#: packages/packagemanager.cpp
+msgctxt "PackageManager"
+msgid "Active"
+msgstr "Aktif"
+
+#: packages/packagemanager.cpp
+msgctxt "PackageManager"
+msgid "Available"
+msgstr "Müsait"
+
+#: packages/packagemanager.cpp
+msgctxt "PackageManager"
+msgid "Available Packages"
+msgstr "Mevcut Paketler"
+
+#: packages/packagemanager.cpp
+msgctxt "PackageManager"
+msgid "Contains %(1) items"
+msgstr "%(1) öğe içeriyor"
+
+#: packages/packagemanager.cpp
+msgctxt "PackageManager"
+msgid "Custom Installation"
+msgstr "Özel Kurulum"
+
+#: packages/packagemanager.cpp
+msgctxt "PackageManager"
+msgid "Full Installation"
+msgstr "Tam Kurulum"
+
+#: packages/packagemanager.cpp
+msgctxt "PackageManager"
+msgid "Installed Packages"
+msgstr "Kurulu Paketler"
+
+#: packages/packagemanager.cpp
+msgctxt "PackageManager"
+msgid "Minimal Installation"
+msgstr "Minimal Kurulum"
+
+#: packages/packagemanager.cpp
+msgctxt "PackageManager"
+msgid "Recommended Installation"
+msgstr "Tavsiye Edilen Kurulum"
+
+#: packages/packagemanager.cpp
+msgctxt "PackageManager"
+msgid "Restart Now"
+msgstr "Şimdi Yeniden Başlat"
+
+#: packages/packagemanager.cpp
+msgctxt "PackageManager"
+msgid "Updates Available"
+msgstr "Güncellemeler Mevcut"
+
+#: packages/packagesorter.cpp
+msgctxt "PackageSorter"
+msgid "File Type"
+msgstr "Dosya Türü"
+
+#: packages/packagesorter.cpp
+msgctxt "PackageSorter"
+msgid "Name"
+msgstr "İsim"
+
+#: packages/packagesorter.cpp
+msgctxt "PackageSorter"
+msgid "Type"
+msgstr "Tür"
+
+#: packages/unifiedpackagesource.cpp
+msgctxt "PackageSource"
+msgid "$APPNAME Content"
+msgstr "$APPNAME İçeriği"
+
+#: packages/unifiedpackagesource.cpp
+msgctxt "PackageSource"
+msgid "Development Content"
+msgstr "Geliştirme İçeriği"
+
+#: packages/unifiedpackagesource.cpp
+msgctxt "PackageSource"
+msgid "Other"
+msgstr "Diğer"
+
+#: packages/unifiedpackagesource.cpp
+msgctxt "PackageSource"
+msgid "Purchased Content"
+msgstr "Satın Alınan İçerik"
+
+#: stores/storepurchasehandler.cpp
+msgctxt "StorePurchaseHandler"
+msgid "Could not complete the purchase."
+msgstr "Satın alma işlemi tamamlanamadı."
+
+#: stores/storepurchasehandler.cpp
+msgctxt "StorePurchaseHandler"
+msgid "Could not restore purchases. Please try again in a few minutes."
+msgstr "Satın alma geçmişi geri yüklenemedi. Lütfen birkaç dakika sonra tekrar deneyin."
+
+#: web/transfermanagerui.cpp
+msgctxt "TransferManager"
+msgid "%(1) of %(2)"
+msgstr "%(2)'nin %(1)'i"
+
+#: web/transfermanagerui.cpp
+msgctxt "TransferManager"
+msgid "Cancel"
+msgstr "İptal"
+
+#: web/transfermanagerui.cpp
+msgctxt "TransferManager"
+msgid "Canceled!"
+msgstr "İptal edildi!"
+
+#: web/transfermanagerui.cpp
+msgctxt "TransferManager"
+msgid "Copying..."
+msgstr "Kopyalanıyor..."
+
+#: web/transfermanagerui.cpp
+msgctxt "TransferManager"
+msgid "Download"
+msgstr "İndir"
+
+#: web/transfermanagerui.cpp
+msgctxt "TransferManager"
+msgid "Downloading..."
+msgstr "İndiriliyor..."
+
+#: web/transfermanagerui.cpp
+msgctxt "TransferManager"
+msgid "Failed!"
+msgstr "Başarısız!"
+
+#: web/transfermanagerui.cpp
+msgctxt "TransferManager"
+msgid "Files are being transferred in background."
+msgstr "Dosyalar arka planda aktarılıyor"
+
+#: web/transfermanagerui.cpp
+msgctxt "TransferManager"
+msgid "New File"
+msgstr "Yeni Dosya"
+
+#: web/transfermanagerui.cpp
+msgctxt "TransferManager"
+msgid "Pause"
+msgstr "Duraklat"
+
+#: web/transfermanagerui.cpp
+msgctxt "TransferManager"
+msgid "Paused"
+msgstr "Duraklatıldı"
+
+#: web/transfermanagerui.cpp
+msgctxt "TransferManager"
+msgid "Queued"
+msgstr "Sırada"
+
+#: web/transfermanagerui.cpp
+msgctxt "TransferManager"
+msgid "Remove From History"
+msgstr "Geçmişten Kaldır"
+
+#: web/transfermanagerui.cpp
+msgctxt "TransferManager"
+msgid "Restart"
+msgstr "Tekrar Başlat"
+
+#: web/transfermanagerui.cpp
+msgctxt "TransferManager"
+msgid "Resume"
+msgstr "Devam Et"
+
+#: web/transfermanagerui.cpp
+msgctxt "TransferManager"
+msgid "Uploading..."
+msgstr "Yükleniyor..."
+
+#: packages/unifiedpackageinstaller.cpp
+msgctxt "UnifiedPackageInstaller"
+msgid "Installation failed for %(1)."
+msgstr "%(1) için kurulum başarısız oldu."
+
+#: packages/unifiedpackageinstaller.cpp
+msgctxt "UnifiedPackageInstaller"
+msgid "The installed content will be available next time you start $APPNAME."
+msgstr "Kurulan içerik, $APPNAME bir sonraki başlatılışında kullanılabilir olacak."
+
+#: extensions/appupdater.cpp
+msgctxt "Updater"
+msgid "Check for Updates"
+msgstr "Güncellemeleri Kontrol Et"
+
+#: extensions/appupdater.cpp
+msgctxt "Updater"
+msgid "Check for Updates failed!"
+msgstr "Güncelleme kontrolü başarısız oldu!"
+
+#: extensions/appupdater.cpp
+msgctxt "Updater"
+msgid "Checking version of %(1)"
+msgstr "%(1) sürümü kontrol ediliyor."
+
+#: extensions/appupdater.cpp
+msgctxt "Updater"
+msgid "Current version: %(1)"
+msgstr "Mevcut sürüm: %(1)"
+
+#: extensions/appupdater.cpp
+msgctxt "Updater"
+msgid "Installed version: %(1)"
+msgstr "Kurulu Sürüm: %(1)"
+
+#: extensions/appupdater.cpp
+msgctxt "Updater"
+msgid "The version could not be identified!"
+msgstr "Sürüm belirlenemedi!"
+
+#: extensions/appupdater.cpp
+msgctxt "Updater"
+msgid "There is a new version available."
+msgstr "Yeni bir sürüm mevcut."
+
+#: extensions/appupdater.cpp
+msgctxt "Updater"
+msgid "Update Now"
+msgstr "Şimdi Güncelle"
+
+#: extensions/appupdater.cpp
+msgctxt "Updater"
+msgid "View Release Notes"
+msgstr "Sürüm notlarına göz at"
+
+#: extensions/appupdater.cpp
+msgctxt "Updater"
+msgid "Your version is up-to-date."
+msgstr "Sürümünüz güncel"
+
+#: webfs/webfilenodes.cpp
+msgctxt "WebFS"
+msgid "Cloud"
+msgstr "Bulut"
+
+#: webfs/downloaddraghandler.cpp
+msgctxt "WebFS"
+msgid "Download"
+msgstr "İndir"
+
+#: webfs/webfsbrowserextension.cpp
+msgctxt "WebFS"
+msgid "Upload To"
+msgstr "Şuraya Yükle"
+
+#~ msgctxt "Command"
+#~ msgid "Extensions"
+#~ msgstr "Genişletmeler"
+
+#~ msgctxt "Command"
+#~ msgid "Installation"
+#~ msgstr "Kurulum"
+
+#~ msgctxt "ExtensionManager"
+#~ msgid "%(1) Extensions installed."
+#~ msgstr "%(1) Enişletme Kurulu."
+
+#~ msgctxt "ExtensionManager"
+#~ msgid "(Developer Mode)"
+#~ msgstr "(Geliştirici Modu)"
+
+#~ msgctxt "ExtensionManager"
+#~ msgid "(disabled)"
+#~ msgstr "(devre dışı)"
+
+#~ msgctxt "ExtensionManager"
+#~ msgid "Do you want to uninstall these Extensions?"
+#~ msgstr "Bu genişletmeleri kaldırmak istiyormusunuz ?"
+
+#~ msgctxt "ExtensionManager"
+#~ msgid "Do you want to uninstall this Extension?"
+#~ msgstr "Bu genişletmeyi kaldırmak istiyormusunuz ?"
+
+#~ msgctxt "ExtensionManager"
+#~ msgid "Installation canceled!"
+#~ msgstr "Kurulum iptal edildi!"
+
+#~ msgctxt "ExtensionManager"
+#~ msgid "No Extensions installed."
+#~ msgstr "Kurulu Genişletme Yok"
+
+#~ msgctxt "ExtensionManager"
+#~ msgid "Waiting for uninstall"
+#~ msgstr "Kaldırma için bekleniyor"
+
+#~ msgctxt "ExtensionManager"
+#~ msgid "Waiting for update"
+#~ msgstr "Güncelleme için bekleniyor"
+
+#~ msgctxt "Installer"
+#~ msgid "%(1) of %(2) packages already exist on your system."
+#~ msgstr "%(2) paketin %(1) sisteminizde zaten var."
+
+#~ msgctxt "Installer"
+#~ msgid "Claim Product Key"
+#~ msgstr "Ürün anahtarı talep et"
+
+#~ msgctxt "Installer"
+#~ msgid "Copy"
+#~ msgstr "Kopyala"
+
+#~ msgctxt "Installer"
+#~ msgid "Custom Installation"
+#~ msgstr "Özel Kurulum"
+
+#~ msgctxt "Installer"
+#~ msgid "Do you want to install the missing packages only?"
+#~ msgstr "Sadece eksik paketlerimi kurmak istiyorsunuz ?"
+
+#~ msgctxt "Installer"
+#~ msgid "Download from $APPCOMPANY Account"
+#~ msgstr "$APPCOMPANY Hesabından indir"
+
+#~ msgctxt "Installer"
+#~ msgid "Full Installation"
+#~ msgstr "Komple Kurulum"
+
+#~ msgctxt "Installer"
+#~ msgid "Install All"
+#~ msgstr "Tümünü Kur"
+
+#~ msgctxt "Installer"
+#~ msgid "Install Missing"
+#~ msgstr "Eksikleri Kur"
+
+#~ msgctxt "Installer"
+#~ msgid "Installed"
+#~ msgstr "Kuruldu"
+
+#~ msgctxt "Installer"
+#~ msgid "License"
+#~ msgstr "Lisans"
+
+#~ msgctxt "Installer"
+#~ msgid "Minimal Installation"
+#~ msgstr "Minimal Kurulum"
+
+#~ msgctxt "Installer"
+#~ msgid "My Purchased Items"
+#~ msgstr "Satın aldıklarım"
+
+#~ msgctxt "Installer"
+#~ msgid "Package"
+#~ msgstr "Paket"
+
+#~ msgctxt "Installer"
+#~ msgid "Recommended Installation"
+#~ msgstr "Tavsiye edilen Kurulum"
+
+#~ msgctxt "Installer"
+#~ msgid "Size"
+#~ msgstr "Boyut"
+
+#~ msgctxt "Installer"
+#~ msgid "Status"
+#~ msgstr "Durum"
+
+#~ msgctxt "Installer"
+#~ msgid "The installed content will be available next time you start $APPNAME."
+#~ msgstr "Kurulan içerik $APPNAME tekrar başlatıldığında kullanıma hazır olacaktır."
+
+#~ msgctxt "PackageFilter"
+#~ msgid "Installable"
+#~ msgstr "Kurulabilir"
+
+#~ msgctxt "PackageSource"
+#~ msgid "Factory Content"
+#~ msgstr "Birlikte Gelen İçerik"
+
+#~ msgctxt "PackageSource"
+#~ msgid "Unknown"
+#~ msgstr "Bilinmiyor"
+
+#~ msgctxt "PackageSource"
+#~ msgid "User Content"
+#~ msgstr "Kullanıcı İçeriği"

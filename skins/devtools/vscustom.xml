@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Skin>
+	<Resources>
+	
+		<ColorScheme name="Main">
+			<ColorScheme.Color name="VSWindowsFormOutlineColor" color="hsl(6,83,52)" huefixed="true" invertedvalue="30"/>
+			<ColorScheme.Color name="VSWindowsFormInnerColor" color="hsl(3,77,67)" huefixed="true" invertedvalue="70"/>
+			<ColorScheme.Color name="VSWindowsFormFillColor" color="hsl(0,30,26)" huefixed="true" invertedvalue="45"/>
+			
+			
+			<ColorScheme.Color name="VSViewFormOutlineColor" color="hsl(56,83,52)" huefixed="true" invertedvalue="30"/>
+			<ColorScheme.Color name="VSViewFormInnerColor" color="hsl(53,100,70)" huefixed="true" invertedvalue="70"/>
+			<ColorScheme.Color name="VSViewFormFillColor" color="hsl(50,30,26)" huefixed="true" invertedvalue="45"/>
+			
+			<ColorScheme.Color name="VSLayoutViewOutlineColor" color="hsl(232,100,50)" huefixed="true" invertedvalue="40"/>
+			<ColorScheme.Color name="VSLayoutViewFillColor" color="hsl(232,70,70)" huefixed="true" invertedvalue="80"/>
+			
+			<ColorScheme.Color name="VSViewBoxOutlineColor" color="hsl(295,62,40)" huefixed="true" invertedvalue="40"/>
+			<ColorScheme.Color name="VSViewBoxFillColor" color="hsl(295,89,71)" huefixed="true" invertedvalue="80"/>
+		</ColorScheme>
+		
+		<ShapeImage name="2Columns.Colored" url="icons/vs2017/2Columns_16x.svg">
+			<ShapeColorMapping name="#f6f6f6"	color="@Main.VSLayoutViewOutlineColor"/>
+			<ShapeColorMapping name="#F0EFF1"	color="@Main.VSLayoutViewFillColor"/>
+		</ShapeImage>
+		<ShapeImage name="2Rows.Colored" url="icons/vs2017/2Rows_16x.svg">
+			<ShapeColorMapping name="#f6f6f6"	color="@Main.VSLayoutViewOutlineColor"/>
+			<ShapeColorMapping name="#F0EFF1"	color="@Main.VSLayoutViewFillColor"/>
+		</ShapeImage>
+		<ShapeImage name="Box.Colored" url="icons/vs2017/Box_16x.svg">
+			<ShapeColorMapping name="#F6F6F6"	color="@Main.VSViewBoxOutlineColor"/>
+			<ShapeColorMapping name="#F0EFF1"	color="@Main.VSViewBoxFillColor"/>
+		</ShapeImage>
+		<ShapeImage name="Table.Colored" url="icons/vs2017/Table_16x.svg">
+			<ShapeColorMapping name="#f6f6f6"	color="@Main.VSLayoutViewOutlineColor"/>
+			<ShapeColorMapping name="#F0EFF1"	color="@Main.VSLayoutViewFillColor"/>
+		</ShapeImage>
+		<ShapeImage name="WindowsForm.Colored" url="icons/vs2017/WindowsForm_16x.svg">
+			<ShapeColorMapping name="#f6f6f6"	color="@Main.VSWindowsFormOutlineColor"/>
+			<ShapeColorMapping name="#f0eff1"	color="@Main.VSWindowsFormInnerColor"/>
+			<ShapeColorMapping name="#424242"	color="@Main.VSWindowsFormFillColor"/>
+			<ShapeColorMapping name="#c27d1a"	color="@Main.VSWindowsFormOutlineColor"/>
+		</ShapeImage>
+		<ShapeImage name="WindowsForm.Colored2" url="icons/vs2017/WindowsForm_16x.svg">
+			<ShapeColorMapping name="#f6f6f6"	color="@Main.VSViewFormOutlineColor"/>
+			<ShapeColorMapping name="#f0eff1"	color="@Main.VSViewFormInnerColor"/>
+			<ShapeColorMapping name="#424242"	color="@Main.VSViewFormFillColor"/>
+		</ShapeImage>
+		
+	</Resources>
+</Skin>
+

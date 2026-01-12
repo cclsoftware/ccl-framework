@@ -1,0 +1,358 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Skin>
+	<Resources>
+		<IconSet name="SpyIcon" url="images/spy.iconset" frames="all"/>
+
+		<!-- Classic Spy Icons -->
+<!--
+		<Image name="icon:UnknownView"			image="SpyIcons/UnknownView"/>
+		<Image name="icon:View"					image="SpyIcons/View"/>
+		<Image name="icon:ImageView"			image="SpyIcons/ImageView"/>
+		<Image name="icon:PictureViewer"		image="SpyIcons/ImageView"/>
+		<Image name="icon:Form"					image="SpyIcons/Form"/>
+		<Image name="icon:VariantView"			image="SpyIcons/VariantView"/>
+		<Image name="icon:sizevariant"			image="SpyIcons/SizeVariant"/>
+		<Image name="icon:LayoutView"			image="SpyIcons/LayoutView"/>
+		<Image name="icon:Horizontal"			image="SpyIcons/Horizontal"/>
+		<Image name="icon:Vertical"				image="SpyIcons/Vertical"/>
+		<Image name="icon:ScrollView"			image="SpyIcons/ScrollView"/>
+		<Image name="icon:Control"				image="SpyIcons/Control"/>
+		<Image name="icon:PopupBox"				image="SpyIcons/Control"/>
+		<Image name="icon:Label"				image="SpyIcons/Label"/>
+		<Image name="icon:WindowBase"			image="SpyIcons/Window"/>
+		<Image name="icon:EmbeddedFrameView"	image="SpyIcons/Window"/>
+		<Image name="icon:DockPanelView"		image="SpyIcons/Window"/>
+		<Image name="icon:UserControlHost"		image="SpyIcons/UserControl"/>
+		<Image name="icon:ListView"				image="SpyIcons/ItemView"/>
+		<Image name="icon:TreeView"				image="SpyIcons/ItemView"/>
+		<Image name="icon:DropBox"				image="SpyIcons/ItemView"/>
+-->
+		<!-- Visual Studio Image Library -->
+
+		<Image name="icon:UnknownView"			image="VSImageLibrary/Box.Colored"/>
+		<Image name="icon:View"					image="VSImageLibrary/Box.Colored"/>
+		<Image name="icon:ImageView"			image="VSImageLibrary/Image"/>
+		<Image name="icon:PictureViewer"		image="VSImageLibrary/ImageButton"/>
+		<Image name="icon:Form"					image="VSImageLibrary/WindowsForm.Colored2"/>
+		<Image name="icon:VariantView"			image="VSImageLibrary/Box.Colored"/>
+		<Image name="icon:sizevariant"			image="VSImageLibrary/Resize"/>
+		<Image name="icon:LayoutView"			image="VSImageLibrary/Box.Colored"/>
+		<Image name="icon:Horizontal"			image="VSImageLibrary/2Columns.Colored"/>
+		<Image name="icon:Vertical"				image="VSImageLibrary/2Rows.Colored"/>
+		<Image name="icon:ScrollView"			image="VSImageLibrary/ScrollBox"/>
+		<Image name="icon:Control"				image="VSImageLibrary/Control"/>
+		<Image name="icon:PopupBox"				image="VSImageLibrary/Control"/>
+		<Image name="icon:Label"				image="VSImageLibrary/Label"/>
+		<Image name="icon:Heading"				image="VSImageLibrary/Label"/>
+		<Image name="icon:WindowBase"			image="VSImageLibrary/WindowsForm.Colored"/>
+		<Image name="icon:EmbeddedFrameView"	image="VSImageLibrary/WindowsForm.Colored"/>
+		<Image name="icon:DockPanelView"		image="VSImageLibrary/WindowsForm.Colored"/>
+		<Image name="icon:UserControlHost"		image="VSImageLibrary/UserControl"/>
+		<Image name="icon:ListView"				image="VSImageLibrary/ListView"/>
+		<Image name="icon:TreeView"				image="VSImageLibrary/TreeView"/>
+		<Image name="icon:DropBox"				image="VSImageLibrary/ListView"/>
+				
+		<Image name="icon:Button"				image="VSImageLibrary/Button"/>
+		<Image name="icon:Toggle"				image="VSImageLibrary/Toggle"/>
+		<Image name="icon:RadioButton"			image="VSImageLibrary/RadioButton"/>
+		<Image name="icon:ValueBar"				image="VSImageLibrary/GaugeLinear"/>
+		<Image name="icon:Slider"				image="VSImageLibrary/Slider"/>		
+		<Image name="icon:TextBox"				image="VSImageLibrary/TextBox"/>
+		<Image name="icon:EditBox"				image="VSImageLibrary/TextBox"/>
+		<Image name="icon:SelectBox"			image="VSImageLibrary/ComboBox"/>		
+		<Image name="icon:Table"				image="VSImageLibrary/Table.Colored"/>
+		<Image name="icon:LinkView"				image="VSImageLibrary/LinkButton"/>
+		<Image name="icon:Divider"				image="VSImageLibrary/Separator"/>
+		
+		<Image name="icon:Object"				image="VSImageLibrary/Object"/>
+		<Image name="icon:Delegate"				image="VSImageLibrary/DelegationArrow"/>
+		<Image name="icon:Module"				image="VSImageLibrary/Module"/>
+		<Image name="icon:Script"				image="VSImageLibrary/Script"/>
+		<Image name="icon:Type"					image="VSImageLibrary/Type"/>
+		<Image name="icon:Breakpoint"			image="VSImageLibrary/BreakpointEnable"/>
+	</Resources>
+
+	<Styles>
+		<Style name="TextCenter" inherit="Standard.TextBox">
+			<Align name="textalign" align="hcenter"/>
+		</Style>
+
+		<Style name="TextRight" inherit="Standard.TextBox">
+			<Align name="textalign" align="right"/>
+		</Style>
+
+		<Style name="SkinReloadTitle">
+			<Font name="textfont" themeid="StandardUI" size="18" style="bold"/>
+			<Color name="textcolor"   	color="white"/>
+		</Style>
+		
+		<Style name="SkinReloadConsole">
+			<Metric name="rowHeight" 	value="24"/>
+			<Font name="textfont" 		themeid="StandardUI" size="12"/>
+			<Color name="backcolor"   	color="black"/>
+			<Color name="textcolor"   	color="white"/>
+			<!--<Image name="warningIcon" 	image="/WarningIcon"/>
+			<Image name="errorIcon"   	image="/ErrorIcon"/>-->
+		</Style>
+
+		<Style name="SkinRefreshBack">
+			<Color name="backcolor" color="#222222"/>
+		</Style>
+
+		<Style name="Spy.TreeView" inherit="Standard.TreeView">
+			<Font name="textfont" themeid="StandardUI" size="11"/>
+			<Metric name="border"		value="0"/>
+			<Metric name="rowHeight"	value="18"/>
+		</Style>
+
+		<Style name="Spy.ListView" inherit="Spy.TreeView">
+		</Style>
+				
+		<Style name="DocumentationBrowserTrigger">
+			<Triggers>
+				<Trigger event="onAttached">
+					<Invoker target="controller" name="scanModels"/>
+				</Trigger>
+			</Triggers>
+		</Style>
+
+		<Style name="SpyTabsTrigger">
+			<Color name="backcolor"	color="@Main.WindowBackgroundColor"/>
+			<Triggers>
+				<Trigger event="showDocumentationBrowser">
+					<Setter property="children[].activeView" value="DocumentationBrowser"/>				
+				</Trigger>
+			</Triggers>
+		</Style>
+
+		<Style name="DocumentationText" inherit="Standard.TextBox" textalign="left top" textoptions="wordbreak">
+			<Font name="textfont" themeid="StandardUI" size="12"/>
+		</Style>
+
+	</Styles>
+
+	<Forms>
+        <!-- ******************************************************************************************** -->
+        <!-- CCL SPY MAIN FORM -->
+        <!-- ******************************************************************************************** -->
+
+		<Form name="SpyView" title="CCL Spy" option="colorize" windowstyle="panelstyle sizable restoresize restorepos" sizelimits="400,400,-1,-1" attach="all" style="SpyTabsTrigger">
+			<Horizontal attach="all">
+				<TabView width="500" height="500" attach="all">
+					<View name="ViewBrowser" attach="all"/>
+					<if property="hasObjectTableBrowser">
+						<View name="ObjectBrowser" attach="all"/>
+					</if>
+					<if property="hasThreadMonitor">
+						<View name="ThreadMonitor" attach="all"/>
+					</if>
+					<if property="hasDocumentationBrowser">
+						<View name="DocumentationBrowser" attach="all"/>
+					</if>
+					<View name="AboutScreen" attach="all"/>
+				</TabView>
+			</Horizontal>
+		</Form>
+		
+        <!-- ******************************************************************************************** -->
+        <!-- VIEW BROWSER -->
+        <!-- ******************************************************************************************** -->
+
+		<Form name="ViewBrowser" title="Views">
+			<Horizontal margin="0" attach="all fitsize">
+				<using controller="ViewTreeBrowser">
+					<TreeView name="ViewTree" width="250" height="300" options="selection exclusive nodrag norubber header" scrolloptions="border vertical autohideh" attach="all" style="Spy.TreeView"/>
+				</using>
+
+				<Divider height="300" attach="top bottom"/>
+
+				<Vertical margin="0" attach="all">
+				
+					<Vertical margin="0" attach="all">
+						<View width="250" height="30" attach="left right">
+							<TextBox name="mousePos" width="250" height="30" style="TextCenter" attach="left right"/>
+							<TextBox name="mousePosRelative" size="180,0,67,30" style="TextRight" options="transparent" attach="left right"/>
+						</View>
+						<TextBox name="mouseViewInfo" size="0,0,250,60" sizelimits="0,0,-1,60" style.class="TextStyle" attach="left right"/>
+					</Vertical>
+					
+					<Horizontal width="250" margin="0" attach="left right">
+						<Button name="showParent" title="Parent"/>
+						<Button name="hilite" title="Hilite"/>
+						<Space attach="left right"/>
+						<Button command.category="Spy" command.name="Reload Skin" title="Reload Skin"/>
+						<Button command.category="Spy" command.name="Reload Skin Quick" title="...Quick" tooltip="Reload Skin Quick"/>
+					</Horizontal>
+
+					<ListView name="Properties" width="250" height="185" options="header selection exclusive" scrolloptions="border vertical" attach="all fill" style="Spy.ListView"/>
+				</Vertical>
+			</Horizontal>
+		</Form>
+	
+        <!-- ******************************************************************************************** -->
+        <!-- OBJECT BROWSER -->
+        <!-- ******************************************************************************************** -->
+
+		<Form name="ObjectBrowser" title="Objects">
+			<Vertical margin="0" spacing="2" attach="all">
+				<Horizontal attach="all" margin="0">
+					<using controller="ObjectTableBrowser">
+						<TreeView title="Objects" name="ObjectTable" width="250" height="300" options="selection exclusive noroot autoexpand" scrolloptions="border autohideboth" attach="all" style="Spy.TreeView"/>
+					</using>
+
+					<Divider height="300" attach="top bottom"/>
+
+					<ListView name="Properties" width="250" height="300" options="header selection exclusive" scrolloptions="border vertical" attach="all fill" style="Spy.ListView"/>
+				</Horizontal>
+				<Label title="NOTE: This is a snapshot of application objects. It has to be refreshed manually!"/>
+			</Vertical>
+		</Form>
+		
+		<Form name="ExtractModelSettings" title="Extract Model" buttons="okay cancel">
+			<DialogGroup options="secondary">
+			<Vertical>
+				<Horizontal margin="0">
+					<Label title="Name"/>
+					<EditBox name="name" width="200" height="20" options="border"/>
+				</Horizontal>
+				<CheckBox name="publicOnly" title="Include only public parameters"/>
+				<CheckBox name="scriptableOnly" title="Include only scriptable classes"/>
+				<CheckBox name="deep" title="Include child objects"/>
+			</Vertical>
+			</DialogGroup>
+		</Form>
+
+        <!-- ******************************************************************************************** -->
+        <!-- THREAD MONITOR -->
+        <!-- ******************************************************************************************** -->
+
+		<Form name="ThreadMonitor" title="Threads">
+			<Vertical margin="0" spacing="4" options="unifysizes" attach="all">
+				<using controller="ThreadMonitor">
+					<DialogGroup options="secondary" attach="left right">
+						<Horizontal>
+							<Label title="Sort by:"/>
+							<RadioButton name="sortBy" value="0" title="Name"/>
+							<RadioButton name="sortBy" value="1" title="Priority"/>
+							<RadioButton name="sortBy" value="2" title="Activity"/>
+						</Horizontal>
+					</DialogGroup>
+										
+					<ListView name="Threads" width="300" height="300" options="header" scrolloptions="border vertical" attach="all fill" style="Spy.ListView"/>
+
+					<Horizontal margin="0">
+						<Label title="Idle:" attach="vcenter"/>
+						<TextBox name="idle" width="50" height="20" options="transparent" style="Standard.Label"/>
+					</Horizontal>
+				</using>
+			</Vertical>
+		</Form>
+		
+		<!-- ******************************************************************************************** -->
+        <!-- DOCUMENTATION BROWSER -->
+        <!-- ******************************************************************************************** -->
+		
+		<Form name="DocumentationBrowser" title="Documentation">
+			<using controller="DocumentationBrowser">
+				<TriggerView style="DocumentationBrowserTrigger"/> <!-- trigger loads the model files -->
+				
+<!--			<Vertical attach="all" margin="0" spacing="0" options="unifysizes">-->
+<!--				<Horizontal margin="0" attach="left right">-->
+<!--					<Space attach="left right fill"/>-->
+<!--					<Button name="scanCode" title="Scan" attach="right" tooltip="Scan sourcecode for documentation"/>-->
+<!--					<Button name="saveModel" title="Save" attach="right"/>-->
+<!--					<Space attach="right"/>-->
+<!--				</Horizontal>-->
+				<View name="DocumentationBrowser.ModelView" width="300" height="300" attach="all"/>
+<!--			</Vertical>-->
+			</using>
+		</Form>
+		
+		<Form name="DocumentationBrowser.ModelView" attach="all"> <!-- see modelview.xml -->
+			<Horizontal margin="0" options="unifysizes" attach="all">
+				<View name="ClassBrowser" attach="all"/>
+				<Divider height="500" options="horizontal" attach="top bottom"/>
+				<Variant property="isDocFileFocused" attach="all">
+					<View name="ElementInspector" attach="all"/>
+					<View name="DocumentationEditor" attach="all"/>
+				</Variant>
+			</Horizontal>			
+		</Form>
+		
+		<Form name="DocumentationEditor" attach="all">
+			<using controller="DocumentationEditor">
+				<Vertical margin="0" attach="all">
+					<TextBox name="title" width="275" height="20" options="transparent" style="Heading" attach="left right"/>
+					<TextBox name="summary" width="300" height="450" options="multiline" style="DocumentationText" attach="all"/>
+				</Vertical>
+			</using>
+		</Form>
+		
+        <!-- ******************************************************************************************** -->
+        <!-- ABOUT SCREEN -->
+        <!-- ******************************************************************************************** -->
+
+		<Form name="AboutScreen" title="About">
+			<Vertical margin="0" attach="hcenter vcenter">
+				<Space/>
+				<ImageView image="SpyIcon" size="0,0,256,256" options="fitimage" attach="hcenter"/>
+				<Space/>
+				<Vertical margin="0" spacing="2">
+					<Label title="$APPNAME"/>
+					<Label title="Development assistant for $CCLNAME&reg;"/>
+					<Label title="Copyright &copy; $COPYYEAR $CCLAUTHOR. All Rights Reserved"/>
+					<Space/>
+					<Anchor url="https://ccl.dev">
+						<Link title="For more information, please visit ccl.dev." attach="hcenter"/>
+					</Anchor>
+				</Vertical>
+			</Vertical>
+		</Form>
+
+		<!-- ******************************************************************************************** -->
+		<!-- SKIN RELOAD -->
+		<!-- ******************************************************************************************** -->
+
+		<Form name="SkinReload" title="Reloading Skin ..." windowstyle="center seethru" attach="left right vfit">
+			<Vertical attach="left right vfit">
+				<Label title="Reloading skin ..." attach="hcenter" style="SkinReloadTitle"/>
+				<ListView name="eventList" width="500" height="0" scrolloptions="canscrollv" style="SkinReloadConsole" attach="left right vfit" sizelimits="50,0,-1,400"/>
+			</Vertical>
+		</Form>
+
+		<Form name="SkinRefresh" style="SkinRefreshBack" options="colorize" title="Rebuilding Perspective ..." attach="all">
+			<Vertical attach="all">
+				<Space/>
+				<Label title="Rebuilding Perspective ..." attach="hcenter" style="SkinReloadTitle"/>
+				<Space attach="all"/>
+			</Vertical>
+		</Form>
+
+	</Forms>
+
+	<!-- ******************************************************************************************** -->
+	<!-- Perspective for Skin Refresh -->
+	<!-- ******************************************************************************************** -->
+
+	<WindowClasses>
+		<WindowClass name="SkinRefresh"
+            title="SkinRefresh"
+            form.name="SkinRefresh"
+            group="SkinRefresh"
+            visible="true"/>
+	</WindowClasses>
+
+	<Workspaces>
+		<Workspace name="cclspy:SkinRefresh">
+			
+			<Perspective name="cclspy:SkinRefresh">
+				<Frame options="vertical">
+					<Frame name="SkinRefresh" groups="SkinRefresh" default="SkinRefresh" options="required"/>
+				</Frame>
+			</Perspective>
+
+		</Workspace>
+	</Workspaces>
+
+</Skin>
+

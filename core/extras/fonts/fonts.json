@@ -1,0 +1,4 @@
+[
+	{"name": "Tuffy16", "file": "tuffy16.fnt", "default": true},
+	{"name": "Tuffy16Mono", "file": "tuffy16mono.fnt", "monochrome": true, "default": true}
+]

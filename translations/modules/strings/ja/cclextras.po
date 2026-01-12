@@ -1,0 +1,966 @@
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: extensions/backupmanager.cpp
+msgctxt "BackupManager"
+msgid "Backup"
+msgstr "バックアップ"
+
+#: extensions/backupmanager.cpp
+msgctxt "BackupManager"
+msgid "Backup is too large."
+msgstr "バックアップが大きすぎます。"
+
+#: extensions/backupmanager.cpp
+msgctxt "BackupManager"
+msgid "Backup restored successfully."
+msgstr "バックアップの復元が完了しました。"
+
+#: extensions/backupmanager.cpp
+msgctxt "BackupManager"
+msgid "Backup uploaded successfully."
+msgstr "バックアップのアップロードが完了しました。"
+
+#: extensions/backupmanager.cpp
+msgctxt "BackupManager"
+msgid "Backup will be restored next time you start $APPNAME."
+msgstr "バックアップは $APPNAME の次回起動時に復元されます。"
+
+#: extensions/backupmanager.cpp
+msgctxt "BackupManager"
+msgid "Computer"
+msgstr "コンピューター"
+
+#: extensions/backupmanager.cpp
+msgctxt "BackupManager"
+msgid "Date & Time"
+msgstr "日付と時刻"
+
+#: extensions/backupmanager.cpp
+msgctxt "BackupManager"
+msgid "Failed to create backup."
+msgstr "バックアップの作成に失敗しました。"
+
+#: extensions/backupmanager.cpp
+msgctxt "BackupManager"
+msgid "Failed to restore from backup."
+msgstr "バックアップからの復元に失敗しました。"
+
+#: extensions/backupmanager.cpp
+msgctxt "BackupManager"
+msgid "Failed to upload backup."
+msgstr "バックアップのアップロードに失敗しました。"
+
+#: extensions/backupmanager.cpp
+msgctxt "BackupManager"
+msgid "Never"
+msgstr "しない"
+
+#: extensions/backupmanager.cpp
+msgctxt "BackupManager"
+msgid "No backups found."
+msgstr "バックアップが見つかりませんでした。"
+
+#: extensions/backupmanager.cpp
+msgctxt "BackupManager"
+msgid "Program Settings"
+msgstr "プログラム設定"
+
+#: extensions/backupmanager.cpp
+msgctxt "BackupManager"
+msgid "Restore"
+msgstr "復元"
+
+#: extensions/backupmanager.cpp
+msgctxt "BackupManager"
+msgid "Size"
+msgstr "サイズ"
+
+#: extensions/backupmanager.cpp
+msgctxt "BackupManager"
+msgid "Unknown"
+msgstr "不明"
+
+#: extensions/backupmanager.cpp
+msgctxt "BackupManager"
+msgid "Version"
+msgstr "バージョン"
+
+#: extensions/backupmanager.cpp
+msgctxt "Command"
+msgid "Application"
+msgstr "アプリケーション"
+
+#: extensions/backupmanager.cpp
+msgctxt "Command"
+msgid "Backup and Restore"
+msgstr "バックアップと復元"
+
+#: extensions/appupdater.cpp
+msgctxt "Command"
+msgid "Check for Updates"
+msgstr "アップデートを確認"
+
+#: analytics/apptrackinghandler.cpp extensions/appupdater.cpp
+msgctxt "Command"
+msgid "Help"
+msgstr "ヘルプ"
+
+#: analytics/apptrackinghandler.cpp
+msgctxt "Command"
+msgid "Usage Data Settings"
+msgstr "使用状況データ設定"
+
+#: extensions/appupdater.cpp
+msgctxt "Command"
+msgid "View Release Notes"
+msgstr "リリースノートを表示"
+
+#: packages/contentpackagemanager.cpp
+msgctxt "ContentPackageManager"
+msgid "%(1) is now available!"
+msgstr "%(1) が利用可能になりました。"
+
+#: packages/contentpackagemanager.cpp
+msgctxt "ContentPackageManager"
+msgid "Do you want to continue installation anyway?"
+msgstr "インストールを続けますか？"
+
+#: packages/contentpackagemanager.cpp
+msgctxt "ContentPackageManager"
+msgid "Download from $APPCOMPANY Account"
+msgstr "$APPCOMPANY アカウントからダウンロード"
+
+#: packages/contentpackagemanager.cpp
+msgctxt "ContentPackageManager"
+msgid "Install"
+msgstr "インストール"
+
+#: packages/contentpackagemanager.cpp
+msgctxt "ContentPackageManager"
+msgid "New content is available!"
+msgstr "新しいコンテンツを利用可能です。"
+
+#: packages/contentpackagemanager.cpp
+msgctxt "ContentPackageManager"
+msgid "Not enough free disk space. %(1) are required, but only %(2) are available on the selected volume."
+msgstr "十分な空きディスク容量がありません。%(1) が必要ですが、選択したボリュームでは %(2) しか使用できません。"
+
+#: extensions/extensionmanager.cpp
+msgctxt "ExtensionManager"
+msgid "%(1) is not compatible with $APPNAME!"
+msgstr "%(1) は $APPNAME に互換していません。"
+
+#: extensions/extensionmanager.cpp
+msgctxt "ExtensionManager"
+msgid "Built-in Extensions can not be uninstalled or updated."
+msgstr "内蔵拡張をアンインストールまたはアップデートできません。"
+
+#: extensions/extensionmanager.cpp
+msgctxt "ExtensionManager"
+msgid "Do you want to install these updates now?"
+msgstr "これらのアップデートを今すぐインストールしますか？"
+
+#: extensions/extensionmanager.cpp
+msgctxt "ExtensionManager"
+msgid "Install Extension"
+msgstr "拡張をインストール"
+
+#: extensions/extensionmanager.cpp
+msgctxt "ExtensionManager"
+msgid "Migrating Extension %(1)..."
+msgstr "拡張 %(1) を移行しています..."
+
+#: extensions/extensionmanager.cpp
+msgctxt "ExtensionManager"
+msgid "Removing Extension %(1)..."
+msgstr "拡張 %(1) を除去しています..."
+
+#: extensions/extensionmanager.cpp
+msgctxt "ExtensionManager"
+msgid "Scanning Extensions..."
+msgstr "拡張をスキャンしています..."
+
+#: extensions/extensionmanager.cpp
+msgctxt "ExtensionManager"
+msgid "Scanning Plug-Ins..."
+msgstr "プラグインをスキャンしています…"
+
+#: extensions/extensionmanager.cpp
+msgctxt "ExtensionManager"
+msgid "Updating Extension %(1)..."
+msgstr "拡張 %(1) をアップデートしています..."
+
+#: extensions/extensionmanager.cpp
+msgctxt "ExtensionManager"
+msgid "You need a newer version of $APPNAME."
+msgstr "新しいバージョンの $APPNAME が必要です。"
+
+#: extensions/extensiondescription.cpp
+msgctxt "Extensions"
+msgid "%(1) is already installed!"
+msgstr "%(1) はすでにインストールされています。"
+
+#: extensions/extensiondescription.cpp
+msgctxt "Extensions"
+msgid "Developer Extension"
+msgstr "デベロッパーエクステンション"
+
+#: extensions/extensiondescription.cpp
+msgctxt "Extensions"
+msgid "Extension"
+msgstr "拡張"
+
+#: extensions/extensiondescription.cpp
+msgctxt "Extensions"
+msgid "Failed to uninstall %(1)!"
+msgstr "%(1) のアンインストールに失敗しました。"
+
+#: extensions/extensiondescription.cpp
+msgctxt "Extensions"
+msgid "Installation failed!"
+msgstr "インストールに失敗しました。"
+
+#: extensions/extensiondescription.cpp
+msgctxt "Extensions"
+msgid "Invalid Installation File!"
+msgstr "無効なインストールファイルです。"
+
+#: extensions/extensiondescription.cpp
+msgctxt "Extensions"
+msgid "No updates found for your Extensions."
+msgstr "ご使用の拡張に対するアップデートは見つかりませんでした。"
+
+#: extensions/extensiondescription.cpp
+msgctxt "Extensions"
+msgid "Program Extension"
+msgstr "エクステンションをプログラム"
+
+#: extensions/extensiondescription.cpp
+msgctxt "Extensions"
+msgid "Shared Extension"
+msgstr "共有済みのエクステンション"
+
+#: extensions/extensiondescription.cpp
+msgctxt "Extensions"
+msgid "Signature Verification"
+msgstr "署名照合"
+
+#: extensions/extensiondescription.cpp
+msgctxt "Extensions"
+msgid "Target directory is locked by %(1)."
+msgstr "ターゲットディレクトリは %(1) によりロックされています。"
+
+#: extensions/extensiondescription.cpp
+msgctxt "Extensions"
+msgid "The installation file is not compatible with this application."
+msgstr "インストールファイルはこのアプリケーションに互換していません。"
+
+#: extensions/extensiondescription.cpp
+msgctxt "Extensions"
+msgid "The installation file is not compatible with this platform."
+msgstr "インストールファイルはこのプラットフォームに互換していません。"
+
+#: extensions/extensiondescription.cpp
+msgctxt "Extensions"
+msgid "There are updates available for your Extensions."
+msgstr "ご使用の拡張に対するアップデートがあります。"
+
+#: extensions/extensiondescription.cpp
+msgctxt "Extensions"
+msgid "This file does not have a valid digital signature."
+msgstr "このファイルには有効なデジタル署名がありません。"
+
+#: extensions/extensiondescription.cpp
+msgctxt "Extensions"
+msgid "User Extension"
+msgstr "ユーザー拡張"
+
+#: web/webelements.cpp
+msgctxt "Feed"
+msgid "Refresh"
+msgstr "再読み込み"
+
+#: extensions/extensiondescription.cpp
+msgctxt "FileType"
+msgid "Installation File"
+msgstr "インストールファイル"
+
+#: gadgets/gadgetmanager.cpp
+msgctxt "GadgetManager"
+msgid "Gadgets"
+msgstr "ガジェット"
+
+#: gadgets/gadgetmanager.cpp
+msgctxt "GadgetManager"
+msgid "No Gadgets installed"
+msgstr "ガジェットがインストールされていません"
+
+#: packages/extensionmanagerpackages.cpp
+msgctxt "PackageActions"
+msgid "Abort Uninstall"
+msgstr "アンインストールを中止"
+
+#: packages/installdatapackages.cpp
+msgctxt "PackageActions"
+msgid "Claim %(1) Product Keys"
+msgstr "%(1) プロダクトキーを要求"
+
+#: packages/installdatapackages.cpp
+msgctxt "PackageActions"
+msgid "Claim Product Key"
+msgstr "プロダクトキーを取得"
+
+#: packages/unifiedpackageaction.cpp
+msgctxt "PackageActions"
+msgid "Disable"
+msgstr "無効化"
+
+#: packages/unifiedpackageaction.cpp
+msgctxt "PackageActions"
+msgid "Disable %(1) items"
+msgstr " %(1) アイテムを無効化"
+
+#: packages/unifiedpackageaction.cpp
+msgctxt "PackageActions"
+msgid "Disable All"
+msgstr "すべてを無効化"
+
+#: packages/unifiedpackageaction.cpp
+msgctxt "PackageActions"
+msgid "Disabled"
+msgstr "無効化"
+
+#: packages/unifiedpackageaction.cpp
+msgctxt "PackageActions"
+msgid "Enable"
+msgstr "有効化"
+
+#: packages/unifiedpackageaction.cpp
+msgctxt "PackageActions"
+msgid "Enable %(1) items"
+msgstr "%(1) アイテムを無効化"
+
+#: packages/unifiedpackageaction.cpp
+msgctxt "PackageActions"
+msgid "Enable All"
+msgstr "すべてを有効化"
+
+#: packages/unifiedpackageaction.cpp
+msgctxt "PackageActions"
+msgid "Enabled"
+msgstr "有効"
+
+#: packages/unifiedpackageaction.cpp
+msgctxt "PackageActions"
+msgid "Install"
+msgstr "インストール"
+
+#: packages/unifiedpackageaction.cpp
+msgctxt "PackageActions"
+msgid "Install %(1) items"
+msgstr "%(1) アイテムをインストール"
+
+#: packages/unifiedpackageaction.cpp
+msgctxt "PackageActions"
+msgid "Install %(1) items (%(2))"
+msgstr "%(1) アイテム (%(2)) をインストール"
+
+#: packages/unifiedpackageaction.cpp
+msgctxt "PackageActions"
+msgid "Install All"
+msgstr "すべてをｲﾝｽﾄｰﾙ"
+
+#: packages/unifiedpackageaction.cpp
+msgctxt "PackageActions"
+msgid "Installed"
+msgstr "インストール済"
+
+#: packages/unifiedpackageaction.cpp
+msgctxt "PackageActions"
+msgid "Not Installed"
+msgstr "未インストール"
+
+#: packages/unifiedpackageaction.cpp
+msgctxt "PackageActions"
+msgid "Restart"
+msgstr "再起動"
+
+#: packages/unifiedpackageaction.cpp
+msgctxt "PackageActions"
+msgid "Restart Required"
+msgstr "再起動が必要です"
+
+#: packages/unifiedpackageaction.cpp
+msgctxt "PackageActions"
+msgid "Uninstall"
+msgstr "アンインストール"
+
+#: packages/unifiedpackageaction.cpp
+msgctxt "PackageActions"
+msgid "Uninstall %(1) items"
+msgstr "%(1) アイテムをアンインストール"
+
+#: packages/unifiedpackageaction.cpp
+msgctxt "PackageActions"
+msgid "Uninstall All"
+msgstr "すべてｱﾝｲﾝｽﾄｰﾙ"
+
+#: packages/unifiedpackageaction.cpp
+msgctxt "PackageActions"
+msgid "Update"
+msgstr "更新"
+
+#: packages/unifiedpackageaction.cpp
+msgctxt "PackageActions"
+msgid "Update %(1) items"
+msgstr "%(1) アイテムを更新"
+
+#: packages/unifiedpackageaction.cpp
+msgctxt "PackageActions"
+msgid "Update All"
+msgstr "すべて更新"
+
+#: packages/packagefilter.cpp
+msgctxt "PackageFilter"
+msgid "Any"
+msgstr "いずれか"
+
+#: packages/packagefilter.cpp
+msgctxt "PackageFilter"
+msgid "Available"
+msgstr "使用可能"
+
+#: packages/packagefilter.cpp
+msgctxt "PackageFilter"
+msgid "File Type"
+msgstr "ファイルタイプ"
+
+#: packages/packagefilter.cpp
+msgctxt "PackageFilter"
+msgid "Installed"
+msgstr "インストール済"
+
+#: packages/packagefilter.cpp
+msgctxt "PackageFilter"
+msgid "Name"
+msgstr "名前"
+
+#: packages/packagefilter.cpp
+msgctxt "PackageFilter"
+msgid "Origin"
+msgstr "出処"
+
+#: packages/packagefilter.cpp
+msgctxt "PackageFilter"
+msgid "Other"
+msgstr "その他"
+
+#: packages/packagefilter.cpp
+msgctxt "PackageFilter"
+msgid "Search"
+msgstr "検索"
+
+#: packages/packagefilter.cpp
+msgctxt "PackageFilter"
+msgid "State"
+msgstr "状態"
+
+#: packages/packagefilter.cpp
+msgctxt "PackageFilter"
+msgid "Tags"
+msgstr "タグ"
+
+#: packages/packagefilter.cpp
+msgctxt "PackageFilter"
+msgid "Type"
+msgstr "タイプ"
+
+#: packages/packagemanager.cpp
+msgctxt "PackageManager"
+msgid "$APPNAME Installation"
+msgstr "$APPNAME インストール"
+
+#: packages/packagemanager.cpp
+msgctxt "PackageManager"
+msgid "%(2)/%(3) %(1)"
+msgstr "%(2)/%(3) %(1)"
+
+#: packages/packagemanager.cpp
+msgctxt "PackageManager"
+msgid "Action Required"
+msgstr "アクションが必要です"
+
+#: packages/packagemanager.cpp
+msgctxt "PackageManager"
+msgid "Active"
+msgstr "有効"
+
+#: packages/packagemanager.cpp
+msgctxt "PackageManager"
+msgid "Available"
+msgstr "使用可能"
+
+#: packages/packagemanager.cpp
+msgctxt "PackageManager"
+msgid "Available Packages"
+msgstr "利用可能なパッケージ"
+
+#: packages/packagemanager.cpp
+msgctxt "PackageManager"
+msgid "Contains %(1) items"
+msgstr "%(1) アイテムを含む"
+
+#: packages/packagemanager.cpp
+msgctxt "PackageManager"
+msgid "Custom Installation"
+msgstr "カスタムインストール"
+
+#: packages/packagemanager.cpp
+msgctxt "PackageManager"
+msgid "Full Installation"
+msgstr "フルインストール"
+
+#: packages/packagemanager.cpp
+msgctxt "PackageManager"
+msgid "Installed Packages"
+msgstr "インストール済みパッケージ"
+
+#: packages/packagemanager.cpp
+msgctxt "PackageManager"
+msgid "Minimal Installation"
+msgstr "最小インストール"
+
+#: packages/packagemanager.cpp
+msgctxt "PackageManager"
+msgid "Recommended Installation"
+msgstr "推奨インストール"
+
+#: packages/packagemanager.cpp
+msgctxt "PackageManager"
+msgid "Restart Now"
+msgstr "今すぐ再起動"
+
+#: packages/packagemanager.cpp
+msgctxt "PackageManager"
+msgid "Updates Available"
+msgstr "アップデートが利用可能です"
+
+#: packages/packagesorter.cpp
+msgctxt "PackageSorter"
+msgid "File Type"
+msgstr "ファイルタイプ"
+
+#: packages/packagesorter.cpp
+msgctxt "PackageSorter"
+msgid "Name"
+msgstr "名前"
+
+#: packages/packagesorter.cpp
+msgctxt "PackageSorter"
+msgid "Type"
+msgstr "タイプ"
+
+#: packages/unifiedpackagesource.cpp
+msgctxt "PackageSource"
+msgid "$APPNAME Content"
+msgstr "$APPNAME コンテンツ"
+
+#: packages/unifiedpackagesource.cpp
+msgctxt "PackageSource"
+msgid "Development Content"
+msgstr "開発コンテンツ"
+
+#: packages/unifiedpackagesource.cpp
+msgctxt "PackageSource"
+msgid "Other"
+msgstr "その他"
+
+#: packages/unifiedpackagesource.cpp
+msgctxt "PackageSource"
+msgid "Purchased Content"
+msgstr "購入済みコンテンツ"
+
+#: stores/storepurchasehandler.cpp
+msgctxt "StorePurchaseHandler"
+msgid "Could not complete the purchase."
+msgstr "購入を完了できませんでした。"
+
+#: stores/storepurchasehandler.cpp
+msgctxt "StorePurchaseHandler"
+msgid "Could not restore purchases. Please try again in a few minutes."
+msgstr "購入を復元できませんでした。数分後に再試行してください。"
+
+#: web/transfermanagerui.cpp
+msgctxt "TransferManager"
+msgid "%(1) of %(2)"
+msgstr "%(2) 中 %(1)"
+
+#: web/transfermanagerui.cpp
+msgctxt "TransferManager"
+msgid "Cancel"
+msgstr "キャンセル"
+
+#: web/transfermanagerui.cpp
+msgctxt "TransferManager"
+msgid "Canceled!"
+msgstr "キャンセルされました。"
+
+#: web/transfermanagerui.cpp
+msgctxt "TransferManager"
+msgid "Copying..."
+msgstr "をコピーしています..."
+
+#: web/transfermanagerui.cpp
+msgctxt "TransferManager"
+msgid "Download"
+msgstr "ダウンロード"
+
+#: web/transfermanagerui.cpp
+msgctxt "TransferManager"
+msgid "Downloading..."
+msgstr "ダウンロードしています..."
+
+#: web/transfermanagerui.cpp
+msgctxt "TransferManager"
+msgid "Failed!"
+msgstr "失敗しました。"
+
+#: web/transfermanagerui.cpp
+msgctxt "TransferManager"
+msgid "Files are being transferred in background."
+msgstr "ファイルはバックグラウンドで転送中です。"
+
+#: web/transfermanagerui.cpp
+msgctxt "TransferManager"
+msgid "New File"
+msgstr "新規ファイル"
+
+#: web/transfermanagerui.cpp
+msgctxt "TransferManager"
+msgid "Pause"
+msgstr "一時停止"
+
+#: web/transfermanagerui.cpp
+msgctxt "TransferManager"
+msgid "Paused"
+msgstr "一時停止中"
+
+#: web/transfermanagerui.cpp
+msgctxt "TransferManager"
+msgid "Queued"
+msgstr "キュー済み"
+
+#: web/transfermanagerui.cpp
+msgctxt "TransferManager"
+msgid "Remove From History"
+msgstr "履歴から削除"
+
+#: web/transfermanagerui.cpp
+msgctxt "TransferManager"
+msgid "Restart"
+msgstr "再起動"
+
+#: web/transfermanagerui.cpp
+msgctxt "TransferManager"
+msgid "Resume"
+msgstr "再開"
+
+#: web/transfermanagerui.cpp
+msgctxt "TransferManager"
+msgid "Uploading..."
+msgstr "アップロードしています..."
+
+#: packages/unifiedpackageinstaller.cpp
+msgctxt "UnifiedPackageInstaller"
+msgid "Installation failed for %(1)."
+msgstr "%(1) のインストールに失敗しました。"
+
+#: packages/unifiedpackageinstaller.cpp
+msgctxt "UnifiedPackageInstaller"
+msgid "The installed content will be available next time you start $APPNAME."
+msgstr "インストール済みコンテンツは $APPNAME の次回起動以降に使用できます。"
+
+#: extensions/appupdater.cpp
+msgctxt "Updater"
+msgid "Check for Updates"
+msgstr "アップデートを確認"
+
+#: extensions/appupdater.cpp
+msgctxt "Updater"
+msgid "Check for Updates failed!"
+msgstr "アップデートの確認に失敗しました。"
+
+#: extensions/appupdater.cpp
+msgctxt "Updater"
+msgid "Checking version of %(1)"
+msgstr "%(1) のバージョンを確認しています"
+
+#: extensions/appupdater.cpp
+msgctxt "Updater"
+msgid "Current version: %(1)"
+msgstr "現在のバージョン: %(1)"
+
+#: extensions/appupdater.cpp
+msgctxt "Updater"
+msgid "Installed version: %(1)"
+msgstr "インストールされているバージョン: %(1)"
+
+#: extensions/appupdater.cpp
+msgctxt "Updater"
+msgid "The version could not be identified!"
+msgstr "バージョンを識別できませんでした。"
+
+#: extensions/appupdater.cpp
+msgctxt "Updater"
+msgid "There is a new version available."
+msgstr "新しいバージョンが存在します。"
+
+#: extensions/appupdater.cpp
+msgctxt "Updater"
+msgid "Update Now"
+msgstr "今すぐアップデート"
+
+#: extensions/appupdater.cpp
+msgctxt "Updater"
+msgid "View Release Notes"
+msgstr "リリースノートを表示"
+
+#: extensions/appupdater.cpp
+msgctxt "Updater"
+msgid "Your version is up-to-date."
+msgstr "ご使用のバージョンは最新です。"
+
+#: webfs/webfilenodes.cpp
+msgctxt "WebFS"
+msgid "Cloud"
+msgstr "クラウド"
+
+#: webfs/downloaddraghandler.cpp
+msgctxt "WebFS"
+msgid "Download"
+msgstr "ダウンロード"
+
+#: webfs/webfsbrowserextension.cpp
+msgctxt "WebFS"
+msgid "Upload To"
+msgstr "アップロード先"
+
+#~ msgctxt "Command"
+#~ msgid "Extensions"
+#~ msgstr "拡張"
+
+#~ msgctxt "Command"
+#~ msgid "Installation"
+#~ msgstr "インストール"
+
+#~ msgctxt "ExtensionManager"
+#~ msgid "%(1) Extensions installed."
+#~ msgstr "%(1) つの拡張がインストールされています。"
+
+#~ msgctxt "ExtensionManager"
+#~ msgid "%(1) is already installed!"
+#~ msgstr "%(1) はすでにインストールされています。"
+
+#~ msgctxt "ExtensionManager"
+#~ msgid "(Developer Mode)"
+#~ msgstr "（デベロッパーモード）"
+
+#~ msgctxt "ExtensionManager"
+#~ msgid "(disabled)"
+#~ msgstr "（無効）"
+
+#~ msgctxt "ExtensionManager"
+#~ msgid "Do you want to uninstall these Extensions?"
+#~ msgstr "これらの拡張をアンインストールしますか？"
+
+#~ msgctxt "ExtensionManager"
+#~ msgid "Do you want to uninstall this Extension?"
+#~ msgstr "この拡張をアンインストールしますか？"
+
+#~ msgctxt "ExtensionManager"
+#~ msgid "Installation canceled!"
+#~ msgstr "インストールはキャンセルされました。"
+
+#~ msgctxt "ExtensionManager"
+#~ msgid "Installation failed!"
+#~ msgstr "インストールに失敗しました。"
+
+#~ msgctxt "ExtensionManager"
+#~ msgid "Invalid Installation File!"
+#~ msgstr "無効なインストールファイルです。"
+
+#~ msgctxt "ExtensionManager"
+#~ msgid "No Extensions installed."
+#~ msgstr "拡張がインストールされていません。"
+
+#~ msgctxt "ExtensionManager"
+#~ msgid "No updates found for your Extensions."
+#~ msgstr "ご使用の拡張に対するアップデートは見つかりませんでした。"
+
+#~ msgctxt "ExtensionManager"
+#~ msgid "Signature Verification"
+#~ msgstr "署名照合"
+
+#~ msgctxt "ExtensionManager"
+#~ msgid "There are updates available for your Extensions."
+#~ msgstr "ご使用の拡張に対するアップデートがあります。"
+
+#~ msgctxt "ExtensionManager"
+#~ msgid "This file does not have a valid digital signature."
+#~ msgstr "このファイルには有効なデジタル署名がありません。"
+
+#~ msgctxt "ExtensionManager"
+#~ msgid "Waiting for uninstall"
+#~ msgstr "アンインストール待機中です"
+
+#~ msgctxt "ExtensionManager"
+#~ msgid "Waiting for update"
+#~ msgstr "アップデート待機中です"
+
+#~ msgctxt "Installer"
+#~ msgid "$APPCOMPANY Account"
+#~ msgstr "$APPCOMPANY アカウント"
+
+#~ msgctxt "Installer"
+#~ msgid "%(1) of %(2) packages already exist on your system."
+#~ msgstr "%(1) パッケージ（ %(2) 中）がシステム内に存在しています。"
+
+#~ msgctxt "Installer"
+#~ msgid "Claim Product Key"
+#~ msgstr "プロダクトキーを取得"
+
+#~ msgctxt "Installer"
+#~ msgid "Copy"
+#~ msgstr "コピー"
+
+#~ msgctxt "Installer"
+#~ msgid "Custom Installation"
+#~ msgstr "カスタムインストール"
+
+#~ msgctxt "Installer"
+#~ msgid "Do you want to install the missing packages only?"
+#~ msgstr "不明なファイルのみをインストールしますか？"
+
+#~ msgctxt "Installer"
+#~ msgid "Download from $APPCOMPANY Account"
+#~ msgstr "$APPCOMPANY アカウントからダウンロード"
+
+#~ msgctxt "Installer"
+#~ msgid "Full Installation"
+#~ msgstr "フルインストール"
+
+#~ msgctxt "Installer"
+#~ msgid "Install All"
+#~ msgstr "すべてをインストール"
+
+#~ msgctxt "Installer"
+#~ msgid "Install Missing"
+#~ msgstr "不明なファイルをインストール"
+
+#~ msgctxt "Installer"
+#~ msgid "Installed"
+#~ msgstr "インストール済"
+
+#~ msgctxt "Installer"
+#~ msgid "License"
+#~ msgstr "ライセンス"
+
+#~ msgctxt "Installer"
+#~ msgid "Minimal Installation"
+#~ msgstr "最小インストール"
+
+#~ msgctxt "Installer"
+#~ msgid "My Purchased Items"
+#~ msgstr "購入済みアイテム"
+
+#~ msgctxt "Installer"
+#~ msgid "Package"
+#~ msgstr "パッケージ"
+
+#~ msgctxt "Installer"
+#~ msgid "Recommended Installation"
+#~ msgstr "推奨インストール"
+
+#~ msgctxt "Installer"
+#~ msgid "Size"
+#~ msgstr "サイズ"
+
+#~ msgctxt "Installer"
+#~ msgid "Status"
+#~ msgstr "ステータス"
+
+#~ msgctxt "Installer"
+#~ msgid "The installed content will be available next time you start $APPNAME."
+#~ msgstr "インストール済みコンテンツは $APPNAME の次回起動以降に使用できます。"
+
+#~ msgctxt "PackageFilter"
+#~ msgid "Installable"
+#~ msgstr "インストール可能"
+
+#~ msgctxt "PackageSource"
+#~ msgid "Factory Content"
+#~ msgstr "ファクトリーコンテンツ"
+
+#~ msgctxt "PackageSource"
+#~ msgid "Unknown"
+#~ msgstr "不明"
+
+#~ msgctxt "PackageSource"
+#~ msgid "User Content"
+#~ msgstr "ユーザーコンテンツ"
+
+#~ msgctxt "TagCategory"
+#~ msgid "Type"
+#~ msgstr "タイプ"
+
+#~ msgctxt "TagStore"
+#~ msgid "Add Tag"
+#~ msgstr "タグを追加"
+
+#~ msgctxt "TagStore"
+#~ msgid "Adding Tags..."
+#~ msgstr "タグを追加しています..."
+
+#~ msgctxt "TagStore"
+#~ msgid "All tags are valid."
+#~ msgstr "すべてのタグは有効です。"
+
+#~ msgctxt "TagStore"
+#~ msgid "Checking files in \"%(1)\""
+#~ msgstr "\"%(1)\" のファイルを確認しています"
+
+#~ msgctxt "TagStore"
+#~ msgid "Cleanup Tags of Missing Files"
+#~ msgstr "行方不明のファイルのタグのクリーンアップ"
+
+#~ msgctxt "TagStore"
+#~ msgid "Clear Tags"
+#~ msgstr "タグをクリア"
+
+#~ msgctxt "TagStore"
+#~ msgid "Do you want to remove these tag entries for non-existing files?"
+#~ msgstr "存在しないファイルに対するこれらのタグエントリを削除しますか？"
+
+#~ msgctxt "TagStore"
+#~ msgid "Remove Tag"
+#~ msgstr "タグを削除"
+
+#~ msgctxt "TagStore"
+#~ msgid "Updated tags in %(1)\n"
+#~ msgstr "%(1) で更新されたタグ\n"
+
+#~ msgctxt "TagStore"
+#~ msgid "other"
+#~ msgstr "その他"
+
+#~ msgctxt "TransferManager"
+#~ msgid "KB/sec"
+#~ msgstr "KB/秒"
+
+#~ msgctxt "TransferManager"
+#~ msgid "MB/sec"
+#~ msgstr "MB/秒"

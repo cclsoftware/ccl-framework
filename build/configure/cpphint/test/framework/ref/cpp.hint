@@ -1,0 +1,582 @@
+// !!! GENERATED WITH cpphint.py, DO NOT EDIT !!!
+
+//////////////////////////////////////////////////////////////////////////
+// core/public/corebasicmacros.h
+//////////////////////////////////////////////////////////////////////////
+
+#define LAZYCAT(a, b) a ## b
+#define LAZYCAT_HELP(a, b) a ## b
+#define STRINGIFY(s) #s
+#define STRINGIFY_HELPER(s) #s
+#define UNIQUE_IDENT(prefix) prefix ## __LINE__
+#define ARRAY_COUNT(a) int(sizeof(a)/sizeof(a[0]))
+#define DEFINE_INITIALIZER(Name) void __init##Name (); struct __##Name { __##Name() { __init##Name (); } }; __##Name the##Name##Initializer; void __init##Name ()
+#define DEFINE_TERMINATOR(Name) void __terminate##Name (); struct __##Name { ~__##Name() { __terminate##Name (); } }; __##Name the##Name##Terminator; void __terminate##Name ()
+#define IMPORT_BINARY_RESOURCE(SymbolName) extern unsigned int SymbolName##_Size; extern void* SymbolName##_Ptr;
+
+//////////////////////////////////////////////////////////////////////////
+// core/public/coreplatform.h
+//////////////////////////////////////////////////////////////////////////
+
+#define EndFor }}
+
+//////////////////////////////////////////////////////////////////////////
+// core/public/corepropertymacros.h
+//////////////////////////////////////////////////////////////////////////
+
+#define PROPERTY_BY_VALUE(type, member, Method) void set##Method (type __value) { member = __value; } type get##Method () const { return member; }
+#define PROPERTY_BY_REFERENCE(type, member, Method) void set##Method (const type& __value) { member = __value; } const type& get##Method () const { return member; }
+#define PROPERTY_OBJECT(Class, member, Method) protected: Class member; public: void set##Method (const Class& __value) { member = __value; } const Class& get##Method () const { return member; }
+#define PROPERTY_VARIABLE(type, member, Method) protected: type member; public: void set##Method (type __value) { member = __value; } type get##Method () const { return member; }
+#define PROPERTY_POINTER(type, member, Method) protected: type* member; public: void set##Method (type* __value) { member = __value; } type* get##Method () const { return member; }
+#define PROPERTY_READONLY_FLAG(var, value, method) bool method () const { return (var & (value)) != 0; }
+#define PROPERTY_FLAG(var, value, method) void method (bool __state) { if(__state) var |= (value); else var &= ~(value); } bool method () const { return (var & (value)) != 0; }
+#define PROPERTY_INDEX_FLAG32(var,method) bool method (int __index) const { return (var & (1<<__index)) != 0; } void method (int __index, bool __state) { if(__state) var |= (1<<__index); else var &= ~(1<<__index); }
+#define PROPERTY_INDEX_FLAG64(var,method) bool method (int __index) const { return (var & (1LL<<__index)) != 0; } void method (int __index, bool __state) { if(__state) var |= (1LL<<__index); else var &= ~(1LL<<__index); }
+#define PROPERTY_BOOL(member, Method) protected: bool member; public: bool is##Method () const { return member; } void set##Method (bool __state = true) { member = __state; }
+#define PROPERTY_CSTRING_BUFFER(size, member, Method) protected: Core::CStringBuffer<size> member; public: void set##Method (const char* _cstr) { member = _cstr; } const Core::CStringBuffer<size>& get##Method () const { return member; }
+
+//////////////////////////////////////////////////////////////////////////
+// core/public/coreenumdef.h
+//////////////////////////////////////////////////////////////////////////
+
+#define DECLARE_ENUMINFO(name) static const Core::EnumInfo name[];
+#define BEGIN_ENUMINFO(name) const Core::EnumInfo name[] = {
+#define END_ENUMINFO {0,0}};
+
+//////////////////////////////////////////////////////////////////////////
+// core/public/coreintrusivelist.h
+//////////////////////////////////////////////////////////////////////////
+
+#define IntrusiveListForEach(list, T, var) { Core::IntrusiveListIterator<T> __iter (list); while(!__iter.done ()) { T* var = __iter.next ();
+#define IntrusiveListForEachReverse(list, T, var) { Core::IntrusiveListIterator<T> __iter (list); __iter.last (); while(!__iter.done ()) { T* var = __iter.previous ();
+
+//////////////////////////////////////////////////////////////////////////
+// core/public/corelinkedlist.h
+//////////////////////////////////////////////////////////////////////////
+
+#define ListForEach(list, T, var) { Core::ListIterator<T> __iter (list); while(!__iter.done ()) { T var = __iter.next ();
+#define ListForEachReverse(list, T, var) { Core::ListIterator<T> __iter (list); __iter.last (); while(!__iter.done ()) { T var = __iter.previous ();
+
+//////////////////////////////////////////////////////////////////////////
+// core/public/coremempool.h
+//////////////////////////////////////////////////////////////////////////
+
+#define MEMORYPOOL_DEADLAND_FILL 0
+#define MEMORYPOOL_LAZY_INITIALIZATION 1
+#define DEFINE_OBJECTPOOL(Class, Pool) namespace Core { template<> Pool Core::PooledObject<Class, Pool>::__pool (sizeof(Class), 0, #Class); }
+#define DEFINE_OBJECTPOOL_SIZE(Class, Pool, count) namespace Core { template<> Pool Core::PooledObject<Class, Pool>::__pool (sizeof(Class), count, #Class); }
+
+//////////////////////////////////////////////////////////////////////////
+// core/public/coreuid.h
+//////////////////////////////////////////////////////////////////////////
+
+#define INLINE_UID(data1, data2, data3, a, b, c, d, e, f, g, h) {(data1), (data2), (data3), {(a), (b), (c), (d), (e), (f), (g), (h)}}
+
+//////////////////////////////////////////////////////////////////////////
+// core/portable/coresingleton.h
+//////////////////////////////////////////////////////////////////////////
+
+#define DEFINE_STATIC_SINGLETON(T) namespace Core { namespace Portable { template<> T& StaticSingleton<T>::instance () { static T theInstance; return theInstance; } } }
+#define DEFINE_SINGLETON(T) namespace Core { namespace Portable { template<> T* Singleton<T>::theInstance = 0; }}
+
+//////////////////////////////////////////////////////////////////////////
+// core/portable/coretypeinfo.h
+//////////////////////////////////////////////////////////////////////////
+
+#define DECLARE_CORE_CLASS(id, Class, Base) static const TypeID kTypeID = id; private: static TypeID __typeid () { return kTypeID; } friend TypeID Core::Portable::__TID<Class>::tid (); public: void* castTo (TypeID typeId) { return typeId == kTypeID ? static_cast<Class*> (this) : Base::castTo (typeId); }
+#define BEGIN_CORE_CLASS_ void* castTo (TypeID typeId) {
+#define BEGIN_CORE_CLASS(id, Class) static const TypeID kTypeID = id; private: static TypeID __typeid () { return kTypeID; } friend TypeID Core::Portable::__TID<Class>::tid (); public: void* castTo (TypeID typeId) { if(typeId == kTypeID) return static_cast<Class*> (this);
+#define ADD_CORE_CLASS(Class) if(void* obj = Class::castTo (typeId)) return obj;
+#define ADD_CORE_CLASS_(Class) if(typeId == Class::kTypeID) return static_cast<Class*> (this);
+#define END_CORE_CLASS(Base) return Base::castTo (typeId); }
+#define DECLARE_CORE_CLASS_(id, Class) static const TypeID kTypeID = id; private: static TypeID __typeid () { return kTypeID; } friend TypeID Core::Portable::__TID<Class>::tid (); public:
+#define DELEGATE_CORE_CLASS(Base) void* castTo (TypeID typeId) { return Base::castTo (typeId); }
+
+//////////////////////////////////////////////////////////////////////////
+// portable/gui/coreview.h
+//////////////////////////////////////////////////////////////////////////
+
+#define DECLARE_CORE_VIEWCLASS(className) virtual CStringPtr getClassName () const { return className; }
+
+//////////////////////////////////////////////////////////////////////////
+// core/public/coremalloc.h
+//////////////////////////////////////////////////////////////////////////
+
+#define core_malloc(s) core_malloc_debug (s, __FILE__, __LINE__)
+#define core_realloc(p,s) core_realloc_debug (p, s, __FILE__, __LINE__)
+#define NEW ::new (__FILE__, __LINE__)
+#define NEW ::new
+#define NEW ::new
+#define core_malloc(s) malloc (s)
+#define core_realloc(m, s) realloc (m, s)
+#define core_free(m) free (m)
+
+//////////////////////////////////////////////////////////////////////////
+// core/public/corevector.h
+//////////////////////////////////////////////////////////////////////////
+
+#define VectorForEach(items, T, var) { for(int __iter = 0, __count = (items).count (); __iter < __count; __iter++) { T var = (T)(items).at (__iter);
+#define VectorForEachFast(items, T, var) { T* __p = (items).getItems (); for(int __iter = (items).count (); __iter != 0; __iter--) { T var = (T)*__p++;
+#define VectorForEachReverse(items, T, var) { for(int __iter = (items).count ()-1; __iter >= 0; __iter--) { T var = (T)(items).at (__iter);
+#define DEFINE_VECTOR_COMPARE(FunctionName, Type, lhs, rhs) int FunctionName (const void* __lhs, const void* __rhs) { Type* lhs = *(Type**)__lhs; Type* rhs = *(Type**)__rhs;
+#define DEFINE_VECTOR_COMPARE_OBJECT(FunctionName, Type, lhs, rhs) int FunctionName (const void* __lhs, const void* __rhs) { Type* lhs = (Type*)__lhs; Type* rhs = (Type*)__rhs;
+
+//////////////////////////////////////////////////////////////////////////
+// ccl/app/component.h
+//////////////////////////////////////////////////////////////////////////
+
+#define DEFINE_COMPONENT_SINGLETON(Class) namespace CCL { template<> Class* ComponentSingleton<Class>::theInstance = 0; }
+
+//////////////////////////////////////////////////////////////////////////
+// app/actions/sideeffect.h
+//////////////////////////////////////////////////////////////////////////
+
+#define DECLARE_SIDEEFFECT(SideEffectClass) class SideEffectClass: public CCL::SideEffect { CCL::Action* createAction (CCL::Action* originalAction) override; };
+#define REGISTER_SIDEEFFECT(SideEffectClass) static RegisterSideEffect rSE ## __LINE__ (::new SideEffectClass, #SideEffectClass);
+#define REGISTER_SIDEEFFECT_BEFORE(SideEffectClass, otherEffectName) static RegisterSideEffect rSE ## __LINE__ (::new SideEffectClass, #SideEffectClass, otherEffectName);
+#define IMPLEMENT_SIDEEFFECT(SideEffectClass) class SideEffectClass: public CCL::SideEffect { CCL::Action* createAction (CCL::Action* originalAction) override; }; static RegisterSideEffect rSE ## __LINE__ (::new SideEffectClass, #SideEffectClass);
+
+//////////////////////////////////////////////////////////////////////////
+// app/fileinfo/fileinfocomponent.h
+//////////////////////////////////////////////////////////////////////////
+
+#define REGISTER_FILEINFO(InfoComponent) bool kernelInit##InfoComponent##Register (); CCL::KernelInitializer __##InfoComponent##Register##KernelInit (kernelInit##InfoComponent##Register, #InfoComponent##Register); bool kernelInit##InfoComponent##Register () { CCL::FileInfoRegistry::instance ().registerFileInfoFactory (::new CCL::TFileInfoFactory<InfoComponent>); return true;}
+
+//////////////////////////////////////////////////////////////////////////
+// ccl/base/initterm.h
+//////////////////////////////////////////////////////////////////////////
+
+#define CCL_KERNEL_INIT(Name) bool kernelInit##Name (); CCL::KernelInitializer __##Name##KernelInit (kernelInit##Name, #Name); bool kernelInit##Name ()
+#define CCL_KERNEL_INIT_LEVEL(Name, level) bool kernelInit##Name (); CCL::KernelInitializer __##Name##KernelInit (kernelInit##Name, #Name, level); bool kernelInit##Name ()
+#define CCL_KERNEL_TERM(Name) void kernelTerm##Name (); CCL::KernelTerminator __##Name##KernelTerm (kernelTerm##Name); void kernelTerm##Name ()
+#define CCL_KERNEL_TERM_LEVEL(Name, level) void kernelTerm##Name (); CCL::KernelTerminator __##Name##KernelTerm (kernelTerm##Name, level); void kernelTerm##Name ()
+
+//////////////////////////////////////////////////////////////////////////
+// ccl/base/objectmacros.h
+//////////////////////////////////////////////////////////////////////////
+
+#define DECLARE_BASE_CLASS(Class) static CCL::Object* __create () { return ::new Class; } static const CCL::MetaClass __class; private: static const CCL::MetaClass& __typeid () { return __class; } friend const CCL::MetaClass& CCL::ccl_typeid<Class> (); public: virtual const CCL::MetaClass& myClass () const { return __class; } virtual bool isClass (const CCL::MetaClass& mc) const { return __class.isClass (mc); } virtual bool canCast (const CCL::MetaClass& mc) const { return __class.canCast (mc); } virtual CCL::Object* clone () const { return ::new Class (*this); }
+#define DECLARE_CLASS(Class, Parent) typedef Parent SuperClass; static CCL::Object* __create () { return ::new Class; } static const CCL::MetaClass __class; private: static const CCL::MetaClass& __typeid () { return __class; } friend const CCL::MetaClass& CCL::ccl_typeid<Class> (); public: virtual const CCL::MetaClass& myClass () const override { return __class; } virtual bool isClass (const CCL::MetaClass& mc) const override { return __class.isClass (mc); } virtual bool canCast (const CCL::MetaClass& mc) const override { return __class.canCast (mc); } virtual CCL::Object* clone () const override { return ::new Class (*this); }
+#define DECLARE_CLASS_ABSTRACT(Class, Parent) typedef Parent SuperClass; static const CCL::MetaClass __class; private: static const CCL::MetaClass& __typeid () { return __class; } friend const CCL::MetaClass& CCL::ccl_typeid<Class> (); public: virtual const CCL::MetaClass& myClass () const override { return __class; } virtual bool isClass (const CCL::MetaClass& mc) const override { return __class.isClass (mc); } virtual bool canCast (const CCL::MetaClass& mc) const override { return __class.canCast (mc); }
+#define DEFINE_BASE_CLASS(Class) const CCL::MetaClass Class::__class (0, #Class, Class::__create);
+#define DEFINE_CLASS(Class, Parent) const CCL::MetaClass Class::__class (&Parent::__class, #Class, Class::__create);
+#define DEFINE_CLASS_HIDDEN(Class, Parent) const CCL::MetaClass Class::__class (&Parent::__class, #Class, Class::__create, 0, true);
+#define DEFINE_CLASS_PERSISTENT(Class, Parent, Name) const CCL::MetaClass Class::__class (&Parent::__class, #Class, Class::__create, Name);
+#define DEFINE_CLASS_ABSTRACT(Class, Parent) const CCL::MetaClass Class::__class (&Parent::__class, #Class, 0, 0, false);
+#define DEFINE_CLASS_ABSTRACT_HIDDEN(Class, Parent) const CCL::MetaClass Class::__class (&Parent::__class, #Class, 0, 0, true);
+#define DEFINE_SINGLETON_CLASS(Class, Parent) const CCL::MetaClass Class::__class (&Parent::__class, #Class, Class::__createSingleton); static const CCL::MetaClass::ClassFlagsModifier ClassFlagsModifier ## __LINE__ (CCL::ccl_typeid<Class> (), CCL::ITypeInfo::kSingleton);
+#define DECLARE_METHOD_NAMES(ClassName) static const CCL::MetaClass::MethodDefinition __methodNames[];
+#define BEGIN_METHOD_NAMES(ClassName) const CCL::MetaClass::MethodDefinition ClassName::__methodNames[] = {
+#define END_METHOD_NAMES(ClassName) {0,0,0}}; static const CCL::MetaClass::MethodNamesModifier MethodNamesModifier ## __LINE__ (CCL::ccl_typeid<ClassName> (), ClassName::__methodNames);
+#define DEFINE_METHOD_NAME(name) {name, 0, 0},
+#define DEFINE_METHOD_ARGS(name, args) {name, args, 0},
+#define DEFINE_METHOD_ARGR(name, args, retval) {name, args, retval},
+#define DECLARE_PROPERTY_NAMES(ClassName) static const CCL::MetaClass::PropertyDefinition __propertyNames[];
+#define BEGIN_PROPERTY_NAMES(ClassName) const CCL::MetaClass::PropertyDefinition ClassName::__propertyNames[] = {
+#define END_PROPERTY_NAMES(ClassName) {0}}; static const CCL::MetaClass::PropertyNamesModifier PropertyNamesModifier ## __LINE__ (CCL::ccl_typeid<ClassName> (), ClassName::__propertyNames);
+#define DEFINE_PROPERTY_NAME(name) {name, CCL::ITypeInfo::kVoid, 0, 0},
+#define DEFINE_PROPERTY_TYPE(name,type) {name, type, 0, 0},
+#define DEFINE_PROPERTY_CLASS(name,className) {name, CCL::ITypeInfo::kObject, className, 0},
+#define DEFINE_PROPERTY_CLASS_(name,className,flags) {name, CCL::ITypeInfo::kObject | flags, className, 0},
+#define DEFINE_PROPERTY_METACLASS(name,ClassName) {name, CCL::ITypeInfo::kObject, #ClassName, &CCL::ccl_typeid<ClassName> ()},
+#define DEFINE_PROPERTY_CONTAINER(name,ClassName) {name, CCL::ITypeInfo::kContainer, #ClassName, &CCL::ccl_typeid<ClassName> ()},
+#define DEFINE_CLASS_UID(ClassName, data1, data2, data3, a, b, c, d, e, f, g, h) static const CCL::MetaClass::ClassIDModifier ClassIDModifier ## __LINE__ (CCL::ccl_typeid<ClassName> (), CCL::UID (data1, data2, data3, a, b, c, d, e, f, g, h));
+#define DEFINE_CLASS_UID_STRING(ClassName, cidString) static const CCL::MetaClass::ClassIDModifier ClassIDModifier ## __LINE__ (CCL::ccl_typeid<ClassName> (), cidString);
+#define DEFINE_CLASS_FLAGS(ClassName, flags) static const CCL::MetaClass::ClassFlagsModifier ClassFlagsModifier ## __LINE__ (CCL::ccl_typeid<ClassName> (), flags);
+#define DEFINE_CLASS_NAMESPACE(ClassName, namespaceName) static const CCL::MetaClass::NamespaceModifier NamespaceModifier ## __LINE__ (CCL::ccl_typeid<ClassName> (), namespaceName);
+#define DEFINE_CLASS_CATEGORY(ClassName, categoryName) static const CCL::MetaClass::CategoryModifier CategoryModifier ## __LINE__ (CCL::ccl_typeid<ClassName> (), categoryName);
+#define DEFINE_CLASS_DESCRIPTION(ClassName, description) static const CCL::MetaClass::DescriptionModifier DescriptionModifier ## __LINE__ (CCL::ccl_typeid<ClassName> (), description);
+#define DEFINE_CLASS_ATTRIBUTE(ClassName, name, value) static const CCL::MetaClass::AttributeModifier AttributeModifier ## __LINE__ (CCL::ccl_typeid<ClassName> (), name, value);
+#define DEFINE_CLASS_CONSTRUCTOR(ClassName, ReplacementClassName) static const CCL::MetaClass::ConstructorModifier ConstructorModifier ## __LINE__ (CCL::ccl_typeid<ClassName> (), CCL::ccl_typeid<ReplacementClassName> ());
+#define TEMPLATE_CLASS_TYPE_ARGUMENT(...) __VA_ARGS__
+#define DECLARE_TEMPLATE_CLASS(Class, Type, Parent) typedef Parent SuperClass<Type>; static CCL::Object* __create () { return ::new Class<Type>; } static const CCL::MetaClass<Type> __class; private: static const CCL::MetaClass<Type>& __typeid () { return __class; } friend const CCL::MetaClass<Type>& CCL::ccl_typeid<Class<Type>> (); public: virtual const CCL::MetaClass<Type>& myClass<Type> () const override { return __class; } virtual bool isClass<Type> (const CCL::MetaClass<Type>& mc) const override { return __class.isClass<Type> (mc); } virtual bool canCast (const CCL::MetaClass<Type>& mc) const override { return __class.canCast (mc); } virtual CCL::Object* clone () const override { return ::new Class<Type> (*this); }
+#define DECLARE_TEMPLATE_CLASS2(Class, Type1, Type2, Parent) typedef Parent SuperClass<Type1, Type2>; static CCL::Object* __create () { return ::new Class<Type1, Type2>; } static const CCL::MetaClass<Type1, Type2> __class; private: static const CCL::MetaClass<Type1, Type2>& __typeid () { return __class; } friend const CCL::MetaClass<Type1, Type2>& CCL::ccl_typeid<Class<Type1, Type2>> (); public: virtual const CCL::MetaClass<Type1, Type2>& myClass<Type1, Type2> () const override { return __class; } virtual bool isClass<Type1, Type2> (const CCL::MetaClass<Type1, Type2>& mc) const override { return __class.isClass<Type1, Type2> (mc); } virtual bool canCast (const CCL::MetaClass<Type1, Type2>& mc) const override { return __class.canCast (mc); } virtual CCL::Object* clone () const override { return ::new Class<Type1, Type2> (*this); }
+#define DECLARE_TEMPLATE_CLASS3(Class, Type1, Type2, Type3, Parent) typedef Parent SuperClass<Type1, Type2, Type3>; static CCL::Object* __create () { return ::new Class<Type1, Type2, Type3>; } static const CCL::MetaClass<Type1, Type2, Type3> __class; private: static const CCL::MetaClass<Type1, Type2, Type3>& __typeid () { return __class; } friend const CCL::MetaClass<Type1, Type2, Type3>& CCL::ccl_typeid<Class<Type1, Type2, Type3>> (); public: virtual const CCL::MetaClass<Type1, Type2, Type3>& myClass<Type1, Type2, Type3> () const override { return __class; } virtual bool isClass<Type1, Type2, Type3> (const CCL::MetaClass<Type1, Type2, Type3>& mc) const override { return __class.isClass<Type1, Type2, Type3> (mc); } virtual bool canCast (const CCL::MetaClass<Type1, Type2, Type3>& mc) const override { return __class.canCast (mc); } virtual CCL::Object* clone () const override { return ::new Class<Type1, Type2, Type3> (*this); }
+#define DECLARE_TEMPLATE_CLASS_ABSTRACT(Class, Type, Parent) typedef Parent SuperClass<Type>; static const CCL::MetaClass<Type> __class; private: static const CCL::MetaClass<Type>& __typeid () { return __class; } friend const CCL::MetaClass<Type>& CCL::ccl_typeid<Class<Type>> (); public: virtual const CCL::MetaClass<Type>& myClass<Type> () const override { return __class; } virtual bool isClass<Type> (const CCL::MetaClass<Type>& mc) const override { return __class.isClass<Type> (mc); } virtual bool canCast (const CCL::MetaClass<Type>& mc) const override { return __class.canCast (mc); }
+#define DECLARE_TEMPLATE_CLASS_ABSTRACT2(Class, Type1, Type2, Parent) typedef Parent SuperClass<Type1, Type2>; static const CCL::MetaClass<Type1, Type2> __class; private: static const CCL::MetaClass<Type1, Type2>& __typeid () { return __class; } friend const CCL::MetaClass<Type1, Type2>& CCL::ccl_typeid<Class<Type1, Type2>> (); public: virtual const CCL::MetaClass<Type1, Type2>& myClass<Type1, Type2> () const override { return __class; } virtual bool isClass<Type1, Type2> (const CCL::MetaClass<Type1, Type2>& mc) const override { return __class.isClass<Type1, Type2> (mc); } virtual bool canCast (const CCL::MetaClass<Type1, Type2>& mc) const override { return __class.canCast (mc); }
+#define DECLARE_TEMPLATE_CLASS_ABSTRACT3(Class, Type1, Type2, Type3, Parent) typedef Parent SuperClass<Type1, Type2, Type3>; static const CCL::MetaClass<Type1, Type2, Type3> __class; private: static const CCL::MetaClass<Type1, Type2, Type3>& __typeid () { return __class; } friend const CCL::MetaClass<Type1, Type2, Type3>& CCL::ccl_typeid<Class<Type1, Type2, Type3>> (); public: virtual const CCL::MetaClass<Type1, Type2, Type3>& myClass<Type1, Type2, Type3> () const override { return __class; } virtual bool isClass<Type1, Type2, Type3> (const CCL::MetaClass<Type1, Type2, Type3>& mc) const override { return __class.isClass<Type1, Type2, Type3> (mc); } virtual bool canCast (const CCL::MetaClass<Type1, Type2, Type3>& mc) const override { return __class.canCast (mc); }
+#define DEFINE_TEMPLATE_CLASS(Class, Type, Parent) template<typename Type> const CCL::MetaClass<Type> Class<Type>::__class (&Parent::__class, #Class<Type>, Class<Type>::__create);;
+#define DEFINE_TEMPLATE_CLASS2(Class, Type1, Type2, Parent) template<typename Type1, typename Type2> const CCL::MetaClass<Type1, Type2> Class<Type1, Type2>::__class (&Parent::__class, #Class<Type1, Type2>, Class<Type1, Type2>::__create);;
+#define DEFINE_TEMPLATE_CLASS3(Class, Type1, Type2, Type3, Parent) template<typename Type1, typename Type2, typename Type3> const CCL::MetaClass<Type1, Type2, Type3> Class<Type1, Type2, Type3>::__class (&Parent::__class, #Class<Type1, Type2, Type3>, Class<Type1, Type2, Type3>::__create);;
+#define DEFINE_TEMPLATE_CLASS_HIDDEN(Class, Type, Parent) template<typename Type> const CCL::MetaClass<Type> Class<Type>::__class (&Parent::__class, #Class<Type>, Class<Type>::__create, 0, true);;
+#define DEFINE_TEMPLATE_CLASS_HIDDEN2(Class, Type1, Type2, Parent) template<typename Type1, typename Type2> const CCL::MetaClass<Type1, Type2> Class<Type1, Type2>::__class (&Parent::__class, #Class<Type1, Type2>, Class<Type1, Type2>::__create, 0, true);;
+#define DEFINE_TEMPLATE_CLASS_HIDDEN3(Class, Type1, Type2, Type3, Parent) template<typename Type1, typename Type2, typename Type3> const CCL::MetaClass<Type1, Type2, Type3> Class<Type1, Type2, Type3>::__class (&Parent::__class, #Class<Type1, Type2, Type3>, Class<Type1, Type2, Type3>::__create, 0, true);;
+#define DEFINE_TEMPLATE_CLASS_ABSTRACT(Class, Type, Parent) template<typename Type> const CCL::MetaClass<Type> Class<Type>::__class (&Parent::__class, #Class<Type>, 0, 0, false);;
+#define DEFINE_TEMPLATE_CLASS_ABSTRACT2(Class, Type1, Type2, Parent) template<typename Type1, typename Type2> const CCL::MetaClass<Type1, Type2> Class<Type1, Type2>::__class (&Parent::__class, #Class<Type1, Type2>, 0, 0, false);;
+#define DEFINE_TEMPLATE_CLASS_ABSTRACT3(Class, Type1, Type2, Type3, Parent) template<typename Type1, typename Type2, typename Type3> const CCL::MetaClass<Type1, Type2, Type3> Class<Type1, Type2, Type3>::__class (&Parent::__class, #Class<Type1, Type2, Type3>, 0, 0, false);;
+#define DEFINE_TEMPLATE_CLASS_ABSTRACT_HIDDEN(Class, Type, Parent) template<typename Type> const CCL::MetaClass<Type> Class<Type>::__class (&Parent::__class, #Class<Type>, 0, 0, true);;
+#define DEFINE_TEMPLATE_CLASS_ABSTRACT_HIDDEN2(Class, Type1, Type2, Parent) template<typename Type1, typename Type2> const CCL::MetaClass<Type1, Type2> Class<Type1, Type2>::__class (&Parent::__class, #Class<Type1, Type2>, 0, 0, true);;
+#define DEFINE_TEMPLATE_CLASS_ABSTRACT_HIDDEN3(Class, Type1, Type2, Type3, Parent) template<typename Type1, typename Type2, typename Type3> const CCL::MetaClass<Type1, Type2, Type3> Class<Type1, Type2, Type3>::__class (&Parent::__class, #Class<Type1, Type2, Type3>, 0, 0, true);;
+
+//////////////////////////////////////////////////////////////////////////
+// ccl/base/singleton.h
+//////////////////////////////////////////////////////////////////////////
+
+#define DEFINE_SINGLETON(Class) namespace CCL { template<> Class* Singleton<Class>::theInstance = 0; }
+#define DEFINE_EXTERNAL_SINGLETON(Class,Impl) namespace CCL { template<> Class* Singleton<Class>::theInstance = 0; } namespace CCL { template<> Class* ExternalSingleton<Class>::createExternalInstance () { return ::new Impl; } }
+#define DEFINE_SHARED_SINGLETON(Class) namespace CCL { template<> Class* SharedSingleton<Class>::theInstance = 0; }
+#define DEFINE_UNMANAGED_SINGLETON(Class) namespace CCL { template<> Class* UnmanagedSingleton<Class>::theInstance = 0; }
+
+//////////////////////////////////////////////////////////////////////////
+// ccl/base/unittest.h
+//////////////////////////////////////////////////////////////////////////
+
+#define _CCL_REGISTER_TEST(TestClassName, SuiteName) inline static TestFactory<TestClassName> factory { #SuiteName };
+#define _CCL_TEST_CLASS_NAME(TestName, SuiteName) SuiteName##_##TestName
+#define _CCL_TEST_CLASS_NAME_SPECIALIZED(TestName, SuiteName, Type) SuiteName##_##TestName##_##Type
+#define _CCL_TEST(SuiteName, TestName, Fixture) class SuiteName##_##TestName: public Fixture { public: StringRef getName () const override { return CCL::System::GetConstantString (#TestName); } void testBody () override; private: inline static TestFactory<SuiteName##_##TestName> factory { #SuiteName }; }; void SuiteName##_##TestName::testBody ()
+#define _CCL_TEST_PARAMETERIZED(SuiteName, TestName, Fixture) class SuiteName##_##TestName: public Fixture { public: StringRef getName () const override { return CCL::System::GetConstantString (#TestName); } void parameterizedTestBody () override; private: inline static TestFactory<SuiteName##_##TestName> factory { #SuiteName }; }; void SuiteName##_##TestName::parameterizedTestBody ()
+#define _CCL_TEST_TEMPLATE(SuiteName, TestName, Fixture) template <typename T> class SuiteName##_##TestName: public Fixture<T> { public: using Fixture<T>::testContext; typedef T TypeParam; StringRef getName () const override { return CCL::System::GetConstantString (#TestName); } void testBody () override; }; template <typename T> void SuiteName##_##TestName<T>::testBody ()
+#define _CCL_TEST_TEMPLATE_SPECIALIZE(SuiteName, TestName, Type) class SuiteName##_##TestName##_##Type : public SuiteName##_##TestName<Type> { private: inline static TestFactory<SuiteName##_##TestName##_##Type> factory { #SuiteName }; };
+#define _CCL_BEGIN_TEST_COLLECTION(CollectionName) class CollectionName: public TestCollection { public: static IUnknown* createInstance (UIDRef cid, void* userData) { return static_cast<ITestCollection*> (::new CollectionName); } CollectionName () {
+#define _CCL_END_TEST_COLLECTION() } };
+#define CCL_TEST(SuiteName, TestName) class SuiteName##_##TestName: public Test { public: StringRef getName () const override { return CCL::System::GetConstantString (#TestName); } void testBody () override; private: inline static TestFactory<SuiteName##_##TestName> factory { #SuiteName }; }; void SuiteName##_##TestName::testBody ()
+#define CCL_TEST_F(FixtureName, TestName) class FixtureNameName##_##TestName: public FixtureName { public: StringRef getName () const override { return CCL::System::GetConstantString (#TestName); } void testBody () override; private: inline static TestFactory<FixtureNameName##_##TestName> factory { #FixtureNameName }; }; void FixtureNameName##_##TestName::testBody ()
+#define CCL_TEST_P(FixtureName, TestName) class FixtureNameName##_##TestName: public FixtureName { public: StringRef getName () const override { return CCL::System::GetConstantString (#TestName); } void parameterizedTestBody () override; private: inline static TestFactory<FixtureNameName##_##TestName> factory { #FixtureNameName }; }; void FixtureNameName##_##TestName::parameterizedTestBody ()
+#define CCL_TEST_T(FixtureName, TestName) template <typename T> class FixtureNameName##_##TestName: public FixtureName<T> { public: using FixtureName<T>::testContext; typedef T TypeParam; StringRef getName () const override { return CCL::System::GetConstantString (#TestName); } void testBody () override; }; template <typename T> void FixtureNameName##_##TestName<T>::testBody ()
+#define CCL_TEST_T_ADD(SuiteName, TestName, Type) class SuiteName##_##TestName##_##Type : public SuiteName##_##TestName<Type> { private: inline static TestFactory<SuiteName##_##TestName##_##Type> factory { #SuiteName }; };
+#define CCL_ADD_TEST_COLLECTION(CollectionName) class CollectionName: public TestCollection { public: static IUnknown* createInstance (UIDRef cid, void* userData) { return static_cast<ITestCollection*> (::new CollectionName); } CollectionName () { auto& registry = TestRegistry::instance (); populateFrom (registry); } };
+#define CCL_ADD_CUSTOM_TEST_COLLECTION(CollectionName, SuiteName) class CollectionName: public TestCollection { public: static IUnknown* createInstance (UIDRef cid, void* userData) { return static_cast<ITestCollection*> (::new CollectionName); } CollectionName () { suites.add (::new SuiteName ()); } };
+#define CCL_REGISTER_TEST_COLLECTION(classFactory, uid, CollectionName) { ClassDesc __testClass (uid, PLUG_CATEGORY_UNITTEST, #CollectionName); classFactory->registerClass (__testClass, CollectionName::createInstance); }
+#define _CCL_TEST_ASSERTION_EXPRESSION(name, arguments) String () << CCL::System::GetConstantString (#name) << " (" << CCL::System::GetConstantString (arguments) << ")"
+#define _CCL_TEST_ASSERT_INTERNAL(condition, name, arguments) if(condition) (testContext->addPass (String () << CCL::System::GetConstantString (#name) << " (" << CCL::System::GetConstantString (arguments) << ")", CCL::String (__FILE__), __LINE__)); else (testContext->addFailure (String () << CCL::System::GetConstantString (#name) << " (" << CCL::System::GetConstantString (arguments) << ")", CCL::String (__FILE__), __LINE__))
+#define CCL_TEST_ASSERT(condition) if(condition) (testContext->addPass (String () << CCL::System::GetConstantString (#CCL_TEST_ASSERT) << " (" << CCL::System::GetConstantString (#condition) << ")", CCL::String (__FILE__), __LINE__)); else (testContext->addFailure (String () << CCL::System::GetConstantString (#CCL_TEST_ASSERT) << " (" << CCL::System::GetConstantString (#condition) << ")", CCL::String (__FILE__), __LINE__))
+#define CCL_TEST_ASSERT_FALSE(condition) if(!(condition)) (testContext->addPass (String () << CCL::System::GetConstantString (#CCL_TEST_ASSERT_FALSE) << " (" << CCL::System::GetConstantString (#condition) << ")", CCL::String (__FILE__), __LINE__)); else (testContext->addFailure (String () << CCL::System::GetConstantString (#CCL_TEST_ASSERT_FALSE) << " (" << CCL::System::GetConstantString (#condition) << ")", CCL::String (__FILE__), __LINE__))
+#define CCL_TEST_ASSERT_EQUAL(expected, actual) if(((expected) == (actual))) (testContext->addPass (String () << CCL::System::GetConstantString (#CCL_TEST_ASSERT_EQUAL) << " (" << CCL::System::GetConstantString (#expected ", " #actual) << ")", CCL::String (__FILE__), __LINE__)); else (testContext->addFailure (String () << CCL::System::GetConstantString (#CCL_TEST_ASSERT_EQUAL) << " (" << CCL::System::GetConstantString (#expected ", " #actual) << ")", CCL::String (__FILE__), __LINE__))
+#define CCL_TEST_ASSERT_NOT_EQUAL(expected, actual) if(((expected) != (actual))) (testContext->addPass (String () << CCL::System::GetConstantString (#CCL_TEST_ASSERT_NOT_EQUAL) << " (" << CCL::System::GetConstantString (#expected ", " #actual) << ")", CCL::String (__FILE__), __LINE__)); else (testContext->addFailure (String () << CCL::System::GetConstantString (#CCL_TEST_ASSERT_NOT_EQUAL) << " (" << CCL::System::GetConstantString (#expected ", " #actual) << ")", CCL::String (__FILE__), __LINE__))
+#define CCL_TEST_ASSERT_NEAR(expected, actual, delta) if((actual > (expected - delta) && actual < (expected + delta))) (testContext->addPass (String () << CCL::System::GetConstantString (#CCL_TEST_ASSERT_NEAR) << " (" << CCL::System::GetConstantString (#expected ", " #actual ", " #delta) << ")", CCL::String (__FILE__), __LINE__)); else (testContext->addFailure (String () << CCL::System::GetConstantString (#CCL_TEST_ASSERT_NEAR) << " (" << CCL::System::GetConstantString (#expected ", " #actual ", " #delta) << ")", CCL::String (__FILE__), __LINE__))
+
+//////////////////////////////////////////////////////////////////////////
+// base/collections/container.h
+//////////////////////////////////////////////////////////////////////////
+
+#define ForEach(cont, Class, var) { CCL::AutoPtr<CCL::Iterator> __iter = (cont).newIterator (); if(__iter) while(!__iter->done ()) { Class* var = (Class*)__iter->next ();
+#define ForEachReverse(cont, Class, var) { CCL::AutoPtr<CCL::Iterator> __iter = (cont).newIterator (); if(__iter) __iter->last (); if(__iter) while(!__iter->done ()) { Class* var = (Class*)__iter->previous ();
+#define IterForEach(createIter, Class, var) { CCL::AutoPtr<CCL::Iterator> __iter = createIter; if(__iter) while(!__iter->done ()) { Class* var = (Class*)__iter->next ();
+#define IterForEachReverse(createIter, Class, var) { CCL::AutoPtr<CCL::Iterator> __iter = createIter; if(__iter) __iter->last (); if(__iter) while(!__iter->done ()) { Class* var = (Class*)__iter->previous ();
+
+//////////////////////////////////////////////////////////////////////////
+// base/collections/linkable.h
+//////////////////////////////////////////////////////////////////////////
+
+#define ListForEachLinkable(list, Class, var) { CCL::LinkableListIterator __iter (list); while(Class* var = (Class*)__iter.next ()) {
+#define ListForEachLinkableReverse(list, Class, var) { CCL::LinkableListIterator __iter (list); __iter.last (); while(Class* var = (Class*)__iter.previous ()) {
+#define ListForEachLinkableFast(list, Class, var) { CCL::FastLinkableListIterator __iter (list); while(Class* var = (Class*)__iter.next ()) {
+#define ListForEachLinkableFastReverse(list, Class, var) { CCL::FastLinkableListIterator __iter (list); while(Class* var = (Class*)__iter.previous ()) {
+
+//////////////////////////////////////////////////////////////////////////
+// base/collections/objectarray.h
+//////////////////////////////////////////////////////////////////////////
+
+#define ArrayForEach(list, Class, var) { for(int __iter = 0, __count = (list).count (); __iter < __count; __iter++) { Class* var = (Class*)(list).at (__iter);
+#define ArrayForEachFast(list, Class, var) { Object** __ptr = (list).getItems (); for(int __iter = (list).count (); __iter != 0; __iter--) { Class* var = (Class*)*__ptr++;
+#define ArrayForEachReverse(list, Class, var) { for(int __iter = (list).count ()-1; __iter >= 0; __iter--) { Class* var = (Class*)(list).at (__iter);
+#define DEFINE_ARRAY_COMPARE(FunctionName, Type, lhs, rhs) int FunctionName (const void* __lhs, const void* __rhs) { Type* lhs = *(Type**)__lhs; Type* rhs = *(Type**)__rhs;
+#define LAMBDA_ARRAY_COMPARE(Type, lhs, rhs) [] (const void* __lhs, const void* __rhs) -> int { Type* lhs = *(Type**)__lhs; Type* rhs = *(Type**)__rhs;
+
+//////////////////////////////////////////////////////////////////////////
+// base/collections/objectlist.h
+//////////////////////////////////////////////////////////////////////////
+
+#define ListForEachObject(list, Class, var) { CCL::ObjectListIterator __iter (list); while(Class* var = (Class*)__iter.next ()) {
+#define ListForEachObjectReverse(list, Class, var) { CCL::ObjectListIterator __iter (list); __iter.last (); while(Class* var = (Class*)__iter.previous ()) {
+
+//////////////////////////////////////////////////////////////////////////
+// 3d/scene/scene3d.h
+//////////////////////////////////////////////////////////////////////////
+
+#define IMPLEMENT_SCENENODE3D_POSITION protected: PointF3D position; public: PointF3DRef  getPosition () const override { return position; } tresult  setPosition (PointF3DRef p) override { position = p; invalidateTransform (); return kResultOk; } tresult  setPositionX (float x) override { position.x = x; invalidateTransform (); return kResultOk; } tresult  setPositionY (float y) override { position.y = y; invalidateTransform (); return kResultOk; } tresult  setPositionZ (float z) override { position.z = z; invalidateTransform (); return kResultOk; }
+#define IMPLEMENT_SCENENODE3D_NO_POSITION PointF3DRef  getPosition () const override { static const PointF3D null3d; return null3d; } tresult  setPosition (PointF3DRef p) override { return kResultNotImplemented; } tresult  setPositionX (float x) override { return kResultNotImplemented; } tresult  setPositionY (float y) override { return kResultNotImplemented; } tresult  setPositionZ (float z) override { return kResultNotImplemented; }
+#define IMPLEMENT_SCENENODE3D_ORIENTATION protected: float yaw = kDefaultAngle; float pitch = kDefaultAngle; float roll = kDefaultAngle; public: float  getYawAngle () const override { return yaw; } tresult  setYawAngle (float angle) override { yaw = angle; invalidateTransform (); return kResultOk; } float  getPitchAngle () const override { return pitch; } tresult  setPitchAngle (float angle) override { pitch = angle; invalidateTransform (); return kResultOk; } float  getRollAngle () const override { return roll; } tresult  setRollAngle (float angle) override { roll = angle; invalidateTransform (); return kResultOk; }
+#define IMPLEMENT_SCENENODE3D_NO_ORIENTATION float  getYawAngle () const override { return kDefaultAngle; } tresult  setYawAngle (float angle) override { return kResultNotImplemented; } float  getPitchAngle () const override { return kDefaultAngle; } tresult  setPitchAngle (float angle) override { return kResultNotImplemented; } float  getRollAngle () const override { return kDefaultAngle; } tresult  setRollAngle (float angle) override { return kResultNotImplemented; }
+#define IMPLEMENT_SCENENODE3D_SCALE protected: float scaleX = kDefaultScale; float scaleY = kDefaultScale; float scaleZ = kDefaultScale; public: float  getScaleX () const override { return scaleX; } tresult  setScaleX (float factor) override { scaleX = factor; invalidateTransform (); return kResultOk; } float  getScaleY () const override { return scaleY; } tresult  setScaleY (float factor) override { scaleY = factor; invalidateTransform (); return kResultOk; } float  getScaleZ () const override { return scaleZ; } tresult  setScaleZ (float factor) override { scaleZ = factor; invalidateTransform (); return kResultOk; }
+#define IMPLEMENT_SCENENODE3D_NO_SCALE float  getScaleX () const override { return kDefaultScale; } tresult  setScaleX (float factor) override { return kResultNotImplemented; } float  getScaleY () const override { return kDefaultScale; } tresult  setScaleY (float factor) override { return kResultNotImplemented; } float  getScaleZ () const override { return kDefaultScale; } tresult  setScaleZ (float factor) override { return kResultNotImplemented; }
+#define IMPLEMENT_SCENENODE3D_INTERACTION bool hitTestingEnabled = false; tresult  enableHitTesting (tbool state) override { hitTestingEnabled = state; return kResultOk; } tbool  isHitTestingEnabled () const override { return hitTestingEnabled; }
+#define IMPLEMENT_SCENENODE3D_NO_INTERACTION tresult  enableHitTesting (tbool state) override { return kResultFailed; } tbool  isHitTestingEnabled () const override { return false; }
+#define IMPLEMENT_SCENENODE3D_BASICS(type, flags, BaseClass) NodeType  getNodeType () const override { return type; } UIDRef  getNodeClassID () const override { return myClass ().getClassID (); } int  getNodeFlags () const override { return flags; } StringID  getNodeName () const override { return this->name; } void  setNodeName (StringID name) override { this->name = name; } void  setNodeData (VariantRef data) override { this->data = data; } VariantRef  getNodeData () const override { return this->data; } ISceneNode3D*  getParentNode () override { return parent; } IScene3D*  getRootNode () override { return getScene (); } ISceneChildren3D*  getChildren () override { return BaseClass::getChildren (); } ISceneConstraints3D*  getConstraints () override { return BaseClass::getConstraints (); } tresult  addAnimation (StringID propertyId, const IAnimation* animation) override { return BaseClass::addAnimation (propertyId, animation); } tresult  removeAnimation (StringID propertyId) override { return BaseClass::removeAnimation (propertyId); } ISceneNode3D*  findIntersectingNode (Ray3DRef ray, float tolerance, int findFlags) const override { return BaseClass::findIntersectingNode (ray, tolerance, findFlags); } Transform3DRef  getWorldTransform () const override { return BaseClass::getWorldTransform (); } Transform3DRef  getInverseWorldTransform () const override { return BaseClass::getInverseWorldTransform (); } void  setWorldTransform (Transform3DRef transform) override { BaseClass::setWorldTransform (transform); }
+
+//////////////////////////////////////////////////////////////////////////
+// gui/skin/skinelement.h
+//////////////////////////////////////////////////////////////////////////
+
+#define SKIN_WARNING(e, s, ...) { CCL::MutableCString __warning; __warning.appendFormat (s, __VA_ARGS__); CCL::SkinWarning (e, __warning); }
+#define DECLARE_SKIN_ELEMENT(Class, Parent) typedef Parent SuperClass; static CCL::Object* __create () { return ::new Class; } static const CCL::MetaClass __class; private: static const CCL::MetaClass& __typeid () { return __class; } friend const CCL::MetaClass& CCL::ccl_typeid<Class> (); public: virtual const CCL::MetaClass& myClass () const override { return __class; } virtual bool isClass (const CCL::MetaClass& mc) const override { return __class.isClass (mc); } virtual bool canCast (const CCL::MetaClass& mc) const override { return __class.canCast (mc); } virtual CCL::Object* clone () const override { return ::new Class (*this); } static SkinElements::MetaElement __skinClass; const ITypeInfo*  getElementClass () const override { return &__skinClass; }
+#define DECLARE_SKIN_ELEMENT_ABSTRACT(Class, Parent) typedef Parent SuperClass; static const CCL::MetaClass __class; private: static const CCL::MetaClass& __typeid () { return __class; } friend const CCL::MetaClass& CCL::ccl_typeid<Class> (); public: virtual const CCL::MetaClass& myClass () const override { return __class; } virtual bool isClass (const CCL::MetaClass& mc) const override { return __class.isClass (mc); } virtual bool canCast (const CCL::MetaClass& mc) const override { return __class.canCast (mc); } static SkinElements::MetaElement __skinClass;
+#define DECLARE_SKIN_ELEMENT_CLASS(Class, Parent) class Class: public Parent { public: Class () {sorted = true;} typedef Parent SuperClass; static CCL::Object* __create () { return ::new Class; } static const CCL::MetaClass __class; private: static const CCL::MetaClass& __typeid () { return __class; } friend const CCL::MetaClass& CCL::ccl_typeid<Class> (); public: virtual const CCL::MetaClass& myClass () const override { return __class; } virtual bool isClass (const CCL::MetaClass& mc) const override { return __class.isClass (mc); } virtual bool canCast (const CCL::MetaClass& mc) const override { return __class.canCast (mc); } virtual CCL::Object* clone () const override { return ::new Class (*this); } static SkinElements::MetaElement __skinClass; const ITypeInfo*  getElementClass () const override { return &__skinClass; } };
+#define DEFINE_SKIN_ENUMERATION(TagName, AttrName, styleDef) static SkinElements::Enumeration __skinEnum ## __LINE__ (TagName "." AttrName, nullptr, styleDef);
+#define DEFINE_SKIN_ENUMERATION_PARENT(TagName, AttrName, styleDef, ParentTagName, ParentAttrName) static SkinElements::Enumeration __skinEnum ## __LINE__ (TagName "." AttrName, ParentTagName "." ParentAttrName, styleDef);
+#define ADD_SKIN_ELEMENT_MEMBER(name, typeName) Model::MemberDescription (name, ITypeInfo::kString, typeName),
+#define BEGIN_SKIN_ELEMENT_ATTRIBUTES(Class) static Model::AttributeDescription __skinAttributes##Class[] = {
+#define ADD_SKIN_ELEMENT_ATTRIBUTE(Name, Value) Model::AttributeDescription (Name, Value),
+#define END_SKIN_ELEMENT_ATTRIBUTES(Class) Model::AttributeDescription () }; SkinElements::MetaElement::AttributeModifier __skinattr ## __LINE__ (Class::__skinClass, __skinAttributes##Class);
+#define ADD_SKIN_SCHEMAGROUP_ATTRIBUTE(val) Model::AttributeDescription ("Class:SchemaGroups", val),
+#define ADD_SKIN_CHILDGROUP_ATTRIBUTE(val) Model::AttributeDescription ("Class:ChildGroup", val),
+#define BEGIN_SKIN_ELEMENT_WITH_MEMBERS(Class, Parent, TagName, GroupName, RelatedClass) const CCL::MetaClass Class::__class (&Parent::__class, #Class, Class::__create, 0, true); SkinElements::MetaElement Class::__skinClass (TagName, Class::__create, &Parent::__skinClass, false, GroupName); static Model::MemberDescription __skinMembers##Class[] = {
+#define BEGIN_SKIN_ELEMENT_ABSTRACT_WITH_MEMBERS(Class, Parent, TagName, GroupName, RelatedClass) const CCL::MetaClass Class::__class (&Parent::__class, #Class, Class::__create, 0, true); SkinElements::MetaElement Class::__skinClass (TagName, Class::__create, &Parent::__skinClass, true, GroupName); static Model::MemberDescription __skinMembers##Class[] = {
+#define BEGIN_SKIN_ELEMENT_BASE_WITH_MEMBERS(Class, Parent, TagName, GroupName) const CCL::MetaClass Class::__class (&Parent::__class, #Class, Class::__create, 0, true); SkinElements::MetaElement Class::__skinClass (TagName, Class::__create, 0, true, GroupName); static Model::MemberDescription __skinMembers##Class[] = {
+#define END_SKIN_ELEMENT_WITH_MEMBERS(Class) Model::MemberDescription () }; static SkinElements::MetaElement::MemberDescriptionModifier __skinmod ## __LINE__ (Class::__skinClass, __skinMembers##Class);
+#define DEFINE_SKIN_ELEMENT(Class, Parent, TagName, GroupName, RelatedClass) const CCL::MetaClass Class::__class (&Parent::__class, #Class, Class::__create, 0, true); SkinElements::MetaElement Class::__skinClass (TagName, Class::__create, &Parent::__skinClass, false, GroupName); static Model::MemberDescription __skinMembers##Class[] = { Model::MemberDescription () }; static SkinElements::MetaElement::MemberDescriptionModifier __skinmod ## __LINE__ (Class::__skinClass, __skinMembers##Class);
+#define DEFINE_SKIN_ELEMENT_ABSTRACT(Class, Parent, TagName, GroupName, RelatedClass) const CCL::MetaClass Class::__class (&Parent::__class, #Class, Class::__create, 0, true); SkinElements::MetaElement Class::__skinClass (TagName, Class::__create, &Parent::__skinClass, true, GroupName); static Model::MemberDescription __skinMembers##Class[] = { Model::MemberDescription () }; static SkinElements::MetaElement::MemberDescriptionModifier __skinmod ## __LINE__ (Class::__skinClass, __skinMembers##Class);
+#define TYPE_BOOL CCL::TypeNames::kBool
+#define TYPE_STRING CCL::TypeNames::kString
+#define TYPE_FLOAT CCL::TypeNames::kFloat
+#define TYPE_INT CCL::TypeNames::kInt
+#define TYPE_ENUM CCL::TypeNames::kEnum
+#define TYPE_METRIC ("metric")
+#define TYPE_COLOR ("color")
+#define TYPE_RECT ("rect")
+#define TYPE_SIZE ("size")
+#define TYPE_POINT ("point")
+#define TYPE_POINT3D ("point3d")
+
+//////////////////////////////////////////////////////////////////////////
+// gui/views/view.h
+//////////////////////////////////////////////////////////////////////////
+
+#define ForEachView(parent, var) { CCL::ViewIterator __iter (parent); while(CCL::View* var = (CCL::View*)__iter.next ()) {
+#define ForEachViewFast(parent, var) { CCL::FastViewIterator __iter (parent); while(CCL::View* var = (CCL::View*)__iter.next ()) {
+#define ForEachViewFastReverse(parent, var) { CCL::FastViewIterator __iter (parent); while(CCL::View* var = (CCL::View*)__iter.previous ()) {
+#define LOG_VIEW(view, indent, deep) { if(view) view->log (indent, deep); else CCL::Debugger::printf ("%s0 n", indent); }
+#define LOG_VIEW(view, indent, deep) {}
+
+//////////////////////////////////////////////////////////////////////////
+// gui/theme/visualstyleclass.h
+//////////////////////////////////////////////////////////////////////////
+
+#define BEGIN_VISUALSTYLE_CLASS(Class, Parent, name) VisualStyleClass CCL::__vsc##Class (name, &__vsc##Parent); Model::MemberDescription __vscMembers##Class []= {
+#define BEGIN_VISUALSTYLE_BASE(Class, name) VisualStyleClass CCL::__vsc##Class (name, 0); Model::MemberDescription __vscMembers##Class[]= {
+#define END_VISUALSTYLE_CLASS(Class) Model::MemberDescription () }; static VisualStyleClass::MemberDescriptionModifier __vscmod ## __LINE__ (__vsc##Class, __vscMembers##Class); static VisualStyleClass::Registrar __reg##Class (__vsc##Class);
+#define DECLARE_VISUALSTYLE_CLASS(Class) extern VisualStyleClass __vsc##Class;
+#define ADD_VISUALSTYLE_COLOR(name) Model::MemberDescription (name, ITypeInfo::kString, "color"),
+#define ADD_VISUALSTYLE_METRIC(name) Model::MemberDescription (name, ITypeInfo::kFloat, "metric"),
+#define ADD_VISUALSTYLE_FONT(name) Model::MemberDescription (name, ITypeInfo::kString, "string"),
+#define ADD_VISUALSTYLE_ALIGN(name) Model::MemberDescription (name, ITypeInfo::kInt, "enum"),
+#define ADD_VISUALSTYLE_OPTIONS(name) Model::MemberDescription (name, ITypeInfo::kInt, "enum"),
+#define ADD_VISUALSTYLE_IMAGE(name) Model::MemberDescription (name, ITypeInfo::kString, "image"),
+#define ADD_VISUALSTYLE_STRING(name) Model::MemberDescription (name, ITypeInfo::kString, "string"),
+
+//////////////////////////////////////////////////////////////////////////
+// public/base/debug.h
+//////////////////////////////////////////////////////////////////////////
+
+#define CCL_DEBUGGER(s) CCL::Debugger::debugBreak (s);
+#define CCL_NOT_IMPL(s) CCL::Debugger::debugBreak (s);
+#define CCL_CHECK_HEAP CCL::Debugger::checkHeap ();
+#define ASSERT(e) { if(!(e)) CCL::Debugger::assertFailed (#e, __FILE__, __LINE__); }
+#define SOFT_ASSERT(e,s) { if(!(e)) CCL::Debugger::printf ("ASSERT FAILED: "%s " "#e" n", s); }
+#define CCL_DEBUGGER(s) {}
+#define CCL_NOT_IMPL(s) {}
+#define CCL_CHECK_HEAP {}
+#define SOFT_ASSERT(e,s) {}
+#define ASSERT(e) {}
+#define CCL_PRINT(s) CCL::Debugger::print (s);
+#define CCL_PRINTLN(s) CCL::Debugger::println (s);
+#define CCL_PRINTF(s, ...) CCL::Debugger::printf (s, __VA_ARGS__);
+#define CCL_PROFILE_START(s) double __profile##s = CCL::Debugger::getProfileTime ();
+#define CCL_PROFILE_STOP(s) __profile##s = CCL::Debugger::getProfileTime () - __profile##s; CCL::Debugger::printf (#s " took %f ms n", (float)__profile##s * 1000.);
+#define CCL_INDENT CCL::Debugger::getIndent ()
+#define CCL_ADD_INDENT(numChars) CCL::Debugger::IndentGuard dbgIndentGuard (numChars);
+#define CCL_LOGSCOPE(s) CCL::Debugger::ScopeLogger dbgScopeLogger (s);
+#define CCL_DEBUG_ID(p) CCL::Debugger::ObjectID (p).str
+#define CCL_PRINT(s) {}
+#define CCL_PRINTLN(s) {}
+#define CCL_PRINTF(s, ...) {}
+#define CCL_PROFILE_START(s) {}
+#define CCL_PROFILE_STOP(s) {}
+#define CCL_INDENT
+#define CCL_ADD_INDENT(numChars) {}
+#define CCL_LOGSCOPE(s) {}
+#define CCL_DEBUG_ID(p) 
+#define CCL_WARN(s, ...) CCL::Debugger::warn (s, __VA_ARGS__);
+#define CCL_RPROFILE_START(s) double __profile##s = CCL::Debugger::getProfileTime ();
+#define CCL_RPROFILE_STOP(s) __profile##s = CCL::Debugger::getProfileTime () - __profile##s; CCL::Debugger::printf (#s " took %f ms n", (float)__profile##s * 1000.);
+
+//////////////////////////////////////////////////////////////////////////
+// public/base/platform.h
+//////////////////////////////////////////////////////////////////////////
+
+#define CCL_API __stdcall
+#define CCL_VCALL __cdecl
+#define CCL_NOVTABLE __declspec(novtable)
+#define CCL_API
+#define CCL_VCALL
+#define CCL_NOVTABLE
+#define interface struct
+#define TRY try
+#define EXCEPT catch (...)
+#define TRY if(1)
+#define EXCEPT if(0)
+#define DEFINE_FOURCC(name, c1, c2, c3, c4) CCL::FOURCC name = {char(c1), char(c2), char(c3), char(c4)};
+
+//////////////////////////////////////////////////////////////////////////
+// public/base/iformatter.h
+//////////////////////////////////////////////////////////////////////////
+
+#define DEFINE_FORMATTER_METHODS CCL::tbool  printString (CCL::String& string, CCL::VariantRef value) const override { string = print (value); return true; } CCL::tbool  scanString (CCL::Variant& value, CCL::StringRef string) const override { return scan (value, string); }
+#define DEFINE_FORMATTER_METHODS_NAMED(NameString) CCL::tbool  printString (CCL::String& string, CCL::VariantRef value) const override { string = print (value); return true; } CCL::tbool  scanString (CCL::Variant& value, CCL::StringRef string) const override { return scan (value, string); } CCL::CStringPtr  getFactoryName () const override { return factoryName ? factoryName : NameString; }
+#define DECLARE_FORMATTER_FACTORY(ClassName) typedef CCL::TFormatterFactory<ClassName> Factory; static Factory __factory;
+#define DEFINE_FORMATTER_FACTORY(ClassName, NameString) ClassName::Factory ClassName::__factory (NameString);
+
+//////////////////////////////////////////////////////////////////////////
+// public/base/iunknown.h
+//////////////////////////////////////////////////////////////////////////
+
+#define DECLARE_IID(Interface) static const CCL::UIDBytes __iid;
+#define DECLARE_IID_ static const CCL::UIDBytes __iid;
+#define DEFINE_IID_(Interface, data1, data2, data3, a, b, c, d, e, f, g, h) const CCL::UIDBytes Interface::__iid = {(data1), (data2), (data3), {(a), (b), (c), (d), (e), (f), (g), (h)}};
+#define DEFINE_CID_(Name, data1, data2, data3, a, b, c, d, e, f, g, h) extern const CCL::UIDBytes Name; const CCL::UIDBytes Name = {(data1), (data2), (data3), {(a), (b), (c), (d), (e), (f), (g), (h)}};
+#define DEFINE_STRINGID_(Name, text) extern const CCL::CString Name; const CCL::CString Name = CCL::System::GetConstantCString (text);
+#define DECLARE_STRINGID_MEMBER(Name) static const CCL::CString Name;
+#define DEFINE_STRINGID_MEMBER_(Class, Name, text) const CCL::CString Class::Name = CCL::System::GetConstantCString (text);
+#define DEFINE_IID(Interface, data1, data2, data3, a, b, c, d, e, f, g, h) 
+#define DEFINE_CID(Name, data1, data2, data3, a, b, c, d, e, f, g, h) extern const CCL::UIDBytes Name;
+#define DEFINE_STRINGID(Name, text) extern const CCL::CString Name;
+#define DEFINE_STRINGID_MEMBER(Class, Name, text) 
+
+//////////////////////////////////////////////////////////////////////////
+// public/base/cclmacros.h
+//////////////////////////////////////////////////////////////////////////
+
+#define DECLARE_UNKNOWN CCL::tresult  queryInterface (CCL::UIDRef iid, void** ptr) override; unsigned int  retain () override; unsigned int  release () override;
+#define QUERY_INTERFACE(Interface) if(CCL::ccl_iid<Interface> ().equals (iid)) { *ptr = static_cast<Interface*>(this); retain (); return CCL::kResultOk; }
+#define QUERY_UNKNOWN(Interface) if(CCL::ccl_iid<IUnknown> ().equals (iid)) { *ptr = static_cast<Interface*>(this); retain (); return CCL::kResultOk; }
+#define PARENT_REFCOUNT(Parent) unsigned int  retain () override { return Parent::retain (); } unsigned int  release () override { return Parent::release (); }
+#define UNKNOWN_REFCOUNT unsigned int  retain () override { return CCL::Unknown::retain (); } unsigned int  release () override { return CCL::Unknown::release (); }
+#define DELEGATE_UNKNOWN(Parent) CCL::tresult  queryInterface (CCL::UIDRef iid, void** ptr) override { return Parent::queryInterface (iid, ptr); } unsigned int  retain () override { return Parent::retain (); } unsigned int  release () override { return Parent::release (); }
+#define CLASS_INTERFACE(Interface, Parent) unsigned int  retain () override { return CCL::Unknown::retain (); } unsigned int  release () override { return CCL::Unknown::release (); } CCL::tresult  queryInterface (CCL::UIDRef iid, void** ptr) override { if(CCL::ccl_iid<Interface> ().equals (iid)) { *ptr = static_cast<Interface*>(this); retain (); return CCL::kResultOk; } return Parent::queryInterface (iid, ptr); }
+#define CLASS_INTERFACE2(Interface1, Interface2, Parent) unsigned int  retain () override { return CCL::Unknown::retain (); } unsigned int  release () override { return CCL::Unknown::release (); } CCL::tresult  queryInterface (CCL::UIDRef iid, void** ptr) override { if(CCL::ccl_iid<Interface1> ().equals (iid)) { *ptr = static_cast<Interface1*>(this); retain (); return CCL::kResultOk; } if(CCL::ccl_iid<Interface2> ().equals (iid)) { *ptr = static_cast<Interface2*>(this); retain (); return CCL::kResultOk; } return Parent::queryInterface (iid, ptr); }
+#define CLASS_INTERFACE3(Interface1, Interface2, Interface3, Parent) unsigned int  retain () override { return CCL::Unknown::retain (); } unsigned int  release () override { return CCL::Unknown::release (); } CCL::tresult  queryInterface (CCL::UIDRef iid, void** ptr) override { if(CCL::ccl_iid<Interface1> ().equals (iid)) { *ptr = static_cast<Interface1*>(this); retain (); return CCL::kResultOk; } if(CCL::ccl_iid<Interface2> ().equals (iid)) { *ptr = static_cast<Interface2*>(this); retain (); return CCL::kResultOk; } if(CCL::ccl_iid<Interface3> ().equals (iid)) { *ptr = static_cast<Interface3*>(this); retain (); return CCL::kResultOk; } return Parent::queryInterface (iid, ptr); }
+#define CLASS_INTERFACES(Parent) unsigned int  retain () override { return CCL::Unknown::retain (); } unsigned int  release () override { return CCL::Unknown::release (); } CCL::tresult  queryInterface (CCL::UIDRef iid, void** ptr) override;
+#define BEGIN_CLASS_INTERFACES unsigned int  retain () override { return CCL::Unknown::retain (); } unsigned int  release () override { return CCL::Unknown::release (); } CCL::tresult  queryInterface (CCL::UIDRef iid, void** ptr) override {
+#define END_CLASS_INTERFACES(Parent) return Parent::queryInterface (iid, ptr); }
+#define IMPLEMENT_UNKNOWN_NO_REFCOUNT unsigned int  retain () override { return 1; } unsigned int  release () override { return 1; }
+#define IMPLEMENT_DUMMY_UNKNOWN(Interface) CCL::tresult  queryInterface (CCL::UIDRef iid, void** ptr) override { if(CCL::ccl_iid<IUnknown> ().equals (iid)) { *ptr = static_cast<Interface*>(this); retain (); return CCL::kResultOk; } if(CCL::ccl_iid<Interface> ().equals (iid)) { *ptr = static_cast<Interface*>(this); retain (); return CCL::kResultOk; } return (CCL::tresult)CCL::kResultNoInterface; } unsigned int  retain () override { return 1; } unsigned int  release () override { return 1; }
+#define IMPLEMENT_DUMMY_UNKNOWN2(Interface1, Interface2) CCL::tresult  queryInterface (CCL::UIDRef iid, void** ptr) override { if(CCL::ccl_iid<IUnknown> ().equals (iid)) { *ptr = static_cast<Interface1*>(this); retain (); return CCL::kResultOk; } if(CCL::ccl_iid<Interface1> ().equals (iid)) { *ptr = static_cast<Interface1*>(this); retain (); return CCL::kResultOk; } if(CCL::ccl_iid<Interface2> ().equals (iid)) { *ptr = static_cast<Interface2*>(this); retain (); return CCL::kResultOk; } return CCL::kResultNoInterface; } unsigned int  retain () override { return 1; } unsigned int  release () override { return 1; }
+#define IMPLEMENT_DUMMY_UNKNOWN3(Interface1, Interface2, Interface3) CCL::tresult  queryInterface (CCL::UIDRef iid, void** ptr) override { if(CCL::ccl_iid<IUnknown> ().equals (iid)) { *ptr = static_cast<Interface1*>(this); retain (); return CCL::kResultOk; } if(CCL::ccl_iid<Interface1> ().equals (iid)) { *ptr = static_cast<Interface1*>(this); retain (); return CCL::kResultOk; } if(CCL::ccl_iid<Interface2> ().equals (iid)) { *ptr = static_cast<Interface2*>(this); retain (); return CCL::kResultOk; } if(CCL::ccl_iid<Interface3> ().equals (iid)) { *ptr = static_cast<Interface3*>(this); retain (); return CCL::kResultOk; } return CCL::kResultNoInterface; } unsigned int  retain () override { return 1; } unsigned int  release () override { return 1; }
+#define IMPLEMENT_DUMMY_UNKNOWN4(Interface1, Interface2, Interface3, Interface4) CCL::tresult  queryInterface (CCL::UIDRef iid, void** ptr) override { if(CCL::ccl_iid<IUnknown> ().equals (iid)) { *ptr = static_cast<Interface1*>(this); retain (); return CCL::kResultOk; } if(CCL::ccl_iid<Interface1> ().equals (iid)) { *ptr = static_cast<Interface1*>(this); retain (); return CCL::kResultOk; } if(CCL::ccl_iid<Interface2> ().equals (iid)) { *ptr = static_cast<Interface2*>(this); retain (); return CCL::kResultOk; } if(CCL::ccl_iid<Interface3> ().equals (iid)) { *ptr = static_cast<Interface3*>(this); retain (); return CCL::kResultOk; } if(CCL::ccl_iid<Interface4> ().equals (iid)) { *ptr = static_cast<Interface4*>(this); retain (); return CCL::kResultOk; } return CCL::kResultNoInterface; } unsigned int  retain () override { return 1; } unsigned int  release () override { return 1; }
+#define PROPERTY_STRING_METHODS(member, Method) void set##Method (CCL::StringRef _str) { member = _str; } CCL::StringRef get##Method () const { return member; }
+#define PROPERTY_STRING(member, Method) protected: CCL::String member; public: void set##Method (CCL::StringRef _str) { member = _str; } CCL::StringRef get##Method () const { return member; }
+#define PROPERTY_MUTABLE_CSTRING(member, Method) protected: CCL::MutableCString member; public: void set##Method (const char* _cstr) { member = _cstr; } CCL::CStringRef get##Method () const { return member; }
+#define PROPERTY_AUTO_POINTER(type, member, Method) protected: CCL::AutoPtr<type> member; public: void set##Method (type* _##member) { member = _##member; } type* get##Method () const { return member; }
+#define PROPERTY_SHARED_METHODS(type, member, Method) void set##Method (type* _arg) { CCL::take_shared<type> (member, _arg); } type* get##Method () const { return member; }
+#define PROPERTY_SHARED(type, member, Method) protected: type* member; public: void set##Method (type* _arg) { CCL::take_shared<type> (member, _arg); } type* get##Method () const { return member; }
+#define PROPERTY_SHARED_AUTO(type, member, Method) protected: CCL::AutoPtr<type> member; public: void set##Method (type* _arg) { member.share (_arg); } type* get##Method () const { return member; }
+#define PROPERTY_SHARED_POINTER(type, member, Method) protected: CCL::SharedPtr<type> member; public: void set##Method (type* _arg) { member = _arg; } type* get##Method () const { return member; }
+
+//////////////////////////////////////////////////////////////////////////
+// public/collections/iunknownlist.h
+//////////////////////////////////////////////////////////////////////////
+
+#define ForEachUnknown(cont, var) { CCL::AutoPtr<CCL::IUnknownIterator> __iter = (cont).createIterator (); if(__iter.isValid ()) while(!__iter->done ()) { CCL::IUnknown* var = __iter->nextUnknown ();
+#define IterForEachUnknown(createIter, var) { CCL::AutoPtr<CCL::IUnknownIterator> __iter = createIter; if(__iter.isValid ()) while(!__iter->done ()) { CCL::IUnknown* var = __iter->nextUnknown ();
+
+//////////////////////////////////////////////////////////////////////////
+// public/collections/vector.h
+//////////////////////////////////////////////////////////////////////////
+
+#define LAMBDA_VECTOR_COMPARE(Type, lhs, rhs) [] (const void* __lhs, const void* __rhs) -> int { Type* lhs = *(Type**)__lhs; Type* rhs = *(Type**)__rhs;
+#define LAMBDA_VECTOR_COMPARE_OBJECT(Type, lhs, rhs) [] (const void* __lhs, const void* __rhs) -> int { Type* lhs = (Type*)__lhs; Type* rhs = (Type*)__rhs;
+
+//////////////////////////////////////////////////////////////////////////
+// public/gui/commanddispatch.h
+//////////////////////////////////////////////////////////////////////////
+
+#define DECLARE_COMMANDS(Class) protected: friend class CCL::CommandDispatcher<Class>; friend class CCL::CommandDispatcherRegistrar<Class>; friend class CCL::CommandRegistry; static CCL::CommandDispatchEntry<Class> __dispatchTable[]; static CCL::CommandDispatcherRegistrar<Class> __registrar; public: CCL::tbool  interpretCommand (const CCL::CommandMsg& msg) override;
+#define DECLARE_COMMAND_CATEGORY(_cat, Parent) CCL::tbool  checkCommandCategory (CCL::CStringRef category) const override { if(category == _cat) return true; return Parent::checkCommandCategory (category); }
+#define DECLARE_COMMAND_CATEGORY2(_cat1, _cat2, Parent) CCL::tbool  checkCommandCategory (CCL::CStringRef category) const override { if(category == _cat1 || category == _cat2) return true; return Parent::checkCommandCategory (category); }
+#define DECLARE_COMMAND_CATEGORY3(_cat1, _cat2, _cat3, Parent) CCL::tbool  checkCommandCategory (CCL::CStringRef category) const override { if(category == _cat1 || category == _cat2 || category == _cat3) return true; return Parent::checkCommandCategory (category); }
+#define BEGIN_COMMANDS(Class) CommandDispatchEntry<Class> Class::__dispatchTable[] = {
+#define DEFINE_COMMAND(category, name, Method) {category, name, &Method, 0, 0},
+#define DEFINE_COMMAND_(category, name, Method, flags) {category, name, &Method, flags, 0},
+#define DEFINE_COMMAND_ARGS(category, name, Method, flags, arguments) {category, name, &Method, flags, arguments},
+#define END_COMMANDS_UNREGISTERED {0, 0, 0, 0}};
+#define END_COMMANDS(Class) {0, 0, 0, 0}}; CCL::CommandDispatcherRegistrar<Class> Class::__registrar;
+#define IMPLEMENT_COMMANDS(Class, Parent) CCL::tbool  Class::interpretCommand (const CCL::CommandMsg& msg) { if(CCL::CommandDispatcher<Class>::dispatchCommand (msg)) return true; return Parent::interpretCommand (msg); }
+#define REGISTER_COMMAND(category, name) static CCL::CommandRegistrar CommandRegistrar ## __LINE__ (category, name, 0, 0);
+#define REGISTER_COMMAND_(category, name, flags) static CCL::CommandRegistrar CommandRegistrar ## __LINE__ (category, name, flags, 0);
+#define REGISTER_COMMAND_ARGS(category, name, flags, arguments) static CCL::CommandRegistrar CommandRegistrar ## __LINE__ (category, name, flags, arguments);
+
+//////////////////////////////////////////////////////////////////////////
+// gui/framework/iitemmodel.h
+//////////////////////////////////////////////////////////////////////////
+
+#define ForEachItem(selection, indexVar) { CCL::AutoPtr<CCL::IItemSelectionIterator> __iter ((selection).newIterator ()); CCL::ItemIndex indexVar; if(__iter) while(__iter->next (indexVar)) {
+
+//////////////////////////////////////////////////////////////////////////
+// gui/framework/styleflags.h
+//////////////////////////////////////////////////////////////////////////
+
+#define DECLARE_STYLEDEF(name) static const Core::EnumInfo name[];
+#define BEGIN_STYLEDEF(name) const Core::EnumInfo name[] = {
+#define END_STYLEDEF {0,0}};
+
+//////////////////////////////////////////////////////////////////////////
+// gui/framework/viewbox.h
+//////////////////////////////////////////////////////////////////////////
+
+#define ForEachChildView(parent, var) { CCL::AutoPtr<CCL::IViewIterator> __iter = (parent) ? (parent)->getChildren ().createIterator () : 0; if(__iter) while(!__iter->done ()) { CCL::ViewBox var = __iter->next ();
+#define ForEachChildViewReverse(parent, var) { CCL::AutoPtr<CCL::IViewIterator> __iter = (parent) ? (parent)->getChildren ().createIterator () : 0; if(__iter)__iter->last (); if(__iter) while(!__iter->done ()) { CCL::ViewBox var = __iter->previous ();
+
+//////////////////////////////////////////////////////////////////////////
+// public/gui/paramlist.h
+//////////////////////////////////////////////////////////////////////////
+
+#define DECLARE_PARAMETER_LOOKUP(paramList) int  countParameters () const override { return paramList.count (); } CCL::IParameter*  getParameterAt (int index) const override { return paramList.at (index); } CCL::IParameter*  findParameter (CCL::StringID name) const override { return paramList.lookup (name); } CCL::IParameter*  getParameterByTag (int tag) const override { return paramList.byTag (tag); }
+
+//////////////////////////////////////////////////////////////////////////
+// public/io/ifilesystem.h
+//////////////////////////////////////////////////////////////////////////
+
+#define ForEachFile(createIter, path) { CCL::AutoPtr<CCL::IFileIterator> __iter = createIter; const CCL::IUrl* path; if(__iter) while((path = __iter->next ()) != 0) {
+
+//////////////////////////////////////////////////////////////////////////
+// public/io/iattributelist.h
+//////////////////////////////////////////////////////////////////////////
+
+#define ForEachAttribute(attribs, name, value) { int __count = (attribs).countAttributes (); if(__count > 0) for(int __idx = 0; __idx < __count; __idx++) { CCL::MutableCString name; (attribs).getAttributeName (name, __idx); CCL::Variant value; (attribs).getAttributeValue (value, __idx);
+
+//////////////////////////////////////////////////////////////////////////
+// public/plugins/stubobject.h
+//////////////////////////////////////////////////////////////////////////
+
+#define DECLARE_STUB_METHODS(Interface, Class) Class (CCL::IObject* object, CCL::IUnknown* outerUnknown) : StubObject (object, outerUnknown) {} static CCL::IStubObject*  createInstance (CCL::UIDRef iid, CCL::IObject* object, CCL::IUnknown* outerUnknown) { return ::new Class (object, outerUnknown); } CCL::tresult  queryInterface (CCL::UIDRef iid, void** ptr) override { return StubObject::queryInterface (iid, ptr); } unsigned int  retain () override { return StubObject::retain (); } unsigned int  release () override { return StubObject::release (); } CCL::tresult  stubQueryInterface (CCL::UIDRef iid, void** ptr) override { if(CCL::ccl_iid<Interface> ().equals (iid)) { *ptr = (Interface*)this; stubRetain (); return CCL::kResultOk; } return StubObject::stubQueryInterface (iid, ptr); }
+#define REGISTER_STUB_CLASS(Interface, Stub) System::GetPlugInManager ().registerStubClass (CCL::ccl_iid<Interface> (), #Interface, Stub::createInstance);
+
+//////////////////////////////////////////////////////////////////////////
+// public/plugins/ipluginmanager.h
+//////////////////////////////////////////////////////////////////////////
+
+#define ForEachPlugInClass(category, var) { const CCL::IPlugInClassList& __classList = CCL::System::GetPlugInManager ().getClassList (category); for(int __classIndex = 0; __classIndex < __classList.getNumClasses (); __classIndex++) { const CCL::IClassDescription& var = __classList.getClass (__classIndex);
+
+//////////////////////////////////////////////////////////////////////////
+// public/text/cclstring.h
+//////////////////////////////////////////////////////////////////////////
+
+#define ForEachStringToken(string, delimiters, result) { CCL::AutoPtr<CCL::IStringTokenizer> __tokenizer = (string).tokenize (delimiters, 0); CCL::uchar __delimiter = 0; if(__tokenizer) while(!__tokenizer->done ()) { CCL::String result = __tokenizer->nextToken (__delimiter);
+#define ForEachStringTokenWithFlags(string, delimiters, result, flags) { CCL::AutoPtr<CCL::IStringTokenizer> __tokenizer = (string).tokenize (delimiters, flags); CCL::uchar __delimiter = 0; if(__tokenizer) while(!__tokenizer->done ()) { CCL::String result = __tokenizer->nextToken (__delimiter);
+
+//////////////////////////////////////////////////////////////////////////
+// public/text/cstring.h
+//////////////////////////////////////////////////////////////////////////
+
+#define CSTR(str) CCL::System::GetConstantCString (str)
+
+//////////////////////////////////////////////////////////////////////////
+// public/text/istring.h
+//////////////////////////////////////////////////////////////////////////
+
+#define CCLSTR(asciiString) CCL::System::GetConstantString (asciiString)
+#define CCLSTRSIZE(charBuffer) (sizeof(charBuffer)/sizeof(CCL::uchar))
+
+//////////////////////////////////////////////////////////////////////////
+// public/text/translation.h
+//////////////////////////////////////////////////////////////////////////
+
+#define BEGIN_XSTRINGS(name) namespace XStrings { static const CCL::LocalString::BeginScope beginScope ## __LINE__ (name);
+#define END_XSTRINGS static const CCL::LocalString::EndScope endScope ## __LINE__; }
+#define XSTRING(var, key) static const CCL::LocalString str##var (key);
+#define XSTR(var) XStrings::str##var.getText ()
+#define XSTR_REF(var) XStrings::str##var
+#define TRANSLATE(string) CCL::LocalString::translate (0, string)
+#define TRANSLATE2(scope, string) CCL::LocalString::translate (scope, string)

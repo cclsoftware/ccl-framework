@@ -1,0 +1,1040 @@
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: system/accessibility.cpp
+msgctxt "Accessibility"
+msgid "Off"
+msgstr "Off"
+
+#: system/accessibility.cpp
+msgctxt "Accessibility"
+msgid "On"
+msgstr "Açık"
+
+#: system/accessibility.cpp
+msgctxt "Accessibility"
+msgid "Page %(1) of %(2)"
+msgstr "%(2) sayfadan %(1). sayfa"
+
+#: dialogs/alert.cpp
+msgctxt "Alert"
+msgid "Cancel"
+msgstr "Vazgeç"
+
+#: dialogs/alert.cpp
+msgctxt "Alert"
+msgid "No"
+msgstr "Hayır"
+
+#: dialogs/alert.cpp
+msgctxt "Alert"
+msgid "OK"
+msgstr "Tamam"
+
+#: dialogs/alert.cpp
+msgctxt "Alert"
+msgid "Retry"
+msgstr "Tekrar Dene"
+
+#: dialogs/alert.cpp
+msgctxt "Alert"
+msgid "Yes"
+msgstr "Evet"
+
+#: views/focusnavigator.cpp
+msgctxt "Command"
+msgid "Cancel"
+msgstr "İptal"
+
+#: itemviews/itemview.cpp
+msgctxt "Command"
+msgid "Copy"
+msgstr "Copyala"
+
+#: itemviews/itemview.cpp
+msgctxt "Command"
+msgid "Cut"
+msgstr "Kes"
+
+#: itemviews/itemview.cpp
+msgctxt "Command"
+msgid "Delete"
+msgstr "Sil"
+
+#: itemviews/itemview.cpp
+msgctxt "Command"
+msgid "Deselect All"
+msgstr "Tümünün Seçimini Kaldır"
+
+#: itemviews/itemview.cpp
+msgctxt "Command"
+msgid "Down"
+msgstr "Aşağı"
+
+#: itemviews/itemview.cpp
+msgctxt "Command"
+msgid "Down Extend"
+msgstr "Aşağı Genişlet"
+
+#: itemviews/itemview.cpp
+msgctxt "Command"
+msgid "Down Extend Add"
+msgstr "Aşağı Genişlet ve Ekle"
+
+#: itemviews/itemview.cpp
+msgctxt "Command"
+msgid "Down Skip"
+msgstr "Aşağı Atla"
+
+#: itemviews/itemview.cpp
+msgctxt "Command"
+msgid "Edit"
+msgstr "Düzenle"
+
+#: itemviews/itemview.cpp
+msgctxt "Command"
+msgid "End"
+msgstr "Son"
+
+#: itemviews/itemview.cpp
+msgctxt "Command"
+msgid "End Extend"
+msgstr "Sona Genişlet"
+
+#: itemviews/itemview.cpp
+msgctxt "Command"
+msgid "End Extend Add"
+msgstr "Sona Genişlet ve Ekle"
+
+#: itemviews/itemview.cpp
+msgctxt "Command"
+msgid "End Skip"
+msgstr "Sona Atla"
+
+#: views/focusnavigator.cpp
+msgctxt "Command"
+msgid "Enter"
+msgstr "Enter"
+
+#: views/focusnavigator.cpp
+msgctxt "Command"
+msgid "Focus Next"
+msgstr "Odak Sonrakine"
+
+#: views/focusnavigator.cpp
+msgctxt "Command"
+msgid "Focus Previous"
+msgstr "Odak Öncekine"
+
+#: windows/windowmanager.cpp
+msgctxt "Command"
+msgid "Fullscreen"
+msgstr "Tam Ekran"
+
+#: itemviews/itemview.cpp
+msgctxt "Command"
+msgid "Left"
+msgstr "Sol"
+
+#: itemviews/itemview.cpp
+msgctxt "Command"
+msgid "Left Extend"
+msgstr "Sola Genişlet"
+
+#: itemviews/itemview.cpp
+msgctxt "Command"
+msgid "Left Extend Add"
+msgstr "Sola Genişlet Ekle"
+
+#: itemviews/itemview.cpp
+msgctxt "Command"
+msgid "Left Skip"
+msgstr "Sola Atlat"
+
+#: itemviews/itemview.cpp views/focusnavigator.cpp
+msgctxt "Command"
+msgid "Navigation"
+msgstr "Navigasyon"
+
+#: layout/workspace.cpp
+msgctxt "Command"
+msgid "Next Perspective"
+msgstr "Sonraki Perspektif"
+
+#: itemviews/itemview.cpp
+msgctxt "Command"
+msgid "Page Down"
+msgstr "Sayfa Aşağı"
+
+#: itemviews/itemview.cpp
+msgctxt "Command"
+msgid "Page Down Extend"
+msgstr "Sayfa Aşağı Genişlet"
+
+#: itemviews/itemview.cpp
+msgctxt "Command"
+msgid "Page Down Extend Add"
+msgstr "Sayfa Aşağı Genişlet Ekle"
+
+#: itemviews/itemview.cpp
+msgctxt "Command"
+msgid "Page Down Skip"
+msgstr "Sayfa Aşağı Atla"
+
+#: itemviews/itemview.cpp
+msgctxt "Command"
+msgid "Page Up"
+msgstr "Sayfa Yukarı"
+
+#: itemviews/itemview.cpp
+msgctxt "Command"
+msgid "Page Up Extend"
+msgstr "Sayfa Yukarı Genişlet"
+
+#: itemviews/itemview.cpp
+msgctxt "Command"
+msgid "Page Up Extend Add"
+msgstr "Sayfa Yukarı Genişlet Ekle"
+
+#: itemviews/itemview.cpp
+msgctxt "Command"
+msgid "Page Up Skip"
+msgstr "Sayfa Yukarı Atla"
+
+#: itemviews/itemview.cpp
+msgctxt "Command"
+msgid "Paste"
+msgstr "Yapıştır"
+
+#: layout/workspace.cpp
+msgctxt "Command"
+msgid "Pin Editor"
+msgstr "Düzenleyiciyi Sabitle"
+
+#: layout/workspace.cpp
+msgctxt "Command"
+msgid "Previous Perspective"
+msgstr "Önceki Perspektif"
+
+#: windows/windowmanager.cpp
+msgctxt "Command"
+msgid "Reset Window Positions"
+msgstr "Pencere Konumlarını Sıfırla"
+
+#: itemviews/itemview.cpp
+msgctxt "Command"
+msgid "Right"
+msgstr "Sağ"
+
+#: itemviews/itemview.cpp
+msgctxt "Command"
+msgid "Right Extend"
+msgstr "Sağa Genişlet"
+
+#: itemviews/itemview.cpp
+msgctxt "Command"
+msgid "Right Extend Add"
+msgstr "Sağa Genişlet Ekle"
+
+#: itemviews/itemview.cpp
+msgctxt "Command"
+msgid "Right Skip"
+msgstr "Sağa Atlat"
+
+#: itemviews/itemview.cpp
+msgctxt "Command"
+msgid "Select All"
+msgstr "Hepsini Seç"
+
+#: itemviews/itemview.cpp
+msgctxt "Command"
+msgid "Start"
+msgstr "Başla"
+
+#: itemviews/itemview.cpp
+msgctxt "Command"
+msgid "Start Extend"
+msgstr "Baştan Genişlet"
+
+#: itemviews/itemview.cpp
+msgctxt "Command"
+msgid "Start Extend Add"
+msgstr "Baştan Genişlet Ekle"
+
+#: itemviews/itemview.cpp
+msgctxt "Command"
+msgid "Start Skip"
+msgstr "Başı Atlat"
+
+#: layout/workspace.cpp
+msgctxt "Command"
+msgid "Toggle Floating Windows"
+msgstr "Yüzen Pencereleri Aç/Kapat"
+
+#: layout/workspace.cpp
+msgctxt "Command"
+msgid "Toggle Optional Views"
+msgstr "Opsiyonel Görünümleri Aç/Kapat"
+
+#: itemviews/itemview.cpp
+msgctxt "Command"
+msgid "Up"
+msgstr "Yukarı"
+
+#: itemviews/itemview.cpp
+msgctxt "Command"
+msgid "Up Extend"
+msgstr "Yukarı Genişlet"
+
+#: itemviews/itemview.cpp
+msgctxt "Command"
+msgid "Up Extend Add"
+msgstr "Yukarı Genişlet Ekle"
+
+#: itemviews/itemview.cpp
+msgctxt "Command"
+msgid "Up Skip"
+msgstr "Yukarı Atlat"
+
+#: layout/workspace.cpp windows/windowmanager.cpp
+msgctxt "Command"
+msgid "View"
+msgstr "Görünüm"
+
+#: controls/commandbar/commandbarview.cpp
+msgctxt "CommandBar"
+msgid "<Unnamed>"
+msgstr "<İsimsiz>"
+
+#: controls/commandbar/commandbarview.cpp
+msgctxt "CommandBar"
+msgid "Assign"
+msgstr "Ata"
+
+#: controls/commandbar/commandbarview.cpp
+msgctxt "CommandBar"
+msgid "Assign Command"
+msgstr "Komut Ata"
+
+#: controls/commandbar/commandbarview.cpp
+msgctxt "CommandBar"
+msgid "Default"
+msgstr "Varsayılan"
+
+#: controls/commandbar/commandbarview.cpp
+msgctxt "CommandBar"
+msgid "Do you want to remove \"%(1)\"?"
+msgstr "\"%(1)\"'i kaldırmak istiyor musunuz?"
+
+#: controls/commandbar/commandbarview.cpp
+msgctxt "CommandBar"
+msgid "Edit Menu"
+msgstr "Düzenleme Menüsü"
+
+#: controls/commandbar/commandbarview.cpp
+msgctxt "CommandBar"
+msgid "Go to"
+msgstr "Git"
+
+#: controls/commandbar/commandbarview.cpp
+msgctxt "CommandBar"
+msgid "Group"
+msgstr "Grup"
+
+#: controls/commandbar/commandbarview.cpp
+msgctxt "CommandBar"
+msgid "Horizontal"
+msgstr "Yatay"
+
+#: controls/commandbar/commandbarview.cpp
+msgctxt "CommandBar"
+msgid "Icon"
+msgstr "İkon"
+
+#: controls/commandbar/commandbarview.cpp
+msgctxt "CommandBar"
+msgid "Menu"
+msgstr "Menü"
+
+#: controls/commandbar/commandbarview.cpp
+msgctxt "CommandBar"
+msgid "Menu Item"
+msgstr "Menü Öğesi"
+
+#: controls/commandbar/commandbarview.cpp
+msgctxt "CommandBar"
+msgid "Move to"
+msgstr "Şuraya Taşı"
+
+#: controls/commandbar/commandbarview.cpp
+msgctxt "CommandBar"
+msgid "New Button"
+msgstr "Yeni Düğme"
+
+#: controls/commandbar/commandbarview.cpp
+msgctxt "CommandBar"
+msgid "New Group"
+msgstr "Yeni Grup"
+
+#: controls/commandbar/commandbarview.cpp
+msgctxt "CommandBar"
+msgid "New Menu Button"
+msgstr "Yeni Menü Düğmesi"
+
+#: controls/commandbar/commandbarview.cpp
+msgctxt "CommandBar"
+msgid "New Menu Item"
+msgstr "Yeni Menü Öğesi"
+
+#: controls/commandbar/commandbarview.cpp
+msgctxt "CommandBar"
+msgid "New Page"
+msgstr "Yeni Sayfa"
+
+#: controls/commandbar/commandbarview.cpp
+msgctxt "CommandBar"
+msgid "New Separator"
+msgstr "Yeni Ayraç"
+
+#: controls/commandbar/commandbarview.cpp
+msgctxt "CommandBar"
+msgid "New Submenu"
+msgstr "Yeni Alt Menü"
+
+#: controls/commandbar/commandbarview.cpp
+msgctxt "CommandBar"
+msgid "Page"
+msgstr "Sayfa"
+
+#: controls/commandbar/commandbarview.cpp
+msgctxt "CommandBar"
+msgid "Remove Button"
+msgstr "Düğmeyi Kaldır"
+
+#: controls/commandbar/commandbarview.cpp
+msgctxt "CommandBar"
+msgid "Remove Group"
+msgstr "Grubu Kaldır"
+
+#: controls/commandbar/commandbarview.cpp
+msgctxt "CommandBar"
+msgid "Remove Image"
+msgstr "Görseli Kaldır"
+
+#: controls/commandbar/commandbarview.cpp
+msgctxt "CommandBar"
+msgid "Remove Menu Item"
+msgstr "Menü Kalemini Kaldır"
+
+#: controls/commandbar/commandbarview.cpp
+msgctxt "CommandBar"
+msgid "Remove Page"
+msgstr "Sayfayı Kaldır"
+
+#: controls/commandbar/commandbarview.cpp
+msgctxt "CommandBar"
+msgid "Remove Separator"
+msgstr "Ayracı Kaldır"
+
+#: controls/commandbar/commandbarview.cpp
+msgctxt "CommandBar"
+msgid "Remove Submenu"
+msgstr "Alt Menüyü Kaldır"
+
+#: controls/commandbar/commandbarview.cpp
+msgctxt "CommandBar"
+msgid "Select Image"
+msgstr "Görsel Seç"
+
+#: controls/commandbar/commandbarview.cpp
+msgctxt "CommandBar"
+msgid "Separator"
+msgstr "Ayraç"
+
+#: controls/commandbar/commandbarview.cpp
+msgctxt "CommandBar"
+msgid "Vertical"
+msgstr "Dikey"
+
+#: dialogs/commandeditor.cpp
+msgctxt "CommandEditor"
+msgid "(modified)"
+msgstr "(değiştirilmiş)"
+
+#: dialogs/commandeditor.cpp
+msgctxt "CommandEditor"
+msgid ""
+"Key is already assigned to:\n"
+"%(1)"
+msgstr ""
+"Bu tuş zaten şuna atanmış durumda:\n"
+"%(1)"
+
+#: dialogs/dialogbuilder.cpp
+msgctxt "Dialog"
+msgid "Apply"
+msgstr "Uygula"
+
+#: dialogs/dialogbuilder.cpp
+msgctxt "Dialog"
+msgid "Cancel"
+msgstr "Vazgeç"
+
+#: dialogs/dialogbuilder.cpp
+msgctxt "Dialog"
+msgid "Close"
+msgstr "Kapat"
+
+#: dialogs/dialogbuilder.cpp
+msgctxt "Dialog"
+msgid "OK"
+msgstr "Tamam"
+
+#: itemviews/dropbox.cpp
+msgctxt "DropBox"
+msgid "Remove %(1)"
+msgstr "%(1)'i Kaldır"
+
+#: itemviews/itemview.cpp
+msgctxt "Edit"
+msgid "Delete"
+msgstr "Sil"
+
+#: graphics/imaging/bitmap.cpp
+msgctxt "FileType"
+msgid "Bitmap File"
+msgstr "Bitmap Dosyası"
+
+#: skin/coreskinmodel.cpp
+msgctxt "FileType"
+msgid "Bitmap Font"
+msgstr "Bitmap Font"
+
+#: theme/colorscheme.cpp
+msgctxt "FileType"
+msgid "Color Scheme"
+msgstr "Renk Teması"
+
+#: graphics/imaging/bitmap.cpp
+msgctxt "FileType"
+msgid "GIF File"
+msgstr "GIF Dosyası"
+
+#: graphics/imaging/multiimage.cpp
+msgctxt "FileType"
+msgid "Icon File"
+msgstr "İkon Dosyası"
+
+#: graphics/imaging/bitmap.cpp
+msgctxt "FileType"
+msgid "JPEG File"
+msgstr "JPEG Dosyası"
+
+#: commands.cpp
+msgctxt "FileType"
+msgid "Keyboard Mapping Scheme"
+msgstr "Klavye Haritalama Düzeni"
+
+#: graphics/imaging/bitmap.cpp
+msgctxt "FileType"
+msgid "PNG File"
+msgstr "PNG Dosyası"
+
+#: graphics/shapes/svg/svgparser.cpp
+msgctxt "FileType"
+msgid "Scalable Vector Graphics"
+msgstr "Ölçeklenebilir Vektör Grafik"
+
+#: skin/skinwizard.cpp
+msgctxt "FileType"
+msgid "Skin File"
+msgstr "Görünüm Dosyası"
+
+#: graphics/imaging/codecs/webpcodec.cpp
+msgctxt "FileType"
+msgid "WebP File"
+msgstr "WebP Dosyası"
+
+#: graphics/nativegraphics.cpp
+msgctxt "GraphicsEngine"
+msgid "This application requires 3D graphics support, but no 3D graphics backend could be initialized."
+msgstr "Bu uygulama 3D grafik desteği gerektiriyor ancak hiçbir 3D grafik altyapısı başlatılamadı."
+
+#: itemviews/headerview.cpp
+msgctxt "HeaderView"
+msgid "Reset All Columns"
+msgstr "Tüm Sütunları Sıfırla"
+
+#: itemviews/headerview.cpp
+msgctxt "HeaderView"
+msgid "Size All Columns to Fit"
+msgstr "Tüm Sütunları Sığdır"
+
+#: itemviews/headerview.cpp
+msgctxt "HeaderView"
+msgid "Size Column to Fit"
+msgstr "Sütunu Sığdır"
+
+#: help/helpmanager.cpp
+msgctxt "HelpManager"
+msgid "Help file not found at:\n"
+msgstr "Yardım dosyası şurada bulunamadı:\n"
+
+#: help/helpmanager.cpp
+msgctxt "HelpManager"
+msgid "No compatible PDF Viewer installed!"
+msgstr "Uyumlu PDF görüntüleyici yüklü değil"
+
+#: dialogs/progressdialog.cpp
+msgctxt "ProgressDialog"
+msgid "Cancelling..."
+msgstr "Vazgeçiliyor"
+
+#: controls/segmentbox.cpp
+msgctxt "SegmentBox"
+msgid "Copy Text to Clipboard"
+msgstr "Yazıyı Panoya Kopyala"
+
+#: controls/textbox.cpp
+msgctxt "TextBox"
+msgid "Copy Text to Clipboard"
+msgstr "Yazıyı Panoya Kopyala"
+
+#: dialogs/useroptionmodel.cpp
+msgctxt "UserOption"
+msgid "General"
+msgstr "Genel"
+
+#: dialogs/useroptionmodel.cpp
+msgctxt "UserOption"
+msgid "You have made changes to the setup. Do you want to apply the changes?"
+msgstr "Ayarlarda değişiklik yaptınız. Değişiklikleri uygulamak istiyor musunuz?"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "&#168;"
+msgstr "¨"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "&#180;"
+msgstr "´"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "&#96;"
+msgstr "`"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "Alt"
+msgstr "Alt"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "Backspace"
+msgstr "Geri"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "Caps Lock"
+msgstr "Caps Lock"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "Channel Down"
+msgstr "Kanal Aşağı"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "Channel Up"
+msgstr "Kanal Yukarı"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "Command"
+msgstr "Komut"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "Control"
+msgstr "Kontrol"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "Ctrl"
+msgstr "Ctrl"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "Del"
+msgstr "Del"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "Down Arrow"
+msgstr "Aşağı Ok"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "End"
+msgstr "Son"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "Enter"
+msgstr "Enter"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "Esc"
+msgstr "Esc"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "F1"
+msgstr "F1"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "F10"
+msgstr "F10"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "F11"
+msgstr "F11"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "F12"
+msgstr "F12"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "F13"
+msgstr "F13"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "F14"
+msgstr "F14"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "F15"
+msgstr "F15"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "F16"
+msgstr "F16"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "F17"
+msgstr "F17"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "F18"
+msgstr "F18"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "F19"
+msgstr "F19"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "F2"
+msgstr "F2"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "F20"
+msgstr "F20"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "F21"
+msgstr "F21"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "F22"
+msgstr "F22"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "F23"
+msgstr "F23"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "F24"
+msgstr "F24"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "F3"
+msgstr "F3"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "F4"
+msgstr "F4"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "F5"
+msgstr "F5"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "F6"
+msgstr "F6"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "F7"
+msgstr "F7"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "F8"
+msgstr "F8"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "F9"
+msgstr "F9"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "Forward"
+msgstr "İleri"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "Home"
+msgstr "Home"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "Ins"
+msgstr "Ins"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "Left Arrow"
+msgstr "Sol Ok"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "NumPad*"
+msgstr "NumPad*"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "NumPad+"
+msgstr "NumPad+"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "NumPad-"
+msgstr "NumPad-"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "NumPad."
+msgstr "NumPad."
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "NumPad/"
+msgstr "NumPad/"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "NumPad0"
+msgstr "NumPad0"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "NumPad1"
+msgstr "NumPad1"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "NumPad2"
+msgstr "NumPad2"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "NumPad3"
+msgstr "NumPad3"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "NumPad4"
+msgstr "NumPad4"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "NumPad5"
+msgstr "NumPad5"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "NumPad6"
+msgstr "NumPad6"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "NumPad7"
+msgstr "NumPad7"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "NumPad8"
+msgstr "NumPad8"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "NumPad9"
+msgstr "NumPad9"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "Option"
+msgstr "Opsiyon"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "Page Down"
+msgstr "Sayfa Aşağı"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "Page Up"
+msgstr "Sayfa Yukarı"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "Pause"
+msgstr "Durdur"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "Play Pause"
+msgstr "Oynat/Durdur"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "Record"
+msgstr "Kayıt"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "Return"
+msgstr "Return"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "Rewind"
+msgstr "Geri Sar"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "Right Arrow"
+msgstr "Sağ Ok"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "Shift"
+msgstr "Shift"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "Space"
+msgstr "Boşluk"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "Stop"
+msgstr "Durdur"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "Tab"
+msgstr "Tab"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "Up Arrow"
+msgstr "Yukarı Ok"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "Volume Down"
+msgstr "Ses Kıs"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "Volume Mute"
+msgstr "Sessize Al"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "Volume Up"
+msgstr "Ses Aç"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "^"
+msgstr "^"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "~"
+msgstr "~"
+
+#: system/webbrowserview.cpp
+msgctxt "WebView"
+msgid "Copy Text to Clipboard"
+msgstr "Yazıyı Panoya Kopyala"
+
+#: system/webbrowserview.cpp
+msgctxt "WebView"
+msgid "Go Back"
+msgstr "Geri Git"
+
+#: system/webbrowserview.cpp
+msgctxt "WebView"
+msgid "Go Forward"
+msgstr "İleri Git"
+
+#: system/webbrowserview.cpp
+msgctxt "WebView"
+msgid "Reload Page"
+msgstr "Sayfayı Yeniden Yükle"
+
+#~ msgctxt "CommandBar"
+#~ msgid "Assign Command..."
+#~ msgstr "Komut Ata..."
+
+#~ msgctxt "ListView"
+#~ msgid "Details"
+#~ msgstr "Detaylar"
+
+#~ msgctxt "ListView"
+#~ msgid "Icons"
+#~ msgstr "İkonlar"
+
+#~ msgctxt "ListView"
+#~ msgid "List"
+#~ msgstr "Liste"

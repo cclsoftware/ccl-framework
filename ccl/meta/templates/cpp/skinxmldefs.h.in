@@ -1,0 +1,17 @@
+{% include ../cclfileheader.in %}
+
+#ifndef _ccl_skinxmldefs_generated_h
+#define _ccl_skinxmldefs_generated_h
+
+{% for group in groups %}
+//////////////////////////////////////////////////////////////////////////////////////////////////
+// {{ group.name }}
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+{% for definition in group.definitions %}
+#define {{ definition.name }} {{ definition.value | cppvalue }}
+{% endfor %}
+
+{% endfor %}
+
+#endif // _ccl_skinxmldefs_generated_h

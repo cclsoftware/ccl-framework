@@ -1,0 +1,2 @@
+# Maintain original line numbers and source file names for stack traces
+-keepattributes LineNumberTable,SourceFile

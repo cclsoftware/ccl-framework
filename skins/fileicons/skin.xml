@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Skin>
+	<Resources>
+		
+		<!-- Generic Icons / Folder Icons -->
+		
+		<IconSet name="FileIcon:unknown" url="icons/document.iconset" adaptive="false"/>
+
+		<IconSet name="FolderIcon:normal" url="icons/folder.iconset"  adaptive="true"/>
+		<IconSet name="FolderIcon:open" url="icons/openfolder.iconset"  adaptive="true"/>
+		
+		<!-- Application Files -->
+		
+		<IconSet name="FileIcon:app" url="icons/application.iconset" adaptive="false"/>
+		<Image name="FileIcon:exe" image="FileIcon:app"/>
+		
+		<IconSet name="FileIcon:install" url="icons/install.iconset" frames="all" adaptive="false"/> <!-- load all frames incl. 48x48 -->
+		<IconSet name="FileIcon:license" url="icons/license.iconset" adaptive="false"/>
+		<Image name="FileIcon:msi" image="FileIcon:install"/>
+		<Image name="FileIcon:mpkg" image="FileIcon:install"/>
+		<IconSet name="FileIcon:dmg" url="icons/diskimage.iconset" adaptive="false"/>
+		<Image name="FileIcon:img" image="FileIcon:dmg"/>
+		<Image name="FileIcon:deb" image="FileIcon:dmg"/>
+
+		<IconSet name="FileIcon:keyscheme" url="icons/shortcuts.iconset" adaptive="false"/>
+
+		<IconSet name="FileIcon:colorscheme"  url="icons/colorscheme.iconset" adaptive="false"/>
+		<IconSet name="FileIcon:colorpalette" url="icons/colorpalette.iconset" adaptive="false"/>
+		
+		<!-- Text Files -->
+		
+		<IconSet name="FileIcon:txt" url="icons/text.iconset" adaptive="false"/>
+		<Image name="FileIcon:rtf" image="FileIcon:txt"/>
+		<Image name="FileIcon:pdf" image="FileIcon:txt"/>
+		
+		<IconSet name="FileIcon:xml" url="icons/xml.iconset" adaptive="false"/>
+
+		<!-- Image Files -->
+		
+		<IconSet name="FileIcon:bmp" url="icons/image.iconset" adaptive="false"/>
+		<Image name="FileIcon:png" image="FileIcon:bmp"/>
+		<Image name="FileIcon:jpg" image="FileIcon:bmp"/>
+		<Image name="FileIcon:gif" image="FileIcon:bmp"/>
+		<Image name="FileIcon:webp" image="FileIcon:bmp"/>
+		
+		<!-- Package Files -->
+		
+		<IconSet name="FileIcon:zip" url="icons/zip.iconset" adaptive="false"/>
+		<Image name="FileIcon:package" image="FileIcon:zip"/>
+				
+	</Resources>
+</Skin>
+

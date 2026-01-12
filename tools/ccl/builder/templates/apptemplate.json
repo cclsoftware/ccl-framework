@@ -1,0 +1,154 @@
+{
+	"name": "apptemplate",
+	"inherits": "basetemplate",
+	"description": "Application based on CCL",
+	"destination": "applications/@TargetName",
+	"platforms":
+	[
+		"win",
+		"mac",
+		"ios",
+		"android",
+		"linux"
+	],
+	"variables":
+	[
+		{
+			"key": "ProjectTitle",
+			"defaultValue": "My Application",
+			"description": "application title, name of the generated IDE project"
+		},
+		{
+			"key": "TargetName",
+			"defaultValue": "myapp",
+			"description": "name of the CMake target, name of the main application source files"
+		},
+		{
+			"key": "ApplicationClass",
+			"defaultValue": "MyApplication",
+			"description": "application class name"
+		},
+		{
+			"key": "PackageID",
+			"defaultValue": "@VendorPackageDomain.@TargetName",
+			"description": "application package ID"
+		},
+		{
+			"key": "ApplicationNamespace",
+			"defaultValue": "@DefaultNamespace",
+			"description": "application namespace"
+		}
+	],
+	"replacements": 
+	[
+		{
+			"searchString": "apptemplate",
+			"replaceString": "@TargetName",
+			"filter": "*.cpp;*.h;*.cmake;*.txt;*.json;*.in;*.nsi;*.bat;*.java;*.gradle;*.template"
+		},
+		{
+			"searchString": "AppNamespace",
+			"replaceString": "@ApplicationNamespace",
+			"filter": "*.cpp;*.h;*.java"
+		},
+		{
+			"searchString": "appvendor",
+			"replaceString": "@VendorID",
+			"filter": "*.txt"
+		},
+		{
+			"searchString": "AppTemplate",
+			"replaceString": "@ApplicationClass",
+			"filter": "*.cpp;*.h;*.java;*.gradle;*.template;*.xml"
+		},
+		{
+			"searchString": "Application Template",
+			"replaceString": "@ProjectTitle",
+			"filter": "*.cpp;*.h;*.cmake;*.txt;*.json;*.in;*.nsi;*.bat;build.sh;*.java;*.gradle;*.template;*.xml"
+		},
+		{
+			"searchString": "(Application Developer)",
+			"replaceString": "@AuthorName",
+			"filter": "*.cpp;*.h;*.cmake;*.txt;*.json;*.in;*.java"
+		},
+		{
+			"searchString": "(Application Copyright)",
+			"replaceString": "@ProjectCopyright",
+			"filter": "*.cpp;*.h;*.cmake;*.txt;*.java"
+		},
+		{
+			"searchString": "(ProjectPackageID)",
+			"replaceString": "@PackageID",
+			"filter": "*.cmake;*.java"
+		}
+	],
+	"files":
+	[
+		{
+			"source": "apptemplate/source",
+			"destination": "@Destination/source"
+		},
+		{
+			"source": "apptemplate/resource",
+			"destination": "@Destination/resource"
+		},
+		{
+			"source": "apptemplate/skin",
+			"destination": "@Destination/skin"
+		},
+		{
+			"source": "apptemplate/cmake/CMakeLists.txt",
+			"destination": "@Destination/cmake/CMakeLists.txt"
+		},
+		{
+			"source": "apptemplate/cmake/apptemplate.mac.cmake",
+			"destination": "@Destination/cmake/apptemplate.mac.cmake",
+			"platform": "mac"
+		},
+		{
+			"source": "apptemplate/cmake/apptemplate.ios.cmake",
+			"destination": "@Destination/cmake/apptemplate.ios.cmake",
+			"platform": "ios"
+		},
+		{
+			"source": "apptemplate/cmake/apptemplate.win.cmake",
+			"destination": "@Destination/cmake/apptemplate.win.cmake",
+			"platform": "win"
+		},
+		{
+			"source": "apptemplate/cmake/apptemplate.linux.cmake",
+			"destination": "@Destination/cmake/apptemplate.linux.cmake",
+			"platform": "linux"
+		},
+		{
+			"source": "apptemplate/cmake/apptemplate.android.cmake",
+			"destination": "@Destination/cmake/apptemplate.android.cmake",
+			"platform": "android"
+		},
+		{
+			"source": "apptemplate/packaging/linux",
+			"destination": "@Destination/packaging/linux",
+			"platform": "linux"
+		},
+		{
+			"source": "apptemplate/packaging/mac",
+			"destination": "@Destination/packaging/mac",
+			"platform": "mac"
+		},
+		{
+			"source": "apptemplate/packaging/win",
+			"destination": "@Destination/packaging/win",
+			"platform": "win"
+		},
+		{
+			"source": "apptemplate/packaging/android",
+			"destination": "@Destination/packaging/android",
+			"platform": "android"
+		},
+		{
+			"source": "apptemplate/packaging/ios",
+			"destination": "@Destination/packaging/ios",
+			"platform": "ios"
+		}
+	]
+}

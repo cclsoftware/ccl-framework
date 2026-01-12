@@ -1,0 +1,147 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Model.ClassRepository xmlns:x="https://ccl.dev/xml" name="Core Skin Elements">
+	<List x:id="classes">
+		<Model.Class name="AlignView" parent="ContainerView">
+			<List x:id="members">
+				<Model.Member name="textalign" type="string"/>
+			</List>
+		</Model.Class>
+		<Model.Class name="Button" parent="View">
+			<List x:id="members">
+				<Model.Member name="image" type="string"/>
+				<Model.Member name="icon" type="string"/>
+				<Model.Member name="title" type="string"/>
+			</List>
+		</Model.Class>
+		<Model.Class name="ContainerView" parent="View">
+			<List x:id="members">
+				<Model.Member name="controller" type="string"/>
+			</List>
+		</Model.Class>
+		<Model.Class name="Delegate" parent="ContainerView">
+			<List x:id="members">
+				<Model.Member name="viewname" type="string"/>
+			</List>
+		</Model.Class>
+		<Model.Class name="EditBox" parent="TextBox">
+			<List x:id="members">
+				<Model.Member name="keyboardlayout" type="string"/>
+			</List>
+		</Model.Class>
+		<Model.Class name="Form" parent="ContainerView">
+		</Model.Class>
+		<Model.Class name="ImageView" parent="ContainerView">
+			<List x:id="members">
+				<Model.Member name="image" type="string"/>
+			</List>
+		</Model.Class>
+		<Model.Class name="Label" parent="View">
+			<List x:id="members">
+				<Model.Member name="title" type="string"/>
+			</List>
+		</Model.Class>
+		<Model.Class name="ListView" parent="View">
+		</Model.Class>
+		<Model.Class name="MultiLineLabel" parent="View">
+			<List x:id="members">
+				<Model.Member name="title" type="string"/>
+			</List>
+		</Model.Class>
+		<Model.Class name="RadioButton" parent="Button">
+		</Model.Class>
+		<Model.Class name="SelectBox" parent="TextBox">
+			<List x:id="members">
+				<Model.Member name="image" type="string"/>
+			</List>
+		</Model.Class>
+		<Model.Class name="Slider" parent="ValueBar">
+		</Model.Class>
+		<Model.Class name="TextBox" parent="View">
+			<List x:id="members">
+				<Model.Member name="texttrim" type="string"/>
+			</List>
+		</Model.Class>
+		<Model.Class name="Toggle" parent="Button">
+		</Model.Class>
+		<Model.Class name="ValueBar" parent="View">
+			<List x:id="members">
+				<Model.Member name="image" type="string"/>
+				<Model.Member name="background" type="string"/>
+			</List>
+		</Model.Class>
+		<Model.Class name="VariantView" parent="ContainerView">
+		</Model.Class>
+		<Model.Class name="View">
+			<List x:id="members">
+				<Model.Member name="name" type="string"/>
+				<Model.Member name="width" type="int"/>
+				<Model.Member name="height" type="int"/>
+				<Model.Member name="size" type="string"/>
+				<Model.Member name="style" type="string"/>
+				<Model.Member name="options" type="string"/>
+			</List>
+		</Model.Class>
+	</List>
+	<List x:id="enums">
+		<Model.Enumeration name="AlignView.textalign">
+			<List x:id="enumerators">
+				<Model.Enumerator name="hcenter" value="0"/>
+				<Model.Enumerator name="left" value="1"/>
+				<Model.Enumerator name="right" value="2"/>
+				<Model.Enumerator name="vcenter" value="0"/>
+				<Model.Enumerator name="top" value="16"/>
+				<Model.Enumerator name="bottom" value="32"/>
+			</List>
+		</Model.Enumeration>
+		<Model.Enumeration name="Button.options">
+			<List x:id="enumerators">
+				<Model.Enumerator name="wantfocus" value="65536"/>
+				<Model.Enumerator name="deferred" value="131072"/>
+				<Model.Enumerator name="transparent" value="262144"/>
+				<Model.Enumerator name="silenttracking" value="524288"/>
+			</List>
+		</Model.Enumeration>
+		<Model.Enumeration name="EditBox.keyboardlayout">
+			<List x:id="enumerators">
+				<Model.Enumerator name="letters" value="0"/>
+				<Model.Enumerator name="numbers" value="1"/>
+				<Model.Enumerator name="symbols" value="2"/>
+			</List>
+		</Model.Enumeration>
+		<Model.Enumeration name="ImageView.options">
+			<List x:id="enumerators">
+				<Model.Enumerator name="colorize" value="65536"/>
+			</List>
+		</Model.Enumeration>
+		<Model.Enumeration name="Label.options">
+			<List x:id="enumerators">
+				<Model.Enumerator name="colorize" value="65536"/>
+			</List>
+		</Model.Enumeration>
+		<Model.Enumeration name="TextBox.options">
+			<List x:id="enumerators">
+				<Model.Enumerator name="multiline" value="65536"/>
+				<Model.Enumerator name="hidetext" value="131072"/>
+			</List>
+		</Model.Enumeration>
+		<Model.Enumeration name="TextBox.texttrim">
+			<List x:id="enumerators">
+				<Model.Enumerator name="none" value="0"/>
+				<Model.Enumerator name="middle" value="1"/>
+				<Model.Enumerator name="right" value="2"/>
+			</List>
+		</Model.Enumeration>
+		<Model.Enumeration name="ValueBar.options">
+			<List x:id="enumerators">
+				<Model.Enumerator name="vertical" value="65536"/>
+				<Model.Enumerator name="centered" value="131072"/>
+				<Model.Enumerator name="filmstrip" value="262144"/>
+			</List>
+		</Model.Enumeration>
+		<Model.Enumeration name="View.options">
+			<List x:id="enumerators">
+				<Model.Enumerator name="disabled" value="1"/>
+			</List>
+		</Model.Enumeration>
+	</List>
+</Model.ClassRepository>

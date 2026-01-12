@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RuleSet Name="CCL Code Analysis Rules" ToolsVersion="17.0">
+  <Rules AnalyzerId="Microsoft.Analyzers.NativeCodeAnalysis" RuleNamespace="Microsoft.Rules.Native">
+    <Rule Id="C26433" Action="Warning" /> <!-- Missing override declaration -->
+  </Rules>
+</RuleSet>

@@ -1,0 +1,18 @@
+#ifndef _vendor_${vendor_id}_h
+#define _vendor_${vendor_id}_h
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+#define VENDOR_NAME				"${VENDOR_NAME}"
+#define VENDOR_COPYRIGHT_YEAR   "${VENDOR_COPYRIGHT_YEAR}"
+#define VENDOR_COPYRIGHT        "${VENDOR_COPYRIGHT}"
+#define VENDOR_WEBSITE          "${VENDOR_WEBSITE}"
+#define VENDOR_MAIL             "${VENDOR_MAIL}"
+
+#define VENDOR_PACKAGE_DOMAIN   "${VENDOR_PACKAGE_DOMAIN}"
+#define VENDOR_MIME_TYPE        "${VENDOR_MIME_TYPE}"
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+#endif // _vendor_${vendor_id}_h
+

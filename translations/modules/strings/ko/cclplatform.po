@@ -1,0 +1,98 @@
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: android/system/filemanager.android.cpp
+msgctxt "FileManager"
+msgid "Internal Storage"
+msgstr "내장 스토리지"
+
+#: cocoa/gui/fileselector.cocoa.mm
+msgctxt "FileSelector"
+msgid "All Documents"
+msgstr "모든 도큐먼트"
+
+#: shared/host/platformfileselectorbase.cpp
+msgctxt "FileSelector"
+msgid "All Files"
+msgstr "모든 파일"
+
+#: win/gui/fileselector.win.cpp
+msgctxt "FileSelector"
+msgid "All Files (*.*)"
+msgstr "모든 파일 (*.*)"
+
+#: cocoa/gui/fileselector.cocoa.mm
+msgctxt "FileSelector"
+msgid "All Readable Documents"
+msgstr "읽을 수 있는 모든 도큐먼트"
+
+#: shared/host/platformfileselectorbase.cpp win/gui/fileselector.win.cpp
+msgctxt "FileSelector"
+msgid "All Supported Files"
+msgstr "지원하는 모든 파일"
+
+#: cocoa/gui/fileselector.ios.mm
+msgctxt "FileSelector"
+msgid "Files are still being downloaded. Please try to open the file again later."
+msgstr "파일을 다운로드하고 있습니다. 나중에 다시 파일을 열어 주십시오."
+
+#: cocoa/system/filemanager.ios.mm
+msgctxt "IOSFileManager"
+msgid "Other Application"
+msgstr "다른 어플리케이션"
+
+#: cocoa/system/filemanager.ios.mm
+msgctxt "IOSFileManager"
+msgid "Storage"
+msgstr "스토리지"
+
+#: cocoa/gui/menu.cocoa.mm
+msgctxt "MacMenu"
+msgid "Hide"
+msgstr "숨김"
+
+#: cocoa/gui/menu.cocoa.mm
+msgctxt "MacMenu"
+msgid "Hide Others"
+msgstr "다른 항목 숨김"
+
+#: cocoa/gui/menu.cocoa.mm
+msgctxt "MacMenu"
+msgid "Quit"
+msgstr "종료"
+
+#: cocoa/gui/menu.cocoa.mm
+msgctxt "MacMenu"
+msgid "Services"
+msgstr "서비스"
+
+#: cocoa/gui/menu.cocoa.mm
+msgctxt "MacMenu"
+msgid "Show All"
+msgstr "모두 표시"
+
+#: win/gui/exceptionhandler.cpp
+msgctxt "Win32"
+msgid ""
+"An unexpected error occurred in this application or in a plug-in.\n"
+"A problem report has been created at:\n"
+"\n"
+"%(1)"
+msgstr ""
+"이 어플리케이션 또는 플러그인에서 예기치 못한 오류가 발생했습니다.\n"
+"이 오류와 관련된 리포트가 다음 위치에 작성되었습니다.:\n"
+"\n"
+"%(1)"
+
+#: win/direct2d/dxgiengine.cpp
+msgctxt "Win32"
+msgid "Graphics hardware acceleration issue detected."
+msgstr "그래픽 하드웨어 가속 문제가 발견되었습니다."
+
+#: win/direct2d/d2dengine.cpp
+msgctxt "Win32"
+msgid "This application requires Windows 10 or later."
+msgstr "이 어플리케이션을 설치하려면 윈도우즈 10 또는 그 이후 버전의 운영체제가 필요합니다."

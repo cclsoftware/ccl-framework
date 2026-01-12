@@ -1,0 +1,99 @@
+{
+	"name": "coreplugintemplate",
+	"inherits": "basetemplate",
+	"description": "Plug-in library based on CCL Core Library",
+	"destination": "plugins/@TargetName",
+	"platforms":
+	[
+		"win",
+		"mac",
+		"linux"
+	],
+	"variables":
+	[
+		{
+			"key": "ProjectTitle",
+			"defaultValue": "My Plug-in",
+			"description": "plug-in title, name of the generated IDE project"
+		},
+		{
+			"key": "TargetName",
+			"defaultValue": "myplugin",
+			"description": "name of the CMake target, name of the main plug-in source files"
+		},
+		{
+			"key": "PlugInClass",
+			"defaultValue": "MyPlugIn",
+			"description": "plug-in class name"
+		},
+		{
+			"key": "PlugInType",
+			"defaultValue": "\"MyClassType\"",
+			"description": "plug-in class type, e.g. CLASS_TYPE_GAMECORE"
+		},
+		{
+			"key": "PackageID",
+			"defaultValue": "@VendorPackageDomain.@TargetName",
+			"description": "plug-in package ID"
+		},
+		{
+			"key": "PlugInNamespace",
+			"defaultValue": "@DefaultNamespace",
+			"description": "plug-in namespace"
+		}
+	],
+	"replacements": 
+	[
+		{
+			"searchString": "plugintemplate",
+			"replaceString": "@TargetName",
+			"filter": "*.cpp;*.h;*.cmake;*.txt;*.json;*.in;*.bat;*.template"
+		},
+		{
+			"searchString": "PlugNamespace",
+			"replaceString": "@PlugInNamespace",
+			"filter": "*.cpp;*.h"
+		},
+		{
+			"searchString": "plugvendor",
+			"replaceString": "@VendorID",
+			"filter": "*.txt"
+		},
+		{
+			"searchString": "PlugTemplate",
+			"replaceString": "@PlugInClass",
+			"filter": "*.cpp;*.h;*.template;*.xml"
+		},
+		{
+			"searchString": "PlugType",
+			"replaceString": "@PlugInType",
+			"filter": "*.cpp;*.h;*.template;*.xml"
+		},
+		{
+			"searchString": "Plug-In Template",
+			"replaceString": "@ProjectTitle",
+			"filter": "*.cpp;*.h;*.cmake;*.txt;*.json;*.in;*.nsi;*.bat;build.sh;*.template;*.xml"
+		},
+		{
+			"searchString": "(Plug-In Developer)",
+			"replaceString": "@AuthorName",
+			"filter": "*.cpp;*.h;*.cmake;*.txt;*.json;*.in"
+		},
+		{
+			"searchString": "(Plug-In Copyright)",
+			"replaceString": "@ProjectCopyright",
+			"filter": "*.cpp;*.h;*.cmake;*.txt"
+		}
+	],
+	"files":
+	[
+		{
+			"source": "coreplugintemplate/source",
+			"destination": "@Destination/source"
+		},
+		{
+			"source": "coreplugintemplate/cmake/CMakeLists.txt",
+			"destination": "@Destination/cmake/CMakeLists.txt"
+		}
+	]
+}

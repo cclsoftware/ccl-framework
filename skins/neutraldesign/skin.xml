@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Skin>
+	<Includes>
+		<Include name="Standard" url="icons.xml"/> 
+		
+		<Include url="sharedcolors.xml"/>
+		<Include url="resources.xml"/>
+		<Include url="styles.xml"/>
+		<Include url="overlays.xml"/>
+		<Include url="tutorialviewer.xml"/>
+		<Include url="euladialog.xml"/>
+	</Includes>
+
+	<Externals>
+		<External name="StandardUI"/>
+		<External name="PrimaryColor*"/> <!-- 25, 30, 35, ... 75 -->
+		<External name="BaseColor*"/> <!-- 00, 05, 10, ... 100 -->
+		<External name="SeverityColor*"/> <!-- Normal, High -->
+	</Externals>
+
+	<Overlays>
+		<Overlay target="skin://cclgui/UserOptionDialog" source="UserOptionDialog"/>
+		<Overlay target="skin://cclgui/ProgressDialogView" source="ProgressDialogView"/>
+		<Overlay target="skin://cclgui/ProgressStepView" source="ProgressStepView"/>
+		<Overlay target="skin://cclgui/Standard.ColorPickerPopup" source="Standard.ColorPickerPopup"/>
+
+		<Overlay target="skin://cclgui/Standard.DialogFrame" source="Standard.DialogFrame"/>
+		<Overlay target="skin://cclgui/Standard.PopupMenuDecor" source="Standard.PopupMenuDecor"/>
+		<Overlay target="skin://cclgui/TutorialViewer" source="TutorialViewer"/>
+		<Overlay target="skin://cclgui/TutorialViewer.SkinContent" source="TutorialViewer.SkinContent"/>
+	</Overlays>
+</Skin>

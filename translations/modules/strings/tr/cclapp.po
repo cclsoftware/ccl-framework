@@ -1,0 +1,2446 @@
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: actions/actionjournal.cpp
+msgctxt "Action"
+msgid "Redo"
+msgstr "Tekrarla"
+
+#: actions/actionjournal.cpp
+msgctxt "Action"
+msgid "Undo"
+msgstr "Geri Al"
+
+#: safety/appsafetymanager.cpp
+msgctxt "AppSafetyManager"
+msgid "Add plug-in to the Blocklist."
+msgstr "Plug-In'i Engellenenler Listesine Ekle."
+
+#: safety/appsafetymanager.cpp
+msgctxt "AppSafetyManager"
+msgid "Block %(1)"
+msgstr "%(1)'i Engelle"
+
+#: safety/appsafetymanager.cpp
+msgctxt "AppSafetyManager"
+msgid "Diagnostics Report"
+msgstr "Tanılama Raporu"
+
+#: safety/appsafetymanager.cpp
+msgctxt "AppSafetyManager"
+msgid "Disable %(1)"
+msgstr "%(1) Devre Dışı Bırak"
+
+#: safety/appsafetymanager.cpp
+msgctxt "AppSafetyManager"
+msgid "Disable service until next time you start $APPNAME."
+msgstr "Bu servisi $APPNAME bir sonraki sefer başlatılana kadar devre dışı bırak."
+
+#: safety/appsafetymanager.cpp
+msgctxt "AppSafetyManager"
+msgid "Open \"%(1)\" with safety options"
+msgstr "\"%(1)\" güvenli mod seçenekleriyle aç"
+
+#: safety/appsafetymanager.cpp
+msgctxt "AppSafetyManager"
+msgid "Please save your work and restart $APPNAME."
+msgstr "Lütfen çalışmalarınızı kaydedin ve $APPNAME'i yeniden başlatın."
+
+#: safety/appsafetymanager.cpp
+msgctxt "AppSafetyManager"
+msgid "The following plug-ins didn't work as expected:"
+msgstr "Aşağıdaki plug-in'ler beklenildiği gibi çalışmadı:"
+
+#: safety/appsafetymanager.cpp
+msgctxt "AppSafetyManager"
+msgid "We're sorry. $APPNAME noticed a problem."
+msgstr "Üzgünüz. $APPNAME bir sorun fark etti."
+
+#: safety/appsafetymanager.cpp
+msgctxt "AppSafetyManager"
+msgid "We're sorry. $APPNAME quit unexpectedly."
+msgstr "Üzgünüz. $APPNAME beklenmedik şekilde kapandı."
+
+#: safety/appsafety.cpp
+msgctxt "AppSafetyProviders"
+msgid "Do not load $APPCOMPANY plug-ins"
+msgstr "$APPCOMPANY plug-in'lerini yükleme"
+
+#: safety/appsafety.cpp
+msgctxt "AppSafetyProviders"
+msgid "Do not load plug-ins made by $APPCOMPANY."
+msgstr "$APPCOMPANY tarafından üretilmiş plug-in'leri yükleme."
+
+#: safety/appsafety.cpp
+msgctxt "AppSafetyProviders"
+msgid "Do not load plug-ins made by third-party vendors."
+msgstr "Üçüncü parti üreticiler tarafından yapılmış plug-in'leri yükleme."
+
+#: safety/appsafety.cpp
+msgctxt "AppSafetyProviders"
+msgid "Do not load third-party plug-ins"
+msgstr "Üçüncü parti plug-in'leri yükleme"
+
+#: safety/appsafety.cpp
+msgctxt "AppSafetyProviders"
+msgid "Find items with long load times."
+msgstr "Uzun yükleme süresi olan öğeleri bul."
+
+#: safety/appsafety.cpp
+msgctxt "AppSafetyProviders"
+msgid "Find items with long save times or large size."
+msgstr "Uzun kaydetme süresi olan veya büyük boyutlu öğeleri bul."
+
+#: safety/appsafety.cpp
+msgctxt "AppSafetyProviders"
+msgid "Profile document loading"
+msgstr "Doküman yükleme profilini çıkar"
+
+#: safety/appsafety.cpp
+msgctxt "AppSafetyProviders"
+msgid "Profile document saving"
+msgstr "Doküman kaydetme profilini çıkar"
+
+#: application.cpp
+msgctxt "Application"
+msgid "$APPNAME can not shutdown right now!"
+msgstr "$APPNAME şu anda kapatılamıyor!"
+
+#: application.cpp
+msgctxt "Application"
+msgid "An instance of $APPNAME is already running."
+msgstr "$APPNAME şu anda zaten çalışıyor."
+
+#: application.cpp
+msgctxt "Application"
+msgid "Do you want to restart $APPNAME now?"
+msgstr "$APPNAME'i şimdi yeniden başlatmak istiyor musunuz?"
+
+#: application.cpp
+msgctxt "Application"
+msgid "Failed to load application theme!"
+msgstr "Uygulama teması yüklenemedi!"
+
+#: application.cpp
+msgctxt "Application"
+msgid "Please restart $APPNAME for the changes to take effect."
+msgstr "Değişikliklerin uygulanabilmesi için lütfen $APPNAME'i yeniden başlatın."
+
+#: application.cpp
+msgctxt "Application"
+msgid "Scanning Languages..."
+msgstr "Diller taranıyor..."
+
+#: application.cpp
+msgctxt "Application"
+msgid "Scanning Plug-Ins..."
+msgstr "Plug-In'ler taranıyor..."
+
+#: application.cpp
+msgctxt "Application"
+msgid "Scanning Scripts..."
+msgstr "Script'ler taranıyor..."
+
+#: application.cpp
+msgctxt "Application"
+msgid "Welcome to %(1)!"
+msgstr "%(1)'e Hoş Geldiniz!"
+
+#: documents/autosaver.cpp
+msgctxt "Autosave"
+msgid "A backup of the original file has been found."
+msgstr "Orijinal dosyanın yedeği bulundu."
+
+#: documents/autosaver.cpp
+msgctxt "Autosave"
+msgid "A backup that is newer than the original file has been found."
+msgstr "Orijinal dosyadan daha yeni bir yedek dosyası bulundu."
+
+#: documents/autosaver.cpp
+msgctxt "Autosave"
+msgid "Do you want to keep the backup as a version?"
+msgstr "Yedeği bir sürüm olarak saklamak istiyor musunuz?"
+
+#: documents/autosaver.cpp
+msgctxt "Autosave"
+msgid "Do you want to open the backup?"
+msgstr "Yedeği açmak istiyor musunuz?"
+
+#: documents/autosaver.cpp
+msgctxt "Autosave"
+msgid "The original file will be kept as a version then."
+msgstr "Orijinal dosya bir sürüm olarak saklanacaktır."
+
+#: browser/browsernode.cpp
+msgctxt "Browser"
+msgid "Add to Favorites"
+msgstr "Favorilere Ekle"
+
+#: browser/pluginnodes.cpp
+msgctxt "Browser"
+msgid "Are you sure you want to reset the plug-in browser to default?"
+msgstr "Plug-in tarayıcısını varsayılana sıfırlamak istediğinize emin misiniz?"
+
+#: browser/pluginnodes.cpp
+msgctxt "Browser"
+msgid "Are you sure you want to revert your last plug-in browser changes?"
+msgstr "Son plug-in tarayıcı değişikliklerinden vazgeçmek istediğinize emin misiniz?"
+
+#: browser/browser.cpp
+msgctxt "Browser"
+msgid "Close Tab"
+msgstr "Sekmeyi Kapat"
+
+#: browser/filesystemnodes.cpp
+msgctxt "Browser"
+msgid "Content"
+msgstr "İçerik"
+
+#: browser/pluginnodes.cpp
+msgctxt "Browser"
+msgid "Delete Thumbnail"
+msgstr "Küçük görseli sil"
+
+#: browser/filebrowser.cpp
+msgctxt "Browser"
+msgid "Desktop"
+msgstr "Masaüstü"
+
+#: browser/browsernode.cpp
+msgctxt "Browser"
+msgid "Do you want to remove these folders?"
+msgstr "Bu klasörleri silmek istiyor musunuz?"
+
+#: browser/browsernode.cpp
+msgctxt "Browser"
+msgid "Do you want to remove this folder?"
+msgstr "Bu klasörü silmek istiyor musunuz?"
+
+#: browser/filebrowser.cpp
+msgctxt "Browser"
+msgid "Documents"
+msgstr "Belgeler"
+
+#: browser/filesystemnodes.cpp
+msgctxt "Browser"
+msgid "Extract Here"
+msgstr "Buraya Çıkart"
+
+#: browser/browsernode.cpp
+msgctxt "Browser"
+msgid "Favorite"
+msgstr "Favori"
+
+#: browser/browsernode.cpp
+msgctxt "Browser"
+msgid "Favorites"
+msgstr "Favoriler"
+
+#: browser/pluginnodes.cpp
+msgctxt "Browser"
+msgid "Hide"
+msgstr "Gizle"
+
+#: browser/filebrowser.cpp
+msgctxt "Browser"
+msgid "Music"
+msgstr "Müzik"
+
+#: browser/browser.cpp
+msgctxt "Browser"
+msgid "New Root Tab"
+msgstr "Yeni Root Sekmesi"
+
+#: browser/browser.cpp
+msgctxt "Browser"
+msgid "New Tab"
+msgstr "Yeni Sekme"
+
+#: browser/browser.cpp
+msgctxt "Browser"
+msgid "New Tab From Here"
+msgstr "Buradan İtibaren Yeni Sekme"
+
+#: browser/filesystemnodes.cpp
+msgctxt "Browser"
+msgid "Packages"
+msgstr "Paketler"
+
+#: browser/pluginnodes.cpp
+msgctxt "Browser"
+msgid "Plug-ins"
+msgstr "Plug-in'ler"
+
+#: browser/pluginnodes.cpp
+msgctxt "Browser"
+msgid "Recent"
+msgstr "Geçmiş"
+
+#: browser/browser.cpp
+msgctxt "Browser"
+msgid "Refresh"
+msgstr "Yenile"
+
+#: browser/browsernode.cpp
+msgctxt "Browser"
+msgid "Rename"
+msgstr "Adını Değiştir"
+
+#: browser/browser.cpp
+msgctxt "Browser"
+msgid "Rename Tab"
+msgstr "Sekmenin Adını Değiştir"
+
+#: browser/pluginnodes.cpp
+msgctxt "Browser"
+msgid "Reset"
+msgstr "Sıfırla"
+
+#: browser/browser.cpp
+msgctxt "Browser"
+msgid "Reset Root"
+msgstr "Kökü Sıfırla"
+
+#: browser/pluginnodes.cpp
+msgctxt "Browser"
+msgid "Revert"
+msgstr "Geri Al"
+
+#: browser/browser.cpp
+msgctxt "Browser"
+msgid "Set as Root"
+msgstr "Root Olarak Ayarla"
+
+#: browser/filesystemnodes.cpp
+msgctxt "Browser"
+msgid "Show Package Contents"
+msgstr "Paket İçeriğini Göster"
+
+#: browser/browser.cpp
+msgctxt "Browser"
+msgid "Up"
+msgstr "Yukarı"
+
+#: browser/filesystemnodes.cpp
+msgctxt "Browser"
+msgid "Volumes"
+msgstr "Yığınlar"
+
+#: utilities/pluginclass.cpp
+msgctxt "CCL"
+msgid "Plug-in Thumbnails"
+msgstr "Plug-in Küçük Görselleri"
+
+#: safety/appsafety.cpp
+msgctxt "CCLAppSafety"
+msgid "Auto-save"
+msgstr "Otomatik Kaydet"
+
+#: safety/appsafety.cpp
+msgctxt "CCLAppSafety"
+msgid "Open document \"%(1)\""
+msgstr "\"%(1)\" belgesini aç"
+
+#: safety/appsafety.cpp
+msgctxt "CCLAppSafety"
+msgid "Quit $APPNAME"
+msgstr "$APPNAME'i sonlandır"
+
+#: safety/appsafety.cpp
+msgctxt "CCLAppSafety"
+msgid "Save document \"%(1)\""
+msgstr "Belgeyi kaydet: \"%(1)\""
+
+#: safety/appsafety.cpp
+msgctxt "CCLAppSafety"
+msgid "Start $APPNAME"
+msgstr "$APPNAME'i Başlat"
+
+#: application.cpp
+msgctxt "Command"
+msgid "About"
+msgstr "Hakkında"
+
+#: application.cpp
+msgctxt "Command"
+msgid "Application"
+msgstr "Uygulama"
+
+#: browser/browser.cpp
+msgctxt "Command"
+msgid "Ascend Root"
+msgstr "En Üst Seviyeye Çık"
+
+#: application.cpp browser/browser.cpp navigation/navigatorbase.cpp
+msgctxt "Command"
+msgid "Back"
+msgstr "Geri"
+
+#: browser/browser.cpp browser/filesystemnodes.cpp
+msgctxt "Command"
+msgid "Browser"
+msgstr "Tarayıcı"
+
+#: documents/documentmanager.cpp
+msgctxt "Command"
+msgid "Clear Recent Files"
+msgstr "Son Kullanılan Dosyaları Temizle"
+
+#: documents/documentmanager.cpp
+msgctxt "Command"
+msgid "Close"
+msgstr "Kapat"
+
+#: documents/documentmanager.cpp
+msgctxt "Command"
+msgid "Close All"
+msgstr "Tümünü Kapat"
+
+#: browser/browser.cpp
+msgctxt "Command"
+msgid "Close Tab"
+msgstr "Sekmeyi Kapat"
+
+#: application.cpp
+msgctxt "Command"
+msgid "Contents"
+msgstr "İçerikler"
+
+#: application.cpp
+msgctxt "Command"
+msgid "Context Help"
+msgstr "Bağlamsal Yardım"
+
+#: editing/editor.cpp
+msgctxt "Command"
+msgid "Copy"
+msgstr "Kopyala"
+
+#: options/customization.cpp
+msgctxt "Command"
+msgid "Customization"
+msgstr "Kişiselleştirme"
+
+#: editing/editor.cpp
+msgctxt "Command"
+msgid "Cut"
+msgstr "Kes"
+
+#: components/stringlistcomponent.cpp editing/editor.cpp
+msgctxt "Command"
+msgid "Delete"
+msgstr "Sil"
+
+#: documents/documentmanager.cpp
+msgctxt "Command"
+msgid "Delete Undo History"
+msgstr "Geri Alma Geçmişini Sil"
+
+#: editing/editor.cpp
+msgctxt "Command"
+msgid "Deselect All"
+msgstr "Tümünün Seçimini Kaldır"
+
+#: components/searchcomponent.cpp components/stringlistcomponent.cpp documents/documentmanager.cpp editing/editor.cpp
+msgctxt "Command"
+msgid "Edit"
+msgstr "Düzenle"
+
+#: browser/browser.cpp
+msgctxt "Command"
+msgid "Enter"
+msgstr "Gir"
+
+#: presets/presettrader.cpp
+msgctxt "Command"
+msgid "Export Preset"
+msgstr "Preset'i Dışa Aktar"
+
+#: application.cpp documents/documentmanager.cpp
+msgctxt "Command"
+msgid "File"
+msgstr "Dosya"
+
+#: navigation/navigatorbase.cpp
+msgctxt "Command"
+msgid "Forward"
+msgstr "İleri"
+
+#: application.cpp
+msgctxt "Command"
+msgid "Help"
+msgstr "Yardım"
+
+#: navigation/navigatorbase.cpp
+msgctxt "Command"
+msgid "Home"
+msgstr "Ana Sayfa"
+
+#: presets/presettrader.cpp
+msgctxt "Command"
+msgid "Import Preset"
+msgstr "Preset İçeri Aktar"
+
+#: browser/browser.cpp
+msgctxt "Command"
+msgid "Insert Selected Item"
+msgstr "Seçilen Öğeyi Ekle"
+
+#: editing/editor.cpp
+msgctxt "Command"
+msgid "Invert Selection"
+msgstr "Seçimi Tersine Çevir"
+
+#: application.cpp
+msgctxt "Command"
+msgid "Keyboard Shortcuts"
+msgstr "Klavye Kısayolları"
+
+#: presets/presettrader.cpp
+msgctxt "Command"
+msgid "Load Preset File"
+msgstr "Preset Dosyasını Yükle"
+
+#: application.cpp browser/browser.cpp editing/editor.cpp navigation/navigatorbase.cpp
+msgctxt "Command"
+msgid "Navigation"
+msgstr "Navigasyon"
+
+#: documents/documentmanager.cpp
+msgctxt "Command"
+msgid "New"
+msgstr "Yeni"
+
+#: browser/filesystemnodes.cpp
+msgctxt "Command"
+msgid "New Folder"
+msgstr "Yeni Klasör"
+
+#: browser/browser.cpp
+msgctxt "Command"
+msgid "New Root Tab"
+msgstr "Yeni Root Sekmesi"
+
+#: browser/browser.cpp
+msgctxt "Command"
+msgid "New Tab"
+msgstr "Yeni Sekme"
+
+#: browser/browser.cpp presets/presetbrowser.cpp
+msgctxt "Command"
+msgid "Next"
+msgstr "Sonraki"
+
+#: editing/tools/toolbar.cpp
+msgctxt "Command"
+msgid "Next Tool"
+msgstr "Sonraki Araç"
+
+#: documents/documentmanager.cpp
+msgctxt "Command"
+msgid "Open"
+msgstr "Aç"
+
+#: application.cpp
+msgctxt "Command"
+msgid "Open Settings Folder"
+msgstr "Ayarlar Klasörünü Aç"
+
+#: documents/documentmanager.cpp
+msgctxt "Command"
+msgid "Open with Options"
+msgstr "Seçeneklerle Aç"
+
+#: application.cpp
+msgctxt "Command"
+msgid "Options"
+msgstr "Seçenekler"
+
+#: editing/editor.cpp
+msgctxt "Command"
+msgid "Paste"
+msgstr "Yapıştır"
+
+#: presets/presetbrowser.cpp presets/presetcomponent.cpp presets/presetmanager.cpp presets/presettrader.cpp
+msgctxt "Command"
+msgid "Presets"
+msgstr "Presetler"
+
+#: browser/browser.cpp presets/presetbrowser.cpp
+msgctxt "Command"
+msgid "Previous"
+msgstr "Önceki"
+
+#: editing/tools/toolbar.cpp
+msgctxt "Command"
+msgid "Previous Tool"
+msgstr "Önceki Araç"
+
+#: application.cpp
+msgctxt "Command"
+msgid "Quit"
+msgstr "Çıkış"
+
+#: presets/presetmanager.cpp
+msgctxt "Command"
+msgid "Re-Index Presets"
+msgstr "Preset'leri tekrar indeksle"
+
+#: documents/documentmanager.cpp
+msgctxt "Command"
+msgid "Recent File"
+msgstr "Geçmiş Dosya"
+
+#: documents/documentmanager.cpp
+msgctxt "Command"
+msgid "Redo"
+msgstr "Tekrarla"
+
+#: browser/browser.cpp navigation/navigatorbase.cpp
+msgctxt "Command"
+msgid "Refresh"
+msgstr "Yenile"
+
+#: presets/presetmanager.cpp
+msgctxt "Command"
+msgid "Remove Plug-In Settings"
+msgstr "Plug-In ayarlarını kaldır"
+
+#: documents/documentmanager.cpp
+msgctxt "Command"
+msgid "Rename"
+msgstr "Adını Değiştir"
+
+#: browser/filesystemnodes.cpp
+msgctxt "Command"
+msgid "Rename File"
+msgstr "Dosya Adını Değiştir"
+
+#: browser/browser.cpp
+msgctxt "Command"
+msgid "Rename Tab"
+msgstr "Sekmenin Adını Değiştir"
+
+#: presets/presetmanager.cpp
+msgctxt "Command"
+msgid "Reset Blocklist"
+msgstr "Bloklistesini Sıfırla"
+
+#: browser/browser.cpp
+msgctxt "Command"
+msgid "Reset Root"
+msgstr "Kökü Sıfırla"
+
+#: documents/documentmanager.cpp
+msgctxt "Command"
+msgid "Restore Version"
+msgstr "Sürümü Geri Getir"
+
+#: documents/documentmanager.cpp
+msgctxt "Command"
+msgid "Revert"
+msgstr "Geri Al"
+
+#: documents/documentmanager.cpp
+msgctxt "Command"
+msgid "Save"
+msgstr "Kaydet"
+
+#: documents/documentmanager.cpp
+msgctxt "Command"
+msgid "Save As"
+msgstr "Farklı Kaydet"
+
+#: documents/documentmanager.cpp
+msgctxt "Command"
+msgid "Save New Version"
+msgstr "Yeni Sürüm Olarak Kaydet"
+
+#: documents/documentmanager.cpp
+msgctxt "Command"
+msgid "Save to New Folder"
+msgstr "Yeni Klasöre Kaydet"
+
+#: components/searchcomponent.cpp
+msgctxt "Command"
+msgid "Search"
+msgstr "Ara"
+
+#: editing/editor.cpp
+msgctxt "Command"
+msgid "Select All"
+msgstr "Tümünü Seç"
+
+#: browser/filesystemnodes.cpp
+msgctxt "Command"
+msgid "Show in Explorer/Finder"
+msgstr "Gezgin/Finder İçinde Göster"
+
+#: presets/presetcomponent.cpp
+msgctxt "Command"
+msgid "Store Preset"
+msgstr "Preset Sakla"
+
+#: presets/presetcomponent.cpp
+msgctxt "Command"
+msgid "Store as Default Preset"
+msgstr "Varsayılan Preset Olarak Sakla"
+
+#: editing/tools/toolbar.cpp
+msgctxt "Command"
+msgid "Tool 1"
+msgstr "Araç 1"
+
+#: editing/tools/toolbar.cpp
+msgctxt "Command"
+msgid "Tool 10"
+msgstr "Araç 10"
+
+#: editing/tools/toolbar.cpp
+msgctxt "Command"
+msgid "Tool 2"
+msgstr "Araç 2"
+
+#: editing/tools/toolbar.cpp
+msgctxt "Command"
+msgid "Tool 3"
+msgstr "Araç 3"
+
+#: editing/tools/toolbar.cpp
+msgctxt "Command"
+msgid "Tool 4"
+msgstr "Araç 4"
+
+#: editing/tools/toolbar.cpp
+msgctxt "Command"
+msgid "Tool 5"
+msgstr "Araç 5"
+
+#: editing/tools/toolbar.cpp
+msgctxt "Command"
+msgid "Tool 6"
+msgstr "Araç 6"
+
+#: editing/tools/toolbar.cpp
+msgctxt "Command"
+msgid "Tool 7"
+msgstr "Araç 7"
+
+#: editing/tools/toolbar.cpp
+msgctxt "Command"
+msgid "Tool 8"
+msgstr "Araç 8"
+
+#: editing/tools/toolbar.cpp
+msgctxt "Command"
+msgid "Tool 9"
+msgstr "Araç 9"
+
+#: editing/tools/toolbar.cpp
+msgctxt "Command"
+msgid "Toolbar"
+msgstr "Araç Çubuğu"
+
+#: documents/documentmanager.cpp
+msgctxt "Command"
+msgid "Undo"
+msgstr "Geri Al"
+
+#: presets/presetmanager.cpp
+msgctxt "Command"
+msgid "Update Plug-In List"
+msgstr "Plug-In Listesini Güncelle"
+
+#: presets/presetcomponent.cpp
+msgctxt "Command"
+msgid "Update Preset"
+msgstr "Preset Güncelle"
+
+#: editing/addins/editaddindescription.cpp options/customization.cpp
+msgctxt "Command"
+msgid "View"
+msgstr "Görünüm"
+
+#: application.cpp
+msgctxt "Command"
+msgid "Website"
+msgstr "Web Sayfası"
+
+#: options/customization.cpp
+msgctxt "Customization"
+msgid "Customization"
+msgstr "Kişiselleştirme"
+
+#: options/customization.cpp
+msgctxt "Customization"
+msgid "Customize"
+msgstr "Kişiselleştir"
+
+#: options/customization.cpp
+msgctxt "Customization"
+msgid "Delete"
+msgstr "Sil"
+
+#: options/customization.cpp
+msgctxt "Customization"
+msgid "Delete User Customization"
+msgstr "Kullanıcı Özelleştirmesini Sil"
+
+#: options/customization.cpp
+msgctxt "Customization"
+msgid "Do you want delete all user customization presets?"
+msgstr "Tüm kullanıcı özelleştirme ayarlarını silmek istiyor musunuz?"
+
+#: options/customization.cpp
+msgctxt "Customization"
+msgid "Edit Customization"
+msgstr "Özelleştirmeyi Düzenle"
+
+#: options/customization.cpp
+msgctxt "Customization"
+msgid "Keep"
+msgstr "Tut"
+
+#: options/customization.cpp
+msgctxt "Customization"
+msgid "Rename"
+msgstr "Adını Değiştir"
+
+#: options/customization.cpp
+msgctxt "Customization"
+msgid "Revert"
+msgstr "Geri Al"
+
+#: options/customization.cpp
+msgctxt "Customization"
+msgid "Store"
+msgstr "Sakla"
+
+#: options/customization.cpp
+msgctxt "Customization"
+msgid "The customization was changed to %(1). Do you want to keep the new customization?"
+msgstr "Özelleştirme %(1) olarak değiştirildi. Yeni özelleştirmeyi saklamak istiyor musunuz?"
+
+#: options/customization.cpp
+msgctxt "Customization"
+msgid "User-defined"
+msgstr "Kullanıcı Tanımlı"
+
+#: utilities/appdiagnostic.cpp
+msgctxt "Diagnostics"
+msgid "<1 KB"
+msgstr "<1 KB"
+
+#: utilities/appdiagnostic.cpp
+msgctxt "Diagnostics"
+msgid "<1 ms"
+msgstr "<1 ms"
+
+#: documents/documentdiagnostic.cpp
+msgctxt "DocumentDiagnostics"
+msgid "%(1) of the time was spent loading other document data."
+msgstr "Sürenin %(1)'si diğer doküman verilerinin yüklenmesine harcandı."
+
+#: documents/documentdiagnostic.cpp
+msgctxt "DocumentDiagnostics"
+msgid "%(1) of the time was spent loading plug-ins."
+msgstr "Sürenin %(1)'si plug-in'lerin yüklenmesine harcandı."
+
+#: documents/documentdiagnostic.cpp
+msgctxt "DocumentDiagnostics"
+msgid "%(1) of the time was spent saving other document data."
+msgstr "Sürenin %(1)'si diğer doküman verilerinin kaydedilmesine harcandı."
+
+#: documents/documentdiagnostic.cpp
+msgctxt "DocumentDiagnostics"
+msgid "%(1) of the time was spent saving plug-ins."
+msgstr "Sürenin %(1)'si plug-in'lerin kaydedilmesine harcandı."
+
+#: documents/documentdiagnostic.cpp
+msgctxt "DocumentDiagnostics"
+msgid "Average"
+msgstr "Ortalama"
+
+#: documents/documentdiagnostic.cpp
+msgctxt "DocumentDiagnostics"
+msgid "Count"
+msgstr "Sayı"
+
+#: documents/documentdiagnostic.cpp
+msgctxt "DocumentDiagnostics"
+msgid "Document Diagnostics"
+msgstr "Doküman Tanılama"
+
+#: documents/documentdiagnostic.cpp
+msgctxt "DocumentDiagnostics"
+msgid "In total, the most time-consuming items are:"
+msgstr "Toplamda en fazla zaman harcanan öğeler şunlardır:"
+
+#: documents/documentdiagnostic.cpp
+msgctxt "DocumentDiagnostics"
+msgid "Load duration of plug-ins and document data"
+msgstr "Plug-in ve doküman verisi yükleme süresi"
+
+#: documents/documentdiagnostic.cpp
+msgctxt "DocumentDiagnostics"
+msgid "Loading the document '%(1)' took %(2)."
+msgstr "'%(1)' dokümanının yüklenmesi %(2) sürdü."
+
+#: documents/documentdiagnostic.cpp
+msgctxt "DocumentDiagnostics"
+msgid "Name"
+msgstr "İsim"
+
+#: documents/documentdiagnostic.cpp
+msgctxt "DocumentDiagnostics"
+msgid "Save duration of plug-ins and document data"
+msgstr "Plug-in ve belge verilerinin kaydetme süresi"
+
+#: documents/documentdiagnostic.cpp
+msgctxt "DocumentDiagnostics"
+msgid "Saving the document '%(1)' took %(2)."
+msgstr "'%(1)' belgesini kaydetmek %(2) sürdü."
+
+#: documents/documentdiagnostic.cpp
+msgctxt "DocumentDiagnostics"
+msgid "Size of plug-in presets and other document data"
+msgstr "Plug-in preset'lerinin ve diğer doküman verilerinin boyutu"
+
+#: documents/documentdiagnostic.cpp
+msgctxt "DocumentDiagnostics"
+msgid "These items have a high average load time:"
+msgstr "Bu öğelerin ortalama yükleme süresi yüksek:"
+
+#: documents/documentdiagnostic.cpp
+msgctxt "DocumentDiagnostics"
+msgid "These items have a high average save time:"
+msgstr "Bu öğelerin ortalama kaydetme süresi yüksek:"
+
+#: documents/documentdiagnostic.cpp
+msgctxt "DocumentDiagnostics"
+msgid "Total"
+msgstr "Toplam"
+
+#: documents/documenttemplates.cpp
+msgctxt "Documents"
+msgid ""
+"%(1) already exists.\n"
+"Do you want to replace it?"
+msgstr ""
+"%(1) zaten mevcut.\n"
+"Üzerine yazmak istiyor musunuz?"
+
+#: documents/documentmanager.cpp
+msgctxt "Documents"
+msgid "%(1) was modified but can't be saved right now. Do you want to save a copy?"
+msgstr "%(1) değiştirildi ancak şu anda kaydedilemiyor. Bir kopyasını kaydetmek ister misiniz?"
+
+#: documents/documentblocks.cpp
+msgctxt "Documents"
+msgid "Additional versions available."
+msgstr "Ek sürümler mevcut."
+
+#: documents/documentversions.cpp
+msgctxt "Documents"
+msgid "Age"
+msgstr "Yaş"
+
+#: documents/documentmanager.cpp
+msgctxt "Documents"
+msgid "Are you sure you want to revert all changes?"
+msgstr "Tüm değişikliklerden vazgeçmek istediğinize emin misiniz?"
+
+#: documents/documentmanager.cpp
+msgctxt "Documents"
+msgid "Can not close %(1) right now!"
+msgstr "%(1) şu an kapatılamıyor!"
+
+#: documents/recentdocuments.cpp
+msgctxt "Documents"
+msgid "Clear Recent Files"
+msgstr "Son Kullanılan Dosyaları Temizle"
+
+#: documents/documentmanager.cpp
+msgctxt "Documents"
+msgid "Convert To"
+msgstr "Dönüştür"
+
+#: documents/documentmanager.cpp
+msgctxt "Documents"
+msgid "Could not load %(1)!"
+msgstr "%(1) yüklenemedi!"
+
+#: documents/documentrenamer.cpp
+msgctxt "Documents"
+msgid ""
+"Could not rename %(1)!\n"
+"\n"
+"The file is in use."
+msgstr ""
+"%(1) yeniden adlandırılamıyor!\n"
+"\n"
+"Dosya kullanımda."
+
+#: documents/documentrenamer.cpp
+msgctxt "Documents"
+msgid ""
+"Could not rename the folder %(1)!\n"
+"\n"
+"A file in this folder is in use."
+msgstr ""
+"%(1) klasörünün adı değiştirilemiyor!\n"
+"\n"
+"Bu klasördeki bir dosya kullanımda."
+
+#: documents/documentmanager.cpp
+msgctxt "Documents"
+msgid "Could not save %(1)!"
+msgstr "%(1) kaydedilemedi!"
+
+#: documents/documentversions.cpp
+msgctxt "Documents"
+msgid "Date"
+msgstr "Tarih"
+
+#: documents/documentmanager.cpp documents/documentversions.cpp
+msgctxt "Documents"
+msgid "Description"
+msgstr "Açıklama"
+
+#: documents/documentversions.cpp
+msgctxt "Documents"
+msgid "Discard"
+msgstr "Çöpe At"
+
+#: documents/recentdocuments.cpp
+msgctxt "Documents"
+msgid ""
+"Do you really want to clear the list of recent files?\n"
+"\n"
+"This action can not be undone."
+msgstr ""
+"Son kullanılan dosyaların listesini gerçekten silmek istiyor musunuz?\n"
+"\n"
+"Bu işlem geri alınamaz."
+
+#: documents/documentmanager.cpp
+msgctxt "Documents"
+msgid ""
+"Do you really want to delete the Undo History?\n"
+"\n"
+"This action can not be undone."
+msgstr ""
+"Geri alma geçmişini gerçekten silmek istiyor musunuz?\n"
+"\n"
+"Bu işlem geri alınamaz."
+
+#: documents/documentmanager.cpp
+msgctxt "Documents"
+msgid "Do you want to merge into %(1)?"
+msgstr "%(1) ile birleştirmek istiyor musunuz?"
+
+#: documents/documentmanager.cpp
+msgctxt "Documents"
+msgid "Do you want to remove the reference to it from the Recent list?"
+msgstr "Bunun referansını Son Kullanılanlar listesinden kaldırmak istiyor musunuz?"
+
+#: documents/documentmanager.cpp
+msgctxt "Documents"
+msgid "Do you want to save a copy of %(1) as file format \"%(2)\"?"
+msgstr "%(1) dosyasının bir kopyasını \"%(2)\" formatında kaydetmek istiyor musunuz?"
+
+#: documents/documentmanager.cpp
+msgctxt "Documents"
+msgid "Do you want to save your changes in %(1)?"
+msgstr "%(1) içindeki değişiklikleri kaydetmek istiyor musunuz?"
+
+#: documents/documentmanager.cpp
+msgctxt "Documents"
+msgid "Exporting %(1)..."
+msgstr "%(1) Dışa Aktarılıyor..."
+
+#: documents/documentmanager.cpp
+msgctxt "Documents"
+msgid "Import as format"
+msgstr "Format olarak içeri aktar"
+
+#: documents/documentmanager.cpp
+msgctxt "Documents"
+msgid "Importing %(1)..."
+msgstr "%(1) içeri aktarılıyor..."
+
+#: documents/documentmanager.cpp
+msgctxt "Documents"
+msgid "Incremental version"
+msgstr "Artan Sürüm"
+
+#: documents/packagedocument.cpp
+msgctxt "Documents"
+msgid "Loading %(1)..."
+msgstr "%(1) yükleniyor..."
+
+#: documents/packagedocument.cpp
+msgctxt "Documents"
+msgid "Loading: %(1)..."
+msgstr "Yükleniyor: %(1)..."
+
+#: documents/documentmanager.cpp
+msgctxt "Documents"
+msgid "Merge"
+msgstr "Birleştir"
+
+#: documents/documentmanager.cpp
+msgctxt "Documents"
+msgid "Merging %(1)..."
+msgstr "%(1) Birleştiriliyor..."
+
+#: documents/documentversions.cpp
+msgctxt "Documents"
+msgid "No other versions of \"%(1)\" were saved."
+msgstr "\"%(1)\"in başka bir versiyonu kaydedilmedi."
+
+#: documents/documentblocks.cpp
+msgctxt "Documents"
+msgid "No versions found."
+msgstr "Versiyon bulunamadı."
+
+#: documents/documentmanager.cpp
+msgctxt "Documents"
+msgid "Open %(1)"
+msgstr "%(1)'i Aç"
+
+#: documents/documentmanager.cpp
+msgctxt "Documents"
+msgid "Open %(1):"
+msgstr "%(1)'i Aç:"
+
+#: documents/documentmanager.cpp
+msgctxt "Documents"
+msgid "Open files:"
+msgstr "Dosyaları Aç:"
+
+#: documents/documentversions.cpp
+msgctxt "Documents"
+msgid "Original"
+msgstr "Orijinal"
+
+#: documents/documentblocks.cpp
+msgctxt "Documents"
+msgid "Pin document to Recent Files list"
+msgstr "Dosyayı Yakın Zamanda Kullanılanlar listesine sabitle"
+
+#: documents/documentblocks.cpp
+msgctxt "Documents"
+msgid "Pinned"
+msgstr "Sabitlendi"
+
+#: documents/documentdialog.cpp
+msgctxt "Documents"
+msgid "Please supply a filename."
+msgstr "Lütfen bir dosya ismi girin."
+
+#: documents/recentdocuments.cpp
+msgctxt "Documents"
+msgid "Recent Files"
+msgstr "Geçmiş Dosyalar"
+
+#: documents/documentblocks.cpp
+msgctxt "Documents"
+msgid "Remove from Recent Files list"
+msgstr "Geçmiş Dosyalar listesinden Kaldır"
+
+#: documents/documentmanager.cpp
+msgctxt "Documents"
+msgid "Rename"
+msgstr "Adını Değiştir"
+
+#: documents/documentversions.cpp
+msgctxt "Documents"
+msgid "Replace"
+msgstr "Yerine Koy"
+
+#: documents/documentdialog.cpp
+msgctxt "Documents"
+msgid "Reset Folder"
+msgstr "Klasörü Sıfırla"
+
+#: documents/documentversions.cpp
+msgctxt "Documents"
+msgid ""
+"Restoring version \"%(1)\".\n"
+"\n"
+"Do you want to replace the saved version \"%(2)\" with the current state, or discard the current state?"
+msgstr ""
+"\"%(1)\" sürümü geri getiriliyor.\n"
+"\n"
+"Kaydedilmiş olan \"%(2)\" sürümünü güncel durumla değiştirmek mi istiyorsunuz, yoksa güncel durumu göz ardı mı etmek istiyorsunuz?"
+
+#: documents/documentmanager.cpp
+msgctxt "Documents"
+msgid "Save New Version"
+msgstr "Yeni Sürüm Olarak Kaydet"
+
+#: documents/packagedocument.cpp
+msgctxt "Documents"
+msgid "Saving %(1)..."
+msgstr "%(1) kaydediliyor..."
+
+#: documents/packagedocument.cpp
+msgctxt "Documents"
+msgid "Saving: %(1)..."
+msgstr "Kaydediliyor: %(1)..."
+
+#: documents/documenttemplates.cpp
+msgctxt "Documents"
+msgid "Templates"
+msgstr "Şablonlar"
+
+#: documents/documentmanager.cpp
+msgctxt "Documents"
+msgid "The file %(1) could not be found!"
+msgstr "%(1) dosyası bulunamadı!"
+
+#: documents/documentmanager.cpp
+msgctxt "Documents"
+msgid "The file format may not preserve all content."
+msgstr "Bu dosya formatı tüm içeriği koruyamayabilir."
+
+#: documents/documentmanager.cpp
+msgctxt "Documents"
+msgid ""
+"The file has been created with an older version of $APPNAME. After saving the file you will not be able to load it in the old version again.\n"
+"\n"
+"Are you sure you want to continue?"
+msgstr ""
+"Bu dosya $APPNAME'in eski bir sürümü ile oluşturulmuş. Kaydettikten sonra dosyayı eski sürümde açamazsınız.\n"
+"\n"
+"Devam etmek istiyor musunuz?"
+
+#: documents/documentmanager.cpp
+msgctxt "Documents"
+msgid "The file is broken or could not be opened."
+msgstr "Dosya bozulmuş ya da açılamıyor."
+
+#: documents/documentmanager.cpp
+msgctxt "Documents"
+msgid "The file is in use."
+msgstr "Dosya kullanımda."
+
+#: documents/documenttemplates.cpp
+msgctxt "Documents"
+msgid "The template could not be saved!"
+msgstr "Şablon kaydedilemedi!"
+
+#: documents/packagedocument.cpp
+msgctxt "Documents"
+msgid ""
+"This file is not compatible because it has been created with a newer version of $APPNAME.\n"
+"\n"
+"This version: %(1)\n"
+"Generator: %(2)"
+msgstr ""
+"Bu dosya $APPNAME'in daha yeni bir sürümünde oluşturulduğu için uyumlu değil.\n"
+"\n"
+"Bu sürüm: %(1)\n"
+"Oluşturan: %(2)"
+
+#: documents/documentversions.cpp
+msgctxt "Documents"
+msgid "Title"
+msgstr "Başlık"
+
+#: documents/documentblocks.cpp
+msgctxt "Documents"
+msgid "Unpin document from Recent Files list"
+msgstr "Belgeyi Son Kullanılanlar listesinden çıkar"
+
+#: documents/documentmanager.cpp
+msgctxt "Documents"
+msgid "Untitled"
+msgstr "İsimsiz"
+
+#: documents/documentmanager.cpp
+msgctxt "Documents"
+msgid "Use %(1) Format"
+msgstr "%(1) formatını kullan"
+
+#: documents/documentmanager.cpp
+msgctxt "Documents"
+msgid "You do not have write permissions at this file location."
+msgstr "Bu dosya konumunda yazma izniniz yok."
+
+#: components/eulacomponent.cpp
+msgctxt "EULA"
+msgid "%(1) End User License Agreement"
+msgstr "%(1) Son Kullanıcı Lisans Sözleşmesi"
+
+#: components/eulacomponent.cpp
+msgctxt "EULA"
+msgid "%(1) Terms of Service"
+msgstr "%(1) Hizmet Koşulları"
+
+#: editing/editor.cpp utilities/batchoperation.cpp
+msgctxt "Edit"
+msgid "Copy"
+msgstr "Kopyala"
+
+#: editing/editor.cpp
+msgctxt "Edit"
+msgid "Cut"
+msgstr "Kes"
+
+#: editing/editor.cpp
+msgctxt "Edit"
+msgid "Delete"
+msgstr "Sil"
+
+#: editing/editor.cpp
+msgctxt "Edit"
+msgid "Deselect All"
+msgstr "Tüm Seçimleri Kaldır"
+
+#: editing/editor.cpp
+msgctxt "Edit"
+msgid "Paste"
+msgstr "Yapıştır"
+
+#: editing/editor.cpp
+msgctxt "Edit"
+msgid "Redo"
+msgstr "Tekrarla"
+
+#: editing/editor.cpp
+msgctxt "Edit"
+msgid "Select All"
+msgstr "Tümünü Seç"
+
+#: editing/editor.cpp
+msgctxt "Edit"
+msgid "Undo"
+msgstr "Geri Al"
+
+#: editing/tasks/edittaskcollection.cpp
+msgctxt "EditTask"
+msgid "No recent items"
+msgstr "Geçmiş nesne yok"
+
+#: editing/tasks/edittaskcollection.cpp
+msgctxt "EditTask"
+msgid "Recent items"
+msgstr "Geçmiş Nesneler"
+
+#: browser/filexportdraghandler.cpp
+msgctxt "FileExport"
+msgid "Download"
+msgstr "İndirme"
+
+#: browser/filexportdraghandler.cpp
+msgctxt "FileExport"
+msgid "Download to \"%(1)\""
+msgstr "\"%(1)\" konumuna indir"
+
+#: browser/filexportdraghandler.cpp
+msgctxt "FileExport"
+msgid "Export"
+msgstr "Dışa Aktar"
+
+#: browser/filexportdraghandler.cpp
+msgctxt "FileExport"
+msgid "Export to \"%(1)\""
+msgstr "\"%(1)\" Konumuna Dışa Aktar"
+
+#: components/fileexporter.cpp
+msgctxt "FileExporter"
+msgid "Exported"
+msgstr "Dışa Aktarıldı"
+
+#: components/fileexporter.cpp
+msgctxt "FileExporter"
+msgid "Exporting"
+msgstr "Dışa Aktarılıyor"
+
+#: components/fileexporter.cpp
+msgctxt "FileExporter"
+msgid "Exporting %(1)"
+msgstr "%(1) Dışa Aktarılıyor"
+
+#: utilities/pathclassifier.cpp
+msgctxt "FileInfo"
+msgid "CD/DVD Drive"
+msgstr "CD/DVD Sürücüsü"
+
+#: fileinfo/filepreviewcomponent.cpp
+msgctxt "FileInfo"
+msgid "File information"
+msgstr "Dosya Bilgisi"
+
+#: fileinfo/fileinfocomponent.cpp
+msgctxt "FileInfo"
+msgid "Folder"
+msgstr "Klasör"
+
+#: utilities/pathclassifier.cpp
+msgctxt "FileInfo"
+msgid "Local"
+msgstr "Lokal"
+
+#: utilities/pathclassifier.cpp
+msgctxt "FileInfo"
+msgid "Remote"
+msgstr "Uzak"
+
+#: utilities/pathclassifier.cpp
+msgctxt "FileInfo"
+msgid "Removable Drive"
+msgstr "Çıkarılabilir Sürücü"
+
+#: utilities/pathclassifier.cpp
+msgctxt "FileInfo"
+msgid "Unknown"
+msgstr "Bilinmiyor"
+
+#: utilities/fileoperations.cpp
+msgctxt "FileOperations"
+msgid "Copy"
+msgstr "Kopyala"
+
+#: utilities/fileoperations.cpp
+msgctxt "FileOperations"
+msgid "Copy to \"%(1)\""
+msgstr "\"%(1)\" konumuna kopyala"
+
+#: utilities/fileoperations.cpp
+msgctxt "FileOperations"
+msgid "Copy to Root"
+msgstr "Kök Dizine Kopyala"
+
+#: utilities/fileoperations.cpp
+msgctxt "FileOperations"
+msgid "Copying %(1)"
+msgstr "%(1) kopyalanıyor"
+
+#: utilities/fileoperations.cpp
+msgctxt "FileOperations"
+msgid "Copying files"
+msgstr "Dosyalar kopyalanıyor"
+
+#: utilities/fileoperations.cpp
+msgctxt "FileOperations"
+msgid "Create new folder"
+msgstr "Yeni klasör oluştur"
+
+#: utilities/fileoperations.cpp
+msgctxt "FileOperations"
+msgid "Delete File"
+msgstr "Dosyayı Sil"
+
+#: utilities/fileoperations.cpp
+msgctxt "FileOperations"
+msgid "Delete Folder"
+msgstr "Klasörü Sil"
+
+#: utilities/fileoperations.cpp
+msgctxt "FileOperations"
+msgid "Deleting %(1)"
+msgstr "%(1) Siliniyor"
+
+#: utilities/fileoperations.cpp
+msgctxt "FileOperations"
+msgid "Deleting Files"
+msgstr "Dosyalar Siliniyor"
+
+#: utilities/fileoperations.cpp
+msgctxt "FileOperations"
+msgid "Do you want to copy these files to \"%(1)\"?"
+msgstr "Bu dosyaları \"%(1)\"e kopyalamak istiyor musunuz?"
+
+#: utilities/fileoperations.cpp
+msgctxt "FileOperations"
+msgid "Do you want to copy this file to \"%(1)\"?"
+msgstr "Bu dosyayı \"%(1)\"e kopyalamak istiyor musunuz?"
+
+#: utilities/fileoperations.cpp
+msgctxt "FileOperations"
+msgid "Do you want to copy this folder to \"%(1)\"?"
+msgstr "Bu klasörü \"%(1)\"e kopyalamak istiyor musunuz?"
+
+#: utilities/fileoperations.cpp
+msgctxt "FileOperations"
+msgid "Do you want to delete these files permanently?"
+msgstr "Bu dosyaları kalıcı olarak silmek istiyor musunuz?"
+
+#: utilities/fileoperations.cpp
+msgctxt "FileOperations"
+msgid "Do you want to delete this file permanently?"
+msgstr "Bu dosyayı kalıcı olarak silmek istiyor musunuz?"
+
+#: utilities/fileoperations.cpp
+msgctxt "FileOperations"
+msgid "Do you want to delete this folder permanently?"
+msgstr "Bu klasörü kalıcı olarak silmek istiyor musunuz?"
+
+#: utilities/fileoperations.cpp
+msgctxt "FileOperations"
+msgid "Do you want to move these files to \"%(1)\"?"
+msgstr "Bu dosyaları \"%(1)\"e taşımak istiyor musunuz?"
+
+#: utilities/fileoperations.cpp
+msgctxt "FileOperations"
+msgid "Do you want to move this file to \"%(1)\"?"
+msgstr "Bu dosyayı \"%(1)\"e taşımak istiyor musunuz?"
+
+#: utilities/fileoperations.cpp
+msgctxt "FileOperations"
+msgid "Do you want to move this folder to \"%(1)\"?"
+msgstr "Bu klasörü \"%(1)\"e taşımak istiyor musunuz?"
+
+#: utilities/batchoperation.cpp
+msgctxt "FileOperations"
+msgid "File %(1) of %(2)"
+msgstr "%(2) dosyanın %(1). dosyası"
+
+#: utilities/fileoperations.cpp
+msgctxt "FileOperations"
+msgid "Move"
+msgstr "Taşı"
+
+#: utilities/fileoperations.cpp
+msgctxt "FileOperations"
+msgid "Move to \"%(1)\""
+msgstr "\"%(1)\"'e Taşı"
+
+#: utilities/fileoperations.cpp
+msgctxt "FileOperations"
+msgid "Move to Folder"
+msgstr "Klasöre Taşı"
+
+#: utilities/fileoperations.cpp
+msgctxt "FileOperations"
+msgid "Move to New Folder"
+msgstr "Yeni Klasöre Taşı"
+
+#: utilities/fileoperations.cpp
+msgctxt "FileOperations"
+msgid "Move to Root"
+msgstr "Tepeye (root) Taşı"
+
+#: utilities/fileoperations.cpp
+msgctxt "FileOperations"
+msgid "Moving %(1)"
+msgstr "%(1) taşınıyor"
+
+#: utilities/fileoperations.cpp
+msgctxt "FileOperations"
+msgid "Moving files"
+msgstr "Dosyalar taşınıyor"
+
+#: utilities/fileoperations.cpp
+msgctxt "FileOperations"
+msgid "New Folder"
+msgstr "Yeni Klasör"
+
+#: utilities/fileoperations.cpp
+msgctxt "FileOperations"
+msgid "New folder"
+msgstr "Yeni Klasör"
+
+#: utilities/fileoperations.cpp
+msgctxt "FileOperations"
+msgid "Rename File"
+msgstr "Dosya Adını Değiştir"
+
+#: utilities/fileoperations.cpp
+msgctxt "FileOperations"
+msgid "Rename Folder"
+msgstr "Klasör Adını Değiştir"
+
+#: utilities/fileoperations.cpp
+msgctxt "FileOperations"
+msgid "Some files could not be copied."
+msgstr "Bazı dosyalar kopyalanamadı."
+
+#: utilities/fileoperations.cpp
+msgctxt "FileOperations"
+msgid "Some files could not be deleted."
+msgstr "Bazı dosyalar silinemedi."
+
+#: utilities/fileoperations.cpp
+msgctxt "FileOperations"
+msgid "Some files could not be moved."
+msgstr "Bazı dosyalar taşınamadı."
+
+#: utilities/fileoperations.cpp
+msgctxt "FileOperations"
+msgid ""
+"The file \"%(1)\" could not be moved to trash.\n"
+"\n"
+"Do you want to permanently delete it?"
+msgstr ""
+"\"%(1)\" dosyası çöp kutusuna taşınamadı.\n"
+"\n"
+"Kalıcı olarak silmek istiyor musunuz?"
+
+#: components/filerenamer.cpp
+msgctxt "FileRenamer"
+msgid "A file with this name already exists."
+msgstr "Bu isimde bir dosya mevcut."
+
+#: components/filerenamer.cpp
+msgctxt "FileRenamer"
+msgid "A folder with this name already exists."
+msgstr "Bu isimde bir klasör mevcut."
+
+#: components/filerenamer.cpp
+msgctxt "FileRenamer"
+msgid "An object with this name already exists."
+msgstr "Bu isimde bir nesne zaten mevcut."
+
+#: components/filerenamer.cpp
+msgctxt "FileRenamer"
+msgid "Could not rename this file."
+msgstr "Bu dosya yeniden adlandırılamadı."
+
+#: components/filerenamer.cpp
+msgctxt "FileRenamer"
+msgid "Could not rename this folder."
+msgstr "Bu klasör yeniden adlandırılamadı."
+
+#: components/filerenamer.cpp
+msgctxt "FileRenamer"
+msgid "Show Extension"
+msgstr "Uzantıyı Göster"
+
+#: options/filetypeselector.cpp
+msgctxt "FileType"
+msgid "%(1) File"
+msgstr "%(1) Dosya"
+
+#: options/filetypeselector.cpp
+msgctxt "FileType"
+msgid "Add File Type"
+msgstr "Dosya Türü Ekle"
+
+#: options/filetypeselector.cpp
+msgctxt "FileType"
+msgid "Category"
+msgstr "Kategori"
+
+#: components/colorpicker.cpp
+msgctxt "FileType"
+msgid "Color Palette"
+msgstr "Renk Paleti"
+
+#: options/filetypeselector.cpp
+msgctxt "FileType"
+msgid "Description"
+msgstr "Açıklama"
+
+#: options/filetypeselector.cpp
+msgctxt "FileType"
+msgid "Extension"
+msgstr "Uzantı"
+
+#: options/filetypeselector.cpp
+msgctxt "FileType"
+msgid "Icon"
+msgstr "İkon"
+
+#: presets/presetfile.cpp
+msgctxt "FileType"
+msgid "Preset"
+msgstr "Preset"
+
+#: presets/presetcollection.cpp
+msgctxt "FileType"
+msgid "Preset Collection"
+msgstr "Preset Koleksiyonu"
+
+#: presets/presetfile.cpp
+msgctxt "FileType"
+msgid "Presets"
+msgstr "Presetler"
+
+#: options/filetypeselector.cpp
+msgctxt "FileType"
+msgid "This file type already exists."
+msgstr "Bu dosya türü zaten mevcut."
+
+#: options/filetypeselector.cpp
+msgctxt "FileType"
+msgid "This file type is invalid."
+msgstr "Bu dosya türü geçersiz."
+
+#: components/imageselector.cpp
+msgctxt "ImageSelector"
+msgid "The image size is limited to %(1) x %(2). Do you want to scale the image?"
+msgstr "Görsel boyutu %(1) x %(2) ile sınırlı. Görseli ölçeklendirmek istiyor musunuz?"
+
+#: utilities/multiprogress.cpp
+msgctxt "MultiProgress"
+msgid "Step %(1) of %(2)"
+msgstr "%(2) adımın %(1). adımı"
+
+#: components/pathselector.cpp
+msgctxt "PathList"
+msgid "Clear History"
+msgstr "Geçmişi Temizle"
+
+#: components/pathselector.cpp
+msgctxt "PathList"
+msgid ""
+"Searching the root folder of a volume might be very slow.\n"
+"\n"
+"Do you really want to add %(1)?"
+msgstr ""
+"Bir birimin kök klasöründe arama yapmak çok yavaş olabilir.\n"
+"\n"
+"%(1) klasörünü gerçekten eklemek istiyor musunuz?"
+
+#: components/pathselector.cpp
+msgctxt "PathList"
+msgid "Select"
+msgstr "Seç"
+
+#: components/pathselector.cpp
+msgctxt "PathList"
+msgid "Select Default"
+msgstr "Varsayılanı Seç"
+
+#: browser/pluginmanagement.cpp
+msgctxt "PlugInManagement"
+msgid "Avg. Load Time"
+msgstr "Ort. Yükleme Süresi"
+
+#: browser/pluginmanagement.cpp
+msgctxt "PlugInManagement"
+msgid "Avg. Preset Size"
+msgstr "Ort. Preset Boyutu"
+
+#: browser/pluginmanagement.cpp
+msgctxt "PlugInManagement"
+msgid "Avg. Save Time"
+msgstr "Ort. Kayıt Süresi"
+
+#: browser/pluginmanagement.cpp
+msgctxt "PlugInManagement"
+msgid "Folder"
+msgstr "Klasör"
+
+#: browser/pluginmanagement.cpp
+msgctxt "PlugInManagement"
+msgid "Last Modified"
+msgstr "Son Değiştirilme"
+
+#: browser/pluginmanagement.cpp
+msgctxt "PlugInManagement"
+msgid "Last Used"
+msgstr "Son Kullanım"
+
+#: browser/pluginmanagement.cpp
+msgctxt "PlugInManagement"
+msgid "Name"
+msgstr "İsim"
+
+#: browser/pluginmanagement.cpp
+msgctxt "PlugInManagement"
+msgid "Plug-In Manager"
+msgstr "Plug-In Yöneticisi"
+
+#: browser/pluginmanagement.cpp
+msgctxt "PlugInManagement"
+msgid "Plug-in duplicates were hidden"
+msgstr "Eklenti kopyaları gizlendi"
+
+#: browser/pluginmanagement.cpp
+msgctxt "PlugInManagement"
+msgid "Remove Plug-in Settings"
+msgstr "Plug-In Ayarlarını Kaldır"
+
+#: browser/pluginmanagement.cpp
+msgctxt "PlugInManagement"
+msgid "Type"
+msgstr "Tip"
+
+#: browser/pluginmanagement.cpp
+msgctxt "PlugInManagement"
+msgid "Vendor"
+msgstr "Üretici"
+
+#: browser/pluginmanagement.cpp
+msgctxt "PlugInManagement"
+msgid "Version"
+msgstr "Sürüm"
+
+#: browser/pluginselector.cpp
+msgctxt "PlugInSelector"
+msgid "(Unknown Vendor)"
+msgstr "(Bilinmeyen Üretici)"
+
+#: browser/pluginselector.cpp
+msgctxt "PlugInSelector"
+msgid "Category"
+msgstr "Kategori"
+
+#: browser/pluginselector.cpp
+msgctxt "PlugInSelector"
+msgid "Flat"
+msgstr "Düz"
+
+#: browser/pluginselector.cpp
+msgctxt "PlugInSelector"
+msgid "Folder"
+msgstr "Klasör"
+
+#: browser/pluginselector.cpp
+msgctxt "PlugInSelector"
+msgid "None"
+msgstr "Hiç"
+
+#: browser/pluginselector.cpp
+msgctxt "PlugInSelector"
+msgid "Type"
+msgstr "Tip"
+
+#: browser/pluginselector.cpp
+msgctxt "PlugInSelector"
+msgid "Vendor"
+msgstr "Üretici"
+
+#: presets/presetbrowser.cpp
+msgctxt "PresetBrowser"
+msgid "(no presets)"
+msgstr "(preset yok)"
+
+#: presets/presettrader.cpp
+msgctxt "Presets"
+msgid "%(1) preset files were imported."
+msgstr "%(1) preset dosyası içe aktarıldı."
+
+#: presets/presetcomponent.cpp
+msgctxt "Presets"
+msgid "A preset with this name already exists."
+msgstr "Bu isimde bir preset mevcut."
+
+#: presets/presettrader.cpp
+msgctxt "Presets"
+msgid "But it's not a preset for %(1)!"
+msgstr "Ancak bu, %(1) için bir preset değil!"
+
+#: presets/presettrader.cpp
+msgctxt "Presets"
+msgid "But none of them is a preset for %(1)!"
+msgstr "Ancak hiçbiri %(1) için bir preset değil!"
+
+#: presets/presetcomponent.cpp
+msgctxt "Presets"
+msgid "Click+Drag Preset"
+msgstr "Preset'i Tıkla+Taşı"
+
+#: presets/presetcomponent.cpp
+msgctxt "Presets"
+msgid "Delete Preset"
+msgstr "Preset'i Sil"
+
+#: presets/presetcomponent.cpp
+msgctxt "Presets"
+msgid "Do you want to delete these presets?"
+msgstr "Bu presetleri silmek istiyor musunuz?"
+
+#: presets/presetcomponent.cpp
+msgctxt "Presets"
+msgid "Do you want to delete this preset?"
+msgstr "Bu preseti silmek istiyor musunuz?"
+
+#: presets/presetmanager.cpp
+msgctxt "Presets"
+msgid "Do you want to remove all plug-in settings and perform a full rescan next time you start $APPNAME?"
+msgstr "$APPNAME'i yeniden başlattığınızda tüm plug-in ayarlarını silip tam bir tarama yapılmasını istiyor musunuz?"
+
+#: presets/presetmanager.cpp
+msgctxt "Presets"
+msgid "Do you want to rescan blocked plug-ins next time you start $APPNAME?"
+msgstr "$APPNAME'i yeniden başlattığınızda engellenmiş plug-in'leri tekrar taramak istiyor musunuz?"
+
+#: presets/presetcomponent.cpp
+msgctxt "Presets"
+msgid "Do you want to store the current settings as default preset?"
+msgstr "Mevcut ayarları varsayılan preset olarak kaydetmek istiyor musunuz?"
+
+#: presets/presetdrag.cpp
+msgctxt "Presets"
+msgid "Enter Name"
+msgstr "İsim Gir"
+
+#: presets/presettrader.cpp
+msgctxt "Presets"
+msgid "Export %(1)"
+msgstr "%(1)'i Dışa Aktar"
+
+#: presets/presettrader.cpp
+msgctxt "Presets"
+msgid "Export Preset"
+msgstr "Preset'i Dışa Aktar"
+
+#: presets/presettrader.cpp
+msgctxt "Presets"
+msgid "Import Preset"
+msgstr "Preset İçeri Aktar"
+
+#: browser/pluginbrowser.cpp
+msgctxt "Presets"
+msgid "Import Presets"
+msgstr "Preset'leri İçeri Aktar"
+
+#: presets/presettrader.cpp
+msgctxt "Presets"
+msgid "Importing Preset"
+msgstr "Preset içeri aktarılıyor"
+
+#: presets/presetcomponent.cpp presets/presettrader.cpp
+msgctxt "Presets"
+msgid "Load Preset"
+msgstr "Preset Yükle"
+
+#: presets/presettrader.cpp
+msgctxt "Presets"
+msgid "Load Preset File"
+msgstr "Preset Dosyasını Yükle"
+
+#: presets/presetparam.cpp
+msgctxt "Presets"
+msgid "No Preset"
+msgstr "Preset Mevcut Değil"
+
+#: presets/presetdrag.cpp
+msgctxt "Presets"
+msgid "No matching Preset"
+msgstr "Eşleşen Preset Yok"
+
+#: presets/presettrader.cpp
+msgctxt "Presets"
+msgid "One preset file was imported."
+msgstr "Bir preset dosyası içe aktarıldı."
+
+#: presets/presettrader.cpp
+msgctxt "Presets"
+msgid "Preset file export failed."
+msgstr "Preset dosyası dışa aktarılamadı."
+
+#: presets/presetcomponent.cpp
+msgctxt "Presets"
+msgid "Preset:"
+msgstr "Preset:"
+
+#: presets/presetcomponent.cpp
+msgctxt "Presets"
+msgid "Rename Preset"
+msgstr "Presetin Adını Değiştir"
+
+#: presets/presetmanager.cpp
+msgctxt "Presets"
+msgid "Scanning Plug-Ins..."
+msgstr "Plug-In'ler taranıyor..."
+
+#: presets/presetmanager.cpp
+msgctxt "Presets"
+msgid "Scanning Presets..."
+msgstr "Preset'ler taranıyor..."
+
+#: presets/presetmanager.cpp
+msgctxt "Presets"
+msgid "Some plug-ins will be updated next time you start $APPNAME."
+msgstr "$APPNAME yeniden başlatıldığında bazı plug-in'ler güncellenecek."
+
+#: presets/presetcomponent.cpp
+msgctxt "Presets"
+msgid "Store %(1)"
+msgstr "%(1)'i Sakla"
+
+#: presets/presetcomponent.cpp
+msgctxt "Presets"
+msgid "Store Preset"
+msgstr "Preset Sakla"
+
+#: presets/presetcomponent.cpp
+msgctxt "Presets"
+msgid "Store as Default Preset"
+msgstr "Varsayılan Preset Olarak Sakla"
+
+#: presets/presettrader.cpp
+msgctxt "Presets"
+msgid "These %(1) files could not be imported:"
+msgstr "Bu %(1) dosya içe aktarılamadı:"
+
+#: presets/presettrader.cpp
+msgctxt "Presets"
+msgid "This file could not be imported:"
+msgstr "Bu dosya içe aktarılamadı:"
+
+#: presets/presetcomponent.cpp
+msgctxt "Presets"
+msgid "Update Preset"
+msgstr "Preset Güncelle"
+
+#: browser/pluginbrowser.cpp
+msgctxt "Presets"
+msgid "Visible"
+msgstr "Görünür"
+
+#: presets/presetcomponent.cpp
+msgctxt "Presets"
+msgid "default"
+msgstr "varsayılan"
+
+#: editing/scaleview.cpp
+msgctxt "Scale"
+msgid "Move"
+msgstr "Taşı"
+
+#: editing/scaleview.cpp
+msgctxt "Scale"
+msgid "Move, Zoom"
+msgstr "Taşı, Zoom"
+
+#: editing/scaleview.cpp
+msgctxt "Scale"
+msgid "Zoom"
+msgstr "Zoom"
+
+#: browser/searchresultlist.cpp
+msgctxt "Search"
+msgid "Folders"
+msgstr "Klasörler"
+
+#: browser/searchresultlist.cpp
+msgctxt "Search"
+msgid "Show in Context"
+msgstr "Bağlamda Göster"
+
+#: utilities/shellcommand.cpp
+msgctxt "Shell"
+msgid "Show in Explorer"
+msgstr "Explorer İçinde Göster"
+
+#: utilities/shellcommand.cpp
+msgctxt "Shell"
+msgid "Show in File Manager"
+msgstr "Dosya Yöneticisinde Göster"
+
+#: utilities/shellcommand.cpp
+msgctxt "Shell"
+msgid "Show in Finder"
+msgstr "Finder İçinde Göster"
+
+#: options/mainoption.cpp
+msgctxt "SliderMode"
+msgid "Jump"
+msgstr "Atla"
+
+#: options/mainoption.cpp
+msgctxt "SliderMode"
+msgid "Touch"
+msgstr "Dokunmatik"
+
+#: editing/tools/selecttool.cpp
+msgctxt "ToolHelp"
+msgid "Delete Objects"
+msgstr "Nesneleri Sil"
+
+#: editing/tools/selecttool.cpp
+msgctxt "ToolHelp"
+msgid "Drag"
+msgstr "Sürükle"
+
+#: editing/tools/selecttool.cpp
+msgctxt "ToolHelp"
+msgid "Draw Selection"
+msgstr "Seçim Alanı Çiz"
+
+#: editing/tools/selecttool.cpp
+msgctxt "ToolHelp"
+msgid "Draw Selection (add)"
+msgstr "Seçim Alanı Çiz (Ekle)"
+
+#: editing/tools/selecttool.cpp
+msgctxt "ToolHelp"
+msgid "Select"
+msgstr "Seç"
+
+#: editing/tools/selecttool.cpp
+msgctxt "ToolHelp"
+msgid "Select Range"
+msgstr "Aralık Seç"
+
+#: editing/tools/selecttool.cpp
+msgctxt "ToolHelp"
+msgid "Toggle Select"
+msgstr "Seçimi Aç/Kapat"
+
+#: editing/tools/selecttool.cpp
+msgctxt "ToolHelp"
+msgid "Zoom"
+msgstr "Zoom"
+
+#: editing/tools/selecttool.cpp
+msgctxt "Tools"
+msgid "Eraser Tool"
+msgstr "Silgi Aracı"
+
+#: editing/tools/selecttool.cpp
+msgctxt "Tools"
+msgid "Select Tool"
+msgstr "Seçim Aracı"
+
+#: options/useroption.cpp
+msgctxt "UserOption"
+msgid "Advanced"
+msgstr "Gelişmiş"
+
+#: options/mainoption.cpp
+msgctxt "UserOption"
+msgid "Appearance"
+msgstr "Görünüm"
+
+#: options/mainoption.cpp
+msgctxt "UserOption"
+msgid "Dark Mode"
+msgstr "Karanlık Mod"
+
+#: options/serviceoption.cpp
+msgctxt "UserOption"
+msgid "Disable"
+msgstr "Devredışı Bırak"
+
+#: options/commandoption.cpp
+msgctxt "UserOption"
+msgid "Do you want to revert the keyboard mapping scheme to \"%(1)\"?"
+msgstr "Klavye haritalamasını \"%(1)\" düzenine döndürmek istiyor musunuz?"
+
+#: options/serviceoption.cpp
+msgctxt "UserOption"
+msgid "Enable"
+msgstr "Etkinleştir"
+
+#: options/commandoption.cpp
+msgctxt "UserOption"
+msgid "Export"
+msgstr "Dışa Aktar"
+
+#: options/commandoption.cpp
+msgctxt "UserOption"
+msgid "Export as Text"
+msgstr "Metin Olarak Dışa Aktar"
+
+#: options/useroption.cpp
+msgctxt "UserOption"
+msgid "General"
+msgstr "Genel"
+
+#: options/mainoption.cpp
+msgctxt "UserOption"
+msgid "Graphics settings will be applied next time you start $APPNAME."
+msgstr "Grafik ayarları, $APPNAME bir sonraki başlatıldığında uygulanacaktır."
+
+#: options/mainoption.cpp
+msgctxt "UserOption"
+msgid "High DPI Mode will be changed next time you start $APPNAME."
+msgstr "$APPNAME tekrar başlatıldığında Yüksek DPI Modu değiştirilecektir."
+
+#: options/commandoption.cpp
+msgctxt "UserOption"
+msgid "Import"
+msgstr "İçeri Aktar"
+
+#: options/commandoption.cpp
+msgctxt "UserOption"
+msgid "Keyboard Shortcuts"
+msgstr "Klavye Kısayolları"
+
+#: options/mainoption.cpp
+msgctxt "UserOption"
+msgid "Language"
+msgstr "Dil"
+
+#: options/mainoption.cpp
+msgctxt "UserOption"
+msgid "Language will be changed next time you start $APPNAME."
+msgstr "$APPNAME tekrar başlatıldığında dil değiştirilecektir."
+
+#: options/mainoption.cpp
+msgctxt "UserOption"
+msgid "Light Mode"
+msgstr "Aydınlık Mod"
+
+#: options/mainoption.cpp options/useroption.cpp
+msgctxt "UserOption"
+msgid "Locations"
+msgstr "Lokasyonlar"
+
+#: options/useroption.cpp
+msgctxt "UserOption"
+msgid "Options"
+msgstr "Seçenekler"
+
+#: options/mainoption.cpp
+msgctxt "UserOption"
+msgid "Please note that the user interface of $APPNAME will appear blurry on high resolution screens."
+msgstr "Yüksek çözünürlüklü ekranlarda $APPNAME'in kullanıcı arayüzü bulanık görünebilir."
+
+#: options/mainoption.cpp
+msgctxt "UserOption"
+msgid "Please note that third-party plug-ins will appear smaller if they do not support scaling."
+msgstr "Ölçeklemeyi desteklemeyen üçüncü parti plug-in'ler daha küçük görünecektir."
+
+#: options/useroption.cpp
+msgctxt "UserOption"
+msgid "Preferences"
+msgstr "Tercihler"
+
+#: options/serviceoption.cpp
+msgctxt "UserOption"
+msgid "Services"
+msgstr "Servisler"
+
+#: options/mainoption.cpp
+msgctxt "UserOption"
+msgid "Turning off hardware acceleration will slow down the user interface of $APPNAME and is not recommended for regular use."
+msgstr "Donanım hızlandırmasını kapatmak $APPNAME'in arayüzünü yavaşlatacaktır ve düzenli kullanım için önerilmez."
+
+#: options/mainoption.cpp
+msgctxt "UserOption"
+msgid "Use this option only for downwards compatibility with older third-party plug-ins."
+msgstr "Bu seçeneği yalnızca eski üçüncü parti Plug-In'lerle geriye dönük uyumluluk için kullanın."
+
+#: options/mainoption.cpp
+msgctxt "UserOption"
+msgid "User Data"
+msgstr "Kullanıcı Bilgileri"
+
+#: options/mainoption.cpp
+msgctxt "UserOption"
+msgid "User Interface"
+msgstr "Kullanıcı Arayüzü"
+
+#: options/serviceoption.cpp
+msgctxt "UserOption"
+msgid "Your changes will be applied next time you start $APPNAME."
+msgstr "Yaptığınız değişiklikler $APPNAME tekrar çalıştırıldığında uygulanacaktır."
+
+#~ msgctxt "Application"
+#~ msgid "Plug-In folder not found at:\n"
+#~ msgstr "Plug-In klasörü şurada bulunamadı:\n"
+
+#~ msgctxt "Application"
+#~ msgid "Script folder not found at:\n"
+#~ msgstr "Script klasörü şurada bulunamadı:\n"
+
+#~ msgctxt "Browser"
+#~ msgid "Show in Explorer"
+#~ msgstr "Explorer'da Göster"
+
+#~ msgctxt "Browser"
+#~ msgid "Show in Finder"
+#~ msgstr "Finder'da Göster"
+
+#~ msgctxt "Command"
+#~ msgid "Update Plug-Ins"
+#~ msgstr "Plug-In'leri güncelle"
+
+#~ msgctxt "FileDraghandler"
+#~ msgid "Copy"
+#~ msgstr "Kopyala"
+
+#~ msgctxt "FileDraghandler"
+#~ msgid "Copy to \"%(1)\""
+#~ msgstr "\"%(1)\" e Kopyala"
+
+#~ msgctxt "FileDraghandler"
+#~ msgid "Move"
+#~ msgstr "Taşı"
+
+#~ msgctxt "FileDraghandler"
+#~ msgid "Move to \"%(1)\""
+#~ msgstr "\"%(1)\" 'e Taşı"
+
+#~ msgctxt "FileOperations"
+#~ msgid "Delete File..."
+#~ msgstr "DosyaSil..."
+
+#~ msgctxt "FileOperations"
+#~ msgid "Delete Folder..."
+#~ msgstr "Klasör Sil"
+
+#~ msgctxt "FileOperations"
+#~ msgid "Do you want to delete these files permanently from disk?"
+#~ msgstr "Bu dosyaları disk'ten tamamı ile silmek istiyormusunuz ?"
+
+#~ msgctxt "FileOperations"
+#~ msgid "Do you want to delete this file permanently from disk?"
+#~ msgstr "Bu dosyayı disk'ten tamamı ile silmek istiyormusunuz ?"
+
+#~ msgctxt "FileOperations"
+#~ msgid "Do you want to delete this folder permanently from disk?"
+#~ msgstr "Bu klasörü disk'ten tamamı ile silmek istiyormusunuz ?"
+
+#~ msgctxt "FileOperations"
+#~ msgid "New Folder..."
+#~ msgstr "Yeni Klasör..."
+
+#~ msgctxt "FileOperations"
+#~ msgid "Rename File..."
+#~ msgstr "Dosya Adını Değiştir..."
+
+#~ msgctxt "FileOperations"
+#~ msgid "Rename Folder..."
+#~ msgstr "Klasör Adını Değiştir..."
+
+#~ msgctxt "KnobMode"
+#~ msgid "Linear"
+#~ msgstr "Lineer"
+
+#~ msgctxt "Notepad"
+#~ msgid "Edit Note"
+#~ msgstr "Notu Düzenle"
+
+#~ msgctxt "Notepad"
+#~ msgid "Edit Note..."
+#~ msgstr "Not düzenle..."
+
+#~ msgctxt "PathList"
+#~ msgid "Select..."
+#~ msgstr "Seç..."
+
+#~ msgctxt "PluginDraghandler"
+#~ msgid "Add to Favorites"
+#~ msgstr "Favorilere Ekle"
+
+#~ msgctxt "PluginDraghandler"
+#~ msgid "Move to \"%(1)\""
+#~ msgstr "\"%(1)\" 'e Taşı"
+
+#~ msgctxt "PluginDraghandler"
+#~ msgid "Move to Root"
+#~ msgstr "Tepeye (root) Taşı"
+
+#~ msgctxt "Presets"
+#~ msgid "Delete"
+#~ msgstr "Sil"
+
+#~ msgctxt "Presets"
+#~ msgid "Export %(1)..."
+#~ msgstr "%(1)'i dışarı aktar..."
+
+#~ msgctxt "Presets"
+#~ msgid "Export Preset..."
+#~ msgstr "Preset Dışarı Aktar..."
+
+#~ msgctxt "Presets"
+#~ msgid "Import Preset..."
+#~ msgstr "Preset İçeri Aktar..."
+
+#~ msgctxt "Presets"
+#~ msgid "Load Preset File..."
+#~ msgstr "Preset Dosyası Yükle..."
+
+#~ msgctxt "Presets"
+#~ msgid "Rename Preset..."
+#~ msgstr "Presetin Adını Değiştir..."
+
+#~ msgctxt "Presets"
+#~ msgid "Store %(1)..."
+#~ msgstr "%(1)'i Sakla..."
+
+#~ msgctxt "Presets"
+#~ msgid "Store Preset..."
+#~ msgstr "Preset Sakla"
+
+#~ msgctxt "ShowHideFilter"
+#~ msgid "New Preset"
+#~ msgstr "Yeni Preset"
+
+#~ msgctxt "TagCategory"
+#~ msgid "Type"
+#~ msgstr "Tip"
+
+#~ msgctxt "TagStore"
+#~ msgid "Add Tag"
+#~ msgstr "İşaret Ekle"
+
+#~ msgctxt "TagStore"
+#~ msgid "Adding Tags..."
+#~ msgstr "İşaretler Ekleniyor..."
+
+#~ msgctxt "TagStore"
+#~ msgid "All tags are valid."
+#~ msgstr "Tüm işaretler geçerli."
+
+#~ msgctxt "TagStore"
+#~ msgid "Checking files in \"%(1)\""
+#~ msgstr "\"%(1)\" içindeki dosyalar kontrol ediliyor"
+
+#~ msgctxt "TagStore"
+#~ msgid "Cleanup Tags of Missing Files"
+#~ msgstr "Eksik dosyaların etiketlerini temizle"
+
+#~ msgctxt "TagStore"
+#~ msgid "Clear Tags"
+#~ msgstr "Etiketleri Temizle"
+
+#~ msgctxt "TagStore"
+#~ msgid "Do you want to remove these tag entries for non-existing files?"
+#~ msgstr "Mevcut olmayan dosyalara ait bu etiketleri kaldırmak istiyor musunuz?"
+
+#~ msgctxt "TagStore"
+#~ msgid "Remove Tag"
+#~ msgstr "Etiketi Kaldır"
+
+#~ msgctxt "TagStore"
+#~ msgid "Updated tags in %(1)\n"
+#~ msgstr "%(1) içindeki etiketler güncellendi\n"
+
+#~ msgctxt "TagStore"
+#~ msgid "other"
+#~ msgstr "Diğer"
+
+#~ msgctxt "TrashBin"
+#~ msgid "Are you sure you want to permanently delete these %(1) items?"
+#~ msgstr "%(1) nesneyi kalıcı olarak silmek istediğinize emin misiniz?"
+
+#~ msgctxt "TrashBin"
+#~ msgid "Are you sure you want to permanently delete this item?"
+#~ msgstr "Bu nesneyi kalıcı olarak silmek istediğinize emin misiniz?"
+
+#~ msgctxt "TrashBin"
+#~ msgid "Delete"
+#~ msgstr "Sil"
+
+#~ msgctxt "TrashBin"
+#~ msgid "Empty Trash Bin"
+#~ msgstr "Çöp Kutusunu Temizle"
+
+#~ msgctxt "TrashBin"
+#~ msgid "Restore"
+#~ msgstr "Geri Getir"
+
+#~ msgctxt "TrashBin"
+#~ msgid "These items could not be restored!"
+#~ msgstr "Bu öğeler geri getirilemedi!"
+
+#~ msgctxt "TrashBin"
+#~ msgid "This item could not be restored!"
+#~ msgstr "Bu öğe geri getirilemedi!"
+
+#~ msgctxt "UserOption"
+#~ msgid "Export as Text..."
+#~ msgstr "Metin dosyası olarak dışarı aktar..."
+
+#~ msgctxt "UserOption"
+#~ msgid "Export..."
+#~ msgstr "Dışarı aktar"
+
+#~ msgctxt "UserOption"
+#~ msgid "Import..."
+#~ msgstr "İçeri Aktar..."

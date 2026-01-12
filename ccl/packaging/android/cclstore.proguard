@@ -1,0 +1,15 @@
+# Google Play Billing
+-keep class com.android.billingclient.api.Purchase { public <methods>; }
+-keep class com.android.billingclient.api.ProductDetails { public <methods>; }
+-keep class com.android.billingclient.api.ProductDetails$OneTimePurchaseOfferDetails { public <methods>; }
+
+-keepnames class com.android.billingclient.api.** { *; }
+-keepnames class com.google.android.gms.internal.play_billing.** { *; }
+
+# Amazon App Store
+-keep class com.amazon.device.iap.model.Product { public <methods>; }
+-keep class com.amazon.device.iap.model.Receipt { public <methods>; }
+
+# Samsung Galaxy Store
+-keep class com.samsung.android.sdk.iap.lib.vo.ProductVo { public <methods>; }
+-keep class com.samsung.android.sdk.iap.lib.vo.OwnedProductVo { public <methods>; }

@@ -1,0 +1,15 @@
+set (VENDOR_NAME "CCL Software Licensing GmbH")
+string (TIMESTAMP VENDOR_COPYRIGHT_YEAR "%Y")
+set (VENDOR_COPYRIGHT "Copyright (c) ${VENDOR_COPYRIGHT_YEAR} ${VENDOR_NAME}")
+set (VENDOR_WEBSITE "https://ccl.dev")
+set (VENDOR_MAIL "")
+
+set (VENDOR_PUBLISHER "${VENDOR_NAME}")
+set (VENDOR_PUBLISHER_WEBSITE "${VENDOR_WEBSITE}")
+
+set (VENDOR_PACKAGE_DOMAIN "dev.ccl")
+set (VENDOR_MIME_TYPE "application/x.ccl")
+
+set (VENDOR_INSTALL_SUBDIR "")
+
+set (VENDOR_NAMESPACE "CCL")

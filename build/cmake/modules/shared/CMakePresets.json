@@ -1,0 +1,288 @@
+{
+	"version": 9,
+	"cmakeMinimumRequired": 
+	{
+		"major": 3,
+		"minor": 30,
+		"patch": 0
+	},
+	"include": [
+		"CMakePresets${hostSystemName}.json"
+	],
+	"configurePresets":
+	[
+		{
+			"name": "ccl-base",
+			"hidden": true,
+			"cacheVariables":
+			{
+				"CMAKE_MODULE_PATH": 
+				{
+					"type": "PATH",
+					"value": "${fileDir}"
+				}
+			}
+		},
+	
+		{
+			"name": "ccl-win",
+			"hidden": true,
+			"inherits": "ccl-base",
+			"generator": "Visual Studio 17 2022",
+			"condition": 
+			{
+				"type": "equals",
+				"lhs": "${hostSystemName}",
+				"rhs": "Windows"
+			}
+		},
+		{
+			"name": "ccl-win32",
+			"hidden": true,
+			"inherits": "ccl-win",
+			"binaryDir": "${sourceDir}/build/Win32",
+			"architecture":
+			{
+				"value": "Win32",
+				"strategy": "set"
+			}
+		},
+		{
+			"name": "ccl-win64",
+			"hidden": true,
+			"inherits": "ccl-win",
+			"binaryDir": "${sourceDir}/build/x64",
+			"architecture":
+			{
+				"value": "x64",
+				"strategy": "set"
+			}
+		},
+		{
+			"name": "ccl-win-arm64",
+			"hidden": true,
+			"inherits": "ccl-win",
+			"binaryDir": "${sourceDir}/build/windows-arm64",
+			"architecture":
+			{
+				"value": "arm64",
+				"strategy": "set"
+			}
+		},
+		{
+			"name": "ccl-win-arm64ec",
+			"hidden": true,
+			"inherits": "ccl-win",
+			"binaryDir": "${sourceDir}/build/windows-arm64ec",
+			"architecture":
+			{
+				"value": "arm64ec",
+				"strategy": "set"
+			}
+		},
+		{
+			"name": "ccl-win-arm64x",
+			"hidden": true,
+			"inherits": "ccl-win-arm64ec",
+			"binaryDir": "${sourceDir}/build/windows-arm64x",
+			"cacheVariables": {
+				"VENDOR_BUILD_AS_ARM64X": "ON"
+			}
+		},
+		
+		{
+			"name": "ccl-mac-base",
+			"hidden": true,
+			"inherits": "ccl-base",
+			"generator": "Xcode",
+			"binaryDir": "${sourceDir}/build/mac-default-sdk",
+			"condition": 
+			{
+				"type": "equals",
+				"lhs": "${hostSystemName}",
+				"rhs": "Darwin"
+			},
+			"cacheVariables":
+			{
+				"CMAKE_OSX_DEPLOYMENT_TARGET": "12.4",
+				"CMAKE_OSX_ARCHITECTURES": "x86_64;arm64",
+				"VENDOR_USE_CCACHE": "ON"
+			}
+		},
+		{
+			"name": "ccl-mac",
+			"hidden": true,
+			"inherits": "ccl-mac-base",
+			"binaryDir": "${sourceDir}/build",
+			"cacheVariables":
+			{
+				"CMAKE_OSX_SYSROOT": "macosx15.0"
+			}
+		},
+
+		{
+			"name": "ccl-ios",
+			"hidden": true,
+			"inherits": "ccl-base",
+			"generator": "Xcode",
+			"binaryDir": "${sourceDir}/build",
+			"condition":
+			{
+				"type": "equals",
+				"lhs": "${hostSystemName}",
+				"rhs": "Darwin"
+			},
+			"cacheVariables":
+			{
+				"CMAKE_SYSTEM_NAME": "iOS",
+				"CMAKE_FIND_ROOT_PATH_MODE_INCLUDE": "NEVER",
+				"CMAKE_FIND_ROOT_PATH_MODE_LIBRARY": "BOTH",
+				"VENDOR_PLATFORM": "ios",
+				"VENDOR_HOST_PLATFORM": "mac",
+				"VENDOR_TARGET_ARCHITECTURE": "aarch64",
+				"CMAKE_OSX_SYSROOT": "iphoneos",
+				"CMAKE_OSX_DEPLOYMENT_TARGET": "15",
+				"VENDOR_USE_CCACHE": "ON",
+				"VENDOR_SIMULATOR": "OFF"
+			}
+		},
+		
+		{
+			"name": "ccl-linux-base",
+			"hidden": true,
+			"inherits": "ccl-base",
+			"generator": "Ninja",
+			"condition":
+			{
+				"type": "equals",
+				"lhs": "${hostSystemName}",
+				"rhs": "Linux"
+			},
+			"cacheVariables":
+			{
+				"CMAKE_C_COMPILER": "/usr/bin/clang",
+				"CMAKE_CXX_COMPILER": "/usr/bin/clang++",
+				"CMAKE_INSTALL_PREFIX": "/",
+				"CMAKE_INSTALL_LIBDIR": "lib",
+				"CPACK_PACKAGING_INSTALL_PREFIX": "/",
+				"VENDOR_USE_CCACHE": "ON"
+			}
+		},
+		{
+			"name": "ccl-linux-debug",
+			"hidden": true,
+			"inherits": "ccl-linux-base",
+			"binaryDir": "${sourceDir}/build/Debug",
+			"cacheVariables":
+			{
+				"CMAKE_BUILD_TYPE": "Debug"
+			}
+		},
+		{
+			"name": "ccl-linux-release",
+			"hidden": true,
+			"inherits": "ccl-linux-base",
+			"binaryDir": "${sourceDir}/build/Release",
+			"cacheVariables":
+			{
+				"CMAKE_BUILD_TYPE": "Release"
+			}
+		},
+		{
+			"name": "ccl-linux",
+			"hidden": true,
+			"inherits": "ccl-linux-base",
+			"binaryDir": "${sourceDir}/build/linux",
+			"generator": "Ninja Multi-Config"
+		},
+		
+		{
+			"name": "ccl-linux-arm64-base",
+			"hidden": true,
+			"inherits": "ccl-linux-base",
+			"condition":
+			{
+				"type": "equals",
+				"lhs": "${hostSystemName}",
+				"rhs": "Linux"
+			},
+			"cacheVariables":
+			{
+				"CMAKE_CROSSCOMPILING": "TRUE",
+				"CMAKE_SYSTEM_NAME": "Linux",
+				"CMAKE_SYSTEM_PROCESSOR": "aarch64",
+				"CMAKE_C_COMPILER_TARGET": "aarch64-linux-gnu",
+				"CMAKE_CXX_COMPILER_TARGET": "aarch64-linux-gnu",
+				"CMAKE_ASM_COMPILER_TARGET": "aarch64-linux-gnu",
+				"CMAKE_TRY_COMPILE_TARGET_TYPE": "STATIC_LIBRARY",
+				"VENDOR_PLATFORM_SUBDIR": "arm64",
+				"VENDOR_HOST_PLATFORM": "linux"
+			}
+		},
+		{
+			"name": "ccl-linux-arm64-debug",
+			"hidden": true,
+			"inherits": "ccl-linux-arm64-base",
+			"binaryDir": "${sourceDir}/build/arm64/Debug",
+			"cacheVariables":
+			{
+				"CMAKE_BUILD_TYPE": "Debug"
+			}
+		},
+		{
+			"name": "ccl-linux-arm64-release",
+			"hidden": true,
+			"inherits": "ccl-linux-arm64-base",
+			"binaryDir": "${sourceDir}/build/arm64/Release",
+			"cacheVariables":
+			{
+				"CMAKE_BUILD_TYPE": "Release"
+			}
+		},
+		{
+			"name": "ccl-linux-arm64",
+			"hidden": true,
+			"inherits": "ccl-linux-arm64-base",
+			"binaryDir": "${sourceDir}/build/arm64",
+			"generator": "Ninja Multi-Config"
+		},
+
+		{
+			"name": "ccl-android",
+			"hidden": true,
+			"inherits":
+			[
+				"ccl-base",
+				"ccl-android-system"
+			],
+			"generator": "Ninja",
+			"binaryDir": "${sourceDir}/build/android",
+			"cacheVariables":
+			{
+				"CMAKE_SYSTEM_NAME": "Android",
+				"CMAKE_FIND_ROOT_PATH_MODE_INCLUDE": "NEVER",
+				"CMAKE_FIND_ROOT_PATH_MODE_LIBRARY": "BOTH",
+				"CMAKE_FIND_ROOT_PATH_MODE_PACKAGE": "BOTH",
+				"ANDROID_STL": "c++_shared",
+				"ANDROID_PLATFORM": "android-26",
+				"ANDROID_API_LEVEL": "26",
+				"VENDOR_PLATFORM": "android",
+				"VENDOR_CXX_STANDARD": "17",
+				"VENDOR_USE_CCACHE": "ON"
+			}
+		},
+
+		{
+			"name": "ccl-zephyr",
+			"hidden": true,
+			"displayName": "Zephyr",
+			"inherits": "ccl-base",
+			"binaryDir": "${sourceDir}/build/zephyr",
+			"cacheVariables":
+			{
+				"VENDOR_PLATFORM": "zephyr",
+				"CMAKE_TRY_COMPILE_TARGET_TYPE": "STATIC_LIBRARY"
+			}
+		}
+	]
+}

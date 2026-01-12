@@ -1,0 +1,7 @@
+﻿<AuthorizationPolicy>
+	<AuthResource sid="extensiontemplate">	
+		<AuthClient sid="*">
+			<AccessAllowed sid="*"/>
+		</AuthClient>
+	</AuthResource>
+</AuthorizationPolicy>

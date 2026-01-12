@@ -1,0 +1,86 @@
+#: ./cocoa/gui/fileselector.cocoa.mm
+msgctxt "FileSelector"
+msgid "All Documents"
+msgstr ""
+
+#: ./shared/host/platformfileselectorbase.cpp
+msgctxt "FileSelector"
+msgid "All Files"
+msgstr ""
+
+#: ./win/gui/fileselector.win.cpp
+msgctxt "FileSelector"
+msgid "All Files (*.*)"
+msgstr ""
+
+#: ./cocoa/gui/fileselector.cocoa.mm
+msgctxt "FileSelector"
+msgid "All Readable Documents"
+msgstr ""
+
+#: ./shared/host/platformfileselectorbase.cpp
+#: ./win/gui/fileselector.win.cpp
+msgctxt "FileSelector"
+msgid "All Supported Files"
+msgstr ""
+
+#: ./win/gui/exceptionhandler.cpp
+msgctxt "Win32"
+msgid "An unexpected error occurred in this application or in a plug-in.\nA problem report has been created at:\n\n%(1)"
+msgstr ""
+
+#: ./cocoa/gui/fileselector.ios.mm
+msgctxt "FileSelector"
+msgid "Files are still being downloaded. Please try to open the file again later."
+msgstr ""
+
+#: ./win/direct2d/dxgiengine.cpp
+msgctxt "Win32"
+msgid "Graphics hardware acceleration issue detected."
+msgstr ""
+
+#: ./cocoa/gui/menu.cocoa.mm
+msgctxt "MacMenu"
+msgid "Hide"
+msgstr ""
+
+#: ./cocoa/gui/menu.cocoa.mm
+msgctxt "MacMenu"
+msgid "Hide Others"
+msgstr ""
+
+#: ./android/system/filemanager.android.cpp
+msgctxt "FileManager"
+msgid "Internal Storage"
+msgstr ""
+
+#: ./cocoa/system/filemanager.ios.mm
+msgctxt "IOSFileManager"
+msgid "Other Application"
+msgstr ""
+
+#: ./cocoa/gui/menu.cocoa.mm
+msgctxt "MacMenu"
+msgid "Quit"
+msgstr ""
+
+#: ./cocoa/gui/menu.cocoa.mm
+msgctxt "MacMenu"
+msgid "Services"
+msgstr ""
+
+#: ./cocoa/gui/menu.cocoa.mm
+msgctxt "MacMenu"
+msgid "Show All"
+msgstr ""
+
+#: ./cocoa/system/filemanager.ios.mm
+msgctxt "IOSFileManager"
+msgid "Storage"
+msgstr ""
+
+#: ./win/direct2d/d2dengine.cpp
+msgctxt "Win32"
+msgid "This application requires Windows 10 or later."
+msgstr ""
+

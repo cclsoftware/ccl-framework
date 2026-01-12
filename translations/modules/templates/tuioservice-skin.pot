@@ -1,0 +1,20 @@
+#: ./option.xml
+msgctxt "TUIOUserOption"
+msgid "Connect multi-touch device with monitor number"
+msgstr ""
+
+#: ./option.xml
+msgctxt "TUIOUserOption"
+msgid "Enable TUIO multi-touch devices on UDP port"
+msgstr ""
+
+#: ./option.xml
+msgctxt "TUIOUserOption"
+msgid "Number of attached multi-touch devices"
+msgstr ""
+
+#: ./option.xml
+msgctxt "TUIOUserOption"
+msgid "This"
+msgstr ""
+

@@ -1,0 +1,133 @@
+{
+	"enums":
+	[
+		{
+			"name": "AnimationTimingType",
+			"brief": "Animation timing types",
+			"enumerators":
+			[
+				{
+					"name": "kAnimationTimingTypeLinear",
+					"type": "int",
+					"function":
+					{
+						"name": "fourcc",
+						"args":
+						[
+							"linr"
+						]
+					},
+					"brief": "constant speed from start to end"
+				},
+				{
+					"name": "kAnimationTimingTypeToggle",
+					"type": "int",
+					"function":
+					{
+						"name": "fourcc",
+						"args":
+						[
+							"togg"
+						]
+					},
+					"brief": "a single abrupt jump from start to end in the middle of the duration"
+				},
+				{
+					"name": "kAnimationTimingTypeEaseIn",
+					"type": "int",
+					"function":
+					{
+						"name": "fourcc",
+						"args":
+						[
+							"eain"
+						]
+					},
+					"brief": "slower start"
+				},
+				{
+					"name": "kAnimationTimingTypeEaseOut",
+					"type": "int",
+					"function":
+					{
+						"name": "fourcc",
+						"args":
+						[
+							"eaou"
+						]
+					},
+					"brief": "slower end"
+				},
+				{
+					"name": "kAnimationTimingTypeEaseInOut",
+					"type": "int",
+					"function":
+					{
+						"name": "fourcc",
+						"args":
+						[
+							"eaio"
+						]
+					},
+					"brief": "slower start and end"
+				},
+				{
+					"name": "kAnimationTimingTypeCubicBezier",
+					"type": "int",
+					"function":
+					{
+						"name": "fourcc",
+						"args":
+						[
+							"cubb"
+						]
+					},
+					"brief": "cubic bezier timing"
+				}
+			]
+		},
+		{
+			"name": "OrientationType",
+			"brief": "GUI orientation types",
+			"enumerators":
+			[
+				{
+					"name": "kOrientationTypeAnyOrientation",
+					"type": "int",
+					"value": "0",
+					"brief": "orientation not specified"
+				},
+				{
+					"name": "kOrientationTypeLandscape",
+					"type": "int",
+					"value": "1",
+					"brief": "the horizontal edge is longer"
+				},
+				{
+					"name": "kOrientationTypePortrait",
+					"type": "int",
+					"value": "2",
+					"brief": "the vertical edge is longer"
+				}
+			]
+		},
+		{
+			"name": "OrientationFlags",
+			"brief": "GUI orientation flags",
+			"enumerators":
+			[
+				{
+					"name": "kOrientationFlagLandscapeAllowed",
+					"type": "int",
+					"value": "1<<kOrientationTypeLandscape",
+					"expression": true
+				},
+				{
+					"name": "kOrientationFlagPortraitAllowed",
+					"type": "int",
+					"value": "1<<kOrientationTypePortrait"
+				}
+			]
+		}
+	]
+}

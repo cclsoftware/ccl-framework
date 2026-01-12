@@ -1,0 +1,141 @@
+{
+	"name": "cclextensiontemplate",
+	"inherits": "basetemplate",
+	"description": "Extension with CCL plug-in library (Service)",
+	"destination": "extensions/development/@TargetName",
+	"platforms":
+	[
+		"win",
+		"mac",
+		"linux"
+	],
+	"variables":
+	[
+		{
+			"key": "ProjectTitle",
+			"defaultValue": "My Service",
+			"description": "service title, name of the generated IDE project"
+		},
+		{
+			"key": "TargetName",
+			"defaultValue": "myservice",
+			"description": "name of the CMake target, name of the main source files"
+		},
+		{
+			"key": "ServiceClass",
+			"defaultValue": "MyService",
+			"description": "service class name"
+		},
+		{
+			"key": "ServiceNamespace",
+			"defaultValue": "@DefaultNamespace",
+			"description": "service namespace"
+		},
+		{
+			"key": "ExtensionDir",
+			"defaultValue": "PlugIns",
+			"description": "extension subdirectory to place the plug-in binary"
+		}
+	],
+	"replacements": 
+	[
+		{
+			"searchString": "extensiontemplate",
+			"replaceString": "@TargetName",
+			"filter": "*.cpp;*.h;*.cmake;*.txt;*.json;*.in;*.bat;*.template;*.xml;*.build"
+		},
+		{
+			"searchString": "Extension Template",
+			"replaceString": "@ProjectTitle",
+			"filter": "*.cpp;*.h;*.cmake;*.txt;*.json;*.in;*.nsi;*.bat;build.sh;*.template;*.xml"
+		},
+		{
+			"searchString": "ExtensionFileName",
+			"replaceString": "@PlugInClass",
+			"filter": "*.build"
+		},
+		{
+			"searchString": "(Vendor Name)",
+			"replaceString": "@VendorName",
+			"filter": "*.txt;*.xml"
+		},
+		{
+			"searchString": "(Vendor Website)",
+			"replaceString": "@VendorWebsite",
+			"filter": "*.txt;*.xml"
+		},
+		{
+			"searchString": "(ProjectPackageID)",
+			"replaceString": "@PackageID",
+			"filter": "*.xml"
+		},
+		{
+			"searchString": "(ProjectPackageID)",
+			"replaceString": "@PackageID",
+			"filter": "*.xml"
+		},
+		{
+			"searchString": "extensiondir",
+			"replaceString": "@ExtensionDir",
+			"filter": "*.txt;*.build"
+		},
+		{
+			"searchString": "servicetemplate",
+			"replaceString": "@TargetName",
+			"filter": "*.cpp;*.h;*.cmake;*.txt;*.json;*.in;*.nsi;*.bat;*.in;*.gradle;*.plugin"
+		},
+		{
+			"searchString": "ServiceNamespace",
+			"replaceString": "@ServiceNamespace",
+			"filter": "*.cpp;*.h;*.java"
+		},
+		{
+			"searchString": "servicevendor",
+			"replaceString": "@VendorID",
+			"filter": "*.cmake;*.txt"
+		},
+		{
+			"searchString": "ServiceTemplate",
+			"replaceString": "@ServiceClass",
+			"filter": "*.cpp;*.h;*.gradle;*.plugin"
+		},
+		{
+			"searchString": "(Service Template)",
+			"replaceString": "@ProjectTitle",
+			"filter": "*.cpp;*.h;*.cmake;*.txt;*.json;*.in;*.nsi;*.bat;build.sh;*.in;*.gradle;*.plugin"
+		},
+		{
+			"searchString": "(Service Developer)",
+			"replaceString": "@AuthorName",
+			"filter": "*.cpp;*.h;*.cmake;*.txt;*.json;*.in"
+		},
+		{
+			"searchString": "(Service Copyright)",
+			"replaceString": "@ProjectCopyright",
+			"filter": "*.cpp;*.h;*.cmake;*.txt"
+		}
+	],
+	"files":
+	[
+		{
+			"source": "servicetemplate/source",
+			"destination": "@Destination/source"
+		},
+		{
+			"source": "cclextensiontemplate/development/CMakeLists.txt",
+			"destination": "@Destination/cmake/CMakeLists.txt"
+		},
+		{
+			"source": "extensiontemplate/deployment/extensiontemplate/installdata.xml",
+			"destination": "@Destination/../../deployment/@TargetName/installdata.xml"
+		},
+		{
+			"source": "extensiontemplate/deployment/extensiontemplate/metainfo.xml",
+			"destination": "@Destination/../../deployment/@TargetName/metainfo.xml"
+		},
+		{
+			"source": "extensiontemplate/security/extensiontemplate.policy.xml",
+			"destination": "@Destination/../../security/@TargetName.policy.xml"
+		}
+	]
+}

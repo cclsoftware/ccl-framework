@@ -1,0 +1,24 @@
+{% for enum in enums %}
+{% if enum.brief %}
+	/** {{ enum.brief }} */
+{% endif %}
+	enum {{ enum.name }}
+	{
+{% for enumerator in enum.enumerators %}
+{% if loop.last %}
+{% if enumerator.brief %}
+		{{ enumerator.name }} = {{ enumerator.value | cppvalue }} ///< {{ enumerator.brief }}
+{% else %}
+		{{ enumerator.name }} = {{ enumerator.value | cppvalue}}
+{% endif %}
+{% else %}
+{% if enumerator.brief %}
+		{{ enumerator.name }} = {{ enumerator.value | cppvalue }}, ///< {{ enumerator.brief }}
+{% else %}
+		{{ enumerator.name }} = {{ enumerator.value | cppvalue}},
+{% endif %}
+{% endif%}
+{% endfor %}
+	};
+
+{% endfor %}

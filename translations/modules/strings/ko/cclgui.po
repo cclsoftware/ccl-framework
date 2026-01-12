@@ -1,0 +1,1036 @@
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: system/accessibility.cpp
+msgctxt "Accessibility"
+msgid "Off"
+msgstr "오프"
+
+#: system/accessibility.cpp
+msgctxt "Accessibility"
+msgid "On"
+msgstr "온"
+
+#: system/accessibility.cpp
+msgctxt "Accessibility"
+msgid "Page %(1) of %(2)"
+msgstr "%(2) 중의 %(1) 페이지"
+
+#: dialogs/alert.cpp
+msgctxt "Alert"
+msgid "Cancel"
+msgstr "취소"
+
+#: dialogs/alert.cpp
+msgctxt "Alert"
+msgid "No"
+msgstr "아니오"
+
+#: dialogs/alert.cpp
+msgctxt "Alert"
+msgid "OK"
+msgstr "확인"
+
+#: dialogs/alert.cpp
+msgctxt "Alert"
+msgid "Retry"
+msgstr "다시 시도"
+
+#: dialogs/alert.cpp
+msgctxt "Alert"
+msgid "Yes"
+msgstr "예"
+
+#: views/focusnavigator.cpp
+msgctxt "Command"
+msgid "Cancel"
+msgstr "취소"
+
+#: itemviews/itemview.cpp
+msgctxt "Command"
+msgid "Copy"
+msgstr "복사"
+
+#: itemviews/itemview.cpp
+msgctxt "Command"
+msgid "Cut"
+msgstr "잘라내기"
+
+#: itemviews/itemview.cpp
+msgctxt "Command"
+msgid "Delete"
+msgstr "삭제"
+
+#: itemviews/itemview.cpp
+msgctxt "Command"
+msgid "Deselect All"
+msgstr "모두 선택 해제"
+
+#: itemviews/itemview.cpp
+msgctxt "Command"
+msgid "Down"
+msgstr "아래쪽"
+
+#: itemviews/itemview.cpp
+msgctxt "Command"
+msgid "Down Extend"
+msgstr "아래쪽 확장"
+
+#: itemviews/itemview.cpp
+msgctxt "Command"
+msgid "Down Extend Add"
+msgstr "아래쪽 확장 추가"
+
+#: itemviews/itemview.cpp
+msgctxt "Command"
+msgid "Down Skip"
+msgstr "아래쪽 건너뛰기"
+
+#: itemviews/itemview.cpp
+msgctxt "Command"
+msgid "Edit"
+msgstr "편집"
+
+#: itemviews/itemview.cpp
+msgctxt "Command"
+msgid "End"
+msgstr "끝"
+
+#: itemviews/itemview.cpp
+msgctxt "Command"
+msgid "End Extend"
+msgstr "끝 확장"
+
+#: itemviews/itemview.cpp
+msgctxt "Command"
+msgid "End Extend Add"
+msgstr "끝 확장 추가"
+
+#: itemviews/itemview.cpp
+msgctxt "Command"
+msgid "End Skip"
+msgstr "끝 건너뛰기"
+
+#: views/focusnavigator.cpp
+msgctxt "Command"
+msgid "Enter"
+msgstr "입력"
+
+#: views/focusnavigator.cpp
+msgctxt "Command"
+msgid "Focus Next"
+msgstr "포커스 다음 아이템으로"
+
+#: views/focusnavigator.cpp
+msgctxt "Command"
+msgid "Focus Previous"
+msgstr "포커스 이전 아이템으로"
+
+#: windows/windowmanager.cpp
+msgctxt "Command"
+msgid "Fullscreen"
+msgstr "풀스크린"
+
+#: itemviews/itemview.cpp
+msgctxt "Command"
+msgid "Left"
+msgstr "왼쪽"
+
+#: itemviews/itemview.cpp
+msgctxt "Command"
+msgid "Left Extend"
+msgstr "왼쪽으로 확장"
+
+#: itemviews/itemview.cpp
+msgctxt "Command"
+msgid "Left Extend Add"
+msgstr "왼쪽으로 확장 추가"
+
+#: itemviews/itemview.cpp
+msgctxt "Command"
+msgid "Left Skip"
+msgstr "왼쪽 건너뛰기"
+
+#: itemviews/itemview.cpp views/focusnavigator.cpp
+msgctxt "Command"
+msgid "Navigation"
+msgstr "내비게이션"
+
+#: layout/workspace.cpp
+msgctxt "Command"
+msgid "Next Perspective"
+msgstr "다음 퍼스펙티브"
+
+#: itemviews/itemview.cpp
+msgctxt "Command"
+msgid "Page Down"
+msgstr "페이지 아래로 이동"
+
+#: itemviews/itemview.cpp
+msgctxt "Command"
+msgid "Page Down Extend"
+msgstr "페이지 아래로 이동 확장"
+
+#: itemviews/itemview.cpp
+msgctxt "Command"
+msgid "Page Down Extend Add"
+msgstr "페이지 아래로 이동 확장 추가"
+
+#: itemviews/itemview.cpp
+msgctxt "Command"
+msgid "Page Down Skip"
+msgstr "페이지 아래로 이동 건너뛰기"
+
+#: itemviews/itemview.cpp
+msgctxt "Command"
+msgid "Page Up"
+msgstr "페이지 위로 이동"
+
+#: itemviews/itemview.cpp
+msgctxt "Command"
+msgid "Page Up Extend"
+msgstr "페이지 위로 이동 확장"
+
+#: itemviews/itemview.cpp
+msgctxt "Command"
+msgid "Page Up Extend Add"
+msgstr "페이지 위로 이동 확장 추가"
+
+#: itemviews/itemview.cpp
+msgctxt "Command"
+msgid "Page Up Skip"
+msgstr "페이지 위로 이동 건너뛰기"
+
+#: itemviews/itemview.cpp
+msgctxt "Command"
+msgid "Paste"
+msgstr "붙여넣기"
+
+#: layout/workspace.cpp
+msgctxt "Command"
+msgid "Pin Editor"
+msgstr "Pin 에디터"
+
+#: layout/workspace.cpp
+msgctxt "Command"
+msgid "Previous Perspective"
+msgstr "이전 퍼스펙티브"
+
+#: windows/windowmanager.cpp
+msgctxt "Command"
+msgid "Reset Window Positions"
+msgstr "윈도우 포지션 리셋"
+
+#: itemviews/itemview.cpp
+msgctxt "Command"
+msgid "Right"
+msgstr "오른쪽"
+
+#: itemviews/itemview.cpp
+msgctxt "Command"
+msgid "Right Extend"
+msgstr "오른쪽 확장"
+
+#: itemviews/itemview.cpp
+msgctxt "Command"
+msgid "Right Extend Add"
+msgstr "오른쪽 확장 추가"
+
+#: itemviews/itemview.cpp
+msgctxt "Command"
+msgid "Right Skip"
+msgstr "오른쪽 건너뛰기"
+
+#: itemviews/itemview.cpp
+msgctxt "Command"
+msgid "Select All"
+msgstr "모두 선택"
+
+#: itemviews/itemview.cpp
+msgctxt "Command"
+msgid "Start"
+msgstr "재생"
+
+#: itemviews/itemview.cpp
+msgctxt "Command"
+msgid "Start Extend"
+msgstr "시작점 확장"
+
+#: itemviews/itemview.cpp
+msgctxt "Command"
+msgid "Start Extend Add"
+msgstr "시작점 확장 추가"
+
+#: itemviews/itemview.cpp
+msgctxt "Command"
+msgid "Start Skip"
+msgstr "시작점 건너뛰기"
+
+#: layout/workspace.cpp
+msgctxt "Command"
+msgid "Toggle Floating Windows"
+msgstr "열려 있는 윈도우 전환"
+
+#: layout/workspace.cpp
+msgctxt "Command"
+msgid "Toggle Optional Views"
+msgstr "보기 전환"
+
+#: itemviews/itemview.cpp
+msgctxt "Command"
+msgid "Up"
+msgstr "위쪽"
+
+#: itemviews/itemview.cpp
+msgctxt "Command"
+msgid "Up Extend"
+msgstr "위쪽 확장"
+
+#: itemviews/itemview.cpp
+msgctxt "Command"
+msgid "Up Extend Add"
+msgstr "위쪽 확장 추가"
+
+#: itemviews/itemview.cpp
+msgctxt "Command"
+msgid "Up Skip"
+msgstr "위쪽 건너뛰기"
+
+#: layout/workspace.cpp windows/windowmanager.cpp
+msgctxt "Command"
+msgid "View"
+msgstr "보기"
+
+#: controls/commandbar/commandbarview.cpp
+msgctxt "CommandBar"
+msgid "<Unnamed>"
+msgstr "<이름없음>"
+
+#: controls/commandbar/commandbarview.cpp
+msgctxt "CommandBar"
+msgid "Assign"
+msgstr "할당"
+
+#: controls/commandbar/commandbarview.cpp
+msgctxt "CommandBar"
+msgid "Assign Command"
+msgstr "커맨드 할당"
+
+#: controls/commandbar/commandbarview.cpp
+msgctxt "CommandBar"
+msgid "Default"
+msgstr "기본값"
+
+#: controls/commandbar/commandbarview.cpp
+msgctxt "CommandBar"
+msgid "Do you want to remove \"%(1)\"?"
+msgstr "\"%(1)\"(을)를 제거하시겠습니까?"
+
+#: controls/commandbar/commandbarview.cpp
+msgctxt "CommandBar"
+msgid "Edit Menu"
+msgstr "편집 메뉴"
+
+#: controls/commandbar/commandbarview.cpp
+msgctxt "CommandBar"
+msgid "Go to"
+msgstr "이동"
+
+#: controls/commandbar/commandbarview.cpp
+msgctxt "CommandBar"
+msgid "Group"
+msgstr "그룹"
+
+#: controls/commandbar/commandbarview.cpp
+msgctxt "CommandBar"
+msgid "Horizontal"
+msgstr "가로"
+
+#: controls/commandbar/commandbarview.cpp
+msgctxt "CommandBar"
+msgid "Icon"
+msgstr "아이콘"
+
+#: controls/commandbar/commandbarview.cpp
+msgctxt "CommandBar"
+msgid "Menu"
+msgstr "메뉴"
+
+#: controls/commandbar/commandbarview.cpp
+msgctxt "CommandBar"
+msgid "Menu Item"
+msgstr "메뉴 아이템"
+
+#: controls/commandbar/commandbarview.cpp
+msgctxt "CommandBar"
+msgid "Move to"
+msgstr "이동"
+
+#: controls/commandbar/commandbarview.cpp
+msgctxt "CommandBar"
+msgid "New Button"
+msgstr "새 버튼"
+
+#: controls/commandbar/commandbarview.cpp
+msgctxt "CommandBar"
+msgid "New Group"
+msgstr "새 그룹"
+
+#: controls/commandbar/commandbarview.cpp
+msgctxt "CommandBar"
+msgid "New Menu Button"
+msgstr "새 메뉴 버튼"
+
+#: controls/commandbar/commandbarview.cpp
+msgctxt "CommandBar"
+msgid "New Menu Item"
+msgstr "새 메뉴 아이템"
+
+#: controls/commandbar/commandbarview.cpp
+msgctxt "CommandBar"
+msgid "New Page"
+msgstr "새 페이지"
+
+#: controls/commandbar/commandbarview.cpp
+msgctxt "CommandBar"
+msgid "New Separator"
+msgstr "새 구분자"
+
+#: controls/commandbar/commandbarview.cpp
+msgctxt "CommandBar"
+msgid "New Submenu"
+msgstr "새 서브 메뉴"
+
+#: controls/commandbar/commandbarview.cpp
+msgctxt "CommandBar"
+msgid "Page"
+msgstr "페이지"
+
+#: controls/commandbar/commandbarview.cpp
+msgctxt "CommandBar"
+msgid "Remove Button"
+msgstr "버튼 제거"
+
+#: controls/commandbar/commandbarview.cpp
+msgctxt "CommandBar"
+msgid "Remove Group"
+msgstr "그룹 제거"
+
+#: controls/commandbar/commandbarview.cpp
+msgctxt "CommandBar"
+msgid "Remove Image"
+msgstr "이미지 제거"
+
+#: controls/commandbar/commandbarview.cpp
+msgctxt "CommandBar"
+msgid "Remove Menu Item"
+msgstr "메뉴 아이템 제거"
+
+#: controls/commandbar/commandbarview.cpp
+msgctxt "CommandBar"
+msgid "Remove Page"
+msgstr "페이지 제거"
+
+#: controls/commandbar/commandbarview.cpp
+msgctxt "CommandBar"
+msgid "Remove Separator"
+msgstr "구분자 제거"
+
+#: controls/commandbar/commandbarview.cpp
+msgctxt "CommandBar"
+msgid "Remove Submenu"
+msgstr "서브 메뉴 제거"
+
+#: controls/commandbar/commandbarview.cpp
+msgctxt "CommandBar"
+msgid "Select Image"
+msgstr "이미지 선택"
+
+#: controls/commandbar/commandbarview.cpp
+msgctxt "CommandBar"
+msgid "Separator"
+msgstr "구분자"
+
+#: controls/commandbar/commandbarview.cpp
+msgctxt "CommandBar"
+msgid "Vertical"
+msgstr "세로"
+
+#: dialogs/commandeditor.cpp
+msgctxt "CommandEditor"
+msgid "(modified)"
+msgstr "(수정됨)"
+
+#: dialogs/commandeditor.cpp
+msgctxt "CommandEditor"
+msgid ""
+"Key is already assigned to:\n"
+"%(1)"
+msgstr ""
+"다음 아이템에 이미 할당된 키입니다:\n"
+"%(1)"
+
+#: dialogs/dialogbuilder.cpp
+msgctxt "Dialog"
+msgid "Apply"
+msgstr "적용"
+
+#: dialogs/dialogbuilder.cpp
+msgctxt "Dialog"
+msgid "Cancel"
+msgstr "취소"
+
+#: dialogs/dialogbuilder.cpp
+msgctxt "Dialog"
+msgid "Close"
+msgstr "닫기"
+
+#: dialogs/dialogbuilder.cpp
+msgctxt "Dialog"
+msgid "OK"
+msgstr "확인"
+
+#: itemviews/dropbox.cpp
+msgctxt "DropBox"
+msgid "Remove %(1)"
+msgstr "%(1) 제거"
+
+#: itemviews/itemview.cpp
+msgctxt "Edit"
+msgid "Delete"
+msgstr "삭제"
+
+#: graphics/imaging/bitmap.cpp
+msgctxt "FileType"
+msgid "Bitmap File"
+msgstr "비트맵 파일"
+
+#: skin/coreskinmodel.cpp
+msgctxt "FileType"
+msgid "Bitmap Font"
+msgstr "비트맵 폰트"
+
+#: theme/colorscheme.cpp
+msgctxt "FileType"
+msgid "Color Scheme"
+msgstr "컬러 구성"
+
+#: graphics/imaging/bitmap.cpp
+msgctxt "FileType"
+msgid "GIF File"
+msgstr "GIF 파일"
+
+#: graphics/imaging/multiimage.cpp
+msgctxt "FileType"
+msgid "Icon File"
+msgstr "아이콘 파일"
+
+#: graphics/imaging/bitmap.cpp
+msgctxt "FileType"
+msgid "JPEG File"
+msgstr "JPEG 파일"
+
+#: commands.cpp
+msgctxt "FileType"
+msgid "Keyboard Mapping Scheme"
+msgstr "키보드 매핑 구성"
+
+#: graphics/imaging/bitmap.cpp
+msgctxt "FileType"
+msgid "PNG File"
+msgstr "PNG 파일"
+
+#: graphics/shapes/svg/svgparser.cpp
+msgctxt "FileType"
+msgid "Scalable Vector Graphics"
+msgstr "SVG 벡터그래픽"
+
+#: skin/skinwizard.cpp
+msgctxt "FileType"
+msgid "Skin File"
+msgstr "스킨 파일"
+
+#: graphics/imaging/codecs/webpcodec.cpp
+msgctxt "FileType"
+msgid "WebP File"
+msgstr "WebP 파일"
+
+#: graphics/nativegraphics.cpp
+msgctxt "GraphicsEngine"
+msgid "This application requires 3D graphics support, but no 3D graphics backend could be initialized."
+msgstr "이 어플리케이션이 3D 그래픽스 지원을 요구하지만 초기화할 수 있는 3D 그래픽스 백엔드가 존재하지 않습니다."
+
+#: itemviews/headerview.cpp
+msgctxt "HeaderView"
+msgid "Reset All Columns"
+msgstr "모든 칼럼 리셋"
+
+#: itemviews/headerview.cpp
+msgctxt "HeaderView"
+msgid "Size All Columns to Fit"
+msgstr "모든 칼럼 크기 맞춤"
+
+#: itemviews/headerview.cpp
+msgctxt "HeaderView"
+msgid "Size Column to Fit"
+msgstr "칼럼 크기 맞춤"
+
+#: help/helpmanager.cpp
+msgctxt "HelpManager"
+msgid "Help file not found at:\n"
+msgstr "다음 위치에서 도움말 파일을 찾을 수 없습니다.:\n"
+
+#: help/helpmanager.cpp
+msgctxt "HelpManager"
+msgid "No compatible PDF Viewer installed!"
+msgstr "호환되는 PDF 뷰어가 설치되어 있지 않습니다!"
+
+#: dialogs/progressdialog.cpp
+msgctxt "ProgressDialog"
+msgid "Cancelling..."
+msgstr "취소하는 중..."
+
+#: controls/segmentbox.cpp
+msgctxt "SegmentBox"
+msgid "Copy Text to Clipboard"
+msgstr "텍스트를 클립보드에 복사"
+
+#: controls/textbox.cpp
+msgctxt "TextBox"
+msgid "Copy Text to Clipboard"
+msgstr "텍스트를 클립보드에 복사"
+
+#: dialogs/useroptionmodel.cpp
+msgctxt "UserOption"
+msgid "General"
+msgstr "일반"
+
+#: dialogs/useroptionmodel.cpp
+msgctxt "UserOption"
+msgid "You have made changes to the setup. Do you want to apply the changes?"
+msgstr "설정이 변경되었습니다. 변경을 적용하시겠습니까?"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "&#168;"
+msgstr "&#168;"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "&#180;"
+msgstr "&#180;"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "&#96;"
+msgstr "&#96;"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "Alt"
+msgstr "Alt"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "Backspace"
+msgstr "Backspace"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "Caps Lock"
+msgstr "Caps Lock"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "Channel Down"
+msgstr "Channel Down"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "Channel Up"
+msgstr "Channel Up"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "Command"
+msgstr "Command"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "Control"
+msgstr "Control"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "Ctrl"
+msgstr "Ctrl"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "Del"
+msgstr "Del"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "Down Arrow"
+msgstr "Down 방향키"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "End"
+msgstr "End"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "Enter"
+msgstr "Enter"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "Esc"
+msgstr "Esc"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "F1"
+msgstr "F1"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "F10"
+msgstr "F10"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "F11"
+msgstr "F11"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "F12"
+msgstr "F12"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "F13"
+msgstr "F13"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "F14"
+msgstr "F14"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "F15"
+msgstr "F15"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "F16"
+msgstr "F16"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "F17"
+msgstr "F17"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "F18"
+msgstr "F18"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "F19"
+msgstr "F19"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "F2"
+msgstr "F2"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "F20"
+msgstr "F20"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "F21"
+msgstr "F21"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "F22"
+msgstr "F22"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "F23"
+msgstr "F23"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "F24"
+msgstr "F24"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "F3"
+msgstr "F3"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "F4"
+msgstr "F4"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "F5"
+msgstr "F5"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "F6"
+msgstr "F6"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "F7"
+msgstr "F7"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "F8"
+msgstr "F8"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "F9"
+msgstr "F9"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "Forward"
+msgstr "Forward"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "Home"
+msgstr "Home"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "Ins"
+msgstr "Ins"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "Left Arrow"
+msgstr "Left 방향키"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "NumPad*"
+msgstr "숫자패드 *"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "NumPad+"
+msgstr "숫자패드 +"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "NumPad-"
+msgstr "숫자패드 -"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "NumPad."
+msgstr "숫자패드 ."
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "NumPad/"
+msgstr "숫자패드 /"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "NumPad0"
+msgstr "숫자패드 0"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "NumPad1"
+msgstr "숫자패드 1"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "NumPad2"
+msgstr "숫자패드 2"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "NumPad3"
+msgstr "숫자패드 3"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "NumPad4"
+msgstr "숫자패드 4"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "NumPad5"
+msgstr "숫자패드 5"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "NumPad6"
+msgstr "숫자패드 6"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "NumPad7"
+msgstr "숫자패드 7"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "NumPad8"
+msgstr "숫자패드 8"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "NumPad9"
+msgstr "숫자패드 9"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "Option"
+msgstr "옵션"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "Page Down"
+msgstr "Page Down"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "Page Up"
+msgstr "Page Up"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "Pause"
+msgstr "일시정지"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "Play Pause"
+msgstr "일시정지"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "Record"
+msgstr "레코딩"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "Return"
+msgstr "Return"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "Rewind"
+msgstr "되감기"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "Right Arrow"
+msgstr "Right 방향키"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "Shift"
+msgstr "Shift"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "Space"
+msgstr "Space"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "Stop"
+msgstr "Stop"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "Tab"
+msgstr "Tab"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "Up Arrow"
+msgstr "Up 방향키"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "Volume Down"
+msgstr "Volume Down"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "Volume Mute"
+msgstr "Volume Mute"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "Volume Up"
+msgstr "Volume Up"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "^"
+msgstr "^"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "~"
+msgstr "~"
+
+#: system/webbrowserview.cpp
+msgctxt "WebView"
+msgid "Copy Text to Clipboard"
+msgstr "텍스트를 클립보드에 복사"
+
+#: system/webbrowserview.cpp
+msgctxt "WebView"
+msgid "Go Back"
+msgstr "뒤로"
+
+#: system/webbrowserview.cpp
+msgctxt "WebView"
+msgid "Go Forward"
+msgstr "앞으로"
+
+#: system/webbrowserview.cpp
+msgctxt "WebView"
+msgid "Reload Page"
+msgstr "페이지 새로 고침"
+
+#~ msgctxt "ListView"
+#~ msgid "Details"
+#~ msgstr "자세히"
+
+#~ msgctxt "ListView"
+#~ msgid "Icons"
+#~ msgstr "아이콘"
+
+#~ msgctxt "ListView"
+#~ msgid "List"
+#~ msgstr "목록"

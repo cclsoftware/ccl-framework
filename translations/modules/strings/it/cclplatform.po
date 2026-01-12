@@ -1,0 +1,134 @@
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: android/system/filemanager.android.cpp
+msgctxt "FileManager"
+msgid "Internal Storage"
+msgstr "Salvataggio interno"
+
+#: cocoa/gui/fileselector.cocoa.mm
+msgctxt "FileSelector"
+msgid "All Documents"
+msgstr "Tutti i Documenti"
+
+#: shared/host/platformfileselectorbase.cpp
+msgctxt "FileSelector"
+msgid "All Files"
+msgstr "Tutti i Files"
+
+#: win/gui/fileselector.win.cpp
+msgctxt "FileSelector"
+msgid "All Files (*.*)"
+msgstr "Tutti i Files (*.*)"
+
+#: cocoa/gui/fileselector.cocoa.mm
+msgctxt "FileSelector"
+msgid "All Readable Documents"
+msgstr "Tutti i Documenti Leggibili"
+
+#: shared/host/platformfileselectorbase.cpp win/gui/fileselector.win.cpp
+msgctxt "FileSelector"
+msgid "All Supported Files"
+msgstr "Tutti i File Supportati"
+
+#: cocoa/gui/fileselector.ios.mm
+msgctxt "FileSelector"
+msgid "Files are still being downloaded. Please try to open the file again later."
+msgstr "I file sono ancora in fase di download. Prova a riaprire il file più tardi."
+
+#: cocoa/system/filemanager.ios.mm
+msgctxt "IOSFileManager"
+msgid "Other Application"
+msgstr "Altra applicazione"
+
+#: cocoa/system/filemanager.ios.mm
+msgctxt "IOSFileManager"
+msgid "Storage"
+msgstr "Storage"
+
+#: cocoa/gui/menu.cocoa.mm
+msgctxt "MacMenu"
+msgid "Hide"
+msgstr "Nascondi"
+
+#: cocoa/gui/menu.cocoa.mm
+msgctxt "MacMenu"
+msgid "Hide Others"
+msgstr "Nascondi Altri"
+
+#: cocoa/gui/menu.cocoa.mm
+msgctxt "MacMenu"
+msgid "Quit"
+msgstr "Esci"
+
+#: cocoa/gui/menu.cocoa.mm
+msgctxt "MacMenu"
+msgid "Services"
+msgstr "Servizi"
+
+#: cocoa/gui/menu.cocoa.mm
+msgctxt "MacMenu"
+msgid "Show All"
+msgstr "Mostra Tutto"
+
+#: win/gui/exceptionhandler.cpp
+msgctxt "Win32"
+msgid ""
+"An unexpected error occurred in this application or in a plug-in.\n"
+"A problem report has been created at:\n"
+"\n"
+"%(1)"
+msgstr ""
+"Si è verificato un errore imprevisto in questa applicazione o in un plug-in.\n"
+"È stato creato un rapporto sul problema in:\n"
+"\n"
+"%(1)"
+
+#: win/direct2d/dxgiengine.cpp
+msgctxt "Win32"
+msgid "Graphics hardware acceleration issue detected."
+msgstr "La Scheda Grafica ha rilevato un problema"
+
+#: win/direct2d/d2dengine.cpp
+msgctxt "Win32"
+msgid "This application requires Windows 10 or later."
+msgstr "Questa applicazione richiede Windows 10 o versioni successive."
+
+#~ msgctxt "Alert"
+#~ msgid "Information"
+#~ msgstr "Informazioni"
+
+#~ msgctxt "FileSelector"
+#~ msgid "Do you want to replace the existing file %(1) ?"
+#~ msgstr "Vuoi sostituire il file esistente %(1)?"
+
+#~ msgctxt "Win32"
+#~ msgid ""
+#~ "An Unexpected Error occured in this Application or one of its Plug-ins!\n"
+#~ "A Crash Dump has been created at:\n"
+#~ "\n"
+#~ "%(1)"
+#~ msgstr ""
+#~ "Un Errore Imprevisto si è verificato in questa applicazione o uno dei suoi plug-in!\n"
+#~ " Un Crash Dump è stato creato a:\n"
+#~ "\n"
+#~ " %(1)"
+
+#~ msgctxt "Win32"
+#~ msgid ""
+#~ "An unexpected error occurred in this application or in a plug-in.\n"
+#~ "A dump file has been created at:\n"
+#~ "\n"
+#~ "%(1)"
+#~ msgstr ""
+#~ "Si è verificato un errore imprevisto in questa applicazione o nel plug in.\n"
+#~ "A è stato creato un file dump a:\n"
+#~ "\n"
+#~ "%(1)"
+
+#~ msgctxt "Win32"
+#~ msgid "This application requires Windows 7 SP1 with Platform Update or later."
+#~ msgstr "Questa applicazione richiede Windows 7 SP1 con l'aggiornamento della Piattaforma o successivo."

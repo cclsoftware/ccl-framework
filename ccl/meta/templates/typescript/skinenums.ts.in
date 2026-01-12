@@ -1,0 +1,16 @@
+{% include ../cclfileheader.in %}
+
+{% for enum in enums %}
+/////////////////////////////////////////////////////////////////////////////////////////
+// {{ enum.name }}
+/////////////////////////////////////////////////////////////////////////////////////////
+
+{% for enumerator in enum.enumerators %}
+{% if enumerator.brief %}
+export const {{ enum.name | identifier | upper }}_{{ enumerator.name | identifier | upper }} = {{ enumerator.name | escapestring }}; // {{ enumerator.brief }}
+{% else %}
+export const {{ enum.name | identifier | upper }}_{{ enumerator.name | identifier | upper }} = {{ enumerator.name | escapestring }};
+{% endif %}
+{% endfor %}
+
+{% endfor %}

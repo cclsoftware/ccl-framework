@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Skin>
+	<Shapes>
+		<Rectangle name="icon:UnknownView" size="0,0,16,16" style="stroke" Pen.color="#888888"/>
+
+		<Shape name="icon:View" size="0,0,16,16">
+			<Rectangle size="0,0,16,16" style="fill stroke" Brush.color="#eeeedd" Pen.color="#dd9933"/>
+		</Shape>
+
+		<Shape name="icon:Form" size="0,0,16,16">
+			<Rectangle size="0,0,16,16" style="fill stroke"  Brush.color="#ffee66" Pen.color="#dd9933"/>
+			<Rectangle size="1,1,14,14" style="stroke" Pen.color="#dd9933"/>
+		</Shape>
+
+		<Shape name="icon:Window" size="0,0,16,16">
+			<Rectangle size="0,0,16,16" style="fill stroke"  Brush.color="#ff6666" Pen.color="#ff0000"/>
+			<Rectangle size="1,1,14,14" style="stroke" Pen.color="#ff0000"/>
+		</Shape>
+
+		<Shape name="icon:VariantView" size="0,0,16,16">
+			<Triangle style="fill stroke" point1="0,14" point2="0,0" point3="14,0" Brush.color="#6666ff" Pen.color="#0000ff"/>
+			<Triangle style="fill stroke" point1="0,15" point2="15,15" point3="15,0" Brush.color="#ff6622" Pen.color="#ff0000"/>
+		</Shape>
+
+		<Shape name="icon:SizeVariant" size="0,0,16,16">
+			<Rectangle size="0,0,12,12" style="fill stroke" Brush.color="#6666ff" Pen.color="#0000ff"/>
+			<Rectangle size="8,8,8,8" style="fill stroke" Brush.color="#ff6622" Pen.color="#ff0000"/>
+		</Shape>
+
+		<Shape name="icon:Horizontal" size="0,0,16,16">
+			<Rectangle size="0,0,16,16" style="fill stroke" Brush.color="#ddddff" Pen.color="#0000ff"/>
+			<Rectangle size=" 2,2,3,12" style="fill" Brush.color="blue"/>
+			<Rectangle size=" 6,2,4,12" style="fill" Brush.color="blue"/>
+			<Rectangle size="11,2,3,12" style="fill" Brush.color="blue"/>
+		</Shape>
+
+		<Shape name="icon:Vertical" size="0,0,16,16">
+			<Rectangle size="0,0,16,16" style="fill stroke" Brush.color="#ddddff" Pen.color="#0000ff"/>
+			<Rectangle size="2, 2,12,3" style="fill" Brush.color="blue"/>
+			<Rectangle size="2, 6,12,4" style="fill" Brush.color="blue"/>
+			<Rectangle size="2,11,12,3" style="fill" Brush.color="blue"/>
+		</Shape>
+
+		<Shape name="icon:LayoutView" size="0,0,16,16">
+			<Rectangle size="0,0,16,16" style="fill stroke" Brush.color="#bbbbff" Pen.color="#0000ff"/>
+		</Shape>
+
+		<Shape name="icon:ScrollView" size="0,0,16,16">
+			<Rectangle size="0,0,16,16" style="fill stroke" Brush.color="#bbbbff" Pen.color="0000ff"/>
+			<Rectangle size="2,2,12,12" style="stroke" Pen.color="#0000ff"/>
+		</Shape>
+
+		<Shape name="icon:ImageView" size="0,0,16,16">
+			<Rectangle size="0,0,16,16" style="fill stroke" Brush.color="#aaaadd" Pen.color="#666666"/>
+			<Triangle style="fill stroke" point1="3,13" point2="12,13" point3="8,5" Brush.color="#ffff00" Pen.color="#ffaa00"/>
+			<Ellipse size="5,1,6,6" style="fill stroke" Brush.color="#ffff00" Pen.color="#ffaa00"/>
+		</Shape>
+
+		<Shape name="icon:ItemView" size="0,0,16,16">
+			<Rectangle size="0,0,16,16" style="fill stroke" Brush.color="#aaaadd" Pen.color="#666666"/>
+			<Rectangle size="3,4,10,1" style="stroke" Pen.color="black"/>
+			<Rectangle size="3,6,10,1" style="stroke" Pen.color="black"/>
+			<Rectangle size="3,8,10,1" style="stroke" Pen.color="black"/>
+			<Rectangle size="3,10,10,1" style="stroke" Pen.color="black"/>
+			<Rectangle size="3,12,10,1" style="stroke" Pen.color="black"/>
+		</Shape>
+
+		<Shape name="icon:Control" size="0,0,16,16">
+			<Rectangle size="0,0,16,16" style="fill stroke" Brush.color="#66ff66" Pen.color="#00aa00"/>
+			<Rectangle size="4,4,8,8" style="fill" Brush.color="#00aa00"/>
+		</Shape>
+
+		<Shape name="icon:Label" size="0,0,16,16">
+			<Rectangle size="0,0,16,16" style="fill stroke" Brush.color="#999999" Pen.color="#333333"/>
+			<Rectangle size="4,7,8,3" style="fill" Brush.color="#333333"/>
+		</Shape>
+
+		<Shape name="icon:UserControl" size="0,0,16,16">
+			<Rectangle size="0,0,16,16" style="fill stroke" Brush.color="#ff66ff" Pen.color="aa00aa"/>
+			<Rectangle size="1,1,14,14" style="stroke" Pen.color="#aa00aa"/>
+		</Shape>		
+	</Shapes>
+
+	<Resources>
+		<ShapeImage name="UnknownView"	url="icon:UnknownView"/>
+		<ShapeImage name="View"			url="icon:View"/>
+		<ShapeImage name="ImageView"	url="icon:ImageView"/>
+		<ShapeImage name="Form"			url="icon:Form"/>
+		<ShapeImage name="VariantView"	url="icon:VariantView"/>
+		<ShapeImage name="SizeVariant"	url="icon:SizeVariant"/>
+		<ShapeImage name="LayoutView"	url="icon:LayoutView"/>
+		<ShapeImage name="Horizontal"	url="icon:Horizontal"/>
+		<ShapeImage name="Vertical"		url="icon:Vertical"/>
+		<ShapeImage name="ScrollView"	url="icon:ScrollView"/>
+		<ShapeImage name="Control"		url="icon:Control"/>
+		<ShapeImage name="Label"		url="icon:Label"/>
+		<ShapeImage name="Window"		url="icon:Window"/>
+		<ShapeImage name="UserControl"	url="icon:UserControl"/>
+		<ShapeImage name="ItemView"		url="icon:ItemView"/>
+	</Resources>
+	
+</Skin>
+

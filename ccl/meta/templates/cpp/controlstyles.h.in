@@ -1,0 +1,21 @@
+{% include ../cclfileheader.in %}
+
+#ifndef _ccl_controlstyles_generated_h
+#define _ccl_controlstyles_generated_h
+
+namespace CCL {
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+// Built-in Control class styles
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+/** Style definitions.
+\ingroup gui */
+
+namespace Styles {
+
+{% include ../../../../core/meta/templates/cpp/shared/enums.h.in %}
+} // Styles
+} // CCL
+
+#endif // _ccl_controlstyles_generated_h

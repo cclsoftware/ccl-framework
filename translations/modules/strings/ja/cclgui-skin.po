@@ -1,0 +1,98 @@
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: skin.xml
+msgctxt "AlertBox"
+msgid "$buttonTitle"
+msgstr "$buttonTitle"
+
+#: skin.xml
+msgctxt "AlertBox"
+msgid "$text"
+msgstr "$text"
+
+#: skin.xml
+msgctxt "CommandSelectorDialog"
+msgid "Clear"
+msgstr "クリア"
+
+#: skin.xml
+msgctxt "CommandSelectorDialog"
+msgid "Search"
+msgstr "検索"
+
+#: skin.xml
+msgctxt "CommandSelectorDialog"
+msgid "Select Command"
+msgstr "コマンドを選択"
+
+#: skin.xml
+msgctxt "FontSelectorDialog"
+msgid "Font"
+msgstr "フォント"
+
+#: skin.xml
+msgctxt "FontSelectorDialog"
+msgid "Select Font"
+msgstr "フォントを選択"
+
+#: skin.xml
+msgctxt "FontSelectorDialog"
+msgid "Size"
+msgstr "サイズ"
+
+#: skin.xml
+msgctxt "FontSelectorDialog"
+msgid "Style"
+msgstr "スタイル"
+
+#: skin.xml
+msgctxt "HelpViewer"
+msgid "Help Viewer"
+msgstr "ヘルプビューワー"
+
+#: skin.xml
+msgctxt "MenuEditor"
+msgid "Edit Menu"
+msgstr "編集メニュー"
+
+#: skin.xml
+msgctxt "ProgressDialogView"
+msgid "Cancel"
+msgstr "キャンセル"
+
+#: skin.xml
+msgctxt "ProgressDialogView"
+msgid "Please wait..."
+msgstr "お待ちください..."
+
+#: skin.xml
+msgctxt "UserOptionDialog"
+msgid "Options"
+msgstr "オプション"
+
+#: skin.xml
+msgctxt "WindowTitleBar"
+msgid "Close"
+msgstr "閉じる"
+
+#: skin.xml
+msgctxt "WindowTitleBar"
+msgid "Maximize"
+msgstr "最大化"
+
+#: skin.xml
+msgctxt "WindowTitleBar"
+msgid "Minimize"
+msgstr "最小化"
+
+#~ msgctxt "CommandEditorDialog"
+#~ msgid "Keyboard Shortcuts"
+#~ msgstr "キーボードショートカット"
+
+#~ msgctxt "CommandSelectorDialog"
+#~ msgid "Search:"
+#~ msgstr "検索:"

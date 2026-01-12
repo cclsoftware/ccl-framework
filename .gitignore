@@ -1,0 +1,20 @@
+*.mo
+*.air
+
+# Visual Studio
+**/.vs
+**/.cache
+
+# Xcode
+*.dmg
+*.ipa
+*.metal.air
+*.pkg
+**/xcuserdata
+
+# MacOS
+**/.DS_Store
+
+# PyCharm
+**/__pycache__
+**/.idea

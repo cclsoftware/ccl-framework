@@ -1,0 +1,11 @@
+{% include ../header.common.in %}
+
+package dev.ccl.cclgui;
+
+/**
+ * CCL GUI constants.
+ */
+public class GuiConstants
+{
+{% include ../../../../core/meta/templates/java/shared/enumsflat.java.in %}
+}

@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Skin>
+	<Resources>
+
+		<ColorScheme name="Main">
+			
+			<?defined mobileapp?>
+				<ColorScheme.Color name="WindowBackgroundColor" 			color="$skin://hostapp/BaseColor10"  			saturation="8:5"	luminance="6" invertedvalue="94" comment="Window backcolor for desktop apps"/>
+				<ColorScheme.Color name="DialogBackgroundColor" 			color="$skin://hostapp/BaseColor10"  			saturation="8:5"	luminance="6" invertedvalue="94" comment="Dialog backcolor for desktop apps"/>
+				<ColorScheme.Color name="TransparentDialogBackgroundColor" 	color="$skin://hostapp/BaseColor10" alphavalue="0" saturation="8:5"	luminance="6" invertedvalue="94" comment="Transparent dialog backcolor for gradients"/>
+				<ColorScheme.Color name="SelectionBackColor" 				color="$skin://hostapp/PrimaryColor40"			saturation="8:5"	luminance="6" invertedvalue="75" huefixed="true" comment="Selection backcolor for desktop apps"/>
+				<ColorScheme.Color name="DarkWindowBackgroundColor" 		color="$skin://hostapp/BaseColor05"  			saturation="8:5"	luminance="6" invertedvalue="98" comment="Window backcolor (high contrast)"/>
+				<ColorScheme.Color name="MenuBarControlBackColor" 			color="$skin://hostapp/BaseColor10"  			saturation="8:5"	luminance="6" invertedvalue="94" comment="Custom menubar background color"/>
+			<?defined desktopapp?>
+				<ColorScheme.Color name="WindowBackgroundColor" 			color="$skin://hostapp/BaseColor10" 			saturation="8:5"	luminance="6" invertedvalue="84" comment="Window backcolor for mobile apps"/>
+				<ColorScheme.Color name="DialogBackgroundColor" 			color="$skin://hostapp/BaseColor10" 			saturation="8:5"	luminance="6" invertedvalue="84" comment="Dialog backcolor for mobile apps"/>
+				<ColorScheme.Color name="TransparentDialogBackgroundColor" 	color="$skin://hostapp/BaseColor10" alphavalue="0" saturation="8:5"	luminance="6" invertedvalue="84" comment="Transparent dialog backcolor for gradients"/>
+				<ColorScheme.Color name="SelectionBackColor" 				color="$skin://hostapp/PrimaryColor40"			saturation="8:30" 	luminance="5:8" invertedvalue="75" huefixed="true" comment="Selection backcolor for mobile apps"/>
+				<ColorScheme.Color name="DarkWindowBackgroundColor" 		color="$skin://hostapp/BaseColor05"  			saturation="8:5"	luminance="6" invertedvalue="90" comment="Window backcolor (high contrast)"/>
+				<ColorScheme.Color name="MenuBarControlBackColor" 			color="$skin://hostapp/BaseColor10" 			saturation="8:5"	luminance="6" invertedvalue="84" comment="Custom menubar background color"/>
+			<?defined?>
+			
+			<ColorScheme.Color name="LabelColor"	 						color="$skin://hostapp/BaseColor85"  			saturation="3:5"	luminance="10:20" contrast="8:16" invertedvalue="7" comment="Default color for static text"/>
+			<ColorScheme.Color name="LabelColor.NoInvert"	 				color="$skin://hostapp/BaseColor85" 			saturation="3:5"	luminance="10:15" contrast="8:16" invertedvalue="90"/>
+			<ColorScheme.Color name="LabelColor.Primary"					color="$skin://hostapp/BaseColor95" 			saturation="2:5"	luminance="10:10" contrast="5:10" invertedvalue="1"/>
+			<ColorScheme.Color name="LabelColor.Primary.NoInvert"			color="$skin://hostapp/BaseColor95" 			saturation="2:5"	luminance="10:10" contrast="5:10" invertedvalue="100"/>
+			<ColorScheme.Color name="LabelColor.Secondary"					color="$skin://hostapp/BaseColor75" 			saturation="3:5"	luminance="10:12" contrast="8:16" invertedvalue="14"/>
+			<ColorScheme.Color name="LabelColor.Secondary.NoInvert"			color="$skin://hostapp/BaseColor75" 			saturation="3:5"	luminance="10:12" contrast="8:16" invertedvalue="82"/>
+			<ColorScheme.Color name="LabelColor.Tertiary"					color="$skin://hostapp/BaseColor70" alphavalue="60" 	saturation="3:5"	luminance="10:12" contrast="10:16" invertedvalue="14"/>
+			<ColorScheme.Color name="LabelColor.Tertiary.NoInvert"			color="$skin://hostapp/BaseColor70" alphavalue="60" 	saturation="3:5"	luminance="10:12" contrast="10:16" invertedvalue="82"/>
+			<ColorScheme.Color name="LabelColor.Dimmed"						color="$skin://hostapp/BaseColor70" alphavalue="50" 	saturation="4-10" 	luminance="6:12" contrast="5:10" invertedvalue="10"/>
+			<ColorScheme.Color name="LabelColor.Dimmed.NoInvert"			color="$skin://hostapp/BaseColor70" alphavalue="50" 	saturation="4-10" 	luminance="6:12" contrast="5:10" invertedvalue="82"/>
+			<ColorScheme.Color name="LabelColor.Disabled"					color="$skin://hostapp/BaseColor50" alphavalue="50" 	saturation="3:5"	luminance="20:15" contrast="20" invertedvalue="15"/>
+			<ColorScheme.Color name="LabelColor.Disabled.NoInvert"			color="$skin://hostapp/BaseColor60" alphavalue="50" 	saturation="3:5"	luminance="20:15" contrast="20" invertedvalue="60"/>
+			
+			<ColorScheme.Color name="IconColor"								color="$skin://hostapp/BaseColor75" 			saturation="3:5" 	luminance="10:12" contrast="8:16" invertedvalue="30" comment="Default color for icons on buttons"/>
+			<ColorScheme.Color name="IconColor.NoInvert"					color="$skin://hostapp/BaseColor75" 			saturation="3:5" 	luminance="10:12" contrast="8:16" invertible="false"/>
+			<ColorScheme.Color name="IconColor.Disabled"					color="$skin://hostapp/BaseColor65" alphavalue="25"	saturation="3:5"	luminance="20:15" contrast="20" invertedvalue="30"/>
+			<ColorScheme.Color name="IconColor.Disabled.NoInvert"			color="$skin://hostapp/BaseColor65" alphavalue="25"	saturation="3:5"	luminance="20:15" contrast="20" invertible="false"/>
+			
+			<ColorScheme.Color name="ContextTemplateColor"					color="$skin://hostapp/BaseColor100" 			saturation="0"		luminance="0" 		huefixed="true" invertedvalue="0" comment="Used to adjust the luminance of images to the colorscheme context"/>
+			<ColorScheme.Color name="WeakContextTemplateColor"				color="$skin://hostapp/BaseColor90" 			saturation="0"		luminance="5:15" 	huefixed="true" invertedvalue="16" comment="Used to adjust the luminance of images to the colorscheme context"/>
+			<ColorScheme.Color name="InverseTemplateColor"					color="$skin://hostapp/BaseColor00" 			saturation="0"		luminance="0" 		huefixed="true" invertedvalue="100" comment="Used to adjust the luminance of images to the colorscheme context"/>
+			
+			<ColorScheme.Color name="ListFocusColor" 						color="$skin://hostapp/PrimaryColor30" 		saturation="5" 		luminance="10" huefixed="true" invertedvalue="67"/>			
+			<ColorScheme.Color name="StdButtonOnColor"						color="$skin://hostapp/PrimaryColor50" 		saturation="8:20" 	luminance="2:6" huefixed="true" invertedvalue="55"/>
+			<ColorScheme.Color name="HeaderViewColor"						color="$skin://hostapp/BaseColor35" alphavalue="55" 	saturation="8:5" 	luminance="2:5" invertedvalue="97"/>
+			<ColorScheme.Color name="HeaderViewSpacingColor"				color="$skin://hostapp/BaseColor20" alphavalue="35" 	saturation="8:5" 	luminance="1:6" invertedvalue="40"/>
+			<ColorScheme.Color name="ListBackgroundColor" 					color="$skin://hostapp/BaseColor20" 			saturation="8:5"	luminance="6" invertedvalue="90"/>
+			<ColorScheme.Color name="MenuBorderOutlineColor" 				color="$skin://hostapp/BaseColor35" alphavalue="45" 	saturation="8:5" 	luminance="2:5" invertedvalue="30"/>
+			
+			<ColorScheme.Color name="TabView.Active"						color="$skin://hostapp/BaseColor95" 			saturation="3:5"	luminance="10:15" contrast="20" invertedvalue="0"/>
+			<ColorScheme.Color name="TabView.Active.NoInvert"				color="$skin://hostapp/BaseColor95" 			saturation="3:5"	luminance="10:15" contrast="20" invertedvalue="100"/>
+			<ColorScheme.Color name="TabView.Inactive"						color="$skin://hostapp/BaseColor75" alphavalue="70" 	saturation="3:5"	luminance="20:15" contrast="20" invertedvalue="0"/>
+			<ColorScheme.Color name="TabView.Inactive.NoInvert"				color="$skin://hostapp/BaseColor75" alphavalue="70" 	saturation="3:5"	luminance="15:15" contrast="20" invertedvalue="90"/>
+			
+			<ColorScheme.Color name="TabBackgroundColor"					color="$skin://hostapp/BaseColor20" 			saturation="5" 		luminance="6" invertedvalue="90"/>
+			<ColorScheme.Color name="PopupMenuBackgroundColor" 				color="$skin://hostapp/BaseColor25" 			saturation="5" 		luminance="10" invertedvalue="73"/>
+
+			<ColorScheme.Color name="DialogGroupColor" 						color="$skin://hostapp/BaseColor25" alphavalue="50" 	saturation="6:4" 	luminance="5:10" invertedvalue="97"/>
+
+			<ColorScheme.Color name="HyperLinkColor" 						color="$skin://hostapp/PrimaryColor75" 				saturation="0" 		luminance="0" huefixed="true" invertedvalue="30"/>
+			<ColorScheme.Color name="HyperLinkColor.NoInvert"				color="$skin://hostapp/PrimaryColor75" 				saturation="0" 		luminance="0" huefixed="true" invertedvalue="80"/>
+
+			<ColorScheme.Color name="SelectBoxButtonColor" 					color="$skin://hostapp/BaseColor100" alphavalue="50" 	saturation="0" 		luminance="0" huefixed="true" invertedvalue="0"/>			
+			<ColorScheme.Color name="KnobHighlightColor"           			color="$skin://hostapp/PrimaryColor70" 					saturation="8:20"   luminance="5"	 huefixed="true" invertedvalue="74"/>
+
+			<ColorScheme.Color name="TextBoxBackColor" 						color="$skin://hostapp/BaseColor100" alphavalue="05"	saturation="5" 		luminance="10" invertedvalue="0"/>			
+			<ColorScheme.Color name="EditBoxBackgroundColor"				color="$skin://hostapp/BaseColor00" alphavalue="15" 	saturation="5" 		luminance="10" contrast="3:10" invertedvalue="100"/>
+			<ColorScheme.Color name="EditBoxOutlineColor"					color="$skin://hostapp/BaseColor100" alphavalue="15"	saturation="5" 		luminance="10" contrast="30" invertedvalue="5"/>
+			<ColorScheme.Color name="EditBoxBackColor" 						color="$skin://hostapp/BaseColor25" 					saturation="10:5" 	luminance="10" invertedvalue="86"/>
+			
+			<ColorScheme.Color name="MenuControlBackColor" 					color="$skin://hostapp/BaseColor20" 					saturation="6" 		luminance="10" invertedvalue="86"/>
+			<ColorScheme.Color name="MenuControlBackColorTransparent" 		color="$skin://hostapp/BaseColor20" alphavalue="0"		saturation="6" 		luminance="10" invertedvalue="86"/>
+			<ColorScheme.Color name="MenuControlSeparatorColor" 			color="$skin://hostapp/BaseColor30" 					saturation="6" 		luminance="10:15" invertedvalue="70"/>
+			
+			<ColorScheme.Color name="ScrollBarColor"						color="$skin://hostapp/BaseColor45" alphavalue="70" 	saturation="0"		luminance="10" invertedvalue="40"/>
+			<ColorScheme.Color name="ScrollBarOpaqueColor"					color="$skin://hostapp/BaseColor35" 				saturation="0"		luminance="10" invertedvalue="55"/>
+
+			<ColorScheme.Color name="StandardDividerVColor"					color="$skin://hostapp/BaseColor15" 				saturation="10:5" luminance="11:5" slcombined="true" invertedvalue="62"/>
+			<ColorScheme.Color name="StandardDividerHColor"					color="$skin://hostapp/BaseColor15" 				saturation="10:5" luminance="11:5" slcombined="true" invertedvalue="62"/>
+			<ColorScheme.Color name="DividerThumbColor"						color="$skin://hostapp/BaseColor40" 					saturation="0"		luminance="20" invertedvalue="20"/>
+			<ColorScheme.Color name="DividerThumbOnColor"					color="$skin://hostapp/BaseColor55" 					saturation="0"		luminance="20" invertedvalue="10"/>
+
+			<ColorScheme.Color name="StandardDividerFrameColor"				color="$skin://hostapp/BaseColor05" 				saturation="10:5" 	luminance="11:5" invertedvalue="26"/>
+			<ColorScheme.Color name="YellowWarningText" 					color="$skin://hostapp/SeverityColorNormal" 		saturation="0" 		luminance="5" huefixed="true" invertedvalue="0"/>
+			<ColorScheme.Color name="YellowWarningText.NoInvert" 			color="$skin://hostapp/SeverityColorNormal" 		saturation="0" 		luminance="5" huefixed="true" invertible="false"/>
+
+			<ColorScheme.Color name="MobileControlColor" 					color="$skin://hostapp/BaseColor25" 				saturation="8:5" luminance="6" invertedvalue="92"/>
+			<ColorScheme.Color name="MobileButtonColor" 					color="$skin://hostapp/BaseColor25" 				saturation="8:5" luminance="6" invertedvalue="90"/>
+			<ColorScheme.Color name="MobileButtonPenColor" 					color="$skin://hostapp/BaseColor25" 				saturation="8:5" luminance="6" invertedvalue="82"/>
+			<ColorScheme.Color name="MobileButtonMOColor" 					color="$skin://hostapp/BaseColor30" 				saturation="8:5" luminance="6" invertedvalue="92"/>
+			<ColorScheme.Color name="MobileControlDisabledColor" 			color="$skin://hostapp/BaseColor30" alphavalue="50" 		saturation="8:5" luminance="6" invertedvalue="70"/>
+			<ColorScheme.Color name="MobileButtonBlueDisabledOnColor" 		color="$skin://hostapp/BaseColor30" alphavalue="25" 		saturation="8:5" luminance="6" invertedvalue="70"/>
+			<ColorScheme.Color name="MobileControlPenColor" 				color="$skin://hostapp/BaseColor30" 				saturation="8:5" luminance="6" invertedvalue="83"/>
+			<ColorScheme.Color name="MobileControlBorderColor" 				color="$skin://hostapp/BaseColor25" 				saturation="8:5" luminance="6" invertedvalue="77"/>
+			<ColorScheme.Color name="MobileControlTextColor" 				color="$skin://hostapp/BaseColor90" 				saturation="8:5" luminance="5" invertedvalue="10"/>
+			<ColorScheme.Color name="MobileControlTextOnColor" 				color="$skin://hostapp/BaseColor100"					saturation="8:5" luminance="5" invertedvalue="100"/>
+			<ColorScheme.Color name="MobileButtonBlueColor" 				color="$skin://hostapp/PrimaryColor40" 				saturation="8:5" luminance="6"  huefixed="true" invertedvalue="55"/>
+			<ColorScheme.Color name="MobileButtonBlueMOColor" 				color="$skin://hostapp/PrimaryColor50" 				saturation="8:5" luminance="6" slcombined="true" huefixed="true" invertedvalue="59"/>
+			<ColorScheme.Color name="MobileButtonBlueDisabledColor" 		color="$skin://hostapp/BaseColor45" alphavalue="50" 	saturation="8:5" luminance="6" slcombined="true" huefixed="true" invertedvalue="68"/>
+			<ColorScheme.Color name="MobileButtonBluePressedColor" 			color="$skin://hostapp/PrimaryColor45" 				saturation="8:5" luminance="6" slcombined="true" huefixed="true" invertedvalue="60"/>
+			<ColorScheme.Color name="MobileButtonBluePenColor" 				color="$skin://hostapp/PrimaryColor50" 				saturation="8:5" luminance="6" slcombined="true" huefixed="true" invertedvalue="51"/>
+			
+			<ColorScheme.Color name="ButtonBlueTextColor"					color="$skin://hostapp/PrimaryColor55" 				saturation="8:5" luminance="6" slcombined="true" huefixed="true" invertedvalue="52"/>
+
+			<ColorScheme.Color name="ColorPaletteBackcolor"					color="$skin://hostapp/BaseColor20" 				saturation="0" luminance="5" invertedvalue="32"/>
+
+			<ColorScheme.Color name="ActiveColor"							color="$skin://hostapp/PrimaryColor40" 				saturation="8:5" luminance="6" huefixed="true" invertedvalue="55"/>
+			<ColorScheme.Color name="HighlightColor" 						color="$skin://hostapp/PrimaryColor60" 				saturation="5" 	 luminance="8" huefixed="true" invertedvalue="65"/>
+			<ColorScheme.Color name="HighlightColor.NoInvert"				color="$skin://hostapp/PrimaryColor60" 				saturation="0" 	 luminance="0" huefixed="true" invertible="false"/>
+		</ColorScheme>
+	</Resources>
+</Skin>

@@ -1,0 +1,1 @@
+SpiderMonkey platform libraries are downloaded here from cclsoftware/gecko GitHub repository releases by CMake.

@@ -1,0 +1,97 @@
+apply from: "${buildscript.sourceFile.getParentFile()}/configuration.gradle"
+
+android {
+    /* Read and set version information
+     */
+	def versionProperties = new Properties()
+
+    versionProperties.setProperty('versionCode', '1')
+    versionProperties.setProperty('versionName', '1.0')
+
+    if (project.ext.has('solutionDir')) {
+        def versionPropertiesFile = rootProject.file("${solutionDir}/gradle/properties/version.properties")
+
+        if (versionPropertiesFile.exists()) {
+            versionProperties.load(new FileInputStream(versionPropertiesFile))
+        }
+    }
+
+    defaultConfig {
+        versionCode = versionProperties.getProperty('versionCode').toInteger() * 100
+        versionName = versionProperties.getProperty('versionName')
+    }
+
+    compileOptions.with {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+
+    packagingOptions {
+        jniLibs {
+            useLegacyPackaging = true
+        }
+    }
+
+    /* Read and set code signing properties
+     */
+    def signingProperties = new Properties()
+
+    if (project.ext.has('solutionDir')) {
+        def signingPropertiesFile = rootProject.file("${solutionDir}/gradle/properties/signing.properties")
+
+        if (signingPropertiesFile.exists()) {
+            signingProperties.load(new FileInputStream(signingPropertiesFile))
+        }
+    }
+
+    signingConfigs {
+        release {
+            storeFile signingProperties.containsKey('key.store') ? rootProject.file(signingProperties.getProperty('key.store').replace('${repositoryRoot}', "${buildscript.sourceFile.getParentFile()}/../../..")) : null
+            storePassword signingProperties.getProperty('key.store.password')
+            keyAlias signingProperties.getProperty('key.alias')
+            keyPassword signingProperties.getProperty('key.alias.password')
+        }
+    }
+
+    buildTypes {
+        release {
+            if (plugins.hasPlugin("com.android.application")) {
+                minifyEnabled true
+                proguardFiles getDefaultProguardFile('proguard-android-optimize.txt')
+            }
+
+            signingConfig = signingConfigs.release
+
+            ndk {
+                debugSymbolLevel = 'full'
+            }
+        }
+
+        debug {
+            jniDebuggable true
+            debuggable true
+        }
+    }
+
+    flavorDimensions 'abi'
+    productFlavors {
+        create("arm7") {
+            dimension 'abi'
+            ndk.abiFilters 'armeabi-v7a'
+        }
+        create("arm8") {
+            dimension 'abi'
+            ndk.abiFilters 'arm64-v8a'
+
+            getIsDefault().set(true)
+        }
+        create("x86") {
+            dimension 'abi'
+            ndk.abiFilters 'x86'
+        }
+        create("x86_64") {
+            dimension 'abi'
+            ndk.abiFilters 'x86_64'
+        }
+    }
+}

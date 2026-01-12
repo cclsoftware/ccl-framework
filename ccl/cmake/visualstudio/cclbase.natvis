@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<AutoVisualizer xmlns="http://schemas.microsoft.com/vstudio/debugger/natvis/2010">
+  <Type Name="CCL::String">
+    <DisplayString>{*__private,su}</DisplayString>
+    <StringView>*__private,su</StringView>
+  </Type>
+
+  <Type Name="CCL::CString">
+    <DisplayString>{text,s}</DisplayString>
+    <StringView>text,s</StringView>
+  </Type>
+
+  <Type Name="CCL::PlainString">
+    <DisplayString>{*__private,su}</DisplayString>
+    <StringView>*__private,su</StringView>
+  </Type>
+
+  <Type Name="CCL::PlainCString">
+    <DisplayString>{text,s}</DisplayString>
+    <StringView>text,s</StringView>
+  </Type>
+
+  <Type Name="CCL::Url">
+    <DisplayString Condition="*hostname.__private==0">{protocol,sub}:///{path,sub}</DisplayString>
+    <DisplayString>{protocol,sub}://{hostname,sub}/{path,sub}</DisplayString>
+  </Type>
+
+  <Type Name="CCL::UID">
+    <DisplayString>{*(Core::UIDBytes*) this}</DisplayString>
+  </Type>
+
+  <Type Name="CCL::Variant">
+    <DisplayString Condition="type == 0">&lt;empty&gt;</DisplayString>
+    <DisplayString Condition="(type &amp; CCL::Variant::kTypeMask) == CCL::Variant::kInt">type=kInt lValue={lValue}</DisplayString>
+    <DisplayString Condition="(type &amp; CCL::Variant::kTypeMask) == CCL::Variant::kFloat">type=kFloat fValue={fValue,g}</DisplayString>
+    <DisplayString Condition="(type &amp; CCL::Variant::kTypeMask) == CCL::Variant::kString">type=kString string={string}</DisplayString>
+    <DisplayString Condition="(type &amp; CCL::Variant::kTypeMask) == CCL::Variant::kObject">type=kObject object={object}</DisplayString>
+  </Type>
+  
+  <Type Name="CCL::RingBuffer&lt;*&gt;">
+    <DisplayString Condition="read &lt;= write">capacity={capacity} count={write-read} read={read} write={write}</DisplayString>
+    <DisplayString Condition="read &gt; write">capacity={capacity} count={capacity-read+write} read={read} write={write}</DisplayString>
+    <Expand>
+      <IndexListItems>
+        <Size Condition="read &lt;= write">write-read</Size>
+        <Size Condition="read &gt; write">capacity-read+write</Size>
+        <ValueNode>(($T1*) items)[read+$i % capacity]</ValueNode>
+      </IndexListItems>
+    </Expand>
+  </Type>
+
+</AutoVisualizer>

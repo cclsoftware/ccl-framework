@@ -1,0 +1,13 @@
+code ../../ccl/system ./templates/cclsystem.pot
+code ../../ccl/gui ./templates/cclgui.pot
+code ../../ccl/platform ./templates/cclplatform.pot
+skin ../../ccl/resource/skin ./templates/cclgui-skin.pot
+code ../../ccl/app ./templates/cclapp.pot
+code ../../ccl/extras ./templates/cclextras.pot
+
+auto ../../ccl/packaging/android/resource/values ./templates/cclplatform-android.pot
+
+code ../../services/tuio/source ./templates/tuioservice.pot
+skin ../../services/tuio/skin ./templates/tuioservice-skin.pot
+
+skin ../../skins/neutraldesign ./templates/neutraldesign-skin.pot

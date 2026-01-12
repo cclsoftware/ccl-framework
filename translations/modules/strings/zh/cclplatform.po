@@ -1,0 +1,134 @@
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: android/system/filemanager.android.cpp
+msgctxt "FileManager"
+msgid "Internal Storage"
+msgstr "内置存储"
+
+#: cocoa/gui/fileselector.cocoa.mm
+msgctxt "FileSelector"
+msgid "All Documents"
+msgstr "所有文档"
+
+#: shared/host/platformfileselectorbase.cpp
+msgctxt "FileSelector"
+msgid "All Files"
+msgstr "所有文件"
+
+#: win/gui/fileselector.win.cpp
+msgctxt "FileSelector"
+msgid "All Files (*.*)"
+msgstr "所有文件（*.*）"
+
+#: cocoa/gui/fileselector.cocoa.mm
+msgctxt "FileSelector"
+msgid "All Readable Documents"
+msgstr "所有可读文档"
+
+#: shared/host/platformfileselectorbase.cpp win/gui/fileselector.win.cpp
+msgctxt "FileSelector"
+msgid "All Supported Files"
+msgstr "所有支持的文件"
+
+#: cocoa/gui/fileselector.ios.mm
+msgctxt "FileSelector"
+msgid "Files are still being downloaded. Please try to open the file again later."
+msgstr "文件仍在下载中。请稍后再尝试打开该文件。"
+
+#: cocoa/system/filemanager.ios.mm
+msgctxt "IOSFileManager"
+msgid "Other Application"
+msgstr "其他应用程序"
+
+#: cocoa/system/filemanager.ios.mm
+msgctxt "IOSFileManager"
+msgid "Storage"
+msgstr "存储"
+
+#: cocoa/gui/menu.cocoa.mm
+msgctxt "MacMenu"
+msgid "Hide"
+msgstr "隐藏"
+
+#: cocoa/gui/menu.cocoa.mm
+msgctxt "MacMenu"
+msgid "Hide Others"
+msgstr "隐藏其他"
+
+#: cocoa/gui/menu.cocoa.mm
+msgctxt "MacMenu"
+msgid "Quit"
+msgstr "退出"
+
+#: cocoa/gui/menu.cocoa.mm
+msgctxt "MacMenu"
+msgid "Services"
+msgstr "服务"
+
+#: cocoa/gui/menu.cocoa.mm
+msgctxt "MacMenu"
+msgid "Show All"
+msgstr "显示全部"
+
+#: win/gui/exceptionhandler.cpp
+msgctxt "Win32"
+msgid ""
+"An unexpected error occurred in this application or in a plug-in.\n"
+"A problem report has been created at:\n"
+"\n"
+"%(1)"
+msgstr ""
+"在此应用程序或插件中发生了意外错误。\n"
+"问题报告已创建在：\n"
+"\n"
+"%(1)"
+
+#: win/direct2d/dxgiengine.cpp
+msgctxt "Win32"
+msgid "Graphics hardware acceleration issue detected."
+msgstr "检测到图形硬件加速问题。"
+
+#: win/direct2d/d2dengine.cpp
+msgctxt "Win32"
+msgid "This application requires Windows 10 or later."
+msgstr "该应用需在Windows 10或更新版本下运行。"
+
+#~ msgctxt "Alert"
+#~ msgid "Information"
+#~ msgstr "信息"
+
+#~ msgctxt "FileSelector"
+#~ msgid "Do you want to replace the existing file %(1) ?"
+#~ msgstr "是否替换已有的文件%(1)?"
+
+#~ msgctxt "Win32"
+#~ msgid ""
+#~ "An Unexpected Error occured in this Application or one of its Plug-ins!\n"
+#~ "A Crash Dump has been created at:\n"
+#~ "\n"
+#~ "%(1)"
+#~ msgstr ""
+#~ "此应用程序或其插件出现异常错误!\n"
+#~ "故障转储信息位于:\n"
+#~ "\n"
+#~ "%(1)"
+
+#~ msgctxt "Win32"
+#~ msgid ""
+#~ "An unexpected error occurred in this application or in a plug-in.\n"
+#~ "A dump file has been created at:\n"
+#~ "\n"
+#~ "%(1)"
+#~ msgstr ""
+#~ " 本应用或插件中出现一个异常错误。\n"
+#~ "一个转储文件已创建于：\n"
+#~ " \n"
+#~ "%(1)"
+
+#~ msgctxt "Win32"
+#~ msgid "This application requires Windows 7 SP1 with Platform Update or later."
+#~ msgstr "此应用要求带有平台升级的Windows 7 SP1 或更高版本。"

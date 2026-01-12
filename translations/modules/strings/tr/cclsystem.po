@@ -1,0 +1,283 @@
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: nativefilesystem.cpp
+msgctxt "FileErrors"
+msgid "Access is denied"
+msgstr "Erişim engellendi"
+
+#: nativefilesystem.cpp
+msgctxt "FileErrors"
+msgid "Invalid Argument"
+msgstr "Geçersiz argüman"
+
+#: nativefilesystem.cpp
+msgctxt "FileErrors"
+msgid "The file exists"
+msgstr "Dosya mevcut"
+
+#: nativefilesystem.cpp
+msgctxt "FileErrors"
+msgid "The file is in use"
+msgstr "Dosya kullanılıyor"
+
+#: nativefilesystem.cpp
+msgctxt "FileErrors"
+msgid "The file is write protected"
+msgstr "Dosya yazma korumalı"
+
+#: nativefilesystem.cpp
+msgctxt "FileErrors"
+msgid "The system cannot find the file specified"
+msgstr "Sistem istenen dosyayı bulamadı"
+
+#: nativefilesystem.cpp
+msgctxt "FileErrors"
+msgid "There is not enough space on the disk"
+msgstr "Disk üzerinde yeterli boş alan yok"
+
+#: nativefilesystem.cpp
+msgctxt "FileErrors"
+msgid "Too many open files"
+msgstr "Çok fazla açık dosya var"
+
+#: nativefilesystem.cpp
+msgctxt "FileErrors"
+msgid "Unknown Error"
+msgstr "Bilinmeyen Hata"
+
+#: fileutilities.cpp
+msgctxt "FileType"
+msgid "Application"
+msgstr "Uygulama"
+
+#: fileutilities.cpp
+msgctxt "FileType"
+msgid "Application Extension"
+msgstr "Uygulama Uzantısı"
+
+#: fileutilities.cpp
+msgctxt "FileType"
+msgid "Binary File"
+msgstr "İkili Dosya"
+
+#: fileutilities.cpp
+msgctxt "FileType"
+msgid "HTML File"
+msgstr "HTML Dosyası"
+
+#: fileutilities.cpp
+msgctxt "FileType"
+msgid "JSON File"
+msgstr "JSON Dosyası"
+
+#: fileutilities.cpp
+msgctxt "FileType"
+msgid "Java Properties File"
+msgstr "Java Özellik Dosyası"
+
+#: localization/languagepack.cpp
+msgctxt "FileType"
+msgid "Language Pack"
+msgstr "Dil Paketi"
+
+#: fileutilities.cpp
+msgctxt "FileType"
+msgid "PDF File"
+msgstr "PDF Dosyası"
+
+#: fileutilities.cpp
+msgctxt "FileType"
+msgid "Package File"
+msgstr "Paket Dosyası"
+
+#: fileutilities.cpp
+msgctxt "FileType"
+msgid "Rich Text Format"
+msgstr "Zengin Metin Biçimi"
+
+#: fileutilities.cpp
+msgctxt "FileType"
+msgid "Spreadsheet"
+msgstr "Hesap Tablosu"
+
+#: fileutilities.cpp
+msgctxt "FileType"
+msgid "Text File"
+msgstr "Metin Dosyası"
+
+#: fileutilities.cpp
+msgctxt "FileType"
+msgid "UBJSON File"
+msgstr "UBJSON Dosyası"
+
+#: fileutilities.cpp
+msgctxt "FileType"
+msgid "XML File"
+msgstr "XML Dosyası"
+
+#: fileutilities.cpp
+msgctxt "FileType"
+msgid "ZIP File"
+msgstr "ZIP Dosyası"
+
+#: localization/localeinfo.cpp
+msgctxt "Locales"
+msgid "%(1) days ago"
+msgstr "%(1) gün önce"
+
+#: localization/localeinfo.cpp
+msgctxt "Locales"
+msgid "%(1) months ago"
+msgstr "%(1) ay önce"
+
+#: localization/localeinfo.cpp
+msgctxt "Locales"
+msgid "%(1) weeks ago"
+msgstr "%(1) hafta önce"
+
+#: localization/localeinfo.cpp
+msgctxt "Locales"
+msgid "%(1) years ago"
+msgstr "%(1) yıl önce"
+
+#: localization/localeinfo.cpp
+msgctxt "Locales"
+msgid "GB"
+msgstr "GB"
+
+#: localization/localeinfo.cpp
+msgctxt "Locales"
+msgid "In %(1) days"
+msgstr "%(1) gün içinde"
+
+#: localization/localeinfo.cpp
+msgctxt "Locales"
+msgid "In %(1) hours"
+msgstr "%(1) saat içinde"
+
+#: localization/localeinfo.cpp
+msgctxt "Locales"
+msgid "In less than one hour"
+msgstr "Bir saatten az"
+
+#: localization/localeinfo.cpp
+msgctxt "Locales"
+msgid "In one day"
+msgstr "Bir gün içinde"
+
+#: localization/localeinfo.cpp
+msgctxt "Locales"
+msgid "In one hour"
+msgstr "Bir saat içinde"
+
+#: localization/localeinfo.cpp
+msgctxt "Locales"
+msgid "KB"
+msgstr "KB"
+
+#: localization/localeinfo.cpp
+msgctxt "Locales"
+msgid "KB/sec"
+msgstr "KB/sn"
+
+#: localization/localeinfo.cpp
+msgctxt "Locales"
+msgid "Last month"
+msgstr "Geçen ay"
+
+#: localization/localeinfo.cpp
+msgctxt "Locales"
+msgid "Last week"
+msgstr "Geçen hafta"
+
+#: localization/localeinfo.cpp
+msgctxt "Locales"
+msgid "Last year"
+msgstr "Geçen yıl"
+
+#: localization/localeinfo.cpp
+msgctxt "Locales"
+msgid "MB"
+msgstr "MB"
+
+#: localization/localeinfo.cpp
+msgctxt "Locales"
+msgid "MB/sec"
+msgstr "MB/sn"
+
+#: localization/localeinfo.cpp
+msgctxt "Locales"
+msgid "TB"
+msgstr "TB"
+
+#: localization/localeinfo.cpp
+msgctxt "Locales"
+msgid "Today"
+msgstr "Bugün"
+
+#: localization/localeinfo.cpp
+msgctxt "Locales"
+msgid "Yesterday"
+msgstr "Dün"
+
+#: localization/localeinfo.cpp
+msgctxt "Locales"
+msgid "bytes"
+msgstr "bytes"
+
+#: localization/localeinfo.cpp
+msgctxt "Locales"
+msgid "days"
+msgstr "gün"
+
+#: localization/localeinfo.cpp
+msgctxt "Locales"
+msgid "hours"
+msgstr "saat"
+
+#: localization/localeinfo.cpp
+msgctxt "Locales"
+msgid "min"
+msgstr "dk"
+
+#: localization/localeinfo.cpp
+msgctxt "Locales"
+msgid "sec"
+msgstr "sn"
+
+#: packaging/filearchive.cpp
+msgctxt "PackageFile"
+msgid "Packaging: %(1)"
+msgstr "Paketleniyor: %(1)"
+
+#: plugins/plugmanager.cpp
+msgctxt "PlugInManager"
+msgid "Deleted script object from \"%(1)\" is still referenced."
+msgstr "\"%(1)\" içinden silinmiş betik nesnesine hâlâ referans veriliyor."
+
+#: plugins/plugcollect.cpp
+msgctxt "PlugIns"
+msgid "%(1) has been blocked."
+msgstr "%(1) engellendi."
+
+#: plugins/servicemanager.cpp
+msgctxt "ServiceManager"
+msgid "%(1) failed!"
+msgstr "%(1) başarısız oldu!"
+
+#: plugins/servicemanager.cpp
+msgctxt "ServiceManager"
+msgid "Starting %(1)..."
+msgstr "%(1) Başlatılıyor..."
+
+#~ msgctxt "FileType"
+#~ msgid "Zip File"
+#~ msgstr "Zip Dosyası"
+
+#~ msgctxt "ServiceManager"
+#~ msgid "Stopping %(1)..."
+#~ msgstr "%(1) Durduruluyor..."

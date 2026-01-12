@@ -1,0 +1,97 @@
+{
+	"name": "coreextensiontemplate",
+	"inherits": "coreplugintemplate",
+	"description": "Extension with core plug-in library",
+	"destination": "extensions/development/@TargetName",
+	"platforms":
+	[
+		"win",
+		"mac",
+		"linux"
+	],
+	"variables":
+	[
+		{
+			"key": "ExtensionDir",
+			"defaultValue": "PlugIns",
+			"description": "extension subdirectory to place the plug-in binary"
+		}
+	],
+	"replacements": 
+	[
+		{
+			"searchString": "extensiontemplate",
+			"replaceString": "@TargetName",
+			"filter": "*.cpp;*.h;*.cmake;*.txt;*.json;*.in;*.bat;*.template;*.xml;*.build"
+		},
+		{
+			"searchString": "Extension Template",
+			"replaceString": "@ProjectTitle",
+			"filter": "*.cpp;*.h;*.cmake;*.txt;*.json;*.in;*.nsi;*.bat;build.sh;*.template;*.xml"
+		},
+		{
+			"searchString": "ExtensionFileName",
+			"replaceString": "@PlugInClass",
+			"filter": "*.build"
+		},
+		{
+			"searchString": "(Vendor Name)",
+			"replaceString": "@VendorName",
+			"filter": "*.txt;*.xml"
+		},
+		{
+			"searchString": "(Vendor Website)",
+			"replaceString": "@VendorWebsite",
+			"filter": "*.txt;*.xml"
+		},
+		{
+			"searchString": "(ProjectPackageID)",
+			"replaceString": "@PackageID",
+			"filter": "*.xml"
+		},
+		{
+			"searchString": "(ProjectPackageID)",
+			"replaceString": "@PackageID",
+			"filter": "*.xml"
+		},
+		{
+			"searchString": "extensiondir",
+			"replaceString": "@ExtensionDir",
+			"filter": "*.txt;*.build"
+		}
+	],
+	"files":
+	[
+		{
+			"source": "coreextensiontemplate/development/CMakeLists.txt",
+			"destination": "@Destination/cmake/CMakeLists.txt"
+		},
+		{
+			"source": "coreextensiontemplate/deployment/extensiontemplate.win.build",
+			"destination": "@Destination/../../deployment/@TargetName.win.build",
+			"platform": "win"
+		},
+		{
+			"source": "coreextensiontemplate/deployment/extensiontemplate.mac.build",
+			"destination": "@Destination/../../deployment/@TargetName.mac.build",
+			"platform": "mac"
+		},
+		{
+			"source": "coreextensiontemplate/deployment/extensiontemplate.linux.build",
+			"destination": "@Destination/../../deployment/@TargetName.linux.build",
+			"platform": "linux"
+		},
+		{
+			"source": "extensiontemplate/deployment/extensiontemplate/installdata.xml",
+			"destination": "@Destination/../../deployment/@TargetName/installdata.xml"
+		},
+		{
+			"source": "extensiontemplate/deployment/extensiontemplate/metainfo.xml",
+			"destination": "@Destination/../../deployment/@TargetName/metainfo.xml"
+		},
+		{
+			"source": "extensiontemplate/security/extensiontemplate.policy.xml",
+			"destination": "@Destination/../../security/@TargetName.policy.xml"
+		}
+	]
+}

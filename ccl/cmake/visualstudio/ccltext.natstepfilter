@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<StepFilter xmlns="http://schemas.microsoft.com/vstudio/debugger/natstepfilter/2010">
+  <Function><Name>GetConstantString</Name><Action>NoStepInto</Action></Function>
+  <Function><Name>GetSignalHandler</Name><Action>NoStepInto</Action></Function>
+</StepFilter>

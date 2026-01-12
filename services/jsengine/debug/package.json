@@ -1,0 +1,11 @@
+{
+	"scripts": {
+		"build": "esbuild ./daphandler.ts --bundle --outfile=daphandler.js --minify --sourcemap=external"
+	},
+	"dependencies": {
+	},
+	"devDependencies": {
+		"@vscode/debugprotocol": "^1.68.0",
+		"esbuild": "^0.25.12"
+	}
+}

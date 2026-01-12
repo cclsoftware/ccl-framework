@@ -1,0 +1,129 @@
+{
+	"enums":
+	[
+		{
+			"name": "CoordLimits",
+			"brief": "Coordinate limits",
+			"enumerators":
+			[
+				{
+					"name": "kCoordLimitsMaxCoord",
+					"type": "int",
+					"value": "0x0fff000",
+					"expression": true,
+					"brief": "max. coordinate value"
+				},
+				{
+					"name": "kCoordLimitsMinCoord",
+					"type": "int",
+					"value": "-kCoordLimitsMaxCoord",
+					"brief": "min. coordinate value"
+				}
+			]
+		},
+		{
+			"name": "Alignment",
+			"brief": "Alignment flags",
+			"enumerators":
+			[
+				{
+					"name": "kAlignmentHCenter",
+					"type": "int",
+					"value": "0x00",
+					"expression": true,
+					"brief": "center horizontally"
+				},
+				{
+					"name": "kAlignmentLeft",
+					"type": "int",
+					"value": "0x01",
+					"expression": true,
+					"brief": "align left"
+				},
+				{
+					"name": "kAlignmentRight",
+					"type": "int",
+					"value": "0x02",
+					"expression": true,
+					"brief": "align right"
+				},
+				{
+					"name": "kAlignmentHMask",
+					"type": "int",
+					"value": "0x0F",
+					"expression": true
+				},
+				{
+					"name": "kAlignmentVCenter",
+					"type": "int",
+					"value": "0x00",
+					"expression": true,
+					"brief": "center vertically"
+				},
+				{
+					"name": "kAlignmentTop",
+					"type": "int",
+					"value": "0x10",
+					"expression": true,
+					"brief": "align top"
+				},
+				{
+					"name": "kAlignmentBottom",
+					"type": "int",
+					"value": "0x20",
+					"expression": true,
+					"brief": "align bottom"
+				},
+				{
+					"name": "kAlignmentVMask",
+					"type": "int",
+					"value": "0xF0",
+					"expression": true
+				},
+				{
+					"name": "kAlignmentCenter",
+					"type": "int",
+					"value": "kAlignmentHCenter|kAlignmentVCenter",
+					"expression": true
+				},
+				{
+					"name": "kAlignmentLeftCenter",
+					"type": "int",
+					"value": "kAlignmentLeft|kAlignmentVCenter",
+					"expression": true
+				},
+
+				{
+					"name": "kAlignmentRightCenter",
+					"type": "int",
+					"value": "kAlignmentRight|kAlignmentVCenter",
+					"expression": true
+				},
+				{
+					"name": "kAlignmentLeftTop",
+					"type": "int",
+					"value": "kAlignmentLeft|kAlignmentTop",
+					"expression": true
+				},
+				{
+					"name": "kAlignmentRightTop",
+					"type": "int",
+					"value": "kAlignmentRight|kAlignmentTop",
+					"expression": true
+				},
+				{
+					"name": "kAlignmentLeftBottom",
+					"type": "int",
+					"value": "kAlignmentLeft|kAlignmentBottom",
+					"expression": true
+				},
+				{
+					"name": "kAlignmentRightBottom",
+					"type": "int",
+					"value": "kAlignmentRight|kAlignmentBottom",
+					"expression": true
+				}
+			]
+		}
+	]
+}

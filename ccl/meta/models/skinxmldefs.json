@@ -1,0 +1,2012 @@
+{
+    "groups": 
+	[
+        {
+            "name": "Skin XML Tags / Sections",
+            "definitions": 
+			[
+                {
+                    "name": "TAG_SKIN",
+                    "value": "Skin",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_INCLUDES",
+                    "value": "Includes",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_IMPORTS",
+                    "value": "Imports",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_EXTERNALS",
+                    "value": "Externals",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_OVERLAYS",
+                    "value": "Overlays",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_RESOURCES",
+                    "value": "Resources",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_STYLES",
+                    "value": "Styles",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_FORMS",
+                    "value": "Forms",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_SHAPES",
+                    "value": "Shapes",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_WINDOWCLASSES",
+                    "value": "WindowClasses",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_WORKSPACES",
+                    "value": "Workspaces",
+                    "type": "string"
+                }
+            ]
+        },
+        {
+            "name": "Skin XML Tags / General",
+            "definitions": 
+			[
+                {
+                    "name": "TAG_ELEMENT",
+                    "value": "Element",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_INCLUDE",
+                    "value": "Include",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_IMPORT",
+                    "value": "Import",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_EXTERNAL",
+                    "value": "External",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_OVERLAY",
+                    "value": "Overlay",
+                    "type": "string"
+                }
+            ]
+        },
+        {
+            "name": "Skin XML Tags / Control statements",
+            "definitions": 
+			[
+                {
+                    "name": "TAG_STATEMENT",
+                    "value": "statement",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_DEFINE",
+                    "value": "define",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_USING",
+                    "value": "using",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_SWITCH",
+                    "value": "switch",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_CASE",
+                    "value": "case",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_DEFAULT",
+                    "value": "default",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_FOREACH",
+                    "value": "foreach",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_IF",
+                    "value": "if",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_ZOOM",
+                    "value": "zoom",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_STYLESELECTOR",
+                    "value": "styleselector",
+                    "type": "string"
+                }
+            ]
+        },
+        {
+            "name": "Skin XML Tags / Workspace",
+            "definitions": 
+			[
+                {
+                    "name": "TAG_WINDOWCLASS",
+                    "value": "WindowClass",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_WORKSPACE",
+                    "value": "Workspace",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_PERSPECTIVE",
+                    "value": "Perspective",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_FRAME",
+                    "value": "Frame",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_PARAMETER",
+                    "value": "Parameter",
+                    "type": "string"
+                }
+            ]
+        },
+        {
+            "name": "Skin XML Tags / Resources",
+            "definitions":
+			[
+                {
+                    "name": "TAG_RESOURCE",
+                    "value": "Resource",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_OBJECT",
+                    "value": "Object",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_IMAGE",
+                    "value": "Image",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_IMAGEPART",
+                    "value": "ImagePart",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_IMAGEFILTER",
+                    "value": "ImageFilter",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_ICONSET",
+                    "value": "IconSet",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_SHAPEIMAGE",
+                    "value": "ShapeImage",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_CURSOR",
+                    "value": "Cursor",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_GRADIENT",
+                    "value": "Gradient",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_LINEARGRADIENT",
+                    "value": "LinearGradient",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_RADIALGRADIENT",
+                    "value": "RadialGradient",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_GRADIENTSTOP",
+                    "value": "GradientStop",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_FONTRESOURCE",
+                    "value": "FontResource",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_COLORSCHEME",
+                    "value": "ColorScheme",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_COLORSCHEMECOLOR",
+                    "value": "ColorScheme.Color",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_SHAPECOLORMAPPING",
+                    "value": "ShapeColorMapping",
+                    "type": "string"
+                }
+            ]
+        },
+        {
+            "name": "Skin XML Tags / Visual Styles",
+            "definitions": 
+			[
+                {
+                    "name": "TAG_STYLE",
+                    "value": "Style",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_STYLEALIAS",
+                    "value": "StyleAlias",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_THEMESTYLE",
+                    "value": "ThemeElements",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_FONT",
+                    "value": "Font",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_COLOR",
+                    "value": "Color",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_METRIC",
+                    "value": "Metric",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_STRING",
+                    "value": "String",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_OPTIONS",
+                    "value": "Options",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_ALIGN",
+                    "value": "Align",
+                    "type": "string"
+                }
+            ]
+        },
+        {
+            "name": "Skin XML Tags / Views",
+            "definitions":
+			[
+                {
+                    "name": "TAG_VIEW",
+                    "value": "View",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_FORM",
+                    "value": "Form",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_VARIANT",
+                    "value": "Variant",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_FORMDELEGATE",
+                    "value": "Delegate",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_SPACE",
+                    "value": "Space",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_NULLSPACE",
+                    "value": "Null",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_LAYOUT",
+                    "value": "AbstractLayout",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_BASICLAYOUT",
+                    "value": "Layout",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_HORIZONTAL",
+                    "value": "Horizontal",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_VERTICAL",
+                    "value": "Vertical",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_TABLE",
+                    "value": "Table",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_SIZEVARIANT",
+                    "value": "SizeVariant",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_FLEXBOX",
+                    "value": "Flexbox",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_ZOOMABLE",
+                    "value": "Zoomable",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_CURSORVIEW",
+                    "value": "CursorView",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_HELPANCHOR",
+                    "value": "HelpAnchor",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_LABEL",
+                    "value": "Label",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_HEADING",
+                    "value": "Heading",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_IMAGEVIEW",
+                    "value": "ImageView",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_PICTURE",
+                    "value": "Picture",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_CONTROL",
+                    "value": "Control",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_VALUECONTROL",
+                    "value": "ValueControl",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_BUTTON",
+                    "value": "Button",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_DIALOGBUTTON",
+                    "value": "DialogButton",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_TOGGLE",
+                    "value": "Toggle",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_MULTITOGGLE",
+                    "value": "MultiToggle",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_CHECKBOX",
+                    "value": "CheckBox",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_RADIOBUTTON",
+                    "value": "RadioButton",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_TOOLBUTTON",
+                    "value": "ToolButton",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_SLIDER",
+                    "value": "Slider",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_RANGESLIDER",
+                    "value": "RangeSlider",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_KNOB",
+                    "value": "Knob",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_VALUEBAR",
+                    "value": "ValueBar",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_PROGRESSBAR",
+                    "value": "ProgressBar",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_ACTIVITYVIEW",
+                    "value": "ActivityIndicator",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_VECTORPAD",
+                    "value": "VectorPad",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_TRIVECTORPAD",
+                    "value": "TriVectorPad",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_TEXTBOX",
+                    "value": "TextBox",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_EDITBOX",
+                    "value": "EditBox",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_TEXTEDITOR",
+                    "value": "TextEditor",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_VALUEBOX",
+                    "value": "ValueBox",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_SELECTBOX",
+                    "value": "SelectBox",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_SEGMENTBOX",
+                    "value": "SegmentBox",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_COMBOBOX",
+                    "value": "ComboBox",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_COLORBOX",
+                    "value": "ColorBox",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_POPUPBOX",
+                    "value": "PopupBox",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_UPDOWNBUTTON",
+                    "value": "UpDownButton",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_UPDOWNBOX",
+                    "value": "UpDownBox",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_SWIPEBOX",
+                    "value": "SwipeBox",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_SCROLLBAR",
+                    "value": "ScrollBar",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_SCROLLBUTTON",
+                    "value": "ScrollButton",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_PAGECONTROL",
+                    "value": "PageControl",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_DIALOGGROUP",
+                    "value": "DialogGroup",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_DIVIDER",
+                    "value": "Divider",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_ALIGNVIEW",
+                    "value": "AlignView",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_EMBEDDED_FRAME",
+                    "value": "EmbeddedFrame",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_SCROLLVIEW",
+                    "value": "ScrollView",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_ITEMVIEW",
+                    "value": "ItemView",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_TARGET",
+                    "value": "Target",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_SCROLLHEADER",
+                    "value": "ScrollHeader",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_TABVIEW",
+                    "value": "TabView",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_LISTVIEW",
+                    "value": "ListView",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_TREEVIEW",
+                    "value": "TreeView",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_DROPBOX",
+                    "value": "DropBox",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_WEBVIEW",
+                    "value": "WebView",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_COMMANDBARVIEW",
+                    "value": "CommandBarView",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_SCROLLPICKER",
+                    "value": "ScrollPicker",
+                    "type": "string"
+                }
+            ]
+        },
+        {
+            "name": "Skin XML Tags / Interactive",
+            "definitions": 
+			[
+                {
+                    "name": "TAG_ANCHOR",
+                    "value": "Anchor",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_LINK",
+                    "value": "Link",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_TRIGGERVIEW",
+                    "value": "TriggerView",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_TRIGGERLIST",
+                    "value": "Triggers",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_TRIGGER",
+                    "value": "Trigger",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_SETTER",
+                    "value": "Setter",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_INVOKER",
+                    "value": "Invoker",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_STARTANIMATION",
+                    "value": "StartAnimation",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_STOPANIMATION",
+                    "value": "StopAnimation",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_ANIMATION",
+                    "value": "Animation",
+                    "type": "string"
+                }
+            ]
+        },
+        {
+            "name": "Skin XML Tags / Shapes",
+            "definitions": 
+			[
+                {
+                    "name": "TAG_BASESHAPE",
+                    "value": "BasicShape",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_SHAPE",
+                    "value": "Shape",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_LINE",
+                    "value": "Line",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_RECTSHAPE",
+                    "value": "Rectangle",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_TRIANGLE",
+                    "value": "Triangle",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_ELLIPSE",
+                    "value": "Ellipse",
+                    "type": "string"
+                }
+            ]
+        },
+        {
+            "name": "Skin XML Tags / 3D",
+            "definitions": 
+			[
+                {
+                    "name": "TAG_MODEL3D",
+                    "value": "Model3D",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_MATERIAL3D",
+                    "value": "Material3D",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_SOLIDCOLORMATERIAL3D",
+                    "value": "SolidColorMaterial3D",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_TEXTUREMATERIAL3D",
+                    "value": "TextureMaterial3D",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_TEXTUREMATERIAL3D_TEXTURE",
+                    "value": "TextureMaterial3D.Texture",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_SCENE3D",
+                    "value": "Scene3D",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_SCENENODE3D",
+                    "value": "SceneNode3D",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_CAMERA3D",
+                    "value": "Camera3D",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_LIGHTSOURCE3D",
+                    "value": "LightSource3D",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_AMBIENTLIGHT3D",
+                    "value": "AmbientLight3D",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_DIRECTIONALIGHT3D",
+                    "value": "DirectionalLight3D",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_POINTLIGHT3D",
+                    "value": "PointLight3D",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_MODELNODE3D",
+                    "value": "ModelNode3D",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_SCENEVIEW3D",
+                    "value": "SceneView3D",
+                    "type": "string"
+                }
+            ]
+        },
+        {
+            "name": "Skin XML Attributes / General",
+            "definitions": 
+			[
+                {
+                    "name": "ATTR_NAME",
+                    "value": "name",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_COMMENT",
+                    "value": "comment",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_URL",
+                    "value": "url",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_TARGET",
+                    "value": "target",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_SOURCE",
+                    "value": "source",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_CONTROLLER",
+                    "value": "controller",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_PROPERTY",
+                    "value": "property",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_PARAMETER",
+                    "value": "parameter",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_NAMESPACE",
+                    "value": "namespace",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_VARIABLE",
+                    "value": "variable",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_IN",
+                    "value": "in",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_VALUE",
+                    "value": "value",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_RANGE",
+                    "value": "range",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_TYPE",
+                    "value": "type",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_COUNT",
+                    "value": "count",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_HOTSPOT",
+                    "value": "hotspot",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_VISIBLE",
+                    "value": "visible",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_GROUP",
+                    "value": "group",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_GROUPS",
+                    "value": "groups",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_WORKSPACE",
+                    "value": "workspace",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_PARENT_CLASS",
+                    "value": "parent.class",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_CONDITION",
+                    "value": "condition",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_DECOR",
+                    "value": "decor",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_FRIEND",
+                    "value": "friend",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_DATATARGET",
+                    "value": "datatarget",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_PROVIDER",
+                    "value": "provider",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_RESULT",
+                    "value": "result",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_EVENT",
+                    "value": "event",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_DEFINED",
+                    "value": "defined",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_NOTDEFINED",
+                    "value": "not.defined",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_ARGUMENT1",
+                    "value": "arg1",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_ARGUMENT2",
+                    "value": "arg2",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_TEMPLATE",
+                    "value": "template",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_ADAPTIVE",
+                    "value": "adaptive",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_LOCALIZE",
+                    "value": "localize",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_POSITION",
+                    "value": "position",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_START",
+                    "value": "start",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_END",
+                    "value": "end",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_CENTER",
+                    "value": "center",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_RADIUS",
+                    "value": "radius",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_STARTCOLOR",
+                    "value": "startcolor",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_ENDCOLOR",
+                    "value": "endcolor",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_STYLES",
+                    "value": "styles",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_FACTOR",
+                    "value": "factor",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_FACTORS",
+                    "value": "factors",
+                    "type": "string"
+                }
+            ]
+        },
+        {
+            "name": "Skin XML Attributes / Animation",
+            "definitions":
+			[
+                {
+                    "name": "ATTR_FROM",
+                    "value": "from",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_TO",
+                    "value": "to",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_DURATION",
+                    "value": "duration",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_FUNCTION",
+                    "value": "function",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_REPEAT",
+                    "value": "repeat",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_RESET",
+                    "value": "reset",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_TRANSITION",
+                    "value": "transition",
+                    "type": "string"
+                }
+            ]
+        },
+        {
+            "name": "Skin XML Attributes / Visual Styles",
+            "definitions":
+			[
+                {
+                    "name": "ATTR_APPSTYLE",
+                    "value": "appstyle",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_OVERRIDE",
+                    "value": "override",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_INHERIT",
+                    "value": "inherit",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_FACE",
+                    "value": "face",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_COLOR",
+                    "value": "color",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_ALIGN",
+                    "value": "align",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_SMOOTHING",
+                    "value": "smoothing",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_FORECOLOR",
+                    "value": "forecolor",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_BACKCOLOR",
+                    "value": "backcolor",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_TEXTCOLOR",
+                    "value": "textcolor",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_HILITECOLOR",
+                    "value": "hilitecolor",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_STROKEWIDTH",
+                    "value": "strokewidth",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_TEXTFACE",
+                    "value": "textface",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_TEXTTHEMEID",
+                    "value": "textthemeid",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_TEXTSIZE",
+                    "value": "textsize",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_TEXTSTYLE",
+                    "value": "textstyle",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_TEXTSMOOTHING",
+                    "value": "textsmoothing",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_TEXTALIGN",
+                    "value": "textalign",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_TEXTOPTIONS",
+                    "value": "textoptions",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_TEXTTRIMMODE",
+                    "value": "texttrimmode",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_THEMEID",
+                    "value": "themeid",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_INVERTEDCOLOR",
+                    "value": "invertedcolor",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_SATURATION",
+                    "value": "saturation",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_LUMINANCE",
+                    "value": "luminance",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_CONTRAST",
+                    "value": "contrast",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_HUEFIXED",
+                    "value": "huefixed",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_INVERTIBLE",
+                    "value": "invertible",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_INVERTEDVALUE",
+                    "value": "invertedvalue",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_SLCOMBINED",
+                    "value": "slcombined",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_ALPHAVALUE",
+                    "value": "alphavalue",
+                    "type": "string"
+                }
+            ]
+        },
+        {
+            "name": "Skin XML Attributes / Views",
+            "definitions": 
+			[
+                {
+                    "name": "ATTR_SIZE",
+                    "value": "size",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_RECT",
+                    "value": "rect",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_WIDTH",
+                    "value": "width",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_HEIGHT",
+                    "value": "height",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_ATTACH",
+                    "value": "attach",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_SIZELIMITS",
+                    "value": "sizelimits",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_BORDER",
+                    "value": "border",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_CURSOR",
+                    "value": "cursor",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_TITLE",
+                    "value": "title",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_TOOLTIP",
+                    "value": "tooltip",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_STYLE",
+                    "value": "style",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_OPTIONS",
+                    "value": "options",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_MODE",
+                    "value": "mode",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_LEVEL",
+                    "value": "level",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_XYEDITING",
+                    "value": "xyediting",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_HSCROLLSTYLE",
+                    "value": "hscroll.style",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_VSCROLLSTYLE",
+                    "value": "vscroll.style",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_HSCROLLNAME",
+                    "value": "hscroll.name",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_VSCROLLNAME",
+                    "value": "vscroll.name",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_HEADERSTYLE",
+                    "value": "headerstyle",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_FRAMES",
+                    "value": "frames",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_OPTIONAL",
+                    "value": "optional",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_SCROLLOPTIONS",
+                    "value": "scrolloptions",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_BACKGROUND",
+                    "value": "background",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_BACKGROUNDOPTIONS",
+                    "value": "backgroundoptions",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_IMAGE",
+                    "value": "image",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_ICON",
+                    "value": "icon",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_ICON_MIXED",
+                    "value": "iconmixed",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_TILE",
+                    "value": "tile",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_WINDOWSTYLE",
+                    "value": "windowstyle",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_STORABLE",
+                    "value": "storable",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_DIALOGBUTTONS",
+                    "value": "buttons",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_FIRSTFOCUS",
+                    "value": "firstfocus",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_IMAGENAME",
+                    "value": "image",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_POPUP",
+                    "value": "popup",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_POPUPSTYLE",
+                    "value": "popupstyle",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_CMDCATEGORY",
+                    "value": "command.category",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_CMDNAME",
+                    "value": "command.name",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_BACKCMDCATEGORY",
+                    "value": "backcommand.category",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_BACKCMDNAME",
+                    "value": "backcommand.name",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_HELPIDENTIFIER",
+                    "value": "helpid",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_SPACING",
+                    "value": "spacing",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_LINESPACING",
+                    "value": "linespacing",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_MARGIN",
+                    "value": "margin",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_OUTREACH",
+                    "value": "outreach",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_ROWS",
+                    "value": "rows",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_COLUMNS",
+                    "value": "columns",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_CELLRATIO",
+                    "value": "cellratio",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_MINCELLRATIO",
+                    "value": "mincellratio",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_LAYOUTCLASS",
+                    "value": "layoutclass",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_PERSISTENCE_ID",
+                    "value": "persistence.id",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_DATAPREFIX",
+                    "value": "data.",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_LAYOUTPRIORITY",
+                    "value": "data.layoutpriority",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_MINSIZE",
+                    "value": "data.minsize",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_FILL",
+                    "value": "data.fill",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_ORIENTATION",
+                    "value": "orientation",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_FORMNAME",
+                    "value": "form.name",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_MENUFORMNAME",
+                    "value": "menuform.name",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_SELECTNAME",
+                    "value": "selectname",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_APPLYNAME",
+                    "value": "applyname",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_EDITNAME",
+                    "value": "editname",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_LABELNAME",
+                    "value": "labelname",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_TITLENAME",
+                    "value": "titlename",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_COLORNAME",
+                    "value": "colorname",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_MODENAME",
+                    "value": "modename",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_YNAME",
+                    "value": "yname",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_ZNAME",
+                    "value": "zname",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_REFERENCENAME",
+                    "value": "referencename",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_NAME2",
+                    "value": "name2",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_PART",
+                    "value": "part",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_VIEWTYPE",
+                    "value": "viewtype",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_RETURNKEY_TYPE",
+                    "value": "returnkeytype",
+                    "type": "string"
+                },
+				{
+					"name": "ATTR_KEYBOARD_TYPE",
+					"value": "keyboardtype",
+					"type": "string"
+				},
+				{
+					"name": "ATTR_AUTOFILL",
+					"value": "autofill",
+					"type": "string"
+				},
+				{
+                    "name": "ATTR_PLACEHOLDER",
+                    "value": "placeholder",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_LAYERBACKING",
+                    "value": "layerbacking",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_ACCESSIBILITY",
+                    "value": "accessibility",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_ACCESSIBILITYID",
+                    "value": "accessibility.id",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_ACCESSIBILITYPROXY",
+                    "value": "accessibility.proxy",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_ACCESSIBILITYLABEL",
+                    "value": "accessibility.label",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_ACCESSIBILITYVALUE",
+                    "value": "accessibility.value",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_GESTURE_PRIO",
+                    "value": "gesturepriority",
+                    "type": "string"
+                }
+            ]
+        },
+        {
+            "name": "Skin XML Attributes / Flexbox",
+            "definitions":
+			[
+                {
+                    "name": "ATTR_FLEXPREFIX",
+                    "value": "flex.",
+                    "type": "string"
+                }
+            ]
+        },
+        {
+            "name": "Skin XML Attributes / Flexbox / Item attributes",
+            "definitions": 
+			[
+                {
+                    "name": "ATTR_FLEXGROW",
+                    "value": "flex.grow",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_FLEXSHRINK",
+                    "value": "flex.shrink",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_FLEXBASIS",
+                    "value": "flex.basis",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_FLEXALIGNSELF",
+                    "value": "flex.alignself",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_FLEXMARGIN",
+                    "value": "flex.margin",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_FLEXMARGINTOP",
+                    "value": "flex.margin.top",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_FLEXMARGINRIGHT",
+                    "value": "flex.margin.right",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_FLEXMARGINBOTTOM",
+                    "value": "flex.margin.bottom",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_FLEXMARGINLEFT",
+                    "value": "flex.margin.left",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_FLEXINSET",
+                    "value": "flex.inset",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_FLEXINSETTOP",
+                    "value": "flex.inset.top",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_FLEXINSETRIGHT",
+                    "value": "flex.inset.right",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_FLEXINSETBOTTOM",
+                    "value": "flex.inset.bottom",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_FLEXINSETLEFT",
+                    "value": "flex.inset.left",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_FLEXPOSITIONTYPE",
+                    "value": "flex.positiontype",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_FLEXSIZEMODE",
+                    "value": "flex.sizemode",
+                    "type": "string"
+                }
+            ]
+        },
+        {
+            "name": "Skin XML Attributes / Flexbox / Container attributes",
+            "definitions": 
+			[
+                {
+                    "name": "ATTR_FLEXDIRECTION",
+                    "value": "flex.direction",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_FLEXWRAP",
+                    "value": "flex.wrap",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_FLEXJUSTIFY",
+                    "value": "flex.justify",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_FLEXALIGN",
+                    "value": "flex.align",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_FLEXPADDING",
+                    "value": "flex.padding",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_FLEXPADDINGTOP",
+                    "value": "flex.padding.top",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_FLEXPADDINGRIGHT",
+                    "value": "flex.padding.right",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_FLEXPADDINGBOTTOM",
+                    "value": "flex.padding.bottom",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_FLEXPADDINGLEFT",
+                    "value": "flex.padding.left",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_FLEXGAP",
+                    "value": "flex.gap",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_FLEXGAPROW",
+                    "value": "flex.gap.row",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_FLEXGAPCOLUMN",
+                    "value": "flex.gap.column",
+                    "type": "string"
+                }
+            ]
+        },
+        {
+            "name": "Skin XML Attributes / Shapes",
+            "definitions": 
+			[
+                {
+                    "name": "ATTR_PENCOLOR",
+                    "value": "Pen.color",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_PENWIDTH",
+                    "value": "Pen.width",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_BRUSHCOLOR",
+                    "value": "Brush.color",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_BRUSHGRADIENT",
+                    "value": "Brush.gradient",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_SHAPEREF",
+                    "value": "shaperef",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_LINESCALEALIGN",
+                    "value": "scalealign",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_POINT1",
+                    "value": "point1",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_POINT2",
+                    "value": "point2",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_POINT3",
+                    "value": "point3",
+                    "type": "string"
+                }
+            ]
+        },
+        {
+            "name": "Skin XML Attributes / 3D",
+            "definitions":
+			[
+                {
+                    "name": "ATTR_DEPTHBIAS",
+                    "value": "depthbias",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_LIGHTMASK",
+                    "value": "lightmask",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_SHININESS",
+                    "value": "shininess",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_OPACITY",
+                    "value": "opacity",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_SCALE",
+                    "value": "scale",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_FIELDOFVIEW_ANGLE",
+                    "value": "fieldofviewangle",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_LOOKAT_POSITION",
+                    "value": "lookatposition",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_LOOKAT_UPVECTOR",
+                    "value": "lookatupvector",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_ATTENUATIONRADIUS",
+                    "value": "attenuationradius",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_ATTENUATIONMINIMUM",
+                    "value": "attenuationminimum",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_ATTENUATIONFACTOR",
+                    "value": "attenuationfactor",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_ATTENUATIONCONSTANT",
+                    "value": "attenuationconstant",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_MODEL",
+                    "value": "model",
+                    "type": "string"
+                }
+            ]
+        },
+        {
+            "name": "Skin XML Attributes / Common attribute values",
+            "definitions":
+			[
+                {
+                    "name": "VALUE_NONE",
+                    "value": "none",
+                    "type": "string"
+                }
+            ]
+        },
+        {
+            "name": "Skin XML Attributes / Attribute values for ATTR_LAYOUTCLASS",
+            "definitions":
+			[
+                {
+                    "name": "LAYOUTCLASS_BOX",
+                    "value": "box",
+                    "type": "string"
+                },
+                {
+                    "name": "LAYOUTCLASS_CLIPPER",
+                    "value": "clipper",
+                    "type": "string"
+                },
+                {
+                    "name": "LAYOUTCLASS_FLEXBOX",
+                    "value": "flexbox",
+                    "type": "string"
+                },
+                {
+                    "name": "LAYOUTCLASS_SIZEVARIANT",
+                    "value": "sizevariant",
+                    "type": "string"
+                },
+                {
+                    "name": "LAYOUTCLASS_TABLE",
+                    "value": "table",
+                    "type": "string"
+                }
+            ]
+        },
+		{
+			"name": "Skin XML Attributes / Attribute value for ATTR_LAYOUTPRIORITY",
+			"definitions":
+			[
+				{
+					"name": "LAYOUTPRIORITY_GROUPDECOR",
+					"value": "groupdecor",
+					"type": "string"
+				}
+			]
+		}
+    ]
+}

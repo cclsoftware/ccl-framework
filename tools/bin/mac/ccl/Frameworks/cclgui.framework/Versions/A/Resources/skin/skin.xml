@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Skin>
+	<Externals>
+		<External name="@Main.*"/>
+		<External name="Standard.*"/>
+	</Externals>
+
+	<Resources>
+
+		<!-- ******************************************************************************************** -->
+		<!-- ICONS -->
+		<!-- ******************************************************************************************** -->
+
+		<Image name="ItemView.FolderIcon" url="images/folder.png" adaptive="true"/>
+		<Image name="ItemView.FolderIconOpen" url="images/openfolder.png" adaptive="true"/>
+		<Image name="UserOptionIcon" url="images/option.png"/>
+		
+		<!-- ******************************************************************************************** -->
+		<!-- LANGUAGE CODES -->
+		<!-- ******************************************************************************************** -->
+
+		<Image name="LanguageCode:en" url="images/english.png"/>
+		
+		<!-- ******************************************************************************************** -->
+		<!-- KEY GLYPHS -->
+		<!-- ******************************************************************************************** -->
+
+		<Image name="KeyGlyphAtlas" url="images/keyglyphs.png"/>
+	
+		<ImagePart name="VKey:Shift"	image="KeyGlyphAtlas" size="12,0,12,12"/>
+		<?platform mac ios?>
+		<ImagePart name="VKey:Command"	image="KeyGlyphAtlas" size="0,0,12,12"/>
+		<ImagePart name="VKey:Option"	image="KeyGlyphAtlas" size="24,0,12,12"/>
+		<ImagePart name="VKey:Control"	image="KeyGlyphAtlas" size="36,0,12,12"/>
+		<Image     name="VKey:Alt"		image="VKey:Option"/>
+		<Image     name="VKey:Ctrl"		image="VKey:Control"/>
+		<?platform?>
+		
+		<Image name="GestureGlyphAtlas" url="images/gestures.png"/>
+		
+		<ImagePart name="Gesture:Drag"			image="GestureGlyphAtlas" size="0,0,18,16"/>
+		<ImagePart name="Gesture:DoubleClick"	image="GestureGlyphAtlas" size="18,0,14,16"/>
+		<ImagePart name="Gesture:Wheel"			image="GestureGlyphAtlas" size="32,0,16,16"/>
+
+	</Resources>
+
+	<Styles>
+				
+		<Style name="UserOptionHeadLine">
+			<Font name="textfont" size="16" style="bold"/>
+			<Color name="textcolor" color="white"/>
+			<Align name="textalign" align="left"/>
+		</Style>
+
+		<Style name="WindowTitleBarDragArea">
+			<Triggers>
+				<Trigger event="onDrag">
+					<Invoker target="controller" name="moveWindow"/>
+				</Trigger>
+				<Trigger event="onContextMenu">
+					<Invoker target="controller" name="showMenu"/>
+				</Trigger>
+			</Triggers>
+		</Style>
+		
+	</Styles>
+	
+	<Forms>
+		<!-- ******************************************************************************************** -->
+		<!-- HELP VIEWER -->
+		<!-- ******************************************************************************************** -->
+
+		<Form name="HelpViewer" title="Help Viewer" windowstyle="titlebar sizable maximize restoresize restorepos inflate center pluginhost" attach="all">
+			<WebView width="800" height="600" attach="all" options="localonly"/>
+		</Form>
+		
+		<!-- ******************************************************************************************** -->
+		<!-- PROGRESS DIALOG -->
+		<!-- ******************************************************************************************** -->
+
+		<Form name="ProgressStepView" attach="fitsize">
+			<Vertical margin="0" attach="fitsize">
+				<Variant name="progressInfinite">
+					<Horizontal margin="0" spacing="3">
+						<TextBox name="progressText" options="fittext transparent multiline" width="280" height="34"/>
+						<TextBox name="progressTime" options="transparent" width="67" height="18"/>
+					</Horizontal>
+					<TextBox name="progressText" options="transparent" width="350" height="18"/>
+				</Variant>
+				<!-- TODO: progress details!
+				 -->
+				<ProgressBar name="progressState" width="350" height="18" options="horizontal"/>
+				<Space height="5"/>
+			</Vertical>
+		</Form>
+
+		<Form name="ProgressDialogView" attach="fitsize" title="Please wait..." windowstyle="panelstyle restorepos">
+			<Vertical attach="all vfit fill" options="unifysizes">
+				<View name="ProgressStepList" attach="all fitsize"/>
+				<Horizontal margin="0" attach="left right">
+					<Space attach="left right fill"/>
+					<Variant property="isCancelEnabled" attach="fitsize right">
+						<View/>
+						<Button name="progressCancel" title="Cancel"/>
+					</Variant>
+				</Horizontal>
+			</Vertical>
+		</Form>
+
+		<!-- ******************************************************************************************** -->
+		<!-- USER OPTION DIALOG -->
+		<!-- ******************************************************************************************** -->
+
+		<Form name="UserOptionDialog" title="Options" windowstyle="restorepos restoresize" buttons="cancel okay apply" firstfocus="searchString">
+			<Horizontal attach="fitsize" margin="0">
+				<ListView name="OptionList" scrolloptions="border vertical" options="selection" width="180" height="400"/>
+				<Vertical margin="0">
+					<TextBox name="optionHeader" width="470" height="25" options="transparent" style="UserOptionHeadLine"/>
+					<View name="OptionView" width="470" height="375"/>
+				</Vertical>
+			</Horizontal>
+		</Form>
+		
+		<!-- ******************************************************************************************** -->
+		<!-- COMMAND DIALOG -->
+		<!-- ******************************************************************************************** -->
+		
+		<Form name="CommandSelectorDialog" title="Select Command" buttons="okay cancel" attach="all" firstfocus="searchString" windowstyle="dialogstyle sizable restoresize restorepos">
+			<DialogGroup options="secondary" attach="all">
+				<Vertical spacing="0" attach="all">
+					<ImageView style="Standard.SearchBox" size="0,0,300,20" attach="left right">
+						<EditBox name="searchString" size="0,0,280,20" options="immediate transparent" style="Standard.SearchBox" attach="left right"/>
+						<Variant property="showPlaceholderLabel" size="0,0,280,20" attach="left right">
+							<Label title="Search" height="20" style="Standard.LabelDimmed" options="transparent nohelp" attach="hcenter"/>
+						</Variant>
+						<Button name="clear" size="280,0,20,20" tooltip="Clear" options="transparent" style="Standard.SearchBox" attach="right"/>
+					</ImageView>
+					<Space height="12"/>
+					<TreeView name="commandTree" width="300" height="200" options="noroot noicons nodrag selectfullwidth selection exclusive autoexpand" scrolloptions="autohideboth transparent" attach="all"/>
+				</Vertical>
+			</DialogGroup>
+		</Form>
+		
+		<!-- ******************************************************************************************** -->
+		<!-- MENU DIALOG -->
+		<!-- ******************************************************************************************** -->
+		
+		<Form name="MenuDialog" style="Standard.MenuBackcolorStyle" options="colorize" attach="all fitsize">
+			<Vertical margin="2" spacing="0" options="unifysizes" attach="all fitsize">
+				<Vertical margin="1" attach="left right">
+					<View attach="left right">
+						<Vertical margin="0" spacing="2" size="15">
+							<TextBox name="title" options="transparent"/>
+							<if property="hasParam[text]">
+								<TextBox name="text" options="transparent"/>
+							</if>
+						</Vertical>
+					</View>
+				</Vertical>
+				<using controller="$PopupSelector">
+					<View name="Content" attach="all fitsize"/>
+				</using>
+			</Vertical>
+		</Form>		
+
+		<!-- ******************************************************************************************** -->
+		<!-- MenuEditor -->
+		<!-- ******************************************************************************************** -->
+
+		<Form name="MenuEditor" style="Standard.MenuBackcolorStyle" options="colorize" title="Edit Menu" windowstyle="sizable restoresize restorepos" attach="all">
+			<Vertical size="25,0" margin="2" spacing="0" options="unifysizes" attach="all">
+				<TreeView name="menuTree" width="200" height="352" options="noroot selectfullwidth selection exclusive vertical expandall" scrolloptions="autohideboth" attach="all" sizelimits="200,16,-1,-1"/>
+			</Vertical>
+		</Form>		
+
+		<!-- ******************************************************************************************** -->
+		<!-- AlertBox -->
+		<!-- ******************************************************************************************** -->
+
+		<Form name="AlertBox" attach="fitsize">
+			<Vertical options="unifysizes" attach="fitsize">
+				<define text="@property:text">
+					<DialogGroup options="secondary" attach="left right vfit">
+						<Vertical attach="left right vfit">
+							<Label title="$text" width="350" options="multiline" attach="left right vfit"/>
+						</Vertical>
+					</DialogGroup>
+				</define>
+
+				<!-- Buttons -->
+				<Horizontal width="350" margin="0" attach="left right bottom">
+					<Space attach="left right fill"/>
+					<if property="hasFirstButton">
+						<define buttonTitle="@property:firstButton">
+							<Button name="firstButton" title="$buttonTitle" attach="right"/>
+						</define>
+					</if>
+					<if property="hasSecondButton">
+						<define buttonTitle="@property:secondButton">
+							<Button name="secondButton" title="$buttonTitle" attach="right"/>
+						</define>
+					</if>
+					<if property="hasThirdButton">
+						<define buttonTitle="@property:thirdButton">
+							<Button name="thirdButton" title="$buttonTitle" attach="right"/>
+						</define>
+					</if>
+				</Horizontal>
+			</Vertical>
+		</Form>
+
+		<!-- ******************************************************************************************** -->
+		<!-- FontSelectorDialog -->
+		<!-- ******************************************************************************************** -->
+
+		<Form name="FontSelectorDialog" title="Select Font" buttons="okay cancel" attach="all" firstfocus="fonts" windowstyle="dialogstyle restorepos">
+			
+			<Vertical options="unifysizes">
+				<Horizontal margin="0">
+					<Vertical margin="0" spacing="0">
+						<Label title="Font" />
+						<ListView name="fontName" options="selection nodrag" scrolloptions="border vertical" size="0,0,250,230" />
+					</Vertical>
+					<Vertical margin="0" spacing="0">
+						<Label title="Style" />
+						<ListView name="fontStyle" options="selection nodrag" scrolloptions="border vertical" size="0,0,200,200" />
+						<Space />
+						<Horizontal margin="0">
+							<ValueBox name="fontSize" size="0,0,100,20" />
+							<Label title="Size" />
+						</Horizontal>
+					</Vertical>
+				</Horizontal>
+				<View name="Example" size="0,0,100,150" attach="left right" style="Standard.Label" />
+			</Vertical>
+		</Form>
+
+		<!-- ******************************************************************************************** -->
+		<!-- WindowDecoration -->
+		<!-- ******************************************************************************************** -->
+
+		<Form name="WindowTitleBar" selectname="active" style="Standard.WindowHeaderView" attach="left right">
+			<Horizontal spacing="0" margin="0" height="$titleBarHeight" attach="left right">
+				<TriggerView attach="left right" style="WindowTitleBarDragArea" options="transparent">
+					<ImageView provider="icon" attach="all fitsize" options="fitimage"/>
+					<TextBox name="title" width="100" height="$titleBarHeight" options="transparent nocontextmenu" attach="vcenter left right"/>
+				</TriggerView>
+				<Variant property="canMinimize">
+					<Button name="minimize" width="$titleBarHeight" attach="all fitsize" tooltip="Minimize" style="Standard.WindowMinimizeButton"/>
+				</Variant>
+				<Variant property="canMaximize">
+					<Toggle name="maximize" width="$titleBarHeight" attach="all fitsize" tooltip="Maximize" style="Standard.WindowMaximizeButton"/>
+				</Variant>
+				<Variant property="canClose">
+					<Button name="close" width="$titleBarHeight" attach="all fitsize" tooltip="Close" style="Standard.WindowCloseButton"/>
+				</Variant>
+				<Space width="2"/>
+			</Horizontal>
+		</Form>
+        
+		<Form name="WindowDecoration" width="200" height="80" attach="all">
+			<define titleBarHeight="@property:titleBarHeight">
+				<Variant property="hasTitleBar" attach="left right">
+					<View name="WindowTitleBar" attach="left right" width="200" height="$titleBarHeight"/>
+				</Variant>
+			</define>
+		</Form>
+        
+	</Forms>
+</Skin>
+

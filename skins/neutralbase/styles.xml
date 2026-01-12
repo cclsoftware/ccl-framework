@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Skin>
+	<Styles>
+		<Style name="Standard.Button" 					inherit="Neutral.Button" appstyle="true"/>
+		<Style name="Standard.TabButton" 				inherit="Neutral.TabButton" appstyle="true"/>
+		<Style name="Standard.CheckBox" 				inherit="Neutral.CheckBox" appstyle="true"/>
+		<Style name="Standard.RadioButton" 				inherit="Neutral.RadioButton" appstyle="true"/>
+		<Style name="Standard.Slider" 					inherit="Neutral.Slider" appstyle="true"/>
+		<Style name="Standard.RangeSlider"				inherit="Neutral.RangeSlider" appstyle="true"/>
+		<Style name="Standard.Knob.Big"					inherit="Neutral.Knob.Big" appstyle="true"/>
+		<Style name="Standard.Knob" 					inherit="Neutral.Knob" appstyle="true"/>
+		<Style name="Standard.Knob.Small" 				inherit="Neutral.Knob.Small" appstyle="true"/>
+		<Style name="Standard.Knob.Medium" 				inherit="Neutral.Knob.Medium" appstyle="true"/>
+		<Style name="Standard.ScrollBar" 				inherit="Neutral.ScrollBar" appstyle="true"/>
+		<Style name="Standard.ScrollButton" 			inherit="Neutral.ScrollButton" appstyle="true"/>
+		<Style name="Standard.ProgressBar" 				inherit="Neutral.ProgressBar" appstyle="true"/>
+		<Style name="Standard.TextBox" 					inherit="Neutral.TextBox" appstyle="true"/>
+		<Style name="Standard.EditBox" 					inherit="Neutral.EditBox" appstyle="true"/>
+		<Style name="Standard.ValueBox" 				inherit="Neutral.ValueBox" appstyle="true"/>
+		<Style name="Standard.SegmentBox" 				inherit="Neutral.SegmentBox" appstyle="true"/>
+		<Style name="Standard.SelectBox" 				inherit="Neutral.SelectBox" appstyle="true"/>
+		<Style name="Standard.ComboBox"					inherit="Neutral.ComboBox" appstyle="true"/>
+		<Style name="Standard.TabView" 					inherit="Neutral.TabView" appstyle="true"/>
+		<Style name="Standard.MenuBarControl"			inherit="Neutral.MenuBarControl" appstyle="true"/>
+		<Style name="Standard.HeaderView"	 			inherit="Neutral.HeaderView" appstyle="true"/>
+		<Style name="Standard.Divider" 					inherit="Neutral.Divider" appstyle="true"/>
+		<Style name="Standard.WindowBackground" 		inherit="Neutral.WindowBackground" appstyle="true"/>
+		<Style name="Standard.DialogGroup" 				inherit="Neutral.DialogGroup" appstyle="true"/>
+		<Style name="Standard.Label" 					inherit="Neutral.Label" appstyle="true"/>
+		<Style name="Standard.H1" 						inherit="Neutral.H1" appstyle="true"/>
+		<Style name="Standard.H2" 						inherit="Neutral.H2" appstyle="true"/>
+		<Style name="Standard.H3" 						inherit="Neutral.H3" appstyle="true"/>
+		<Style name="Standard.ListViewBase"				inherit="Neutral.ListViewBase" appstyle="true"/>
+		<Style name="Standard.ListView" 				inherit="Neutral.ListView" appstyle="true"/>
+		<Style name="Standard.ListViewIcons"			inherit="Neutral.ListViewIcons" appstyle="true"/>
+		<Style name="Standard.TreeView" 				inherit="Neutral.TreeView" appstyle="true"/>
+		<Style name="Standard.PopupMenu"				inherit="Neutral.PopupMenu" appstyle="true"/>
+		<Style name="Standard.PopupMenuLarge"	 		inherit="Neutral.PopupMenuLarge" appstyle="true"/>
+		<Style name="Standard.PalettePopup" 			inherit="Neutral.PalettePopup" appstyle="true"/>
+		<Style name="Standard.MenuControl" 				inherit="Neutral.MenuControl" appstyle="true"/>
+		<Style name="Standard.ContextMenu"				inherit="Neutral.ContextMenu" appstyle="true"/>
+		<Style name="Standard.PerspectiveSwitcher" 		inherit="Neutral.PerspectiveSwitcher" appstyle="true"/>
+		<Style name="Standard.UpDownBox" 				inherit="Neutral.UpDownBox" appstyle="true"/>
+		<Style name="Standard.ValueBar" 				inherit="Neutral.ValueBar" appstyle="true"/>
+		<Style name="Standard.PageControl" 				inherit="Neutral.PageControl" appstyle="true"/>
+		<Style name="Standard.ScrollPicker"				inherit="Neutral.ScrollPicker" appstyle="true"/>
+		<Style name="Standard.VectorPad"	 			inherit="Neutral.VectorPad" appstyle="true"/>
+		<Style name="Standard.TriVectorPad" 			inherit="Neutral.TriVectorPad" appstyle="true"/>
+		<Style name="Standard.ScrollBar.NoInvert" 		inherit="Neutral.ScrollBar.NoInvert" appstyle="true"/>
+		<Style name="Standard.Sprite" 					inherit="Neutral.Sprite" appstyle="true"/>
+		<Style name="Standard.CommandButton" 			inherit="Neutral.CommandButton" appstyle="true"/>
+		<Style name="Standard.WindowCloseButton" 		inherit="Neutral.WindowCloseButton" appstyle="true"/>
+		<Style name="Standard.WindowMaximizeButton" 	inherit="Neutral.WindowMaximizeButton" appstyle="true"/>
+		<Style name="Standard.WindowMinimizeButton" 	inherit="Neutral.WindowMinimizeButton" appstyle="true"/>
+		<Style name="Standard.WindowHeaderView"			inherit="Neutral.WindowHeaderView" appstyle="true"/>
+		<Style name="Standard.ColorPickerMetrics"		inherit="Neutral.ColorPickerMetrics" appstyle="true"/>
+		<Style name="Standard.ColorPickerPalette" 		inherit="Neutral.ColorPickerPalette" appstyle="true"/>
+		<Style name="Standard.ButtonTabView" 			inherit="Neutral.ButtonTabView" appstyle="true"/>
+		<Style name="Standard.LabelDimmed" 				inherit="Neutral.LabelDimmed" appstyle="true"/>
+		<Style name="Standard.SearchBox" 				inherit="Neutral.SearchBox" appstyle="true"/>
+		<Style name="Standard.ColorPopupBox" 			inherit="Neutral.ColorPopupBox" appstyle="true"/>
+		<Style name="Standard.PopupMenuDecorStyle" 		inherit="Neutral.PopupMenuDecorStyle" appstyle="true"/>
+		<Style name="Standard.DialogTitle" 				inherit="Neutral.DialogTitle" appstyle="true"/>
+		<Style name="Standard.MenuBackcolorStyle"		inherit="Neutral.MenuBackcolorStyle" appstyle="true"/>
+		<Style name="Standard.ViewHighlights"			inherit="Neutral.ViewHighlights" appstyle="true"/>
+		<Style name="Standard.ProgressAnimationTrigger"	inherit="Neutral.ProgressAnimationTrigger" appstyle="true"/>
+	</Styles>
+	
+</Skin>

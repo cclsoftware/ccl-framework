@@ -1,0 +1,1048 @@
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: system/accessibility.cpp
+msgctxt "Accessibility"
+msgid "Off"
+msgstr "Aus"
+
+#: system/accessibility.cpp
+msgctxt "Accessibility"
+msgid "On"
+msgstr "An"
+
+#: system/accessibility.cpp
+msgctxt "Accessibility"
+msgid "Page %(1) of %(2)"
+msgstr "Seite %(1) von %(2)"
+
+#: dialogs/alert.cpp
+msgctxt "Alert"
+msgid "Cancel"
+msgstr "Abbrechen"
+
+#: dialogs/alert.cpp
+msgctxt "Alert"
+msgid "No"
+msgstr "Nein"
+
+#: dialogs/alert.cpp
+msgctxt "Alert"
+msgid "OK"
+msgstr "OK"
+
+#: dialogs/alert.cpp
+msgctxt "Alert"
+msgid "Retry"
+msgstr "Wiederholen"
+
+#: dialogs/alert.cpp
+msgctxt "Alert"
+msgid "Yes"
+msgstr "Ja"
+
+#: views/focusnavigator.cpp
+msgctxt "Command"
+msgid "Cancel"
+msgstr "Abbrechen"
+
+#: itemviews/itemview.cpp
+msgctxt "Command"
+msgid "Copy"
+msgstr "Kopieren"
+
+#: itemviews/itemview.cpp
+msgctxt "Command"
+msgid "Cut"
+msgstr "Ausschneiden"
+
+#: itemviews/itemview.cpp
+msgctxt "Command"
+msgid "Delete"
+msgstr "Löschen"
+
+#: itemviews/itemview.cpp
+msgctxt "Command"
+msgid "Deselect All"
+msgstr "Auswahl aufheben"
+
+#: itemviews/itemview.cpp
+msgctxt "Command"
+msgid "Down"
+msgstr "Nach unten"
+
+#: itemviews/itemview.cpp
+msgctxt "Command"
+msgid "Down Extend"
+msgstr "Nach unten erweitern"
+
+#: itemviews/itemview.cpp
+msgctxt "Command"
+msgid "Down Extend Add"
+msgstr "Nach unten erweitern, hinzufügen"
+
+#: itemviews/itemview.cpp
+msgctxt "Command"
+msgid "Down Skip"
+msgstr "Nach unten überspringen"
+
+#: itemviews/itemview.cpp
+msgctxt "Command"
+msgid "Edit"
+msgstr "Bearbeiten"
+
+#: itemviews/itemview.cpp
+msgctxt "Command"
+msgid "End"
+msgstr "Ans Ende"
+
+#: itemviews/itemview.cpp
+msgctxt "Command"
+msgid "End Extend"
+msgstr "Ans Ende erweitern"
+
+#: itemviews/itemview.cpp
+msgctxt "Command"
+msgid "End Extend Add"
+msgstr "Ans Ende erweitern, hinzufügen"
+
+#: itemviews/itemview.cpp
+msgctxt "Command"
+msgid "End Skip"
+msgstr "Ans Ende überspringen"
+
+#: views/focusnavigator.cpp
+msgctxt "Command"
+msgid "Enter"
+msgstr "Eingabe"
+
+#: views/focusnavigator.cpp
+msgctxt "Command"
+msgid "Focus Next"
+msgstr "Fokus weiter"
+
+#: views/focusnavigator.cpp
+msgctxt "Command"
+msgid "Focus Previous"
+msgstr "Fokus zurück"
+
+#: windows/windowmanager.cpp
+msgctxt "Command"
+msgid "Fullscreen"
+msgstr "Vollbildansicht"
+
+#: itemviews/itemview.cpp
+msgctxt "Command"
+msgid "Left"
+msgstr "Nach links"
+
+#: itemviews/itemview.cpp
+msgctxt "Command"
+msgid "Left Extend"
+msgstr "Nach links erweitern"
+
+#: itemviews/itemview.cpp
+msgctxt "Command"
+msgid "Left Extend Add"
+msgstr "Nach links erweiten, hinzufügen"
+
+#: itemviews/itemview.cpp
+msgctxt "Command"
+msgid "Left Skip"
+msgstr "Nach links überspringen"
+
+#: itemviews/itemview.cpp views/focusnavigator.cpp
+msgctxt "Command"
+msgid "Navigation"
+msgstr "Navigation"
+
+#: layout/workspace.cpp
+msgctxt "Command"
+msgid "Next Perspective"
+msgstr "Nächste Ansicht"
+
+#: itemviews/itemview.cpp
+msgctxt "Command"
+msgid "Page Down"
+msgstr "Seite nach unten"
+
+#: itemviews/itemview.cpp
+msgctxt "Command"
+msgid "Page Down Extend"
+msgstr "Seite nach unten erweitern"
+
+#: itemviews/itemview.cpp
+msgctxt "Command"
+msgid "Page Down Extend Add"
+msgstr "Seite nach unten erweitern, hinzufügen"
+
+#: itemviews/itemview.cpp
+msgctxt "Command"
+msgid "Page Down Skip"
+msgstr "Seite nach unten überspringen"
+
+#: itemviews/itemview.cpp
+msgctxt "Command"
+msgid "Page Up"
+msgstr "Seite nach oben"
+
+#: itemviews/itemview.cpp
+msgctxt "Command"
+msgid "Page Up Extend"
+msgstr "Seite nach oben erweiten"
+
+#: itemviews/itemview.cpp
+msgctxt "Command"
+msgid "Page Up Extend Add"
+msgstr "Seite nach oben erweitern, hinzufügen"
+
+#: itemviews/itemview.cpp
+msgctxt "Command"
+msgid "Page Up Skip"
+msgstr "Seite nach oben überspringen"
+
+#: itemviews/itemview.cpp
+msgctxt "Command"
+msgid "Paste"
+msgstr "Einfügen"
+
+#: layout/workspace.cpp
+msgctxt "Command"
+msgid "Pin Editor"
+msgstr "Editor anheften"
+
+#: layout/workspace.cpp
+msgctxt "Command"
+msgid "Previous Perspective"
+msgstr "Vorherige Ansicht"
+
+#: windows/windowmanager.cpp
+msgctxt "Command"
+msgid "Reset Window Positions"
+msgstr "Fensterpositionen zurücksetzen"
+
+#: itemviews/itemview.cpp
+msgctxt "Command"
+msgid "Right"
+msgstr "Nach rechts"
+
+#: itemviews/itemview.cpp
+msgctxt "Command"
+msgid "Right Extend"
+msgstr "Nach rechts erweitern"
+
+#: itemviews/itemview.cpp
+msgctxt "Command"
+msgid "Right Extend Add"
+msgstr "Nach rechts erweitern, hinzufügen"
+
+#: itemviews/itemview.cpp
+msgctxt "Command"
+msgid "Right Skip"
+msgstr "Nach rechts überspringen"
+
+#: itemviews/itemview.cpp
+msgctxt "Command"
+msgid "Select All"
+msgstr "Alles auswählen"
+
+#: itemviews/itemview.cpp
+msgctxt "Command"
+msgid "Start"
+msgstr "An den Anfang"
+
+#: itemviews/itemview.cpp
+msgctxt "Command"
+msgid "Start Extend"
+msgstr "An Anfang erweitern"
+
+#: itemviews/itemview.cpp
+msgctxt "Command"
+msgid "Start Extend Add"
+msgstr "An Anfang erweitern, hinzufügen"
+
+#: itemviews/itemview.cpp
+msgctxt "Command"
+msgid "Start Skip"
+msgstr "An Anfang überspringen"
+
+#: layout/workspace.cpp
+msgctxt "Command"
+msgid "Toggle Floating Windows"
+msgstr "Fenster ein-/ausblenden"
+
+#: layout/workspace.cpp
+msgctxt "Command"
+msgid "Toggle Optional Views"
+msgstr "Arbeitsflächen ein-/ausblenden"
+
+#: itemviews/itemview.cpp
+msgctxt "Command"
+msgid "Up"
+msgstr "Nach oben"
+
+#: itemviews/itemview.cpp
+msgctxt "Command"
+msgid "Up Extend"
+msgstr "Nach oben erweitern"
+
+#: itemviews/itemview.cpp
+msgctxt "Command"
+msgid "Up Extend Add"
+msgstr "Nach oben erweitern, hinzufügen"
+
+#: itemviews/itemview.cpp
+msgctxt "Command"
+msgid "Up Skip"
+msgstr "Nach oben überspringen"
+
+#: layout/workspace.cpp windows/windowmanager.cpp
+msgctxt "Command"
+msgid "View"
+msgstr "Ansicht"
+
+#: controls/commandbar/commandbarview.cpp
+msgctxt "CommandBar"
+msgid "<Unnamed>"
+msgstr "<Unbenannt>"
+
+#: controls/commandbar/commandbarview.cpp
+msgctxt "CommandBar"
+msgid "Assign"
+msgstr "Zuweisen"
+
+#: controls/commandbar/commandbarview.cpp
+msgctxt "CommandBar"
+msgid "Assign Command"
+msgstr "Befehl zuweisen"
+
+#: controls/commandbar/commandbarview.cpp
+msgctxt "CommandBar"
+msgid "Default"
+msgstr "Standard"
+
+#: controls/commandbar/commandbarview.cpp
+msgctxt "CommandBar"
+msgid "Do you want to remove \"%(1)\"?"
+msgstr "Möchten Sie \"%(1)\" entfernen?"
+
+#: controls/commandbar/commandbarview.cpp
+msgctxt "CommandBar"
+msgid "Edit Menu"
+msgstr "Menü bearbeiten"
+
+#: controls/commandbar/commandbarview.cpp
+msgctxt "CommandBar"
+msgid "Go to"
+msgstr "Gehe zu"
+
+#: controls/commandbar/commandbarview.cpp
+msgctxt "CommandBar"
+msgid "Group"
+msgstr "Gruppe"
+
+#: controls/commandbar/commandbarview.cpp
+msgctxt "CommandBar"
+msgid "Horizontal"
+msgstr "Horizontal anordnen"
+
+#: controls/commandbar/commandbarview.cpp
+msgctxt "CommandBar"
+msgid "Icon"
+msgstr "Symbol"
+
+#: controls/commandbar/commandbarview.cpp
+msgctxt "CommandBar"
+msgid "Menu"
+msgstr "Menü"
+
+#: controls/commandbar/commandbarview.cpp
+msgctxt "CommandBar"
+msgid "Menu Item"
+msgstr "Menüeintrag"
+
+#: controls/commandbar/commandbarview.cpp
+msgctxt "CommandBar"
+msgid "Move to"
+msgstr "Verschieben nach"
+
+#: controls/commandbar/commandbarview.cpp
+msgctxt "CommandBar"
+msgid "New Button"
+msgstr "Neuer Button"
+
+#: controls/commandbar/commandbarview.cpp
+msgctxt "CommandBar"
+msgid "New Group"
+msgstr "Neue Gruppe"
+
+#: controls/commandbar/commandbarview.cpp
+msgctxt "CommandBar"
+msgid "New Menu Button"
+msgstr "Neue Menüschaltfläche"
+
+#: controls/commandbar/commandbarview.cpp
+msgctxt "CommandBar"
+msgid "New Menu Item"
+msgstr "Neuer Menüeintrag"
+
+#: controls/commandbar/commandbarview.cpp
+msgctxt "CommandBar"
+msgid "New Page"
+msgstr "Neue Seite"
+
+#: controls/commandbar/commandbarview.cpp
+msgctxt "CommandBar"
+msgid "New Separator"
+msgstr "Neuer Trenner"
+
+#: controls/commandbar/commandbarview.cpp
+msgctxt "CommandBar"
+msgid "New Submenu"
+msgstr "Neues Untermenü"
+
+#: controls/commandbar/commandbarview.cpp
+msgctxt "CommandBar"
+msgid "Page"
+msgstr "Seite"
+
+#: controls/commandbar/commandbarview.cpp
+msgctxt "CommandBar"
+msgid "Remove Button"
+msgstr "Button entfernen"
+
+#: controls/commandbar/commandbarview.cpp
+msgctxt "CommandBar"
+msgid "Remove Group"
+msgstr "Gruppe entfernen"
+
+#: controls/commandbar/commandbarview.cpp
+msgctxt "CommandBar"
+msgid "Remove Image"
+msgstr "Bild entfernen"
+
+#: controls/commandbar/commandbarview.cpp
+msgctxt "CommandBar"
+msgid "Remove Menu Item"
+msgstr "Menüeintrag entfernen"
+
+#: controls/commandbar/commandbarview.cpp
+msgctxt "CommandBar"
+msgid "Remove Page"
+msgstr "Seite löschen"
+
+#: controls/commandbar/commandbarview.cpp
+msgctxt "CommandBar"
+msgid "Remove Separator"
+msgstr "Trenner entfernen"
+
+#: controls/commandbar/commandbarview.cpp
+msgctxt "CommandBar"
+msgid "Remove Submenu"
+msgstr "Untermenü entfernen"
+
+#: controls/commandbar/commandbarview.cpp
+msgctxt "CommandBar"
+msgid "Select Image"
+msgstr "Bild auswählen"
+
+#: controls/commandbar/commandbarview.cpp
+msgctxt "CommandBar"
+msgid "Separator"
+msgstr "Trenner"
+
+#: controls/commandbar/commandbarview.cpp
+msgctxt "CommandBar"
+msgid "Vertical"
+msgstr "Vertikal anordnen"
+
+#: dialogs/commandeditor.cpp
+msgctxt "CommandEditor"
+msgid "(modified)"
+msgstr "(verändert)"
+
+#: dialogs/commandeditor.cpp
+msgctxt "CommandEditor"
+msgid ""
+"Key is already assigned to:\n"
+"%(1)"
+msgstr ""
+"Die Taste wird verwendet von:\n"
+"%(1)"
+
+#: dialogs/dialogbuilder.cpp
+msgctxt "Dialog"
+msgid "Apply"
+msgstr "Anwenden"
+
+#: dialogs/dialogbuilder.cpp
+msgctxt "Dialog"
+msgid "Cancel"
+msgstr "Abbrechen"
+
+#: dialogs/dialogbuilder.cpp
+msgctxt "Dialog"
+msgid "Close"
+msgstr "Schließen"
+
+#: dialogs/dialogbuilder.cpp
+msgctxt "Dialog"
+msgid "OK"
+msgstr "OK"
+
+#: itemviews/dropbox.cpp
+msgctxt "DropBox"
+msgid "Remove %(1)"
+msgstr "%(1) entfernen"
+
+#: itemviews/itemview.cpp
+msgctxt "Edit"
+msgid "Delete"
+msgstr "Löschen"
+
+#: graphics/imaging/bitmap.cpp
+msgctxt "FileType"
+msgid "Bitmap File"
+msgstr "Bitmap-Datei"
+
+#: skin/coreskinmodel.cpp
+msgctxt "FileType"
+msgid "Bitmap Font"
+msgstr "Bitmap-Font"
+
+#: theme/colorscheme.cpp
+msgctxt "FileType"
+msgid "Color Scheme"
+msgstr "Farbschema"
+
+#: graphics/imaging/bitmap.cpp
+msgctxt "FileType"
+msgid "GIF File"
+msgstr "GIF-Datei"
+
+#: graphics/imaging/multiimage.cpp
+msgctxt "FileType"
+msgid "Icon File"
+msgstr "Icon-Datei"
+
+#: graphics/imaging/bitmap.cpp
+msgctxt "FileType"
+msgid "JPEG File"
+msgstr "JPEG-Datei"
+
+#: commands.cpp
+msgctxt "FileType"
+msgid "Keyboard Mapping Scheme"
+msgstr "Tastaturbefehleinstellungen"
+
+#: graphics/imaging/bitmap.cpp
+msgctxt "FileType"
+msgid "PNG File"
+msgstr "PNG-Datei"
+
+#: graphics/shapes/svg/svgparser.cpp
+msgctxt "FileType"
+msgid "Scalable Vector Graphics"
+msgstr "Scalable Vector Graphics"
+
+#: skin/skinwizard.cpp
+msgctxt "FileType"
+msgid "Skin File"
+msgstr "Skin-Datei"
+
+#: graphics/imaging/codecs/webpcodec.cpp
+msgctxt "FileType"
+msgid "WebP File"
+msgstr "WebP-Datei"
+
+#: graphics/nativegraphics.cpp
+msgctxt "GraphicsEngine"
+msgid "This application requires 3D graphics support, but no 3D graphics backend could be initialized."
+msgstr "Diese Anwendung erfordert 3D-Grafikunterstützung, aber es konnte kein 3D-Grafiksystem initialisiert werden."
+
+#: itemviews/headerview.cpp
+msgctxt "HeaderView"
+msgid "Reset All Columns"
+msgstr "Alle Spalten zurücksetzen"
+
+#: itemviews/headerview.cpp
+msgctxt "HeaderView"
+msgid "Size All Columns to Fit"
+msgstr "Alle Spalten anpassen"
+
+#: itemviews/headerview.cpp
+msgctxt "HeaderView"
+msgid "Size Column to Fit"
+msgstr "Spaltenbreite anpassen"
+
+#: help/helpmanager.cpp
+msgctxt "HelpManager"
+msgid "Help file not found at:\n"
+msgstr "Hilfedatei nicht gefunden in:\n"
+
+#: help/helpmanager.cpp
+msgctxt "HelpManager"
+msgid "No compatible PDF Viewer installed!"
+msgstr "Kein passender PDF-Betrachter installiert!"
+
+#: dialogs/progressdialog.cpp
+msgctxt "ProgressDialog"
+msgid "Cancelling..."
+msgstr "Wird abgebrochen..."
+
+#: controls/segmentbox.cpp
+msgctxt "SegmentBox"
+msgid "Copy Text to Clipboard"
+msgstr "Text in Zwischenablage kopieren"
+
+#: controls/textbox.cpp
+msgctxt "TextBox"
+msgid "Copy Text to Clipboard"
+msgstr "Text in Zwischenablage kopieren"
+
+#: dialogs/useroptionmodel.cpp
+msgctxt "UserOption"
+msgid "General"
+msgstr "Allgemein"
+
+#: dialogs/useroptionmodel.cpp
+msgctxt "UserOption"
+msgid "You have made changes to the setup. Do you want to apply the changes?"
+msgstr "Sie haben die Einstellungen geändert. Möchten Sie diese Änderungen jetzt anwenden?"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "&#168;"
+msgstr "&#168;"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "&#180;"
+msgstr "&#180;"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "&#96;"
+msgstr "&#96;"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "Alt"
+msgstr "Alt"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "Backspace"
+msgstr "Rücktaste"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "Caps Lock"
+msgstr "Caps-Lock"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "Channel Down"
+msgstr "Kanal ab"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "Channel Up"
+msgstr "Kanal auf"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "Command"
+msgstr "Befehlstaste"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "Control"
+msgstr "Strg"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "Ctrl"
+msgstr "Strg"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "Del"
+msgstr "Entf"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "Down Arrow"
+msgstr "Pfeil unten"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "End"
+msgstr "Ende"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "Enter"
+msgstr "Enter"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "Esc"
+msgstr "Esc"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "F1"
+msgstr "F1"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "F10"
+msgstr "F10"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "F11"
+msgstr "F11"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "F12"
+msgstr "F12"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "F13"
+msgstr "F13"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "F14"
+msgstr "F14"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "F15"
+msgstr "F15"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "F16"
+msgstr "F16"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "F17"
+msgstr "F17"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "F18"
+msgstr "F18"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "F19"
+msgstr "F19"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "F2"
+msgstr "F2"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "F20"
+msgstr "F20"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "F21"
+msgstr "F21"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "F22"
+msgstr "F22"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "F23"
+msgstr "F23"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "F24"
+msgstr "F24"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "F3"
+msgstr "F3"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "F4"
+msgstr "F4"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "F5"
+msgstr "F5"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "F6"
+msgstr "F6"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "F7"
+msgstr "F7"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "F8"
+msgstr "F8"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "F9"
+msgstr "F9"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "Forward"
+msgstr "Vorlauf"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "Home"
+msgstr "Pos 1"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "Ins"
+msgstr "Einfg"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "Left Arrow"
+msgstr "Pfeil links"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "NumPad*"
+msgstr "Num*"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "NumPad+"
+msgstr "Num+"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "NumPad-"
+msgstr "Num-"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "NumPad."
+msgstr "Num,"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "NumPad/"
+msgstr "Num/"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "NumPad0"
+msgstr "Num0"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "NumPad1"
+msgstr "Num1"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "NumPad2"
+msgstr "Num2"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "NumPad3"
+msgstr "Num3"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "NumPad4"
+msgstr "Num4"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "NumPad5"
+msgstr "Num5"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "NumPad6"
+msgstr "Num6"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "NumPad7"
+msgstr "Num7"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "NumPad8"
+msgstr "Num8"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "NumPad9"
+msgstr "Num9"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "Option"
+msgstr "Wahltaste"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "Page Down"
+msgstr "Bild ab"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "Page Up"
+msgstr "Bild auf"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "Pause"
+msgstr "Pause"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "Play Pause"
+msgstr "Spielen"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "Record"
+msgstr "Aufnahme"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "Return"
+msgstr "Eingabe"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "Rewind"
+msgstr "Rücklauf"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "Right Arrow"
+msgstr "Pfeil rechts"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "Shift"
+msgstr "Umschalt"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "Space"
+msgstr "Leertaste"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "Stop"
+msgstr "Stopp"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "Tab"
+msgstr "Tab"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "Up Arrow"
+msgstr "Pfeil oben"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "Volume Down"
+msgstr "Lautstärke ab"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "Volume Mute"
+msgstr "Stummschalten"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "Volume Up"
+msgstr "Lautstärke auf"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "^"
+msgstr "^"
+
+#: keyevent.cpp
+msgctxt "VirtualKey"
+msgid "~"
+msgstr "~"
+
+#: system/webbrowserview.cpp
+msgctxt "WebView"
+msgid "Copy Text to Clipboard"
+msgstr "Text in Zwischenablage kopieren"
+
+#: system/webbrowserview.cpp
+msgctxt "WebView"
+msgid "Go Back"
+msgstr "Zurück"
+
+#: system/webbrowserview.cpp
+msgctxt "WebView"
+msgid "Go Forward"
+msgstr "Vorwärts"
+
+#: system/webbrowserview.cpp
+msgctxt "WebView"
+msgid "Reload Page"
+msgstr "Seite neu laden"
+
+#~ msgctxt "CommandBar"
+#~ msgid "Assign Command..."
+#~ msgstr "Befehl zuweisen..."
+
+#~ msgctxt "CommandBar"
+#~ msgid "Compact"
+#~ msgstr "Kompaktansicht"
+
+#~ msgctxt "CommandBar"
+#~ msgid "Do you want to remove %(1)?"
+#~ msgstr "Möchten Sie %(1) löschen?"
+
+#~ msgctxt "ListView"
+#~ msgid "Details"
+#~ msgstr "Details"
+
+#~ msgctxt "ListView"
+#~ msgid "Icons"
+#~ msgstr "Symbole"
+
+#~ msgctxt "ListView"
+#~ msgid "List"
+#~ msgstr "Liste"

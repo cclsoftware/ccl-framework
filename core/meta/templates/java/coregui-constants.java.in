@@ -1,0 +1,14 @@
+{% include ../corefileheader.in %}
+
+package dev.ccl.core;
+
+import androidx.annotation.Keep;
+
+/**
+ * Core library GUI constants.
+ */
+@Keep
+public class CoreGuiConstants
+{
+{% include shared/enumsflat.java.in %}
+}

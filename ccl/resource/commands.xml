@@ -1,0 +1,250 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Commands name="CCL">
+    <!-- ******************************************************************************* -->
+    <!-- Development -->
+    <!-- ******************************************************************************* -->
+
+	<?config debug?>
+    <Command category="Debug" name="Stop Debugging">
+		<Key name="Shift+F5"/>
+	</Command>
+	<?config?>
+
+    <!-- ******************************************************************************* -->
+    <!-- Help -->
+    <!-- ******************************************************************************* -->
+  
+	<Command category="Help" name="Context Help">
+        <Key name="F1"/>
+    </Command>
+
+	<Command category="Help" name="Contents">
+        <Key name="Alt+F1"/>
+    </Command>
+
+    <!-- ******************************************************************************* -->
+    <!-- File -->
+    <!-- ******************************************************************************* -->
+    
+	<Command category="File" name="New">
+		<Key name="Command+N"/>
+	</Command>
+
+    <Command category="File" name="Open">
+		<Key name="Command+O"/>
+	</Command>
+    
+    <Command category="File" name="Close">
+		<Key name="Command+W"/>
+		<?platform win linux?>
+		<Key name="Command+F4"/>
+		<?platform?>
+	</Command>
+
+    <Command category="File" name="Quit">
+		<Key name="Command+Q"/>
+	</Command>
+
+	<Command category="File" name="Save">
+		<Key name="Command+S"/>
+	</Command>
+
+	<Command category="File" name="Save As">
+		<Key name="Command+Alt+S"/>
+	</Command>
+
+    <!-- ******************************************************************************* -->
+    <!-- Editing -->
+    <!-- ******************************************************************************* -->
+    
+	<Command category="Edit" name="Undo">
+		<Key name="Command+Z"/>
+	</Command>
+
+    <Command category="Edit" name="Redo">
+        <Key name="Command+Y"/>
+		<Key name="Command+Shift+Z"/>
+    </Command>
+
+    <Command category="Edit" name="Cut">
+        <Key name="Command+X"/>
+    </Command>
+
+    <Command category="Edit" name="Copy">
+        <Key name="Command+C"/>
+    </Command>
+
+    <Command category="Edit" name="Paste">
+        <Key name="Command+V"/>
+    </Command>
+
+	<Command category="Edit" name="Delete">
+        <Key name="Del"/>
+        <Key name="Backspace"/>
+    </Command>
+
+    <Command category="Edit" name="Select All">
+        <Key name="Command+A"/>
+    </Command>
+
+	<Command category="Edit" name="Deselect All">
+		<Key name="Command+D"/>
+	</Command>
+    
+    <!-- ******************************************************************************* -->
+    <!-- Navigation -->
+    <!-- ******************************************************************************* -->
+  
+    <Command category="Navigation" name="Focus Next">
+      <Key name="Tab"/>
+    </Command>
+
+    <Command category="Navigation" name="Focus Previous">
+      <Key name="Shift+Tab"/>
+    </Command>
+
+	<!-- Left -->
+	
+    <Command category="Navigation" name="Left">
+      <Key name="Left Arrow"/>
+    </Command>
+
+    <Command category="Navigation" name="Left Extend">
+      <Key name="Shift+Left Arrow"/>
+    </Command>
+
+    <Command category="Navigation" name="Left Extend Add">
+      <Key name="Command+Shift+Left Arrow"/>
+    </Command>
+
+    <Command category="Navigation" name="Left Skip">
+      <Key name="Command+Left Arrow"/>
+    </Command>
+
+	<!-- Right -->
+
+    <Command category="Navigation" name="Right">
+      <Key name="Right Arrow"/>
+    </Command>
+
+    <Command category="Navigation" name="Right Extend">
+      <Key name="Shift+Right Arrow"/>
+    </Command>
+
+    <Command category="Navigation" name="Right Extend Add">
+      <Key name="Command+Shift+Right Arrow"/>
+    </Command>
+
+    <Command category="Navigation" name="Right Skip">
+      <Key name="Command+Right Arrow"/>
+    </Command>
+	
+	<!-- Up -->
+
+    <Command category="Navigation" name="Up">
+      <Key name="Up Arrow"/>
+    </Command>
+
+    <Command category="Navigation" name="Up Extend">
+      <Key name="Shift+Up Arrow"/>
+    </Command>
+
+    <Command category="Navigation" name="Up Extend Add">
+      <Key name="Command+Shift+Up Arrow"/>
+    </Command>
+
+    <Command category="Navigation" name="Up Skip">
+      <Key name="Command+Up Arrow"/>
+    </Command>
+
+	<!-- Down -->
+
+    <Command category="Navigation" name="Down">
+      <Key name="Down Arrow"/>
+    </Command>
+
+    <Command category="Navigation" name="Down Extend">
+      <Key name="Shift+Down Arrow"/>
+    </Command>
+
+    <Command category="Navigation" name="Down Extend Add">
+      <Key name="Command+Shift+Down Arrow"/>
+    </Command>
+
+    <Command category="Navigation" name="Down Skip">
+      <Key name="Command+Down Arrow"/>
+    </Command>
+
+	<!-- Page Up -->
+
+    <Command category="Navigation" name="Page Up">
+      <Key name="Page Up"/>
+    </Command>
+
+    <Command category="Navigation" name="Page Up Extend">
+      <Key name="Shift+Page Up"/>
+    </Command>
+
+    <Command category="Navigation" name="Page Up Extend Add">
+      <Key name="Command+Shift+Page Up"/>
+    </Command>
+
+    <Command category="Navigation" name="Page Up Skip">
+      <Key name="Command+Page Up"/>
+    </Command>
+
+	<!-- Page Down -->
+
+    <Command category="Navigation" name="Page Down">
+      <Key name="Page Down"/>
+    </Command>
+
+    <Command category="Navigation" name="Page Down Extend">
+      <Key name="Shift+Page Down"/>
+    </Command>
+
+    <Command category="Navigation" name="Page Down Extend Add">
+      <Key name="Command+Shift+Page Down"/>
+    </Command>
+
+    <Command category="Navigation" name="Page Down Skip">
+      <Key name="Command+Page Down"/>
+    </Command>
+	
+	<!-- Home -->
+
+    <Command category="Navigation" name="Start">
+      <Key name="Home"/>
+    </Command>
+
+    <Command category="Navigation" name="Start Extend">
+      <Key name="Shift+Home"/>
+    </Command>
+
+    <Command category="Navigation" name="Start Extend Add">
+      <Key name="Command+Shift+Home"/>
+    </Command>
+
+    <Command category="Navigation" name="Start Skip">
+      <Key name="Command+Home"/>
+    </Command>
+
+	<!-- End -->
+
+    <Command category="Navigation" name="End">
+      <Key name="End"/>
+    </Command>
+
+    <Command category="Navigation" name="End Extend">
+      <Key name="Shift+End"/>
+    </Command>
+
+    <Command category="Navigation" name="End Extend Add">
+      <Key name="Command+Shift+End"/>
+    </Command>
+
+    <Command category="Navigation" name="End Skip">
+      <Key name="Command+End"/>
+    </Command>
+
+</Commands>

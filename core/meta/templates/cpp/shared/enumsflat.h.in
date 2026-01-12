@@ -1,0 +1,17 @@
+{% for enum in enums %}
+//************************************************************************************************
+// {{ enum.name }}
+{% if enum.brief %}
+/* {{ enum.brief }} */
+{% endif %}
+//************************************************************************************************
+
+{% for enumerator in enum.enumerators %}
+{% if enumerator.brief %}
+static const {{ enumerator.type | cppvalue }} {{ enumerator.name }} = {{ enumerator.value | cppvalue }}; ///< {{ enumerator.brief }}
+{% else %}
+static const {{ enumerator.type | cppvalue }} {{ enumerator.name }} = {{ enumerator.value | cppvalue}};
+{% endif %}
+{% endfor %}
+
+{% endfor %}

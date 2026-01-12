@@ -1,0 +1,109 @@
+{
+	"name": "servicetemplate",
+	"inherits": "basetemplate",
+	"description": "Service based on CCL",
+	"destination": "services/@TargetName",
+	"platforms":
+	[
+		"win",
+		"mac",
+		"linux",
+		"android",
+		"ios"
+	],
+	"variables":
+	[
+		{
+			"key": "ProjectTitle",
+			"defaultValue": "My Service",
+			"description": "service title, name of the generated IDE project"
+		},
+		{
+			"key": "TargetName",
+			"defaultValue": "myservice",
+			"description": "name of the CMake target, name of the main source files"
+		},
+		{
+			"key": "ServiceClass",
+			"defaultValue": "MyService",
+			"description": "service class name"
+		},
+		{
+			"key": "ServiceNamespace",
+			"defaultValue": "@DefaultNamespace",
+			"description": "service namespace"
+		}
+	],
+	"replacements": 
+	[
+		{
+			"searchString": "servicetemplate",
+			"replaceString": "@TargetName",
+			"filter": "*.cpp;*.h;*.cmake;*.txt;*.json;*.in;*.nsi;*.bat;*.in;*.gradle;*.plugin"
+		},
+		{
+			"searchString": "ServiceNamespace",
+			"replaceString": "@ServiceNamespace",
+			"filter": "*.cpp;*.h;*.java"
+		},
+		{
+			"searchString": "servicevendor",
+			"replaceString": "@VendorID",
+			"filter": "*.cmake;*.txt"
+		},
+		{
+			"searchString": "ServiceTemplate",
+			"replaceString": "@ServiceClass",
+			"filter": "*.cpp;*.h;*.gradle;*.plugin"
+		},
+		{
+			"searchString": "(Service Template)",
+			"replaceString": "@ProjectTitle",
+			"filter": "*.cpp;*.h;*.cmake;*.txt;*.json;*.in;*.nsi;*.bat;build.sh;*.in;*.gradle;*.plugin"
+		},
+		{
+			"searchString": "(Service Developer)",
+			"replaceString": "@AuthorName",
+			"filter": "*.cpp;*.h;*.cmake;*.txt;*.json;*.in"
+		},
+		{
+			"searchString": "(Service Copyright)",
+			"replaceString": "@ProjectCopyright",
+			"filter": "*.cpp;*.h;*.cmake;*.txt"
+		},
+		{
+			"searchString": "(Destination)",
+			"replaceString": "@RelativeDestination",
+			"filter": "*.cmake"
+		}
+	],
+	"files":
+	[
+		{
+			"source": "servicetemplate/source",
+			"destination": "@Destination/source"
+		},
+		{
+			"source": "servicetemplate/cmake/CMakeLists.txt",
+			"destination": "@Destination/cmake/CMakeLists.txt"
+		},
+		{
+			"source": "servicetemplate/cmake/servicetemplate-config.cmake",
+			"destination": "@Destination/cmake/servicetemplate-config.cmake"
+		},
+		{
+			"source": "servicetemplate/cmake/servicetemplate.ios.cmake",
+			"destination": "@Destination/cmake/servicetemplate.ios.cmake",
+			"platform": "ios"
+		},
+		{
+			"source": "servicetemplate/cmake/servicetemplate.linux.cmake",
+			"destination": "@Destination/cmake/servicetemplate.linux.cmake",
+			"platform": "linux"
+		},
+		{
+			"source": "servicetemplate/Findservicetemplate.cmake",
+			"destination": "@RepositoryRoot/build/cmake/modules/services/Findservicetemplate.cmake"
+		}
+	]
+}

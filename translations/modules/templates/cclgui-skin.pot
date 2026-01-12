@@ -1,0 +1,85 @@
+#: ./skin.xml
+msgctxt "AlertBox"
+msgid "$buttonTitle"
+msgstr ""
+
+#: ./skin.xml
+msgctxt "AlertBox"
+msgid "$text"
+msgstr ""
+
+#: ./skin.xml
+msgctxt "ProgressDialogView"
+msgid "Cancel"
+msgstr ""
+
+#: ./skin.xml
+msgctxt "CommandSelectorDialog"
+msgid "Clear"
+msgstr ""
+
+#: ./skin.xml
+msgctxt "WindowTitleBar"
+msgid "Close"
+msgstr ""
+
+#: ./skin.xml
+msgctxt "MenuEditor"
+msgid "Edit Menu"
+msgstr ""
+
+#: ./skin.xml
+msgctxt "FontSelectorDialog"
+msgid "Font"
+msgstr ""
+
+#: ./skin.xml
+msgctxt "HelpViewer"
+msgid "Help Viewer"
+msgstr ""
+
+#: ./skin.xml
+msgctxt "WindowTitleBar"
+msgid "Maximize"
+msgstr ""
+
+#: ./skin.xml
+msgctxt "WindowTitleBar"
+msgid "Minimize"
+msgstr ""
+
+#: ./skin.xml
+msgctxt "UserOptionDialog"
+msgid "Options"
+msgstr ""
+
+#: ./skin.xml
+msgctxt "ProgressDialogView"
+msgid "Please wait..."
+msgstr ""
+
+#: ./skin.xml
+msgctxt "CommandSelectorDialog"
+msgid "Search"
+msgstr ""
+
+#: ./skin.xml
+msgctxt "CommandSelectorDialog"
+msgid "Select Command"
+msgstr ""
+
+#: ./skin.xml
+msgctxt "FontSelectorDialog"
+msgid "Select Font"
+msgstr ""
+
+#: ./skin.xml
+msgctxt "FontSelectorDialog"
+msgid "Size"
+msgstr ""
+
+#: ./skin.xml
+msgctxt "FontSelectorDialog"
+msgid "Style"
+msgstr ""
+

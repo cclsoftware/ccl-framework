@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Skin>
+	<Externals>
+		<External name="Standard.*"/>
+		<External name="@Main.*"/>
+	</Externals>
+
+	<Imports>
+		<Import url="@devtools"/>
+	</Imports>
+
+	<Includes>
+		<Include url="spyview.xml"/>
+	</Includes>
+</Skin>

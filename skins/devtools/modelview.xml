@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Skin>
+	<Shapes>
+		<Shape name="DoxygenHeaderShape">
+			<Rectangle style="fill" size="0,0,10,10" Brush.color="hsl(0,0,50,25)"/>
+		</Shape>
+	</Shapes>
+
+	<Resources>
+		<!-- Browser icons accessed by Application: -->
+		<Image name="ModelElement:Class"  		image="VSImageLibrary/Class"/>
+		<Image name="ModelElement:Enum"   		image="VSImageLibrary/Enumerator"/>
+		<Image name="ModelElement:Enumerator"   image="VSImageLibrary/EnumItem"/>
+		<Image name="ModelElement:Object" 		image="VSImageLibrary/Object"/>
+		<Image name="ModelElement:Method" 		image="VSImageLibrary/Method"/>
+		<Image name="ModelElement:Member" 		image="VSImageLibrary/Member"/>
+		<Image name="ModelElement:Folder" 		image="VSImageLibrary/Namespace"/>
+
+		<ShapeImage name="DoxygenHeader" url="DoxygenHeaderShape"/>
+	</Resources>
+
+	<Styles>
+		<Style name="Model.Label" textalign="left vcenter" inherit="Standard.Label">
+			<Font name="textfont" themeid="StandardUI" size="12"/>
+			<!--Color name="textcolor" color="black"/-->
+		</Style>
+
+		<Style name="Model.CheckBox" textalign="left vcenter" inherit="Standard.CheckBox">
+			<!--Color name="textcolor" color="black"/-->
+		</Style>
+
+		<Style name="ElementInspector">
+			<Color name="backcolor" color="hsl(0,0,40,10)"/>
+		</Style>
+
+		<Style name="Heading" textalign="left vcenter" inherit="Model.Label">
+            <Font name="textfont" themeid="StandardUI" size="16" style="bold"/>
+		</Style>
+
+		<Style name="SubHeading" textalign="left vcenter" inherit="Heading">
+            <Font name="textfont" themeid="StandardUI" size="12" style="bold"/>
+		</Style>
+
+		<Style name="SubHeading.Link" inherit="SubHeading" textcolor="hsl(220,40,36)"/>
+
+		<Style name="TextBox" textalign="left vcenter" inherit="Standard.TextBox" textoptions="wordbreak">
+			<Font name="textfont" themeid="StandardUI" size="12"/>
+		</Style>
+
+		<Style name="LinkList" textalign="left vcenter" inherit="Standard.ListView">
+			<Font name="textfont" themeid="StandardUI" size="12"/>
+		</Style>
+
+		<Style name="PropertyList" inherit="Standard.ListView"/>
+
+		<Style name="GroupHeading" inherit="Model.Label">
+			<Font name="textfont" themeid="StandardUI" size="18"/>
+			<Color name="textcolor" color="hsl(220,40,36)"/>
+		</Style>
+
+		<Style name="HeaderView" inherit="Standard.HeaderView">
+			<Image name="background" image="DoxygenHeader"/>
+			<Font name="textfont" themeid="StandardUI" size="12" style="bold"/>
+			<!--Color name="textcolor" color="black"/-->
+		</Style>
+
+		<Style name="SearchBarBackColor">
+			<Color name="backcolor"	color="hsl(0,0,100,5)"/>
+		</Style>
+
+	</Styles>
+
+	<Forms>
+
+		<!-- ******************************************************************************************** -->
+		<!-- Search Bar -->
+		<!-- ******************************************************************************************** -->
+
+		<Form name="SearchBar" style="SearchBarBackColor" options="colorize">
+			<Horizontal margin="5" spacing="5" attach="left right">
+				<using controller="NodeNavigator">
+					<Button name="goBack" title="Back"/>
+					<Button name="goForward" title="Forward"/>
+				</using>
+				<using controller="Search">
+					<Horizontal margin="0" spacing="5" attach="left right">
+						<Label title="Search for" height="20"/>
+						<EditBox name="searchTerms" size="0,0,135,20" options="border immediate" attach="left right"/>
+						<Button name="clear" title="X" size="135,0,20" tooltip="Clear" attach="right"/>
+					</Horizontal>
+				</using>
+			</Horizontal>
+		</Form>
+
+		<!-- ******************************************************************************************** -->
+        <!-- Class Browser -->
+        <!-- ******************************************************************************************** -->
+
+		<Form name="ClassBrowser" attach="all">
+			<using controller="ClassBrowser">
+				<Vertical margin="0" spacing="0" attach="all">
+					<View name="SearchBar" width="400" attach="left right"/>
+					<Variant name="Search/showResult" attach="all">
+						<View name="BrowserView"	  width="400" height="500" attach="all"/>
+						<using controller="Search">
+							<View name="SearchResult" width="400" height="500" attach="all"/>
+						</using>
+					</Variant>
+				</Vertical>
+			</using>
+		</Form>
+
+		<!-- ******************************************************************************************** -->
+        <!-- Element Inspector -->
+        <!-- ******************************************************************************************** -->
+
+		<Form name="ElementInspector"  style="ElementInspector" options="colorize" attach="all">
+			<using controller="Inspector">
+				<Vertical margin="4" attach="all">
+					<Horizontal margin="0" spacing="5" attach="left right">
+						<ImageView options="colorize" style="Standard.ListView">
+							<ImageView provider="elementIcon" width="16" height="16"/>
+						</ImageView>
+						<TextBox name="elementName" width="275" height="20" options="transparent" style="Heading" attach="left right"/>
+					</Horizontal>
+					<ScrollView name="ElementInspectorScroller" width="308" attach="all" options="autohidev" style="ElementInspector"/>
+				</Vertical>
+			</using>
+		</Form>
+
+		<Form name="ElementInspectorScroller" attach="left right vfit">
+			<Vertical margin="4" attach="all vfit">
+				<Variant property="isClass" width="300" height="20" attach="left right">
+					<Horizontal margin="0" spacing="5">
+						<CheckBox name="isAbstract" title="abstract" style="Model.CheckBox"/>
+						<CheckBox name="isScriptable" title="scriptable" style="Model.CheckBox"/>
+						<Label title="Group:" height="20" style="Model.Label"/>
+						<TextBox name="groupName" width="80" height="20" options="transparent fittext" style="SubHeading"/>
+						<Label title="Base Type:" height="20" style="Model.Label"/>
+						<Link name="gotoSuperClass" width="200" height="20" >
+							<TextBox name="superClassName" width="200" height="20" options="transparent fittext" style="SubHeading.Link"/>
+						</Link>
+					</Horizontal>
+				</Variant>
+
+				<ListView name="propertyList" options="selection exclusive header extendlastcolumn" scrolloptions="border" width="300" attach="left right vfit" style="PropertyList" headerstyle="HeaderView"/>
+
+				<Vertical margin="0" spacing="5" attach="left right vfit">
+					<using controller="Documenter">
+						<TextBox name="targetName" width="300" height="20" options="transparent" style="Heading" attach="left right"/>
+						<Vertical margin="0" spacing="2" attach="left right vfit">
+							<TextBox name="briefDescription" size="2,0,300" options="multiline" style="TextBox" attach="left right vfit"/>
+							<Space/>
+							<Variant property="hasDetails" width="300" attach="left right vfit">
+								<Vertical margin="0" width="300" attach="left right vfit">
+									<Label title="Detailed Description:" style="GroupHeading"/>
+									<TextBox name="detailedDescription" size="2,0,300" options="multiline" style="TextBox" attach="left right vfit"/>
+									<Space/>
+								</Vertical>
+							</Variant>
+							<Variant property="hasLinks" attach="fitsize">
+								<Label title="Related:" style="GroupHeading"/>
+							</Variant>
+							<ListView name="linkList" width="300" options="transparent" scrolloptions="transparent" style="LinkList" attach="left right vfit"/>
+						</Vertical>
+					</using>
+				</Vertical>
+			</Vertical>
+		</Form>
+
+		<!-- ******************************************************************************************** -->
+		<!-- EnumerationPopup Popup -->
+		<!-- ******************************************************************************************** -->
+
+		<Form name="EnumerationPopup" style="Standard.MenuBackcolorStyle" options="colorize" attach="all">
+			<Vertical margin="2" attach="all">
+					<!--<TextBox name="elementName" width="300" height="20" options="transparent" style="Heading" attach="left right"/>-->
+				<ListView name="propertyList" options="selection exclusive header extendlastcolumn" scrolloptions="border autohidev" width="300" height="300" attach="all" style="PropertyList" headerstyle="HeaderView"/>
+			</Vertical>
+		</Form>
+
+	</Forms>
+</Skin>
+

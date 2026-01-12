@@ -1,0 +1,25 @@
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: option.xml
+msgctxt "TUIOUserOption"
+msgid "Connect multi-touch device with monitor number"
+msgstr "모니터 번호의 멀티터치 장치 접속"
+
+#: option.xml
+msgctxt "TUIOUserOption"
+msgid "Enable TUIO multi-touch devices on UDP port"
+msgstr "UDP 포트의 TUIO 멀티터치 장치 켜기"
+
+#: option.xml
+msgctxt "TUIOUserOption"
+msgid "Number of attached multi-touch devices"
+msgstr "접속된 멀티터치 장치의 수"
+
+#: option.xml
+msgctxt "TUIOUserOption"
+msgid "This"
+msgstr "선택"

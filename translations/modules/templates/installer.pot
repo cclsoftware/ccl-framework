@@ -1,0 +1,5 @@
+#: .\localize.nsh
+msgctxt "Installer"
+msgid "The installer is unable to configure the firewall because a third party firewall ($0) is installed on this system. This may limit the network connectivity of this application."
+msgstr ""
+

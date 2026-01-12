@@ -1,0 +1,22 @@
+{
+	"version": 9,
+	"cmakeMinimumRequired": 
+	{
+		"major": 3,
+		"minor": 30,
+		"patch": 0
+	},
+	"configurePresets":
+	[
+		{
+			"name": "ccl-android-system",
+			"hidden": true,
+			"cacheVariables":
+			{
+				"CMAKE_ANDROID_NDK": "$env{HOME}/Android/Sdk/ndk/29.0.14206865",
+				"CMAKE_TOOLCHAIN_FILE": "$env{HOME}/Android/Sdk/ndk/29.0.14206865/build/cmake/android.toolchain.cmake",
+				"VENDOR_HOST_PLATFORM": "linux"
+			}
+		}
+	]
+}

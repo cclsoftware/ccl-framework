@@ -1,0 +1,98 @@
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: skin.xml
+msgctxt "AlertBox"
+msgid "$buttonTitle"
+msgstr "$buttonTitle"
+
+#: skin.xml
+msgctxt "AlertBox"
+msgid "$text"
+msgstr "$text"
+
+#: skin.xml
+msgctxt "CommandSelectorDialog"
+msgid "Clear"
+msgstr "Limpar"
+
+#: skin.xml
+msgctxt "CommandSelectorDialog"
+msgid "Search"
+msgstr "Procurar"
+
+#: skin.xml
+msgctxt "CommandSelectorDialog"
+msgid "Select Command"
+msgstr "Selecionar Comando"
+
+#: skin.xml
+msgctxt "FontSelectorDialog"
+msgid "Font"
+msgstr "Fonte"
+
+#: skin.xml
+msgctxt "FontSelectorDialog"
+msgid "Select Font"
+msgstr "Selecionar Fonte"
+
+#: skin.xml
+msgctxt "FontSelectorDialog"
+msgid "Size"
+msgstr "Tamanho"
+
+#: skin.xml
+msgctxt "FontSelectorDialog"
+msgid "Style"
+msgstr "Estilo"
+
+#: skin.xml
+msgctxt "HelpViewer"
+msgid "Help Viewer"
+msgstr "Visualizador da Ajuda"
+
+#: skin.xml
+msgctxt "MenuEditor"
+msgid "Edit Menu"
+msgstr "Menu Edição"
+
+#: skin.xml
+msgctxt "ProgressDialogView"
+msgid "Cancel"
+msgstr "Cancelar"
+
+#: skin.xml
+msgctxt "ProgressDialogView"
+msgid "Please wait..."
+msgstr "Aguarde por favor..."
+
+#: skin.xml
+msgctxt "UserOptionDialog"
+msgid "Options"
+msgstr "Opções"
+
+#: skin.xml
+msgctxt "WindowTitleBar"
+msgid "Close"
+msgstr "Fechar"
+
+#: skin.xml
+msgctxt "WindowTitleBar"
+msgid "Maximize"
+msgstr "Maximizar"
+
+#: skin.xml
+msgctxt "WindowTitleBar"
+msgid "Minimize"
+msgstr "Minimizar"
+
+#~ msgctxt "CommandEditorDialog"
+#~ msgid "Keyboard Shortcuts"
+#~ msgstr "Atalhos do Teclado"
+
+#~ msgctxt "CommandSelectorDialog"
+#~ msgid "Search:"
+#~ msgstr "Pesquisa:"

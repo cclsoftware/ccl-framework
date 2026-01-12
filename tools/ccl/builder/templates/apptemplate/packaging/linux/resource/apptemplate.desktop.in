@@ -1,0 +1,8 @@
+[Desktop Entry]
+Encoding=UTF-8
+Type=Application
+Name=Application Template
+Version=${apptemplate_VERSION}
+Exec=/opt/apptemplate/apptemplate %F
+Icon=apptemplate
+Categories=Utility

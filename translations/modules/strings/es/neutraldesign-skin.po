@@ -1,0 +1,133 @@
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: overlays.xml
+msgctxt "DialogFrameHeader"
+msgid "$t"
+msgstr "$t"
+
+#: overlays.xml
+msgctxt "DialogFrameHeader"
+msgid "$title"
+msgstr "$title"
+
+#: euladialog.xml
+msgctxt "EULADialog"
+msgid "I Accept"
+msgstr "Acepto"
+
+#: euladialog.xml
+msgctxt "EULADialog"
+msgid "I Decline"
+msgstr "Rechazo"
+
+#: overlays.xml
+msgctxt "ProgressDialogView"
+msgid "Cancel"
+msgstr "Cancelar"
+
+#: overlays.xml
+msgctxt "ProgressDialogView"
+msgid "Please wait..."
+msgstr "Por favor espere..."
+
+#: overlays.xml
+msgctxt "ProgressStepView"
+msgid "Time remaining:"
+msgstr "Tiempo restante:"
+
+#: overlays.xml
+msgctxt "Standard.ColorPickerPopup"
+msgid "#"
+msgstr "#"
+
+#: overlays.xml
+msgctxt "Standard.ColorPickerPopup"
+msgid "HSL"
+msgstr "HSL"
+
+#: overlays.xml
+msgctxt "Standard.ColorPickerPopup"
+msgid "Load Preset"
+msgstr "Cargar preset"
+
+#: overlays.xml
+msgctxt "Standard.ColorPickerPopup"
+msgid "RGB"
+msgstr "RGB"
+
+#: overlays.xml
+msgctxt "Standard.ColorPickerPopup"
+msgid "Reset"
+msgstr "Restablecer"
+
+#: overlays.xml
+msgctxt "Standard.ColorPickerPopup"
+msgid "Store Preset"
+msgstr "Guardar preset"
+
+#: tutorialviewer.xml
+msgctxt "TutorialViewer"
+msgid "Tutorial"
+msgstr "Tutorial"
+
+#: tutorialviewer.xml
+msgctxt "TutorialViewer.Navigation"
+msgid "First Step"
+msgstr "Primer paso"
+
+#: tutorialviewer.xml
+msgctxt "TutorialViewer.Navigation"
+msgid "Last Step"
+msgstr "Último paso"
+
+#: tutorialviewer.xml
+msgctxt "TutorialViewer.Navigation"
+msgid "Next Step"
+msgstr "Siguiente paso"
+
+#: tutorialviewer.xml
+msgctxt "TutorialViewer.Navigation"
+msgid "Previous Step"
+msgstr "Paso previo"
+
+#: tutorialviewer.xml
+msgctxt "TutorialViewer.SkinContent"
+msgid "Close"
+msgstr "Cerrar"
+
+#: overlays.xml
+msgctxt "UserOptionDialog"
+msgid "Options"
+msgstr "Opciones"
+
+#~ msgctxt "ColorPickerPopup"
+#~ msgid "#"
+#~ msgstr "#"
+
+#~ msgctxt "ColorPickerPopup"
+#~ msgid "HSL"
+#~ msgstr "HSL"
+
+#~ msgctxt "ColorPickerPopup"
+#~ msgid "Load Preset"
+#~ msgstr "Cargar preset"
+
+#~ msgctxt "ColorPickerPopup"
+#~ msgid "RGB"
+#~ msgstr "RGB"
+
+#~ msgctxt "ColorPickerPopup"
+#~ msgid "Reset"
+#~ msgstr "Restablecer"
+
+#~ msgctxt "ColorPickerPopup"
+#~ msgid "Store Preset"
+#~ msgstr "Guardar preset"
+
+#~ msgctxt "TutorialViewer"
+#~ msgid "Close"
+#~ msgstr "Cerrar"

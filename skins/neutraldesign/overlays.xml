@@ -1,0 +1,392 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Skin>
+	
+	<Resources>
+		<ShapeImage name="ColorPickerRGBSliderHandle" url="ColorPickerRGBSliderHandleShape"/>
+	</Resources>
+	
+	<Shapes>
+		<Shape name="ColorPickerRGBSliderHandleShape" size="0,0,15,25">
+			<Ellipse style="stroke" size="2,7,11,11" Pen.color="@Main.LabelColor" Pen.width="2"/>
+			<Ellipse style="stroke" size="1,6,13,13" Pen.color="hsl(0,0,10)" Pen.width="1"/>
+		</Shape>
+	</Shapes>
+	
+	<Styles>
+		
+		<Style name="ProgressBackgroundColor">
+			<Color name="backcolor"		color="@Main.WindowBackgroundColor"/>
+		</Style>
+		
+		<Style name="ProgressText" textalign="left vcenter" textcolor="@Main.LabelColor">
+			<Font name="textfont" size="11" style="bold"/>
+		</Style>
+		
+		<Style name="ProgressDetailText" inherit="Standard.Label" textcolor="@Main.LabelColor">
+		</Style>
+		
+		<!-- <Style name="ProgressTextRight" inherit="ProgressText" textalign="right vcenter"/> -->
+		
+		<Style name="ProgressWarningText" textoptions="wordbreak">
+			<Font name="textfont" themeid="StandardUI" size="12"/>
+			<Color name="textcolor" color="@Main.YellowWarningText"/>
+			<Align name="textalign"	align="left vcenter"/>
+		</Style>
+		
+		<Style name="OptionList">
+			<Color name="backcolor" color="@Main.TabBackgroundColor"/>
+			<Color name="textcolor" color="white"/>
+			<Font name="textfont" themeid="StandardUI" size="12" style="bold"/>
+			<Metric name="icons.multiLineTitle" value="1"/> <!-- use multiline text for option titles -->
+
+			<Metric name="margin" value="0"/>
+			
+			<Metric name="icons.width" value="103"/>
+			<Metric name="icons.height" value="88"/>
+			
+			<Metric name="icons.dataleft" value="0"/>
+			<Metric name="icons.datatop" value="5"/>
+			<Metric name="icons.datawidth" value="103"/>
+			<Metric name="icons.dataheight" value="50"/>
+			
+			<Metric name="icons.textleft" value="2"/>
+			<Metric name="icons.texttop" value="56"/>
+			<Metric name="icons.textwidth" value="99"/>
+			<Metric name="icons.textheight" value="34"/>
+		</Style>
+		
+		<Style name="ColorPickerBackgroundStyle">
+			<Color name="backcolor" color="@Main.MenuControlBackColor"/>
+		</Style>
+		<Style name="ColorPickerHSLWheelStyle">
+			<Color name="backcolor" color="@Main.MenuControlBackColor"/>
+			<Color name="bordercolor" color="@Main.MenuBorderOutlineColor"/>
+			<Metric name="borderpenwidth" value="1"/>
+			<Metric name="colorwheel.offset" value="2"/>
+			<Metric name="colorwheel.ratio" value="0.195"/>
+			<Metric name="fullcolor.luminance" value="50"/>
+			<Metric name="bezierradius" value="11"/>
+			<Metric name="handlesize" value="11"/>
+			<Metric name="r.offset" value="120"/>
+			<Metric name="g.offset" value="120"/>
+			<Metric name="b.offset" value="120"/>
+		</Style>
+		<Style name="ColorPickerRGBSlider">
+			<Metric name="margin" value="6"/>
+			<Metric name="backradius" value="6"/>
+			<Image name="hHandle" image="ColorPickerRGBSliderHandle"/>
+		</Style>
+		<Style name="ColorPickerPaletteStyle">
+			<Color name="backcolor" color="@Main.MenuControlBackColor"/>
+			<Metric name="margin" value="0"/>
+			<Metric name="spacing" value="0"/>
+			<Color name="selectionColor" color="white"/>
+			<Metric name="icons.width" value="30"/>
+			<Metric name="icons.height" value="20"/>
+			<Metric name="icons.dataleft" value="0"/>
+			<Metric name="icons.datatop" value="0"/>
+			<Metric name="icons.datawidth" value="30"/>
+			<Metric name="icons.dataheight" value="20"/>
+		</Style>
+		<Style name="ColorPickerHexEditBox" inherit="Standard.EditBox">
+			<Metric name="padding.left"	value="20"/>
+			<Font name="textfont" themeid="StandardUI"/>
+		</Style>
+		<Style name="ColorPickerHashLabel" inherit="Standard.Label">
+			<Color name="textcolor" color="@Main.LabelColor.Tertiary"/>
+			<Font name="textfont" themeid="StandardUI"/>
+		</Style>
+		<Style name="ColorPickerValueBox" inherit="Standard.ValueBox">
+			<Font name="textfont" themeid="StandardUI"/>
+		</Style>
+		<Style name="ColorPickerModeButton" inherit="Standard.Button">
+			<Font name="textfont" themeid="StandardUI"/>
+			<Metric name="padding.left" value="5"/>
+			<Metric name="padding.right" value="5"/>
+		</Style>
+		<Style name="DialogFrameSeparatorColor">
+			<Color name="backcolor" color="@Main.MenuControlSeparatorColor"/>
+		</Style>
+		<Style name="DialogCloseIcon" inherit="Standard.WindowCloseButton">
+			<Metric name="fill.icon" value="1"/>
+			<Color name="iconcolor" color="@Main.LabelColor"/>
+			<Color name="iconcolor.mouseover" color="@Main.LabelColor.Primary"/>
+			<Color name="iconcolor.pressed" color="@Main.LabelColor.Primary"/>
+			<Color name="iconcolor.on" color="@Main.LabelColor.Primary"/>
+		</Style>
+	</Styles>
+	
+    <Forms>
+        <!-- ******************************************************************************************** -->
+        <!-- PROGRESS DIALOG -->
+        <!-- ******************************************************************************************** -->
+
+        <Form name="ProgressStepView"  attach="fitsize">
+            <Vertical margin="14" spacing="0" attach="fitsize">
+                <TextBox name="progressText" width="350" height="34" options="transparent multiline" style="ProgressText"/>
+
+				<Variant name="hasProgressTime" width="350" height="14">
+					<Space/>
+                    <Horizontal margin="0" spacing="2" width="350" height="14">
+						<Label title="Time remaining:" height="14" style="ProgressDetailText"/>
+                        <TextBox name="progressTime" height="14" options="transparent" style="ProgressDetailText" attach="left right fill"/>
+                    </Horizontal>					
+                </Variant>
+
+				<!-- Progress Details -->
+				<foreach variable="$index" count="detailCount">
+					<Variant name="@detailVisible[$index]" size="0,0,0,0" attach="fitsize">
+						<View size="0,0,0,0" sizelimits="0,0,0,0"/>
+						<TextBox name="@detailText[$index]" width="346" height="14" options="transparent" style="ProgressDetailText"/>
+					</Variant>
+				</foreach>
+				
+				<Space height="5"/>
+				
+				<TriggerView style="Standard.ProgressAnimationTrigger">
+					<ProgressBar name="progressState" width="350" height="4" options="horizontal"/>
+				</TriggerView>
+            </Vertical>
+        </Form>
+
+		<Form name="ProgressDialogView" options="colorize" style="ProgressBackgroundColor" attach="fitsize" title="Please wait..." windowstyle="panelstyle">
+			<Vertical attach="all vfit fill" options="unifysizes">
+				<DialogGroup options="secondary" attach="all fitsize">
+					<Vertical margin="0" spacing="0" attach="all fitsize">
+						<View name="ProgressStepList" attach="all fitsize"/>
+						<Variant name="hasWarning" attach="all fitsize">
+							<Horizontal margin="0" attach="all fitsize">
+								<Space/>
+								<ImageView image="WarningIcon" attach="vcenter"/>
+								<TextBox name="warningMessage" size="0,0,300,65" attach="vfit vcenter left right" options="multiline transparent" style="ProgressWarningText"/>
+							</Horizontal>
+						</Variant>
+						<Space/>
+					</Vertical>
+				</DialogGroup>
+				
+				<Horizontal attach="all" margin="0">
+					<Space attach="left right fill"/>
+					<Variant property="isCancelEnabled" attach="fitsize right">
+						<Button name="progressCancel" title="Cancel"/>
+					</Variant>
+				</Horizontal>
+			</Vertical>
+		</Form>
+
+        <!-- ******************************************************************************************** -->
+        <!-- USER OPTION DIALOG -->
+        <!-- ******************************************************************************************** -->
+
+        <Form name="UserOptionDialog" title="Options" windowstyle="sizable restorepos restoresize" attach="all" firstfocus="searchString">
+			<Vertical margin="0" spacing="0" attach="all">
+				<if property="isSimple" value="0">
+					<!-- Header -->
+					<ListView name="OptionList"
+					width="575" height="88" attach="left right"
+					scrolloptions="autobuttonsh" options="selection exclusive nofocus nolinebreak simplemouse" viewtype="icons"
+					style="OptionList"/>
+				</if>
+			
+				<!-- Content -->
+				<Vertical attach="all" margin="20">
+					<View name="OptionView" width="535" height="408" attach="all" sizelimits="535,408,-1,-1"/>
+				</Vertical>
+				
+				<!-- Buttons -->
+				<Horizontal width="575" margin="0" attach="left right bottom">
+					<Space attach="left right fill"/>
+					<DialogButton result="apply" attach="right"/>
+					<?defined affirmative-button-left?>
+					<DialogButton result="okay" attach="right"/>
+					<DialogButton result="cancel" attach="right"/>
+					<?defined affirmative-button-right?>
+					<DialogButton result="cancel" attach="right"/>
+					<DialogButton result="okay" attach="right"/>
+					<?defined?>
+					<Space/>
+				</Horizontal>
+				<Space height="20"/>
+			</Vertical>
+		</Form>
+		
+		<!-- ******************************************************************************************** -->
+		<!-- Color Picker -->
+		<!-- ******************************************************************************************** -->
+
+		<Form name="Standard.ColorPickerPopup" attach="vfit">
+			<Vertical margin="3" spacing="0" width="506" options="unifysizes" attach="vfit">
+				<Space/>
+				<ListView name="paletteModel" style="ColorPickerPaletteStyle" options="exclusive autoselect nodoubleclick nodrag" viewtype="icons" size="10,0,480,100" attach="left right vfit"/>
+				<Horizontal margin="0" spacing="0" attach="left right vfit">
+					<Space/>
+					<Variant name="pickerMode" width="100" height="25">
+						<View>
+							<Button name="addColor" icon="Standard/PlusIcon" options="immediate transparent" size="5,1,40,24"/>
+							<Button name="removeColor" icon="Standard/MinusIcon" options="immediate transparent" size="45,1,40,24"/>
+						</View>
+					</Variant>
+					<Space attach="left right"/>
+					<Variant name="pickerMode" width="40" height="25">
+						<Toggle name="pickerMode" icon="Standard/ExpandVerticalArrow" options="transparent immediate" size="0,3,40,20" attach="top"/>
+						<Toggle name="pickerMode" icon="Standard/ExpandVerticalArrow" options="transparent immediate" size="0,3,40,20" attach="top"/>
+					</Variant>
+					<Space attach="left right"/>
+					<Space width="100"/>
+					<Space/>
+				</Horizontal>
+				<Variant name="pickerMode" width="500" attach="left right vfit">
+					<Vertical margin="0" spacing="0" attach="left right">
+						<Space height="2"/>
+						<switch property="hasPresets">
+							<case value="1">
+								<DialogGroup size="10,0,480,46" options="secondary" attach="left right">
+									<Horizontal width="480" attach="left right">
+										<using controller="Presets">
+											<Button name="storePreset" title="Store Preset"/>
+											<PopupBox name="PresetBrowser" options="nowheel">
+												<Button title="Load Preset"/>
+											</PopupBox>
+										</using>
+										<Space attach="left right"/>
+										<Button name="restorePreset" title="Reset"/>
+									</Horizontal>
+								</DialogGroup>
+								<Space height="10"/>
+							</case>
+							<default>
+								<if property="hasPresetPalette">
+									<Button name="restorePreset" title="Reset"/>
+									<Space height="10"/>
+								</if>
+							</default>
+						</switch>
+						<!--						<View width="50" attach="left right">-->
+						<Vertical margin="10" spacing="10" attach="left right">
+							<Variant name="hslWheelMode" size="0,0,480,201" attach="left right">
+								<View name="RGBSliders" size="0,0,480,200" attach="left right"/>
+								<View name="HSLColorWheel" size="140,0,201,201" style="ColorPickerHSLWheelStyle" attach="left right"/>
+							</Variant>
+							<Horizontal spacing="2" width="480" attach="left right">
+								<EditBox name="hex" style="ColorPickerHexEditBox" size="0,0,80,20">
+									<Label title="#" style="ColorPickerHashLabel" size="5,0,20,20"/>
+								</EditBox>
+								<Space width="20" attach="left right"/>
+								<RadioButton name="hslWheelMode" style="ColorPickerModeButton" title="HSL" size="0,0,40,20" value="1"/>
+								<ValueBox name="hue" size="0,0,40,20" style="ColorPickerValueBox"/>
+								<ValueBox name="saturation" size="0,0,40,20" style="ColorPickerValueBox"/>
+								<ValueBox name="luminance" size="0,0,40,20" style="ColorPickerValueBox"/>
+								<Space width="20" attach="left right"/>
+								<RadioButton name="hslWheelMode" style="ColorPickerModeButton" title="RGB" size="0,0,40,20" value="0" attach="hcenter"/>
+								<ValueBox name="red" size="0,0,40,20"  style="ColorPickerValueBox"/>
+								<ValueBox name="green" size="0,0,40,20"  style="ColorPickerValueBox"/>
+								<ValueBox name="blue" size="0,0,40,20"  style="ColorPickerValueBox"/>
+							</Horizontal>
+						</Vertical>
+						<!--						</View>-->
+					</Vertical>
+				</Variant>
+			</Vertical>
+		</Form>
+		
+		<Form name="RGBSliders">
+			<Vertical margin="35" spacing="25" attach="left right">
+				<View name="RGBSliderRed" style="ColorPickerRGBSlider" options="transparent" size="0,0,400,25" attach="left right"/>
+				<View name="RGBSliderGreen" style="ColorPickerRGBSlider" options="transparent" size="0,0,400,25" attach="left right"/>
+				<View name="RGBSliderBlue" style="ColorPickerRGBSlider" options="transparent" size="0,0,400,25" attach="left right"/>
+			</Vertical>
+		</Form>
+		
+		<!-- ******************************************************************************************** -->
+		<!-- DialogFrame -->
+		<!-- ******************************************************************************************** -->
+		
+		<Form name="DialogFrameHeader" attach="left right">
+			<if property="$hasTitleBarImage">
+				<Horizontal attach="left right v_enter" width="100" height="46" margin="0" spacing="0">
+					<Space attach="left right"/>
+					<Imageview provider="titleBarImage" attach="vcenter"/>
+					<Space attach="left right"/>
+				</Horizontal>
+			</if>
+			<Horizontal attach="left right" width="100" margin="3" spacing="0">
+				<if property="hasButton[1]">
+					<define r="@property:buttonResult[1]" t="@property:buttonTitle[1]">
+						<DialogButton result="$r" options="transparent hidefocus" style="Standard.CommandButton" title="$t"/>
+					</define>
+				</if>
+				<if property="hasButton[3]">
+					<define r="@property:buttonResult[3]" t="@property:buttonTitle[3]">
+						<DialogButton result="$r" options="transparent hidefocus" style="Standard.CommandButton" title="$t"/>
+					</define>
+				</if>
+				
+				<!-- title is only shown when there is no titleBarImage -->
+				<if property="$hasTitleBarImage" value="0">
+					<!-- center title when there are buttons on each side or no buttons -->
+					<define multiButton="hasButton[1]" anyButton="hasButton[0]" centerTitle="@eval:$multiButton | !$anyButton">
+						<if property="$centerTitle">
+							<if property="$anyButton" value="0">
+								<Space width="32"/><!-- fixed default-close-button-width -->
+							</if>
+							<Space attach="left right"/>
+						</if>
+						<if property="$centerTitle" value="0">
+							<Space width="3"/>
+						</if>
+					</define>
+					<Label title="$title" style="Standard.DialogTitle" attach="vcenter"/>
+				</if>
+				<Space attach="left right"/>
+				
+				<if property="hasButton[2]">
+					<define r="@property:buttonResult[2]" t="@property:buttonTitle[2]">
+						<DialogButton result="$r" options="transparent hidefocus" style="Standard.CommandButton" title="$t"/>
+					</define>
+				</if>
+				<if property="hasButton[0]">
+					<define r="@property:buttonResult[0]" t="@property:buttonTitle[0]">
+						<DialogButton result="$r" options="transparent hidefocus" style="Standard.CommandButton" title="$t"/>
+					</define>
+				</if>
+				<if property="hasButton[0]" value="0">
+					<!-- add close button if dialog has no button at all -->
+					<?xstring off?>
+					<DialogButton title=" " result="close" options="transparent hidefocus" style="DialogCloseIcon" size="0,0,32,32"/>
+					<?xstring?>
+				</if>
+			</Horizontal>
+		</Form>
+		
+		<Form name="Standard.DialogFrame" style="Standard.PopupMenuDecorStyle" attach="all fitsize" options="windowmovable" windowstyle="customframe transparent translucent sheetstyle">
+			<Vertical margin="3" spacing="0" attach="all fitsize" options="unifysizes">
+				<View name="DialogFrameHeader" attach="left right" data.buttonOrder="affirmative-button-right"/>
+				<if property="$hasTitleBarImage" value="0">
+					<ImageView style="DialogFrameSeparatorColor" height="1" options="colorize" attach="left right"/>
+				</if>
+				<View name="Content" attach="all fitsize"/>
+			</Vertical>
+		</Form>
+		
+		<!-- ******************************************************************************************** -->
+		<!-- PopupMenuDecor -->
+		<!-- ******************************************************************************************** -->
+
+		<Form name="Standard.PopupMenuDecor" style="Standard.PopupMenuDecorStyle" windowstyle="sizable customframe" options="translucent transparent" attach="all fitsize">
+			<?defined mobileapp?>
+				<Vertical margin="3" spacing="0" attach="all fitsize">
+					<using controller="$PopupSelector">
+						<View name="Content" attach="all fitsize"/>
+					</using>
+				</Vertical>
+			<?defined desktopapp?>
+				<Vertical margin="2" spacing="0" attach="all fitsize">
+					<using controller="$PopupSelector">
+						<View name="Content" attach="all fitsize"/>
+					</using>
+				</Vertical>
+			<?defined?>
+		</Form>
+    </Forms>
+</Skin>
+

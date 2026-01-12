@@ -1,0 +1,1418 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Skin>
+	<Resources>
+
+		<ColorScheme name="Main">
+
+		<!-- ******************************************************************************************** -->
+		<!-- NeutralDesign Internal Colors -->
+		<!-- ******************************************************************************************** -->
+
+			<?defined mobileapp?>
+			<ColorScheme.Color name="MenuButtonColor"						color="$skin://hostapp/BaseColor10" 				saturation="8:5"	luminance="6" invertedvalue="94"/>
+			<?defined desktopapp?>
+			<ColorScheme.Color name="MenuButtonColor"						color="$skin://hostapp/BaseColor20" 				saturation="8:5"	luminance="6" invertedvalue="84"/>
+			<?defined?>
+			
+			<ColorScheme.Color name="MenuButtonMouseoverColor"				color="$skin://hostapp/BaseColor30" alphavalue="40" 		saturation="8:5" 	luminance="1:6" invertedvalue="80"/>
+			<ColorScheme.Color name="PageIndicatorDotActiveColor"			color="$skin://hostapp/BaseColor75" 						saturation="0"		luminance="10" invertedvalue="25"/>
+			<ColorScheme.Color name="PageIndicatorDotColor"					color="$skin://hostapp/BaseColor30" alphavalue="75" 		saturation="8:5" 	luminance="2:5" invertedvalue="57"/>
+			<ColorScheme.Color name="PageIndicatorDotOutlineColor"			color="$skin://hostapp/BaseColor30" alphavalue="65" 		saturation="8:5" 	luminance="2:6" slcombined="true" huefixed="true" invertedvalue="52"/>
+			
+			<ColorScheme.Color name="TabButtonColor"						color="$skin://hostapp/BaseColor25" alphavalue="35" 		saturation="8:5" 	luminance="2:5" invertedvalue="75"/>
+			<ColorScheme.Color name="TabButtonMouseoverColor"				color="$skin://hostapp/BaseColor30" alphavalue="40" 		saturation="8:5" 	luminance="1:6" invertedvalue="80"/>
+			
+			<ColorScheme.Color name="StandardSliderColor"					color="$skin://hostapp/BaseColor30" alphavalue="70" 		saturation="8:5" 	luminance="8" invertedvalue="82"/>
+			<ColorScheme.Color name="StandardSliderOnColor"					color="$skin://hostapp/BaseColor50" alphavalue="70" 		saturation="8:5" 	luminance="8" invertedvalue="62"/>
+			<ColorScheme.Color name="StandardSliderHandleColor"				color="$skin://hostapp/BaseColor80" 						saturation="8:5" 	luminance="8" invertedvalue="10"/>
+			<ColorScheme.Color name="StandardSliderBorderColor"				color="$skin://hostapp/BaseColor10" alphavalue="50" 		saturation="5"		luminance="10" contrast="20" invertedvalue="60"/>
+
+			<ColorScheme.Color name="DialogBorderColor" 					color="$skin://hostapp/BaseColor20" 				saturation="5" 		luminance="4:10" invertedvalue="75"/>
+			
+			<ColorScheme.Color name="BorderOutlineColor" 					color="$skin://hostapp/BaseColor20" alphavalue="25" 		saturation="8:5" 	luminance="2:5" invertedvalue="97"/>
+			
+			<ColorScheme.Color name="ListViewIconsFrameColor"				color="$skin://hostapp/BaseColor20" 					saturation="8:4/20" luminance="4:14" invertedvalue="70"/>
+			<ColorScheme.Color name="ListViewIconsFolderColor"				color="$skin://hostapp/BaseColor20" 					saturation="8:4/20" luminance="4:14" invertedvalue="70"/>
+			<ColorScheme.Color name="ListViewIconsTileBackcolor" 			color="$skin://hostapp/BaseColor15" 					saturation="8" luminance="4:13" invertedvalue="85"/>
+			<ColorScheme.Color name="ListViewIconsTileTextBackcolor" 		color="$skin://hostapp/BaseColor20" 					saturation="8" luminance="4:13" invertedvalue="81"/>
+			<ColorScheme.Color name="ListViewIconsTileTextDividerColor"		color="$skin://hostapp/BaseColor20" 					saturation="8" luminance="4:13" invertedvalue="80"/>
+			<ColorScheme.Color name="ListViewIconsTileBackSelectedColor" 	color="$skin://hostapp/BaseColor15" 					saturation="8" luminance="4:13" invertedvalue="85"/>
+				
+			<ColorScheme.Color name="MenuBarControl.Active"					color="$skin://hostapp/BaseColor95" 					saturation="3:5"	luminance="10:15" contrast="20" invertedvalue="0"/>
+			<ColorScheme.Color name="MenuBarControl.Active.NoInvert"		color="$skin://hostapp/BaseColor95" 					saturation="3:5"	luminance="10:15" contrast="20" invertedvalue="100"/>
+			<ColorScheme.Color name="MenuBarControl.Inactive"				color="$skin://hostapp/BaseColor75" alphavalue="70" 	saturation="3:5"	luminance="20:15" contrast="20" invertedvalue="0"/>
+			
+			<ColorScheme.Color name="TabViewBackColor" 						color="$skin://hostapp/BaseColor20" 					saturation="5" 		luminance="5:8" invertedvalue="82"/>
+			<ColorScheme.Color name="TabOutlineColor" 						color="$skin://hostapp/BaseColor20" alphavalue="25" 	saturation="5" 		luminance="10" contrast="1:1" invertedvalue="97"/>
+			<ColorScheme.Color name="DialogGroupOutlineColor" 				color="$skin://hostapp/BaseColor30" alphavalue="20" 	saturation="5" 		luminance="10" contrast="1:3" invertedvalue="99"/>
+			<ColorScheme.Color name="DialogHeaderLineColor" 				color="$skin://hostapp/BaseColor20" alphavalue="70" 	saturation="5" 		luminance="5" contrast="1:3" invertedvalue="87"/>
+			
+			<ColorScheme.Color name="KnobLightAdaptColor"          			color="$skin://hostapp/BaseColor00" 					luminance="5"	huefixed="true" invertedvalue="10"/>
+			<ColorScheme.Color name="AlphaSelectionColor" 					color="$skin://hostapp/PrimaryColor50" alphavalue="25" saturation="5" 		luminance="10" huefixed="true" invertedvalue="50"/>
+			<ColorScheme.Color name="AlphaCursorColor"						color="$skin://hostapp/PrimaryColor50" alphavalue="75" saturation="8:30" 	luminance="5:12" huefixed="true" slcombined="true" invertedvalue="50"/>
+
+			<ColorScheme.Color name="RadioButtonOutlineColor"				color="$skin://hostapp/BaseColor100" alphavalue="15" 	saturation="5" 		luminance="10" contrast="30" invertedvalue="0"/>
+			<ColorScheme.Color name="CheckMark.DisabledColor"				color="$skin://hostapp/BaseColor65" alphavalue="60" 	saturation="3:5"	luminance="10" contrast="15" invertedvalue="90"/>
+			
+			<ColorScheme.Color name="MenuControlHeaderColor" 				color="$skin://hostapp/BaseColor25" 					saturation="6" 		luminance="10:15" invertedvalue="75"/>
+			<ColorScheme.Color name="ScrollBarColor.NoInvert"				color="$skin://hostapp/BaseColor65" alphavalue="70" 	saturation="0"		luminance="20" invertedvalue="68"/>
+			
+			<ColorScheme.Color name="ValueBarForecolor"						color="$skin://hostapp/PrimaryColor65"					saturation="8:20" 	luminance="2:6" slcombined="true" huefixed="true" invertedvalue="55"/>
+			<ColorScheme.Color name="ValueBarBackcolor" 					color="$skin://hostapp/BaseColor15" 					saturation="5" 		luminance="4:10" invertedvalue="80"/>
+			<ColorScheme.Color name="ScrollPickerBackcolor" 				color="$skin://hostapp/BaseColor15" 					saturation="5" 		luminance="4:10" invertedvalue="87"/>
+			<ColorScheme.Color name="ScrollPickerCenterColor" 				color="$skin://hostapp/BaseColor10" 					saturation="5" 		luminance="4:10" invertedvalue="90"/>
+					
+			<ColorScheme.Color name="WindowHeaderColor"						color="$skin://hostapp/BaseColor20" 					saturation="10:5" 	luminance="11:5" invertedvalue="85"/>
+			<ColorScheme.Color name="WindowHeaderActiveColor"				color="$skin://hostapp/BaseColor10" 					saturation="10:5" 	luminance="11:5" invertedvalue="95"/>
+					
+			<ColorScheme.Color name="MobileControlMOColor" 					color="$skin://hostapp/BaseColor30" 					saturation="8:5" luminance="6" invertedvalue="94"/>
+			<ColorScheme.Color name="MobileButtonMOOutlineColor" 			color="$skin://hostapp/BaseColor30" 					saturation="8:5" luminance="6" invertedvalue="80"/>
+					
+			<ColorScheme.Color name="MobileButtonTextColor" 				color="$skin://hostapp/BaseColor100"					saturation="8:5" luminance="5" huefixed="true" invertedvalue="100"/>
+			<ColorScheme.Color name="MobileSliderHandleColor" 				color="$skin://hostapp/BaseColor45" 					saturation="8:5" luminance="6" invertedvalue="70"/>
+			<ColorScheme.Color name="MobileSliderHandleBorderColor" 		color="$skin://hostapp/BaseColor80" 					saturation="8:5" luminance="5" invertedvalue="40"/>
+					
+			<ColorScheme.Color name="ButtonSpecialBlueColor" 				color="$skin://hostapp/PrimaryColor30" 				saturation="8:5" luminance="6" huefixed="true" invertedvalue="40"/>
+			<ColorScheme.Color name="ButtonSpecialBlueMOColor" 				color="$skin://hostapp/PrimaryColor35" 				saturation="8:5" luminance="6" huefixed="true" invertedvalue="44"/>
+			<ColorScheme.Color name="ButtonSpecialBlueDisabledColor"		color="$skin://hostapp/BaseColor30" alphavalue="50" 	saturation="8:5" luminance="6" huefixed="true" invertedvalue="55"/>
+			<ColorScheme.Color name="ButtonSpecialBluePressedColor" 		color="$skin://hostapp/PrimaryColor35" 				saturation="8:5" luminance="6" huefixed="true" invertedvalue="46"/>
+			<ColorScheme.Color name="ButtonSpecialBluePenColor" 			color="$skin://hostapp/PrimaryColor30" 				saturation="8:5" luminance="6" huefixed="true" invertedvalue="36"/>
+					
+			<ColorScheme.Color name="ButtonPenColor" 						color="$skin://hostapp/BaseColor25" 					saturation="8:5" luminance="6" invertedvalue="72"/>
+					
+			<ColorScheme.Color name="VectorPadBackcolor"					color="$skin://hostapp/BaseColor30" 					saturation="5" 		luminance="6" invertedvalue="56"/>
+			<ColorScheme.Color name="VectorPadDotActiveColor"				color="$skin://hostapp/BaseColor90" 					saturation="5" 		luminance="6" invertedvalue="16"/>
+			<ColorScheme.Color name="VectorPadDotColor"						color="$skin://hostapp/BaseColor70" 					saturation="5" 		luminance="6" invertedvalue="26"/>
+					
+			<ColorScheme.Color name="RangeSliderRedColor" 					color="$skin://hostapp/SeverityColorHigh" 				saturation="8:5" luminance="6" slcombined="true" huefixed="true" invertedvalue="55"/>
+			<ColorScheme.Color name="RangeSliderRedPenColor" 				color="$skin://hostapp/SeverityColorHigh" 				saturation="8:5" luminance="6" slcombined="true" huefixed="true" invertedvalue="51"/>
+			
+		</ColorScheme>
+		
+		
+		<ShapeImage name="Button" 					url="ButtonShape" frames="embedded"/>
+		<ShapeImage name="ButtonL" 					url="ButtonLShape" frames="embedded"/>
+		<ShapeImage name="ButtonR" 					url="ButtonRShape" frames="embedded"/>
+		<ShapeImage name="ButtonM" 					url="ButtonMShape" frames="embedded"/>
+		<ShapeImage name="WindowBackground"			url="WindowBackgroundShape"/>
+		<ShapeImage name="DialogBackground"			url="DialogBackgroundShape"/>
+		<ShapeImage name="ListBackground"			url="ListBackgroundShape"/>
+		<ShapeImage name="DialogListBackground"		url="DialogListBackgroundShape"/>
+		<ShapeImage name="TabBackground"			url="TabBackgroundShape"/>
+		<ShapeImage name="MenuBackground"			url="MenuBackgroundShape"/>
+		<ShapeImage name="PopupMenuBackground"		url="PopupMenuBackgroundShape"/>
+		<ShapeImage name="MenuControlBackground"	url="MenuControlBackgroundShape"/>
+		<ShapeImage name="DialogGroup"				url="DialogGroupShape"/>
+		<ShapeImage name="SecondaryDialogGroup"		url="SecondaryDialogGroupShape"/>
+		<ShapeImage name="MobileDialogGroup"		url="MobileDialogGroupShape"/>
+		
+		<ShapeImage name="TextBoxBackground"		url="TextBoxBackgroundShape"/>
+		<ShapeImage name="EditBoxBackground"		url="EditBoxBackgroundShape"/>
+		<ShapeImage name="EditFocusBoxBackground"	url="EditFocusBoxBackgroundShape" frames="embedded"/>
+		<ShapeImage name="CheckBoxBackground"		url="CheckBoxBackgroundShape" frames="embedded"/>
+		<ShapeImage name="RadioButtonBackground"	url="RadioButtonBackgroundShape" frames="embedded"/>
+		
+		<ShapeImage name="ScrollBack"				url="ScrollBackShape"/>
+		<ShapeImage name="ScrollBackSmall"			url="ScrollBackSmallShape"/>
+		<ShapeImage name="VSmallListScrollThumb" 	url="VSmallListScrollThumbShape" frames="embedded"/>
+		<ShapeImage name="HSmallListScrollThumb" 	url="HSmallListScrollThumbShape" frames="embedded"/>
+		<ShapeImage name="VDividerThumb" 			url="VDividerThumbShape" frames="embedded"/>
+		<ShapeImage name="HDividerThumb" 			url="HDividerThumbShape" frames="embedded"/>
+		
+		
+		<ShapeImage name="SelectBoxButton"			url="SelectBoxButtonShape" frames="embedded"/>
+<!--		<Image name="SelectBoxButton">-->
+<!--			<ShapeImage name="normal"			url="images/svgs/SelectBoxArrow.svg" template="true">-->
+<!--				<ShapeColorMapping name="rgb(235,235,235)"	color="@Main.SelectBoxButtonColor"/>-->
+<!--			</ShapeImage>-->
+<!--			<ShapeImage name="mouseover"			url="images/svgs/SelectBoxArrow.svg" template="true">-->
+<!--				<ShapeColorMapping name="rgb(235,235,235)"	color="@Main.LabelColor.Secondary"/>-->
+<!--			</ShapeImage>-->
+<!--			<ShapeImage name="pressed"			url="images/svgs/SelectBoxArrow.svg" template="true">-->
+<!--				<ShapeColorMapping name="rgb(235,235,235)"	color="@Main.LabelColor"/>-->
+<!--			</ShapeImage>-->
+<!--			<ShapeImage name="focus"			url="images/svgs/SelectBoxArrow.svg" template="true">-->
+<!--				<ShapeColorMapping name="rgb(235,235,235)"	color="@Main.LabelColor.Secondary"/>-->
+<!--			</ShapeImage>-->
+<!--			<ShapeImage name="disabled"			url="images/svgs/SelectBoxArrow.svg" template="true">-->
+<!--				<ShapeColorMapping name="rgb(235,235,235)"	color="@Main.MobileControlDisabledColor"/>-->
+<!--			</ShapeImage>-->
+<!--		</Image>-->
+			
+		<ShapeImage name="TreeViewExpandButton"		url="TreeViewExpandButtonShape" frames="embedded"/>
+		<ShapeImage name="ProgressBarBackground"	url="ProgressBarBackgroundShape"/>
+		<ShapeImage name="ProgressBarIndicator"		url="ProgressBarIndicatorShape"/>
+		
+		<ShapeImage name="DividerBackgroundH"		url="DividerBackgroundHShape" />
+		<ShapeImage name="DividerBackgroundV"		url="DividerBackgroundVShape" />
+		
+		<ShapeImage name="SliderBack"				url="SliderBackShape" frames="embedded"/>
+		<ShapeImage name="SliderBackVMk2"			url="SliderBackVMk2Shape" frames="embedded"/>
+		<ShapeImage name="SliderBackHMk2"			url="SliderBackHMk2Shape" frames="embedded"/>
+		<ShapeImage name="SliderBackSmallVMk2"		url="SliderBackSmallVMk2Shape" frames="embedded"/>
+		<ShapeImage name="SliderBackSmallHMk2"		url="SliderBackSmallHMk2Shape" frames="embedded"/>
+		<ShapeImage name="RangeSliderInvertedBackHMk2" 		url="RangeSliderInvertedBackHMk2Shape" frames="embedded"/>
+		<ShapeImage name="RangeSliderInvertedBackVMk2" 		url="RangeSliderInvertedBackVMk2Shape" frames="embedded"/>
+		<ShapeImage name="RangeSliderInvertedBackSmallHMk2" 		url="RangeSliderInvertedBackSmallHMk2Shape" frames="embedded"/>
+		<ShapeImage name="RangeSliderInvertedBackSmallVMk2" 		url="RangeSliderInvertedBackSmallVMk2Shape" frames="embedded"/>
+
+
+		<ShapeImage name="SliderHandleV"			url="SliderHandleVShape"/>
+		<ShapeImage name="SliderHandleH"			url="SliderHandleHShape"/>
+		<ShapeImage name="SliderHandleHMk2" 		url="SliderHandleHMk2Shape"/>
+		<ShapeImage name="SliderHandleVMk2" 		url="SliderHandleVMk2Shape"/>
+		<ShapeImage name="SliderHandleSmallHMk2" 	url="SliderHandleSmallHMk2Shape"/>
+		<ShapeImage name="SliderHandleSmallVMk2" 	url="SliderHandleSmallVMk2Shape"/>
+
+
+		<ShapeImage name="TabButton" 				url="TabButtonShape" frames="embedded"/>
+		<ShapeImage name="TabButtonL" 				url="TabButtonLShape" frames="embedded"/>
+		<ShapeImage name="TabButtonR" 				url="TabButtonRShape" frames="embedded"/>
+		<ShapeImage name="TabButtonM" 				url="TabButtonMShape" frames="embedded"/>
+
+		<ShapeImage name="MenuButton" 				url="MenuButtonShape" frames="embedded"/>
+		<ShapeImage name="PageIndicatorDot" 		url="PageIndicatorDotShape" frames="embedded"/>
+		<ShapeImage name="VectorPadBackground" 		url="VectorPadBackgroundShape"/>
+		<ShapeImage name="VectorPadHandle"	 		url="VectorPadHandleShape" frames="embedded"/>
+		<ShapeImage name="ScrollPickerOverlay"		url="ScrollPickerOverlayShape"/>
+		
+		<ShapeImage name="HeaderBackground"			url="HeaderBackgroundShape"/>
+
+		
+		<Image name="AtlasStandard"	url="images/AtlasNeutralStandard.png"/>
+
+		<Image name="ProgressForeground"	url="images/NeutralProgressBar.png" tile="repeat-x" margin="0,0,0,0" frames="40" duration="800 ms"/>
+
+		<ImagePart name="CheckBox" 				image="AtlasStandard" 	size="30,64,18,72" frames="normal normalOn disabledOn disabled">
+			<ImageFilter name="lightadapt"		color="@Main.ContextTemplateColor"/>
+		</ImagePart>
+		<ImagePart name="RadioButton" 			image="AtlasStandard"	size="48,64,18,72" frames="normal normalOn disabledOn disabled">
+			<ImageFilter name="lightadapt"		color="@Main.ContextTemplateColor"/>
+		</ImagePart>
+		<ImagePart name="CheckBoxIcon"	 		image="AtlasStandard"	size="30,136,18,18" template="true"/>
+		<ImagePart name="CheckBoxIconMixed"	 	image="AtlasStandard"	size="30,154,18,18" template="true"/>
+		<ImagePart name="RadioDotIcon" 			image="AtlasStandard"	size="48,136,18,18" template="true"/>
+		<ImagePart name="RadioButtonDotIcon"	image="AtlasStandard"	size="47,136,18,18" template="true"/>
+		<ImagePart name="CheckMarkIcon" 		image="AtlasStandard"	size="33,140,10,10" template="true"/>
+		<ImagePart name="WarningIcon"			image="AtlasStandard"	size="30,40,28,24"/>
+
+		<Image name="VScrollButtonDown">
+			<ImagePart name="normal" 	image="AtlasStandard"	size="0,132,17,18">
+				<ImageFilter name="colorize"		color="@Main.ScrollBarColor"/>
+			</ImagePart>
+			<ImagePart name="mouseover" 	image="AtlasStandard"	size="0,132,17,18">
+				<ImageFilter name="colorize"		color="@Main.LabelColor.Secondary"/>
+			</ImagePart>
+		</Image>
+		<Image name="VScrollButtonUp">
+			<ImagePart name="normal"   	image="AtlasStandard"	size="0,114,17,18">
+				<ImageFilter name="colorize"		color="@Main.ScrollBarColor"/>
+			</ImagePart>
+			<ImagePart name="mouseover"   	image="AtlasStandard"	size="0,114,17,18">
+				<ImageFilter name="colorize"		color="@Main.LabelColor.Secondary"/>
+			</ImagePart>
+		</Image>
+		<Image name="HScrollButtonDown">
+			<ImagePart name="normal"  	image="AtlasStandard"	size="66,132,25,18">
+				<ImageFilter name="colorize"		color="@Main.ScrollBarColor"/>
+			</ImagePart>
+			<ImagePart name="mouseover"  	image="AtlasStandard"	size="66,132,25,18">
+				<ImageFilter name="colorize"		color="@Main.LabelColor.Secondary"/>
+			</ImagePart>
+		</Image>
+		<Image name="HScrollButtonUp">
+			<ImagePart name="normal"    	image="AtlasStandard"	size="81,132,25,18">
+				<ImageFilter name="colorize"		color="@Main.ScrollBarColor"/>
+			</ImagePart>
+			<ImagePart name="mouseover"    	image="AtlasStandard"	size="81,132,25,18">
+				<ImageFilter name="colorize"		color="@Main.LabelColor.Secondary"/>
+			</ImagePart>
+		</Image>
+		<Image name="HScrollThumb">
+			<ImagePart name="normal"		image="AtlasStandard"  size="67,79,30,17" tile="tile-x" 	margin="5,7,5,7">
+				<ImageFilter name="colorize"	color="@Main.ScrollBarColor"/>			
+			</ImagePart>
+			<ImagePart name="mouseover"		image="AtlasStandard"  size="67,79,30,17" tile="tile-x" 	margin="5,7,5,7">
+				<ImageFilter name="colorize"	color="@Main.LabelColor.Secondary"/>			
+			</ImagePart>
+			<ImagePart name="pressed"		image="AtlasStandard"  size="67,79,30,17" tile="tile-x" 	margin="5,7,5,7">
+				<ImageFilter name="colorize"	color="@Main.LabelColor"/>			
+			</ImagePart>
+		</Image>
+		<Image name="VScrollThumb">
+			<ImagePart name="normal"		image="AtlasStandard"  size="29,0,17,40" tile="tile-y" 	margin="7,5,7,5" >
+				<ImageFilter name="colorize"	color="@Main.ScrollBarColor"/>			
+			</ImagePart>
+			<ImagePart name="mouseover"		image="AtlasStandard"  size="29,0,17,40" tile="tile-y" 	margin="7,5,7,5" >
+				<ImageFilter name="colorize"	color="@Main.LabelColor.Secondary"/>			
+			</ImagePart>
+			<ImagePart name="pressed"		image="AtlasStandard"  size="29,0,17,40" tile="tile-y" 	margin="7,5,7,5" >
+				<ImageFilter name="colorize"	color="@Main.LabelColor"/>			
+			</ImagePart>
+		</Image>
+							
+		<Image name="VScrollButtonDown.NoInvert">
+			<ImagePart name="normal" 	image="AtlasStandard"	size="0,132,17,18">
+				<ImageFilter name="colorize"		color="@Main.ScrollBarColor.NoInvert"/>
+			</ImagePart>
+			<ImagePart name="mouseover" 	image="AtlasStandard"	size="0,132,17,18">
+				<ImageFilter name="colorize"		color="@Main.LabelColor.Secondary.NoInvert"/>
+			</ImagePart>
+		</Image>
+		<Image name="VScrollButtonUp.NoInvert">
+			<ImagePart name="normal"   	image="AtlasStandard"	size="0,114,17,18">
+				<ImageFilter name="colorize"		color="@Main.ScrollBarColor.NoInvert"/>
+			</ImagePart>
+			<ImagePart name="mouseover"   	image="AtlasStandard"	size="0,114,17,18">
+				<ImageFilter name="colorize"		color="@Main.LabelColor.Secondary.NoInvert"/>
+			</ImagePart>
+		</Image>
+		<Image name="HScrollButtonDown.NoInvert">
+			<ImagePart name="normal"  	image="AtlasStandard"	size="66,132,25,18">
+				<ImageFilter name="colorize"		color="@Main.ScrollBarColor.NoInvert"/>
+			</ImagePart>
+			<ImagePart name="mouseover"  	image="AtlasStandard"	size="66,132,25,18">
+				<ImageFilter name="colorize"		color="@Main.LabelColor.Secondary.NoInvert"/>
+			</ImagePart>
+		</Image>
+		<Image name="HScrollButtonUp.NoInvert">
+			<ImagePart name="normal"    	image="AtlasStandard"	size="81,132,25,18">
+				<ImageFilter name="colorize"		color="@Main.ScrollBarColor.NoInvert"/>
+			</ImagePart>
+			<ImagePart name="mouseover"    	image="AtlasStandard"	size="81,132,25,18">
+				<ImageFilter name="colorize"		color="@Main.LabelColor.Secondary.NoInvert"/>
+			</ImagePart>
+		</Image>
+		<Image name="HScrollThumb.NoInvert">
+			<ImagePart name="normal"		image="AtlasStandard"  size="67,79,30,17" tile="tile-x" 	margin="5,7,5,7">
+				<ImageFilter name="colorize"	color="@Main.ScrollBarColor.NoInvert"/>			
+			</ImagePart>
+			<ImagePart name="mouseover"		image="AtlasStandard"  size="67,79,30,17" tile="tile-x" 	margin="5,7,5,7">
+				<ImageFilter name="colorize"	color="@Main.LabelColor.Secondary.NoInvert"/>			
+			</ImagePart>
+			<ImagePart name="pressed"		image="AtlasStandard"  size="67,79,30,17" tile="tile-x" 	margin="5,7,5,7">
+				<ImageFilter name="colorize"	color="@Main.LabelColor.NoInvert"/>			
+			</ImagePart>
+		</Image>
+		<Image name="VScrollThumb.NoInvert">
+			<ImagePart name="normal"		image="AtlasStandard"  size="29,0,17,40" tile="tile-y" 	margin="7,5,7,5" >
+				<ImageFilter name="colorize"	color="@Main.ScrollBarColor.NoInvert"/>			
+			</ImagePart>
+			<ImagePart name="mouseover"		image="AtlasStandard"  size="29,0,17,40" tile="tile-y" 	margin="7,5,7,5" >
+				<ImageFilter name="colorize"	color="@Main.LabelColor.Secondary.NoInvert"/>			
+			</ImagePart>
+			<ImagePart name="pressed"		image="AtlasStandard"  size="29,0,17,40" tile="tile-y" 	margin="7,5,7,5" >
+				<ImageFilter name="colorize"	color="@Main.LabelColor.NoInvert"/>			
+			</ImagePart>
+		</Image>
+				
+<!--		<ImagePart name="HScrollThumb"       	image="AtlasStandard"	size="67,79,30,51"		tile="tile-x" 	margin="5,7,5,7" frames="normal mouseover pressed">-->
+<!--			<ImageFilter name="colorize"		color="@Main.ScrollBarColor"/>-->
+<!--		</ImagePart>-->
+		<ImagePart name="UpDownBoxL" 			image="AtlasStandard"	size="71,133,10,15"/>
+		<ImagePart name="UpDownBoxR" 			image="AtlasStandard"	size="91,133,10,15"/>
+		
+		<ImagePart name="ColorPickerPalette" 	image="AtlasStandard"	size="1,160,16,8"/>
+		
+		<Image name="StdKnobTable"			url="images/AtlasNeutralKnobs.png"/>
+		<ImagePart name="StdKnobABack"				image="StdKnobTable" size="0,0,53,53">
+			<ImageFilter name="lightadapt"		color="@Main.KnobLightAdaptColor"/>
+		</ImagePart>
+		<ImagePart name="StdKnobBBack"				image="StdKnobTable" size="53,0,43,43">
+			<ImageFilter name="lightadapt"		color="@Main.KnobLightAdaptColor"/>
+		</ImagePart>
+		<ImagePart name="StdKnobDBack"				image="StdKnobTable" size="98,2,27,27">
+			<ImageFilter name="lightadapt"		color="@Main.KnobLightAdaptColor"/>
+		</ImagePart>
+		<ImagePart name="StdKnobFBack"				image="StdKnobTable" size="129,0,48,48">
+			<ImageFilter name="lightadapt"		color="@Main.KnobLightAdaptColor"/>
+		</ImagePart>
+		
+		
+		<ImagePart name="StdKnobA"					image="StdKnobTable" size="0,53,53,53">
+			<ImageFilter name="lightadapt"		color="@Main.KnobLightAdaptColor"/>
+		</ImagePart>
+		<ImagePart name="StdKnobB"					image="StdKnobTable" size="53,43,43,43">
+			<ImageFilter name="lightadapt"		color="@Main.KnobLightAdaptColor"/>
+		</ImagePart>
+		<ImagePart name="StdKnobD"					image="StdKnobTable" size="98,35,27,27">
+			<ImageFilter name="lightadapt"		color="@Main.KnobLightAdaptColor"/>
+		</ImagePart>
+		<ImagePart name="StdKnobF"					image="StdKnobTable" size="129,48,48,48">
+			<ImageFilter name="lightadapt"		color="@Main.KnobLightAdaptColor"/>
+		</ImagePart>
+		
+		<ImagePart name="StdKnobAMask"				image="StdKnobTable" size="0,106,53,53">
+			<ImageFilter name="lightadapt"		color="@Main.KnobLightAdaptColor"/>
+		</ImagePart>
+		<ImagePart name="StdKnobBMask"				image="StdKnobTable" size="53,86,43,43">
+			<ImageFilter name="lightadapt"		color="@Main.KnobLightAdaptColor"/>
+		</ImagePart>
+		<ImagePart name="StdKnobDMask"				image="StdKnobTable" size="98,68,27,27">
+			<ImageFilter name="lightadapt"		color="@Main.KnobLightAdaptColor"/>
+		</ImagePart>
+		<ImagePart name="StdKnobFMask"				image="StdKnobTable" size="129,96,48,48">
+			<ImageFilter name="lightadapt"		color="@Main.KnobLightAdaptColor"/>
+		</ImagePart>
+
+		<ImagePart name="StdKnobADisabled"				image="StdKnobTable" size="0,159,53,53">
+			<ImageFilter name="lightadapt"		color="@Main.KnobLightAdaptColor"/>
+		</ImagePart>
+		<ImagePart name="StdKnobBDisabled"				image="StdKnobTable" size="53,129,43,43">
+			<ImageFilter name="lightadapt"		color="@Main.KnobLightAdaptColor"/>
+		</ImagePart>
+		<ImagePart name="StdKnobDDisabled"				image="StdKnobTable" size="98,101,27,27">
+			<ImageFilter name="lightadapt"		color="@Main.KnobLightAdaptColor"/>
+		</ImagePart>
+		<ImagePart name="StdKnobFDisabled"				image="StdKnobTable" size="129,144,48,48">
+			<ImageFilter name="lightadapt"		color="@Main.KnobLightAdaptColor"/>
+		</ImagePart>
+		
+		
+		<Image name="IconsFolderTileOverlay">
+			<Image name="normal" url="images/IconsFolderTileOverlay.png" tile="tile-x" margin="65,0,0,0">
+				<ImageFilter name="colorize" color="@Main.ListViewIconsFolderColor"/>
+			</Image>
+			<Image name="pressed" url="images/IconsFolderTileOverlay.png" tile="tile-x" margin="65,0,0,0">
+				<ImageFilter name="colorize" color="@Main.SelectionBackColor"/>
+			</Image>
+		</Image>
+		
+		<Image name="SearchClearIcon" url="images/SearchClearIcon.png" frames="pressed mouseover normal">
+			<ImageFilter name="lightadapt" color="@Main.ContextTemplateColor"/>
+		</Image>
+		
+		<ShapeImage name="IconsTileBackground"		url="IconsTileBackgroundShape" frames="embedded" template="true"/>
+		<ShapeImage name="IconsTileOverlayFrame"	url="IconsTileOverlayFrameShape" frames="embedded" template="true"/>
+		<ShapeImage name="IconsTileFocusFrame"		url="IconsTileFocusFrameShape"/>
+		
+		<Image name="WindowMaximizeIcon" template="true">
+			<ShapeImage name="normal"	url="images/svgs/WindowMaximizeIcon.svg" template="true"/>
+			<ShapeImage name="normalOn"	url="images/svgs/WindowMaximizeOnIcon.svg" template="true"/>
+		</Image>
+		<ShapeImage name="WindowMinimizeIcon"		url="images/svgs/WindowMinimizeIcon.svg" template="true"/>
+		<ShapeImage name="WindowCloseIcon"		url="images/svgs/WindowCloseIcon.svg" template="true"/>
+		<ShapeImage name="MobileWindowCloseIcon"	url="images/svgs/MobileWindowCloseIcon.svg" template="true"/>
+
+		<ShapeImage name="WindowHeaderView"		url="WindowHeaderViewShape" frames="embedded"/>
+		
+		<ShapeImage name="MobileCheckBoxIcon"		url="images/svgs/MobileCheckBoxIcon.svg" template="true"/>
+		
+		<Image name="MobileMenuArrow" template="true">
+			<ShapeImage name="normal"	url="images/svgs/MobileMenuArrow.svg" template="true"/>
+			<ShapeImage name="normalOn"	url="images/svgs/MobileMenuBackArrow.svg" template="true"/>
+		</Image>
+			
+		<Image name="MobileSelectBoxButton">
+			<ShapeImage name="normal" 	url="images/svgs/MobileSelectBoxArrow.svg" template="true">
+				<ShapeColorMapping name="rgb(242,13,13)" color="@Main.MobileControlTextColor"/>
+			</ShapeImage>
+			<ShapeImage name="disabled" 	url="images/svgs/MobileSelectBoxArrow.svg" template="true">
+				<ShapeColorMapping name="rgb(242,13,13)" color="@Main.MobileControlDisabledColor"/>
+			</ShapeImage>
+		</Image>
+		<Image name="MobileComboBoxButton">
+			<ShapeImage name="normal" 	url="images/svgs/MobileComboBoxArrow.svg" template="true">
+				<ShapeColorMapping name="rgb(242,13,13)" color="@Main.LabelColor"/>
+				<ShapeColorMapping name="rgb(0,0,255)" color="@Main.LabelColor.Tertiary"/>
+			</ShapeImage>
+			<ShapeImage name="disabled" 	url="images/svgs/MobileComboBoxArrow.svg" template="true">
+				<ShapeColorMapping name="rgb(242,13,13)" color="@Main.MobileControlDisabledColor"/>
+				<ShapeColorMapping name="rgb(0,0,255)" color="@Main.MobileControlDisabledColor"/>
+			</ShapeImage>
+		</Image>
+		
+		<ShapeImage name="SearchBoxBack" url="SearchBoxBackShape"/>
+		
+<!--		<ShapeImage name="MobileBox" url="MobileBoxShape"/>-->
+		<ShapeImage name="MobileTextBox" url="MobileTextBoxShape"/>
+		<ShapeImage name="MobileControl" url="MobileControlShape" frames="embedded"/>
+		<ShapeImage name="MobileCheckBox" url="MobileCheckBoxShape" frames="embedded"/>
+		<ShapeImage name="MobileCheckSlider" url="MobileCheckSliderShape" frames="embedded"/>
+		<ShapeImage name="MobileSliderBackH" url="MobileSliderBackHShape" frames="embedded"/>
+		<ShapeImage name="MobileSliderBackV" url="MobileSliderBackVShape" frames="embedded"/>
+		<ShapeImage name="MobileRangeSliderInvertedBack" url="MobileRangeSliderInvertedBackShape" frames="embedded"/>
+		<ShapeImage name="MobileValueBarBack" url="MobileValueBarBackShape" frames="embedded"/>
+		<ShapeImage name="MobileSliderHandleH" url="MobileSliderHandleHShape"/>
+		<ShapeImage name="MobileSliderHandleV" url="MobileSliderHandleVShape"/>
+
+		<ShapeImage name="MobileSliderRoundHandleH" url="MobileSliderRoundHandleHShape" frames="embedded"/>
+		<ShapeImage name="MobileSliderRoundHandleV" url="MobileSliderRoundHandleVShape" frames="embedded"/>
+		<ShapeImage name="MobileButton" url="MobileButtonShape" frames="embedded"/>
+		<ShapeImage name="MobileButtonL" url="MobileButtonLShape" frames="embedded"/>
+		<ShapeImage name="MobileButtonR" url="MobileButtonRShape" frames="embedded"/>
+		<ShapeImage name="MobileButtonM" url="MobileButtonMShape" frames="embedded"/>
+
+		<ShapeImage name="MobileRadioButtonBackground"	url="MobileRadioButtonBackgroundShape" frames="embedded"/>
+		<ShapeImage name="MobileRadioButtonDotIcon"	url="MobileRadioButtonDotIconShape"/>
+
+		<ShapeImage name="MobileRadioTabControl"		url="MobileRadioTabControlShape" frames="embedded"/>
+		<ShapeImage name="MobileRadioTabControlLeft"	url="MobileRadioTabControlLeftShape" frames="embedded"/>
+		<ShapeImage name="MobileRadioTabControlRight"	url="MobileRadioTabControlRightShape" frames="embedded"/>
+		
+		<ShapeImage name="MobileSelectionBar"	url="MobileSelectionBarShape"/>
+		<ShapeImage name="DesktopSelectionBar"	url="DesktopSelectionBarShape"/>
+		<ShapeImage name="MobileCommandButton" 	url="MobileCommandButtonShape" frames="embedded"/>
+	
+		<ShapeImage name="ButtonSpecialBlue" url="ButtonSpecialBlueShape" frames="embedded"/>
+			
+		<ShapeImage name="PopupMenuDecor" url="PopupMenuDecorShape"/>
+	</Resources>
+
+	<Shapes>
+		<Shape name="WindowHeaderViewShape">
+			<Shape name="normal">
+				<Rectangle size="0,0,20,20" style="fill" Brush.color="@Main.WindowHeaderColor"/>
+			</Shape>
+			<Shape name="normalOn">
+				<Rectangle size="0,0,20,20" style="fill" Brush.color="@Main.WindowHeaderActiveColor"/>
+			</Shape>
+		</Shape>
+		
+		<Shape name="MobileSelectionBarShape" size="0,0,40,40" style="scale">
+			<Rectangle style="fill stroke tiled margin" size="3,3,34,34" Pen.color="@Main.MobileButtonBluePenColor" Brush.color="@Main.MobileButtonBlueColor" radius="3"/>
+		</Shape>
+		<Shape name="DesktopSelectionBarShape" size="0,0,40,40" style="scale">
+			<Rectangle style="fill stroke tiled" size="0,0,40,40" Pen.color="@Main.MobileButtonBluePenColor" Brush.color="@Main.MobileButtonBlueColor" radius="3"/>
+		</Shape>
+		
+		<Shape name="MobileRadioTabControlShape" size="0,0,40,40" style="scale">
+			<Shape name="normal" size="0,0,20,40" style="scale">
+				<Rectangle style="fill stroke tiled margin" size="-3,3,34,34" Pen.color="@Main.MobileButtonPenColor" Brush.color="@Main.MobileButtonColor" radius="3"/>
+				<Line start="0,8" end="0,32" Pen.color="@Main.MobileControlBorderColor"/>
+				<Line start="19,8" end="19,32" Pen.color="@Main.MobileControlBorderColor" scalealign="right"/>
+			</Shape>
+			<Shape name="pressed" size="0,0,20,40" style="scale">
+				<Rectangle style="fill stroke tiled margin" size="-3,3,34,34" Pen.color="@Main.MobileButtonBluePenColor" Brush.color="@Main.MobileButtonBlueColor" radius="3"/>
+				<Line start="0,3" end="0,37" Pen.color="@Main.MobileButtonBluePenColor"/>
+				<Line start="19,3" end="19,37" Pen.color="@Main.MobileButtonBluePenColor" scalealign="right"/>
+			</Shape>
+			<Shape name="normalOn" size="0,0,20,40" style="scale">
+				<Rectangle style="fill stroke tiled margin" size="-3,3,34,34" Pen.color="@Main.MobileButtonBluePenColor" Brush.color="@Main.MobileButtonBlueColor" radius="3"/>
+				<Line start="0,3" end="0,37" Pen.color="@Main.MobileButtonBluePenColor"/>
+				<Line start="19,3" end="19,37" Pen.color="@Main.MobileButtonBluePenColor" scalealign="right"/>
+			</Shape>
+		</Shape>
+		<Shape name="MobileRadioTabControlLeftShape" size="0,0,40,40" style="scale">
+			<Shape name="normal" size="0,0,30,40" style="scale">
+				<Rectangle style="fill stroke tiled margin" size="3,3,34,34" Pen.color="@Main.MobileButtonPenColor" Brush.color="@Main.MobileButtonColor" radius="3"/>
+				<Line start="29,8" end="29,32" Pen.color="@Main.MobileControlBorderColor" scalealign="right"/>
+			</Shape>
+			<Shape name="pressed" size="0,0,30,40" style="scale">
+				<Rectangle style="fill stroke tiled margin" size="3,3,34,34" Pen.color="@Main.MobileButtonBluePenColor" Brush.color="@Main.MobileButtonBlueColor" radius="3"/>
+				<Line start="29,3" end="29,37" Pen.color="@Main.MobileButtonBluePenColor" scalealign="right"/>
+			</Shape>
+			<Shape name="normalOn" size="0,0,30,40" style="scale">
+				<Rectangle style="fill stroke tiled margin" size="3,3,34,34" Pen.color="@Main.MobileButtonBluePenColor" Brush.color="@Main.MobileButtonBlueColor" radius="3"/>
+				<Line start="29,3" end="29,37" Pen.color="@Main.MobileButtonBluePenColor" scalealign="right"/>
+			</Shape>
+		</Shape>
+		<Shape name="MobileRadioTabControlRightShape" size="0,0,40,40" style="scale">
+			<Shape name="normal" size="0,0,30,40" style="scale">
+				<Rectangle style="fill stroke tiled margin" size="-3,3,30,34" Pen.color="@Main.MobileButtonPenColor" Brush.color="@Main.MobileButtonColor" radius="3"/>
+				<Line start="0,8" end="0,32" Pen.color="@Main.MobileControlBorderColor"/>
+			</Shape>
+			<Shape name="pressed" size="0,0,30,40" style="scale">
+				<Rectangle style="fill stroke tiled margin" size="-3,3,30,34" Pen.color="@Main.MobileButtonBluePenColor" Brush.color="@Main.MobileButtonBlueColor" radius="3"/>
+				<Line start="0,3" end="0,37" Pen.color="@Main.MobileButtonBluePenColor"/>
+			</Shape>
+			<Shape name="normalOn" size="0,0,30,40" style="scale">
+				<Rectangle style="fill stroke tiled margin" size="-3,3,30,34" Pen.color="@Main.MobileButtonBluePenColor" Brush.color="@Main.MobileButtonBlueColor" radius="3"/>
+				<Line start="0,3" end="0,37" Pen.color="@Main.MobileButtonBluePenColor"/>
+			</Shape>
+		</Shape>
+		
+		<Shape name="HeaderBackgroundShape">
+			<Rectangle size="0,0,100,24" style="fill" Brush.color="@Main.HeaderViewColor"/>
+		</Shape>
+		<Shape name="TextBoxBackgroundShape" style="scale">
+			<Rectangle size="0,0,100,24" style="fill tiled" Brush.color="@Main.TextBoxBackColor" radius="3"/>
+		</Shape>
+
+		<Shape name="EditFocusBoxBackgroundShape" style="scale">
+			<Shape name="normal" style="scale">
+				<Rectangle size="0,0,100,24" style="fill stroke tiled" Brush.color="@Main.EditBoxBackgroundColor" Pen.color="@Main.EditBoxOutlineColor" radius="3"/>
+			</Shape>
+			<Shape name="focus" style="scale">
+				<Rectangle size="0,0,24,24" style="fill stroke tiled" Brush.color="@Main.EditBoxBackgroundColor" Pen.color="@Main.HighlightColor" radius="3"/>
+			</Shape>
+		</Shape>
+		<Shape name="CheckBoxBackgroundShape">
+			<Shape name="normal" size="0,0,20,20">
+				<Rectangle size="1,2,16,16" style="fill stroke tiled" Brush.color="@Main.EditBoxBackgroundColor" Pen.color="@Main.EditBoxOutlineColor" radius="2"/>
+			</Shape>
+			<Shape name="disabled" size="0,0,20,20">
+				<Rectangle size="1,2,16,16" style="fill" Brush.color="@Main.MobileControlDisabledColor" radius="2"/>
+			</Shape>
+			<Shape name="focus" size="0,0,20,20">
+				<Rectangle size="1,2,16,16" style="fill stroke tiled" Brush.color="@Main.EditBoxBackgroundColor" Pen.color="@Main.HighlightColor" radius="2"/>
+			</Shape>
+		</Shape>
+
+		<Shape name="RadioButtonBackgroundShape">
+			<Shape name="normal" size="0,0,20,20">
+				<Ellipse size="2,2,16,16" style="fill stroke tiled" Brush.color="@Main.EditBoxBackgroundColor" Pen.color="@Main.RadioButtonOutlineColor"/>
+			</Shape>
+			<Shape name="disabled" size="0,0,20,20">
+				<Ellipse size="2,2,16,16" style="fill" Brush.color="@Main.MobileControlDisabledColor"/>
+			</Shape>
+			<Shape name="focus" size="0,0,20,20">
+				<Ellipse size="2,2,16,16" style="fill stroke tiled" Brush.color="@Main.EditBoxBackgroundColor" Pen.color="@Main.HighlightColor"/>
+			</Shape>
+		</Shape>
+		
+		<Shape name="EditBoxBackgroundShape" style="scale">
+			<Rectangle size="0,0,100,24" style="fill stroke tiled" Brush.color="@Main.EditBoxBackgroundColor" Pen.color="@Main.EditBoxOutlineColor" radius="3"/>
+		</Shape>
+
+		<Shape name="ButtonShape" style="scale">
+			<Shape name="normal" size="0,0,40,40" style="scale">
+				<Rectangle style="fill stroke tiled" size="0,0,40,40" Pen.color="@Main.ButtonPenColor" Brush.color="@Main.MobileButtonColor" radius="3"/>
+			</Shape>
+			<Shape name="mouseover" size="0,0,40,40" style="scale">
+				<Rectangle style="fill stroke tiled" size="0,0,40,40" Pen.color="@Main.MobileButtonMOOutlineColor" Brush.color="@Main.MobileButtonMOColor" radius="3"/>
+			</Shape>
+			<Shape name="pressed" size="0,0,40,40" style="scale">
+				<Rectangle style="fill stroke tiled" size="0,0,40,40" Pen.color="@Main.MobileButtonBluePenColor" Brush.color="@Main.MobileButtonBlueColor" radius="3"/>
+			</Shape>
+			<Shape name="disabled" size="0,0,40,40" style="scale">
+				<Rectangle style="fill tiled" size="0,0,40,40" Brush.color="@Main.MobileControlDisabledColor" radius="3"/>
+			</Shape>
+			<Shape name="normalOn" size="0,0,40,40" style="scale">
+				<Rectangle style="fill stroke tiled" size="0,0,40,40" Pen.color="@Main.MobileButtonBluePenColor" Brush.color="@Main.MobileButtonBlueColor" radius="3"/>
+			</Shape>
+			<Shape name="pressedOn" size="0,0,40,40" style="scale">
+				<Rectangle style="fill stroke tiled" size="0,0,40,40" Pen.color="@Main.MobileButtonBluePenColor" Brush.color="@Main.MobileButtonBluePressedColor" radius="3"/>
+			</Shape>
+			<Shape name="disabledOn" size="0,0,40,40" style="scale">
+				<Rectangle style="fill tiled" size="0,0,40,40" Brush.color="@Main.MobileButtonBlueDisabledOnColor" radius="3"/>
+			</Shape>
+			<Shape name="focus" size="0,0,40,40" style="scale">
+				<Rectangle style="stroke tiled" size="0,0,40,40" Pen.color="@Main.HighlightColor" radius="3"/>
+			</Shape>
+		</Shape>
+		
+		<Shape name="ButtonLShape" style="scale">
+			<Shape name="normal" size="0,0,32,40" style="scale">
+				<Rectangle style="fill stroke tiled" size="0,0,36,40" Pen.color="@Main.ButtonPenColor" Brush.color="@Main.MobileButtonColor" radius="3"/>
+				<Line start="31,0" end="31,40" scalealign="right" Pen.color="@Main.ButtonPenColor"/>
+			</Shape>
+			<Shape name="mouseover" size="0,0,32,40" style="scale">
+				<Rectangle style="fill stroke tiled" size="0,0,36,40" Pen.color="@Main.MobileButtonMOOutlineColor" Brush.color="@Main.MobileButtonMOColor" radius="3"/>
+				<Line start="31,0" end="31,40" scalealign="right" Pen.color="@Main.MobileButtonMOOutlineColor"/>
+			</Shape>
+			<Shape name="pressed" size="0,0,32,40" style="scale">
+				<Rectangle style="fill stroke tiled" size="0,0,36,40" Pen.color="@Main.MobileButtonBluePenColor" Brush.color="@Main.MobileButtonBlueColor" radius="3"/>
+				<Line start="31,0" end="31,40" scalealign="right" Pen.color="@Main.MobileButtonBluePenColor"/>
+			</Shape>
+			<Shape name="disabled" size="0,0,32,40" style="scale">
+				<Rectangle style="fill tiled" size="0,0,36,40" Brush.color="@Main.MobileControlDisabledColor" radius="3"/>
+			</Shape>
+			<Shape name="normalOn" size="0,0,32,40" style="scale">
+				<Rectangle style="fill stroke tiled" size="0,0,36,40" Pen.color="@Main.MobileButtonBluePenColor" Brush.color="@Main.MobileButtonBlueColor" radius="3"/>
+				<Line start="31,0" end="31,40" scalealign="right" Pen.color="@Main.MobileButtonBluePenColor"/>
+			</Shape>
+			<Shape name="pressedOn" size="0,0,32,40" style="scale">
+				<Rectangle style="fill stroke tiled" size="0,0,36,40" Pen.color="@Main.MobileButtonBluePenColor" Brush.color="@Main.MobileButtonBluePressedColor" radius="3"/>
+				<Line start="31,0" end="31,40" scalealign="right" Pen.color="@Main.MobileButtonBluePenColor"/>
+			</Shape>
+			<Shape name="disabledOn" size="0,0,32,40" style="scale">
+				<Rectangle style="fill tiled" size="0,0,36,40" Brush.color="@Main.MobileButtonBlueDisabledOnColor" radius="3"/>
+			</Shape>
+		</Shape>
+		
+		<Shape name="ButtonRShape" style="scale">
+			<Shape name="normal" size="0,0,32,40" style="scale">
+				<Rectangle style="fill stroke tiled" size="-4,0,36,40" Pen.color="@Main.ButtonPenColor" Brush.color="@Main.MobileButtonColor" radius="3"/>
+				<Line start="0,0" end="0,40" Pen.color="@Main.ButtonPenColor"/>
+			</Shape>
+			<Shape name="mouseover" size="0,0,32,40" style="scale">
+				<Rectangle style="fill stroke tiled" size="-4,0,36,40" Pen.color="@Main.MobileButtonMOOutlineColor" Brush.color="@Main.MobileButtonMOColor" radius="3"/>
+				<Line start="0,0" end="0,40" Pen.color="@Main.MobileButtonMOOutlineColor"/>
+			</Shape>
+			<Shape name="pressed" size="0,0,32,40" style="scale">
+				<Rectangle style="fill stroke tiled" size="-4,0,36,40" Pen.color="@Main.MobileButtonBluePenColor" Brush.color="@Main.MobileButtonBlueColor" radius="3"/>
+				<Line start="0,0" end="0,40" Pen.color="@Main.MobileButtonBluePenColor"/>
+			</Shape>
+			<Shape name="disabled" size="0,0,32,40" style="scale">
+				<Rectangle style="fill tiled" size="-4,0,36,40" Brush.color="@Main.MobileControlDisabledColor" radius="3"/>
+			</Shape>
+			<Shape name="normalOn" size="0,0,32,40" style="scale">
+				<Rectangle style="fill stroke tiled" size="-4,0,36,40" Pen.color="@Main.MobileButtonBluePenColor" Brush.color="@Main.MobileButtonBlueColor" radius="3"/>
+				<Line start="0,0" end="0,40" Pen.color="@Main.MobileButtonBluePenColor"/>
+			</Shape>
+			<Shape name="pressedOn" size="0,0,32,40" style="scale">
+				<Rectangle style="fill stroke tiled" size="-4,0,36,40" Pen.color="@Main.MobileButtonBluePenColor" Brush.color="@Main.MobileButtonBluePressedColor" radius="3"/>
+				<Line start="0,0" end="0,40" Pen.color="@Main.MobileButtonBluePenColor"/>
+			</Shape>
+			<Shape name="disabledOn" size="0,0,32,40" style="scale">
+				<Rectangle style="fill tiled" size="-4,0,36,40" Brush.color="@Main.MobileButtonBlueDisabledOnColor" radius="3"/>
+			</Shape>
+		</Shape>
+		
+		<Shape name="ButtonMShape" style="scale">
+			<Shape name="normal" size="0,0,40,40" style="scale">
+				<Rectangle style="fill stroke tiled" size="0,0,40,40" Pen.color="@Main.ButtonPenColor" Brush.color="@Main.MobileButtonColor"/>
+<!--				<Line start="39,0" end="39,40" scalealign="right" Pen.color="hsl(0,0,0,20)"/>-->
+			</Shape>
+			<Shape name="mouseover" size="0,0,40,40" style="scale">
+				<Rectangle style="fill stroke tiled" size="0,0,40,40" Pen.color="@Main.MobileButtonMOOutlineColor" Brush.color="@Main.MobileButtonMOColor"/>
+<!--				<Line start="39,0" end="39,40" scalealign="right" Pen.color="hsl(0,0,0,20)"/>-->
+			</Shape>
+			<Shape name="pressed" size="0,0,40,40" style="scale">
+				<Rectangle style="fill stroke tiled" size="0,0,40,40" Pen.color="@Main.MobileButtonBluePenColor" Brush.color="@Main.MobileButtonBlueColor"/>
+<!--				<Line start="39,0" end="39,40" scalealign="right" Pen.color="hsl(0,0,0,20)"/>-->
+			</Shape>
+			<Shape name="disabled" size="0,0,40,40" style="scale">
+				<Rectangle style="fill tiled" size="0,0,40,40" Brush.color="@Main.MobileControlDisabledColor"/>
+<!--				<Line start="39,0" end="39,40" scalealign="right" Pen.color="hsl(0,0,0,20)"/>-->
+			</Shape>
+			<Shape name="normalOn" size="0,0,40,40" style="scale">
+				<Rectangle style="fill stroke tiled" size="0,0,40,40" Pen.color="@Main.MobileButtonBluePenColor" Brush.color="@Main.MobileButtonBlueColor"/>
+<!--				<Line start="39,0" end="39,40" scalealign="right" Pen.color="hsl(0,0,0,20)"/>-->
+			</Shape>
+			<Shape name="pressedOn" size="0,0,40,40" style="scale">
+				<Rectangle style="fill stroke tiled" size="0,0,40,40" Pen.color="@Main.MobileButtonBluePenColor" Brush.color="@Main.MobileButtonBluePressedColor"/>
+<!--				<Line start="39,0" end="39,40" scalealign="right" Pen.color="hsl(0,0,0,20)"/>-->
+			</Shape>
+			<Shape name="disabledOn" size="0,0,40,40" style="scale">
+				<Rectangle style="fill tiled" size="0,0,40,40" Brush.color="@Main.MobileButtonBlueDisabledOnColor"/>
+<!--				<Line start="39,0" end="39,40" scalealign="right" Pen.color="hsl(0,0,0,20)"/>-->
+			</Shape>
+		</Shape>	
+		
+		
+		<Shape name="DividerBackgroundVShape" style="scale">
+			<Rectangle style="fill" Brush.color="@Main.StandardDividerVColor" size="0,0,10,10"/>
+			<Line start="0,0"  end="0,10" Pen.color="@Main.StandardDividerFrameColor"/>
+			<Line start="9,0"  end="9,10" scalealign="right" Pen.color="@Main.StandardDividerFrameColor"/>
+		</Shape>
+		<Shape name="DividerBackgroundHShape" style="scale">
+			<Rectangle style="fill" Brush.color="@Main.StandardDividerHColor" size="0,0,10,10"/>
+			<Line start="0,0"  end="10,0" Pen.color="@Main.StandardDividerFrameColor"/>
+			<Line start="0,9"  end="10,9" scalealign="bottom" Pen.color="@Main.StandardDividerFrameColor"/>
+		</Shape>
+
+		<Shape name="TreeViewExpandButtonShape">
+			<Shape name="normal" size="0,0,9,9">
+				<Triangle point1="4,0" point2="4,8" point3="8,4" style="fill" Brush.color="@Main.IconColor"/>
+			</Shape>
+			<Shape name="pressed" size="0,0,9,9">
+				<Triangle point1="2,6" point2="8,0" point3="8,6" style="fill" Brush.color="@Main.IconColor"/>
+			</Shape>
+			<Shape name="normalOn" size="0,0,9,9">
+				<Triangle point1="4,0" point2="4,8" point3="8,4" style="fill" Brush.color="@Main.LabelColor.NoInvert"/>
+			</Shape>
+			<Shape name="pressedOn" size="0,0,9,9">
+				<Triangle point1="2,6" point2="8,0" point3="8,6" style="fill" Brush.color="@Main.LabelColor.NoInvert"/>
+			</Shape>
+		</Shape>
+		<Shape name="ProgressBarBackgroundShape">
+			<Rectangle size="0,0,10,10" style="fill" Brush.color="@Main.WindowBackgroundColor"/>
+		</Shape>
+		<Shape name="ProgressBarIndicatorShape">
+			<Rectangle size="0,0,2,18" style="fill" Brush.color="@Main.StdButtonOnColor"/>
+		</Shape>
+
+		<Shape name="ScrollBackSmallShape" size="0,0,8,8"/>
+		<Shape name="ScrollBackShape" size="0,0,8,8"/>
+
+		<Shape name="VSmallListScrollThumbShape" size="0,0,8,8" style="scale">
+			<Shape name="normal" size="0,0,8,8">
+				<Rectangle size="1,0,4,8" style="fill stroke tiled" Brush.color="@Main.ScrollBarOpaqueColor" Pen.color="@Main.ScrollBarOpaqueColor" radius="1"/>
+			</Shape>
+			<Shape name="mouseover" size="0,0,8,8">
+				<Rectangle size="1,0,4,8" style="fill stroke tiled" Brush.color="@Main.LabelColor.Secondary" Pen.color="@Main.LabelColor.Secondary" radius="1"/>
+			</Shape>
+			<Shape name="pressed" size="0,0,8,8">
+				<Rectangle size="1,0,4,8" style="fill stroke tiled" Brush.color="@Main.LabelColor" Pen.color="@Main.LabelColor" radius="1"/>
+			</Shape>
+		</Shape>		
+		<Shape name="HSmallListScrollThumbShape" size="0,0,8,8" style="scale">
+			<Shape name="normal" size="0,0,8,8">
+				<Rectangle size="0,2,8,4" style="fill stroke tiled" Brush.color="@Main.ScrollBarOpaqueColor" Pen.color="@Main.ScrollBarOpaqueColor" radius="1"/>
+			</Shape>
+			<Shape name="mouseover" size="0,0,8,8">
+				<Rectangle size="0,2,8,4" style="fill stroke tiled" Brush.color="@Main.LabelColor.Secondary" Pen.color="@Main.LabelColor.Secondary" radius="1"/>
+			</Shape>
+			<Shape name="pressed" size="0,0,8,8">
+				<Rectangle size="0,2,8,4" style="fill stroke tiled" Brush.color="@Main.LabelColor" Pen.color="@Main.LabelColor" radius="1"/>
+			</Shape>
+		</Shape>
+		<Shape name="VDividerThumbShape" size="0,0,8,40" style="scale">
+			<Shape name="normal" size="0,0,8,40" style="scale">
+				<Rectangle size="2,0,4,40" style="fill stroke tiled" Brush.color="@Main.DividerThumbColor" Pen.color="@Main.DividerThumbColor" radius="1"/>
+			</Shape>
+			<Shape name="pressed" size="0,0,8,40" style="scale">
+				<Rectangle size="2,0,4,40" style="fill stroke tiled" Brush.color="@Main.DividerThumbOnColor" Pen.color="@Main.DividerThumbOnColor" radius="1"/>
+			</Shape>
+		</Shape>
+		<Shape name="HDividerThumbShape" size="0,0,40,8" style="scale">
+			<Shape name="normal" size="0,0,40,8" style="scale">
+				<Rectangle size="0,2,40,4" style="fill stroke tiled" Brush.color="@Main.DividerThumbColor" Pen.color="@Main.DividerThumbColor" radius="1"/>
+			</Shape>
+			<Shape name="pressed" size="0,0,40,8" style="scale">
+				<Rectangle size="0,2,40,4" style="fill stroke tiled" Brush.color="@Main.DividerThumbOnColor" Pen.color="@Main.DividerThumbOnColor" radius="1"/>
+			</Shape>
+		</Shape>
+		
+		<Shape name="DialogGroupShape" style="scale">
+			<Rectangle size="0,0,100,100" style="fill stroke tiled" Brush.color="@Main.DialogGroupColor" Pen.color="@Main.DialogGroupOutlineColor" radius="3"/>
+		</Shape>
+		<Shape name="SecondaryDialogGroupShape" style="scale">
+			<Rectangle size="0,0,100,100" style="fill stroke tiled" Brush.color="@Main.DialogGroupColor" Pen.color="@Main.DialogGroupOutlineColor" radius="3"/>
+		</Shape>
+		<Shape name="MobileDialogGroupShape" style="scale">
+			<Rectangle size="0,0,100,100" style="fill stroke tiled" Brush.color="@Main.DialogGroupColor" Pen.color="@Main.DialogGroupOutlineColor" Pen.width="2" radius="6"/>
+		</Shape>
+		<Shape name="WindowBackgroundShape">
+			<Rectangle size="0,0,100,100" style="fill" Brush.color="@Main.WindowBackgroundColor"/>
+		</Shape>
+		<Shape name="DialogBackgroundShape" style="scale">
+			<Rectangle size="0,0,100,100" style="fill" Brush.color="@Main.DialogBackgroundColor"/>
+		</Shape>
+		<Shape name="ListBackgroundShape">
+			<Rectangle size="0,0,100,100" style="fill" Brush.color="@Main.ListBackgroundColor"/>
+		</Shape>
+		<Shape name="DialogListBackgroundShape" style="scale">
+			<Rectangle size="0,0,100,100" style="fill stroke tiled margin" Brush.color="@Main.ListBackgroundColor" Pen.color="@Main.ListBackgroundColor" radius="3"/>
+		</Shape>
+		<Shape name="TabBackgroundShape" size="0,0,100,100" style="scale">
+			<Rectangle size="0,-10,100,110" style="fill stroke tiled" Brush.color="@Main.TabBackgroundColor" Pen.color="@Main.TabOutlineColor" radius="3"/>
+		</Shape>
+        <Shape name="MenuBackgroundShape" style="scale">
+			<Rectangle size="0,0,100,100" style="fill" Brush.color="@Main.MenuBarControlBackColor"/>
+		</Shape>
+		<Shape name="PopupMenuBackgroundShape" style="scale">
+			<Rectangle style="fill" size="0,0,40,40" Brush.color="@Main.MenuControlBackColor"/>
+		</Shape>
+		<Shape name="MenuControlBackgroundShape" style="scale">
+			<Rectangle size="0,0,100,100" style="fill" Brush.color="@Main.MenuControlBackColor"/>
+		</Shape>
+		
+		
+		<Shape name="SelectBoxButtonShape">
+			<Shape name="normal" size="0,0,13,6">
+				<Triangle style="fill" point1="0,1" point2="8,1" point3="4,6" Brush.color="@Main.SelectBoxButtonColor"/>
+			</Shape>
+			<Shape name="disabled" size="0,0,13,6"/>
+		</Shape>
+		
+		
+		<Shape name="SliderBackShape" style="scale">
+			<Shape name="normal">
+				<Rectangle style="fill stroke tiled" size="0,0,10,10" Brush.color="@Main.StandardSliderColor" Pen.color="@Main.StandardSliderBorderColor"/>
+			</Shape>
+			<Shape name="pressed">
+				<Rectangle style="fill stroke tiled" size="0,0,10,10" Brush.color="@Main.StandardSliderOnColor" Pen.color="@Main.StandardSliderBorderColor"/>
+			</Shape>
+		</Shape>
+		<Shape name="SliderBackVMk2Shape" size="0,0,20,20" style="scale">
+			<Shape name="normal" size="0,0,20,20">
+				<Rectangle style="fill stroke tiled margin" size="3,0,14,20" Brush.color="@Main.StandardSliderColor" Pen.color="@Main.StandardSliderBorderColor" radius="7"/>
+			</Shape>
+			<Shape name="pressed" size="0,0,20,20">
+				<Rectangle style="fill stroke tiled margin" size="3,0,14,20" Brush.color="@Main.StandardSliderOnColor" Pen.color="@Main.StandardSliderBorderColor" radius="7"/>
+			</Shape>
+		</Shape>
+		<Shape name="SliderBackHMk2Shape" size="0,0,20,20" style="scale">
+			<Shape name="normal" size="0,0,20,20">
+				<Rectangle style="fill stroke tiled margin" size="0,3,20,14" Brush.color="@Main.StandardSliderColor" Pen.color="@Main.StandardSliderBorderColor" radius="7"/>
+			</Shape>
+			<Shape name="pressed" size="0,0,20,20">
+				<Rectangle style="fill stroke tiled margin" size="0,3,20,14" Brush.color="@Main.StandardSliderOnColor" Pen.color="@Main.StandardSliderBorderColor" radius="7"/>
+			</Shape>
+		</Shape>
+		<Shape name="SliderBackSmallVMk2Shape" size="0,0,10,10" style="scale">
+			<Shape name="normal" size="0,0,10,10">
+				<Rectangle style="fill stroke tiled margin" size="1,0,8,10" Brush.color="@Main.StandardSliderColor" Pen.color="@Main.StandardSliderBorderColor" radius="4"/>
+			</Shape>
+			<Shape name="pressed" size="0,0,10,10">
+				<Rectangle style="fill stroke tiled margin" size="1,0,8,10" Brush.color="@Main.StandardSliderOnColor" Pen.color="@Main.StandardSliderBorderColor" radius="4"/>
+			</Shape>
+		</Shape>
+		<Shape name="SliderBackSmallHMk2Shape" size="0,0,10,10" style="scale">
+			<Shape name="normal" size="0,0,10,10">
+				<Rectangle style="fill stroke tiled margin" size="0,1,10,8" Brush.color="@Main.StandardSliderColor" Pen.color="@Main.StandardSliderBorderColor" radius="4"/>
+			</Shape>
+			<Shape name="pressed" size="0,0,10,10">
+				<Rectangle style="fill stroke tiled margin" size="0,1,10,8" Brush.color="@Main.StandardSliderOnColor" Pen.color="@Main.StandardSliderBorderColor" radius="4"/>
+			</Shape>
+		</Shape>
+
+		<Shape name="RangeSliderInvertedBackVMk2Shape" size="0,0,20,20" style="scale">
+			<Shape name="normal" size="0,0,20,20">
+				<Rectangle style="fill stroke tiled margin" size="3,0,14,20" Brush.color="@Main.StandardSliderColor" Pen.color="@Main.StandardSliderBorderColor" radius="7"/>
+			</Shape>
+			<Shape name="pressed" size="0,0,20,20">
+				<Rectangle style="fill stroke tiled margin" size="3,0,14,20" Brush.color="@Main.RangeSliderRedColor" Pen.color="@Main.StandardSliderBorderColor" radius="7"/>
+			</Shape>
+		</Shape>
+		<Shape name="RangeSliderInvertedBackHMk2Shape" size="0,0,20,20" style="scale">
+			<Shape name="normal" size="0,0,20,20">
+				<Rectangle style="fill stroke tiled margin" size="0,3,20,14" Brush.color="@Main.StandardSliderColor" Pen.color="@Main.StandardSliderBorderColor" radius="7"/>
+			</Shape>
+			<Shape name="pressed" size="0,0,20,20">
+				<Rectangle style="fill stroke tiled margin" size="0,3,20,14" Brush.color="@Main.RangeSliderRedColor" Pen.color="@Main.StandardSliderBorderColor" radius="7"/>
+			</Shape>
+		</Shape>
+		<Shape name="RangeSliderInvertedBackSmallVMk2Shape" size="0,0,10,10" style="scale">
+			<Shape name="normal" size="0,0,10,10">
+				<Rectangle style="fill stroke tiled margin" size="1,0,8,10" Brush.color="@Main.StandardSliderColor" Pen.color="@Main.StandardSliderBorderColor" radius="4"/>
+			</Shape>
+			<Shape name="pressed" size="0,0,10,10">
+				<Rectangle style="fill stroke tiled margin" size="1,0,8,10" Brush.color="@Main.RangeSliderRedColor" Pen.color="@Main.StandardSliderBorderColor" radius="4"/>
+			</Shape>
+		</Shape>
+		<Shape name="RangeSliderInvertedBackSmallHMk2Shape" size="0,0,10,10" style="scale">
+			<Shape name="normal" size="0,0,10,10">
+				<Rectangle style="fill stroke tiled margin" size="0,1,10,8" Brush.color="@Main.StandardSliderColor" Pen.color="@Main.StandardSliderBorderColor" radius="4"/>
+			</Shape>
+			<Shape name="pressed" size="0,0,10,10">
+				<Rectangle style="fill stroke tiled margin" size="0,1,10,8" Brush.color="@Main.RangeSliderRedColor" Pen.color="@Main.StandardSliderBorderColor" radius="4"/>
+			</Shape>
+		</Shape>
+
+		<Shape name="SliderHandleHShape" size="0,0,6,16">
+			<Rectangle style="fill" size="1,0,4,16" Brush.color="@Main.StandardSliderHandleColor"/>
+		</Shape>
+		<Shape name="SliderHandleVShape" size="0,0,16,6">
+			<Rectangle style="fill" size="0,1,16,4" Brush.color="@Main.StandardSliderHandleColor"/>
+		</Shape>
+		<Shape name="SliderHandleHMk2Shape" size="0,0,6,20">
+			<Rectangle style="fill" size="1,1,4,18" Brush.color="@Main.StandardSliderHandleColor" radius="2"/>
+		</Shape>
+		<Shape name="SliderHandleVMk2Shape" size="0,0,20,6">
+			<Rectangle style="fill" size="1,1,18,4" Brush.color="@Main.StandardSliderHandleColor" radius="2"/>
+		</Shape>
+		<Shape name="SliderHandleSmallHMk2Shape" size="0,0,6,10">
+			<Rectangle style="fill" size="1,0,4,10" Brush.color="@Main.StandardSliderHandleColor" radius="2"/>
+		</Shape>
+		<Shape name="SliderHandleSmallVMk2Shape" size="0,0,10,6">
+			<Rectangle style="fill" size="0,1,10,4" Brush.color="@Main.StandardSliderHandleColor" radius="2"/>
+		</Shape>
+
+<!--		<Shape name="TabButtonShape" style="scale">-->
+<!--			<Shape name="normal">-->
+<!--				<Rectangle style="fill" size="0,0,10,24" Brush.color="@Main.TabButtonColor"/>-->
+<!--			</Shape>-->
+<!--			<Shape name="mouseover" style="scale">-->
+<!--				<Rectangle style="fill stroke tiled" size="0,0,10,24" Brush.color="@Main.TabButtonMouseoverColor" Pen.color="@Main.TabButtonColor"/>-->
+<!--			</Shape>-->
+<!--			<Shape name="normalOn" style="scale">-->
+<!--				<Rectangle size="0,0,10,24" style="fill stroke tiled" Brush.color="@Main.StdButtonOnColor" Pen.color="@Main.StdButtonOnColor"/>-->
+<!--				<Rectangle size="0,22,10,2" style="fill tiled" Brush.color="@Main.StdButtonOnColor"/>-->
+<!--			</Shape>-->
+<!--			<Shape name="disabled"	size="0,0,10,24"/>-->
+<!--		</Shape>-->
+		
+		<Shape name="TabButtonShape" style="scale">
+			<Shape name="normal" size="0,0,40,30" style="scale">
+				<Rectangle style="fill stroke tiled" size="0,0,40,40" Pen.color="@Main.TabOutlineColor" Brush.color="@Main.TabButtonColor" radius="3"/>
+				<Line start="0,29" end="39,29" scalealign="bottom" Pen.color="hsl(0,0,0,20)"/>
+			</Shape>
+			<Shape name="mouseover" size="0,0,40,30" style="scale">
+				<Rectangle style="fill stroke tiled" size="0,0,40,40" Pen.color="@Main.TabButtonMouseoverColor" Brush.color="@Main.TabButtonMouseoverColor" radius="3"/>
+				<Line start="0,29" end="39,29" scalealign="bottom" Pen.color="hsl(0,0,0,20)"/>
+			</Shape>
+			<Shape name="pressed" size="0,0,40,30" style="scale">
+				<Rectangle style="fill stroke tiled" size="0,0,40,30" Pen.color="@Main.MobileButtonBluePenColor" Brush.color="@Main.MobileButtonBlueColor" radius="3"/>
+				<Line start="0,29" end="39,29" scalealign="bottom" Pen.color="hsl(0,0,0,20)"/>
+			</Shape>
+			<Shape name="disabled" size="0,0,40,30" style="scale">
+				<Rectangle style="fill tiled" size="0,0,40,40" Brush.color="@Main.MobileControlDisabledColor" radius="3"/>
+				<Line start="0,29" end="39,29" scalealign="bottom" Pen.color="hsl(0,0,0,20)"/>
+			</Shape>
+			<Shape name="normalOn" size="0,0,40,30" style="scale">
+				<Rectangle style="fill stroke tiled" size="0,0,40,40" Pen.color="@Main.MobileButtonBluePenColor" Brush.color="@Main.MobileButtonBlueColor" radius="3"/>
+				<Line start="0,29" end="39,29" scalealign="bottom" Pen.color="hsl(0,0,0,20)"/>
+			</Shape>
+			<Shape name="pressedOn" size="0,0,40,30" style="scale">
+				<Rectangle style="fill stroke tiled" size="0,0,40,40" Pen.color="@Main.MobileButtonBluePenColor" Brush.color="@Main.MobileButtonBluePressedColor" radius="3"/>
+				<Line start="0,29" end="39,29" scalealign="bottom" Pen.color="hsl(0,0,0,20)"/>
+			</Shape>
+			<Shape name="disabledOn" size="0,0,40,30" style="scale">
+				<Rectangle style="fill tiled" size="0,0,40,40" Brush.color="@Main.MobileButtonBlueDisabledOnColor" radius="3"/>
+				<Line start="0,29" end="39,29" scalealign="bottom" Pen.color="hsl(0,0,0,20)"/>
+			</Shape>
+		</Shape>
+		
+		<Shape name="TabButtonLShape" style="scale">
+			<Shape name="normal" size="0,0,32,30" style="scale">
+				<Rectangle style="fill stroke tiled" size="0,0,36,40" Pen.color="@Main.TabOutlineColor" Brush.color="@Main.TabButtonColor" radius="3"/>
+<!--				<Line start="31,0" end="31,40" scalealign="right" Pen.color="hsl(0,0,10,20)"/>-->
+				<Line start="0,29" end="39,29" scalealign="bottom" Pen.color="hsl(0,0,0,20)"/>
+			</Shape>
+			<Shape name="mouseover" size="0,0,32,30" style="scale">
+				<Rectangle style="fill stroke tiled" size="0,0,36,40" Pen.color="@Main.TabButtonMouseoverColor" Brush.color="@Main.TabButtonMouseoverColor" radius="3"/>
+<!--				<Line start="31,0" end="31,40" scalealign="right" Pen.color="hsl(0,0,0,20)"/>-->
+				<Line start="0,29" end="39,29" scalealign="bottom" Pen.color="hsl(0,0,0,20)"/>
+			</Shape>
+			<Shape name="pressed" size="0,0,32,30" style="scale">
+				<Rectangle style="fill stroke tiled" size="0,0,36,40" Pen.color="@Main.MobileButtonBluePenColor" Brush.color="@Main.MobileButtonBlueColor" radius="3"/>
+<!--				<Line start="31,0" end="31,40" scalealign="right" Pen.color="hsl(0,0,0,20)"/>-->
+				<Line start="0,29" end="39,29" scalealign="bottom" Pen.color="hsl(0,0,0,20)"/>
+			</Shape>
+			<Shape name="disabled" size="0,0,32,30" style="scale">
+				<Rectangle style="fill tiled" size="0,0,36,40" Brush.color="@Main.MobileControlDisabledColor" radius="3"/>
+<!--				<Line start="31,0" end="31,40" scalealign="right" Pen.color="hsl(0,0,0,20)"/>-->
+				<Line start="0,29" end="39,29" scalealign="bottom" Pen.color="hsl(0,0,0,20)"/>
+			</Shape>
+			<Shape name="normalOn" size="0,0,32,30" style="scale">
+				<Rectangle style="fill stroke tiled" size="0,0,36,40" Pen.color="@Main.MobileButtonBluePenColor" Brush.color="@Main.MobileButtonBlueColor" radius="3"/>
+<!--				<Line start="31,0" end="31,40" scalealign="right" Pen.color="hsl(0,0,0,20)"/>-->
+				<Line start="0,29" end="39,29" scalealign="bottom" Pen.color="hsl(0,0,0,20)"/>
+			</Shape>
+			<Shape name="pressedOn" size="0,0,32,30" style="scale">
+				<Rectangle style="fill stroke tiled" size="0,0,36,40" Pen.color="@Main.MobileButtonBluePenColor" Brush.color="@Main.MobileButtonBluePressedColor" radius="3"/>
+<!--				<Line start="31,0" end="31,40" scalealign="right" Pen.color="hsl(0,0,0,20)"/>-->
+				<Line start="0,29" end="39,29" scalealign="bottom" Pen.color="hsl(0,0,0,20)"/>
+			</Shape>
+			<Shape name="disabledOn" size="0,0,32,30" style="scale">
+				<Rectangle style="fill tiled" size="0,0,36,40" Brush.color="@Main.MobileButtonBlueDisabledOnColor" radius="3"/>
+<!--				<Line start="31,0" end="31,40" scalealign="right" Pen.color="hsl(0,0,0,20)"/>-->
+				<Line start="0,29" end="39,29" scalealign="bottom" Pen.color="hsl(0,0,0,20)"/>
+			</Shape>
+		</Shape>
+		
+		<Shape name="TabButtonRShape" style="scale">
+			<Shape name="normal" size="0,0,32,30" style="scale">
+				<Rectangle style="fill stroke tiled" size="-4,0,36,40" Pen.color="@Main.TabOutlineColor" Brush.color="@Main.TabButtonColor" radius="3"/>
+				<Line start="0,29" end="39,29" scalealign="bottom" Pen.color="hsl(0,0,0,20)"/>
+			</Shape>
+			<Shape name="mouseover" size="0,0,32,30" style="scale">
+				<Rectangle style="fill stroke tiled" size="-4,0,36,40" Pen.color="@Main.TabButtonMouseoverColor" Brush.color="@Main.TabButtonMouseoverColor" radius="3"/>
+				<Line start="0,29" end="39,29" scalealign="bottom" Pen.color="hsl(0,0,0,20)"/>
+			</Shape>
+			<Shape name="pressed" size="0,0,32,30" style="scale">
+				<Rectangle style="fill stroke tiled" size="-4,0,36,40" Pen.color="@Main.MobileButtonBluePenColor" Brush.color="@Main.MobileButtonBlueColor" radius="3"/>
+				<Line start="0,29" end="39,29" scalealign="bottom" Pen.color="hsl(0,0,0,20)"/>
+			</Shape>
+			<Shape name="disabled" size="0,0,32,30" style="scale">
+				<Rectangle style="fill tiled" size="-4,0,36,40" Brush.color="@Main.MobileControlDisabledColor" radius="3"/>
+				<Line start="0,29" end="39,29" scalealign="bottom" Pen.color="hsl(0,0,0,20)"/>
+			</Shape>
+			<Shape name="normalOn" size="0,0,32,30" style="scale">
+				<Rectangle style="fill stroke tiled" size="-4,0,36,40" Pen.color="@Main.MobileButtonBluePenColor" Brush.color="@Main.MobileButtonBlueColor" radius="3"/>
+				<Line start="0,29" end="39,29" scalealign="bottom" Pen.color="hsl(0,0,0,20)"/>
+			</Shape>
+			<Shape name="pressedOn" size="0,0,32,30" style="scale">
+				<Rectangle style="fill stroke tiled" size="-4,0,36,40" Pen.color="@Main.MobileButtonBluePenColor" Brush.color="@Main.MobileButtonBluePressedColor" radius="3"/>
+				<Line start="0,29" end="39,29" scalealign="bottom" Pen.color="hsl(0,0,0,20)"/>
+			</Shape>
+			<Shape name="disabledOn" size="0,0,32,30" style="scale">
+				<Rectangle style="fill tiled" size="-4,0,36,40" Brush.color="@Main.MobileButtonBlueDisabledOnColor" radius="3"/>
+				<Line start="0,29" end="39,29" scalealign="bottom" Pen.color="hsl(0,0,0,20)"/>
+			</Shape>
+		</Shape>
+		
+		<Shape name="TabButtonMShape" style="scale">
+			<Shape name="normal" size="0,0,40,30" style="scale">
+				<Rectangle style="fill stroke tiled" size="0,0,40,40" Pen.color="@Main.TabOutlineColor" Brush.color="@Main.TabButtonColor"/>
+<!--				<Line start="39,0" end="39,40" scalealign="right" Pen.color="hsl(0,0,0,20)"/>-->
+				<Line start="0,29" end="39,29" scalealign="bottom" Pen.color="hsl(0,0,0,20)"/>
+			</Shape>
+			<Shape name="mouseover" size="0,0,40,30" style="scale">
+				<Rectangle style="fill stroke tiled" size="0,0,40,40" Pen.color="@Main.TabButtonMouseoverColor" Brush.color="@Main.TabButtonMouseoverColor"/>
+<!--				<Line start="39,0" end="39,40" scalealign="right" Pen.color="hsl(0,0,0,20)"/>-->
+				<Line start="0,29" end="39,29" scalealign="bottom" Pen.color="hsl(0,0,0,20)"/>
+			</Shape>
+			<Shape name="pressed" size="0,0,40,30" style="scale">
+				<Rectangle style="fill stroke tiled" size="0,0,40,40" Pen.color="@Main.MobileButtonBluePenColor" Brush.color="@Main.MobileButtonBlueColor"/>
+<!--				<Line start="39,0" end="39,40" scalealign="right" Pen.color="hsl(0,0,0,20)"/>-->
+				<Line start="0,29" end="39,29" scalealign="bottom" Pen.color="hsl(0,0,0,20)"/>
+			</Shape>
+			<Shape name="disabled" size="0,0,40,30" style="scale">
+				<Rectangle style="fill tiled" size="0,0,40,40" Brush.color="@Main.MobileControlDisabledColor"/>
+<!--				<Line start="39,0" end="39,40" scalealign="right" Pen.color="hsl(0,0,0,20)"/>-->
+				<Line start="0,29" end="39,29" scalealign="bottom" Pen.color="hsl(0,0,0,20)"/>
+			</Shape>
+			<Shape name="normalOn" size="0,0,40,30" style="scale">
+				<Rectangle style="fill stroke tiled" size="0,0,40,40" Pen.color="@Main.MobileButtonBluePenColor" Brush.color="@Main.MobileButtonBlueColor"/>
+<!--				<Line start="39,0" end="39,40" scalealign="right" Pen.color="hsl(0,0,0,20)"/>-->
+				<Line start="0,29" end="39,29" scalealign="bottom" Pen.color="hsl(0,0,0,20)"/>
+			</Shape>
+			<Shape name="pressedOn" size="0,0,40,30" style="scale">
+				<Rectangle style="fill stroke tiled" size="0,0,40,40" Pen.color="@Main.MobileButtonBluePenColor" Brush.color="@Main.MobileButtonBluePressedColor"/>
+<!--				<Line start="39,0" end="39,40" scalealign="right" Pen.color="hsl(0,0,0,20)"/>-->
+				<Line start="0,29" end="39,29" scalealign="bottom" Pen.color="hsl(0,0,0,20)"/>
+			</Shape>
+			<Shape name="disabledOn" size="0,0,40,30" style="scale">
+				<Rectangle style="fill tiled" size="0,0,40,40" Brush.color="@Main.MobileButtonBlueDisabledOnColor"/>
+<!--				<Line start="39,0" end="39,40" scalealign="right" Pen.color="hsl(0,0,0,20)"/>-->
+				<Line start="0,29" end="39,29" scalealign="bottom" Pen.color="hsl(0,0,0,20)"/>
+			</Shape>
+		</Shape>	
+		
+		
+		<Shape name="MenuButtonShape" style="scale">
+			<Shape name="normal" size="0,0,40,40" style="scale"/>
+			<Shape name="mouseover" size="0,0,40,40" style="scale">
+				<Rectangle style="fill stroke tiled" size="0,0,40,40" Pen.color="@Main.MobileButtonMOOutlineColor" Brush.color="@Main.MobileButtonMOColor" radius="3"/>
+			</Shape>
+			<Shape name="disabled" size="0,0,40,40" style="scale"/>
+			<Shape name="normalOn" size="0,0,40,40" style="scale">
+				<Rectangle style="fill stroke tiled" size="0,0,40,40" Pen.color="@Main.MobileButtonBlueColor" Brush.color="@Main.MobileButtonBlueColor" radius="3"/>
+			</Shape>
+		</Shape>
+
+		<Shape name="PageIndicatorDotShape">
+			<Shape name="normal">
+				<Ellipse size="0,0,8,8" style="fill stroke" Brush.color="@Main.PageIndicatorDotColor" Pen.color="@Main.PageIndicatorDotOutlineColor"/>
+			</Shape>
+			<Shape name="normalOn">
+				<Ellipse size="0,0,8,8" style="fill" Brush.color="@Main.PageIndicatorDotActiveColor"/>
+			</Shape>
+		</Shape>
+		
+		<Shape name="ScrollPickerOverlayShape" style="scale">
+			<Rectangle style="stroke tiled" size="0,0,10,10" Pen.color="@Main.ScrollPickerBackcolor"/>
+		</Shape>
+		
+		<Shape name="IconsTileBackgroundShape">
+			<Shape name="normal">
+				<Rectangle style="fill" size="0,0,134,145" Brush.color="@Main.ListViewIconsTileBackcolor" radius="4" Pen.width="2"/>
+				<Rectangle style="fill" size="1,110,132,34" Brush.color="@Main.ListViewIconsTileTextBackcolor"/>
+				<Line start="1,110" end="133,110" Pen.color="@Main.ListViewIconsTileTextDividerColor"/>
+			</Shape>
+			<Shape name="pressed">
+				<Rectangle style="fill" size="0,0,134,145" Brush.color="@Main.ListViewIconsTileBackSelectedColor" radius="4" Pen.width="2"/>
+			</Shape>
+		</Shape>
+		<Shape name="IconsTileOverlayFrameShape">
+			<Shape name="normal">
+				<Rectangle style="stroke" size="0,0,134,145" Pen.color="@Main.ListViewIconsFrameColor" radius="4" Pen.width="2"/>
+				<Rectangle style="stroke" size="17,6,100,100" Pen.color="@Main.ListViewIconsTileBackcolor" radius="5" Pen.width="2"/>
+			</Shape>
+			<Shape name="pressed">
+				<Rectangle style="fill" size="1,110,132,34" Brush.color="@Main.SelectionBackColor"/>
+				<Rectangle style="stroke" size="17,6,100,100" Pen.color="@Main.ListViewIconsTileBackSelectedColor" radius="5" Pen.width="2"/>
+				<Rectangle style="stroke" size="0,0,134,145" Pen.color="@Main.SelectionBackColor" radius="4" Pen.width="2"/>
+			</Shape>
+		</Shape>
+		<Shape name="IconsTileFocusFrameShape">
+			<Rectangle style="stroke" size="0,0,134,145" Pen.color="@Main.SelectionBackColor" radius="4" Pen.width="2"/><!-- ListFocusColor -->
+		</Shape>
+		
+		<Shape name="SearchBoxBackShape" style="scale">
+			<Rectangle size="0,0,10,10" style="fill stroke tiled" Brush.color="@Main.EditBoxBackgroundColor" Pen.color="@Main.EditBoxOutlineColor" radius="2"/>
+		</Shape>
+		
+<!--		<Shape name="MobileBoxShape" size="0,0,40,40" style="scale">-->
+<!--			<Rectangle style="stroke tiled" size="3,3,34,34" Pen.color="@Main.MobileControlPenColor" radius="3"/>-->
+<!--		</Shape>-->
+		<Shape name="MobileTextBoxShape" size="0,0,40,40" style="scale">
+			<Rectangle style="stroke tiled margin" size="3,3,34,34" Pen.color="@Main.MobileControlPenColor" radius="3"/>
+		</Shape>
+		
+		<Shape name="MobileControlShape" size="0,0,40,40" style="scale">
+			<Shape name="normal" size="0,0,40,40" style="scale">
+				<Rectangle style="fill stroke tiled margin" size="3,3,34,34" Pen.color="@Main.MobileControlPenColor" Brush.color="@Main.MobileControlColor" radius="3"/>
+			</Shape>
+			<Shape name="mouseover" size="0,0,40,40" style="scale">
+				<Rectangle style="fill stroke tiled margin" size="3,3,34,34" Pen.color="@Main.MobileButtonPenColor" Brush.color="@Main.MobileButtonColor" radius="3"/>
+			</Shape>
+			<Shape name="disabled" size="0,0,40,40" style="scale">
+				<Rectangle style="fill tiled margin" size="3,3,34,34" Brush.color="@Main.MobileControlDisabledColor" radius="3"/>
+			</Shape>
+		</Shape>
+		
+		<Shape name="MobileButtonShape" size="0,0,40,40" style="scale">
+			<Shape name="normal" size="0,0,40,40" style="scale">
+				<Rectangle style="fill stroke tiled margin" size="3,3,34,34" Pen.color="@Main.MobileButtonPenColor" Brush.color="@Main.MobileButtonColor" radius="3"/>
+			</Shape>
+			<Shape name="mouseover" size="0,0,40,40" style="scale">
+				<Rectangle style="fill stroke tiled margin" size="3,3,34,34" Pen.color="@Main.MobileButtonMOOutlineColor" Brush.color="@Main.MobileButtonMOColor" radius="3"/>
+			</Shape>
+			<Shape name="pressed" size="0,0,40,40" style="scale">
+				<Rectangle style="fill stroke tiled margin" size="3,3,34,34" Pen.color="@Main.MobileButtonBluePenColor" Brush.color="@Main.MobileButtonBlueColor" radius="3"/>
+			</Shape>
+			<Shape name="disabled" size="0,0,40,40" style="scale">
+				<Rectangle style="fill tiled margin" size="3,3,34,34" Brush.color="@Main.MobileControlDisabledColor" radius="3"/>
+			</Shape>
+			<Shape name="normalOn" size="0,0,40,40" style="scale">
+				<Rectangle style="fill stroke tiled margin" size="3,3,34,34" Pen.color="@Main.MobileButtonBluePenColor" Brush.color="@Main.MobileButtonBlueColor" radius="3"/>
+			</Shape>
+			<Shape name="mouseoverOn" size="0,0,40,40" style="scale">
+				<Rectangle style="fill stroke tiled margin" size="3,3,34,34" Pen.color="@Main.MobileButtonBluePenColor" Brush.color="@Main.MobileButtonBlueMOColor" radius="3"/>
+			</Shape>
+			<Shape name="pressedOn" size="0,0,40,40" style="scale">
+				<Rectangle style="fill stroke tiled margin" size="3,3,34,34" Pen.color="@Main.MobileButtonBluePenColor" Brush.color="@Main.MobileButtonBluePressedColor" radius="3"/>
+			</Shape>
+			<Shape name="disabledOn" size="0,0,40,40" style="scale">
+				<Rectangle style="fill tiled margin" size="3,3,34,34" Brush.color="@Main.MobileButtonBlueDisabledOnColor" radius="3"/>
+			</Shape>
+		</Shape>
+		<Shape name="MobileButtonLShape" size="0,0,40,40" style="scale">
+			<Shape name="normal" size="0,0,40,40" style="scale">
+				<Rectangle style="fill stroke tiled margin" size="3,3,44,34" Pen.color="@Main.MobileButtonPenColor" Brush.color="@Main.MobileButtonColor" radius="3"/>
+			</Shape>
+			<Shape name="mouseover" size="0,0,40,40" style="scale">
+				<Rectangle style="fill stroke tiled margin" size="3,3,44,34" Pen.color="@Main.MobileButtonMOOutlineColor" Brush.color="@Main.MobileButtonMOColor" radius="3"/>
+			</Shape>
+			<Shape name="pressed" size="0,0,40,40" style="scale">
+				<Rectangle style="fill stroke tiled margin" size="3,3,44,34" Pen.color="@Main.MobileButtonBluePenColor" Brush.color="@Main.MobileButtonBlueColor" radius="3"/>
+			</Shape>
+			<Shape name="disabled" size="0,0,40,40" style="scale">
+				<Rectangle style="fill tiled margin" size="3,3,44,34" Brush.color="@Main.MobileControlDisabledColor" radius="3"/>
+			</Shape>
+			<Shape name="normalOn" size="0,0,40,40" style="scale">
+				<Rectangle style="fill stroke tiled margin" size="3,3,44,34" Pen.color="@Main.MobileButtonBluePenColor" Brush.color="@Main.MobileButtonBlueColor" radius="3"/>
+			</Shape>
+			<Shape name="mouseoverOn" size="0,0,40,40" style="scale">
+				<Rectangle style="fill stroke tiled margin" size="3,3,44,34" Pen.color="@Main.MobileButtonBluePenColor" Brush.color="@Main.MobileButtonBlueMOColor" radius="3"/>
+			</Shape>
+			<Shape name="pressedOn" size="0,0,40,40" style="scale">
+				<Rectangle style="fill stroke tiled margin" size="3,3,44,34" Pen.color="@Main.MobileButtonBluePenColor" Brush.color="@Main.MobileButtonBluePressedColor" radius="3"/>
+			</Shape>
+			<Shape name="disabledOn" size="0,0,40,40" style="scale">
+				<Rectangle style="fill tiled margin" size="3,3,44,34" Brush.color="@Main.MobileButtonBlueDisabledOnColor" radius="3"/>
+			</Shape>
+		</Shape>
+		<Shape name="MobileButtonRShape" size="0,0,40,40" style="scale">
+			<Shape name="normal" size="0,0,40,40" style="scale">
+				<Rectangle style="fill stroke tiled margin" size="-3,3,43,34" Pen.color="@Main.MobileButtonPenColor" Brush.color="@Main.MobileButtonColor" radius="3"/>
+			</Shape>
+			<Shape name="mouseover" size="0,0,40,40" style="scale">
+				<Rectangle style="fill stroke tiled margin" size="-3,3,43,34" Pen.color="@Main.MobileButtonMOOutlineColor" Brush.color="@Main.MobileButtonMOColor" radius="3"/>
+			</Shape>
+			<Shape name="pressed" size="0,0,40,40" style="scale">
+				<Rectangle style="fill stroke tiled margin" size="-3,3,43,34" Pen.color="@Main.MobileButtonBluePenColor" Brush.color="@Main.MobileButtonBlueColor" radius="3"/>
+			</Shape>
+			<Shape name="disabled" size="0,0,40,40" style="scale">
+				<Rectangle style="fill tiled margin" size="-3,3,43,34" Brush.color="@Main.MobileControlDisabledColor" radius="3"/>
+			</Shape>
+			<Shape name="normalOn" size="0,0,40,40" style="scale">
+				<Rectangle style="fill stroke tiled margin" size="-3,3,43,34" Pen.color="@Main.MobileButtonBluePenColor" Brush.color="@Main.MobileButtonBlueColor" radius="3"/>
+			</Shape>
+			<Shape name="mouseoverOn" size="0,0,40,40" style="scale">
+				<Rectangle style="fill stroke tiled margin" size="-3,3,43,34" Pen.color="@Main.MobileButtonBluePenColor" Brush.color="@Main.MobileButtonBlueMOColor" radius="3"/>
+			</Shape>
+			<Shape name="pressedOn" size="0,0,40,40" style="scale">
+				<Rectangle style="fill stroke tiled margin" size="-3,3,43,34" Pen.color="@Main.MobileButtonBluePenColor" Brush.color="@Main.MobileButtonBluePressedColor" radius="3"/>
+			</Shape>
+			<Shape name="disabledOn" size="0,0,40,40" style="scale">
+				<Rectangle style="fill tiled margin" size="-3,3,43,34" Brush.color="@Main.MobileButtonBlueDisabledOnColor" radius="3"/>
+			</Shape>
+		</Shape>
+		<Shape name="MobileButtonMShape" size="0,0,40,40" style="scale">
+			<Shape name="normal" size="0,0,40,40" style="scale">
+				<Rectangle style="fill stroke tiled margin" size="-4,3,48,34" Pen.color="@Main.MobileButtonPenColor" Brush.color="@Main.MobileButtonColor" radius="3"/>
+			</Shape>
+			<Shape name="mouseover" size="0,0,40,40" style="scale">
+				<Rectangle style="fill stroke tiled margin" size="-4,3,48,34" Pen.color="@Main.MobileButtonMOOutlineColor" Brush.color="@Main.MobileButtonMOColor" radius="3"/>
+			</Shape>
+			<Shape name="pressed" size="0,0,40,40" style="scale">
+				<Rectangle style="fill stroke tiled margin" size="-4,3,48,34" Pen.color="@Main.MobileButtonBluePenColor" Brush.color="@Main.MobileButtonBlueColor" radius="3"/>
+			</Shape>
+			<Shape name="disabled" size="0,0,40,40" style="scale">
+				<Rectangle style="fill tiled margin" size="-4,3,48,34" Brush.color="@Main.MobileControlDisabledColor" radius="3"/>
+			</Shape>
+			<Shape name="normalOn" size="0,0,40,40" style="scale">
+				<Rectangle style="fill stroke tiled margin" size="-4,3,48,34" Pen.color="@Main.MobileButtonBluePenColor" Brush.color="@Main.MobileButtonBlueColor" radius="3"/>
+			</Shape>
+			<Shape name="mouseoverOn" size="0,0,40,40" style="scale">
+				<Rectangle style="fill stroke tiled margin" size="-4,3,48,34" Pen.color="@Main.MobileButtonBluePenColor" Brush.color="@Main.MobileButtonBlueMOColor" radius="3"/>
+			</Shape>
+			<Shape name="pressedOn" size="0,0,40,40" style="scale">
+				<Rectangle style="fill stroke tiled margin" size="-4,3,48,34" Pen.color="@Main.MobileButtonBluePenColor" Brush.color="@Main.MobileButtonBluePressedColor" radius="3"/>
+			</Shape>
+			<Shape name="disabledOn" size="0,0,40,40" style="scale">
+				<Rectangle style="fill tiled margin" size="-4,3,48,34" Brush.color="@Main.MobileButtonBlueDisabledOnColor" radius="3"/>
+			</Shape>
+		</Shape>
+		<Shape name="MobileSliderRoundHandleHShape" size="0,0,24,40" style="scale">
+			<Shape name="normal" size="0,0,24,40" style="scale">
+				<Ellipse size="1,9,22,22" style="fill stroke" Pen.color="@Main.MobileSliderHandleBorderColor" Brush.color="@Main.MobileSliderHandleColor"/>
+			</Shape>
+			<Shape name="pressed" size="0,0,24,40" style="scale">
+				<Ellipse size="1,9,22,22" style="fill" Brush.color="@Main.MobileControlTextColor"/>
+			</Shape>
+		</Shape>
+		<Shape name="MobileSliderRoundHandleVShape" size="0,0,40,24" style="scale">
+			<Shape name="normal" size="0,0,40,24" style="scale">
+				<Ellipse size="9,1,22,22" style="fill stroke" Pen.color="@Main.MobileSliderHandleBorderColor" Brush.color="@Main.MobileSliderHandleColor"/>
+			</Shape>
+			<Shape name="pressed" size="0,0,40,24" style="scale">
+				<Ellipse size="9,1,22,22" style="fill" Brush.color="@Main.MobileControlTextColor"/>
+			</Shape>
+		</Shape>
+		<Shape name="MobileCheckSliderShape" size="0,0,60,40" style="scale">
+			<Shape name="normal" size="0,0,60,40" style="scale">
+				<Rectangle style="fill stroke tiled" size="6,6,48,28" Pen.color="@Main.MobileControlPenColor" Brush.color="@Main.MobileControlColor" radius="14"/>
+				<Ellipse size="9,9,22,22" style="fill stroke" Pen.color="@Main.MobileSliderHandleBorderColor" Brush.color="@Main.MobileSliderHandleColor"/>
+			</Shape>
+			<Shape name="mouseover" size="0,0,60,40" style="scale">
+				<Rectangle style="fill stroke tiled" size="6,6,48,28" Pen.color="@Main.MobileControlPenColor" Brush.color="@Main.MobileControlMOColor" radius="14"/>
+				<Ellipse size="9,9,22,22" style="fill stroke" Pen.color="@Main.MobileSliderHandleBorderColor" Brush.color="@Main.MobileSliderHandleColor"/>
+			</Shape>
+			<Shape name="pressed" size="0,0,60,40" style="scale">
+				<Rectangle style="fill stroke tiled" size="6,6,48,28" Pen.color="@Main.MobileControlPenColor" Brush.color="@Main.MobileControlMOColor" radius="14"/>
+				<Ellipse size="9,9,22,22" style="fill stroke" Pen.color="@Main.MobileSliderHandleBorderColor" Brush.color="@Main.MobileSliderHandleColor"/>
+<!--				<Ellipse size="8,8,24,24" style="fill stroke" Pen.color="@Main.MobileControlPenColor" Brush.color="@Main.MobileControlTextOnColor"/>-->
+			</Shape>
+			<Shape name="disabled" size="0,0,60,40" style="scale">
+				<Rectangle style="fill stroke tiled" size="6,6,48,28" Brush.color="@Main.MobileControlDisabledColor" Pen.color="@Main.MobileControlMOColor" radius="14"/>
+				<Ellipse size="9,9,22,22" style="fill" Brush.color="@Main.MobileButtonBlueDisabledColor"/>
+			</Shape>
+			<Shape name="normalOn" size="0,0,60,40" style="scale">
+				<Rectangle style="fill stroke tiled" size="6,6,48,28" Pen.color="@Main.MobileButtonBluePenColor" Brush.color="@Main.MobileButtonBlueColor" radius="14"/>
+				<Ellipse size="29,9,22,22" style="fill" Brush.color="@Main.MobileControlTextOnColor"/>
+<!--				<Ellipse size="28,8,24,24" style="fill stroke" Pen.color="@Main.MobileControlPenColor" Brush.color="@Main.MobileControlTextOnColor"/>-->
+			</Shape>
+			<Shape name="mouseoverOn" size="0,0,60,40" style="scale">
+				<Rectangle style="fill stroke tiled" size="6,6,48,28" Pen.color="@Main.MobileButtonBluePenColor" Brush.color="@Main.MobileButtonBlueMOColor" radius="14"/>
+				<Ellipse size="29,9,22,22" style="fill" Brush.color="@Main.MobileControlTextOnColor"/>
+<!--				<Ellipse size="28,8,24,24" style="fill stroke" Pen.color="@Main.MobileControlPenColor" Brush.color="@Main.MobileControlTextOnColor"/>-->
+			</Shape>
+			<Shape name="pressedOn" size="0,0,60,40" style="scale">
+				<Rectangle style="fill stroke tiled" size="6,6,48,28" Pen.color="@Main.MobileButtonBluePenColor" Brush.color="@Main.MobileButtonBluePressedColor" radius="14"/>
+				<Ellipse size="29,9,22,22" style="fill" Brush.color="@Main.MobileControlTextOnColor"/>
+<!--				<Ellipse size="28,8,24,24" style="fill stroke" Pen.color="@Main.MobileControlPenColor" Brush.color="@Main.MobileControlTextOnColor"/>-->
+			</Shape>
+			<Shape name="disabledOn" size="0,0,60,40" style="scale">
+				<Rectangle style="fill tiled" size="6,6,48,28" Brush.color="@Main.MobileButtonBlueDisabledColor" radius="14"/>
+				<Ellipse size="28,8,24,24" style="fill stroke" Pen.color="@Main.MobileControlPenColor" Brush.color="@Main.MobileButtonBlueDisabledColor"/>
+			</Shape>
+		</Shape>
+		
+		<Shape name="MobileCheckBoxShape" size="0,0,40,40" style="scale">
+			<Shape name="normal" size="0,0,40,40" style="scale">
+				<Rectangle style="fill stroke tiled" size="3,3,34,34" Pen.color="@Main.MobileControlPenColor" Brush.color="@Main.MobileControlColor" radius="3"/>
+			</Shape>
+			<Shape name="mouseover" size="0,0,40,40" style="scale">
+				<Rectangle style="fill stroke tiled" size="3,3,34,34" Pen.color="@Main.MobileControlPenColor" Brush.color="@Main.MobileControlMOColor" radius="3"/>
+			</Shape>
+			<Shape name="pressed" size="0,0,40,40" style="scale">
+				<Rectangle style="fill stroke tiled" size="3,3,34,34" Pen.color="@Main.MobileButtonBluePenColor" Brush.color="@Main.MobileButtonBlueColor" radius="3"/>
+			</Shape>
+			<Shape name="disabled" size="0,0,40,40" style="scale">
+				<Rectangle style="fill tiled" size="3,3,34,34" Brush.color="@Main.MobileControlDisabledColor" radius="3"/>
+			</Shape>
+			<Shape name="normalOn" size="0,0,40,40" style="scale">
+				<Rectangle style="fill stroke tiled" size="3,3,34,34" Pen.color="@Main.MobileButtonBluePenColor" Brush.color="@Main.MobileButtonBlueColor" radius="3"/>
+			</Shape>
+			<Shape name="mouseoverOn" size="0,0,40,40" style="scale">
+				<Rectangle style="fill stroke tiled" size="3,3,34,34" Pen.color="@Main.MobileButtonBluePenColor" Brush.color="@Main.MobileButtonBlueMOColor" radius="3"/>
+			</Shape>
+			<Shape name="pressedOn" size="0,0,40,40" style="scale">
+				<Rectangle style="fill stroke tiled" size="3,3,34,34" Pen.color="@Main.MobileButtonBluePenColor" Brush.color="@Main.MobileButtonBluePressedColor" radius="3"/>
+			</Shape>
+			<Shape name="disabledOn" size="0,0,40,40" style="scale">
+				<Rectangle style="fill tiled" size="3,3,34,34" Brush.color="@Main.MobileButtonBlueDisabledColor" radius="3"/>
+			</Shape>
+		</Shape>
+		
+		<Shape name="MobileSliderBackHShape" size="0,0,40,40" style="scale">
+			<Shape name="normal" size="0,0,40,40" style="scale">
+				<Rectangle style="fill stroke tiled margin" size="3,18,34,4" Pen.color="@Main.MobileControlPenColor" Brush.color="@Main.MobileControlColor" radius="2"/>
+			</Shape>
+			<Shape name="normalOn" size="0,0,40,40" style="scale">
+				<Rectangle style="fill stroke tiled margin" size="3,18,34,4" Pen.color="@Main.MobileButtonBluePenColor" Brush.color="@Main.MobileButtonBlueColor" radius="2"/>
+			</Shape>
+		</Shape>
+		<Shape name="MobileSliderBackVShape" size="0,0,40,40" style="scale">
+			<Shape name="normal" size="0,0,40,40" style="scale">
+				<Rectangle style="fill stroke tiled margin" size="18,3,4,34" Pen.color="@Main.MobileControlPenColor" Brush.color="@Main.MobileControlColor" radius="2"/>
+			</Shape>
+			<Shape name="normalOn" size="0,0,40,40" style="scale">
+				<Rectangle style="fill stroke tiled margin" size="18,3,4,34" Pen.color="@Main.MobileButtonBluePenColor" Brush.color="@Main.MobileButtonBlueColor" radius="2"/>
+			</Shape>
+		</Shape>
+		<Shape name="MobileRangeSliderInvertedBackShape" size="0,0,40,40" style="scale">
+			<Shape name="normal" size="0,0,40,40" style="scale">
+				<Rectangle style="fill stroke tiled margin" size="3,18,34,4" Pen.color="@Main.MobileControlPenColor" Brush.color="@Main.MobileControlColor" radius="2"/>
+			</Shape>
+			<Shape name="normalOn" size="0,0,40,40" style="scale">
+				<Rectangle style="fill stroke tiled margin" size="3,18,34,4" Pen.color="@Main.RangeSliderRedPenColor" Brush.color="@Main.RangeSliderRedColor" radius="2"/>
+			</Shape>
+		</Shape>
+		<Shape name="MobileSliderHandleHShape" size="0,0,18,40">
+			<Rectangle style="fill stroke" size="3,3,12,34" Brush.color="@Main.MobileSliderHandleColor" Pen.color="@Main.MobileSliderHandleBorderColor" radius="3"/>
+		</Shape>
+		<Shape name="MobileSliderHandleVShape" size="0,0,40,18">
+			<Rectangle style="fill stroke" size="3,3,34,12" Brush.color="@Main.MobileSliderHandleColor" Pen.color="@Main.MobileSliderHandleBorderColor"  radius="3"/>
+		</Shape>
+		
+		<Shape name="MobileValueBarBackShape" size="0,0,40,40" style="scale">
+			<Shape name="normal" size="0,0,40,40" style="scale">
+				<Rectangle style="fill stroke tiled margin" size="3,3,34,34" Pen.color="@Main.MobileControlPenColor" Brush.color="@Main.MobileControlColor" radius="3"/>
+			</Shape>
+			<Shape name="normalOn" size="0,0,40,40" style="scale">
+				<Rectangle style="fill stroke tiled margin" size="3,3,34,34" Pen.color="@Main.MobileButtonBluePenColor" Brush.color="@Main.MobileButtonBlueColor" radius="3"/>
+			</Shape>
+		</Shape>
+		
+		<Shape name="MobileRadioButtonBackgroundShape">
+			<Shape name="normal" size="0,0,40,40">
+				<Ellipse size="7,7,26,26" style="fill stroke tiled" Brush.color="@Main.MobileControlColor" Pen.color="@Main.MobileControlPenColor"/>
+			</Shape>
+			<Shape name="mouseover" size="0,0,40,40" style="scale">
+				<Ellipse size="7,7,26,26" style="fill stroke tiled" Brush.color="@Main.MobileControlMOColor" Pen.color="@Main.MobileControlPenColor"/>
+			</Shape>
+			<Shape name="pressed" size="0,0,40,40">
+				<Ellipse size="7,7,26,26" style="fill stroke tiled" Brush.color="@Main.MobileButtonBlueColor" Pen.color="@Main.MobileButtonBluePenColor"/>
+			</Shape>
+			<Shape name="normalOn" size="0,0,40,40">
+				<Ellipse size="7,7,26,26" style="fill stroke tiled" Brush.color="@Main.MobileButtonBlueColor" Pen.color="@Main.MobileButtonBluePenColor"/>
+			</Shape>
+			<Shape name="disabled" size="0,0,40,40">
+				<Ellipse size="7,7,26,26" style="fill" Brush.color="@Main.MobileControlDisabledColor"/>
+			</Shape>
+		</Shape>
+		
+
+		<Shape name="MobileCommandButtonShape" style="scale">
+			<Shape name="normal" size="0,0,32,32"/>
+			<Shape name="pressed" size="0,0,32,32" style="scale">
+				<Rectangle style="stroke tiled margin" size="3,3,26,26" Pen.color="@Main.MobileButtonBluePenColor" radius="4" Pen.width="2"/>
+			</Shape>
+		</Shape>
+
+		<Shape name="MobileRadioButtonDotIconShape" size="0,0,40,40">
+			<Ellipse size="15,15,10,10" style="fill tiled" Brush.color="@Main.MobileControlTextOnColor"/>
+		</Shape>
+		
+		<Shape name="ButtonSpecialBlueShape" style="scale">
+			<Shape name="normal">
+				<Rectangle style="fill stroke tiled" size="0,0,10,10" Pen.color="@Main.ButtonSpecialBluePenColor" Brush.color="@Main.ButtonSpecialBlueColor" radius="3"/>
+			</Shape>
+			<Shape name="mouseover">
+				<Rectangle style="fill stroke tiled" size="0,0,10,10" Pen.color="@Main.ButtonSpecialBluePenColor" Brush.color="@Main.ButtonSpecialBlueMOColor" radius="3"/>
+			</Shape>
+			<Shape name="pressed">
+				<Rectangle style="fill stroke tiled" size="0,0,10,10" Pen.color="@Main.ButtonSpecialBluePenColor" Brush.color="@Main.ButtonSpecialBluePressedColor" radius="3"/>
+			</Shape>
+			<Shape name="disabled">
+				<Rectangle style="fill tiled" size="0,0,10,10" Brush.color="@Main.ButtonSpecialBlueDisabledColor" radius="3"/>
+			</Shape>
+			<Shape name="focus">
+				<Rectangle style="stroke tiled" size="0,0,10,10" Pen.color="@Main.HighlightColor" radius="3"/>
+			</Shape>
+		</Shape>
+		
+		<Shape name="PopupMenuDecorShape" style="scale">
+			<?defined mobileapp?>
+				<Rectangle size="0,0,20,20" style="fill tiled stroke" Pen.color="@Main.MenuBorderOutlineColor" Brush.color="@Main.MenuControlBackColor" radius="8"/>
+			<?defined desktopapp?>
+				<Rectangle size="0,0,20,20" style="fill tiled stroke" Pen.color="@Main.MenuBorderOutlineColor" Brush.color="@Main.MenuControlBackColor" radius="5"/>
+			<?defined?>
+		</Shape>
+		
+		<Shape name="VectorPadBackgroundShape" style="scale">
+			<Rectangle style="fill stroke tiled" size="0,0,10,10" Brush.color="@Main.VectorPadBackcolor" Pen.color="@Main.EditBoxOutlineColor" radius="3"/>
+		</Shape>
+		
+		<Shape name="VectorPadHandleShape">
+			<Shape name="normal">
+				<Ellipse size="0,0,15,15" style="stroke" Pen.color="@Main.VectorPadDotColor" Pen.width="3"/>
+			</Shape>
+			<Shape name="pressed">
+				<Ellipse size="0,0,15,15" style="stroke" Pen.color="@Main.VectorPadDotActiveColor" Pen.width="2"/>
+				<Ellipse size="2,2,11,11" style="fill" Brush.color="@Main.VectorPadDotActiveColor"/>
+			</Shape>
+		</Shape>
+		
+	</Shapes>
+
+</Skin>

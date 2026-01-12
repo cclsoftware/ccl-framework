@@ -1,0 +1,94 @@
+{
+	"name": "consoleapptemplate",
+	"inherits": "basetemplate",
+	"description": "Console Application based on CCL",
+	"destination": "tools/@TargetName",
+	"platforms":
+	[
+		"win",
+		"mac",
+		"linux"
+	],
+	"variables":
+	[
+		{
+			"key": "ProjectTitle",
+			"defaultValue": "My Application",
+			"description": "application title, name of the generated IDE project"
+		},
+		{
+			"key": "TargetName",
+			"defaultValue": "myapp",
+			"description": "name of the CMake target, name of the main application source files"
+		},
+		{
+			"key": "PackageID",
+			"defaultValue": "@VendorPackageDomain.@TargetName",
+			"description": "application package ID"
+		},
+		{
+			"key": "ApplicationNamespace",
+			"defaultValue": "@DefaultNamespace",
+			"description": "application namespace"
+		}
+	],
+	"replacements": 
+	[
+		{
+			"searchString": "apptemplate",
+			"replaceString": "@TargetName",
+			"filter": "*.cpp;*.h;*.cmake;*.txt;*.json;*.in;*.bat;*.template"
+		},
+		{
+			"searchString": "AppNamespace",
+			"replaceString": "@ApplicationNamespace",
+			"filter": "*.cpp;*.h"
+		},
+		{
+			"searchString": "appvendor",
+			"replaceString": "@VendorID",
+			"filter": "*.txt"
+		},
+		{
+			"searchString": "Application Template",
+			"replaceString": "@ProjectTitle",
+			"filter": "*.cpp;*.h;*.cmake;*.txt;*.json;*.in;*.nsi;*.bat;build.sh;*.template;*.xml"
+		},
+		{
+			"searchString": "(Application Developer)",
+			"replaceString": "@AuthorName",
+			"filter": "*.cpp;*.h;*.cmake;*.txt;*.json;*.in"
+		},
+		{
+			"searchString": "(Application Copyright)",
+			"replaceString": "@ProjectCopyright",
+			"filter": "*.cpp;*.h;*.cmake;*.txt"
+		}
+	],
+	"files":
+	[
+		{
+			"source": "consoleapptemplate/source",
+			"destination": "@Destination/source"
+		},
+		{
+			"source": "consoleapptemplate/cmake/CMakeLists.txt",
+			"destination": "@Destination/cmake/CMakeLists.txt"
+		},
+		{
+			"source": "consoleapptemplate/cmake/apptemplate.mac.cmake",
+			"destination": "@Destination/cmake/apptemplate.mac.cmake",
+			"platform": "mac"
+		},
+		{
+			"source": "consoleapptemplate/cmake/apptemplate.win.cmake",
+			"destination": "@Destination/cmake/apptemplate.win.cmake",
+			"platform": "win"
+		},
+		{
+			"source": "consoleapptemplate/cmake/apptemplate.linux.cmake",
+			"destination": "@Destination/cmake/apptemplate.linux.cmake",
+			"platform": "linux"
+		}
+	]
+}

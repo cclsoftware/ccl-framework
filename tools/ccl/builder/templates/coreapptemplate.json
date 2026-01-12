@@ -1,0 +1,89 @@
+{
+	"name": "coreapptemplate",
+	"inherits": "basetemplate",
+	"description": "Console Application based on CCL Core Library",
+	"destination": "applications/@TargetName",
+	"platforms":
+	[
+		"win",
+		"mac",
+		"linux"
+	],
+	"variables":
+	[
+		{
+			"key": "ProjectTitle",
+			"defaultValue": "My Application",
+			"description": "application title, name of the generated IDE project"
+		},
+		{
+			"key": "TargetName",
+			"defaultValue": "myapp",
+			"description": "name of the CMake target, name of the main application source files"
+		},
+		{
+			"key": "ApplicationClass",
+			"defaultValue": "MyApplication",
+			"description": "application class name"
+		},
+		{
+			"key": "PackageID",
+			"defaultValue": "@VendorPackageDomain.@TargetName",
+			"description": "application package ID"
+		},
+		{
+			"key": "ApplicationNamespace",
+			"defaultValue": "@DefaultNamespace",
+			"description": "application namespace"
+		}
+	],
+	"replacements": 
+	[
+		{
+			"searchString": "apptemplate",
+			"replaceString": "@TargetName",
+			"filter": "*.cpp;*.h;*.cmake;*.txt;*.json;*.in;*.bat;*.template"
+		},
+		{
+			"searchString": "AppNamespace",
+			"replaceString": "@ApplicationNamespace",
+			"filter": "*.cpp;*.h"
+		},
+		{
+			"searchString": "appvendor",
+			"replaceString": "@VendorID",
+			"filter": "*.txt"
+		},
+		{
+			"searchString": "AppTemplate",
+			"replaceString": "@ApplicationClass",
+			"filter": "*.cpp;*.h;*.template;*.xml"
+		},
+		{
+			"searchString": "Application Template",
+			"replaceString": "@ProjectTitle",
+			"filter": "*.cpp;*.h;*.cmake;*.txt;*.json;*.in;*.nsi;*.bat;build.sh;*.template;*.xml"
+		},
+		{
+			"searchString": "(Application Developer)",
+			"replaceString": "@AuthorName",
+			"filter": "*.cpp;*.h;*.cmake;*.txt;*.json;*.in"
+		},
+		{
+			"searchString": "(Application Copyright)",
+			"replaceString": "@ProjectCopyright",
+			"filter": "*.cpp;*.h;*.cmake;*.txt"
+		}
+	],
+	"files":
+	[
+		{
+			"source": "coreapptemplate/source",
+			"destination": "@Destination/source"
+		},
+		{
+			"source": "coreapptemplate/cmake/CMakeLists.txt",
+			"destination": "@Destination/cmake/CMakeLists.txt"
+		}
+	]
+}

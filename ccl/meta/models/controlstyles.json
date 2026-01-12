@@ -1,0 +1,1926 @@
+{
+	"enums":
+	[
+		{
+			"name": "ImageViewStyles",
+			"brief": "ImageView styles",
+			"enumerators":
+			[
+				{
+					"name": "kImageViewAppearanceColorize",
+					"value": "1<<0",
+					"type": "int",
+					"expression": true,
+					"brief": "(appearance) fill with backcolor/forecolor depending on select parameter or colorize background image"
+				},
+				{
+					"name": "kImageViewAppearanceFitImage",
+					"value": "1<<1",
+					"type": "int",
+					"expression": true,
+					"brief": "(appearance) fit image proportionally and select best resolution"
+				},
+				{
+					"name": "kImageViewAppearanceAllowStretch",
+					"value": "1<<2",
+					"type": "int",
+					"expression": true,
+					"brief": "(appearance) allow to stretch image, requires fit option"
+				},
+				{
+					"name": "kImageViewAppearanceAllowZoom",
+					"value": "1<<3",
+					"type": "int",
+					"expression": true,
+					"brief": "(appearance) allow to zoom image, requires fit option"
+				},
+				{
+					"name": "kImageViewBehaviorSelectOnClick",
+					"value": "1<<4",
+					"type": "int",
+					"expression": true,
+					"brief": "(behavior) select when clicked"
+				},
+				{
+					"name": "kImageViewBehaviorFramesByName",
+					"value": "1<<5",
+					"type": "int",
+					"expression": true,
+					"brief": "(behavior) interpret string of select parameter as frame name in background image"
+				},
+				{
+					"name": "kImageViewBehaviorWindowSizable",
+					"value": "1<<6",
+					"type": "int",
+					"expression": true,
+					"brief": "(behavior) user can resize window by clicking in border areas"
+				},
+				{
+					"name": "kImageViewBehaviorWindowMovable",
+					"value": "1<<7",
+					"type": "int",
+					"expression": true,
+					"brief": "(behavior) user can move window by clicking in view"
+				},
+				{
+					"name": "kImageViewBehaviorWindowMaximize",
+					"value": "1<<8",
+					"type": "int",
+					"expression": true,
+					"brief": "(behavior) user can maximize window with double click"
+				},
+				{
+					"name": "kImageViewBehaviorInsertData",
+					"value": "1<<9",
+					"type": "int",
+					"expression": true,
+					"brief": "(behavior) IDataTarget::insertData() will be called even if there is a custom drag handler"
+				},
+				{
+					"name": "kImageViewLayoutIgnoreImageSize",
+					"value": "1<<10",
+					"type": "int",
+					"expression": true,
+					"brief": "(layout) don't auto-size to background image when initial size is empty"
+				},
+				{
+					"name": "kImageViewBehaviorSwallowMouseClick",
+					"value": "1<<11",
+					"type": "int",
+					"expression": true,
+					"brief": "(behavior) don't allow parents to perform mouse clicks, e.g. to suppress drag operation"
+				},
+				{
+					"name": "kImageViewBehaviorSwallowMouseWheel",
+					"value": "1<<12",
+					"type": "int",
+					"expression": true,
+					"brief": "(behavior) don't allow parents to perform mouse wheel"
+				},
+				{
+					"name": "kImageViewBehaviorBackgroundLayer",
+					"value": "1<<13",
+					"type": "int",
+					"expression": true,
+					"brief": "(behavior) create graphics layer for background image"
+				},
+				{
+					"name": "kImageViewAppearanceHighQuality",
+					"value": "1<<14",
+					"type": "int",
+					"expression": true,
+					"brief": "(appearance) use high quality image interpolation mode"
+				},
+				{
+					"name": "kImageViewLayoutHFitImageSize",
+					"value": "1<<15",
+					"type": "int",
+					"expression": true,
+					"brief": "(layout) auto-size view to width of current image"
+				},
+				{
+					"name": "kImageViewAppearanceCenterImage",
+					"value": "1<<16",
+					"type": "int",
+					"expression": true,
+					"brief": "(appearance) center image"
+				},
+				{
+					"name": "kImageViewBehaviorDisable",
+					"value": "1<<17",
+					"type": "int",
+					"expression": true,
+					"brief": "(behavior) disable view, i.e. don't allow children to perform any edits"
+				},
+				{
+					"name": "kImageViewLastFlag",
+					"value": "17",
+					"type": "int"
+				}
+			]
+		},
+		{
+			"name": "VariantViewStyles",
+			"brief": "VariantView styles",
+			"enumerators":
+			[
+				{
+					"name": "kVariantViewBehaviorBoundValue",
+					"value": "1<<0",
+					"type": "int",
+					"expression": true,
+					"brief": "(behavior) always create child view even if numeric parameter is out of bounds"
+				},
+				{
+					"name": "kVariantViewBehaviorSelectAlways",
+					"value": "1<<1",
+					"type": "int",
+					"expression": true,
+					"brief": "(behavior) always rebuild child view, even if index did not change"
+				},
+				{
+					"name": "kVariantViewBehaviorInvert",
+					"value": "1<<2",
+					"type": "int",
+					"expression": true,
+					"brief": "(behavior) invert value of associated parameter"
+				},
+				{
+					"name": "kVariantViewLayoutUnifySizes",
+					"value": "1<<3",
+					"type": "int",
+					"expression": true,
+					"brief": "(layout) when switching views, pass width / height of previous view to new view, depending on options, i.e. horizontal for width, vertical for height"
+				},
+				{
+					"name": "kVariantViewLayoutFill",
+					"value": "1<<4",
+					"type": "int",
+					"expression": true,
+					"brief": "(layout) child views always get full client area of variant view (can be used for optimization as other views don't need to be resized)"
+				}
+			]
+		},
+		{
+			"name": "ItemViewStyles",
+			"brief": "ItemView styles",
+			"enumerators":
+			[
+				{
+					"name": "kItemViewAppearanceHeader",
+					"value": "1<<0",
+					"type": "int",
+					"expression": true,
+					"brief": "(appearance) show column headers above item view"
+				},
+				{
+					"name": "kItemViewBehaviorSelection",
+					"value": "1<<1",
+					"type": "int",
+					"expression": true,
+					"brief": "(behavior) enable selection of items"
+				},
+				{
+					"name": "kItemViewBehaviorSelectExclusive",
+					"value": "1<<2",
+					"type": "int",
+					"expression": true,
+					"brief": "(behavior) only one item can be selected at a time"
+				},
+				{
+					"name": "kItemViewBehaviorAutoSelect",
+					"value": "1<<3",
+					"type": "int",
+					"expression": true,
+					"brief": "(behavior) automatically select item under mouse"
+				},
+				{
+					"name": "kItemViewBehaviorNoDrag",
+					"value": "1<<4",
+					"type": "int",
+					"expression": true,
+					"brief": "(behavior) don't allow to drag items"
+				},
+				{
+					"name": "kItemViewBehaviorNoRubberband",
+					"value": "1<<5",
+					"type": "int",
+					"expression": true,
+					"brief": "(behavior) don't allow to start a rubberband selection"
+				},
+				{
+					"name": "kItemViewBehaviorNoDoubleClick",
+					"value": "1<<6",
+					"type": "int",
+					"expression": true,
+					"brief": "(behavior) don't wait for doubleclicks"
+				},
+				{
+					"name": "kItemViewAppearanceNoFocusRect",
+					"value": "1<<7",
+					"type": "int",
+					"expression": true,
+					"brief": "(appearance) don't draw focus rectangle around item"
+				},
+				{
+					"name": "kItemViewBehaviorColumnFocus",
+					"value": "1<<8",
+					"type": "int",
+					"expression": true,
+					"brief": "(behavior) limit focus rectangle to focussed column"
+				},
+				{
+					"name": "kItemViewBehaviorFocusSelectable",
+					"value": "1<<9",
+					"type": "int",
+					"expression": true,
+					"brief": "(behavior) only selectable items can be focussed"
+				},
+				{
+					"name": "kItemViewBehaviorSelectFullWidth",
+					"value": "1<<10",
+					"type": "int",
+					"expression": true,
+					"brief": "(behavior) draw selection using full available width, ignoring title width"
+				},
+				{
+					"name": "kItemViewAppearanceRedrawOnResize",
+					"value": "1<<11",
+					"type": "int",
+					"expression": true,
+					"brief": "(appearance) redraw item view on resize (use if data is drawn right-aligned or centered)"
+				},
+				{
+					"name": "kItemViewBehaviorSwallowAlphaChars",
+					"value": "1<<12",
+					"type": "int",
+					"expression": true,
+					"brief": "(behavior) swallow key events with alphabetical characters (when name navigation fails)"
+				},
+				{
+					"name": "kItemViewAppearanceThumbnails",
+					"value": "1<<13",
+					"type": "int",
+					"expression": true,
+					"brief": "(appearance) show item thumbnails"
+				},
+				{
+					"name": "kItemViewBehaviorDragSwipeH",
+					"value": "1<<14",
+					"type": "int",
+					"expression": true,
+					"brief": "(behavior) start dragging the touched item on a horizontal swipe gesture (with high priority)"
+				},
+				{
+					"name": "kItemViewBehaviorDragSwipeV",
+					"value": "1<<15",
+					"type": "int",
+					"expression": true,
+					"brief": "(behavior) start dragging the touched item on a vertical swipe gesture (with high priority)"
+				},
+				{
+					"name": "kItemViewBehaviorNoUnselect",
+					"value": "1<<16",
+					"type": "int",
+					"expression": true,
+					"brief": "(behavior) don't unselect items on click in empty area"
+				},
+				{
+					"name": "kItemViewBehaviorNoNameNavigation",
+					"value": "1<<17",
+					"type": "int",
+					"expression": true,
+					"brief": "(behavior) suppress name navigation (which steals key commands sometimes)"
+				},
+				{
+					"name": "kItemViewBehaviorNoContextMenu",
+					"value": "1<<18",
+					"type": "int",
+					"expression": true,
+					"brief": "(behavior) suppress context menu"
+				},
+				{
+					"name": "kLastItemViewFlag",
+					"value": "kItemViewBehaviorNoContextMenu",
+					"type": "int",
+					"expression": true,
+					"brief": ""
+				},
+				{
+					"name": "kItemViewBehaviorSimpleMouse",
+					"value": "kItemViewBehaviorNoDrag|kItemViewBehaviorNoRubberband|kItemViewBehaviorNoDoubleClick",
+					"type": "int",
+					"expression": true,
+					"brief": "(behavior) combined option: no drag, no rubberband, no doubleclick"
+				}
+			]
+		},
+		{
+			"name": "TreeViewStyles",
+			"brief": "TreeView styles",
+			"enumerators":
+			[
+				{
+					"name": "kTreeViewAppearanceNoRoot",
+					"value": "kLastItemViewFlag<<1",
+					"type": "int",
+					"expression": true,
+					"brief": "(appearance) hide tree root item"
+				},
+				{
+					"name": "kTreeViewAppearanceNoIcons",
+					"value": "kLastItemViewFlag<<2",
+					"type": "int",
+					"expression": true,
+					"brief": "(appearance) hide tree item icons"
+				},
+				{
+					"name": "kTreeViewBehaviorAutoExpand",
+					"value": "kLastItemViewFlag<<3",
+					"type": "int",
+					"expression": true,
+					"brief": "(behavior) automatically expand selected item"
+				},
+				{
+					"name": "kTreeViewBehaviorExpandAll",
+					"value": "kLastItemViewFlag<<4",
+					"type": "int",
+					"expression": true,
+					"brief": "(behavior) automatically expand all items (no collapse possible)"
+				},
+				{
+					"name": "kTreeViewBehaviorExpandMouseItem",
+					"value": "kLastItemViewFlag<<5",
+					"type": "int",
+					"expression": true,
+					"brief": "(behavior) automatically expand item under mouse after short delay"
+				},
+				{
+					"name": "kTreeViewBehaviorExpandDragItem",
+					"value": "kLastItemViewFlag<<6",
+					"type": "int",
+					"expression": true,
+					"brief": "(behavior) automatically expand item under mouse when dragging"
+				}
+			]
+		},
+		{
+			"name": "ListViewStyles",
+			"brief": "ListView styles",
+			"enumerators":
+			[
+				{
+					"name": "kListViewAppearanceDontClipCells",
+					"value": "kLastItemViewFlag<<1",
+					"type": "int",
+					"expression": true,
+					"brief": "(appearance) cells are allowed to draw outside their cell rectangle"
+				},
+				{
+					"name": "kListViewAppearanceNoLineBreak",
+					"value": "kLastItemViewFlag<<2",
+					"type": "int",
+					"expression": true,
+					"brief": "(appearance) no line break in icon mode, all icons are placed in one row"
+				},
+				{
+					"name": "kListViewAppearanceExtendLastColumn",
+					"value": "kLastItemViewFlag<<3",
+					"type": "int",
+					"expression": true,
+					"brief": "(appearance) extend last column to right edge of view"
+				},
+				{
+					"name": "kListViewBehaviorSwipeToFocus",
+					"value": "kLastItemViewFlag<<4",
+					"type": "int",
+					"expression": true,
+					"brief": "(behavior) swipe to focus item under touch (like auto-select behavior for mouse)"
+				},
+				{
+					"name": "kListViewAppearanceAutoSizeItems",
+					"value": "kLastItemViewFlag<<5",
+					"type": "int",
+					"expression": true,
+					"brief": "(appearance) auto-size list items to fill the available horizontal space"
+				},
+				{
+					"name": "kListViewAppearanceNoDefaultIcon",
+					"value": "kLastItemViewFlag<<6",
+					"type": "int",
+					"expression": true,
+					"brief": "(appearance) explicitly hide the default icon"
+				},
+				{
+					"name": "kListViewAppearanceAutoCenterIcons",
+					"value": "kLastItemViewFlag<<7",
+					"type": "int",
+					"expression": true,
+					"brief": "(appearance) auto-center list items to fill the available horizontal space"
+				},
+				{
+					"name": "kListViewBehaviorNavigateFlat",
+					"value": "kLastItemViewFlag<<8",
+					"type": "int",
+					"expression": true,
+					"brief": "(behavior) interpret 'Up' / 'Down' and 'Left' / 'Right' commands as 'previous / next item' (no spatial navigation, can be useful with switchable view types)"
+				},
+				{
+					"name": "kListViewAppearanceDrawCustomItem",
+					"value": "kLastItemViewFlag<<9",
+					"type": "int",
+					"expression": true,
+					"brief": "(appearance) application model draws customized item (not the framework)"
+				},
+				{
+					"name": "kListViewAppearanceCenterRows",
+					"value": "kLastItemViewFlag<<10",
+					"type": "int",
+					"expression": true,
+					"brief": "(appearance) center rows in list view"
+				}
+			]
+		},
+		{
+			"name": "DropBoxStyles",
+			"brief": "DropBox styles",
+			"enumerators":
+			[
+				{
+					"name": "kDropBoxLayoutWrapViews",
+					"value": "kLastItemViewFlag<<1",
+					"type": "int",
+					"expression": true,
+					"brief": "(layout) views that don't fit in the container are wrapped to a new row"
+				},
+				{
+					"name": "kDropBoxBehaviorDragNowhereToRemove",
+					"value": "kLastItemViewFlag<<2",
+					"type": "int",
+					"expression": true,
+					"brief": "(behavior) items that are dragged to a place where they cannot be handled are removed"
+				},
+				{
+					"name": "kDropBoxBehaviorScrollWheel",
+					"value": "kLastItemViewFlag<<3",
+					"type": "int",
+					"expression": true,
+					"brief": "(behavior) enable mousewheel scrolling (can be unpleasant if child views also handle the wheel, e.g. controls)"
+				},
+				{
+					"name": "kDropBoxLayoutAlignEnd",
+					"value": "kLastItemViewFlag<<4",
+					"type": "int",
+					"expression": true,
+					"brief": "(layout) align views at right (horizontal) or bottom (vertical) of DropBox instead of left / top"
+				},
+				{
+					"name": "kDropBoxAppearanceColorize",
+					"value": "kLastItemViewFlag<<5",
+					"type": "int",
+					"expression": true,
+					"brief": "(appearance) fill with background color"
+				},
+				{
+					"name": "kDropBoxLayoutCentered",
+					"value": "kLastItemViewFlag<<6",
+					"type": "int",
+					"expression": true,
+					"brief": "(layout) views are centered inside the dropbox"
+				},
+				{
+					"name": "kDropBoxLayoutAutoResize",
+					"value": "kLastItemViewFlag<<7",
+					"type": "int",
+					"expression": true,
+					"brief": "(layout) dropbox height is resized to content when views are wrapped"
+				},
+				{
+					"name": "kDropBoxLayoutCommonBaseSize",
+					"value": "kLastItemViewFlag<<8",
+					"type": "int",
+					"expression": true,
+					"brief": "(layout) layout is calculated based on a common initial size for all views"
+				}
+			]
+		},
+		{
+			"name": "WindowStyles",
+			"brief": "Window styles",
+			"enumerators":
+			[
+				{
+					"name": "kWindowBehaviorFloating",
+					"value": "1<<0",
+					"type": "int",
+					"expression": true,
+					"brief": "(behavior) window is in floating layer"
+				},
+				{
+					"name": "kWindowAppearanceTitleBar",
+					"value": "1<<1",
+					"type": "int",
+					"expression": true,
+					"brief": "(appearance) window has a title bar"
+				},
+				{
+					"name": "kWindowBehaviorSizable",
+					"value": "1<<2",
+					"type": "int",
+					"expression": true,
+					"brief": "(behavior) window has a sizable border"
+				},
+				{
+					"name": "kWindowBehaviorMaximizable",
+					"value": "1<<3",
+					"type": "int",
+					"expression": true,
+					"brief": "(behavior) windows can be maximized"
+				},
+				{
+					"name": "kWindowBehaviorTopMost",
+					"value": "1<<4",
+					"type": "int",
+					"expression": true,
+					"brief": "(behavior) windows is above other applications"
+				},
+				{
+					"name": "kWindowAppearanceDropShadow",
+					"value": "1<<5",
+					"type": "int",
+					"expression": true,
+					"brief": "(appearance) window has a shadow effect"
+				},
+				{
+					"name": "kWindowBehaviorCenter",
+					"value": "1<<6",
+					"type": "int",
+					"expression": true,
+					"brief": "(behavior) window is shown centered"
+				},
+				{
+					"name": "kWindowBehaviorInflate",
+					"value": "1<<7",
+					"type": "int",
+					"expression": true,
+					"brief": "(behavior) window size should be inflated to fill the main monitor"
+				},
+				{
+					"name": "kWindowBehaviorAutoSeeThru",
+					"value": "1<<8",
+					"type": "int",
+					"expression": true,
+					"brief": "(behavior) window is half-transparent when inactive"
+				},
+				{
+					"name": "kWindowBehaviorPopupSelector",
+					"value": "1<<9",
+					"type": "int",
+					"expression": true,
+					"brief": "(behavior) window that is used by the popup selector, needs to be above anything else"
+				},
+				{
+					"name": "kWindowBehaviorRestoreSize",
+					"value": "1<<10",
+					"type": "int",
+					"expression": true,
+					"brief": "(behavior) restore last known window size"
+				},
+				{
+					"name": "kWindowBehaviorRestorePosition",
+					"value": "1<<11",
+					"type": "int",
+					"expression": true,
+					"brief": "(behavior) restore last known window position"
+				},
+				{
+					"name": "kWindowBehaviorRestoreCenter",
+					"value": "1<<12",
+					"type": "int",
+					"expression": true,
+					"brief": "(behavior) restore last known window center position"
+				},
+				{
+					"name": "kWindowPrivateFlagRestored",
+					"value": "1<<13",
+					"type": "int",
+					"expression": true,
+					"brief": "(private flag) true if window size/position was restored"
+				},
+				{
+					"name": "kWindowAppearanceCustomFrame",
+					"value": "1<<14",
+					"type": "int",
+					"expression": true,
+					"brief": "(appearance) window has a custom frame"
+				},
+				{
+					"name": "kWindowBehaviorIntermediate",
+					"value": "1<<15",
+					"type": "int",
+					"expression": true,
+					"brief": "(behavior) window is below floating windows and above base layer windows"
+				},
+				{
+					"name": "kWindowBehaviorProgressDialog",
+					"value": "1<<16",
+					"type": "int",
+					"expression": true,
+					"brief": "(behavior) window is used as progress dialog"
+				},
+				{
+					"name": "kWindowBehaviorTooltip",
+					"value": "1<<17",
+					"type": "int",
+					"expression": true,
+					"brief": "(behavior) window is used as tooltip"
+				},
+				{
+					"name": "kWindowBehaviorPluginViewHost",
+					"value": "1<<18",
+					"type": "int",
+					"expression": true,
+					"brief": "(behavior) window hosts foreign views"
+				},
+				{
+					"name": "kWindowBehaviorFullscreen",
+					"value": "1<<19",
+					"type": "int",
+					"expression": true,
+					"brief": "(behavior) window can enter fullscreen mode"
+				},
+				{
+					"name": "kWindowBehaviorSheetStyle",
+					"value": "1<<20",
+					"type": "int",
+					"expression": true,
+					"brief": "(behavior) sheet presentation (not available on all platforms)"
+				},
+				{
+					"name": "kWindowAppearanceRoundedCorners",
+					"value": "1<<21",
+					"type": "int",
+					"expression": true,
+					"brief": "(appearance) window with custom frame can have rounded corners (not available on all platforms)"
+				},				 
+				{
+					"name": "kWindowCombinedStyleDefault",
+					"value": "kWindowAppearanceTitleBar",
+					"type": "int",
+					"expression": true,
+					"brief": "default window style: title bar"
+				},
+				{
+					"name": "kWindowCombinedStyleSizable",
+					"value": "kWindowAppearanceTitleBar|kWindowBehaviorSizable|kWindowBehaviorMaximizable",
+					"type": "int",
+					"expression": true,
+					"brief": "sizable, maximizable window"
+				},
+				{
+					"name": "kWindowCombinedStylePanel",
+					"value": "kWindowAppearanceTitleBar|kWindowBehaviorFloating",
+					"type": "int",
+					"expression": true,
+					"brief": "panel window style: title bar, floating"
+				},
+				{
+					"name": "kWindowCombinedStyleDialog",
+					"value": "kWindowAppearanceTitleBar|kWindowBehaviorCenter",
+					"type": "int",
+					"expression": true,
+					"brief": "default dialog window style: title bar, centered"
+				}
+			]
+		},
+		{
+			"name": "BoxLayoutStyles",
+			"brief": "LayoutView styles",
+			"enumerators":
+			[
+				{
+					"name": "kLayoutReverse",
+					"value": "1<<0",
+					"type": "int",
+					"expression": true,
+					"brief": "start placing views at right (bottom) edge"
+				},
+				{
+					"name": "kLayoutUnifySizes",
+					"value": "1<<1",
+					"type": "int",
+					"expression": true,
+					"brief": "try to give all views the same height (horizontal) or width (vertical)"
+				},
+				{
+					"name": "kLayoutWrap",
+					"value": "1<<2",
+					"type": "int",
+					"expression": true,
+					"brief": "views that don't fit in the container are wrapped to a new row"
+				},
+				{
+					"name": "kLayoutHidePriority",
+					"value": "1<<3",
+					"type": "int",
+					"expression": true,
+					"brief": "views that don't fit in the container are hidden, lowest priority first"
+				},
+				{
+					"name": "kLayoutNoMinLimit",
+					"value": "1<<4",
+					"type": "int",
+					"expression": true,
+					"brief": "layout view reports 0 as minimum width (height), ignoring the value calculated from child views"
+				},
+				{
+					"name": "kLayoutAdaptive",
+					"value": "1<<5",
+					"type": "int",
+					"expression": true,
+					"brief": "views get a chance to constrain the proposed size via View::constrainSize ()"
+				},
+				{
+					"name": "kLayoutCommonBaseSize",
+					"value": "1<<6",
+					"type": "int",
+					"expression": true,
+					"brief": "layout is calculated based on a common initial size for all views (updated when a view changes its size)"
+				}
+			]
+		},
+		{
+			"name": "DividerStyles",
+			"brief": "Divider styles",
+			"enumerators":
+			[
+				{
+					"name": "kDividerBehaviorMaster",
+					"value": "1<<0",
+					"type": "int",
+					"expression": true,
+					"brief": "in a group of dividers synced to the same parameter, this divider takes some extra care of syncing the fellow dividers to the parameter"
+				},
+				{
+					"name": "kDividerBehaviorSlave",
+					"value": "1<<1",
+					"type": "int",
+					"expression": true,
+					"brief": "in a group of dividers synced to the same parameter, this divider does not modify the parameter when it moves"
+				},
+				{
+					"name": "kDividerBehaviorReverse",
+					"value": "1<<2",
+					"type": "int",
+					"expression": true,
+					"brief": "the parameter value refers to the distance of the divider from the parent's bottom / right instead of top / left (default)"
+				},
+				{
+					"name": "kDividerBehaviorOutreachLeft",
+					"value": "1<<3",
+					"type": "int",
+					"expression": true,
+					"brief": "the divider's outreach (if defined) should only be applied to the left neighbor"
+				},
+				{
+					"name": "kDividerBehaviorOutreachRight",
+					"value": "1<<4",
+					"type": "int",
+					"expression": true,
+					"brief": "the divider's outreach (if defined) should only be applied to the right neighbor"
+				},
+				{
+					"name": "kDividerBehaviorOutreachTop",
+					"value": "1<<5",
+					"type": "int",
+					"expression": true,
+					"brief": "the divider's outreach (if defined) should only be applied to the top neighbor"
+				},
+				{
+					"name": "kDividerBehaviorOutreachBottom",
+					"value": "1<<6",
+					"type": "int",
+					"expression": true,
+					"brief": "the divider's outreach (if defined) should only be applied to the bottom neighbor"
+				},
+				{
+					"name": "kDividerBehaviorChildrenOnTop",
+					"value": "1<<7",
+					"type": "int",
+					"expression": true,
+					"brief": "divider can have children on top"
+				},
+				{
+					"name": "kDividerBehaviorPush",
+					"value": "1<<8",
+					"type": "int",
+					"expression": true,
+					"brief": "when the divider can't be moved further, it tries to 'push' another near divider to make room"
+				}
+			]
+		},
+		{
+			"name": "ButtonStyles",
+			"brief": "Button styles",
+			"enumerators":
+			[
+				{
+					"name": "kButtonBehaviorImmediate",
+					"value": "1<<0",
+					"type": "int",
+					"expression": true,
+					"brief": "(behavior) parameter is changed on mouse down instead of mouse up"
+				},
+				{
+					"name": "kButtonBehaviorSwipe",
+					"value": "1<<1",
+					"type": "int",
+					"expression": true,
+					"brief": "(behavior) mouse can be dragged over horizontal or vertical row of buttons with the same name (from different controllers) to switch them all to the same value as the first clicked button"
+				},
+				{
+					"name": "kButtonLayoutIgnoreImageSize",
+					"value": "1<<2",
+					"type": "int",
+					"expression": true,
+					"brief": "(layout) background image size is ignored when auto-sizing the button, only title size is used"
+				},
+				{
+					"name": "kButtonBehaviorSilentTracking",
+					"value": "1<<3",
+					"type": "int",
+					"expression": true,
+					"brief": "(behavior) instead of changing the paramter value, a special preview handler is used"
+				},
+				{
+					"name": "kButtonBehaviorSlide",
+					"value": "1<<4",
+					"type": "int",
+					"expression": true,
+					"brief": "(behavior) instead of a simple click, the button can be slided to its new state (dragging the mouse). An additional 'slide' image is used during this manipulation. It should have one frame per button state and an equal number of intermediate frames between them."
+				},
+				{
+					"name": "kButtonBehaviorMomentary",
+					"value": "1<<5",
+					"type": "int",
+					"expression": true,
+					"brief": "(behavior) parameter is changed on mouse down. In case of toggle buttons, the parameter change is just momentary (i.e. does not latch) if the button is pressed longer"
+				},
+				{
+					"name": "kButtonAppearanceMultiLine",
+					"value": "1<<6",
+					"type": "int",
+					"expression": true,
+					"brief": "(appearance) button title will be drawn with wordwrap, requires button width to be set"
+				},
+				{
+					"name": "kButtonAppearanceHideFocus",
+					"value": "1<<7",
+					"type": "int",
+					"expression": true,
+					"brief": "(appearance) don't draw focus rectangle"
+				},
+				{
+					"name": "kButtonBehaviorIntermediate",
+					"value": "1<<8",
+					"type": "int",
+					"expression": true,
+					"brief": "(behavior) parameter is changed on mouse down and back on mouse up"
+				},
+				{
+					"name": "kButtonAppearanceLeadingIcon",
+					"value": "1<<9",
+					"type": "int",
+					"expression": true,
+					"brief": "(appearance) icon sticks to the left with respect to given padding"
+				},
+				{
+					"name": "kButtonAppearanceTrailingIcon",
+					"value": "1<<10",
+					"type": "int",
+					"expression": true,
+					"brief": "(appearance) icon sticks to the right with respect to given padding"
+				},
+				{
+					"name": "kButtonBehaviorPassive",
+					"value": "1<<11",
+					"type": "int",
+					"expression": true,
+					"brief": "(behavior) button is used as passive control, i.e. mouse clicks fall thru"
+				},
+				{
+					"name": "kButtonBehaviorNeedsOptionKey",
+					"value": "1<<12",
+					"type": "int",
+					"expression": true,
+					"brief": "(behavior) button only responds to mouse/touch input when the option key is pressed (multiple modifier requirements can be combined)"
+				},
+				{
+					"name": "kButtonBehaviorNeedsCommandKey",
+					"value": "1<<13",
+					"type": "int",
+					"expression": true,
+					"brief": "(behavior) button only responds to mouse/touch input when the command key is pressed"
+				},
+				{
+					"name": "kButtonBehaviorNeedsShiftKey",
+					"value": "1<<14",
+					"type": "int",
+					"expression": true,
+					"brief": "(behavior) button only responds to mouse/touch input when the shift key is pressed"
+				},
+				{
+					"name": "kButtonAppearanceScaleText",
+					"value": "1<<15",
+					"type": "int",
+					"expression": true,
+					"brief": "(appearance) button uses a dynamic font size to fill the available space"
+				},
+				{
+					"name": "kLastButtonStyle",
+					"value": "kButtonAppearanceScaleText",
+					"type": "int",
+					"expression": true
+				}
+			]
+		},
+		{
+			"name": "ToggleStyles",
+			"brief": "Toggle styles",
+			"enumerators":
+			[
+				{
+					"name": "kToggleBehaviorInvertParam",
+					"value": "kLastButtonStyle<<1",
+					"type": "int",
+					"expression": true,
+					"brief": "parameter is inverted"
+				},
+				{
+					"name": "kLastToggleStyle",
+					"value": "kToggleBehaviorInvertParam",
+					"type": "int",
+					"expression": true,
+					"brief": ""
+				}
+			]
+		},
+		{
+			"name": "MultiToggleStyles",
+			"brief": "MultiToggle styles",
+			"enumerators":
+			[
+				{
+					"name": "kMultiToggleBehaviorDecrement",
+					"value": "kLastToggleStyle<<1",
+					"type": "int",
+					"expression": true,
+					"brief": "parameter is decremented on push"
+				}
+			]
+		},
+		{
+			"name": "CheckBoxStyles",
+			"brief": "CheckBox styles",
+			"enumerators":
+			[
+				{
+					"name": "kCheckBoxBehaviorTriState",
+					"value": "kLastToggleStyle<<1",
+					"type": "int",
+					"expression": true,
+					"brief": "checkbox has three states: off, mixed, on"
+				},
+				{
+					"name": "kLastCheckBoxStyle",
+					"value": "kCheckBoxBehaviorTriState",
+					"type": "int",
+					"expression": true,
+					"brief": ""
+				}
+			]
+		},
+		{
+			"name": "RadioButtonStyles",
+			"brief": "RadioButton styles",
+			"enumerators":
+			[
+				{
+					"name": "kRadioButtonBehaviorToggle",
+					"value": "kLastCheckBoxStyle<<1",
+					"type": "int",
+					"expression": true,
+					"brief": "parameter is set to min if radio value is already set"
+				},
+				{
+					"name": "kLastRadioStyle",
+					"value": "kRadioButtonBehaviorToggle",
+					"type": "int",
+					"expression": true,
+					"brief": ""
+				}
+			]
+		},
+		{
+			"name": "ToolButtonStyles",
+			"brief": "ToolButton styles",
+			"enumerators":
+			[
+				{
+					"name": "kToolButtonBehaviorNoWheel",
+					"value": "kLastRadioStyle<<1",
+					"type": "int",
+					"expression": true,
+					"brief": "no mousewheel"
+				},
+				{
+					"name": "kToolButtonAppearanceFixedIcon",
+					"value": "kLastRadioStyle<<2",
+					"type": "int",
+					"expression": true,
+					"brief": "no mode icons are shown"
+				},
+				{
+					"name": "kToolButtonBehaviorModeToggle",
+					"value": "kLastRadioStyle<<3",
+					"type": "int",
+					"expression": true,
+					"brief": "like toggle option - use when mode parameter is equal to control parameter without off state"
+				}
+			]
+		},
+		{
+			"name": "UpDownButtonStyles",
+			"brief": "UpDownButton styles",
+			"enumerators":
+			[
+				{
+					"name": "kUpDownButtonBehaviorIncrement",
+					"value": "kLastToggleStyle<<1",
+					"type": "int",
+					"expression": true,
+					"brief": "button increments parameter value"
+				},
+				{
+					"name": "kUpDownButtonBehaviorDecrement",
+					"value": "kLastToggleStyle<<2",
+					"type": "int",
+					"expression": true,
+					"brief": "button decrements parameter value"
+				}
+			]
+		},
+		{
+			"name": "LinkViewStyles",
+			"brief": "LinkView styles",
+			"enumerators":
+			[
+				{
+					"name": "kLinkViewAppearanceButton",
+					"value": "kLastButtonStyle<<1",
+					"type": "int",
+					"expression": true,
+					"brief": "link draws as button"
+				},
+				{
+					"name": "kLinkViewAppearanceFitTitle",
+					"value": "kLastButtonStyle<<2",
+					"type": "int",
+					"expression": true,
+					"brief": "fit title to display width"
+				},
+				{
+					"name": "kLinkViewAppearanceTitleAsUrl",
+					"value": "kLastButtonStyle<<3",
+					"type": "int",
+					"expression": true,
+					"brief": "title is the url"
+				}
+			]
+		},
+		{
+			"name": "TextBoxStyles",
+			"brief": "TextBox styles",
+			"enumerators":
+			[
+				{
+					"name": "kTextBoxAppearanceMultiLine",
+					"value": "1<<0",
+					"type": "int",
+					"expression": true,
+					"brief": "multiline text"
+				},
+				{
+					"name": "kTextBoxAppearanceFitText",
+					"value": "1<<1",
+					"type": "int",
+					"expression": true,
+					"brief": "fit text to display width"
+				},
+				{
+					"name": "kTextBoxBehaviorNoContextMenu",
+					"value": "1<<2",
+					"type": "int",
+					"expression": true,
+					"brief": "suppress context menu"
+				},
+				{
+					"name": "kTextBoxAppearanceScaleText",
+					"value": "1<<3",
+					"type": "int",
+					"expression": true,
+					"brief": "uses a dynamic font size to fill the available space"
+				},
+				{
+					"name": "kTextBoxAppearanceMarkupEnabled",
+					"value": "1<<4",
+					"type": "int",
+					"expression": true,
+					"brief": "interpret text markup"
+				},
+				{
+					"name": "kTextBoxBehaviorPasswordEdit",
+					"value": "1<<5",
+					"type": "int",
+					"expression": true,
+					"brief": "password-style editing"
+				},
+				{
+					"name": "kTextBoxBehaviorDoubleClickEdit",
+					"value": "1<<6",
+					"type": "int",
+					"expression": true,
+					"brief": "edit only if double-clicked"
+				},
+				{
+					"name": "kLastTextBoxStyle",
+					"value": "kTextBoxBehaviorDoubleClickEdit",
+					"type": "int",
+					"expression": true,
+					"brief": ""
+				}
+			]
+		},
+		{
+			"name": "ReturnKeyStyles",
+			"brief": "ReturnKey styles",
+			"autoValue":  true,
+			"enumerators":
+			[
+				{
+					"name": "kReturnKeyDefault",
+					"brief": "platform default, for example 'Return'"
+				},
+				{
+					"name": "kReturnKeyGo",
+					"brief": "'Go'"
+				},
+				{
+					"name": "kReturnKeyNext",
+					"brief": "'Next'"
+				},
+				{
+					"name": "kReturnKeySearch",
+					"brief": "'Search'"
+				},
+				{
+					"name": "kReturnKeySend",
+					"brief": "'Send'"
+				},
+				{
+					"name": "kReturnKeyDone",
+					"brief": "'Done'"
+				}
+			]
+		},
+		{
+			"name": "KeyboardTypes",
+			"brief": "Platform Keyboard Type styles",
+			"autoValue":  true,
+			"enumerators":
+			[
+				{
+					"name": "kKeyboardTypeAutomatic",
+					"brief": "input field type derived from parameter type"
+				},
+				{
+					"name": "kKeyboardTypeGeneric",
+					"brief": "default input field"
+				},
+				{
+					"name": "kKeyboardTypeEmail",
+					"brief": "email address input field"
+				},
+				{
+					"name": "kKeyboardTypeUrl",
+					"brief": "URL input field"
+				},
+				{
+					"name": "kKeyboardTypePhoneNumber",
+					"brief": "phone number input field"
+				},
+				{
+					"name": "kKeyboardTypeNumeric",
+					"brief": "numeric input field"
+				},
+				{
+					"name": "kKeyboardTypeNumericSigned",
+					"brief": "numeric input field for signed values"
+				},
+				{
+					"name": "kKeyboardTypeDecimal",
+					"brief": "input field with decimal point"
+				},
+				{
+					"name": "kKeyboardTypeDecimalSigned",
+					"brief": "input field for signed decimal values"
+				}
+			]
+		},
+		{
+			"name": "AutofillType",
+			"brief": "Text field types for autofill",
+			"autoValue":  true,
+			"enumerators":
+			[
+				{
+					"name": "kAutofillTypeNone",
+					"brief": "not defined (default)"
+				},
+				{
+					"name": "kAutofillTypeUsername",
+					"brief": "user account or login name"
+				},
+				{
+					"name": "kAutofillTypeEmail",
+					"brief": "email address"
+				},
+				{
+					"name": "kAutofillTypePassword",
+					"brief": "password"
+				},
+				{
+					"name": "kAutofillTypeNewPassword",
+					"brief": "new password"
+				},
+				{
+					"name": "kAutofillTypeFirstName",
+					"brief": "first name"
+				},
+				{
+					"name": "kAutofillTypeLastName",
+					"brief": "last name"
+				},
+				{
+					"name": "kAutofillTypeCountry",
+					"brief": "country or region name"
+				}
+			]
+		},
+		{
+			"name": "EditBoxStyles",
+			"brief": "EditBox styles",
+			"enumerators":
+			[
+				{
+					"name": "kEditBoxBehaviorDialogEdit",
+					"value": "kLastTextBoxStyle<<1",
+					"type": "int",
+					"expression": true,
+					"brief": "edit has dialog behavior"
+				},
+				{
+					"name": "kEditBoxBehaviorMustHitText",
+					"value": "kLastTextBoxStyle<<2",
+					"type": "int",
+					"expression": true,
+					"brief": "on mouseclick, edit only if the text was hit"
+				},
+				{
+					"name": "kEditBoxBehaviorImmediate",
+					"value": "kLastTextBoxStyle<<3",
+					"type": "int",
+					"expression": true,
+					"brief": "parameter gets updates while editing"
+				},
+				{
+					"name": "kEditBoxAppearanceHideText",
+					"value": "kLastTextBoxStyle<<4",
+					"type": "int",
+					"expression": true,
+					"brief": "do not display text"
+				},
+				{
+					"name": "kEditBoxBehaviorNoWheel",
+					"value": "kLastTextBoxStyle<<5",
+					"type": "int",
+					"expression": true,
+					"brief": "no mousewheel"
+				},
+				{
+					"name": "kEditBoxBehaviorNoSuggestions",
+					"value": "kLastTextBoxStyle<<6",
+					"type": "int",
+					"expression": true,
+					"brief": "no text suggestions"
+				},
+				{
+					"name": "kEditBoxBehaviorNoClearButton",
+					"value": "kLastTextBoxStyle<<7",
+					"type": "int",
+					"expression": true,
+					"brief": "no clear button (X)"
+				},
+				{
+					"name": "kEditBoxBehaviorExtended",
+					"value": "kLastTextBoxStyle<<8",
+					"type": "int",
+					"expression": true,
+					"brief": "use framework editing implementation instead of native text control (regardless of global configuration)"
+				},
+				{
+					"name": "kEditBoxBehaviorDragText",
+					"value": "kLastTextBoxStyle<<9",
+					"type": "int",
+					"expression": true,
+					"brief": "drag a text selection to another position to cut and paste it"
+				},
+				{
+					"name": "kEditBoxBehaviorPermanentCaret",
+					"value": "kLastTextBoxStyle<<10",
+					"type": "int",
+					"expression": true,
+					"brief": "show caret permanently when not focused"
+				},
+				{
+					"name": "kEditBoxAppearanceOpaqueEdit",
+					"value": "kLastTextBoxStyle<<11",
+					"type": "int",
+					"expression": true,
+					"brief": "draw background while editing, even if the control is transparent"
+				},
+				{
+					"name": "kLastEditBoxStyle",
+					"value": "kEditBoxAppearanceOpaqueEdit",
+					"type": "int",
+					"expression": true,
+					"brief": ""
+				}
+			]
+		},
+		{
+			"name": "ValueBoxStyles",
+			"brief": "ValueBox styles",
+			"enumerators":
+			[
+				{
+					"name": "kValueBoxBehaviorNoDrag",
+					"value": "kLastEditBoxStyle<<1",
+					"type": "int",
+					"expression": true,
+					"brief": "drag events can be handled by controls beneath."
+				},
+				{
+					"name": "kValueBoxBehaviorXYEdit",
+					"value": "kLastEditBoxStyle<<2",
+					"type": "int",
+					"expression": true,
+					"brief": "use xyediting with a default sensitivity of 200 points and set the vertical size cursor immediately"
+				},
+				{
+					"name": "kLastValueBoxStyle",
+					"value": "kValueBoxBehaviorXYEdit",
+					"type": "int",
+					"expression": true,
+					"brief": ""
+				}
+			]
+		},
+		{
+			"name": "SelectBoxStyles",
+			"brief": "SelectBox styles",
+			"enumerators":
+			[
+				{
+					"name": "kSelectBoxAppearanceHideText",
+					"value": "kLastTextBoxStyle<<1",
+					"type": "int",
+					"expression": true,
+					"brief": "do not display text"
+				},
+				{
+					"name": "kSelectBoxAppearanceHideFocus",
+					"value": "kLastTextBoxStyle<<2",
+					"type": "int",
+					"expression": true,
+					"brief": "don't draw focus rectangle"
+				},
+				{
+					"name": "kSelectBoxAppearanceHideButton",
+					"value": "kLastTextBoxStyle<<3",
+					"type": "int",
+					"expression": true,
+					"brief": "don't draw the select button"
+				},
+				{
+					"name": "kSelectBoxBehaviorIgnoreKeys",
+					"value": "kLastTextBoxStyle<<4",
+					"type": "int",
+					"expression": true,
+					"brief": "ignore arrow keys (when menu closed); Option+Up/Down is still handled to open the menu"
+				},
+				{
+					"name": "kSelectBoxBehaviorInverseWheel",
+					"value": "kLastTextBoxStyle<<5",
+					"type": "int",
+					"expression": true,
+					"brief": "inverse mousewheel direction"
+				},
+				{
+					"name": "kSelectBoxBehaviorStayOpenOnClick",
+					"value": "kLastTextBoxStyle<<6",
+					"type": "int",
+					"expression": true,
+					"brief": "popup stays open on single click on an item, closes on doubleclick"
+				},
+				{
+					"name": "kSelectBoxAppearanceLeadingButton",
+					"value": "kLastTextBoxStyle<<7",
+					"type": "int",
+					"expression": true,
+					"brief": "draw the select button on left hand side from the text"
+				},
+				{
+					"name": "kSelectBoxAppearanceTrailingButton",
+					"value": "kLastTextBoxStyle<<8",
+					"type": "int",
+					"expression": true,
+					"brief": "draw the select button on right hand side even when no text is displayed (hidetext)"
+				},
+				{
+					"name": "kSelectBoxAppearanceOffState",
+					"value": "kLastTextBoxStyle<<9",
+					"type": "int",
+					"expression": true,
+					"brief": "draw the first item as it is in off state"
+				},
+				{
+					"name": "kSelectBoxBehaviorNoWheel",
+					"value": "kLastTextBoxStyle<<10",
+					"type": "int",
+					"expression": true,
+					"brief": "no mousewheel"
+				},
+				{
+					"name": "kSelectBoxBehaviorNoModifier",
+					"value": "kLastTextBoxStyle<<11",
+					"type": "int",
+					"expression": true,
+					"brief": "mouse down events with modifiers are ignored"
+				},
+				{
+					"name": "kSelectBoxAppearanceHideImage",
+					"value": "kLastTextBoxStyle<<12",
+					"type": "int",
+					"expression": true,
+					"brief": "hide the image taken from the visualStyle 'states' image or the parameter, in case it is an imageprovider"
+				},
+				{
+					"name": "kSelectBoxAppearanceTitleAsText",
+					"value": "kLastTextBoxStyle<<13",
+					"type": "int",
+					"expression": true,
+					"brief": "show view title instead of parameter value"
+				},
+				{
+					"name": "kSelectBoxBehaviorDragOpen",
+					"value": "kLastTextBoxStyle<<14",
+					"type": "int",
+					"expression": true,
+					"brief": "defer opening the menu until mouse is dragged / swipe is detected"
+				},
+				{
+					"name": "kSelectBoxBehaviorCloseMenu",
+					"value": "kLastTextBoxStyle<<15",
+					"type": "int",
+					"expression": true,
+					"brief": "close menu when mouse/touch is outside, even when nothing was selected"
+				}
+			]
+		},
+		{
+			"name": "DialogGroupStyles",
+			"brief": "DialogGroup styles",
+			"enumerators":
+			[
+				{
+					"name": "kDialogGroupAppearancePrimary",
+					"value": "1<<1",
+					"type": "int",
+					"expression": true,
+					"brief": "primary dialog group"
+				},
+				{
+					"name": "kDialogGroupAppearanceSecondary",
+					"value": "1<<2",
+					"type": "int",
+					"expression": true,
+					"brief": "secondary dialog group"
+				}
+			]
+		},
+		{
+			"name": "SliderModes",
+			"brief": "Global slider modes",
+			"autoValue":  true,
+			"enumerators":
+			[
+				{
+					"name": "kSliderModeTouch",
+					"brief": "slider handle must be hit"
+				},
+				{
+					"name": "kSliderModeJump",
+					"brief": "slider handle is allowed to jump"
+				},
+				{
+					"name": "kSliderModeRelative",
+					"brief": "slider can be hit anywhere; handle does not jump but moves relatively"
+				},
+				{
+					"name": "kNumSliderModes"
+				},
+				{
+					"name": "kSliderModeDefault",
+					"value": "kSliderModeJump"
+				}
+			]
+		},
+		{
+			"name": "SliderStyles",
+			"brief": "Slider styles",
+			"enumerators":
+			[
+				{
+					"name": "kSliderAppearanceThinHandle",
+					"value": "1<<0",
+					"type": "int",
+					"expression": true,
+					"brief": "draw thin handle"
+				},
+				{
+					"name": "kSliderBehaviorEditTooltip",
+					"value": "1<<1",
+					"type": "int",
+					"expression": true,
+					"brief": "show value tooltip while editing"
+				},
+				{
+					"name": "kSliderAppearanceBarGraph",
+					"value": "1<<2",
+					"type": "int",
+					"expression": true,
+					"brief": "draw bar graph"
+				},
+				{
+					"name": "kSliderBehaviorGlobalMode",
+					"value": "1<<3",
+					"type": "int",
+					"expression": true,
+					"brief": "follow global slider mode"
+				},
+				{
+					"name": "kSliderAppearanceCentered",
+					"value": "1<<4",
+					"type": "int",
+					"expression": true,
+					"brief": "draw centered bargraph (like bipolar param)"
+				},
+				{
+					"name": "kSliderBehaviorReverse",
+					"value": "1<<5",
+					"type": "int",
+					"expression": true,
+					"brief": "draw reversed value (like reverse param)"
+				},
+				{
+					"name": "kSliderBehaviorSwipe",
+					"value": "1<<6",
+					"type": "int",
+					"expression": true,
+					"brief": "swipe with right mouse button to copy value to related sliders"
+				},
+				{
+					"name": "kSliderBehaviorNoTouchReset",
+					"value": "1<<7",
+					"type": "int",
+					"expression": true,
+					"brief": "don't reset slider via touch input"
+				},
+				{
+					"name": "kSliderAppearanceTickScale",
+					"value": "1<<8",
+					"type": "int",
+					"expression": true,
+					"brief": "draw tick scale in slider (requires a IParamCurve that provides the ITickScale interface)"
+				},
+				{
+					"name": "kSliderBehaviorXYEdit",
+					"value": "1<<9",
+					"type": "int",
+					"expression": true,
+					"brief": "xy editing - enables vertical mouse movements for horizontal sliders and vice versa"
+				},
+				{
+					"name": "kSliderBehaviorOptionClick",
+					"value": "1<<10",
+					"type": "int",
+					"expression": true,
+					"brief": "slider notifies controller on option+click"
+				},
+				{
+					"name": "kSliderBehaviorResetClick",
+					"value": "1<<11",
+					"type": "int",
+					"expression": true,
+					"brief": "slider notifies controller on reset click"
+				},
+				{
+					"name": "kSliderBehaviorDoubleTap",
+					"value": "1<<12",
+					"type": "int",
+					"expression": true,
+					"brief": "slider notifies controller on double tap instead of parameter reset"
+				},
+				{
+					"name": "kSliderBehaviorNoWheel",
+					"value": "1<<13",
+					"type": "int",
+					"expression": true,
+					"brief": "no mousewheel"
+				},
+				{
+					"name": "kSliderBehaviorPassive",
+					"value": "1<<14",
+					"type": "int",
+					"expression": true,
+					"brief": "slider is used as passive control - mouse clicks fall through"
+				},
+				{
+					"name": "kSliderBehaviorInverseWheel",
+					"value": "1<<15",
+					"type": "int",
+					"expression": true,
+					"brief": "inverse mousewheel direction"
+				},
+				{
+					"name": "kSliderAppearanceDefaultCentered",
+					"value": "1<<16",
+					"type": "int",
+					"expression": true,
+					"brief": "default value is used as center value for bargraph style"
+				},
+				{
+					"name": "kLastSliderStyle",
+					"value": "kSliderAppearanceDefaultCentered",
+					"type": "int",
+					"expression": true
+				}
+			]
+		},
+		{
+			"name": "ValueBarStyles",
+			"brief": "ValueBar styles",
+			"enumerators":
+			[
+				{
+					"name": "kValueBarAppearanceCentered",
+					"value": "kSliderAppearanceCentered"
+				}
+			]
+		},
+		{
+			"name": "KnobStyles",
+			"brief": "Knob styles",
+			"enumerators":
+			[
+				{
+					"name": "kKnobAppearanceFilmstrip",
+					"value": "kLastSliderStyle<<1",
+					"type": "int",
+					"expression": true,
+					"brief": "'background' image should be used as a filmstrip"
+				},
+				{
+					"name": "kKnobAppearanceCircle",
+					"value": "kLastSliderStyle<<2",
+					"type": "int",
+					"expression": true,
+					"brief": "a partial circle around the center is drawn"
+				},
+				{
+					"name": "kKnobAppearanceIndicator",
+					"value": "kLastSliderStyle<<3",
+					"type": "int",
+					"expression": true,
+					"brief": "a line from the center to the end of the circle is drawn"
+				},
+				{
+					"name": "kKnobBehaviorEndlessDial",
+					"value": "kLastSliderStyle<<4",
+					"type": "int",
+					"expression": true,
+					"brief": "knob works as an endless dial"
+				}
+			]
+		},
+		{
+			"name": "RangeSliderStyles",
+			"brief": "RangeSlider styles",
+			"enumerators":
+			[
+				{
+					"name": "kRangeSliderBehaviorValidate",
+					"value": "kLastSliderStyle<<1",
+					"type": "int",
+					"expression": true,
+					"brief": "external value changes will be validated (first value cannot be above second value)"
+				},
+				{
+					"name": "kRangeSliderBehaviorLimit",
+					"value": "kLastSliderStyle<<2",
+					"type": "int",
+					"expression": true,
+					"brief": "lower and upper limits for value changes defined by boundaries"
+				},
+				{
+					"name": "kRangeSliderBehaviorInvertible",
+					"value": "kLastSliderStyle<<3",
+					"type": "int",
+					"expression": true,
+					"brief": "first value can be above second value - not compatible with 'validate'"
+				}
+			]
+		},
+		{
+			"name": "ColorBoxStyles",
+			"brief": "ColorBox styles",
+			"enumerators":
+			[
+				{
+					"name": "kColorBoxBehaviorNoWheel",
+					"value": "1<<0",
+					"type": "int",
+					"expression": true,
+					"brief": "no mousewheel"
+				}
+			]
+		},
+		{
+			"name": "SwipeBoxStyles",
+			"brief": "SwipeBox styles",
+			"enumerators":
+			[
+				{
+					"name": "kSwipeBoxBehaviorNoWheel",
+					"value": "1<<0",
+					"type": "int",
+					"expression": true,
+					"brief": "no mousewheel"
+				},
+				{
+					"name": "kSwipeBoxBehaviorIgnoreName",
+					"value": "1<<1",
+					"type": "int",
+					"expression": true,
+					"brief": "target controls don't have to match name of start control"
+				},
+				{
+					"name": "kSwipeBoxBehaviorIgnoreTag",
+					"value": "1<<2",
+					"type": "int",
+					"expression": true,
+					"brief": "target controls don't have to match tag of start control"
+				}
+			]
+		},
+		{
+			"name": "ScrollPickerStyles",
+			"brief": "ScrollPicker styles",
+			"enumerators":
+			[
+				{
+					"name": "kScrollPickerBehaviorWrapAround",
+					"value": "1<<0",
+					"type": "int",
+					"expression": true,
+					"brief": "no stops at min or max - the value is wrapped around when exceeding min/max"
+				},
+				{
+					"name": "kScrollPickerAppearanceFlatBarrel",
+					"value": "1<<1",
+					"type": "int",
+					"expression": true,
+					"brief": "barrel appears to be flat"
+				},
+				{
+					"name": "kScrollPickerAppearanceDigitMode",
+					"value": "1<<2",
+					"type": "int",
+					"expression": true,
+					"brief": "the renderer uses single digit-bitmaps for integer parameters (no wrap- or flat-mode support)"
+				},
+				{
+					"name": "kScrollPickerAppearanceHideImage",
+					"value": "1<<3",
+					"type": "int",
+					"expression": true,
+					"brief": "disable carousel mode for images"
+				}
+			]
+		},
+		{
+			"name": "PlugInViewStyles",
+			"brief": "PlugInView styles",
+			"enumerators":
+			[
+				{
+					"name": "kPlugInViewBehaviorFocus",
+					"value": "1<<0",
+					"type": "int",
+					"expression": true,
+					"brief": "plug-in view takes focus when it's activated"
+				}
+			]
+		},
+		{
+			"name": "TriVectorPadStyles",
+			"brief": "TriVectorPad styles",
+			"enumerators":
+			[
+				{
+					"name": "kTriVectorPadBehaviorKeepLevel",
+					"value": "1<<0",
+					"type": "int",
+					"expression": true,
+					"brief": "combined levels are remembered - only parameter ratios change. (i.e. initial full scale state of all three parameters is reset when moving the handle back to center)"
+				},
+				{
+					"name": "kTriVectorPadAppearanceUpsideDown",
+					"value": "1<<1",
+					"type": "int",
+					"expression": true,
+					"brief": "triangle is upside down"
+				},
+				{
+					"name": "kTriVectorPadBehaviorTooltip",
+					"value": "1<<2",
+					"type": "int",
+					"expression": true,
+					"brief": "show tooltip values"
+				},
+				{
+					"name": "kTriVectorPadBehaviorInvert",
+					"value": "1<<3",
+					"type": "int",
+					"expression": true,
+					"brief": "parameter is inverted"
+				}
+			]
+		},
+		{
+			"name": "WebBrowserViewStyles",
+			"brief": "WebBrowserView styles",
+			"enumerators":
+			[
+				{
+					"name": "kWebBrowserViewBehaviorRestrictToLocal",
+					"value": "1<<0",
+					"type": "int",
+					"expression": true,
+					"brief": "restrict to local pages only"
+				}
+			]
+		}
+	]
+}

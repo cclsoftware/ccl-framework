@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Skin>
+
+	<Styles>
+		<Style name="TuioThisButton" inherit="Standard.Button">
+			<Metric name="buttonMinWidth" value="60"/>
+		</Style>
+		
+	</Styles>
+	<Forms>
+		
+		<Form name="TUIOUserOption">
+			<DialogGroup options="secondary" attach="all">
+				<Vertical attach="all" options="unifysizes">
+					<Horizontal margin="0" spacing="0" attach="left right">
+						<CheckBox name="TUIO.clientEnabled_2" title="Enable TUIO multi-touch devices on UDP port" attach="vcenter"/>
+						<Space width="0" attach="left right"/>
+						<ValueBox name="TUIO.clientPort" width="60" attach="vcenter"/>
+					</Horizontal>
+					<Horizontal margin="0" spacing="0" attach="left right">
+						<Label title="Connect multi-touch device with monitor number" attach="vcenter"/>
+						<Space width="0" attach="left right"/>
+						<ValueBox name="TUIO.monitorNumber" attach="vcenter"/>
+						<Space/>
+						<Button name="TUIO.matchMonitor" title="This" style="TuioThisButton" attach="vcenter"/>
+					</Horizontal>
+					<Horizontal margin="0" spacing="0" attach="left right">
+						<Label title="Number of attached multi-touch devices" attach="vcenter"/>
+						<Space width="0" attach="left right"/>
+						<ValueBox name="TUIO.monitorCount" attach="vcenter"/>
+					</Horizontal>
+				</Vertical>
+			</DialogGroup>
+		</Form>
+		
+	</Forms>
+</Skin>
+

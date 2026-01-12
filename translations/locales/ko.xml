@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LocaleInfo	language="ko" title="한국어">
+	<String x:id="dateFormat" text="%int(3).%int(2).%int(1)"/>				<!-- 9.3.2008 -->
+	<String x:id="friendlyDateFormat" text="%(5), %int(3). %(4) %int(1)"/>	<!-- Sonntag, 9. März 2008 -->
+	<String x:id="timeFormat" text="%int(1:2):%int(2:2):%int(3:2)"/>		<!-- 01:42:00 -->
+	
+	<Attributes x:id="weekdays">
+		<Association key="Sun" value="일요일"/>
+		<Association key="Mon" value="월요일"/>
+		<Association key="Tue" value="화요일"/>
+		<Association key="Wed" value="수요일"/>
+		<Association key="Thu" value="목요일"/>
+		<Association key="Fri" value="금요일"/>
+		<Association key="Sat" value="토요일"/>
+	</Attributes>
+	
+	<Attributes x:id="months">
+		<Association key="Jan" value="1월"/>
+		<Association key="Feb" value="2월"/>
+		<Association key="Mar" value="3월"/>
+		<Association key="Apr" value="4월"/>
+		<Association key="May" value="5월"/>
+		<Association key="Jun" value="6월"/>
+		<Association key="Jul" value="7월"/>
+		<Association key="Aug" value="8월"/>
+		<Association key="Sep" value="9월"/>
+		<Association key="Oct" value="10월"/>
+		<Association key="Nov" value="11월"/>
+		<Association key="Dec" value="12월"/>
+	</Attributes>
+</LocaleInfo>
+

@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<InstallManifest>
+	<InstallFile>
+		 <!--RequiredApp id="myapp.*" minVersion="1.2.3.4" maxVersion="*"/-->
+	</InstallFile>
+</InstallManifest>

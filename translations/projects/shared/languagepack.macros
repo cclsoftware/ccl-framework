@@ -1,0 +1,19 @@
+; Macro definitions for building Language Packs
+
+#beginMacro: copyTable
+
+print: Copying table:$(table) language:$(language)
+
+findPath: #$(InputTableDir) translations modules/tables/$(table).in
+findPathList: #$(TranslationDirs) translations modules/strings/$(language)
+
+setFilter: true
+loadFilter: $(InputTableDir)/modules/tables/$(table).in
+
+setOutputDir: ./$(TempDir)/$(LanguagePack)/tables/$(table)
+setInputDirList: $(TranslationDirs)/modules/strings/$(language)
+copyFolder
+
+resetFilter
+
+#endMacro

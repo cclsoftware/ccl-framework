@@ -1,0 +1,139 @@
+{
+	"enums":
+	[
+		{
+			"name": "PenLineCap",
+			"brief": "Pen line cap style",
+			"enumerators":
+			[
+				{
+					"name": "kPenLineCapButt",
+					"type": "int",
+					"value": "0"
+				},
+				{
+					"name": "kPenLineCapSquare",
+					"type": "int",
+					"value": "1<<8",
+					"expression": true
+				},
+				{
+					"name": "kPenLineCapRound",
+					"type": "int",
+					"value": "2<<8",
+					"expression": true
+				}
+			]
+		},
+		{
+			"name": "PenLineJoin",
+			"brief": "Pen line join style",
+			"enumerators":
+			[
+				{
+					"name": "kPenLineJoinMiter",
+					"type": "int",
+					"value": "0"
+				},
+				{
+					"name": "kPenLineJoinBevel",
+					"type": "int",
+					"value": "1<<16",
+					"expression": true
+				},
+				{
+					"name": "kPenLineJoinRound",
+					"type": "int",
+					"value": "2<<16",
+					"expression": true
+				}
+			]
+		},
+		{
+			"name": "FontStyle",
+			"brief": "Font styles",
+			"enumerators":
+			[
+				{
+					"name": "kFontStyleNormal",
+					"type": "int",
+					"value": "0",
+					"brief": "no decoration"
+				},
+				{
+					"name": "kFontStyleBold",
+					"type": "int",
+					"value": "1<<0",
+					"expression": true,
+					"brief": "bold"
+				},
+				{
+					"name": "kFontStyleItalic",
+					"type": "int",
+					"value": "1<<1",
+					"expression": true,
+					"brief": "italic"
+				},
+				{
+					"name": "kFontStyleUnderline",
+					"type": "int",
+					"value": "1<<2",
+					"expression": true,
+					"brief": "underline"
+				},
+				{
+					"name": "kFontStyleStrikeout",
+					"type": "int",
+					"value": "1<<3",
+					"expression": true,
+					"brief": "strikeout"
+				}
+			]
+		},
+		{
+			"name": "DrawTextOptions",
+			"brief": "Draw text options",
+			"enumerators":
+			[
+				{
+					"name": "kDrawTextOptionsDrawAtBaseline",
+					"type": "int",
+					"value": "1<<0",
+					"expression": true,
+					"brief": "draw with baseline at given point"
+				}
+			]
+		},
+		{
+			"name": "TextFormatOptions",
+			"brief": "Text format flags",
+			"enumerators":
+			[
+				{
+					"name": "kTextFormatOptionsWordBreak",
+					"type": "int",
+					"value": "1<<0",
+					"expression": true,
+					"brief": "break line after last word inside layout rectangle"
+				}
+			]
+		},
+		{
+			"name": "TextLayoutLineMode",
+			"brief": "Text layout line modes",
+			"enumerators":
+			[
+				{
+					"name": "kTextLayoutLineModeSingleLine",
+					"type": "int",
+					"value": "0"
+				},
+				{
+					"name": "kTextLayoutLineModeMultiLine",
+					"type": "int",
+					"value": "1"
+				}
+			]
+		}
+	]
+}

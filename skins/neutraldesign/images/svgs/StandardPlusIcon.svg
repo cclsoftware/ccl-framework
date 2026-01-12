@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="100%" height="100%" viewBox="0 0 28 28" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
+    <g id="Standard.PlusIcon" transform="matrix(0.666767,0,0,0.666767,6.66556,6.66556)">
+        <g transform="matrix(1,0,0,1.02257,1.50023,-0.248307)">
+            <path d="M11,0.825C11,0.37 10.664,0 10.25,0L8.75,0C8.336,0 8,0.37 8,0.825L8,21.175C8,21.63 8.336,22 8.75,22L10.25,22C10.664,22 11,21.63 11,21.175L11,0.825Z" style="fill:rgb(235,235,235);"/>
+        </g>
+        <g transform="matrix(6.12231e-17,0.999849,-1.02257,6.26146e-17,22.2483,1.50143)">
+            <path d="M11,0.825C11,0.37 10.664,0 10.25,0L8.75,0C8.336,0 8,0.37 8,0.825L8,21.175C8,21.63 8.336,22 8.75,22L10.25,22C10.664,22 11,21.63 11,21.175L11,0.825Z" style="fill:rgb(235,235,235);"/>
+        </g>
+    </g>
+</svg>

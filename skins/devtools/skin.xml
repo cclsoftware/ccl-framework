@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Skin>
+	<Includes>
+		<Include name="SpyIcons" url="spyicons.xml"/>
+		<Include name="VSImageLibrary" url="vs2017.xml"/>
+		<Include name="VSImageLibrary" url="vscustom.xml"/>
+
+		<Include url="modelview.xml"/>
+	</Includes>
+
+	<Externals>
+		<External name="@Main.*"/>
+		<External name="Standard.*"/>
+	</Externals>
+</Skin>

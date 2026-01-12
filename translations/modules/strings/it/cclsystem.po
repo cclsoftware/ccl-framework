@@ -1,0 +1,291 @@
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: nativefilesystem.cpp
+msgctxt "FileErrors"
+msgid "Access is denied"
+msgstr "Accesso negato"
+
+#: nativefilesystem.cpp
+msgctxt "FileErrors"
+msgid "Invalid Argument"
+msgstr "Argomento non Valido"
+
+#: nativefilesystem.cpp
+msgctxt "FileErrors"
+msgid "The file exists"
+msgstr "Il file esiste"
+
+#: nativefilesystem.cpp
+msgctxt "FileErrors"
+msgid "The file is in use"
+msgstr "Il file è in uso"
+
+#: nativefilesystem.cpp
+msgctxt "FileErrors"
+msgid "The file is write protected"
+msgstr "Il file è protetto da scrittura"
+
+#: nativefilesystem.cpp
+msgctxt "FileErrors"
+msgid "The system cannot find the file specified"
+msgstr "Il sistema non riesce a trovare il file specificato"
+
+#: nativefilesystem.cpp
+msgctxt "FileErrors"
+msgid "There is not enough space on the disk"
+msgstr "Non c'è abbastanza spazio sul disco"
+
+#: nativefilesystem.cpp
+msgctxt "FileErrors"
+msgid "Too many open files"
+msgstr "Troppi file aperti"
+
+#: nativefilesystem.cpp
+msgctxt "FileErrors"
+msgid "Unknown Error"
+msgstr "Errore Sconosciuto"
+
+#: fileutilities.cpp
+msgctxt "FileType"
+msgid "Application"
+msgstr "Applicazione"
+
+#: fileutilities.cpp
+msgctxt "FileType"
+msgid "Application Extension"
+msgstr "Applicazione Estensione"
+
+#: fileutilities.cpp
+msgctxt "FileType"
+msgid "Binary File"
+msgstr "File Binario"
+
+#: fileutilities.cpp
+msgctxt "FileType"
+msgid "HTML File"
+msgstr "File HTML"
+
+#: fileutilities.cpp
+msgctxt "FileType"
+msgid "JSON File"
+msgstr "File JSON"
+
+#: fileutilities.cpp
+msgctxt "FileType"
+msgid "Java Properties File"
+msgstr "Proprietà File Java"
+
+#: localization/languagepack.cpp
+msgctxt "FileType"
+msgid "Language Pack"
+msgstr "Pacchetto Lingua"
+
+#: fileutilities.cpp
+msgctxt "FileType"
+msgid "PDF File"
+msgstr "File PDF"
+
+#: fileutilities.cpp
+msgctxt "FileType"
+msgid "Package File"
+msgstr "File Package"
+
+#: fileutilities.cpp
+msgctxt "FileType"
+msgid "Rich Text Format"
+msgstr "Rich Text Format"
+
+#: fileutilities.cpp
+msgctxt "FileType"
+msgid "Spreadsheet"
+msgstr "Foglio di Calcolo"
+
+#: fileutilities.cpp
+msgctxt "FileType"
+msgid "Text File"
+msgstr "File di Testo"
+
+#: fileutilities.cpp
+msgctxt "FileType"
+msgid "UBJSON File"
+msgstr "File UBJSON"
+
+#: fileutilities.cpp
+msgctxt "FileType"
+msgid "XML File"
+msgstr "File XML"
+
+#: fileutilities.cpp
+msgctxt "FileType"
+msgid "ZIP File"
+msgstr "File Zip"
+
+#: localization/localeinfo.cpp
+msgctxt "Locales"
+msgid "%(1) days ago"
+msgstr "%(1) giorni fa"
+
+#: localization/localeinfo.cpp
+msgctxt "Locales"
+msgid "%(1) months ago"
+msgstr "%(1) mesi fa"
+
+#: localization/localeinfo.cpp
+msgctxt "Locales"
+msgid "%(1) weeks ago"
+msgstr "%(1) settimane fa"
+
+#: localization/localeinfo.cpp
+msgctxt "Locales"
+msgid "%(1) years ago"
+msgstr "%(1) anni fa"
+
+#: localization/localeinfo.cpp
+msgctxt "Locales"
+msgid "GB"
+msgstr "GB"
+
+#: localization/localeinfo.cpp
+msgctxt "Locales"
+msgid "In %(1) days"
+msgstr "In %(1) giorni"
+
+#: localization/localeinfo.cpp
+msgctxt "Locales"
+msgid "In %(1) hours"
+msgstr "In %(1) ore"
+
+#: localization/localeinfo.cpp
+msgctxt "Locales"
+msgid "In less than one hour"
+msgstr "In meno di un'ora"
+
+#: localization/localeinfo.cpp
+msgctxt "Locales"
+msgid "In one day"
+msgstr "In un giorno"
+
+#: localization/localeinfo.cpp
+msgctxt "Locales"
+msgid "In one hour"
+msgstr "In un'ora"
+
+#: localization/localeinfo.cpp
+msgctxt "Locales"
+msgid "KB"
+msgstr "KB"
+
+#: localization/localeinfo.cpp
+msgctxt "Locales"
+msgid "KB/sec"
+msgstr "KB/sec"
+
+#: localization/localeinfo.cpp
+msgctxt "Locales"
+msgid "Last month"
+msgstr "Ultimo Mese"
+
+#: localization/localeinfo.cpp
+msgctxt "Locales"
+msgid "Last week"
+msgstr "Ultima Settimana"
+
+#: localization/localeinfo.cpp
+msgctxt "Locales"
+msgid "Last year"
+msgstr "Ultimo Anno"
+
+#: localization/localeinfo.cpp
+msgctxt "Locales"
+msgid "MB"
+msgstr "MB"
+
+#: localization/localeinfo.cpp
+msgctxt "Locales"
+msgid "MB/sec"
+msgstr "MB/sec"
+
+#: localization/localeinfo.cpp
+msgctxt "Locales"
+msgid "TB"
+msgstr "TB"
+
+#: localization/localeinfo.cpp
+msgctxt "Locales"
+msgid "Today"
+msgstr "Oggi"
+
+#: localization/localeinfo.cpp
+msgctxt "Locales"
+msgid "Yesterday"
+msgstr "Ieri"
+
+#: localization/localeinfo.cpp
+msgctxt "Locales"
+msgid "bytes"
+msgstr "byte"
+
+#: localization/localeinfo.cpp
+msgctxt "Locales"
+msgid "days"
+msgstr "giorni"
+
+#: localization/localeinfo.cpp
+msgctxt "Locales"
+msgid "hours"
+msgstr "ore"
+
+#: localization/localeinfo.cpp
+msgctxt "Locales"
+msgid "min"
+msgstr "min"
+
+#: localization/localeinfo.cpp
+msgctxt "Locales"
+msgid "sec"
+msgstr "sec"
+
+#: packaging/filearchive.cpp
+msgctxt "PackageFile"
+msgid "Packaging: %(1)"
+msgstr "Compressione: %(1)"
+
+#: plugins/plugmanager.cpp
+msgctxt "PlugInManager"
+msgid "Deleted script object from \"%(1)\" is still referenced."
+msgstr "Oggetto script eliminato da \"%(1)\" è ancora referenziato."
+
+#: plugins/plugcollect.cpp
+msgctxt "PlugIns"
+msgid "%(1) has been blocked."
+msgstr "%(1) è stato bloccato."
+
+#: plugins/servicemanager.cpp
+msgctxt "ServiceManager"
+msgid "%(1) failed!"
+msgstr "%(1) non riuscito!"
+
+#: plugins/servicemanager.cpp
+msgctxt "ServiceManager"
+msgid "Starting %(1)..."
+msgstr "Avvio di %(1)..."
+
+#~ msgctxt "FileType"
+#~ msgid "Zip File"
+#~ msgstr "File Zip"
+
+#~ msgctxt "PlugIns"
+#~ msgid "%(1) ignored because it is blacklisted."
+#~ msgstr "%(1) ignorato perchè è nella blacklist"
+
+#~ msgctxt "PlugIns"
+#~ msgid "%(1) ignored, because it crashed before."
+#~ msgstr "%(1) ignorato, perché è andato in crash precedentemente."
+
+#~ msgctxt "ServiceManager"
+#~ msgid "Stopping %(1)..."
+#~ msgstr "Arresto di %(1) ..."

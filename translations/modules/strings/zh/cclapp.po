@@ -1,0 +1,2494 @@
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: actions/actionjournal.cpp
+msgctxt "Action"
+msgid "Redo"
+msgstr "重做"
+
+#: actions/actionjournal.cpp
+msgctxt "Action"
+msgid "Undo"
+msgstr "撤销"
+
+#: safety/appsafetymanager.cpp
+msgctxt "AppSafetyManager"
+msgid "Add plug-in to the Blocklist."
+msgstr "将插件添加到屏蔽列表中。"
+
+#: safety/appsafetymanager.cpp
+msgctxt "AppSafetyManager"
+msgid "Block %(1)"
+msgstr "阻止 %(1)"
+
+#: safety/appsafetymanager.cpp
+msgctxt "AppSafetyManager"
+msgid "Diagnostics Report"
+msgstr "诊断报告"
+
+#: safety/appsafetymanager.cpp
+msgctxt "AppSafetyManager"
+msgid "Disable %(1)"
+msgstr "禁用 %(1)"
+
+#: safety/appsafetymanager.cpp
+msgctxt "AppSafetyManager"
+msgid "Disable service until next time you start $APPNAME."
+msgstr "禁用服务直至下一次您开启 $APPNAME。"
+
+#: safety/appsafetymanager.cpp
+msgctxt "AppSafetyManager"
+msgid "Open \"%(1)\" with safety options"
+msgstr "使用安全选项打开“%(1)”"
+
+#: safety/appsafetymanager.cpp
+msgctxt "AppSafetyManager"
+msgid "Please save your work and restart $APPNAME."
+msgstr "请保存您的工作并重新启动 $APPNAME。"
+
+#: safety/appsafetymanager.cpp
+msgctxt "AppSafetyManager"
+msgid "The following plug-ins didn't work as expected:"
+msgstr "下列插件未能达到预期效果："
+
+#: safety/appsafetymanager.cpp
+msgctxt "AppSafetyManager"
+msgid "We're sorry. $APPNAME noticed a problem."
+msgstr "很抱歉。$APPNAME 发现了一个问题。"
+
+#: safety/appsafetymanager.cpp
+msgctxt "AppSafetyManager"
+msgid "We're sorry. $APPNAME quit unexpectedly."
+msgstr "抱歉。 $APPNAME 意外退出。"
+
+#: safety/appsafety.cpp
+msgctxt "AppSafetyProviders"
+msgid "Do not load $APPCOMPANY plug-ins"
+msgstr "不加载 $APPCOMPANY 插件"
+
+#: safety/appsafety.cpp
+msgctxt "AppSafetyProviders"
+msgid "Do not load plug-ins made by $APPCOMPANY."
+msgstr "不加载 $APPCOMPANY 旗下的插件。"
+
+#: safety/appsafety.cpp
+msgctxt "AppSafetyProviders"
+msgid "Do not load plug-ins made by third-party vendors."
+msgstr "不加载第三方厂商制作的插件。"
+
+#: safety/appsafety.cpp
+msgctxt "AppSafetyProviders"
+msgid "Do not load third-party plug-ins"
+msgstr "不加载第三方插件"
+
+#: safety/appsafety.cpp
+msgctxt "AppSafetyProviders"
+msgid "Find items with long load times."
+msgstr "查找加载时间长的项目。"
+
+#: safety/appsafety.cpp
+msgctxt "AppSafetyProviders"
+msgid "Find items with long save times or large size."
+msgstr "查找保存耗时较长或文件大小过大的项目。"
+
+#: safety/appsafety.cpp
+msgctxt "AppSafetyProviders"
+msgid "Profile document loading"
+msgstr "配置文档加载"
+
+#: safety/appsafety.cpp
+msgctxt "AppSafetyProviders"
+msgid "Profile document saving"
+msgstr "配置文档保存"
+
+#: application.cpp
+msgctxt "Application"
+msgid "$APPNAME can not shutdown right now!"
+msgstr "$APPNAME无法马上关闭！"
+
+#: application.cpp
+msgctxt "Application"
+msgid "An instance of $APPNAME is already running."
+msgstr "$APPNAME 已在运行。"
+
+#: application.cpp
+msgctxt "Application"
+msgid "Do you want to restart $APPNAME now?"
+msgstr "是否现在重启$APPNAME？"
+
+#: application.cpp
+msgctxt "Application"
+msgid "Failed to load application theme!"
+msgstr "程序主题加载失败！"
+
+#: application.cpp
+msgctxt "Application"
+msgid "Please restart $APPNAME for the changes to take effect."
+msgstr "重启$APPNAME以使改变生效。"
+
+#: application.cpp
+msgctxt "Application"
+msgid "Scanning Languages..."
+msgstr "正在扫描语言..."
+
+#: application.cpp
+msgctxt "Application"
+msgid "Scanning Plug-Ins..."
+msgstr "正在扫描插件..."
+
+#: application.cpp
+msgctxt "Application"
+msgid "Scanning Scripts..."
+msgstr "正在扫描脚本..."
+
+#: application.cpp
+msgctxt "Application"
+msgid "Welcome to %(1)!"
+msgstr "欢迎使用%(1)！"
+
+#: documents/autosaver.cpp
+msgctxt "Autosave"
+msgid "A backup of the original file has been found."
+msgstr "找到一个原始文件的备份。"
+
+#: documents/autosaver.cpp
+msgctxt "Autosave"
+msgid "A backup that is newer than the original file has been found."
+msgstr "找到一个新于原始文件的备份。"
+
+#: documents/autosaver.cpp
+msgctxt "Autosave"
+msgid "Do you want to keep the backup as a version?"
+msgstr "是否保留备份作为一个版本？"
+
+#: documents/autosaver.cpp
+msgctxt "Autosave"
+msgid "Do you want to open the backup?"
+msgstr "是否打开备份？"
+
+#: documents/autosaver.cpp
+msgctxt "Autosave"
+msgid "The original file will be kept as a version then."
+msgstr "原始文件将保存为一个版本。"
+
+#: browser/browsernode.cpp
+msgctxt "Browser"
+msgid "Add to Favorites"
+msgstr "添加至收藏"
+
+#: browser/pluginnodes.cpp
+msgctxt "Browser"
+msgid "Are you sure you want to reset the plug-in browser to default?"
+msgstr "是否确认将插件浏览器重置为默认设置？"
+
+#: browser/pluginnodes.cpp
+msgctxt "Browser"
+msgid "Are you sure you want to revert your last plug-in browser changes?"
+msgstr "是否确实要恢复插件浏览器的上一次改变？"
+
+#: browser/browser.cpp
+msgctxt "Browser"
+msgid "Close Tab"
+msgstr "关闭标签"
+
+#: browser/filesystemnodes.cpp
+msgctxt "Browser"
+msgid "Content"
+msgstr "内容"
+
+#: browser/pluginnodes.cpp
+msgctxt "Browser"
+msgid "Delete Thumbnail"
+msgstr "删除缩略图"
+
+#: browser/filebrowser.cpp
+msgctxt "Browser"
+msgid "Desktop"
+msgstr "桌面"
+
+#: browser/browsernode.cpp
+msgctxt "Browser"
+msgid "Do you want to remove these folders?"
+msgstr "是否确认移除这些文件夹？"
+
+#: browser/browsernode.cpp
+msgctxt "Browser"
+msgid "Do you want to remove this folder?"
+msgstr "是否确认移除此文件夹？"
+
+#: browser/filebrowser.cpp
+msgctxt "Browser"
+msgid "Documents"
+msgstr "文档"
+
+#: browser/filesystemnodes.cpp
+msgctxt "Browser"
+msgid "Extract Here"
+msgstr "解压到此处"
+
+#: browser/browsernode.cpp
+msgctxt "Browser"
+msgid "Favorite"
+msgstr "收藏"
+
+#: browser/browsernode.cpp
+msgctxt "Browser"
+msgid "Favorites"
+msgstr "收藏"
+
+#: browser/pluginnodes.cpp
+msgctxt "Browser"
+msgid "Hide"
+msgstr "隐藏"
+
+#: browser/filebrowser.cpp
+msgctxt "Browser"
+msgid "Music"
+msgstr "音乐"
+
+#: browser/browser.cpp
+msgctxt "Browser"
+msgid "New Root Tab"
+msgstr "新建根标签"
+
+#: browser/browser.cpp
+msgctxt "Browser"
+msgid "New Tab"
+msgstr "新建标签"
+
+#: browser/browser.cpp
+msgctxt "Browser"
+msgid "New Tab From Here"
+msgstr "从此处新建标签"
+
+#: browser/filesystemnodes.cpp
+msgctxt "Browser"
+msgid "Packages"
+msgstr "包"
+
+#: browser/pluginnodes.cpp
+msgctxt "Browser"
+msgid "Plug-ins"
+msgstr "插件"
+
+#: browser/pluginnodes.cpp
+msgctxt "Browser"
+msgid "Recent"
+msgstr "最近使用"
+
+#: browser/browser.cpp
+msgctxt "Browser"
+msgid "Refresh"
+msgstr "刷新"
+
+#: browser/browsernode.cpp
+msgctxt "Browser"
+msgid "Rename"
+msgstr "重命名"
+
+#: browser/browser.cpp
+msgctxt "Browser"
+msgid "Rename Tab"
+msgstr "重命名标签"
+
+#: browser/pluginnodes.cpp
+msgctxt "Browser"
+msgid "Reset"
+msgstr "重置"
+
+#: browser/browser.cpp
+msgctxt "Browser"
+msgid "Reset Root"
+msgstr "重置根目录"
+
+#: browser/pluginnodes.cpp
+msgctxt "Browser"
+msgid "Revert"
+msgstr "恢复"
+
+#: browser/browser.cpp
+msgctxt "Browser"
+msgid "Set as Root"
+msgstr "设置为根目录"
+
+#: browser/filesystemnodes.cpp
+msgctxt "Browser"
+msgid "Show Package Contents"
+msgstr "显示包目录"
+
+#: browser/browser.cpp
+msgctxt "Browser"
+msgid "Up"
+msgstr "向上"
+
+#: browser/filesystemnodes.cpp
+msgctxt "Browser"
+msgid "Volumes"
+msgstr "卷"
+
+#: utilities/pluginclass.cpp
+msgctxt "CCL"
+msgid "Plug-in Thumbnails"
+msgstr "插件缩略图"
+
+#: safety/appsafety.cpp
+msgctxt "CCLAppSafety"
+msgid "Auto-save"
+msgstr "自动存储"
+
+#: safety/appsafety.cpp
+msgctxt "CCLAppSafety"
+msgid "Open document \"%(1)\""
+msgstr "打开文件“%(1)”"
+
+#: safety/appsafety.cpp
+msgctxt "CCLAppSafety"
+msgid "Quit $APPNAME"
+msgstr "退出 $APPNAME"
+
+#: safety/appsafety.cpp
+msgctxt "CCLAppSafety"
+msgid "Save document \"%(1)\""
+msgstr "保存文件“%(1)”"
+
+#: safety/appsafety.cpp
+msgctxt "CCLAppSafety"
+msgid "Start $APPNAME"
+msgstr "开始 $APPNAME"
+
+#: application.cpp
+msgctxt "Command"
+msgid "About"
+msgstr "关于"
+
+#: application.cpp
+msgctxt "Command"
+msgid "Application"
+msgstr "应用程序"
+
+#: browser/browser.cpp
+msgctxt "Command"
+msgid "Ascend Root"
+msgstr "升序排列根目录"
+
+#: application.cpp browser/browser.cpp navigation/navigatorbase.cpp
+msgctxt "Command"
+msgid "Back"
+msgstr "返回"
+
+#: browser/browser.cpp browser/filesystemnodes.cpp
+msgctxt "Command"
+msgid "Browser"
+msgstr "浏览器"
+
+#: documents/documentmanager.cpp
+msgctxt "Command"
+msgid "Clear Recent Files"
+msgstr "清空最近使用的文件"
+
+#: documents/documentmanager.cpp
+msgctxt "Command"
+msgid "Close"
+msgstr "关闭"
+
+#: documents/documentmanager.cpp
+msgctxt "Command"
+msgid "Close All"
+msgstr "全部关闭"
+
+#: browser/browser.cpp
+msgctxt "Command"
+msgid "Close Tab"
+msgstr "关闭标签"
+
+#: application.cpp
+msgctxt "Command"
+msgid "Contents"
+msgstr "目录"
+
+#: application.cpp
+msgctxt "Command"
+msgid "Context Help"
+msgstr "快捷帮助"
+
+#: editing/editor.cpp
+msgctxt "Command"
+msgid "Copy"
+msgstr "复制"
+
+#: options/customization.cpp
+msgctxt "Command"
+msgid "Customization"
+msgstr "自定义"
+
+#: editing/editor.cpp
+msgctxt "Command"
+msgid "Cut"
+msgstr "剪切"
+
+#: components/stringlistcomponent.cpp editing/editor.cpp
+msgctxt "Command"
+msgid "Delete"
+msgstr "删除"
+
+#: documents/documentmanager.cpp
+msgctxt "Command"
+msgid "Delete Undo History"
+msgstr "删除撤销记录"
+
+#: editing/editor.cpp
+msgctxt "Command"
+msgid "Deselect All"
+msgstr "取消选择"
+
+#: components/searchcomponent.cpp components/stringlistcomponent.cpp documents/documentmanager.cpp editing/editor.cpp
+msgctxt "Command"
+msgid "Edit"
+msgstr "编辑"
+
+#: browser/browser.cpp
+msgctxt "Command"
+msgid "Enter"
+msgstr "进入"
+
+#: presets/presettrader.cpp
+msgctxt "Command"
+msgid "Export Preset"
+msgstr "导出预设"
+
+#: application.cpp documents/documentmanager.cpp
+msgctxt "Command"
+msgid "File"
+msgstr "文件"
+
+#: navigation/navigatorbase.cpp
+msgctxt "Command"
+msgid "Forward"
+msgstr "快进"
+
+#: application.cpp
+msgctxt "Command"
+msgid "Help"
+msgstr "帮助"
+
+#: navigation/navigatorbase.cpp
+msgctxt "Command"
+msgid "Home"
+msgstr "主页"
+
+#: presets/presettrader.cpp
+msgctxt "Command"
+msgid "Import Preset"
+msgstr "导入预设"
+
+#: browser/browser.cpp
+msgctxt "Command"
+msgid "Insert Selected Item"
+msgstr "插入选定项目"
+
+#: editing/editor.cpp
+msgctxt "Command"
+msgid "Invert Selection"
+msgstr "反转所选"
+
+#: application.cpp
+msgctxt "Command"
+msgid "Keyboard Shortcuts"
+msgstr "键盘快捷键"
+
+#: presets/presettrader.cpp
+msgctxt "Command"
+msgid "Load Preset File"
+msgstr "加载预设文件"
+
+#: application.cpp browser/browser.cpp editing/editor.cpp navigation/navigatorbase.cpp
+msgctxt "Command"
+msgid "Navigation"
+msgstr "导航"
+
+#: documents/documentmanager.cpp
+msgctxt "Command"
+msgid "New"
+msgstr "新建"
+
+#: browser/filesystemnodes.cpp
+msgctxt "Command"
+msgid "New Folder"
+msgstr "新建文件夹"
+
+#: browser/browser.cpp
+msgctxt "Command"
+msgid "New Root Tab"
+msgstr "新建根标签"
+
+#: browser/browser.cpp
+msgctxt "Command"
+msgid "New Tab"
+msgstr "新建标签"
+
+#: browser/browser.cpp presets/presetbrowser.cpp
+msgctxt "Command"
+msgid "Next"
+msgstr "下一个"
+
+#: editing/tools/toolbar.cpp
+msgctxt "Command"
+msgid "Next Tool"
+msgstr "下一个工具"
+
+#: documents/documentmanager.cpp
+msgctxt "Command"
+msgid "Open"
+msgstr "打开"
+
+#: application.cpp
+msgctxt "Command"
+msgid "Open Settings Folder"
+msgstr "打开设置文件夹"
+
+#: documents/documentmanager.cpp
+msgctxt "Command"
+msgid "Open with Options"
+msgstr "用选项打开"
+
+#: application.cpp
+msgctxt "Command"
+msgid "Options"
+msgstr "选项"
+
+#: editing/editor.cpp
+msgctxt "Command"
+msgid "Paste"
+msgstr "粘贴"
+
+#: presets/presetbrowser.cpp presets/presetcomponent.cpp presets/presetmanager.cpp presets/presettrader.cpp
+msgctxt "Command"
+msgid "Presets"
+msgstr "预置"
+
+#: browser/browser.cpp presets/presetbrowser.cpp
+msgctxt "Command"
+msgid "Previous"
+msgstr "上一个"
+
+#: editing/tools/toolbar.cpp
+msgctxt "Command"
+msgid "Previous Tool"
+msgstr "上一个工具"
+
+#: application.cpp
+msgctxt "Command"
+msgid "Quit"
+msgstr "退出"
+
+#: presets/presetmanager.cpp
+msgctxt "Command"
+msgid "Re-Index Presets"
+msgstr "重索引预置"
+
+#: documents/documentmanager.cpp
+msgctxt "Command"
+msgid "Recent File"
+msgstr "最近使用的文件"
+
+#: documents/documentmanager.cpp
+msgctxt "Command"
+msgid "Redo"
+msgstr "重做"
+
+#: browser/browser.cpp navigation/navigatorbase.cpp
+msgctxt "Command"
+msgid "Refresh"
+msgstr "刷新"
+
+#: presets/presetmanager.cpp
+msgctxt "Command"
+msgid "Remove Plug-In Settings"
+msgstr "删除插件设置"
+
+#: documents/documentmanager.cpp
+msgctxt "Command"
+msgid "Rename"
+msgstr "重命名"
+
+#: browser/filesystemnodes.cpp
+msgctxt "Command"
+msgid "Rename File"
+msgstr "重命名文件"
+
+#: browser/browser.cpp
+msgctxt "Command"
+msgid "Rename Tab"
+msgstr "重命名标签"
+
+#: presets/presetmanager.cpp
+msgctxt "Command"
+msgid "Reset Blocklist"
+msgstr "重置黑名单"
+
+#: browser/browser.cpp
+msgctxt "Command"
+msgid "Reset Root"
+msgstr "重置根目录"
+
+#: documents/documentmanager.cpp
+msgctxt "Command"
+msgid "Restore Version"
+msgstr "还原版本"
+
+#: documents/documentmanager.cpp
+msgctxt "Command"
+msgid "Revert"
+msgstr "恢复"
+
+#: documents/documentmanager.cpp
+msgctxt "Command"
+msgid "Save"
+msgstr "保存"
+
+#: documents/documentmanager.cpp
+msgctxt "Command"
+msgid "Save As"
+msgstr "另存为"
+
+#: documents/documentmanager.cpp
+msgctxt "Command"
+msgid "Save New Version"
+msgstr "保存新版本"
+
+#: documents/documentmanager.cpp
+msgctxt "Command"
+msgid "Save to New Folder"
+msgstr "保存到新的文件夹"
+
+#: components/searchcomponent.cpp
+msgctxt "Command"
+msgid "Search"
+msgstr "搜索"
+
+#: editing/editor.cpp
+msgctxt "Command"
+msgid "Select All"
+msgstr "全选"
+
+#: browser/filesystemnodes.cpp
+msgctxt "Command"
+msgid "Show in Explorer/Finder"
+msgstr "在资源管理器/Finder中显示"
+
+#: presets/presetcomponent.cpp
+msgctxt "Command"
+msgid "Store Preset"
+msgstr "存储预设"
+
+#: presets/presetcomponent.cpp
+msgctxt "Command"
+msgid "Store as Default Preset"
+msgstr "存储为默认预设"
+
+#: editing/tools/toolbar.cpp
+msgctxt "Command"
+msgid "Tool 1"
+msgstr "工具 1"
+
+#: editing/tools/toolbar.cpp
+msgctxt "Command"
+msgid "Tool 10"
+msgstr "工具 10"
+
+#: editing/tools/toolbar.cpp
+msgctxt "Command"
+msgid "Tool 2"
+msgstr "工具 2"
+
+#: editing/tools/toolbar.cpp
+msgctxt "Command"
+msgid "Tool 3"
+msgstr "工具 3"
+
+#: editing/tools/toolbar.cpp
+msgctxt "Command"
+msgid "Tool 4"
+msgstr "工具 4"
+
+#: editing/tools/toolbar.cpp
+msgctxt "Command"
+msgid "Tool 5"
+msgstr "工具 5"
+
+#: editing/tools/toolbar.cpp
+msgctxt "Command"
+msgid "Tool 6"
+msgstr "工具 6"
+
+#: editing/tools/toolbar.cpp
+msgctxt "Command"
+msgid "Tool 7"
+msgstr "工具 7"
+
+#: editing/tools/toolbar.cpp
+msgctxt "Command"
+msgid "Tool 8"
+msgstr "工具 8"
+
+#: editing/tools/toolbar.cpp
+msgctxt "Command"
+msgid "Tool 9"
+msgstr "工具 9"
+
+#: editing/tools/toolbar.cpp
+msgctxt "Command"
+msgid "Toolbar"
+msgstr "工具栏"
+
+#: documents/documentmanager.cpp
+msgctxt "Command"
+msgid "Undo"
+msgstr "撤销"
+
+#: presets/presetmanager.cpp
+msgctxt "Command"
+msgid "Update Plug-In List"
+msgstr "更新插件列表"
+
+#: presets/presetcomponent.cpp
+msgctxt "Command"
+msgid "Update Preset"
+msgstr "更新预设"
+
+#: editing/addins/editaddindescription.cpp options/customization.cpp
+msgctxt "Command"
+msgid "View"
+msgstr "查看"
+
+#: application.cpp
+msgctxt "Command"
+msgid "Website"
+msgstr "网站"
+
+#: options/customization.cpp
+msgctxt "Customization"
+msgid "Customization"
+msgstr "自定义"
+
+#: options/customization.cpp
+msgctxt "Customization"
+msgid "Customize"
+msgstr "自定义"
+
+#: options/customization.cpp
+msgctxt "Customization"
+msgid "Delete"
+msgstr "删除"
+
+#: options/customization.cpp
+msgctxt "Customization"
+msgid "Delete User Customization"
+msgstr "删除用户自定义"
+
+#: options/customization.cpp
+msgctxt "Customization"
+msgid "Do you want delete all user customization presets?"
+msgstr "您是否希望删除全部自定义预设？"
+
+#: options/customization.cpp
+msgctxt "Customization"
+msgid "Edit Customization"
+msgstr "编辑自定义"
+
+#: options/customization.cpp
+msgctxt "Customization"
+msgid "Keep"
+msgstr "保持"
+
+#: options/customization.cpp
+msgctxt "Customization"
+msgid "Rename"
+msgstr "重命名"
+
+#: options/customization.cpp
+msgctxt "Customization"
+msgid "Revert"
+msgstr "恢复"
+
+#: options/customization.cpp
+msgctxt "Customization"
+msgid "Store"
+msgstr "存储"
+
+#: options/customization.cpp
+msgctxt "Customization"
+msgid "The customization was changed to %(1). Do you want to keep the new customization?"
+msgstr "自定义更改为 %(1)。是否保留新的自定义？"
+
+#: options/customization.cpp
+msgctxt "Customization"
+msgid "User-defined"
+msgstr "用户自定义"
+
+#: utilities/appdiagnostic.cpp
+msgctxt "Diagnostics"
+msgid "<1 KB"
+msgstr "<1 KB"
+
+#: utilities/appdiagnostic.cpp
+msgctxt "Diagnostics"
+msgid "<1 ms"
+msgstr "<1 ms"
+
+#: documents/documentdiagnostic.cpp
+msgctxt "DocumentDiagnostics"
+msgid "%(1) of the time was spent loading other document data."
+msgstr "%(1)的时间用于加载其他文档数据。"
+
+#: documents/documentdiagnostic.cpp
+msgctxt "DocumentDiagnostics"
+msgid "%(1) of the time was spent loading plug-ins."
+msgstr "%(1)的时间用于加载插件。"
+
+#: documents/documentdiagnostic.cpp
+msgctxt "DocumentDiagnostics"
+msgid "%(1) of the time was spent saving other document data."
+msgstr "%(1)的时间用于保存其他文档数据。"
+
+#: documents/documentdiagnostic.cpp
+msgctxt "DocumentDiagnostics"
+msgid "%(1) of the time was spent saving plug-ins."
+msgstr "%(1)的时间用于保存插件。"
+
+#: documents/documentdiagnostic.cpp
+msgctxt "DocumentDiagnostics"
+msgid "Average"
+msgstr "平均数"
+
+#: documents/documentdiagnostic.cpp
+msgctxt "DocumentDiagnostics"
+msgid "Count"
+msgstr "数量"
+
+#: documents/documentdiagnostic.cpp
+msgctxt "DocumentDiagnostics"
+msgid "Document Diagnostics"
+msgstr "文件诊断"
+
+#: documents/documentdiagnostic.cpp
+msgctxt "DocumentDiagnostics"
+msgid "In total, the most time-consuming items are:"
+msgstr "总的来说，最耗时的项目是："
+
+#: documents/documentdiagnostic.cpp
+msgctxt "DocumentDiagnostics"
+msgid "Load duration of plug-ins and document data"
+msgstr "加载插件和文档数据的持续时间"
+
+#: documents/documentdiagnostic.cpp
+msgctxt "DocumentDiagnostics"
+msgid "Loading the document '%(1)' took %(2)."
+msgstr "加载文档“%(1)”需要%(2)。"
+
+#: documents/documentdiagnostic.cpp
+msgctxt "DocumentDiagnostics"
+msgid "Name"
+msgstr "名称"
+
+#: documents/documentdiagnostic.cpp
+msgctxt "DocumentDiagnostics"
+msgid "Save duration of plug-ins and document data"
+msgstr "保存插件和文件数据的持续时间"
+
+#: documents/documentdiagnostic.cpp
+msgctxt "DocumentDiagnostics"
+msgid "Saving the document '%(1)' took %(2)."
+msgstr "保存文档“%(1)”占用 %(2)。"
+
+#: documents/documentdiagnostic.cpp
+msgctxt "DocumentDiagnostics"
+msgid "Size of plug-in presets and other document data"
+msgstr "插件预设和其他文件数据的大小"
+
+#: documents/documentdiagnostic.cpp
+msgctxt "DocumentDiagnostics"
+msgid "These items have a high average load time:"
+msgstr "这些项目的平均加载时间很高："
+
+#: documents/documentdiagnostic.cpp
+msgctxt "DocumentDiagnostics"
+msgid "These items have a high average save time:"
+msgstr "这些项目的平均保存时间较长："
+
+#: documents/documentdiagnostic.cpp
+msgctxt "DocumentDiagnostics"
+msgid "Total"
+msgstr "总计"
+
+#: documents/documenttemplates.cpp
+msgctxt "Documents"
+msgid ""
+"%(1) already exists.\n"
+"Do you want to replace it?"
+msgstr ""
+"%(1)已经存在。\n"
+"是否替换？"
+
+#: documents/documentmanager.cpp
+msgctxt "Documents"
+msgid "%(1) was modified but can't be saved right now. Do you want to save a copy?"
+msgstr "%(1) 已修改但现在无法保存。是否另存为副本？"
+
+#: documents/documentblocks.cpp
+msgctxt "Documents"
+msgid "Additional versions available."
+msgstr "有其他版本可供选择。"
+
+#: documents/documentversions.cpp
+msgctxt "Documents"
+msgid "Age"
+msgstr "存在时间"
+
+#: documents/documentmanager.cpp
+msgctxt "Documents"
+msgid "Are you sure you want to revert all changes?"
+msgstr "确认要恢复所有改变吗？"
+
+#: documents/documentmanager.cpp
+msgctxt "Documents"
+msgid "Can not close %(1) right now!"
+msgstr "无法立即关闭%(1)！"
+
+#: documents/recentdocuments.cpp
+msgctxt "Documents"
+msgid "Clear Recent Files"
+msgstr "清空最近使用的文件"
+
+#: documents/documentmanager.cpp
+msgctxt "Documents"
+msgid "Convert To"
+msgstr "转换为"
+
+#: documents/documentmanager.cpp
+msgctxt "Documents"
+msgid "Could not load %(1)!"
+msgstr "无法加载%(1)！"
+
+#: documents/documentrenamer.cpp
+msgctxt "Documents"
+msgid ""
+"Could not rename %(1)!\n"
+"\n"
+"The file is in use."
+msgstr ""
+"无法重命名%(1)！\n"
+"\n"
+"文件正在使用。"
+
+#: documents/documentrenamer.cpp
+msgctxt "Documents"
+msgid ""
+"Could not rename the folder %(1)!\n"
+"\n"
+"A file in this folder is in use."
+msgstr ""
+"无法重命名文件夹%(1)！\n"
+"\n"
+"该文件夹下有文件正在使用。"
+
+#: documents/documentmanager.cpp
+msgctxt "Documents"
+msgid "Could not save %(1)!"
+msgstr "无法保存%(1)！"
+
+#: documents/documentversions.cpp
+msgctxt "Documents"
+msgid "Date"
+msgstr "日期"
+
+#: documents/documentmanager.cpp documents/documentversions.cpp
+msgctxt "Documents"
+msgid "Description"
+msgstr "描述"
+
+#: documents/documentversions.cpp
+msgctxt "Documents"
+msgid "Discard"
+msgstr "放弃"
+
+#: documents/recentdocuments.cpp
+msgctxt "Documents"
+msgid ""
+"Do you really want to clear the list of recent files?\n"
+"\n"
+"This action can not be undone."
+msgstr ""
+"是否确实要清空最近使用的文件列表？\n"
+"\n"
+"此操作不可撤销。"
+
+#: documents/documentmanager.cpp
+msgctxt "Documents"
+msgid ""
+"Do you really want to delete the Undo History?\n"
+"\n"
+"This action can not be undone."
+msgstr ""
+"确认要删除撤销历史记录吗？\n"
+"\n"
+"此操作无法撤销。"
+
+#: documents/documentmanager.cpp
+msgctxt "Documents"
+msgid "Do you want to merge into %(1)?"
+msgstr "是否要合并至%(1)？"
+
+#: documents/documentmanager.cpp
+msgctxt "Documents"
+msgid "Do you want to remove the reference to it from the Recent list?"
+msgstr "是否将其从最近使用的文件列表中移除？"
+
+#: documents/documentmanager.cpp
+msgctxt "Documents"
+msgid "Do you want to save a copy of %(1) as file format \"%(2)\"?"
+msgstr "是否将%(1)的副本保存为“%(2)”的文件格式？"
+
+#: documents/documentmanager.cpp
+msgctxt "Documents"
+msgid "Do you want to save your changes in %(1)?"
+msgstr "是否将改变保存到%(1)？"
+
+#: documents/documentmanager.cpp
+msgctxt "Documents"
+msgid "Exporting %(1)..."
+msgstr "正在导出：%(1)..."
+
+#: documents/documentmanager.cpp
+msgctxt "Documents"
+msgid "Import as format"
+msgstr "导入为格式"
+
+#: documents/documentmanager.cpp
+msgctxt "Documents"
+msgid "Importing %(1)..."
+msgstr "正在导入：%(1)..."
+
+#: documents/documentmanager.cpp
+msgctxt "Documents"
+msgid "Incremental version"
+msgstr "增量版本"
+
+#: documents/packagedocument.cpp
+msgctxt "Documents"
+msgid "Loading %(1)..."
+msgstr "正在加载%(1)..."
+
+#: documents/packagedocument.cpp
+msgctxt "Documents"
+msgid "Loading: %(1)..."
+msgstr "正在加载：%(1)..."
+
+#: documents/documentmanager.cpp
+msgctxt "Documents"
+msgid "Merge"
+msgstr "合并"
+
+#: documents/documentmanager.cpp
+msgctxt "Documents"
+msgid "Merging %(1)..."
+msgstr "正在合并 %(1)..."
+
+#: documents/documentversions.cpp
+msgctxt "Documents"
+msgid "No other versions of \"%(1)\" were saved."
+msgstr "未保存其他版本的“%(1)”。"
+
+#: documents/documentblocks.cpp
+msgctxt "Documents"
+msgid "No versions found."
+msgstr "未找到版本。"
+
+#: documents/documentmanager.cpp
+msgctxt "Documents"
+msgid "Open %(1)"
+msgstr "打开 %(1)"
+
+#: documents/documentmanager.cpp
+msgctxt "Documents"
+msgid "Open %(1):"
+msgstr "打开 %(1)："
+
+#: documents/documentmanager.cpp
+msgctxt "Documents"
+msgid "Open files:"
+msgstr "打开文件："
+
+#: documents/documentversions.cpp
+msgctxt "Documents"
+msgid "Original"
+msgstr "原始"
+
+#: documents/documentblocks.cpp
+msgctxt "Documents"
+msgid "Pin document to Recent Files list"
+msgstr "将文件固定在最近使用的文件列表中"
+
+#: documents/documentblocks.cpp
+msgctxt "Documents"
+msgid "Pinned"
+msgstr "固定"
+
+#: documents/documentdialog.cpp
+msgctxt "Documents"
+msgid "Please supply a filename."
+msgstr "请提供文件名。"
+
+#: documents/recentdocuments.cpp
+msgctxt "Documents"
+msgid "Recent Files"
+msgstr "最近使用的文件"
+
+#: documents/documentblocks.cpp
+msgctxt "Documents"
+msgid "Remove from Recent Files list"
+msgstr "从最近使用的文件列表中移除"
+
+#: documents/documentmanager.cpp
+msgctxt "Documents"
+msgid "Rename"
+msgstr "重命名"
+
+#: documents/documentversions.cpp
+msgctxt "Documents"
+msgid "Replace"
+msgstr "替换"
+
+#: documents/documentdialog.cpp
+msgctxt "Documents"
+msgid "Reset Folder"
+msgstr "重置文件夹"
+
+#: documents/documentversions.cpp
+msgctxt "Documents"
+msgid ""
+"Restoring version \"%(1)\".\n"
+"\n"
+"Do you want to replace the saved version \"%(2)\" with the current state, or discard the current state?"
+msgstr ""
+"正在还原版本“%(1)”。\n"
+"\n"
+"是否要将保存的版本“%(2)”替换为当前状态，或放弃当前状态？"
+
+#: documents/documentmanager.cpp
+msgctxt "Documents"
+msgid "Save New Version"
+msgstr "保存新版本"
+
+#: documents/packagedocument.cpp
+msgctxt "Documents"
+msgid "Saving %(1)..."
+msgstr "正在保存%(1)..."
+
+#: documents/packagedocument.cpp
+msgctxt "Documents"
+msgid "Saving: %(1)..."
+msgstr "正在保存：%(1)..."
+
+#: documents/documenttemplates.cpp
+msgctxt "Documents"
+msgid "Templates"
+msgstr "模板"
+
+#: documents/documentmanager.cpp
+msgctxt "Documents"
+msgid "The file %(1) could not be found!"
+msgstr "无法找到文件%(1)！"
+
+#: documents/documentmanager.cpp
+msgctxt "Documents"
+msgid "The file format may not preserve all content."
+msgstr "该文件格式可能无法保留全部内容。"
+
+#: documents/documentmanager.cpp
+msgctxt "Documents"
+msgid ""
+"The file has been created with an older version of $APPNAME. After saving the file you will not be able to load it in the old version again.\n"
+"\n"
+"Are you sure you want to continue?"
+msgstr ""
+"此文件是旧版本$APPNAME所创建的。保存后将无法在旧版本中打开。\n"
+"\n"
+"确认要继续吗？"
+
+#: documents/documentmanager.cpp
+msgctxt "Documents"
+msgid "The file is broken or could not be opened."
+msgstr "文件损坏或者无法打开。"
+
+#: documents/documentmanager.cpp
+msgctxt "Documents"
+msgid "The file is in use."
+msgstr "文件正在使用。"
+
+#: documents/documenttemplates.cpp
+msgctxt "Documents"
+msgid "The template could not be saved!"
+msgstr "无法保存此模板！"
+
+#: documents/packagedocument.cpp
+msgctxt "Documents"
+msgid ""
+"This file is not compatible because it has been created with a newer version of $APPNAME.\n"
+"\n"
+"This version: %(1)\n"
+"Generator: %(2)"
+msgstr ""
+"此文件不兼容，因为它由更新版本的$APPNAME所创建。\n"
+"\n"
+"当前版本是：%(1)\n"
+"生成器：%(2)"
+
+#: documents/documentversions.cpp
+msgctxt "Documents"
+msgid "Title"
+msgstr "标题"
+
+#: documents/documentblocks.cpp
+msgctxt "Documents"
+msgid "Unpin document from Recent Files list"
+msgstr "在最近使用的文件列表中取消固定文件"
+
+#: documents/documentmanager.cpp
+msgctxt "Documents"
+msgid "Untitled"
+msgstr "无标题"
+
+#: documents/documentmanager.cpp
+msgctxt "Documents"
+msgid "Use %(1) Format"
+msgstr "使用 %(1) 格式"
+
+#: documents/documentmanager.cpp
+msgctxt "Documents"
+msgid "You do not have write permissions at this file location."
+msgstr "没有此文件位置的写入权限。"
+
+#: components/eulacomponent.cpp
+msgctxt "EULA"
+msgid "%(1) End User License Agreement"
+msgstr "%(1) 最终用户许可协议"
+
+#: components/eulacomponent.cpp
+msgctxt "EULA"
+msgid "%(1) Terms of Service"
+msgstr "%(1) 服务条款"
+
+#: editing/editor.cpp utilities/batchoperation.cpp
+msgctxt "Edit"
+msgid "Copy"
+msgstr "复制"
+
+#: editing/editor.cpp
+msgctxt "Edit"
+msgid "Cut"
+msgstr "剪切"
+
+#: editing/editor.cpp
+msgctxt "Edit"
+msgid "Delete"
+msgstr "删除"
+
+#: editing/editor.cpp
+msgctxt "Edit"
+msgid "Deselect All"
+msgstr "取消选择"
+
+#: editing/editor.cpp
+msgctxt "Edit"
+msgid "Paste"
+msgstr "粘贴"
+
+#: editing/editor.cpp
+msgctxt "Edit"
+msgid "Redo"
+msgstr "重做"
+
+#: editing/editor.cpp
+msgctxt "Edit"
+msgid "Select All"
+msgstr "全选"
+
+#: editing/editor.cpp
+msgctxt "Edit"
+msgid "Undo"
+msgstr "撤销"
+
+#: editing/tasks/edittaskcollection.cpp
+msgctxt "EditTask"
+msgid "No recent items"
+msgstr "无最近使用的项"
+
+#: editing/tasks/edittaskcollection.cpp
+msgctxt "EditTask"
+msgid "Recent items"
+msgstr "最近使用的项"
+
+#: browser/filexportdraghandler.cpp
+msgctxt "FileExport"
+msgid "Download"
+msgstr "下载"
+
+#: browser/filexportdraghandler.cpp
+msgctxt "FileExport"
+msgid "Download to \"%(1)\""
+msgstr "下载至“%(1)”"
+
+#: browser/filexportdraghandler.cpp
+msgctxt "FileExport"
+msgid "Export"
+msgstr "导出"
+
+#: browser/filexportdraghandler.cpp
+msgctxt "FileExport"
+msgid "Export to \"%(1)\""
+msgstr "导出到“%(1)”"
+
+#: components/fileexporter.cpp
+msgctxt "FileExporter"
+msgid "Exported"
+msgstr "已导出"
+
+#: components/fileexporter.cpp
+msgctxt "FileExporter"
+msgid "Exporting"
+msgstr "正在导出"
+
+#: components/fileexporter.cpp
+msgctxt "FileExporter"
+msgid "Exporting %(1)"
+msgstr "正在导出%(1)"
+
+#: utilities/pathclassifier.cpp
+msgctxt "FileInfo"
+msgid "CD/DVD Drive"
+msgstr "CD/DVD驱动器"
+
+#: fileinfo/filepreviewcomponent.cpp
+msgctxt "FileInfo"
+msgid "File information"
+msgstr "文件信息"
+
+#: fileinfo/fileinfocomponent.cpp
+msgctxt "FileInfo"
+msgid "Folder"
+msgstr "文件夹"
+
+#: utilities/pathclassifier.cpp
+msgctxt "FileInfo"
+msgid "Local"
+msgstr "本地"
+
+#: utilities/pathclassifier.cpp
+msgctxt "FileInfo"
+msgid "Remote"
+msgstr "远程"
+
+#: utilities/pathclassifier.cpp
+msgctxt "FileInfo"
+msgid "Removable Drive"
+msgstr "移动硬盘"
+
+#: utilities/pathclassifier.cpp
+msgctxt "FileInfo"
+msgid "Unknown"
+msgstr "未知"
+
+#: utilities/fileoperations.cpp
+msgctxt "FileOperations"
+msgid "Copy"
+msgstr "复制"
+
+#: utilities/fileoperations.cpp
+msgctxt "FileOperations"
+msgid "Copy to \"%(1)\""
+msgstr "复制到“%(1)”"
+
+#: utilities/fileoperations.cpp
+msgctxt "FileOperations"
+msgid "Copy to Root"
+msgstr "复制到根目录"
+
+#: utilities/fileoperations.cpp
+msgctxt "FileOperations"
+msgid "Copying %(1)"
+msgstr "正在复制%(1)"
+
+#: utilities/fileoperations.cpp
+msgctxt "FileOperations"
+msgid "Copying files"
+msgstr "正在复制文件"
+
+#: utilities/fileoperations.cpp
+msgctxt "FileOperations"
+msgid "Create new folder"
+msgstr "新建文件夹"
+
+#: utilities/fileoperations.cpp
+msgctxt "FileOperations"
+msgid "Delete File"
+msgstr "删除文件"
+
+#: utilities/fileoperations.cpp
+msgctxt "FileOperations"
+msgid "Delete Folder"
+msgstr "删除文件夹"
+
+#: utilities/fileoperations.cpp
+msgctxt "FileOperations"
+msgid "Deleting %(1)"
+msgstr "正在删除%(1)"
+
+#: utilities/fileoperations.cpp
+msgctxt "FileOperations"
+msgid "Deleting Files"
+msgstr "正在删除文件"
+
+#: utilities/fileoperations.cpp
+msgctxt "FileOperations"
+msgid "Do you want to copy these files to \"%(1)\"?"
+msgstr "是否将这些文件复制到“%(1)”？"
+
+#: utilities/fileoperations.cpp
+msgctxt "FileOperations"
+msgid "Do you want to copy this file to \"%(1)\"?"
+msgstr "是否将此文件复制到“%(1)”？"
+
+#: utilities/fileoperations.cpp
+msgctxt "FileOperations"
+msgid "Do you want to copy this folder to \"%(1)\"?"
+msgstr "是否将文件夹复制到“%(1)”？"
+
+#: utilities/fileoperations.cpp
+msgctxt "FileOperations"
+msgid "Do you want to delete these files permanently?"
+msgstr "您想永久删除这些文件吗？"
+
+#: utilities/fileoperations.cpp
+msgctxt "FileOperations"
+msgid "Do you want to delete this file permanently?"
+msgstr "您想永久删除这个文件吗？"
+
+#: utilities/fileoperations.cpp
+msgctxt "FileOperations"
+msgid "Do you want to delete this folder permanently?"
+msgstr "您想永久删除这个文件夹吗？"
+
+#: utilities/fileoperations.cpp
+msgctxt "FileOperations"
+msgid "Do you want to move these files to \"%(1)\"?"
+msgstr "是否将这些文件移至“%(1)”？"
+
+#: utilities/fileoperations.cpp
+msgctxt "FileOperations"
+msgid "Do you want to move this file to \"%(1)\"?"
+msgstr "是否将此文件移至“%(1)”？"
+
+#: utilities/fileoperations.cpp
+msgctxt "FileOperations"
+msgid "Do you want to move this folder to \"%(1)\"?"
+msgstr "是否将文件夹移至“%(1)”？"
+
+#: utilities/batchoperation.cpp
+msgctxt "FileOperations"
+msgid "File %(1) of %(2)"
+msgstr "文件%(1)，共%(2)个"
+
+#: utilities/fileoperations.cpp
+msgctxt "FileOperations"
+msgid "Move"
+msgstr "移动"
+
+#: utilities/fileoperations.cpp
+msgctxt "FileOperations"
+msgid "Move to \"%(1)\""
+msgstr "移至“%(1)”"
+
+#: utilities/fileoperations.cpp
+msgctxt "FileOperations"
+msgid "Move to Folder"
+msgstr "移动到文件夹"
+
+#: utilities/fileoperations.cpp
+msgctxt "FileOperations"
+msgid "Move to New Folder"
+msgstr "移动到新文件夹"
+
+#: utilities/fileoperations.cpp
+msgctxt "FileOperations"
+msgid "Move to Root"
+msgstr "移至根目录"
+
+#: utilities/fileoperations.cpp
+msgctxt "FileOperations"
+msgid "Moving %(1)"
+msgstr "正在移动%(1)"
+
+#: utilities/fileoperations.cpp
+msgctxt "FileOperations"
+msgid "Moving files"
+msgstr "正在移动文件"
+
+#: utilities/fileoperations.cpp
+msgctxt "FileOperations"
+msgid "New Folder"
+msgstr "新建文件夹"
+
+#: utilities/fileoperations.cpp
+msgctxt "FileOperations"
+msgid "New folder"
+msgstr "新建文件夹"
+
+#: utilities/fileoperations.cpp
+msgctxt "FileOperations"
+msgid "Rename File"
+msgstr "重命名文件"
+
+#: utilities/fileoperations.cpp
+msgctxt "FileOperations"
+msgid "Rename Folder"
+msgstr "重命名文件夹"
+
+#: utilities/fileoperations.cpp
+msgctxt "FileOperations"
+msgid "Some files could not be copied."
+msgstr "某些文件无法复制。"
+
+#: utilities/fileoperations.cpp
+msgctxt "FileOperations"
+msgid "Some files could not be deleted."
+msgstr "某些文件无法删除。"
+
+#: utilities/fileoperations.cpp
+msgctxt "FileOperations"
+msgid "Some files could not be moved."
+msgstr "某些文件无法移动。"
+
+#: utilities/fileoperations.cpp
+msgctxt "FileOperations"
+msgid ""
+"The file \"%(1)\" could not be moved to trash.\n"
+"\n"
+"Do you want to permanently delete it?"
+msgstr ""
+"无法将文件“%(1)”移至回收站。\n"
+"\n"
+"是否永久删除？"
+
+#: components/filerenamer.cpp
+msgctxt "FileRenamer"
+msgid "A file with this name already exists."
+msgstr "已存在同名文件。"
+
+#: components/filerenamer.cpp
+msgctxt "FileRenamer"
+msgid "A folder with this name already exists."
+msgstr "已存在同名文件夹。"
+
+#: components/filerenamer.cpp
+msgctxt "FileRenamer"
+msgid "An object with this name already exists."
+msgstr "已存在同名对象。"
+
+#: components/filerenamer.cpp
+msgctxt "FileRenamer"
+msgid "Could not rename this file."
+msgstr "无法重命名此文件。"
+
+#: components/filerenamer.cpp
+msgctxt "FileRenamer"
+msgid "Could not rename this folder."
+msgstr "无法重命名此文件夹。"
+
+#: components/filerenamer.cpp
+msgctxt "FileRenamer"
+msgid "Show Extension"
+msgstr "显示扩展"
+
+#: options/filetypeselector.cpp
+msgctxt "FileType"
+msgid "%(1) File"
+msgstr "%(1)文件"
+
+#: options/filetypeselector.cpp
+msgctxt "FileType"
+msgid "Add File Type"
+msgstr "添加文件类型"
+
+#: options/filetypeselector.cpp
+msgctxt "FileType"
+msgid "Category"
+msgstr "类别"
+
+#: components/colorpicker.cpp
+msgctxt "FileType"
+msgid "Color Palette"
+msgstr "调色板"
+
+#: options/filetypeselector.cpp
+msgctxt "FileType"
+msgid "Description"
+msgstr "描述"
+
+#: options/filetypeselector.cpp
+msgctxt "FileType"
+msgid "Extension"
+msgstr "扩展"
+
+#: options/filetypeselector.cpp
+msgctxt "FileType"
+msgid "Icon"
+msgstr "图标"
+
+#: presets/presetfile.cpp
+msgctxt "FileType"
+msgid "Preset"
+msgstr "预设"
+
+#: presets/presetcollection.cpp
+msgctxt "FileType"
+msgid "Preset Collection"
+msgstr "预设合集"
+
+#: presets/presetfile.cpp
+msgctxt "FileType"
+msgid "Presets"
+msgstr "预置"
+
+#: options/filetypeselector.cpp
+msgctxt "FileType"
+msgid "This file type already exists."
+msgstr "文件类型已经存在。"
+
+#: options/filetypeselector.cpp
+msgctxt "FileType"
+msgid "This file type is invalid."
+msgstr "文件类型无效。"
+
+#: components/imageselector.cpp
+msgctxt "ImageSelector"
+msgid "The image size is limited to %(1) x %(2). Do you want to scale the image?"
+msgstr "图像大小限制为%(1) × %(2)。是否进行缩放？"
+
+#: utilities/multiprogress.cpp
+msgctxt "MultiProgress"
+msgid "Step %(1) of %(2)"
+msgstr "步骤%(1)/ %(2)"
+
+#: components/pathselector.cpp
+msgctxt "PathList"
+msgid "Clear History"
+msgstr "清空历史记录"
+
+#: components/pathselector.cpp
+msgctxt "PathList"
+msgid ""
+"Searching the root folder of a volume might be very slow.\n"
+"\n"
+"Do you really want to add %(1)?"
+msgstr ""
+"从根目录下开始搜索可能耗时很长。\n"
+"\n"
+"确认要添加%(1)吗？"
+
+#: components/pathselector.cpp
+msgctxt "PathList"
+msgid "Select"
+msgstr "选择"
+
+#: components/pathselector.cpp
+msgctxt "PathList"
+msgid "Select Default"
+msgstr "选择默认"
+
+#: browser/pluginmanagement.cpp
+msgctxt "PlugInManagement"
+msgid "Avg. Load Time"
+msgstr "平均加载时长"
+
+#: browser/pluginmanagement.cpp
+msgctxt "PlugInManagement"
+msgid "Avg. Preset Size"
+msgstr "平均预设大小"
+
+#: browser/pluginmanagement.cpp
+msgctxt "PlugInManagement"
+msgid "Avg. Save Time"
+msgstr "平均保存时间"
+
+#: browser/pluginmanagement.cpp
+msgctxt "PlugInManagement"
+msgid "Folder"
+msgstr "文件夹"
+
+#: browser/pluginmanagement.cpp
+msgctxt "PlugInManagement"
+msgid "Last Modified"
+msgstr "最后修改"
+
+#: browser/pluginmanagement.cpp
+msgctxt "PlugInManagement"
+msgid "Last Used"
+msgstr "最后一次使用"
+
+#: browser/pluginmanagement.cpp
+msgctxt "PlugInManagement"
+msgid "Name"
+msgstr "名称"
+
+#: browser/pluginmanagement.cpp
+msgctxt "PlugInManagement"
+msgid "Plug-In Manager"
+msgstr "插件管理器"
+
+#: browser/pluginmanagement.cpp
+msgctxt "PlugInManagement"
+msgid "Plug-in duplicates were hidden"
+msgstr "重复插件已被隐藏"
+
+#: browser/pluginmanagement.cpp
+msgctxt "PlugInManagement"
+msgid "Remove Plug-in Settings"
+msgstr "移除插件设置"
+
+#: browser/pluginmanagement.cpp
+msgctxt "PlugInManagement"
+msgid "Type"
+msgstr "类型"
+
+#: browser/pluginmanagement.cpp
+msgctxt "PlugInManagement"
+msgid "Vendor"
+msgstr "供应商"
+
+#: browser/pluginmanagement.cpp
+msgctxt "PlugInManagement"
+msgid "Version"
+msgstr "版本"
+
+#: browser/pluginselector.cpp
+msgctxt "PlugInSelector"
+msgid "(Unknown Vendor)"
+msgstr "（未知供应商）"
+
+#: browser/pluginselector.cpp
+msgctxt "PlugInSelector"
+msgid "Category"
+msgstr "类别"
+
+#: browser/pluginselector.cpp
+msgctxt "PlugInSelector"
+msgid "Flat"
+msgstr "平铺"
+
+#: browser/pluginselector.cpp
+msgctxt "PlugInSelector"
+msgid "Folder"
+msgstr "文件夹"
+
+#: browser/pluginselector.cpp
+msgctxt "PlugInSelector"
+msgid "None"
+msgstr "无"
+
+#: browser/pluginselector.cpp
+msgctxt "PlugInSelector"
+msgid "Type"
+msgstr "类型"
+
+#: browser/pluginselector.cpp
+msgctxt "PlugInSelector"
+msgid "Vendor"
+msgstr "供应商"
+
+#: presets/presetbrowser.cpp
+msgctxt "PresetBrowser"
+msgid "(no presets)"
+msgstr "（无预设）"
+
+#: presets/presettrader.cpp
+msgctxt "Presets"
+msgid "%(1) preset files were imported."
+msgstr "%(1) 预设文件已导入。"
+
+#: presets/presetcomponent.cpp
+msgctxt "Presets"
+msgid "A preset with this name already exists."
+msgstr "已存在同名预设。"
+
+#: presets/presettrader.cpp
+msgctxt "Presets"
+msgid "But it's not a preset for %(1)!"
+msgstr "但它不是%(1)的预设！"
+
+#: presets/presettrader.cpp
+msgctxt "Presets"
+msgid "But none of them is a preset for %(1)!"
+msgstr "但其中没有%(1)的预设！"
+
+#: presets/presetcomponent.cpp
+msgctxt "Presets"
+msgid "Click+Drag Preset"
+msgstr "点击并拖动预设"
+
+#: presets/presetcomponent.cpp
+msgctxt "Presets"
+msgid "Delete Preset"
+msgstr "删除预设"
+
+#: presets/presetcomponent.cpp
+msgctxt "Presets"
+msgid "Do you want to delete these presets?"
+msgstr "是否删除这些预设？"
+
+#: presets/presetcomponent.cpp
+msgctxt "Presets"
+msgid "Do you want to delete this preset?"
+msgstr "是否删除此预设？"
+
+#: presets/presetmanager.cpp
+msgctxt "Presets"
+msgid "Do you want to remove all plug-in settings and perform a full rescan next time you start $APPNAME?"
+msgstr "是否要删除所有插件设置并在下次启动 $APPNAME 时执行完全重新扫描？"
+
+#: presets/presetmanager.cpp
+msgctxt "Presets"
+msgid "Do you want to rescan blocked plug-ins next time you start $APPNAME?"
+msgstr "是否在下次启动$APPNAME时重新扫描黑名单中的插件？"
+
+#: presets/presetcomponent.cpp
+msgctxt "Presets"
+msgid "Do you want to store the current settings as default preset?"
+msgstr "是否将当前设置存储为默认预设？"
+
+#: presets/presetdrag.cpp
+msgctxt "Presets"
+msgid "Enter Name"
+msgstr "输入名字"
+
+#: presets/presettrader.cpp
+msgctxt "Presets"
+msgid "Export %(1)"
+msgstr "导出%(1)"
+
+#: presets/presettrader.cpp
+msgctxt "Presets"
+msgid "Export Preset"
+msgstr "导出预设"
+
+#: presets/presettrader.cpp
+msgctxt "Presets"
+msgid "Import Preset"
+msgstr "导入预设"
+
+#: browser/pluginbrowser.cpp
+msgctxt "Presets"
+msgid "Import Presets"
+msgstr "导入预设"
+
+#: presets/presettrader.cpp
+msgctxt "Presets"
+msgid "Importing Preset"
+msgstr "正在导入预设"
+
+#: presets/presetcomponent.cpp presets/presettrader.cpp
+msgctxt "Presets"
+msgid "Load Preset"
+msgstr "加载预设"
+
+#: presets/presettrader.cpp
+msgctxt "Presets"
+msgid "Load Preset File"
+msgstr "加载预设文件"
+
+#: presets/presetparam.cpp
+msgctxt "Presets"
+msgid "No Preset"
+msgstr "无预设"
+
+#: presets/presetdrag.cpp
+msgctxt "Presets"
+msgid "No matching Preset"
+msgstr "无配对预设"
+
+#: presets/presettrader.cpp
+msgctxt "Presets"
+msgid "One preset file was imported."
+msgstr "已导入一个预设文件。"
+
+#: presets/presettrader.cpp
+msgctxt "Presets"
+msgid "Preset file export failed."
+msgstr "预设文件导出失败。"
+
+#: presets/presetcomponent.cpp
+msgctxt "Presets"
+msgid "Preset:"
+msgstr "预设："
+
+#: presets/presetcomponent.cpp
+msgctxt "Presets"
+msgid "Rename Preset"
+msgstr "重命名预设"
+
+#: presets/presetmanager.cpp
+msgctxt "Presets"
+msgid "Scanning Plug-Ins..."
+msgstr "正在扫描插件..."
+
+#: presets/presetmanager.cpp
+msgctxt "Presets"
+msgid "Scanning Presets..."
+msgstr "正在扫描预设..."
+
+#: presets/presetmanager.cpp
+msgctxt "Presets"
+msgid "Some plug-ins will be updated next time you start $APPNAME."
+msgstr "一些插件将在下次启动$APPNAME时更新。"
+
+#: presets/presetcomponent.cpp
+msgctxt "Presets"
+msgid "Store %(1)"
+msgstr "存储%(1)"
+
+#: presets/presetcomponent.cpp
+msgctxt "Presets"
+msgid "Store Preset"
+msgstr "存储预设"
+
+#: presets/presetcomponent.cpp
+msgctxt "Presets"
+msgid "Store as Default Preset"
+msgstr "存储为默认预设"
+
+#: presets/presettrader.cpp
+msgctxt "Presets"
+msgid "These %(1) files could not be imported:"
+msgstr "无法导入这些%(1)文件："
+
+#: presets/presettrader.cpp
+msgctxt "Presets"
+msgid "This file could not be imported:"
+msgstr "无法导入此文件："
+
+#: presets/presetcomponent.cpp
+msgctxt "Presets"
+msgid "Update Preset"
+msgstr "更新预设"
+
+#: browser/pluginbrowser.cpp
+msgctxt "Presets"
+msgid "Visible"
+msgstr "可见"
+
+#: presets/presetcomponent.cpp
+msgctxt "Presets"
+msgid "default"
+msgstr "默认"
+
+#: editing/scaleview.cpp
+msgctxt "Scale"
+msgid "Move"
+msgstr "移动"
+
+#: editing/scaleview.cpp
+msgctxt "Scale"
+msgid "Move, Zoom"
+msgstr "移动，缩放"
+
+#: editing/scaleview.cpp
+msgctxt "Scale"
+msgid "Zoom"
+msgstr "缩放"
+
+#: browser/searchresultlist.cpp
+msgctxt "Search"
+msgid "Folders"
+msgstr "文件夹"
+
+#: browser/searchresultlist.cpp
+msgctxt "Search"
+msgid "Show in Context"
+msgstr "在上下文中显示"
+
+#: utilities/shellcommand.cpp
+msgctxt "Shell"
+msgid "Show in Explorer"
+msgstr "在浏览器中显示"
+
+#: utilities/shellcommand.cpp
+msgctxt "Shell"
+msgid "Show in File Manager"
+msgstr "在文件管理器中显示"
+
+#: utilities/shellcommand.cpp
+msgctxt "Shell"
+msgid "Show in Finder"
+msgstr "在Finder中显示"
+
+#: options/mainoption.cpp
+msgctxt "SliderMode"
+msgid "Jump"
+msgstr "跳进"
+
+#: options/mainoption.cpp
+msgctxt "SliderMode"
+msgid "Touch"
+msgstr "触控"
+
+#: editing/tools/selecttool.cpp
+msgctxt "ToolHelp"
+msgid "Delete Objects"
+msgstr "删除对象"
+
+#: editing/tools/selecttool.cpp
+msgctxt "ToolHelp"
+msgid "Drag"
+msgstr "拖动"
+
+#: editing/tools/selecttool.cpp
+msgctxt "ToolHelp"
+msgid "Draw Selection"
+msgstr "绘制所选"
+
+#: editing/tools/selecttool.cpp
+msgctxt "ToolHelp"
+msgid "Draw Selection (add)"
+msgstr "绘制所选（添加）"
+
+#: editing/tools/selecttool.cpp
+msgctxt "ToolHelp"
+msgid "Select"
+msgstr "选择"
+
+#: editing/tools/selecttool.cpp
+msgctxt "ToolHelp"
+msgid "Select Range"
+msgstr "选择范围"
+
+#: editing/tools/selecttool.cpp
+msgctxt "ToolHelp"
+msgid "Toggle Select"
+msgstr "切换选择"
+
+#: editing/tools/selecttool.cpp
+msgctxt "ToolHelp"
+msgid "Zoom"
+msgstr "缩放"
+
+#: editing/tools/selecttool.cpp
+msgctxt "Tools"
+msgid "Eraser Tool"
+msgstr "擦除工具"
+
+#: editing/tools/selecttool.cpp
+msgctxt "Tools"
+msgid "Select Tool"
+msgstr "选择工具"
+
+#: options/useroption.cpp
+msgctxt "UserOption"
+msgid "Advanced"
+msgstr "高级"
+
+#: options/mainoption.cpp
+msgctxt "UserOption"
+msgid "Appearance"
+msgstr "外观"
+
+#: options/mainoption.cpp
+msgctxt "UserOption"
+msgid "Dark Mode"
+msgstr "夜间模式"
+
+#: options/serviceoption.cpp
+msgctxt "UserOption"
+msgid "Disable"
+msgstr "禁用"
+
+#: options/commandoption.cpp
+msgctxt "UserOption"
+msgid "Do you want to revert the keyboard mapping scheme to \"%(1)\"?"
+msgstr "是否将键盘映射方案恢复为“%(1)”？"
+
+#: options/serviceoption.cpp
+msgctxt "UserOption"
+msgid "Enable"
+msgstr "启用"
+
+#: options/commandoption.cpp
+msgctxt "UserOption"
+msgid "Export"
+msgstr "导出"
+
+#: options/commandoption.cpp
+msgctxt "UserOption"
+msgid "Export as Text"
+msgstr "导出为文本"
+
+#: options/useroption.cpp
+msgctxt "UserOption"
+msgid "General"
+msgstr "常规"
+
+#: options/mainoption.cpp
+msgctxt "UserOption"
+msgid "Graphics settings will be applied next time you start $APPNAME."
+msgstr "图形设置将在下次启动$APPNAME时应用。"
+
+#: options/mainoption.cpp
+msgctxt "UserOption"
+msgid "High DPI Mode will be changed next time you start $APPNAME."
+msgstr "高DPI模式将在下次启动$APPNAME时更改。"
+
+#: options/commandoption.cpp
+msgctxt "UserOption"
+msgid "Import"
+msgstr "导入"
+
+#: options/commandoption.cpp
+msgctxt "UserOption"
+msgid "Keyboard Shortcuts"
+msgstr "键盘快捷键"
+
+#: options/mainoption.cpp
+msgctxt "UserOption"
+msgid "Language"
+msgstr "语言"
+
+#: options/mainoption.cpp
+msgctxt "UserOption"
+msgid "Language will be changed next time you start $APPNAME."
+msgstr "新的语言将在您重新启动$APPNAME后应用。"
+
+#: options/mainoption.cpp
+msgctxt "UserOption"
+msgid "Light Mode"
+msgstr "日间模式"
+
+#: options/mainoption.cpp options/useroption.cpp
+msgctxt "UserOption"
+msgid "Locations"
+msgstr "位置"
+
+#: options/useroption.cpp
+msgctxt "UserOption"
+msgid "Options"
+msgstr "选项"
+
+#: options/mainoption.cpp
+msgctxt "UserOption"
+msgid "Please note that the user interface of $APPNAME will appear blurry on high resolution screens."
+msgstr "请注意，在高分辨率屏幕上，$APPNAME的用户界面会显得很模糊。"
+
+#: options/mainoption.cpp
+msgctxt "UserOption"
+msgid "Please note that third-party plug-ins will appear smaller if they do not support scaling."
+msgstr "请注意，第三方插件如不支持缩放，则会显示得较小。"
+
+#: options/useroption.cpp
+msgctxt "UserOption"
+msgid "Preferences"
+msgstr "偏好设置"
+
+#: options/serviceoption.cpp
+msgctxt "UserOption"
+msgid "Services"
+msgstr "服务"
+
+#: options/mainoption.cpp
+msgctxt "UserOption"
+msgid "Turning off hardware acceleration will slow down the user interface of $APPNAME and is not recommended for regular use."
+msgstr "关闭硬件加速会拖慢$APPNAME的用户界面响应，通常不建议使用。"
+
+#: options/mainoption.cpp
+msgctxt "UserOption"
+msgid "Use this option only for downwards compatibility with older third-party plug-ins."
+msgstr "此选项仅用于向下兼容旧的第三方插件。"
+
+#: options/mainoption.cpp
+msgctxt "UserOption"
+msgid "User Data"
+msgstr "用户数据"
+
+#: options/mainoption.cpp
+msgctxt "UserOption"
+msgid "User Interface"
+msgstr "用户界面"
+
+#: options/serviceoption.cpp
+msgctxt "UserOption"
+msgid "Your changes will be applied next time you start $APPNAME."
+msgstr "改变将在重新启动$APPNAME后生效。"
+
+#~ msgctxt "Application"
+#~ msgid "An instance of %(1) is already running!"
+#~ msgstr "实例%(1)已经运行!"
+
+#~ msgctxt "Application"
+#~ msgid "Plug-In folder not found at:\n"
+#~ msgstr "此处没有找到插件文件夹:\n"
+
+#~ msgctxt "Application"
+#~ msgid "Script folder not found at:\n"
+#~ msgstr "此处没有找到脚本文件夹:\n"
+
+#~ msgctxt "Autosave"
+#~ msgid "Do you want to open the backup? The original file will be kept as a version then."
+#~ msgstr "是否打开备份？打开后源文件将被保存为一个版本。"
+
+#~ msgctxt "Browser"
+#~ msgid "Show in Explorer"
+#~ msgstr "在资源管理器中显示"
+
+#~ msgctxt "Browser"
+#~ msgid "Show in File Manager"
+#~ msgstr "在文件管理器中显示"
+
+#~ msgctxt "Browser"
+#~ msgid "Show in Finder"
+#~ msgstr "在访达中显示"
+
+#~ msgctxt "Command"
+#~ msgid "Replace Preset"
+#~ msgstr "替换预置"
+
+#~ msgctxt "Command"
+#~ msgid "Reset Blacklist"
+#~ msgstr "重置黑名单"
+
+#~ msgctxt "Command"
+#~ msgid "Update Plug-Ins"
+#~ msgstr "更新插件"
+
+#~ msgctxt "DocumentDiagnostics"
+#~ msgid "<1 KB"
+#~ msgstr "<1 KB"
+
+#~ msgctxt "DocumentDiagnostics"
+#~ msgid "<1 ms"
+#~ msgstr "<1 ms"
+
+#~ msgctxt "Documents"
+#~ msgid "Do you want to save a copy of %(1) as format %(2)?"
+#~ msgstr "是否将%(1)的副本保存为格式%(2)?"
+
+#~ msgctxt "Documents"
+#~ msgid "Loading %(1) canceled."
+#~ msgstr "取消加载%(1)."
+
+#~ msgctxt "FileDraghandler"
+#~ msgid "Copy"
+#~ msgstr "复制"
+
+#~ msgctxt "FileDraghandler"
+#~ msgid "Copy to \"%(1)\""
+#~ msgstr "复制到\"%(1)\""
+
+#~ msgctxt "FileDraghandler"
+#~ msgid "Move"
+#~ msgstr "移动"
+
+#~ msgctxt "FileDraghandler"
+#~ msgid "Move to \"%(1)\""
+#~ msgstr "移至\"%(1)\""
+
+#~ msgctxt "FileOperations"
+#~ msgid "Delete File..."
+#~ msgstr "删除文件..."
+
+#~ msgctxt "FileOperations"
+#~ msgid "Delete Folder..."
+#~ msgstr "删除文件夹..."
+
+#~ msgctxt "FileOperations"
+#~ msgid "Do you want to delete these files permanently from disk?"
+#~ msgstr "是否从磁盘中永久性删除这些文件?"
+
+#~ msgctxt "FileOperations"
+#~ msgid "Do you want to delete this file permanently from disk?"
+#~ msgstr "是否从磁盘中永久性删除此文件?"
+
+#~ msgctxt "FileOperations"
+#~ msgid "Do you want to delete this folder permanently from disk?"
+#~ msgstr "是否从磁盘中永久性删除此文件夹?"
+
+#~ msgctxt "FileOperations"
+#~ msgid "New Folder..."
+#~ msgstr "新建文件夹..."
+
+#~ msgctxt "FileOperations"
+#~ msgid "Rename File..."
+#~ msgstr "重命名文件..."
+
+#~ msgctxt "FileOperations"
+#~ msgid "Rename Folder..."
+#~ msgstr "重命名文件夹..."
+
+#~ msgctxt "KnobMode"
+#~ msgid "Linear"
+#~ msgstr "线性"
+
+#~ msgctxt "Notepad"
+#~ msgid "Edit Note"
+#~ msgstr "编辑注释"
+
+#~ msgctxt "Notepad"
+#~ msgid "Edit Note..."
+#~ msgstr "编辑记录…"
+
+#~ msgctxt "PathList"
+#~ msgid "Select..."
+#~ msgstr "选择..."
+
+#~ msgctxt "PluginDraghandler"
+#~ msgid "Add to Favorites"
+#~ msgstr "添加至收藏夹"
+
+#~ msgctxt "PluginDraghandler"
+#~ msgid "Move to \"%(1)\""
+#~ msgstr "移至\"%(1)\""
+
+#~ msgctxt "PluginDraghandler"
+#~ msgid "Move to Root"
+#~ msgstr "移至根"
+
+#~ msgctxt "Presets"
+#~ msgid "Delete"
+#~ msgstr "删除"
+
+#~ msgctxt "Presets"
+#~ msgid "Do you want to rescan blacklisted plug-ins next time you start $APPNAME?"
+#~ msgstr "是否在下次启动$APPNAME时重新扫描黑名单中的插件?"
+
+#~ msgctxt "Presets"
+#~ msgid "Export %(1)..."
+#~ msgstr "导出%(1)..."
+
+#~ msgctxt "Presets"
+#~ msgid "Export Preset..."
+#~ msgstr "导出预置..."
+
+#~ msgctxt "Presets"
+#~ msgid "Import Preset..."
+#~ msgstr "导入预置..."
+
+#~ msgctxt "Presets"
+#~ msgid "Load Preset File..."
+#~ msgstr "加载预置文件..."
+
+#~ msgctxt "Presets"
+#~ msgid "Rename Preset..."
+#~ msgstr "重命名预置..."
+
+#~ msgctxt "Presets"
+#~ msgid "Replace Preset"
+#~ msgstr "替换预置"
+
+#~ msgctxt "Presets"
+#~ msgid "Store %(1)..."
+#~ msgstr "存储%(1)..."
+
+#~ msgctxt "Presets"
+#~ msgid "Store Preset..."
+#~ msgstr "存储预置..."
+
+#~ msgctxt "ShowHideFilter"
+#~ msgid "New Preset"
+#~ msgstr "新建预设"
+
+#~ msgctxt "TagCategory"
+#~ msgid "Type"
+#~ msgstr "类型"
+
+#~ msgctxt "TagStore"
+#~ msgid "Add Tag"
+#~ msgstr "添加标签"
+
+#~ msgctxt "TagStore"
+#~ msgid "Adding Tags..."
+#~ msgstr "添加标签中..."
+
+#~ msgctxt "TagStore"
+#~ msgid "All tags are valid."
+#~ msgstr "所有标签均有效。"
+
+#~ msgctxt "TagStore"
+#~ msgid "Checking files in \"%(1)\""
+#~ msgstr "正在检查“%(1)”中的文件"
+
+#~ msgctxt "TagStore"
+#~ msgid "Cleanup Tags of Missing Files"
+#~ msgstr "清空缺失文件的标签"
+
+#~ msgctxt "TagStore"
+#~ msgid "Clear Tags"
+#~ msgstr "清空标签"
+
+#~ msgctxt "TagStore"
+#~ msgid "Do you want to remove these tag entries for non-existing files?"
+#~ msgstr "是否确定移除这些不存在文件的标签？"
+
+#~ msgctxt "TagStore"
+#~ msgid "Remove Tag"
+#~ msgstr "移除标签"
+
+#~ msgctxt "TagStore"
+#~ msgid "Updated tags in %(1)\n"
+#~ msgstr "已更新%(1)中的标签\n"
+
+#~ msgctxt "TagStore"
+#~ msgid "other"
+#~ msgstr "其他"
+
+#~ msgctxt "TrashBin"
+#~ msgid "Are you sure you want to permanently delete these %(1) items?"
+#~ msgstr "确认要永久删除这些%(1)项吗？"
+
+#~ msgctxt "TrashBin"
+#~ msgid "Are you sure you want to permanently delete this item?"
+#~ msgstr "确认要永久删除此项吗？"
+
+#~ msgctxt "TrashBin"
+#~ msgid "Delete"
+#~ msgstr "删除"
+
+#~ msgctxt "TrashBin"
+#~ msgid "Empty Trash Bin"
+#~ msgstr "清空回收站"
+
+#~ msgctxt "TrashBin"
+#~ msgid "Restore"
+#~ msgstr "还原"
+
+#~ msgctxt "TrashBin"
+#~ msgid "These items could not be restored!"
+#~ msgstr "无法还原这些项！"
+
+#~ msgctxt "TrashBin"
+#~ msgid "This item could not be restored!"
+#~ msgstr "无法还原此项！"
+
+#~ msgctxt "UserOption"
+#~ msgid "Export as Text..."
+#~ msgstr "导出为文本..."
+
+#~ msgctxt "UserOption"
+#~ msgid "Export..."
+#~ msgstr "导出..."
+
+#~ msgctxt "UserOption"
+#~ msgid "Import..."
+#~ msgstr "导入..."
+
+#~ msgctxt "UserOption"
+#~ msgid "Please note that third party plug-ins will appear smaller if they do not support scaling."
+#~ msgstr "请注意，若第三方插件无法适应缩放比例，则其或被缩小显示。"

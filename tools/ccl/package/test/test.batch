@@ -1,0 +1,7 @@
+#define.win: $(Tool)=../../bin/win/ccl/crypt.exe
+#define.mac: $(Tool)=../../bin/mac/ccl/crypt
+
+replace: test.txt "$(var)"="World" > output.txt
+
+setErrorMode: dontfail
+call: $(Tool)[]-?

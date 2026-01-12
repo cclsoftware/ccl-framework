@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?platform ios?>
+<FileFilter filtermode="exclude">
+	 <FileFilter.File name="cclgui.framework"/>
+	 <FileFilter.File name="ccltext.framework"/>
+	 <FileFilter.File name="cclsystem.framework"/>
+	 <FileFilter.File name="cclsecurity.framework"/>
+	 <FileFilter.File name="cclnet.framework"/>
+</FileFilter>
+<?platform?>

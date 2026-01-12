@@ -1,0 +1,20 @@
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: plugmain.cpp
+msgctxt "TUIO"
+msgid "Support for multi-touch via TUIO protocol"
+msgstr "TUIO 프로토콜을 통한 멀티터치 지원"
+
+#: plugversion.h
+msgctxt "TUIO"
+msgid "TUIO Support"
+msgstr "TUIO 지원"
+
+#: tuiouseroption.cpp
+msgctxt "TUIO"
+msgid "Touch Input"
+msgstr "터치입력"

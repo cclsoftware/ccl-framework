@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Skin>
+	
+	<Resources>
+		<Color name="BaseColor00" 			color="hsl(212,0,0)"/>
+		<Color name="BaseColor05" 			color="hsl(212,0,5)"/>
+		<Color name="BaseColor10" 			color="hsl(212,0,10)"/>
+		<Color name="BaseColor15" 			color="hsl(212,0,15)"/>
+		<Color name="BaseColor20" 			color="hsl(212,0,20)"/>
+		<Color name="BaseColor25" 			color="hsl(212,0,25)"/>
+		<Color name="BaseColor30" 			color="hsl(212,0,30)"/>
+		<Color name="BaseColor35" 			color="hsl(212,0,35)"/>
+		<Color name="BaseColor40" 			color="hsl(212,0,40)"/>
+		<Color name="BaseColor45" 			color="hsl(212,0,45)"/>
+		<Color name="BaseColor50" 			color="hsl(212,0,50)"/>
+		<Color name="BaseColor55" 			color="hsl(212,0,55)"/>
+		<Color name="BaseColor60" 			color="hsl(212,0,60)"/>
+		<Color name="BaseColor65" 			color="hsl(212,0,65)"/>
+		<Color name="BaseColor70" 			color="hsl(212,0,70)"/>
+		<Color name="BaseColor75" 			color="hsl(212,0,75)"/>
+		<Color name="BaseColor80" 			color="hsl(212,0,78)"/>
+		<Color name="BaseColor85"  			color="hsl(212,0,85)"/>
+		<Color name="BaseColor90" 			color="hsl(212,0,90)"/>
+		<Color name="BaseColor95" 			color="hsl(212,0,95)"/>
+		<Color name="BaseColor100" 			color="hsl(212,0,100)"/>
+		
+		<Color name="PrimaryColor25" 		color="hsl(212,50,25)"/>
+		<Color name="PrimaryColor30" 		color="hsl(212,60,30)"/>
+		<Color name="PrimaryColor35" 		color="hsl(212,65,35)"/>
+		<Color name="PrimaryColor40" 		color="hsl(212,65,40)"/>
+		<Color name="PrimaryColor45" 		color="hsl(212,70,45)"/>
+		<Color name="PrimaryColor50" 		color="hsl(212,75,50)"/>
+		<Color name="PrimaryColor55" 		color="hsl(212,75,55)"/>
+		<Color name="PrimaryColor60" 		color="hsl(212,80,60)"/>
+		<Color name="PrimaryColor65" 		color="hsl(212,95,65)"/>
+		<Color name="PrimaryColor70" 		color="hsl(212,95,70)"/>
+		<Color name="PrimaryColor75" 		color="hsl(212,95,80)"/>
+		
+		<Color name="SeverityColorNormal"	color="hsl(55,90,50)"/>
+		<Color name="SeverityColorHigh"	 	color="hsl(15,55,50)"/>
+	</Resources>
+	
+</Skin>
+
+ 

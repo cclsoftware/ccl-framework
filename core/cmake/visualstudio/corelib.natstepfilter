@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<StepFilter xmlns="http://schemas.microsoft.com/vstudio/debugger/natstepfilter/2010">
+  <Function><Name>Core::ConstVector&lt;.*&gt;::isEmpty</Action></Function>
+  <Function><Name>Core::ConstVector&lt;.*&gt;::count</Action></Function>
+  <Function><Name>Core::GestureInfo::TouchVector::getTouchIDs</Name><Action>NoStepInto</Action></Function>
+</StepFilter>

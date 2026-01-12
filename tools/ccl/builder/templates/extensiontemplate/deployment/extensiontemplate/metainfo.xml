@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<MetaInformation>
+	<Attribute id="Package:ID" value="(ProjectPackageID)"/>
+	<Attribute id="Package:ShortID" value="extensiontemplate"/>
+	<Attribute id="Package:Name" value="Extension Template"/>
+	<Attribute id="Package:Description" value="Extension Template"/>
+	<Attribute id="Package:Version" value="1.0.0.$revision"/>
+	<Attribute id="Package:Vendor" value="(Vendor Name)"/>
+	<Attribute id="Package:Website" value="(Vendor Website)"/>
+	<Attribute id="Licenser:PurchasedItem" value="1"/>
+</MetaInformation>

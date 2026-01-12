@@ -1,0 +1,81 @@
+{
+	"name": "basetemplate",
+	"hidden": true,
+	"variables":
+	[
+		{
+			"key": "AuthorName",
+			"defaultValue": "Unknown Developer",
+			"description": "your name, the name that is shown in the file header"
+		},
+		{
+			"key": "ProjectCopyright",
+			"defaultValue": "@DefaultCopyright",
+			"description": "copyright entry in the file header"
+		}
+	],
+	"replacements": 
+	[
+		{
+			"searchString": "(RelPathToRoot)",
+			"replaceString": "@RelativePathToRoot",
+			"filter": "*.json;*.sh;*.gradle;*.template;*.txt;*.cmake"
+		},
+		{
+			"searchString": "(RelPathToFramework)",
+			"replaceString": "@RelativePathToFramework",
+			"filter": "*.json;*.sh;*.gradle;*.template;*.txt;*.cmake"
+		},
+		{
+			"searchString": "(NativePathToRoot)",
+			"replaceString": "@NativeRelativePathToRoot",
+			"filter": "*.nsi;*.bat"
+		},
+		{
+			"searchString": "(ProjectGUID)",
+			"replaceString": "@ProjectGUID",
+			"filter": "*.h;*.cpp"
+		},
+		{
+			"searchString": "(Vendor ID)",
+			"replaceString": "@VendorID",
+			"filter": "CMakePresets.json"
+		},
+		{
+			"searchString": "(FrameworkVersion)",
+			"replaceString": "@PreferredFrameworkVersion",
+			"filter": "*.json;*.sh;*.gradle;*.template;*.txt;*.cmake"
+		}
+	],
+	"files":
+	[
+		{
+			"source": "shared/CMakePresets.json",
+			"destination": "@Destination/cmake/CMakePresets.json"
+		},
+		{
+			"source": "shared/root/CMakePresets.json",
+			"destination": "@RepositoryRoot/build/cmake/modules/shared/CMakePresets.json"
+		},
+		{
+			"source": "shared/root/CMakePresetsDarwin.json",
+			"destination": "@RepositoryRoot/build/cmake/modules/shared/CMakePresetsDarwin.json"
+		},
+		{
+			"source": "shared/root/CMakePresetsLinux.json",
+			"destination": "@RepositoryRoot/build/cmake/modules/shared/CMakePresetsLinux.json"
+		},
+		{
+			"source": "shared/root/CMakePresetsWindows.json",
+			"destination": "@RepositoryRoot/build/cmake/modules/shared/CMakePresetsWindows.json"
+		},
+		{
+			"source": "shared/root/vendor.cmake",
+			"destination": "@RepositoryRoot/build/cmake/modules/shared/vendor.cmake"
+		},
+		{
+			"source": "shared/root/vendor.android.cmake",
+			"destination": "@RepositoryRoot/build/cmake/modules/shared/vendor.android.cmake"
+		}
+	]
+}

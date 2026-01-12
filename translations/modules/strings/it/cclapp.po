@@ -1,0 +1,2490 @@
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: actions/actionjournal.cpp
+msgctxt "Action"
+msgid "Redo"
+msgstr "Ripristina"
+
+#: actions/actionjournal.cpp
+msgctxt "Action"
+msgid "Undo"
+msgstr "Annulla"
+
+#: safety/appsafetymanager.cpp
+msgctxt "AppSafetyManager"
+msgid "Add plug-in to the Blocklist."
+msgstr "Aggiungi plug-in alla Blocklist."
+
+#: safety/appsafetymanager.cpp
+msgctxt "AppSafetyManager"
+msgid "Block %(1)"
+msgstr "Blocco %(1)"
+
+#: safety/appsafetymanager.cpp
+msgctxt "AppSafetyManager"
+msgid "Diagnostics Report"
+msgstr "Rapporto di Diagnostica"
+
+#: safety/appsafetymanager.cpp
+msgctxt "AppSafetyManager"
+msgid "Disable %(1)"
+msgstr "Disabilita %(1)"
+
+#: safety/appsafetymanager.cpp
+msgctxt "AppSafetyManager"
+msgid "Disable service until next time you start $APPNAME."
+msgstr "Disabilitare il servizio fino al prossimo avvio $APPNAME."
+
+#: safety/appsafetymanager.cpp
+msgctxt "AppSafetyManager"
+msgid "Open \"%(1)\" with safety options"
+msgstr "Apri \"%(1)\" con opzioni salvataggio"
+
+#: safety/appsafetymanager.cpp
+msgctxt "AppSafetyManager"
+msgid "Please save your work and restart $APPNAME."
+msgstr "Per favore salva il lavoro e riavvia $APPNAME."
+
+#: safety/appsafetymanager.cpp
+msgctxt "AppSafetyManager"
+msgid "The following plug-ins didn't work as expected:"
+msgstr "I plug-in seguenti non hanno funzionato come previsto:"
+
+#: safety/appsafetymanager.cpp
+msgctxt "AppSafetyManager"
+msgid "We're sorry. $APPNAME noticed a problem."
+msgstr "Ci dispiace. $APPNAME rilevato un problema."
+
+#: safety/appsafetymanager.cpp
+msgctxt "AppSafetyManager"
+msgid "We're sorry. $APPNAME quit unexpectedly."
+msgstr "Ci dispiace. $APPNAME chiusura inaspettata"
+
+#: safety/appsafety.cpp
+msgctxt "AppSafetyProviders"
+msgid "Do not load $APPCOMPANY plug-ins"
+msgstr "Non caricare il plug in $APPCOMPANY"
+
+#: safety/appsafety.cpp
+msgctxt "AppSafetyProviders"
+msgid "Do not load plug-ins made by $APPCOMPANY."
+msgstr "Non caricare il Plug in creato da $APPCOMPANY."
+
+#: safety/appsafety.cpp
+msgctxt "AppSafetyProviders"
+msgid "Do not load plug-ins made by third-party vendors."
+msgstr "Non caricare i plug-in delle terze parti"
+
+#: safety/appsafety.cpp
+msgctxt "AppSafetyProviders"
+msgid "Do not load third-party plug-ins"
+msgstr "Non caricare plug-in di terze parti"
+
+#: safety/appsafety.cpp
+msgctxt "AppSafetyProviders"
+msgid "Find items with long load times."
+msgstr "Trova oggetti con tempo di caricamento lungo."
+
+#: safety/appsafety.cpp
+msgctxt "AppSafetyProviders"
+msgid "Find items with long save times or large size."
+msgstr "Trova oggetti con tempo di caricamento lungo o grossa dimensione."
+
+#: safety/appsafety.cpp
+msgctxt "AppSafetyProviders"
+msgid "Profile document loading"
+msgstr "Caricamento profilo del documento"
+
+#: safety/appsafety.cpp
+msgctxt "AppSafetyProviders"
+msgid "Profile document saving"
+msgstr "Salvataggio profilo del documento"
+
+#: application.cpp
+msgctxt "Application"
+msgid "$APPNAME can not shutdown right now!"
+msgstr "$APPNAME Non spegnere!"
+
+#: application.cpp
+msgctxt "Application"
+msgid "An instance of $APPNAME is already running."
+msgstr "Un'istanza di $APPNAME è già in esecuzione!"
+
+#: application.cpp
+msgctxt "Application"
+msgid "Do you want to restart $APPNAME now?"
+msgstr "Vuoi riavviare $APPNAME ora?"
+
+#: application.cpp
+msgctxt "Application"
+msgid "Failed to load application theme!"
+msgstr "Impossibile caricare il Tema dell'Applicazione"
+
+#: application.cpp
+msgctxt "Application"
+msgid "Please restart $APPNAME for the changes to take effect."
+msgstr "Riavviare $APPNAME affinché le modifiche abbiano effetto."
+
+#: application.cpp
+msgctxt "Application"
+msgid "Scanning Languages..."
+msgstr "Scansione Lingue..."
+
+#: application.cpp
+msgctxt "Application"
+msgid "Scanning Plug-Ins..."
+msgstr "Scansione Plug-Ins..."
+
+#: application.cpp
+msgctxt "Application"
+msgid "Scanning Scripts..."
+msgstr "Scansione Script..."
+
+#: application.cpp
+msgctxt "Application"
+msgid "Welcome to %(1)!"
+msgstr "Benvenuto In %(1)!"
+
+#: documents/autosaver.cpp
+msgctxt "Autosave"
+msgid "A backup of the original file has been found."
+msgstr "È stato trovato un backup del file originale."
+
+#: documents/autosaver.cpp
+msgctxt "Autosave"
+msgid "A backup that is newer than the original file has been found."
+msgstr "È stato rilevato un backup che è più recente del file originale."
+
+#: documents/autosaver.cpp
+msgctxt "Autosave"
+msgid "Do you want to keep the backup as a version?"
+msgstr "Volete mantenere il backup come una versione?"
+
+#: documents/autosaver.cpp
+msgctxt "Autosave"
+msgid "Do you want to open the backup?"
+msgstr "Vuoi aprire il backup?"
+
+#: documents/autosaver.cpp
+msgctxt "Autosave"
+msgid "The original file will be kept as a version then."
+msgstr "Il file originale viene conservato come una versione."
+
+#: browser/browsernode.cpp
+msgctxt "Browser"
+msgid "Add to Favorites"
+msgstr "Aggiungi ai Preferiti"
+
+#: browser/pluginnodes.cpp
+msgctxt "Browser"
+msgid "Are you sure you want to reset the plug-in browser to default?"
+msgstr "Sei sicuro di voler resettare il browser dei plug-in?"
+
+#: browser/pluginnodes.cpp
+msgctxt "Browser"
+msgid "Are you sure you want to revert your last plug-in browser changes?"
+msgstr "Sei sicuro di voler ripristinare il tuo ultimo cambiamento del browser dei plug-in?"
+
+#: browser/browser.cpp
+msgctxt "Browser"
+msgid "Close Tab"
+msgstr "Chiudi Scheda"
+
+#: browser/filesystemnodes.cpp
+msgctxt "Browser"
+msgid "Content"
+msgstr "Contenuto"
+
+#: browser/pluginnodes.cpp
+msgctxt "Browser"
+msgid "Delete Thumbnail"
+msgstr "Elimina Miniatura"
+
+#: browser/filebrowser.cpp
+msgctxt "Browser"
+msgid "Desktop"
+msgstr "Desktop"
+
+#: browser/browsernode.cpp
+msgctxt "Browser"
+msgid "Do you want to remove these folders?"
+msgstr "Vuoi rimuovere queste cartelle?"
+
+#: browser/browsernode.cpp
+msgctxt "Browser"
+msgid "Do you want to remove this folder?"
+msgstr "Vuoi eliminare questa cartella?"
+
+#: browser/filebrowser.cpp
+msgctxt "Browser"
+msgid "Documents"
+msgstr "Documenti"
+
+#: browser/filesystemnodes.cpp
+msgctxt "Browser"
+msgid "Extract Here"
+msgstr "Estrai Qui"
+
+#: browser/browsernode.cpp
+msgctxt "Browser"
+msgid "Favorite"
+msgstr "Favorito"
+
+#: browser/browsernode.cpp
+msgctxt "Browser"
+msgid "Favorites"
+msgstr "Preferiti"
+
+#: browser/pluginnodes.cpp
+msgctxt "Browser"
+msgid "Hide"
+msgstr "Nascondi"
+
+#: browser/filebrowser.cpp
+msgctxt "Browser"
+msgid "Music"
+msgstr "Musica"
+
+#: browser/browser.cpp
+msgctxt "Browser"
+msgid "New Root Tab"
+msgstr "Nuova Scheda Radice"
+
+#: browser/browser.cpp
+msgctxt "Browser"
+msgid "New Tab"
+msgstr "Nuova Scheda"
+
+#: browser/browser.cpp
+msgctxt "Browser"
+msgid "New Tab From Here"
+msgstr "Nuova Scheda Da Qui"
+
+#: browser/filesystemnodes.cpp
+msgctxt "Browser"
+msgid "Packages"
+msgstr "Pacchetti"
+
+#: browser/pluginnodes.cpp
+msgctxt "Browser"
+msgid "Plug-ins"
+msgstr "Plug-in"
+
+#: browser/pluginnodes.cpp
+msgctxt "Browser"
+msgid "Recent"
+msgstr "Recente"
+
+#: browser/browser.cpp
+msgctxt "Browser"
+msgid "Refresh"
+msgstr "Aggiorna"
+
+#: browser/browsernode.cpp
+msgctxt "Browser"
+msgid "Rename"
+msgstr "Rinomina"
+
+#: browser/browser.cpp
+msgctxt "Browser"
+msgid "Rename Tab"
+msgstr "Scheda Rinomina"
+
+#: browser/pluginnodes.cpp
+msgctxt "Browser"
+msgid "Reset"
+msgstr "Reset"
+
+#: browser/browser.cpp
+msgctxt "Browser"
+msgid "Reset Root"
+msgstr "Ripristina Radice"
+
+#: browser/pluginnodes.cpp
+msgctxt "Browser"
+msgid "Revert"
+msgstr "Inverti"
+
+#: browser/browser.cpp
+msgctxt "Browser"
+msgid "Set as Root"
+msgstr "Imposta come Radice"
+
+#: browser/filesystemnodes.cpp
+msgctxt "Browser"
+msgid "Show Package Contents"
+msgstr "Mostra Contenuto del Pacchetto"
+
+#: browser/browser.cpp
+msgctxt "Browser"
+msgid "Up"
+msgstr "Su"
+
+#: browser/filesystemnodes.cpp
+msgctxt "Browser"
+msgid "Volumes"
+msgstr "Volumi"
+
+#: utilities/pluginclass.cpp
+msgctxt "CCL"
+msgid "Plug-in Thumbnails"
+msgstr "Miniature Plug-in"
+
+#: safety/appsafety.cpp
+msgctxt "CCLAppSafety"
+msgid "Auto-save"
+msgstr "Auto-salvataggio"
+
+#: safety/appsafety.cpp
+msgctxt "CCLAppSafety"
+msgid "Open document \"%(1)\""
+msgstr "Apri documento \"%(1)\""
+
+#: safety/appsafety.cpp
+msgctxt "CCLAppSafety"
+msgid "Quit $APPNAME"
+msgstr "Esci $APPNAME"
+
+#: safety/appsafety.cpp
+msgctxt "CCLAppSafety"
+msgid "Save document \"%(1)\""
+msgstr "Salva documento \"%(1)\""
+
+#: safety/appsafety.cpp
+msgctxt "CCLAppSafety"
+msgid "Start $APPNAME"
+msgstr "Avvio $APPNAME"
+
+#: application.cpp
+msgctxt "Command"
+msgid "About"
+msgstr "Informazioni"
+
+#: application.cpp
+msgctxt "Command"
+msgid "Application"
+msgstr "Applicazione"
+
+#: browser/browser.cpp
+msgctxt "Command"
+msgid "Ascend Root"
+msgstr "Sali di Tonalità"
+
+#: application.cpp browser/browser.cpp navigation/navigatorbase.cpp
+msgctxt "Command"
+msgid "Back"
+msgstr "Indietro"
+
+#: browser/browser.cpp browser/filesystemnodes.cpp
+msgctxt "Command"
+msgid "Browser"
+msgstr "Sfoglia"
+
+#: documents/documentmanager.cpp
+msgctxt "Command"
+msgid "Clear Recent Files"
+msgstr "Cancella Files Recenti"
+
+#: documents/documentmanager.cpp
+msgctxt "Command"
+msgid "Close"
+msgstr "Chiudi"
+
+#: documents/documentmanager.cpp
+msgctxt "Command"
+msgid "Close All"
+msgstr "Chiudi Tutto"
+
+#: browser/browser.cpp
+msgctxt "Command"
+msgid "Close Tab"
+msgstr "Chiudi Scheda"
+
+#: application.cpp
+msgctxt "Command"
+msgid "Contents"
+msgstr "Contenuti"
+
+#: application.cpp
+msgctxt "Command"
+msgid "Context Help"
+msgstr "Guida Contestuale"
+
+#: editing/editor.cpp
+msgctxt "Command"
+msgid "Copy"
+msgstr "Copia"
+
+#: options/customization.cpp
+msgctxt "Command"
+msgid "Customization"
+msgstr "Personalizzazione"
+
+#: editing/editor.cpp
+msgctxt "Command"
+msgid "Cut"
+msgstr "Taglia"
+
+#: components/stringlistcomponent.cpp editing/editor.cpp
+msgctxt "Command"
+msgid "Delete"
+msgstr "Elimina"
+
+#: documents/documentmanager.cpp
+msgctxt "Command"
+msgid "Delete Undo History"
+msgstr "Elimina Cronologia Annullamenti"
+
+#: editing/editor.cpp
+msgctxt "Command"
+msgid "Deselect All"
+msgstr "Deseleziona Tutto"
+
+#: components/searchcomponent.cpp components/stringlistcomponent.cpp documents/documentmanager.cpp editing/editor.cpp
+msgctxt "Command"
+msgid "Edit"
+msgstr "Modifica"
+
+#: browser/browser.cpp
+msgctxt "Command"
+msgid "Enter"
+msgstr "Invio"
+
+#: presets/presettrader.cpp
+msgctxt "Command"
+msgid "Export Preset"
+msgstr "Esporta Preset"
+
+#: application.cpp documents/documentmanager.cpp
+msgctxt "Command"
+msgid "File"
+msgstr "File"
+
+#: navigation/navigatorbase.cpp
+msgctxt "Command"
+msgid "Forward"
+msgstr "Avanti"
+
+#: application.cpp
+msgctxt "Command"
+msgid "Help"
+msgstr "Aiuto"
+
+#: navigation/navigatorbase.cpp
+msgctxt "Command"
+msgid "Home"
+msgstr "Home"
+
+#: presets/presettrader.cpp
+msgctxt "Command"
+msgid "Import Preset"
+msgstr "Importa Preset"
+
+#: browser/browser.cpp
+msgctxt "Command"
+msgid "Insert Selected Item"
+msgstr "Inserisci Elemento Selezonato"
+
+#: editing/editor.cpp
+msgctxt "Command"
+msgid "Invert Selection"
+msgstr "Inverti Selezione"
+
+#: application.cpp
+msgctxt "Command"
+msgid "Keyboard Shortcuts"
+msgstr "Scorciatoie da Tastiera"
+
+#: presets/presettrader.cpp
+msgctxt "Command"
+msgid "Load Preset File"
+msgstr "Carica Preset File"
+
+#: application.cpp browser/browser.cpp editing/editor.cpp navigation/navigatorbase.cpp
+msgctxt "Command"
+msgid "Navigation"
+msgstr "Navigazione"
+
+#: documents/documentmanager.cpp
+msgctxt "Command"
+msgid "New"
+msgstr "Nuovo"
+
+#: browser/filesystemnodes.cpp
+msgctxt "Command"
+msgid "New Folder"
+msgstr "Nuova Cartella"
+
+#: browser/browser.cpp
+msgctxt "Command"
+msgid "New Root Tab"
+msgstr "Nuovo Scheda Radice"
+
+#: browser/browser.cpp
+msgctxt "Command"
+msgid "New Tab"
+msgstr "Nuova Scheda"
+
+#: browser/browser.cpp presets/presetbrowser.cpp
+msgctxt "Command"
+msgid "Next"
+msgstr "Prossimo"
+
+#: editing/tools/toolbar.cpp
+msgctxt "Command"
+msgid "Next Tool"
+msgstr "Strumento Successivo "
+
+#: documents/documentmanager.cpp
+msgctxt "Command"
+msgid "Open"
+msgstr "Apri"
+
+#: application.cpp
+msgctxt "Command"
+msgid "Open Settings Folder"
+msgstr "Apri Cartella Impostazioni"
+
+#: documents/documentmanager.cpp
+msgctxt "Command"
+msgid "Open with Options"
+msgstr "Apri con Opzioni"
+
+#: application.cpp
+msgctxt "Command"
+msgid "Options"
+msgstr "Opzioni"
+
+#: editing/editor.cpp
+msgctxt "Command"
+msgid "Paste"
+msgstr "Incolla"
+
+#: presets/presetbrowser.cpp presets/presetcomponent.cpp presets/presetmanager.cpp presets/presettrader.cpp
+msgctxt "Command"
+msgid "Presets"
+msgstr "Presets"
+
+#: browser/browser.cpp presets/presetbrowser.cpp
+msgctxt "Command"
+msgid "Previous"
+msgstr "Precedente"
+
+#: editing/tools/toolbar.cpp
+msgctxt "Command"
+msgid "Previous Tool"
+msgstr "Strumento Precedente"
+
+#: application.cpp
+msgctxt "Command"
+msgid "Quit"
+msgstr "Esci"
+
+#: presets/presetmanager.cpp
+msgctxt "Command"
+msgid "Re-Index Presets"
+msgstr "Reindicizza Preset"
+
+#: documents/documentmanager.cpp
+msgctxt "Command"
+msgid "Recent File"
+msgstr "File Recente"
+
+#: documents/documentmanager.cpp
+msgctxt "Command"
+msgid "Redo"
+msgstr "Ripristina"
+
+#: browser/browser.cpp navigation/navigatorbase.cpp
+msgctxt "Command"
+msgid "Refresh"
+msgstr "Aggiorna"
+
+#: presets/presetmanager.cpp
+msgctxt "Command"
+msgid "Remove Plug-In Settings"
+msgstr "Rimuovi le impostazioni del Plug-In"
+
+#: documents/documentmanager.cpp
+msgctxt "Command"
+msgid "Rename"
+msgstr "Rinomina"
+
+#: browser/filesystemnodes.cpp
+msgctxt "Command"
+msgid "Rename File"
+msgstr "Rinomina File"
+
+#: browser/browser.cpp
+msgctxt "Command"
+msgid "Rename Tab"
+msgstr "Scheda Rinomina"
+
+#: presets/presetmanager.cpp
+msgctxt "Command"
+msgid "Reset Blocklist"
+msgstr "Blocklist Reset!"
+
+#: browser/browser.cpp
+msgctxt "Command"
+msgid "Reset Root"
+msgstr "Ripristina Radice"
+
+#: documents/documentmanager.cpp
+msgctxt "Command"
+msgid "Restore Version"
+msgstr "Ripristina Versione"
+
+#: documents/documentmanager.cpp
+msgctxt "Command"
+msgid "Revert"
+msgstr "Inverti"
+
+#: documents/documentmanager.cpp
+msgctxt "Command"
+msgid "Save"
+msgstr "Salva"
+
+#: documents/documentmanager.cpp
+msgctxt "Command"
+msgid "Save As"
+msgstr "Salva Come"
+
+#: documents/documentmanager.cpp
+msgctxt "Command"
+msgid "Save New Version"
+msgstr "Salva Nuova Versione"
+
+#: documents/documentmanager.cpp
+msgctxt "Command"
+msgid "Save to New Folder"
+msgstr "Salva in Nuova Cartella"
+
+#: components/searchcomponent.cpp
+msgctxt "Command"
+msgid "Search"
+msgstr "Cerca"
+
+#: editing/editor.cpp
+msgctxt "Command"
+msgid "Select All"
+msgstr "Seleziona Tutto"
+
+#: browser/filesystemnodes.cpp
+msgctxt "Command"
+msgid "Show in Explorer/Finder"
+msgstr "Mostra in Explorer/Finder"
+
+#: presets/presetcomponent.cpp
+msgctxt "Command"
+msgid "Store Preset"
+msgstr "Salva Preset"
+
+#: presets/presetcomponent.cpp
+msgctxt "Command"
+msgid "Store as Default Preset"
+msgstr "Salva come Preset di Default"
+
+#: editing/tools/toolbar.cpp
+msgctxt "Command"
+msgid "Tool 1"
+msgstr "Strumento 1"
+
+#: editing/tools/toolbar.cpp
+msgctxt "Command"
+msgid "Tool 10"
+msgstr "Strumento 10"
+
+#: editing/tools/toolbar.cpp
+msgctxt "Command"
+msgid "Tool 2"
+msgstr "Strumento 2"
+
+#: editing/tools/toolbar.cpp
+msgctxt "Command"
+msgid "Tool 3"
+msgstr "Strumento 3"
+
+#: editing/tools/toolbar.cpp
+msgctxt "Command"
+msgid "Tool 4"
+msgstr "Strumento 4"
+
+#: editing/tools/toolbar.cpp
+msgctxt "Command"
+msgid "Tool 5"
+msgstr "Strumento 5"
+
+#: editing/tools/toolbar.cpp
+msgctxt "Command"
+msgid "Tool 6"
+msgstr "Strumento 6"
+
+#: editing/tools/toolbar.cpp
+msgctxt "Command"
+msgid "Tool 7"
+msgstr "Strumento 7"
+
+#: editing/tools/toolbar.cpp
+msgctxt "Command"
+msgid "Tool 8"
+msgstr "Strumento 8"
+
+#: editing/tools/toolbar.cpp
+msgctxt "Command"
+msgid "Tool 9"
+msgstr "Strumento 9"
+
+#: editing/tools/toolbar.cpp
+msgctxt "Command"
+msgid "Toolbar"
+msgstr "Barra Strumenti"
+
+#: documents/documentmanager.cpp
+msgctxt "Command"
+msgid "Undo"
+msgstr "Annulla"
+
+#: presets/presetmanager.cpp
+msgctxt "Command"
+msgid "Update Plug-In List"
+msgstr "Aggiorna la lista di Plug-Ins"
+
+#: presets/presetcomponent.cpp
+msgctxt "Command"
+msgid "Update Preset"
+msgstr "Aggiorna Preset"
+
+#: editing/addins/editaddindescription.cpp options/customization.cpp
+msgctxt "Command"
+msgid "View"
+msgstr "Vista"
+
+#: application.cpp
+msgctxt "Command"
+msgid "Website"
+msgstr "Sito Web"
+
+#: options/customization.cpp
+msgctxt "Customization"
+msgid "Customization"
+msgstr "Personalizzazione"
+
+#: options/customization.cpp
+msgctxt "Customization"
+msgid "Customize"
+msgstr "Personalizza"
+
+#: options/customization.cpp
+msgctxt "Customization"
+msgid "Delete"
+msgstr "Elimina"
+
+#: options/customization.cpp
+msgctxt "Customization"
+msgid "Delete User Customization"
+msgstr "Elimina la Personalizzazione dell'Utente"
+
+#: options/customization.cpp
+msgctxt "Customization"
+msgid "Do you want delete all user customization presets?"
+msgstr "Vuoi eliminare tutti i preset di personalizzazione dell'utente?"
+
+#: options/customization.cpp
+msgctxt "Customization"
+msgid "Edit Customization"
+msgstr "Modifica Customizzazione"
+
+#: options/customization.cpp
+msgctxt "Customization"
+msgid "Keep"
+msgstr "Mantieni"
+
+#: options/customization.cpp
+msgctxt "Customization"
+msgid "Rename"
+msgstr "Rinomina"
+
+#: options/customization.cpp
+msgctxt "Customization"
+msgid "Revert"
+msgstr "Inverti"
+
+#: options/customization.cpp
+msgctxt "Customization"
+msgid "Store"
+msgstr "Store"
+
+#: options/customization.cpp
+msgctxt "Customization"
+msgid "The customization was changed to %(1). Do you want to keep the new customization?"
+msgstr "La personalizzazione è stata modificata in %(1). Si desidera mantenere la nuova personalizzazione?"
+
+#: options/customization.cpp
+msgctxt "Customization"
+msgid "User-defined"
+msgstr "Definito dall'utente"
+
+#: utilities/appdiagnostic.cpp
+msgctxt "Diagnostics"
+msgid "<1 KB"
+msgstr "<1 KB"
+
+#: utilities/appdiagnostic.cpp
+msgctxt "Diagnostics"
+msgid "<1 ms"
+msgstr "<1 ms"
+
+#: documents/documentdiagnostic.cpp
+msgctxt "DocumentDiagnostics"
+msgid "%(1) of the time was spent loading other document data."
+msgstr "%(1) del tempo è stato impiegato per caricare i dati di un altro documento."
+
+#: documents/documentdiagnostic.cpp
+msgctxt "DocumentDiagnostics"
+msgid "%(1) of the time was spent loading plug-ins."
+msgstr "%(1) del tempo è stato impiegato a caricare i Plug-Ins."
+
+#: documents/documentdiagnostic.cpp
+msgctxt "DocumentDiagnostics"
+msgid "%(1) of the time was spent saving other document data."
+msgstr "%(1) del tempo è stato impiegato per salvare i dati di un altro documento."
+
+#: documents/documentdiagnostic.cpp
+msgctxt "DocumentDiagnostics"
+msgid "%(1) of the time was spent saving plug-ins."
+msgstr "%(1) del tempo è stato impiegato per salvare i Plug-Ins."
+
+#: documents/documentdiagnostic.cpp
+msgctxt "DocumentDiagnostics"
+msgid "Average"
+msgstr "Media"
+
+#: documents/documentdiagnostic.cpp
+msgctxt "DocumentDiagnostics"
+msgid "Count"
+msgstr "Conteggio"
+
+#: documents/documentdiagnostic.cpp
+msgctxt "DocumentDiagnostics"
+msgid "Document Diagnostics"
+msgstr "Documenti Diagnostici"
+
+#: documents/documentdiagnostic.cpp
+msgctxt "DocumentDiagnostics"
+msgid "In total, the most time-consuming items are:"
+msgstr "In totale, gli oggetti che hanno bisogno di piu tempo sono:"
+
+#: documents/documentdiagnostic.cpp
+msgctxt "DocumentDiagnostics"
+msgid "Load duration of plug-ins and document data"
+msgstr "Tempo di caricamento Plug-Ins e dati del documento"
+
+#: documents/documentdiagnostic.cpp
+msgctxt "DocumentDiagnostics"
+msgid "Loading the document '%(1)' took %(2)."
+msgstr "Il caricamento del documento '%(1)' ha impiegato %(2)."
+
+#: documents/documentdiagnostic.cpp
+msgctxt "DocumentDiagnostics"
+msgid "Name"
+msgstr "Nome"
+
+#: documents/documentdiagnostic.cpp
+msgctxt "DocumentDiagnostics"
+msgid "Save duration of plug-ins and document data"
+msgstr "Salva durata dei Plug-In e dati di documento"
+
+#: documents/documentdiagnostic.cpp
+msgctxt "DocumentDiagnostics"
+msgid "Saving the document '%(1)' took %(2)."
+msgstr "Il Salvataggio del documento '%(1)' ha impiegato %(2)."
+
+#: documents/documentdiagnostic.cpp
+msgctxt "DocumentDiagnostics"
+msgid "Size of plug-in presets and other document data"
+msgstr "Dimensioni dei Preset dei Plug-In e altre Dati dei Documenti"
+
+#: documents/documentdiagnostic.cpp
+msgctxt "DocumentDiagnostics"
+msgid "These items have a high average load time:"
+msgstr "Questi Oggetti hanno un tempo medio di caricamento lungo:"
+
+#: documents/documentdiagnostic.cpp
+msgctxt "DocumentDiagnostics"
+msgid "These items have a high average save time:"
+msgstr "Questi Oggetti hanno un tempo medio di salvataggio lungo:"
+
+#: documents/documentdiagnostic.cpp
+msgctxt "DocumentDiagnostics"
+msgid "Total"
+msgstr "Totale"
+
+#: documents/documenttemplates.cpp
+msgctxt "Documents"
+msgid ""
+"%(1) already exists.\n"
+"Do you want to replace it?"
+msgstr ""
+"%(1) esiste già.\n"
+"Vuoi sostituirlo?"
+
+#: documents/documentmanager.cpp
+msgctxt "Documents"
+msgid "%(1) was modified but can't be saved right now. Do you want to save a copy?"
+msgstr "%(1) è stato modificato ma non può essere salvato al momento. Vuoi salvarne una copia?"
+
+#: documents/documentblocks.cpp
+msgctxt "Documents"
+msgid "Additional versions available."
+msgstr "Sono disponibili altre versioni."
+
+#: documents/documentversions.cpp
+msgctxt "Documents"
+msgid "Age"
+msgstr "Età"
+
+#: documents/documentmanager.cpp
+msgctxt "Documents"
+msgid "Are you sure you want to revert all changes?"
+msgstr "Sei sicuro di voler annullare tutte le modifiche?"
+
+#: documents/documentmanager.cpp
+msgctxt "Documents"
+msgid "Can not close %(1) right now!"
+msgstr "Impossibile chiudere %(1) in questo momento!"
+
+#: documents/recentdocuments.cpp
+msgctxt "Documents"
+msgid "Clear Recent Files"
+msgstr "Cancella Files Recenti"
+
+#: documents/documentmanager.cpp
+msgctxt "Documents"
+msgid "Convert To"
+msgstr "Converti a "
+
+#: documents/documentmanager.cpp
+msgctxt "Documents"
+msgid "Could not load %(1)!"
+msgstr "Impossibile caricare %(1)!"
+
+#: documents/documentrenamer.cpp
+msgctxt "Documents"
+msgid ""
+"Could not rename %(1)!\n"
+"\n"
+"The file is in use."
+msgstr ""
+"Non posso rinominare %(1)!\n"
+"\n"
+"Il file è in uso."
+
+#: documents/documentrenamer.cpp
+msgctxt "Documents"
+msgid ""
+"Could not rename the folder %(1)!\n"
+"\n"
+"A file in this folder is in use."
+msgstr ""
+"Non posso rinominare la cartella %(1)!\n"
+"\n"
+"Un file di questa cartella è in uso."
+
+#: documents/documentmanager.cpp
+msgctxt "Documents"
+msgid "Could not save %(1)!"
+msgstr "Impossibile salvare %(1)!"
+
+#: documents/documentversions.cpp
+msgctxt "Documents"
+msgid "Date"
+msgstr "Data"
+
+#: documents/documentmanager.cpp documents/documentversions.cpp
+msgctxt "Documents"
+msgid "Description"
+msgstr "Descrizione"
+
+#: documents/documentversions.cpp
+msgctxt "Documents"
+msgid "Discard"
+msgstr "Scarta"
+
+#: documents/recentdocuments.cpp
+msgctxt "Documents"
+msgid ""
+"Do you really want to clear the list of recent files?\n"
+"\n"
+"This action can not be undone."
+msgstr ""
+"Vuoi davvero cancellare la lista dei file recenti?\n"
+"\n"
+"Questa azione non può essere annullata."
+
+#: documents/documentmanager.cpp
+msgctxt "Documents"
+msgid ""
+"Do you really want to delete the Undo History?\n"
+"\n"
+"This action can not be undone."
+msgstr ""
+"Sei sicuro di voler cancellare la cronologia degli annullamenti?\n"
+"\n"
+"Questa azione non può essere annullata."
+
+#: documents/documentmanager.cpp
+msgctxt "Documents"
+msgid "Do you want to merge into %(1)?"
+msgstr "Vuoi unire in %(1)?"
+
+#: documents/documentmanager.cpp
+msgctxt "Documents"
+msgid "Do you want to remove the reference to it from the Recent list?"
+msgstr "Vuoi rimuovere il riferimento dall'elenco recente?"
+
+#: documents/documentmanager.cpp
+msgctxt "Documents"
+msgid "Do you want to save a copy of %(1) as file format \"%(2)\"?"
+msgstr "Vuoi salvare una copia di %(1) come formato file \"%(2)\"?"
+
+#: documents/documentmanager.cpp
+msgctxt "Documents"
+msgid "Do you want to save your changes in %(1)?"
+msgstr "Volete salvare le modifiche in %(1)?"
+
+#: documents/documentmanager.cpp
+msgctxt "Documents"
+msgid "Exporting %(1)..."
+msgstr "Esportazione di %(1)..."
+
+#: documents/documentmanager.cpp
+msgctxt "Documents"
+msgid "Import as format"
+msgstr "Importa come formato"
+
+#: documents/documentmanager.cpp
+msgctxt "Documents"
+msgid "Importing %(1)..."
+msgstr "Importazione di %(1) ..."
+
+#: documents/documentmanager.cpp
+msgctxt "Documents"
+msgid "Incremental version"
+msgstr "Versione incrementale"
+
+#: documents/packagedocument.cpp
+msgctxt "Documents"
+msgid "Loading %(1)..."
+msgstr "Caricamento di %(1)..."
+
+#: documents/packagedocument.cpp
+msgctxt "Documents"
+msgid "Loading: %(1)..."
+msgstr "Caricamento: %(1)..."
+
+#: documents/documentmanager.cpp
+msgctxt "Documents"
+msgid "Merge"
+msgstr "Unisci"
+
+#: documents/documentmanager.cpp
+msgctxt "Documents"
+msgid "Merging %(1)..."
+msgstr "Sto Unendo %(1)..."
+
+#: documents/documentversions.cpp
+msgctxt "Documents"
+msgid "No other versions of \"%(1)\" were saved."
+msgstr "Nessun altra versione di\"%(1)\" è stata salvata."
+
+#: documents/documentblocks.cpp
+msgctxt "Documents"
+msgid "No versions found."
+msgstr "Nessuna versione trovata."
+
+#: documents/documentmanager.cpp
+msgctxt "Documents"
+msgid "Open %(1)"
+msgstr "Apri %(1)"
+
+#: documents/documentmanager.cpp
+msgctxt "Documents"
+msgid "Open %(1):"
+msgstr "Apri %(1):"
+
+#: documents/documentmanager.cpp
+msgctxt "Documents"
+msgid "Open files:"
+msgstr "Aprire file:"
+
+#: documents/documentversions.cpp
+msgctxt "Documents"
+msgid "Original"
+msgstr "Originale"
+
+#: documents/documentblocks.cpp
+msgctxt "Documents"
+msgid "Pin document to Recent Files list"
+msgstr "Blocca il documento all'elenco dei File Recenti"
+
+#: documents/documentblocks.cpp
+msgctxt "Documents"
+msgid "Pinned"
+msgstr "Appuntato"
+
+#: documents/documentdialog.cpp
+msgctxt "Documents"
+msgid "Please supply a filename."
+msgstr "Si prega di fornire un nome file."
+
+#: documents/recentdocuments.cpp
+msgctxt "Documents"
+msgid "Recent Files"
+msgstr "Files Recenti"
+
+#: documents/documentblocks.cpp
+msgctxt "Documents"
+msgid "Remove from Recent Files list"
+msgstr "Cancella dalla lista dei File Recenti"
+
+#: documents/documentmanager.cpp
+msgctxt "Documents"
+msgid "Rename"
+msgstr "Rinomina"
+
+#: documents/documentversions.cpp
+msgctxt "Documents"
+msgid "Replace"
+msgstr "Sostituisci"
+
+#: documents/documentdialog.cpp
+msgctxt "Documents"
+msgid "Reset Folder"
+msgstr "Resetta la Cartella"
+
+#: documents/documentversions.cpp
+msgctxt "Documents"
+msgid ""
+"Restoring version \"%(1)\".\n"
+"\n"
+"Do you want to replace the saved version \"%(2)\" with the current state, or discard the current state?"
+msgstr ""
+"Versione di Ripristino \"%(1)\".\n"
+"\n"
+"Vuoi sostituire la versione salvata \"%(2)\" con la versione corrente o eliminare la versione corrente?"
+
+#: documents/documentmanager.cpp
+msgctxt "Documents"
+msgid "Save New Version"
+msgstr "Salva Nuova Versione"
+
+#: documents/packagedocument.cpp
+msgctxt "Documents"
+msgid "Saving %(1)..."
+msgstr "Salvataggio di %(1) ..."
+
+#: documents/packagedocument.cpp
+msgctxt "Documents"
+msgid "Saving: %(1)..."
+msgstr "Salvataggio di %(1) ..."
+
+#: documents/documenttemplates.cpp
+msgctxt "Documents"
+msgid "Templates"
+msgstr "Template"
+
+#: documents/documentmanager.cpp
+msgctxt "Documents"
+msgid "The file %(1) could not be found!"
+msgstr "Il file %(1) non è stato trovato!"
+
+#: documents/documentmanager.cpp
+msgctxt "Documents"
+msgid "The file format may not preserve all content."
+msgstr "Il formato del file non può preservare tutto il contenuto."
+
+#: documents/documentmanager.cpp
+msgctxt "Documents"
+msgid ""
+"The file has been created with an older version of $APPNAME. After saving the file you will not be able to load it in the old version again.\n"
+"\n"
+"Are you sure you want to continue?"
+msgstr ""
+"Il file è stato creato con una versione precedente di $APPNAME. Dopo aver salvato il file non si sarà in grado di caricare la vecchia versione di nuovo.\n"
+"\n"
+"Sei sicuro di voler continuare?"
+
+#: documents/documentmanager.cpp
+msgctxt "Documents"
+msgid "The file is broken or could not be opened."
+msgstr "Il file è danneggiato o non può essere aperto."
+
+#: documents/documentmanager.cpp
+msgctxt "Documents"
+msgid "The file is in use."
+msgstr "Il file è in uso."
+
+#: documents/documenttemplates.cpp
+msgctxt "Documents"
+msgid "The template could not be saved!"
+msgstr "Non è stato possibile salvare il modello!"
+
+#: documents/packagedocument.cpp
+msgctxt "Documents"
+msgid ""
+"This file is not compatible because it has been created with a newer version of $APPNAME.\n"
+"\n"
+"This version: %(1)\n"
+"Generator: %(2)"
+msgstr ""
+"Questo file non è compatibile perché è stato creato con una versione più recente di $APPNAME \n"
+"\n"
+"Questa versione: %(1)\n"
+"Generator: %(2)"
+
+#: documents/documentversions.cpp
+msgctxt "Documents"
+msgid "Title"
+msgstr "Titolo"
+
+#: documents/documentblocks.cpp
+msgctxt "Documents"
+msgid "Unpin document from Recent Files list"
+msgstr "Sblocca il documento dalla lista dei file Recenti"
+
+#: documents/documentmanager.cpp
+msgctxt "Documents"
+msgid "Untitled"
+msgstr "Senza Titolo"
+
+#: documents/documentmanager.cpp
+msgctxt "Documents"
+msgid "Use %(1) Format"
+msgstr "Usa il Formato %(1)"
+
+#: documents/documentmanager.cpp
+msgctxt "Documents"
+msgid "You do not have write permissions at this file location."
+msgstr "Non si dispone di autorizzazioni di scrittura in questa posizione del file."
+
+#: components/eulacomponent.cpp
+msgctxt "EULA"
+msgid "%(1) End User License Agreement"
+msgstr "%(1) Contratto di licenza con l'Utente Finale"
+
+#: components/eulacomponent.cpp
+msgctxt "EULA"
+msgid "%(1) Terms of Service"
+msgstr "%(1) Termini di Servizio"
+
+#: editing/editor.cpp utilities/batchoperation.cpp
+msgctxt "Edit"
+msgid "Copy"
+msgstr "Copia"
+
+#: editing/editor.cpp
+msgctxt "Edit"
+msgid "Cut"
+msgstr "Taglia"
+
+#: editing/editor.cpp
+msgctxt "Edit"
+msgid "Delete"
+msgstr "Elimina"
+
+#: editing/editor.cpp
+msgctxt "Edit"
+msgid "Deselect All"
+msgstr "Deseleziona Tutto"
+
+#: editing/editor.cpp
+msgctxt "Edit"
+msgid "Paste"
+msgstr "Incolla"
+
+#: editing/editor.cpp
+msgctxt "Edit"
+msgid "Redo"
+msgstr "Ripristina"
+
+#: editing/editor.cpp
+msgctxt "Edit"
+msgid "Select All"
+msgstr "Seleziona Tutto"
+
+#: editing/editor.cpp
+msgctxt "Edit"
+msgid "Undo"
+msgstr "Annulla"
+
+#: editing/tasks/edittaskcollection.cpp
+msgctxt "EditTask"
+msgid "No recent items"
+msgstr "Non ci sono elementi recenti"
+
+#: editing/tasks/edittaskcollection.cpp
+msgctxt "EditTask"
+msgid "Recent items"
+msgstr "Elementi Recenti"
+
+#: browser/filexportdraghandler.cpp
+msgctxt "FileExport"
+msgid "Download"
+msgstr "Download"
+
+#: browser/filexportdraghandler.cpp
+msgctxt "FileExport"
+msgid "Download to \"%(1)\""
+msgstr "Download in \"%(1)\""
+
+#: browser/filexportdraghandler.cpp
+msgctxt "FileExport"
+msgid "Export"
+msgstr "Esporta"
+
+#: browser/filexportdraghandler.cpp
+msgctxt "FileExport"
+msgid "Export to \"%(1)\""
+msgstr "Esporta in \"%(1)\""
+
+#: components/fileexporter.cpp
+msgctxt "FileExporter"
+msgid "Exported"
+msgstr "Esportato"
+
+#: components/fileexporter.cpp
+msgctxt "FileExporter"
+msgid "Exporting"
+msgstr "Esportazione"
+
+#: components/fileexporter.cpp
+msgctxt "FileExporter"
+msgid "Exporting %(1)"
+msgstr "Esportazione di %(1)"
+
+#: utilities/pathclassifier.cpp
+msgctxt "FileInfo"
+msgid "CD/DVD Drive"
+msgstr "Unità CD/DVD"
+
+#: fileinfo/filepreviewcomponent.cpp
+msgctxt "FileInfo"
+msgid "File information"
+msgstr "Informazione File"
+
+#: fileinfo/fileinfocomponent.cpp
+msgctxt "FileInfo"
+msgid "Folder"
+msgstr "Cartella"
+
+#: utilities/pathclassifier.cpp
+msgctxt "FileInfo"
+msgid "Local"
+msgstr "Locale"
+
+#: utilities/pathclassifier.cpp
+msgctxt "FileInfo"
+msgid "Remote"
+msgstr "Remoto"
+
+#: utilities/pathclassifier.cpp
+msgctxt "FileInfo"
+msgid "Removable Drive"
+msgstr "Unità Rimovibile"
+
+#: utilities/pathclassifier.cpp
+msgctxt "FileInfo"
+msgid "Unknown"
+msgstr "Sconosciuto"
+
+#: utilities/fileoperations.cpp
+msgctxt "FileOperations"
+msgid "Copy"
+msgstr "Copia"
+
+#: utilities/fileoperations.cpp
+msgctxt "FileOperations"
+msgid "Copy to \"%(1)\""
+msgstr "Copia a \"%(1)\""
+
+#: utilities/fileoperations.cpp
+msgctxt "FileOperations"
+msgid "Copy to Root"
+msgstr "Copia nella Root"
+
+#: utilities/fileoperations.cpp
+msgctxt "FileOperations"
+msgid "Copying %(1)"
+msgstr "Copia di %(1)"
+
+#: utilities/fileoperations.cpp
+msgctxt "FileOperations"
+msgid "Copying files"
+msgstr "Sto Copiando dei Files"
+
+#: utilities/fileoperations.cpp
+msgctxt "FileOperations"
+msgid "Create new folder"
+msgstr "Crea nuova cartella"
+
+#: utilities/fileoperations.cpp
+msgctxt "FileOperations"
+msgid "Delete File"
+msgstr "Elimina File"
+
+#: utilities/fileoperations.cpp
+msgctxt "FileOperations"
+msgid "Delete Folder"
+msgstr "Elimina Cartella"
+
+#: utilities/fileoperations.cpp
+msgctxt "FileOperations"
+msgid "Deleting %(1)"
+msgstr "Eliminazione di %(1)"
+
+#: utilities/fileoperations.cpp
+msgctxt "FileOperations"
+msgid "Deleting Files"
+msgstr "Eliminazione Files"
+
+#: utilities/fileoperations.cpp
+msgctxt "FileOperations"
+msgid "Do you want to copy these files to \"%(1)\"?"
+msgstr "Vuoi copiare questi file in \"%(1)\"?"
+
+#: utilities/fileoperations.cpp
+msgctxt "FileOperations"
+msgid "Do you want to copy this file to \"%(1)\"?"
+msgstr "Vuoi copiare questo file in \"%(1)\"?"
+
+#: utilities/fileoperations.cpp
+msgctxt "FileOperations"
+msgid "Do you want to copy this folder to \"%(1)\"?"
+msgstr "Vuoi copiare questa cartella in \"%(1)\"?"
+
+#: utilities/fileoperations.cpp
+msgctxt "FileOperations"
+msgid "Do you want to delete these files permanently?"
+msgstr "Vuoi cancellare questi file in modo permanente?"
+
+#: utilities/fileoperations.cpp
+msgctxt "FileOperations"
+msgid "Do you want to delete this file permanently?"
+msgstr "Vuoi cancellare questo file in modo permanente?"
+
+#: utilities/fileoperations.cpp
+msgctxt "FileOperations"
+msgid "Do you want to delete this folder permanently?"
+msgstr "Vuoi cancellare questa cartella in modo permanente?"
+
+#: utilities/fileoperations.cpp
+msgctxt "FileOperations"
+msgid "Do you want to move these files to \"%(1)\"?"
+msgstr "Vuoi spostare questi file in \"%(1)\"?"
+
+#: utilities/fileoperations.cpp
+msgctxt "FileOperations"
+msgid "Do you want to move this file to \"%(1)\"?"
+msgstr "Vuoi spostare questo file in \"%(1)\"?"
+
+#: utilities/fileoperations.cpp
+msgctxt "FileOperations"
+msgid "Do you want to move this folder to \"%(1)\"?"
+msgstr "Vuoi spostare questa cartella a \"%(1)\"?"
+
+#: utilities/batchoperation.cpp
+msgctxt "FileOperations"
+msgid "File %(1) of %(2)"
+msgstr "File %(1) di %(2)"
+
+#: utilities/fileoperations.cpp
+msgctxt "FileOperations"
+msgid "Move"
+msgstr "Sposta"
+
+#: utilities/fileoperations.cpp
+msgctxt "FileOperations"
+msgid "Move to \"%(1)\""
+msgstr "Sposta a \"%(1)\""
+
+#: utilities/fileoperations.cpp
+msgctxt "FileOperations"
+msgid "Move to Folder"
+msgstr "Sposta nella Cartella"
+
+#: utilities/fileoperations.cpp
+msgctxt "FileOperations"
+msgid "Move to New Folder"
+msgstr "Sposta in una Nuova Cartella"
+
+#: utilities/fileoperations.cpp
+msgctxt "FileOperations"
+msgid "Move to Root"
+msgstr "Vai alla Root"
+
+#: utilities/fileoperations.cpp
+msgctxt "FileOperations"
+msgid "Moving %(1)"
+msgstr "Spostamento di %(1)"
+
+#: utilities/fileoperations.cpp
+msgctxt "FileOperations"
+msgid "Moving files"
+msgstr "Spostamento files"
+
+#: utilities/fileoperations.cpp
+msgctxt "FileOperations"
+msgid "New Folder"
+msgstr "Nuova Cartella"
+
+#: utilities/fileoperations.cpp
+msgctxt "FileOperations"
+msgid "New folder"
+msgstr "Nuova Cartella"
+
+#: utilities/fileoperations.cpp
+msgctxt "FileOperations"
+msgid "Rename File"
+msgstr "Rinomina File"
+
+#: utilities/fileoperations.cpp
+msgctxt "FileOperations"
+msgid "Rename Folder"
+msgstr "Rinomina Cartella"
+
+#: utilities/fileoperations.cpp
+msgctxt "FileOperations"
+msgid "Some files could not be copied."
+msgstr "Alcuni file non possono essere copiati."
+
+#: utilities/fileoperations.cpp
+msgctxt "FileOperations"
+msgid "Some files could not be deleted."
+msgstr "Non è stato possibile eliminare alcuni file."
+
+#: utilities/fileoperations.cpp
+msgctxt "FileOperations"
+msgid "Some files could not be moved."
+msgstr "Non è stato possibile spostare alcuni file."
+
+#: utilities/fileoperations.cpp
+msgctxt "FileOperations"
+msgid ""
+"The file \"%(1)\" could not be moved to trash.\n"
+"\n"
+"Do you want to permanently delete it?"
+msgstr ""
+"Non è stato possibile spostare il file \"%(1)\" nel cestino.\n"
+"\n"
+"Vuoi eliminarlo definitivamente?"
+
+#: components/filerenamer.cpp
+msgctxt "FileRenamer"
+msgid "A file with this name already exists."
+msgstr "Un file con questo nome esiste già."
+
+#: components/filerenamer.cpp
+msgctxt "FileRenamer"
+msgid "A folder with this name already exists."
+msgstr "Una cartella con questo nome esiste già."
+
+#: components/filerenamer.cpp
+msgctxt "FileRenamer"
+msgid "An object with this name already exists."
+msgstr "Un oggetto con questo nome esiste già."
+
+#: components/filerenamer.cpp
+msgctxt "FileRenamer"
+msgid "Could not rename this file."
+msgstr "Impossibile rinominare il file."
+
+#: components/filerenamer.cpp
+msgctxt "FileRenamer"
+msgid "Could not rename this folder."
+msgstr "Impossibile rinominare questa cartella."
+
+#: components/filerenamer.cpp
+msgctxt "FileRenamer"
+msgid "Show Extension"
+msgstr "Mostra Estensione"
+
+#: options/filetypeselector.cpp
+msgctxt "FileType"
+msgid "%(1) File"
+msgstr "%(1) File"
+
+#: options/filetypeselector.cpp
+msgctxt "FileType"
+msgid "Add File Type"
+msgstr "Aggiungi Tipo di File"
+
+#: options/filetypeselector.cpp
+msgctxt "FileType"
+msgid "Category"
+msgstr "Categoria"
+
+#: components/colorpicker.cpp
+msgctxt "FileType"
+msgid "Color Palette"
+msgstr "Tavolozza di colori"
+
+#: options/filetypeselector.cpp
+msgctxt "FileType"
+msgid "Description"
+msgstr "Descrizione"
+
+#: options/filetypeselector.cpp
+msgctxt "FileType"
+msgid "Extension"
+msgstr "Estensione"
+
+#: options/filetypeselector.cpp
+msgctxt "FileType"
+msgid "Icon"
+msgstr "Icona"
+
+#: presets/presetfile.cpp
+msgctxt "FileType"
+msgid "Preset"
+msgstr "Preset"
+
+#: presets/presetcollection.cpp
+msgctxt "FileType"
+msgid "Preset Collection"
+msgstr "Raccolta Preset"
+
+#: presets/presetfile.cpp
+msgctxt "FileType"
+msgid "Presets"
+msgstr "Presets"
+
+#: options/filetypeselector.cpp
+msgctxt "FileType"
+msgid "This file type already exists."
+msgstr "Questo tipo di file esiste già."
+
+#: options/filetypeselector.cpp
+msgctxt "FileType"
+msgid "This file type is invalid."
+msgstr "Questo tipo di file non è valido."
+
+#: components/imageselector.cpp
+msgctxt "ImageSelector"
+msgid "The image size is limited to %(1) x %(2). Do you want to scale the image?"
+msgstr "La dimensione dell'immagine è limitata a%(1) x%(2). Volete ridimensionare l'immagine?"
+
+#: utilities/multiprogress.cpp
+msgctxt "MultiProgress"
+msgid "Step %(1) of %(2)"
+msgstr "Passo %(1) di %(2)"
+
+#: components/pathselector.cpp
+msgctxt "PathList"
+msgid "Clear History"
+msgstr "Elimina Cronologia"
+
+#: components/pathselector.cpp
+msgctxt "PathList"
+msgid ""
+"Searching the root folder of a volume might be very slow.\n"
+"\n"
+"Do you really want to add %(1)?"
+msgstr ""
+"La ricerca di un volume nella cartella principale potrebbe essere molto lenta.\n"
+"\n"
+"Vuoi veramente aggiungere %(1)?"
+
+#: components/pathselector.cpp
+msgctxt "PathList"
+msgid "Select"
+msgstr "Seleziona"
+
+#: components/pathselector.cpp
+msgctxt "PathList"
+msgid "Select Default"
+msgstr "Seleziona Default"
+
+#: browser/pluginmanagement.cpp
+msgctxt "PlugInManagement"
+msgid "Avg. Load Time"
+msgstr "Tempo medio di Caricamento"
+
+#: browser/pluginmanagement.cpp
+msgctxt "PlugInManagement"
+msgid "Avg. Preset Size"
+msgstr "Dim. media Presets"
+
+#: browser/pluginmanagement.cpp
+msgctxt "PlugInManagement"
+msgid "Avg. Save Time"
+msgstr "Tempo medio di Salvataggio"
+
+#: browser/pluginmanagement.cpp
+msgctxt "PlugInManagement"
+msgid "Folder"
+msgstr "Cartella"
+
+#: browser/pluginmanagement.cpp
+msgctxt "PlugInManagement"
+msgid "Last Modified"
+msgstr "Ultima Modifica"
+
+#: browser/pluginmanagement.cpp
+msgctxt "PlugInManagement"
+msgid "Last Used"
+msgstr "Ultimo Usato"
+
+#: browser/pluginmanagement.cpp
+msgctxt "PlugInManagement"
+msgid "Name"
+msgstr "Nome"
+
+#: browser/pluginmanagement.cpp
+msgctxt "PlugInManagement"
+msgid "Plug-In Manager"
+msgstr "Plug-In Manager"
+
+#: browser/pluginmanagement.cpp
+msgctxt "PlugInManagement"
+msgid "Plug-in duplicates were hidden"
+msgstr "I duplicati del plug-in erano nascosti"
+
+#: browser/pluginmanagement.cpp
+msgctxt "PlugInManagement"
+msgid "Remove Plug-in Settings"
+msgstr "Rimuovi le impostazioni del Plug-In"
+
+#: browser/pluginmanagement.cpp
+msgctxt "PlugInManagement"
+msgid "Type"
+msgstr "Tipo"
+
+#: browser/pluginmanagement.cpp
+msgctxt "PlugInManagement"
+msgid "Vendor"
+msgstr "Fornitore"
+
+#: browser/pluginmanagement.cpp
+msgctxt "PlugInManagement"
+msgid "Version"
+msgstr "Versione"
+
+#: browser/pluginselector.cpp
+msgctxt "PlugInSelector"
+msgid "(Unknown Vendor)"
+msgstr "(Fornitore Sconosciuto)"
+
+#: browser/pluginselector.cpp
+msgctxt "PlugInSelector"
+msgid "Category"
+msgstr "Categoria"
+
+#: browser/pluginselector.cpp
+msgctxt "PlugInSelector"
+msgid "Flat"
+msgstr "Flat"
+
+#: browser/pluginselector.cpp
+msgctxt "PlugInSelector"
+msgid "Folder"
+msgstr "Cartella"
+
+#: browser/pluginselector.cpp
+msgctxt "PlugInSelector"
+msgid "None"
+msgstr "Nessuno"
+
+#: browser/pluginselector.cpp
+msgctxt "PlugInSelector"
+msgid "Type"
+msgstr "Tipo"
+
+#: browser/pluginselector.cpp
+msgctxt "PlugInSelector"
+msgid "Vendor"
+msgstr "Fornitore"
+
+#: presets/presetbrowser.cpp
+msgctxt "PresetBrowser"
+msgid "(no presets)"
+msgstr "(nessun preset)"
+
+#: presets/presettrader.cpp
+msgctxt "Presets"
+msgid "%(1) preset files were imported."
+msgstr "%(1) file Preset sono stati importati."
+
+#: presets/presetcomponent.cpp
+msgctxt "Presets"
+msgid "A preset with this name already exists."
+msgstr "Un preset con questo nome esiste già."
+
+#: presets/presettrader.cpp
+msgctxt "Presets"
+msgid "But it's not a preset for %(1)!"
+msgstr "Ma non è un preset per %(1)!"
+
+#: presets/presettrader.cpp
+msgctxt "Presets"
+msgid "But none of them is a preset for %(1)!"
+msgstr "Ma nessuno di loro è un preset per %(1)!"
+
+#: presets/presetcomponent.cpp
+msgctxt "Presets"
+msgid "Click+Drag Preset"
+msgstr "Clic+Trascina Preset"
+
+#: presets/presetcomponent.cpp
+msgctxt "Presets"
+msgid "Delete Preset"
+msgstr "Elimina Preset"
+
+#: presets/presetcomponent.cpp
+msgctxt "Presets"
+msgid "Do you want to delete these presets?"
+msgstr "Vuoi eliminare questi preset?"
+
+#: presets/presetcomponent.cpp
+msgctxt "Presets"
+msgid "Do you want to delete this preset?"
+msgstr "Vuoi eliminare questo preset?"
+
+#: presets/presetmanager.cpp
+msgctxt "Presets"
+msgid "Do you want to remove all plug-in settings and perform a full rescan next time you start $APPNAME?"
+msgstr "Vuoi rimuovere tuttte le impostazioni del plug-in ed effettuare una scansione completa la prossima voltache utilizzi $APPNAME?"
+
+#: presets/presetmanager.cpp
+msgctxt "Presets"
+msgid "Do you want to rescan blocked plug-ins next time you start $APPNAME?"
+msgstr "Vuoi effettuare nuovamente lo scan dei plug-in della blocklist la prossima volta che lanci $APPNAME?"
+
+#: presets/presetcomponent.cpp
+msgctxt "Presets"
+msgid "Do you want to store the current settings as default preset?"
+msgstr "Vuoi salvare le impostazioni correnti come preset predefinito?"
+
+#: presets/presetdrag.cpp
+msgctxt "Presets"
+msgid "Enter Name"
+msgstr "Inserisci il Nome"
+
+#: presets/presettrader.cpp
+msgctxt "Presets"
+msgid "Export %(1)"
+msgstr "Esporta %(1)"
+
+#: presets/presettrader.cpp
+msgctxt "Presets"
+msgid "Export Preset"
+msgstr "Esporta Preset"
+
+#: presets/presettrader.cpp
+msgctxt "Presets"
+msgid "Import Preset"
+msgstr "Importa Preset"
+
+#: browser/pluginbrowser.cpp
+msgctxt "Presets"
+msgid "Import Presets"
+msgstr "Importa i Preset"
+
+#: presets/presettrader.cpp
+msgctxt "Presets"
+msgid "Importing Preset"
+msgstr "Importazione Preset"
+
+#: presets/presetcomponent.cpp presets/presettrader.cpp
+msgctxt "Presets"
+msgid "Load Preset"
+msgstr "Carica Preset"
+
+#: presets/presettrader.cpp
+msgctxt "Presets"
+msgid "Load Preset File"
+msgstr "Carica File Preset"
+
+#: presets/presetparam.cpp
+msgctxt "Presets"
+msgid "No Preset"
+msgstr "Nessun Preset"
+
+#: presets/presetdrag.cpp
+msgctxt "Presets"
+msgid "No matching Preset"
+msgstr "Nessun Preset corrispondente"
+
+#: presets/presettrader.cpp
+msgctxt "Presets"
+msgid "One preset file was imported."
+msgstr "Un file di preset è stato importato."
+
+#: presets/presettrader.cpp
+msgctxt "Presets"
+msgid "Preset file export failed."
+msgstr "Esportazione del file predefinito non riuscita."
+
+#: presets/presetcomponent.cpp
+msgctxt "Presets"
+msgid "Preset:"
+msgstr "Preset:"
+
+#: presets/presetcomponent.cpp
+msgctxt "Presets"
+msgid "Rename Preset"
+msgstr "Rinomina Preset"
+
+#: presets/presetmanager.cpp
+msgctxt "Presets"
+msgid "Scanning Plug-Ins..."
+msgstr "Scansione Plug-Ins..."
+
+#: presets/presetmanager.cpp
+msgctxt "Presets"
+msgid "Scanning Presets..."
+msgstr "Scansione Preset..."
+
+#: presets/presetmanager.cpp
+msgctxt "Presets"
+msgid "Some plug-ins will be updated next time you start $APPNAME."
+msgstr "Alcuni Plug-ins verranno aggiornati al prossimo avvio $APPNAME."
+
+#: presets/presetcomponent.cpp
+msgctxt "Presets"
+msgid "Store %(1)"
+msgstr "Salva %(1)"
+
+#: presets/presetcomponent.cpp
+msgctxt "Presets"
+msgid "Store Preset"
+msgstr "Salva Preset"
+
+#: presets/presetcomponent.cpp
+msgctxt "Presets"
+msgid "Store as Default Preset"
+msgstr "Salva come Preset di Default"
+
+#: presets/presettrader.cpp
+msgctxt "Presets"
+msgid "These %(1) files could not be imported:"
+msgstr "Questi file%(1) non possono essere importati:"
+
+#: presets/presettrader.cpp
+msgctxt "Presets"
+msgid "This file could not be imported:"
+msgstr "Questo file non può essere importato:"
+
+#: presets/presetcomponent.cpp
+msgctxt "Presets"
+msgid "Update Preset"
+msgstr "Aggiorna Preset"
+
+#: browser/pluginbrowser.cpp
+msgctxt "Presets"
+msgid "Visible"
+msgstr "Visibile"
+
+#: presets/presetcomponent.cpp
+msgctxt "Presets"
+msgid "default"
+msgstr "predefinito"
+
+#: editing/scaleview.cpp
+msgctxt "Scale"
+msgid "Move"
+msgstr "Sposta"
+
+#: editing/scaleview.cpp
+msgctxt "Scale"
+msgid "Move, Zoom"
+msgstr "Sposta, Zoom"
+
+#: editing/scaleview.cpp
+msgctxt "Scale"
+msgid "Zoom"
+msgstr "Zoom"
+
+#: browser/searchresultlist.cpp
+msgctxt "Search"
+msgid "Folders"
+msgstr "Cartelle"
+
+#: browser/searchresultlist.cpp
+msgctxt "Search"
+msgid "Show in Context"
+msgstr "Mostra nel Contesto"
+
+#: utilities/shellcommand.cpp
+msgctxt "Shell"
+msgid "Show in Explorer"
+msgstr "Mostra in Explorer"
+
+#: utilities/shellcommand.cpp
+msgctxt "Shell"
+msgid "Show in File Manager"
+msgstr "Mostra nel File Manager"
+
+#: utilities/shellcommand.cpp
+msgctxt "Shell"
+msgid "Show in Finder"
+msgstr "Mostra nel Finder"
+
+#: options/mainoption.cpp
+msgctxt "SliderMode"
+msgid "Jump"
+msgstr "Salta"
+
+#: options/mainoption.cpp
+msgctxt "SliderMode"
+msgid "Touch"
+msgstr "Tocca"
+
+#: editing/tools/selecttool.cpp
+msgctxt "ToolHelp"
+msgid "Delete Objects"
+msgstr "Elimina Oggetti"
+
+#: editing/tools/selecttool.cpp
+msgctxt "ToolHelp"
+msgid "Drag"
+msgstr "Trascina"
+
+#: editing/tools/selecttool.cpp
+msgctxt "ToolHelp"
+msgid "Draw Selection"
+msgstr "Disegna Selezione"
+
+#: editing/tools/selecttool.cpp
+msgctxt "ToolHelp"
+msgid "Draw Selection (add)"
+msgstr "Disegna Selezione (aggiungi)"
+
+#: editing/tools/selecttool.cpp
+msgctxt "ToolHelp"
+msgid "Select"
+msgstr "Seleziona"
+
+#: editing/tools/selecttool.cpp
+msgctxt "ToolHelp"
+msgid "Select Range"
+msgstr "Seleziona intervallo"
+
+#: editing/tools/selecttool.cpp
+msgctxt "ToolHelp"
+msgid "Toggle Select"
+msgstr "Alterna Selezione"
+
+#: editing/tools/selecttool.cpp
+msgctxt "ToolHelp"
+msgid "Zoom"
+msgstr "Zoom"
+
+#: editing/tools/selecttool.cpp
+msgctxt "Tools"
+msgid "Eraser Tool"
+msgstr "Tool Gomma"
+
+#: editing/tools/selecttool.cpp
+msgctxt "Tools"
+msgid "Select Tool"
+msgstr "Strumento Selezione"
+
+#: options/useroption.cpp
+msgctxt "UserOption"
+msgid "Advanced"
+msgstr "Avanzato"
+
+#: options/mainoption.cpp
+msgctxt "UserOption"
+msgid "Appearance"
+msgstr "Aspetto"
+
+#: options/mainoption.cpp
+msgctxt "UserOption"
+msgid "Dark Mode"
+msgstr "Modalità Scura"
+
+#: options/serviceoption.cpp
+msgctxt "UserOption"
+msgid "Disable"
+msgstr "Disabilita"
+
+#: options/commandoption.cpp
+msgctxt "UserOption"
+msgid "Do you want to revert the keyboard mapping scheme to \"%(1)\"?"
+msgstr "Vuoi ripristinare la mappatura della tastiera a \"%(1)\"?"
+
+#: options/serviceoption.cpp
+msgctxt "UserOption"
+msgid "Enable"
+msgstr "Abilita"
+
+#: options/commandoption.cpp
+msgctxt "UserOption"
+msgid "Export"
+msgstr "Esporta"
+
+#: options/commandoption.cpp
+msgctxt "UserOption"
+msgid "Export as Text"
+msgstr "Esporta come Testo"
+
+#: options/useroption.cpp
+msgctxt "UserOption"
+msgid "General"
+msgstr "Generale"
+
+#: options/mainoption.cpp
+msgctxt "UserOption"
+msgid "Graphics settings will be applied next time you start $APPNAME."
+msgstr "Impostazioni grafiche verranno applicate al prossimo riavvio $APPNAME."
+
+#: options/mainoption.cpp
+msgctxt "UserOption"
+msgid "High DPI Mode will be changed next time you start $APPNAME."
+msgstr "La modalità High DPI verrà cambiata al prossimo riavvio di $APPNAME."
+
+#: options/commandoption.cpp
+msgctxt "UserOption"
+msgid "Import"
+msgstr "Importa"
+
+#: options/commandoption.cpp
+msgctxt "UserOption"
+msgid "Keyboard Shortcuts"
+msgstr "Scorciatoie da Tastiera"
+
+#: options/mainoption.cpp
+msgctxt "UserOption"
+msgid "Language"
+msgstr "Lingua"
+
+#: options/mainoption.cpp
+msgctxt "UserOption"
+msgid "Language will be changed next time you start $APPNAME."
+msgstr "La lingua verrà cambiata al prossimo riavvio di $APPNAME."
+
+#: options/mainoption.cpp
+msgctxt "UserOption"
+msgid "Light Mode"
+msgstr "Modalità Chiara"
+
+#: options/mainoption.cpp options/useroption.cpp
+msgctxt "UserOption"
+msgid "Locations"
+msgstr "Posizioni Cartelle"
+
+#: options/useroption.cpp
+msgctxt "UserOption"
+msgid "Options"
+msgstr "Opzioni"
+
+#: options/mainoption.cpp
+msgctxt "UserOption"
+msgid "Please note that the user interface of $APPNAME will appear blurry on high resolution screens."
+msgstr "Tieni presente che l'interfaccia utente di $APPNAME apparirà sfocata sugli schermi ad alta risoluzione."
+
+#: options/mainoption.cpp
+msgctxt "UserOption"
+msgid "Please note that third-party plug-ins will appear smaller if they do not support scaling."
+msgstr "Si noti che i plug-in di terze parti appariranno più piccoli se non supportano il ridimensionamento."
+
+#: options/useroption.cpp
+msgctxt "UserOption"
+msgid "Preferences"
+msgstr "Preferenze"
+
+#: options/serviceoption.cpp
+msgctxt "UserOption"
+msgid "Services"
+msgstr "Servizi"
+
+#: options/mainoption.cpp
+msgctxt "UserOption"
+msgid "Turning off hardware acceleration will slow down the user interface of $APPNAME and is not recommended for regular use."
+msgstr "La disattivazione dell'accelerazione hardware rallenterà l'interfaccia utente di $APPNAME e non è consigliata nel normale utilizzo."
+
+#: options/mainoption.cpp
+msgctxt "UserOption"
+msgid "Use this option only for downwards compatibility with older third-party plug-ins."
+msgstr "Usa questa opzione solo per compatibilità con i vecchi plug-in di terze parti."
+
+#: options/mainoption.cpp
+msgctxt "UserOption"
+msgid "User Data"
+msgstr "Dati Utente"
+
+#: options/mainoption.cpp
+msgctxt "UserOption"
+msgid "User Interface"
+msgstr "Interfaccia Utente"
+
+#: options/serviceoption.cpp
+msgctxt "UserOption"
+msgid "Your changes will be applied next time you start $APPNAME."
+msgstr "Le modifiche verranno applicate al prossimo riavvio di $APPNAME."
+
+#~ msgctxt "Application"
+#~ msgid "An instance of %(1) is already running!"
+#~ msgstr "Un'istanza di %(1) è già in esecuzione!"
+
+#~ msgctxt "Application"
+#~ msgid "Plug-In folder not found at:\n"
+#~ msgstr "La cartella dei plug-in non è disponibile sul sito:\n"
+
+#~ msgctxt "Application"
+#~ msgid "Script folder not found at:\n"
+#~ msgstr "Cartella degli Script non trovata in:\n"
+
+#~ msgctxt "Browser"
+#~ msgid "Show in Explorer"
+#~ msgstr "Mostra in Explorer"
+
+#~ msgctxt "Browser"
+#~ msgid "Show in File Manager"
+#~ msgstr "Mostra nel File Manager"
+
+#~ msgctxt "Browser"
+#~ msgid "Show in Finder"
+#~ msgstr "Mostra nel Finder"
+
+#~ msgctxt "Command"
+#~ msgid "Replace Preset"
+#~ msgstr "Sostituire Preset"
+
+#~ msgctxt "Command"
+#~ msgid "Reset Blacklist"
+#~ msgstr "Blacklist Reset!"
+
+#~ msgctxt "Command"
+#~ msgid "Update Plug-Ins"
+#~ msgstr "Aggiorna Plug-Ins"
+
+#~ msgctxt "DocumentDiagnostics"
+#~ msgid "<1 KB"
+#~ msgstr "<1 KB"
+
+#~ msgctxt "DocumentDiagnostics"
+#~ msgid "<1 ms"
+#~ msgstr "<1 ms"
+
+#~ msgctxt "Documents"
+#~ msgid "Do you want to save a copy of %(1) as format %(2)?"
+#~ msgstr "Vuoi salvare una copia di % (1) nel formato di %(2)?"
+
+#~ msgctxt "Documents"
+#~ msgid "Loading %(1) canceled."
+#~ msgstr "Caricamento di %(1) annullato."
+
+#~ msgctxt "FileDraghandler"
+#~ msgid "Copy"
+#~ msgstr "Copia"
+
+#~ msgctxt "FileDraghandler"
+#~ msgid "Copy to \"%(1)\""
+#~ msgstr "Copia a \"%(1)\""
+
+#~ msgctxt "FileDraghandler"
+#~ msgid "Move"
+#~ msgstr "Sposta"
+
+#~ msgctxt "FileDraghandler"
+#~ msgid "Move to \"%(1)\""
+#~ msgstr "Sposta a \"%(1)\""
+
+#~ msgctxt "FileOperations"
+#~ msgid "Delete File..."
+#~ msgstr "Elimina File..."
+
+#~ msgctxt "FileOperations"
+#~ msgid "Delete Folder..."
+#~ msgstr "Elimina Cartella..."
+
+#~ msgctxt "FileOperations"
+#~ msgid "Do you want to delete these files permanently from disk?"
+#~ msgstr "Vuoi eliminare questi file in modo permanente dal disco?"
+
+#~ msgctxt "FileOperations"
+#~ msgid "Do you want to delete this file permanently from disk?"
+#~ msgstr "Vuoi eliminare questo file in modo permanente dal disco?"
+
+#~ msgctxt "FileOperations"
+#~ msgid "Do you want to delete this folder permanently from disk?"
+#~ msgstr "Vuoi eliminare la cartella in modo permanente dal disco?"
+
+#~ msgctxt "FileOperations"
+#~ msgid "New Folder..."
+#~ msgstr "Nuova Cartella..."
+
+#~ msgctxt "FileOperations"
+#~ msgid "Rename File..."
+#~ msgstr "Rinomina File"
+
+#~ msgctxt "FileOperations"
+#~ msgid "Rename Folder..."
+#~ msgstr "Rinomina Cartella"
+
+#~ msgctxt "KnobMode"
+#~ msgid "Linear"
+#~ msgstr "Lineare"
+
+#~ msgctxt "Notepad"
+#~ msgid "Edit Note"
+#~ msgstr "Modifica Nota"
+
+#~ msgctxt "Notepad"
+#~ msgid "Edit Note..."
+#~ msgstr "Modifica Nota..."
+
+#~ msgctxt "PathList"
+#~ msgid "Select..."
+#~ msgstr "Seleziona..."
+
+#~ msgctxt "PluginDraghandler"
+#~ msgid "Add to Favorites"
+#~ msgstr "Aggiungi ai Preferiti"
+
+#~ msgctxt "PluginDraghandler"
+#~ msgid "Move to \"%(1)\""
+#~ msgstr "Sposta a \"%(1)\""
+
+#~ msgctxt "PluginDraghandler"
+#~ msgid "Move to Root"
+#~ msgstr "Vai alla Tonica"
+
+#~ msgctxt "Presets"
+#~ msgid "Delete"
+#~ msgstr "Elimina"
+
+#~ msgctxt "Presets"
+#~ msgid "Do you want to rescan blacklisted plug-ins next time you start $APPNAME?"
+#~ msgstr "Vuoi effettuare nuovamente lo scan dei plug-in della blacklist la prossima volta che lanci $APPNAME?"
+
+#~ msgctxt "Presets"
+#~ msgid "Export %(1)..."
+#~ msgstr "Esporta %(1)..."
+
+#~ msgctxt "Presets"
+#~ msgid "Export Preset..."
+#~ msgstr "Esporta Preset..."
+
+#~ msgctxt "Presets"
+#~ msgid "Import Preset..."
+#~ msgstr "Importa preset..."
+
+#~ msgctxt "Presets"
+#~ msgid "Load Preset File..."
+#~ msgstr "Carica File Preset..."
+
+#~ msgctxt "Presets"
+#~ msgid "Rename Preset..."
+#~ msgstr "Rinomina Preset..."
+
+#~ msgctxt "Presets"
+#~ msgid "Replace Preset"
+#~ msgstr "Sostituisci Preset"
+
+#~ msgctxt "Presets"
+#~ msgid "Store %(1)..."
+#~ msgstr "Salva %(1)..."
+
+#~ msgctxt "Presets"
+#~ msgid "Store Preset..."
+#~ msgstr "Salva Preset..."
+
+#~ msgctxt "ShowHideFilter"
+#~ msgid "New Preset"
+#~ msgstr "Nuovo Preset"
+
+#~ msgctxt "TagCategory"
+#~ msgid "Type"
+#~ msgstr "Tipo"
+
+#~ msgctxt "TagStore"
+#~ msgid "Add Tag"
+#~ msgstr "Aggiungi Tag"
+
+#~ msgctxt "TagStore"
+#~ msgid "Adding Tags..."
+#~ msgstr "Sto Aggiungendo Tags..."
+
+#~ msgctxt "TagStore"
+#~ msgid "All tags are valid."
+#~ msgstr "Tutti i tags sono validi."
+
+#~ msgctxt "TagStore"
+#~ msgid "Checking files in \"%(1)\""
+#~ msgstr "Sto Conotrollando i file in \"%(1)\""
+
+#~ msgctxt "TagStore"
+#~ msgid "Cleanup Tags of Missing Files"
+#~ msgstr "Ripulisci i Tag dei File Mancanti"
+
+#~ msgctxt "TagStore"
+#~ msgid "Clear Tags"
+#~ msgstr "Rmuovi Tags"
+
+#~ msgctxt "TagStore"
+#~ msgid "Do you want to remove these tag entries for non-existing files?"
+#~ msgstr "Vuoi rimuovere i tag inseriti per i file non più esistenti?"
+
+#~ msgctxt "TagStore"
+#~ msgid "Remove Tag"
+#~ msgstr "Rimuovi Tag"
+
+#~ msgctxt "TagStore"
+#~ msgid "Updated tags in %(1)\n"
+#~ msgstr "Tag aggiornati in %(1)\n"
+
+#~ msgctxt "TagStore"
+#~ msgid "other"
+#~ msgstr "altro"
+
+#~ msgctxt "TrashBin"
+#~ msgid "Are you sure you want to permanently delete these %(1) items?"
+#~ msgstr "Sei sicuro di voler eliminare definitivamente questi %(1) elementi?"
+
+#~ msgctxt "TrashBin"
+#~ msgid "Are you sure you want to permanently delete this item?"
+#~ msgstr "Sei sicuro di voler eliminare definitivamente questo elemento?"
+
+#~ msgctxt "TrashBin"
+#~ msgid "Delete"
+#~ msgstr "Elimina"
+
+#~ msgctxt "TrashBin"
+#~ msgid "Empty Trash Bin"
+#~ msgstr "Svuota Cestino"
+
+#~ msgctxt "TrashBin"
+#~ msgid "Restore"
+#~ msgstr "Ripristina"
+
+#~ msgctxt "TrashBin"
+#~ msgid "These items could not be restored!"
+#~ msgstr "Impossibile ripristinare questi elementi!"
+
+#~ msgctxt "TrashBin"
+#~ msgid "This item could not be restored!"
+#~ msgstr "Non è stato possibile ripristinare questo elemento!"
+
+#~ msgctxt "UserOption"
+#~ msgid "Export as Text..."
+#~ msgstr "Esporta come Testo..."
+
+#~ msgctxt "UserOption"
+#~ msgid "Export..."
+#~ msgstr "Esporta..."
+
+#~ msgctxt "UserOption"
+#~ msgid "Import..."
+#~ msgstr "Importa..."
+
+#~ msgctxt "UserOption"
+#~ msgid "Please note that third party plug-ins will appear smaller if they do not support scaling."
+#~ msgstr "Si prega di notare che i plug-in di terze parti appariranno più piccoli se non supportano il ridimensionamento."

@@ -1,0 +1,4415 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Model.ClassRepository xmlns:x="https://ccl.dev/xml" name="Cross-platform GUI Framework">
+	<List x:id="classes">
+		<Model.Class name="AlertBox" parent="DialogInformation">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="AliasParam" namespace="CCL" scriptable="1" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+			<List x:id="members">
+				<Model.Member name="value" type="variant">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="default" type="variant">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="type" type="int">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="min" type="variant">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="max" type="variant">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="name" type="string">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="string" type="string">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="enabled" type="bool">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="signalAlways" type="bool">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="reverse" type="bool">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+				</Model.Member>
+			</List>
+			<List x:id="methods">
+				<Model.Method name="setOriginal">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="void">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="original" type="object" typeName="Parameter">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="hasOriginal">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="bool">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+				</Model.Method>
+				<Model.Method name="setFeedbackNeeded">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="void">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="needed" type="bool" typeName="bool">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="setValue">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="void">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="value" type="variant" typeName="variant">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+						<Model.MethodArg name="update" type="bool" typeName="bool" defaultValue="false">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="fromString">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="void">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="str" type="string" typeName="string">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+						<Model.MethodArg name="update" type="bool" typeName="bool" defaultValue="false">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="setNormalized">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="void">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="value" type="float" typeName="float">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+						<Model.MethodArg name="upate" type="bool" typeName="bool" defaultValue="false">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="getNormalized">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="float">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+				</Model.Method>
+				<Model.Method name="setFormatter">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="void">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="formatter" type="object" typeName="Formatter">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="setCurve">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="void">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="curve" type="string" typeName="string">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="isType">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="bool">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="type" type="string" typeName="string">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="setSignalAlways">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="void">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="state" type="bool" typeName="bool" defaultValue="true">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="appendString">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="void">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="str" type="string" typeName="string">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="appendValue">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="void">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="value" type="variant" typeName="variant">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="removeAll">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="void">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+				</Model.Method>
+				<Model.Method name="getValueAt">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="variant">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="index" type="int" typeName="int">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="getSelectedValue">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="variant">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+				</Model.Method>
+				<Model.Method name="selectValue">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="void">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="value" type="variant" typeName="variant">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+						<Model.MethodArg name="update" type="bool" typeName="bool" defaultValue="false">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="setImage">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="void">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="image" type="object" typeName="Object">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+						<Model.MethodArg name="update" type="bool" typeName="bool">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+			</List>
+		</Model.Class>
+		<Model.Class name="AlignView" parent="Control">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="AmbientLight3D" parent="SceneNode3D">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="AnchorLayoutItem" parent="LayoutItem">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="AnchorLayoutView" parent="LayoutView">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="AnimationManager" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="Association" namespace="CCL" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="Attribute" namespace="CCL" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="AttributeQueue" namespace="CCL" parent="ObjectArray" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="Attributes" namespace="CCL" scriptable="1" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+			<List x:id="methods">
+				<Model.Method name="countAttributes">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="int">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+				</Model.Method>
+				<Model.Method name="getAttributeName">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="string">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="index" type="int" typeName="int">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="getAttributeValue">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="variant">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="index" type="int" typeName="int">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="getAttribute">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="variant">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="name" type="string" typeName="string">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="setAttribute">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="bool">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="name" type="string" typeName="string">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+						<Model.MethodArg name="value" type="variant" typeName="variant">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="queueAttribute">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="bool">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="id" type="string" typeName="string">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+						<Model.MethodArg name="value" type="variant" typeName="variant">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="newQueueIterator">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="object" typeName="Iterator">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="id" type="string" typeName="string">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+			</List>
+		</Model.Class>
+		<Model.Class name="AutoScroller" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="BaseGeometry3D" abstract="1" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="BasicAnimation" parent="Animation">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="Billboard3D" parent="BaseGeometry3D">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="BitmapFilter" namespace="CCL" abstract="1" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="BitmapPainter" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="BitmapProcessor" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="BoxLayout" parent="AnchorLayout">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="BoxLayoutView" parent="AnchorLayoutView">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="BufferAllocator3D" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="Button" scriptable="1" parent="Control">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+			<List x:id="methods">
+				<Model.Method name="push">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="void">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+				</Model.Method>
+			</List>
+		</Model.Class>
+		<Model.Class name="CStringDictionary" namespace="CCL" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="Camera3D" parent="SceneNode3D">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="CheckBox" parent="Toggle">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="Clipboard" scriptable="1" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+			<List x:id="methods">
+				<Model.Method name="setText">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="void">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="text" type="void">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="getText">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="string">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+				</Model.Method>
+			</List>
+		</Model.Class>
+		<Model.Class name="ClipperLayout" parent="AnchorLayout">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="ColorPalette" scriptable="1" parent="PaletteBase">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+			<List x:id="methods">
+				<Model.Method name="setColor">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="void">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="index" type="int" typeName="int">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+						<Model.MethodArg name="color" type="void" typeName="int | string">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="removeColors">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="void">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="startIndex" type="int" typeName="int" defaultValue="0">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+						<Model.MethodArg name="count" type="int" typeName="int" defaultValue="-1">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+			</List>
+		</Model.Class>
+		<Model.Class name="ColorPaletteModel" parent="PaletteModel">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="ColorParam" namespace="CCL" parent="Parameter" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="ColorSchemes" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="ColoredBitmap" parent="ModifiedBitmap">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="ColumnHeaderList" scriptable="1" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+			<List x:id="methods">
+				<Model.Method name="addColumn">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="void">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="width" type="void">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+						<Model.MethodArg name="title" type="void">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+						<Model.MethodArg name="id" type="void">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+						<Model.MethodArg name="minWidth" type="void">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+						<Model.MethodArg name="flags" type="void">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+			</List>
+		</Model.Class>
+		<Model.Class name="Command" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="CommandBar.Button" scriptable="1" parent="CommandBar.Item">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+			<List x:id="members">
+				<Model.Member name="commandCategory" type="void">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="commandName" type="void">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="icon" type="void">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="menuContent" type="void">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+				</Model.Member>
+			</List>
+		</Model.Class>
+		<Model.Class name="CommandBar.CustomItem" parent="CommandBar.Item">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="CommandBar.Group" scriptable="1" parent="CommandBar.Item">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+			<List x:id="members">
+				<Model.Member name="name" type="void">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="layout" type="void">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="revision" type="void">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+				</Model.Member>
+			</List>
+			<List x:id="methods">
+				<Model.Method name="addChildItem">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="bool">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="Item" type="void">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="removeChildItem">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="bool">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="Item" type="void">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="removeAll">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="object" typeName="void">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="void" type="void">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+			</List>
+		</Model.Class>
+		<Model.Class name="CommandBar.Icon" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="CommandBar.Item" scriptable="1" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+			<List x:id="members">
+				<Model.Member name="id" type="void">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="title" type="void">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="type" type="void">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="numChilds" type="void">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="flags" type="void">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="isReadOnly" type="void">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="isTemporary" type="void">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="isLeftClickContextMenu" type="void">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+				</Model.Member>
+			</List>
+			<List x:id="methods">
+				<Model.Method name="getChildItem">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="object" typeName="Item">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="int" type="void">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="getChildIndex">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="int">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="Item" type="void">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="saveToFile">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="bool">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="Url" type="void">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="cloneItem">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="object" typeName="Item">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="void" type="void">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+			</List>
+		</Model.Class>
+		<Model.Class name="CommandBar.Menu" parent="CommandBar.Group">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="CommandBar.MenuItem" parent="CommandBar.Button">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="CommandBar.MenuSeparator" parent="CommandBar.Item">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="CommandBar.Page" parent="CommandBar.Group">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="CommandBar.Root" parent="CommandBar.Group">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="CommandBar.SetupGroup" parent="CommandBar.Group">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="CommandBar.Tabs" parent="CommandBar.Group">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="CommandBarModel" scriptable="1" parent="StorableObject">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+			<List x:id="methods">
+				<Model.Method name="getRootItem">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="object" typeName="Item">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="void" type="void">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="getParentItem">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="object" typeName="Item">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="item" type="void">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="invalidate">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="object" typeName="void">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="void" type="void">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="loadItemFromFile">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="object" typeName="Item">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="Url" type="void">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="createPage">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="object" typeName="PageItem">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="void" type="void">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="getPage">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="object" typeName="PageItem">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="int" type="void">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="countPages">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="int">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="void" type="void">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="addItem">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="bool">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="item" type="void">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+						<Model.MethodArg name="parent" type="void">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+						<Model.MethodArg name="index" type="void">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="checkItemsIDs">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="object" typeName="void">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="void" type="void">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+			</List>
+		</Model.Class>
+		<Model.Class name="CommandBarView" scriptable="1" parent="View">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+			<List x:id="methods">
+				<Model.Method name="dragItem">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="void">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+				</Model.Method>
+			</List>
+		</Model.Class>
+		<Model.Class name="CommandContainer" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="CommandEditor" parent="CommandSelector">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="CommandParam" namespace="CCL" parent="Parameter" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="CommandSelector" scriptable="1" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+			<List x:id="members">
+				<Model.Member name="name" type="void">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="argColumnEnabled" type="void">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="focusCommand" type="void">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+				</Model.Member>
+			</List>
+			<List x:id="methods">
+				<Model.Method name="addExcludedCategory">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="void">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="displayName" type="void">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+			</List>
+		</Model.Class>
+		<Model.Class name="CommandTable" namespace="CCL" scriptable="1" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+			<List x:id="methods">
+				<Model.Method name="interpretCommand">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="bool">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="category" type="string" typeName="string">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+						<Model.MethodArg name="name" type="string" typeName="string">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+						<Model.MethodArg name="checkOnly" type="bool" typeName="bool" defaultValue="false">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+						<Model.MethodArg name="invoker" type="object" typeName="Object" defaultValue="null">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="deferCommand">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="bool">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="category" type="string" typeName="string">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+						<Model.MethodArg name="name" type="string" typeName="string">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+						<Model.MethodArg name="checkOnly" type="bool" typeName="bool" defaultValue="false">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+						<Model.MethodArg name="invoker" type="object" typeName="Object" defaultValue="null">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="addHandler">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="void">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="ICommandHandler" type="void">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="removeHandler">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="void">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="ICommandHandler" type="void">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="findCommand">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="object" typeName="Object">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="category" type="string" typeName="string">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+						<Model.MethodArg name="name" type="string" typeName="string">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="registerCommand">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="void">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="category" type="string" typeName="string">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+						<Model.MethodArg name="name" type="string" typeName="string">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+						<Model.MethodArg name="displayCategory" type="string" typeName="string">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+						<Model.MethodArg name="displayName" type="string" typeName="string">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+						<Model.MethodArg name="englishName" type="string" typeName="string">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+						<Model.MethodArg name="arguments" type="string" typeName="string" defaultValue="&apos;&apos;">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="unregisterCommand">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="void">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="category" type="string" typeName="string">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+						<Model.MethodArg name="name" type="string" typeName="string">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="newCommandIterator">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="void">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+				</Model.Method>
+				<Model.Method name="newCategoryIterator">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="void">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+				</Model.Method>
+				<Model.Method name="lookupBindings">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="object" typeName="Object">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="command" type="void">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="lookupKeyEvent">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="object" typeName="Key">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="command" type="object" typeName="Command">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+						<Model.MethodArg name="layoutSensitive" type="bool" typeName="bool" defaultValue="true">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="assignKey">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="void">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="command" type="void">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+						<Model.MethodArg name="key" type="void">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="beginTransaction">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="void">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+				</Model.Method>
+				<Model.Method name="endTransaction">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="void">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+				</Model.Method>
+			</List>
+		</Model.Class>
+		<Model.Class name="Commands" parent="StorableObject">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="Configuration" namespace="CCL" parent="PersistentAttributes" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="ContextPopupMenu" parent="ContextMenu">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="CoreSkinLoader" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="CryptoMaterial" namespace="CCL" parent="StorableObject">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="CubeTessellator3D" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="CubicBezierTimingFunction" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="CustomMaterial3D" parent="TextureMaterial3D">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="DateTime" namespace="CCL" scriptable="1" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+			<List x:id="methods">
+				<Model.Method name="toOrdinal">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="void">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+				</Model.Method>
+			</List>
+		</Model.Class>
+		<Model.Class name="DetachedFrameItem" parent="PopupFrameItem">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="DialogBuilder" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="DialogGroup" parent="View">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="DialogInformation" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="DirectionalLight3D" parent="SceneNode3D">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="Divider" scriptable="1" parent="Control">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+			<List x:id="methods">
+				<Model.Method name="jump">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="void">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+				</Model.Method>
+			</List>
+		</Model.Class>
+		<Model.Class name="DividerItem" parent="DockPanelItem">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="DockPanelGroup" parent="DockPanelItem">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="DockPanelItem" parent="ObjectNode" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="DockPanelRoot" parent="DockPanelGroup">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="DockPanelView" parent="View">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="DpiInfo" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="DragSession" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="DropBox" parent="ItemViewBase">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="DropBoxControl" parent="ItemControlBase">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="EditBox" parent="TextBox">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="EmbeddedFrameItem" parent="FrameItem">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="ExtendedMenu" scriptable="1" parent="Menu">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+			<List x:id="methods">
+				<Model.Method name="addHeaderItem">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="object" typeName="MenuItem">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="title" type="void">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+			</List>
+		</Model.Class>
+		<Model.Class name="FileFilter" parent="StorableObject">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="FileFilter.File" parent="FileFilter.Item">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="FileFilter.Folder" parent="FileFilter.Item">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="FileSelector" parent="NativeFileSelector">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="FileType" namespace="CCL" scriptable="1" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+			<List x:id="members">
+				<Model.Member name="description" type="string">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="extension" type="string">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="mimetype" type="string">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+				</Model.Member>
+			</List>
+		</Model.Class>
+		<Model.Class name="Filmstrip" parent="Image" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="FlexItem" parent="LayoutItem">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="FlexboxLayout" abstract="1" parent="Layout">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="FloatParam" namespace="CCL" parent="Parameter" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="FloatingSprite" parent="ManagedSprite">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="FolderSelector" parent="NativeFolderSelector">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="Form" parent="ImageView">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="Formatter" namespace="CCL" scriptable="1" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+			<List x:id="methods">
+				<Model.Method name="print">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="string">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="value" type="variant" typeName="variant">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="scan">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="variant">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="value" type="string" typeName="string">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+			</List>
+		</Model.Class>
+		<Model.Class name="FrameGroupItem" parent="FrameItem">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="FrameItem" parent="DockPanelItem">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="FrameItem.ViewState" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="FunctionParam" parent="Parameter" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="Geometry3D" parent="BaseGeometry3D">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="GraphicsHelper" namespace="CCL" abstract="1" scriptable="1" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+			<List x:id="methods">
+				<Model.Method name="loadImage">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="object" typeName="Image">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="path" type="void">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="saveImage">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="void">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="path" type="void">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+						<Model.MethodArg name="image" type="void">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+						<Model.MethodArg name="encoderOptions" type="void" defaultValue="null">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="createBitmap">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="object" typeName="Image">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="width" type="void">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+						<Model.MethodArg name="height" type="void">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="createFilmstrip">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="object" typeName="Image">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="image" type="void">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+						<Model.MethodArg name="frames" type="void">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="createImagePart">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="object" typeName="Image">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="image" type="void">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+						<Model.MethodArg name="left" type="void">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+						<Model.MethodArg name="top" type="void">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+						<Model.MethodArg name="width" type="void">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+						<Model.MethodArg name="height" type="void">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="copyBitmap">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="void">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="dstBitmap" type="void">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+						<Model.MethodArg name="srcBitmap" type="void">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+						<Model.MethodArg name="offsetX" type="void">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+						<Model.MethodArg name="offsetY" type="void">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="createBitmapFilter">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="object" typeName="BitmapFilter">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="name" type="void">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="processBitmap">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="object" typeName="Image">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="bitmap" type="void">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+						<Model.MethodArg name="filter" type="void">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+						<Model.MethodArg name="inplace" type="void" defaultValue="false">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+			</List>
+		</Model.Class>
+		<Model.Class name="GridTessellator3D" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="HelpCatalog" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="HelpInfoBuilder" scriptable="1" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+			<List x:id="methods">
+				<Model.Method name="addOption">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="void">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+				</Model.Method>
+			</List>
+		</Model.Class>
+		<Model.Class name="HelpInfoCollection" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="HelpReference" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="HelpTutorial" scriptable="1" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+			<List x:id="methods">
+				<Model.Method name="getID">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="string">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+				</Model.Method>
+				<Model.Method name="getTitle">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="string">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+				</Model.Method>
+				<Model.Method name="getCategory">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="string">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+				</Model.Method>
+			</List>
+		</Model.Class>
+		<Model.Class name="HelpTutorial.Step" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="Image" namespace="CCL" abstract="1" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="ImageCache" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="ImagePalette" parent="PaletteBase">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="ImageProvider" namespace="CCL" scriptable="1" parent="Parameter" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+			<List x:id="methods">
+				<Model.Method name="setImage">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="void">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="image" type="object" typeName="Object">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+						<Model.MethodArg name="update" type="bool" typeName="bool">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+			</List>
+		</Model.Class>
+		<Model.Class name="ImageView" parent="View">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="IntParam" namespace="CCL" parent="Parameter" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="ItemListSelection" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="ItemModel.BoxedEditInfo" scriptable="1" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+			<List x:id="members">
+				<Model.Member name="view" type="void">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="rect" type="void">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="editEvent" type="void">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+				</Model.Member>
+			</List>
+		</Model.Class>
+		<Model.Class name="Iterator" namespace="CCL" abstract="1" scriptable="1" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+			<List x:id="methods">
+				<Model.Method name="done">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="void">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+				</Model.Method>
+				<Model.Method name="first">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="void">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+				</Model.Method>
+				<Model.Method name="last">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="void">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+				</Model.Method>
+				<Model.Method name="next">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="void">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+				</Model.Method>
+				<Model.Method name="previous">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="void">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+				</Model.Method>
+			</List>
+		</Model.Class>
+		<Model.Class name="Key" namespace="CCL" parent="KeyEvent" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="KeyEvent" namespace="CCL" scriptable="1" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+			<List x:id="methods">
+				<Model.Method name="toString">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="object" typeName="String">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="translated" type="bool" typeName="bool" defaultValue="false">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+			</List>
+		</Model.Class>
+		<Model.Class name="Knob" parent="Slider">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="Label" parent="View">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="LayoutView" parent="View">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="LightAdaptedBitmap" parent="ColoredBitmap">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="LightSource3D" scriptable="1" parent="SceneNode3D">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+			<List x:id="members">
+				<Model.Member name="lightColor" type="object" typeName="UIValue">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+				</Model.Member>
+			</List>
+		</Model.Class>
+		<Model.Class name="LinkView" parent="Button">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="Linkable" namespace="CCL" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="ListControl" parent="ItemControl">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="ListParam" namespace="CCL" scriptable="1" parent="IntParam" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+			<List x:id="methods">
+				<Model.Method name="appendString">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="void">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="str" type="string" typeName="string">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="appendValue">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="void">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="value" type="variant" typeName="variant">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="removeAll">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="void">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+				</Model.Method>
+				<Model.Method name="getValueAt">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="variant">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="index" type="int" typeName="int">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="getSelectedValue">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="variant">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+				</Model.Method>
+				<Model.Method name="selectValue">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="void">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="value" type="variant" typeName="variant">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+						<Model.MethodArg name="update" type="bool" typeName="bool" defaultValue="false">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+			</List>
+		</Model.Class>
+		<Model.Class name="ListView" parent="ItemView">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="LogEvent" namespace="CCL" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="LogEventList" namespace="CCL" parent="StorableObject">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="Menu" parent="PopupMenu">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="MenuBar" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="MenuItem" parent="MenuItemBase">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="MenuParam" namespace="CCL" parent="ListParam" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="MenuPlaceholder" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="MenuSeparator" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="Message" namespace="CCL" scriptable="1" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+			<List x:id="members">
+				<Model.Member name="id" type="string">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="argCount" type="int" readOnly="1">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+				</Model.Member>
+			</List>
+			<List x:id="methods">
+				<Model.Method name="getArg">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="variant">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="index" type="int" typeName="int">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="getArgCount">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="int">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+				</Model.Method>
+			</List>
+		</Model.Class>
+		<Model.Class name="ModalProgressDialog" parent="ProgressDialog">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="Model3D" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="ModelNode3D" parent="ContainerNode3D">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="ModifiedImageCache" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="MountPoint" namespace="CCL" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="MouseEvent" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="MultiImage" parent="Image" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="MutableRegion" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="NativeColorSelector" parent="ColorSelector">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="NativeFileSelector" parent="FileSelector">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="NativeFolderSelector" scriptable="1" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+			<List x:id="methods">
+				<Model.Method name="run">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="bool">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="[title]" type="void">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="getPath">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="object" typeName="Url">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+				</Model.Method>
+			</List>
+		</Model.Class>
+		<Model.Class name="NativeTextLayout" abstract="1" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="NonModalPopupSelectorWindow" parent="PopupWindow">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="NotificationAction" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="NotifyIcon" parent="NotifyIcon">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="NullView" parent="View">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="Object" namespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="ObjectArray" namespace="CCL" parent="Container">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="ObjectList" namespace="CCL" parent="Container">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="ObjectNode" namespace="CCL" scriptable="1" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+			<List x:id="methods">
+				<Model.Method name="find">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="object" typeName="ObjectNode">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="childName" type="string" typeName="string">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+			</List>
+		</Model.Class>
+		<Model.Class name="ObjectStack" namespace="CCL" parent="ObjectList" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="PackageInfo" namespace="CCL" parent="PersistentAttributes" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="PaletteModel" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="PaletteParam" namespace="CCL" parent="ListParam" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="ParamContainer" namespace="CCL" scriptable="1" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+			<List x:id="methods">
+				<Model.Method name="add">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="object" typeName="Parameter">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="param" type="object" typeName="Parameter">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="addParam">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="object" typeName="Parameter">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="name" type="string" typeName="string">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="addFloat">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="object" typeName="FloatParam">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="min" type="float" typeName="float">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+						<Model.MethodArg name="max" type="float" typeName="float">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+						<Model.MethodArg name="name" type="string" typeName="string">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="addInteger">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="object" typeName="IntParam">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="min" type="int" typeName="int">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+						<Model.MethodArg name="max" type="int" typeName="int">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+						<Model.MethodArg name="name" type="string" typeName="string">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="addString">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="object" typeName="StringParam">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="name" type="string" typeName="string">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="addList">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="object" typeName="ListParam">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="name" type="string" typeName="string">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="addMenu">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="object" typeName="MenuParam">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="name" type="string" typeName="string">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="addCommand">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="object" typeName="CommandParam">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="commandCategory" type="string" typeName="string">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+						<Model.MethodArg name="commandName" type="string" typeName="string">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+						<Model.MethodArg name="name" type="string" typeName="string">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="addColor">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="object" typeName="ColorParam">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="name" type="string" typeName="string">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="addAlias">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="object" typeName="AliasParam">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="name" type="string" typeName="string">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="addImage">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="object" typeName="ImageProvider">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="name" type="string" typeName="string">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="remove">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="object" typeName="Parameter">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="name" type="string" typeName="string">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="lookup">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="object" typeName="Parameter">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="name" type="string" typeName="string">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+			</List>
+		</Model.Class>
+		<Model.Class name="ParamItemModel" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="ParamList" parent="ParamContainer" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="Parameter" namespace="CCL" scriptable="1" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+			<List x:id="members">
+				<Model.Member name="type" type="int">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="value" type="variant">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="min" type="variant">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="max" type="variant">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="default" type="variant">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="name" type="string">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="string" type="string">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="enabled" type="bool">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="signalAlways" type="bool">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="reverse" type="bool">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+				</Model.Member>
+			</List>
+			<List x:id="methods">
+				<Model.Method name="setValue">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="void">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="value" type="variant" typeName="variant">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+						<Model.MethodArg name="update" type="bool" typeName="bool" defaultValue="false">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="fromString">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="void">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="str" type="string" typeName="string">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+						<Model.MethodArg name="update" type="bool" typeName="bool" defaultValue="false">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="setNormalized">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="void">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="value" type="float" typeName="float">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+						<Model.MethodArg name="upate" type="bool" typeName="bool" defaultValue="false">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="getNormalized">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="float">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+				</Model.Method>
+				<Model.Method name="setFormatter">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="void">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="formatter" type="object" typeName="Formatter">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="setCurve">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="void">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="curve" type="string" typeName="string">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="isType">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="bool">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="type" type="string" typeName="string">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="setSignalAlways">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="void">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="state" type="bool" typeName="bool" defaultValue="true">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+			</List>
+		</Model.Class>
+		<Model.Class name="ParameterMenuBuilder" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="PersistentAttributes" namespace="CCL" parent="Attributes" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="Perspective" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="PerspectiveFrameState" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="PerspectiveState" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="PlugInViewStatics" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="Point" scriptable="1" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+			<List x:id="methods">
+				<Model.Method name="equals">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="void">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+				</Model.Method>
+			</List>
+		</Model.Class>
+		<Model.Class name="PointLight3D" scriptable="1" parent="SceneNode3D">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+			<List x:id="members">
+				<Model.Member name="attenuationRadius" type="float">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="attenuationMinimum" type="float">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="attenuationLinearFactor" type="float">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="attenuationConstantTerm" type="float">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+				</Model.Member>
+			</List>
+		</Model.Class>
+		<Model.Class name="PopupBox" scriptable="1" parent="View">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+			<List x:id="methods">
+				<Model.Method name="showPopup">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="void">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+				</Model.Method>
+				<Model.Method name="closePopup">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="void">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+				</Model.Method>
+			</List>
+		</Model.Class>
+		<Model.Class name="PopupFrameItem" parent="FrameItem">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="PopupMenu" parent="Menu">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="PopupSelector" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="ProgressBar" parent="ValueBar">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="ProgressDialog" parent="ProgressStep">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="RadioButton" parent="CheckBox">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="Rect" scriptable="1" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+			<List x:id="methods">
+				<Model.Method name="equals">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="void">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+				</Model.Method>
+				<Model.Method name="pointInside">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="void">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+				</Model.Method>
+				<Model.Method name="clone">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="void">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+				</Model.Method>
+			</List>
+		</Model.Class>
+		<Model.Class name="RootFrameItem" parent="FrameGroupItem">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="Scene3D" parent="ContainerNode3D">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="SceneView3D" parent="View3D">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="ScreenManager" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="ScriptComponent" scriptable="1" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+			<List x:id="methods">
+				<Model.Method name="construct">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="void">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+				</Model.Method>
+				<Model.Method name="addChild">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="void">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+				</Model.Method>
+			</List>
+		</Model.Class>
+		<Model.Class name="ScriptGUIHost" namespace="CCL" abstract="1" scriptable="1" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+			<List x:id="members">
+				<Model.Member name="Constants" type="void">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="Commands" type="object" typeName="CommandTable" readOnly="1">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="Themes" type="void">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="Desktop" type="void">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="Help" type="void">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="Configuration" type="void">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+				</Model.Member>
+			</List>
+			<List x:id="methods">
+				<Model.Method name="flushUpdates">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="void">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+				</Model.Method>
+				<Model.Method name="alert">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="void">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="text" type="void">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="ask">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="void">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="text" type="void">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="runDialog">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="int">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="theme" type="object" typeName="Object">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+						<Model.MethodArg name="formName" type="string" typeName="string">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+						<Model.MethodArg name="controller" type="object" typeName="Object" defaultValue="null">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+						<Model.MethodArg name="buttons" type="int" typeName="int" defaultValue="0">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="runDialogWithParameters">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="int">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="paramList" type="void">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+						<Model.MethodArg name="title" type="void">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="addIdleTask">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="void">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+				</Model.Method>
+				<Model.Method name="removeIdleTask">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="void">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+				</Model.Method>
+				<Model.Method name="openUrl">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="void">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+				</Model.Method>
+				<Model.Method name="showInBrowser">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="void">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+				</Model.Method>
+				<Model.Method name="keyStateToString">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="void">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+				</Model.Method>
+			</List>
+		</Model.Class>
+		<Model.Class name="ScrollBar" parent="Control">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="ScrollButton" parent="ScrollBar">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="ScrollParam" namespace="CCL" parent="IntParam" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="ScrollView" parent="View">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="Section" namespace="CCL" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="SegmentBox" parent="Control">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="SelectBox" scriptable="1" parent="TextBox">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+			<List x:id="methods">
+				<Model.Method name="showMenu">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="void">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+				</Model.Method>
+			</List>
+		</Model.Class>
+		<Model.Class name="SelectionRegion" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="Settings" namespace="CCL" scriptable="1" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+			<List x:id="methods">
+				<Model.Method name="getAttributes">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="string">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="Attributes" type="void">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+			</List>
+		</Model.Class>
+		<Model.Class name="SharedDetachedFrameItem" parent="DetachedFrameItem">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="SizeVariantLayout" parent="AnchorLayout">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="SkinWizard" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="Slider" parent="ValueControl">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="SolidColorMaterial3D" scriptable="1" parent="Material3D">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+			<List x:id="members">
+				<Model.Member name="materialColor" type="object" typeName="UIValue">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="shininess" type="float">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+				</Model.Member>
+			</List>
+		</Model.Class>
+		<Model.Class name="String" namespace="CCL" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="StringDictionary" namespace="CCL" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="StringList" namespace="CCL" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="StringParam" namespace="CCL" parent="Parameter" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="SublayerSprite" parent="ManagedSprite">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="SwipeBox" parent="Control">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="SystemFrameItem" parent="FrameItem">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="SystemWindow" parent="Window">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="TableLayout" parent="AnchorLayout">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="TaskBarDelegate" namespace="CCL" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="TextBox" parent="Control">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="TextEditor" parent="Control">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="TextFile" namespace="CCL" scriptable="1" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+			<List x:id="members">
+				<Model.Member name="endOfStream" type="void">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+				</Model.Member>
+			</List>
+			<List x:id="methods">
+				<Model.Method name="readLine">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="void">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+				</Model.Method>
+				<Model.Method name="writeLine">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="void">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+				</Model.Method>
+				<Model.Method name="writeString">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="void">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+				</Model.Method>
+				<Model.Method name="close">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="void">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+				</Model.Method>
+			</List>
+		</Model.Class>
+		<Model.Class name="TextLayoutBuilder" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="TextModelProvider" parent="Parameter" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="TextureMaterial3D" scriptable="1" parent="SolidColorMaterial3D">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+			<List x:id="members">
+				<Model.Member name="opacity" type="float">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+				</Model.Member>
+			</List>
+		</Model.Class>
+		<Model.Class name="ThemeStatics" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="TiledImage" parent="Image" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="TintedBitmap" parent="ColoredBitmap">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="Toggle" parent="Button">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="ToolButton" parent="RadioButton">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="TooltipWindow" parent="TooltipPopup">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="TouchInputManager" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="TransformAnimation" parent="Animation">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="Tree" parent="TreeItem">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="TreeControl" parent="ItemControl">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="TreeItem" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="UID" namespace="CCL" scriptable="1" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+			<List x:id="methods">
+				<Model.Method name="equals">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="bool">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="id" type="void" typeName="UID | string">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+			</List>
+		</Model.Class>
+		<Model.Class name="UVSphereTessellator3D" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="UpDownButton" parent="Button">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="Url" namespace="CCL" scriptable="1" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+			<List x:id="members">
+				<Model.Member name="name" type="void">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="url" type="void">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="extension" type="void">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="protocol" type="void">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="hostname" type="void">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+				</Model.Member>
+			</List>
+			<List x:id="methods">
+				<Model.Method name="ascend">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="void">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+				</Model.Method>
+				<Model.Method name="descend">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="void">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="name" type="void">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+						<Model.MethodArg name="folder" type="void" defaultValue="false">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="makeUnique">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="void">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="forceSuffix" type="void" defaultValue="false">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="toDisplayString">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="string">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+				</Model.Method>
+				<Model.Method name="fromDisplayString">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="void">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="string" type="void">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+						<Model.MethodArg name="folder" type="void" defaultValue="false">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="contains">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="void">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="childUrl" type="object" typeName="Url">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="getName">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="string">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="withExtension" type="bool" typeName="bool" defaultValue="true">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+			</List>
+		</Model.Class>
+		<Model.Class name="UrlWithTitle" namespace="CCL" parent="Url" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="UserControlHost" parent="View">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="UserOptionDialog" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="UserView3D" parent="View3D">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="ValueBox" parent="EditBox">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="Variant" namespace="CCL" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="VariantView" parent="Control">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="View" parent="Linkable" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="ViewScreenCapture" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="VisualStyle" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="WebBrowserView" parent="View">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="Win32PageSetupDialog" parent="PageSetupDialog">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="Window" scriptable="1" parent="WindowBase">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+			<List x:id="methods">
+				<Model.Method name="popupContextMenu">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="void">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+				</Model.Method>
+				<Model.Method name="showPlatformInformation">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="void">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+				</Model.Method>
+				<Model.Method name="close">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="void">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+				</Model.Method>
+			</List>
+		</Model.Class>
+		<Model.Class name="WindowBase" parent="View">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="WindowsAlertBox" parent="AlertBox">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="WindowsDragSession" parent="DragSession">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="WindowsMenuBar" parent="MenuBar">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="WindowsTooltip" parent="TooltipPopup">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="WindowsVariantMenuBar" parent="WindowsMenuBar">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="Workspace" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="XmlNode" namespace="CCL" scriptable="1" parent="ObjectNode" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+			<List x:id="members">
+				<Model.Member name="name" type="void">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="parent" type="void">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="text" type="void">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="comment" type="void">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+				</Model.Member>
+			</List>
+			<List x:id="methods">
+				<Model.Method name="newNode">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="object" typeName="XmlNode">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="title" type="void" defaultValue="&apos;&apos;">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="setAttribute">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="void">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="key" type="void">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+						<Model.MethodArg name="value" type="void">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="getAttribute">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="string">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="key" type="void">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="addChild">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="void">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="node" type="void">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="findNode">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="object" typeName="XmlNode">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="name" type="void">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="newIterator">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="object" typeName="Iterator">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+				</Model.Method>
+			</List>
+		</Model.Class>
+		<Model.Class name="XmlSettings" namespace="CCL" parent="Settings" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="XmlTree" namespace="CCL" scriptable="1" parent="StorableObject">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+			<List x:id="members">
+				<Model.Member name="root" type="void">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="errorMessage" type="void">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+				</Model.Member>
+			</List>
+		</Model.Class>
+		<Model.Class name="YogaLayout" parent="FlexboxLayout">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="ZoomableView" parent="View">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+	</List>
+</Model.ClassRepository>

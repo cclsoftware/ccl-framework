@@ -1,0 +1,11 @@
+get_property (multi_config GLOBAL PROPERTY GENERATOR_IS_MULTI_CONFIG)
+if (multi_config)
+	set (yoga_LIBRARY_OUTPUT_DEBUG "${yoga_CONFIG_DIR}/Debug/libyogacore.a")
+	set (yoga_LIBRARY_OUTPUT_RELEASE "${yoga_CONFIG_DIR}/Release/libyogacore.a")
+	set (yoga_BUILD_BYPRODUCTS "${yoga_CONFIG_DIR}/$<CONFIG>/libyogacore.a")
+else ()
+	set (yoga_LIBRARY_OUTPUT "${yoga_CONFIG_DIR}/libyogacore.a")
+	set (yoga_BUILD_BYPRODUCTS "${yoga_LIBRARY_OUTPUT}")
+endif ()
+
+set (yoga_cxx_flags "-std\\=c++1z -DYOGA_EXPORT= -fvisibility=hidden -Wno-macro-redefined")

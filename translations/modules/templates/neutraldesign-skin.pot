@@ -1,0 +1,100 @@
+#: ./overlays.xml
+msgctxt "Standard.ColorPickerPopup"
+msgid "#"
+msgstr ""
+
+#: ./overlays.xml
+msgctxt "DialogFrameHeader"
+msgid "$t"
+msgstr ""
+
+#: ./overlays.xml
+msgctxt "DialogFrameHeader"
+msgid "$title"
+msgstr ""
+
+#: ./overlays.xml
+msgctxt "ProgressDialogView"
+msgid "Cancel"
+msgstr ""
+
+#: ./tutorialviewer.xml
+msgctxt "TutorialViewer.SkinContent"
+msgid "Close"
+msgstr ""
+
+#: ./tutorialviewer.xml
+msgctxt "TutorialViewer.Navigation"
+msgid "First Step"
+msgstr ""
+
+#: ./overlays.xml
+msgctxt "Standard.ColorPickerPopup"
+msgid "HSL"
+msgstr ""
+
+#: ./euladialog.xml
+msgctxt "EULADialog"
+msgid "I Accept"
+msgstr ""
+
+#: ./euladialog.xml
+msgctxt "EULADialog"
+msgid "I Decline"
+msgstr ""
+
+#: ./tutorialviewer.xml
+msgctxt "TutorialViewer.Navigation"
+msgid "Last Step"
+msgstr ""
+
+#: ./overlays.xml
+msgctxt "Standard.ColorPickerPopup"
+msgid "Load Preset"
+msgstr ""
+
+#: ./tutorialviewer.xml
+msgctxt "TutorialViewer.Navigation"
+msgid "Next Step"
+msgstr ""
+
+#: ./overlays.xml
+msgctxt "UserOptionDialog"
+msgid "Options"
+msgstr ""
+
+#: ./overlays.xml
+msgctxt "ProgressDialogView"
+msgid "Please wait..."
+msgstr ""
+
+#: ./tutorialviewer.xml
+msgctxt "TutorialViewer.Navigation"
+msgid "Previous Step"
+msgstr ""
+
+#: ./overlays.xml
+msgctxt "Standard.ColorPickerPopup"
+msgid "RGB"
+msgstr ""
+
+#: ./overlays.xml
+msgctxt "Standard.ColorPickerPopup"
+msgid "Reset"
+msgstr ""
+
+#: ./overlays.xml
+msgctxt "Standard.ColorPickerPopup"
+msgid "Store Preset"
+msgstr ""
+
+#: ./overlays.xml
+msgctxt "ProgressStepView"
+msgid "Time remaining:"
+msgstr ""
+
+#: ./tutorialviewer.xml
+msgctxt "TutorialViewer"
+msgid "Tutorial"
+msgstr ""
+

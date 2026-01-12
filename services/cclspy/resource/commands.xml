@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Commands>
+    <Command category="Spy" name="Reload Skin">
+		  <Key name="Shift+F10"/>
+	</Command>
+
+	<Command category="Spy" name="Reload Skin Quick">
+		<Key name="Ctrl+Shift+F10"/>
+	</Command>
+
+	<Command category="Spy" name="Switch Orientation">
+		<Key name="Ctrl+Shift++Alt+Page Up"/>
+	</Command>
+
+	<Command category="Spy" name="Move View Left">
+		<Key name="Ctrl+Alt+Left Arrow"/>
+	</Command>
+
+	<Command category="Spy" name="Move View Right">
+		<Key name="Ctrl+Alt+Right Arrow"/>
+	</Command>
+
+	<Command category="Spy" name="Move View Up">
+		<Key name="Ctrl+Alt+Up Arrow"/>
+	</Command>
+
+    <Command category="Spy" name="Move View Down">
+        <Key name="Ctrl+Alt+Down Arrow"/>
+    </Command>
+
+
+	<Command category="Spy" name="Show CCL Spy" global="true">
+		<Key name="Ctrl+Alt+O"/>
+	</Command>
+
+	<Command category="Spy" name="Show Parent" global="true">
+		<Key name="Ctrl+Alt+Shift+Up Arrow"/>
+	</Command>
+
+	<Command category="Spy" name="Hilite View" global="true">
+		<Key name="Ctrl+Alt+Shift+Down Arrow"/>
+	</Command>
+</Commands>

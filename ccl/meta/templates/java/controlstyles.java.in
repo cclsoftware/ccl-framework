@@ -1,0 +1,11 @@
+{% include ../cclfileheader.in %}
+
+package dev.ccl.cclgui;
+
+/**
+ * Built-in Control class styles.
+ */
+public class ControlStyles
+{
+{% include ../../../../core/meta/templates/java/shared/enumsflat.java.in %}
+}

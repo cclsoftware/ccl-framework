@@ -1,0 +1,270 @@
+#: ./localization/localeinfo.cpp
+msgctxt "Locales"
+msgid "%(1) days ago"
+msgstr ""
+
+#: ./plugins/servicemanager.cpp
+msgctxt "ServiceManager"
+msgid "%(1) failed!"
+msgstr ""
+
+#: ./plugins/plugcollect.cpp
+msgctxt "PlugIns"
+msgid "%(1) has been blocked."
+msgstr ""
+
+#: ./localization/localeinfo.cpp
+msgctxt "Locales"
+msgid "%(1) months ago"
+msgstr ""
+
+#: ./localization/localeinfo.cpp
+msgctxt "Locales"
+msgid "%(1) weeks ago"
+msgstr ""
+
+#: ./localization/localeinfo.cpp
+msgctxt "Locales"
+msgid "%(1) years ago"
+msgstr ""
+
+#: ./nativefilesystem.cpp
+msgctxt "FileErrors"
+msgid "Access is denied"
+msgstr ""
+
+#: ./fileutilities.cpp
+msgctxt "FileType"
+msgid "Application"
+msgstr ""
+
+#: ./fileutilities.cpp
+msgctxt "FileType"
+msgid "Application Extension"
+msgstr ""
+
+#: ./fileutilities.cpp
+msgctxt "FileType"
+msgid "Binary File"
+msgstr ""
+
+#: ./plugins/plugmanager.cpp
+msgctxt "PlugInManager"
+msgid "Deleted script object from \"%(1)\" is still referenced."
+msgstr ""
+
+#: ./localization/localeinfo.cpp
+msgctxt "Locales"
+msgid "GB"
+msgstr ""
+
+#: ./fileutilities.cpp
+msgctxt "FileType"
+msgid "HTML File"
+msgstr ""
+
+#: ./localization/localeinfo.cpp
+msgctxt "Locales"
+msgid "In %(1) days"
+msgstr ""
+
+#: ./localization/localeinfo.cpp
+msgctxt "Locales"
+msgid "In %(1) hours"
+msgstr ""
+
+#: ./localization/localeinfo.cpp
+msgctxt "Locales"
+msgid "In less than one hour"
+msgstr ""
+
+#: ./localization/localeinfo.cpp
+msgctxt "Locales"
+msgid "In one day"
+msgstr ""
+
+#: ./localization/localeinfo.cpp
+msgctxt "Locales"
+msgid "In one hour"
+msgstr ""
+
+#: ./nativefilesystem.cpp
+msgctxt "FileErrors"
+msgid "Invalid Argument"
+msgstr ""
+
+#: ./fileutilities.cpp
+msgctxt "FileType"
+msgid "JSON File"
+msgstr ""
+
+#: ./fileutilities.cpp
+msgctxt "FileType"
+msgid "Java Properties File"
+msgstr ""
+
+#: ./localization/localeinfo.cpp
+msgctxt "Locales"
+msgid "KB"
+msgstr ""
+
+#: ./localization/localeinfo.cpp
+msgctxt "Locales"
+msgid "KB/sec"
+msgstr ""
+
+#: ./localization/languagepack.cpp
+msgctxt "FileType"
+msgid "Language Pack"
+msgstr ""
+
+#: ./localization/localeinfo.cpp
+msgctxt "Locales"
+msgid "Last month"
+msgstr ""
+
+#: ./localization/localeinfo.cpp
+msgctxt "Locales"
+msgid "Last week"
+msgstr ""
+
+#: ./localization/localeinfo.cpp
+msgctxt "Locales"
+msgid "Last year"
+msgstr ""
+
+#: ./localization/localeinfo.cpp
+msgctxt "Locales"
+msgid "MB"
+msgstr ""
+
+#: ./localization/localeinfo.cpp
+msgctxt "Locales"
+msgid "MB/sec"
+msgstr ""
+
+#: ./fileutilities.cpp
+msgctxt "FileType"
+msgid "PDF File"
+msgstr ""
+
+#: ./fileutilities.cpp
+msgctxt "FileType"
+msgid "Package File"
+msgstr ""
+
+#: ./packaging/filearchive.cpp
+msgctxt "PackageFile"
+msgid "Packaging: %(1)"
+msgstr ""
+
+#: ./fileutilities.cpp
+msgctxt "FileType"
+msgid "Rich Text Format"
+msgstr ""
+
+#: ./fileutilities.cpp
+msgctxt "FileType"
+msgid "Spreadsheet"
+msgstr ""
+
+#: ./plugins/servicemanager.cpp
+msgctxt "ServiceManager"
+msgid "Starting %(1)..."
+msgstr ""
+
+#: ./localization/localeinfo.cpp
+msgctxt "Locales"
+msgid "TB"
+msgstr ""
+
+#: ./fileutilities.cpp
+msgctxt "FileType"
+msgid "Text File"
+msgstr ""
+
+#: ./nativefilesystem.cpp
+msgctxt "FileErrors"
+msgid "The file exists"
+msgstr ""
+
+#: ./nativefilesystem.cpp
+msgctxt "FileErrors"
+msgid "The file is in use"
+msgstr ""
+
+#: ./nativefilesystem.cpp
+msgctxt "FileErrors"
+msgid "The file is write protected"
+msgstr ""
+
+#: ./nativefilesystem.cpp
+msgctxt "FileErrors"
+msgid "The system cannot find the file specified"
+msgstr ""
+
+#: ./nativefilesystem.cpp
+msgctxt "FileErrors"
+msgid "There is not enough space on the disk"
+msgstr ""
+
+#: ./localization/localeinfo.cpp
+msgctxt "Locales"
+msgid "Today"
+msgstr ""
+
+#: ./nativefilesystem.cpp
+msgctxt "FileErrors"
+msgid "Too many open files"
+msgstr ""
+
+#: ./fileutilities.cpp
+msgctxt "FileType"
+msgid "UBJSON File"
+msgstr ""
+
+#: ./nativefilesystem.cpp
+msgctxt "FileErrors"
+msgid "Unknown Error"
+msgstr ""
+
+#: ./fileutilities.cpp
+msgctxt "FileType"
+msgid "XML File"
+msgstr ""
+
+#: ./localization/localeinfo.cpp
+msgctxt "Locales"
+msgid "Yesterday"
+msgstr ""
+
+#: ./fileutilities.cpp
+msgctxt "FileType"
+msgid "ZIP File"
+msgstr ""
+
+#: ./localization/localeinfo.cpp
+msgctxt "Locales"
+msgid "bytes"
+msgstr ""
+
+#: ./localization/localeinfo.cpp
+msgctxt "Locales"
+msgid "days"
+msgstr ""
+
+#: ./localization/localeinfo.cpp
+msgctxt "Locales"
+msgid "hours"
+msgstr ""
+
+#: ./localization/localeinfo.cpp
+msgctxt "Locales"
+msgid "min"
+msgstr ""
+
+#: ./localization/localeinfo.cpp
+msgctxt "Locales"
+msgid "sec"
+msgstr ""
+

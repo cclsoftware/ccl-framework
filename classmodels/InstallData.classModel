@@ -1,0 +1,246 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Model.ClassRepository xmlns:x="https://ccl.dev/xml" name="Install Manifext XML">
+	<List x:id="classes">
+
+		<Model.Class name="ContainerItem" abstract="1">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text="Abstract base class, defines element that parents multiple items. Not directly used as XML element."/>
+				<String x:id="detailed" text=""/>
+			</Model.Documentation>
+			<Attributes x:id="attributes">
+				<Attribute id="Class:DocGroup" value="Install Data"/>
+			</Attributes>
+		</Model.Class>
+
+		<Model.Class name="InstallAction" parent="ContainerItem">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+				<String x:id="detailed" text=""/>
+			</Model.Documentation>
+			<List x:id="members">
+				<!-- TODO: should be enum but no enum defined in code. -->
+				<Model.Member name="type" type="string" typeName="string"/>
+			</List>
+			<Attributes x:id="attributes">
+				<Attribute id="Class:DocGroup" value="Install Data"/>
+			</Attributes>
+		</Model.Class>
+
+			<!-- HistoryEntry -->
+			<Model.Class name="InstallEntry" parent="InstallItem">
+				<Model.Documentation x:id="doc">
+					<String x:id="brief" text=""/>
+					<String x:id="detailed" text=""/>
+				</Model.Documentation>
+				<List x:id="members">
+					<!-- TODO: member type is object? -->
+					<Model.Member name="date" type="string" typeName="string"/>
+					<Model.Member name="path" type="string" typeName="string"/>
+				</List>
+			<Attributes x:id="attributes">
+				<Attribute id="Class:DocGroup" value="Install Data"/>
+			</Attributes>
+		</Model.Class>
+
+		<Model.Class name="InstallExecute" parent="InstallFile">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text="Executable file to run during package installation."/>
+				<String x:id="detailed" text=""/>
+			</Model.Documentation>
+			<Attributes x:id="attributes">
+				<Attribute id="Class:DocGroup" value="Install Data"/>
+			</Attributes>
+		</Model.Class>
+
+		<Model.Class name="InstallFile" parent="InstallItem">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text="Extension file installation application."/>
+				<String x:id="detailed" text=""/>
+			</Model.Documentation>
+			<List x:id="members">
+				<Model.Member name="parent" type="string" typeName="string"/>
+				<Model.Member name="file" type="string" typeName="string"/>
+				<Model.Member name="medium" type="string" typeName="string"/>
+				<Model.Member name="license" type="string" typeName="string"/>
+				<Model.Member name="source" type="string" typeName="string"/>
+				<Model.Member name="target" type="string" typeName="string"/>
+				<Model.Member name="unpack" type="string" typeName="string"/>
+				<Model.Member name="description" type="string" typeName="string"/>
+				<Model.Member name="restart" type="bool" typeName="bool"/>
+				<Model.Member name="recommended" type="bool" typeName="bool"/>
+				<Model.Member name="minimum" type="bool" typeName="bool"/>
+				<Model.Member name="sharedLocation" type="bool" typeName="bool">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="Install to shared location (company-wide, not app-specific)"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="finishAction" type="string" typeName="string"/>
+				<Model.Member name="size" type="double" typeName="double"/>
+			</List>
+			<Attributes x:id="attributes">
+				<Attribute id="Class:DocGroup" value="Install Data"/>
+			</Attributes>
+		</Model.Class>
+
+		<Model.Class name="InstallHistory">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text="Root element of installhistory.xml file."/>
+				<String x:id="detailed" text=""/>
+			</Model.Documentation>
+			<List x:id="members">
+				<Model.Member name="version" type="string" typeName="string"/>
+			</List>
+			<Attributes x:id="attributes">
+				<Attribute id="Class:DocGroup" value="Install Data"/>
+			</Attributes>
+		</Model.Class>
+
+		<Model.Class name="InstallInclude" parent="InstallItem">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+				<String x:id="detailed" text=""/>
+			</Model.Documentation>
+			<Attributes x:id="attributes">
+				<Attribute id="Class:DocGroup" value="Install Data"/>
+			</Attributes>
+		</Model.Class>
+
+		<Model.Class name="InstallItem">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+				<String x:id="detailed" text=""/>
+			</Model.Documentation>
+			<List x:id="members">
+				<Model.Member name="id" type="string" typeName="string"/>
+				<Model.Member name="title" type="string" typeName="string"/>
+				<Model.Member name="icon" type="string" typeName="string"/>
+			</List>
+			<Attributes x:id="attributes">
+				<Attribute id="Class:DocGroup" value="Install Data"/>
+			</Attributes>
+		</Model.Class>
+
+		<Model.Class name="InstallMedium" parent="InstallItem">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+				<String x:id="detailed" text=""/>
+			</Model.Documentation>
+			<List x:id="members">
+				<Model.Member name="detect" type="bool" typeName="bool"/>
+			</List>
+			<Attributes x:id="attributes">
+				<Attribute id="Class:DocGroup" value="Install Data"/>
+			</Attributes>
+		</Model.Class>
+		
+		<Model.Class name="InstallPackage" parent="ContainerItem">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+				<String x:id="detailed" text=""/>
+			</Model.Documentation>
+			<List x:id="members">
+				<!-- no persistent members -->
+			</List>
+			<Attributes x:id="attributes">
+				<Attribute id="Class:DocGroup" value="Install Data"/>
+			</Attributes>
+		</Model.Class>
+
+		<Model.Class name="InstallExecute" parent="InstallFile">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+				<String x:id="detailed" text=""/>
+			</Model.Documentation>
+			<Attributes x:id="attributes">
+				<Attribute id="Class:DocGroup" value="Install Data"/>
+			</Attributes>
+		</Model.Class>
+
+		<Model.Class name="InstallDependent" parent="InstallItem">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+				<String x:id="detailed" text=""/>
+			</Model.Documentation>
+			<Attributes x:id="attributes">
+				<Attribute id="Class:DocGroup" value="Install Data"/>
+			</Attributes>
+		</Model.Class>
+
+		<Model.Class name="InstallManifest">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text="Root element of installdata.xml file."/>
+				<String x:id="detailed" text=""/>
+			</Model.Documentation>
+			<List x:id="members">
+			</List>
+			<Attributes x:id="attributes">
+				<Attribute id="Class:DocGroup" value="Install Data"/>
+			</Attributes>
+		</Model.Class>
+
+		<Model.Class name="RequiredApp">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text="Declare extension required application by ID and version range."/>
+				<String x:id="detailed" text=""/>
+			</Model.Documentation>
+			<List x:id="members">
+				<Model.Member name="id" type="string" typeName="string">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="Required application ID."/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="minVersion" type="string" typeName="string">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="Minimum required application version"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="maxVersion" type="string" typeName="string">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="Maximum required application version"/>
+					</Model.Documentation>
+				</Model.Member>
+			</List>
+			<Attributes x:id="attributes">
+				<Attribute id="Class:DocGroup" value="Install Data"/>
+			</Attributes>
+		</Model.Class>
+
+		<Model.Class name="RequiredFramework" parent="RequiredApp">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text="Declare extension required framework."/>
+				<String x:id="detailed" text=""/>
+			</Model.Documentation>
+			<List x:id="members">
+				<!-- Overwrite id description from RequiredApp -->
+				<Model.Member name="id" type="string" typeName="string">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="Framework ID."/>
+					</Model.Documentation>
+				</Model.Member>
+			</List>
+			<Attributes x:id="attributes">
+				<Attribute id="Class:DocGroup" value="Install Data"/>
+			</Attributes>
+		</Model.Class>
+
+		<Model.Class name="ExcludedApp">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text="Declare extension excluded application by ID."/>
+				<String x:id="detailed" text=""/>
+				<String x:id="code" text=""/>
+				<String x:id="language" text="xml"/>
+			</Model.Documentation>
+			<List x:id="members">
+				<Model.Member name="id" type="string" typeName="string">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="Excluded application ID."/>
+					</Model.Documentation>
+				</Model.Member>
+			</List>
+			<Attributes x:id="attributes">
+				<Attribute id="Class:DocGroup" value="Install Data"/>
+			</Attributes>
+		</Model.Class>
+
+	</List>
+</Model.ClassRepository>

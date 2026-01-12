@@ -1,0 +1,198 @@
+{
+	"description": "cpphint.py config for framework test",
+	"output": "out/cpp.hint",
+	"sources":
+	[
+		{
+			"path": "../../../../../core/public/corebasicmacros.h",
+			"comment": "",
+			"include_patterns": [],
+			"exclude_patterns": []
+		},
+		{
+			"path": "../../../../../core/public/coreplatform.h",
+			"include_patterns":
+			[
+				"EndFor"
+			]
+		},
+		{
+			"path": "../../../../../core/public/corepropertymacros.h"
+		},
+		{
+			"path": "../../../../../core/public/coreenumdef.h"
+		},
+		{
+			"path": "../../../../../core/public/coreintrusivelist.h"
+		},
+		{
+			"path": "../../../../../core/public/corelinkedlist.h"
+		},
+		{
+			"path": "../../../../../core/public/coremempool.h"
+		},
+		{
+			"path": "../../../../../core/public/coreuid.h"
+		},
+		{
+			"path": "../../../../../core/portable/coresingleton.h"
+		},
+		{
+			"path": "../../../../../core/portable/coretypeinfo.h"
+		},
+		{
+			"path": "../../../../../core/portable/gui/coreview.h"
+		},
+		{
+			"path": "../../../../../core/public/coremalloc.h",
+			"exclude_patterns":
+			[
+				"MALLOC"
+			]
+		},
+		{
+			"path": "../../../../../core/public/corevector.h",
+			"exclude_patterns":
+			[
+				"CORE_VECTOR_EXPONENTIAL_GROWTH"
+			]
+		},
+		{
+			"path": "../../../../../ccl/app/component.h"
+		},
+		{
+			"path": "../../../../../ccl/app/actions/sideeffect.h"
+		},
+		{
+			"path": "../../../../../ccl/app/fileinfo/fileinfocomponent.h"
+		},
+		{
+			"path": "../../../../../ccl/base/initterm.h"
+		},
+		{
+			"path": "../../../../../ccl/base/objectmacros.h"
+		},
+		{
+			"path": "../../../../../ccl/base/singleton.h"
+		},
+		{
+			"path": "../../../../../ccl/base/unittest.h"
+		},
+		{
+			"path": "../../../../../ccl/base/collections/container.h"
+		},
+		{
+			"path": "../../../../../ccl/base/collections/linkable.h"
+		},
+		{
+			"path": "../../../../../ccl/base/collections/objectarray.h"
+		},
+		{
+			"path": "../../../../../ccl/base/collections/objectlist.h"
+		},
+		{
+			"path": "../../../../../ccl/gui/graphics/3d/scene/scene3d.h"
+		},
+		{
+			"path": "../../../../../ccl/gui/skin/skinelement.h"
+		},
+		{
+			"path": "../../../../../ccl/gui/views/view.h"
+		},
+		{
+			"path": "../../../../../ccl/gui/theme/visualstyleclass.h"
+		},
+		{
+			"path": "../../../../../ccl/public/base/debug.h",
+			"exclude_patterns":
+			[
+				"DEBUG_LOG"
+			]
+		},
+		{
+			"path": "../../../../../ccl/public/base/platform.h",
+			"exclude_patterns":
+			[
+				"PLATFORM",
+				"CCL_ALIGN",
+				"CCL_OS_NAME",
+				"CCL_64",
+				"CCL_INTEL",
+				"CCL_ARM",
+				"CCL_ARM64EC",
+				"CCL_LITTLE_ENDIAN",
+				"CCL_BIG_ENDIAN",
+				"CCL_NATIVE_BYTEORDER",
+				"CCL_FALLTHROUGH",
+				"NAMESPACE_CCL",
+				"CCL_EXPORT",
+				"CCL_DEBUG_INTERNAL"
+			]
+		},
+		{
+			"path": "../../../../../ccl/public/base/iformatter.h"
+		},
+		{
+			"path": "../../../../../ccl/public/base/iunknown.h"
+		},
+		{
+			"path": "../../../../../ccl/public/base/cclmacros.h"
+		},
+		{
+			"path": "../../../../../ccl/public/collections/iunknownlist.h"
+		},
+		{
+			"path": "../../../../../ccl/public/collections/vector.h"
+		},
+		{
+			"path": "../../../../../ccl/public/gui/commanddispatch.h"
+		},
+		{
+			"path": "../../../../../ccl/public/gui/framework/iitemmodel.h"
+		},
+		{
+			"path": "../../../../../ccl/public/gui/framework/styleflags.h"
+		},
+		{
+			"path": "../../../../../ccl/public/gui/framework/viewbox.h"
+		},
+		{
+			"path": "../../../../../ccl/public/gui/paramlist.h"
+		},
+		{
+			"path": "../../../../../ccl/public/io/ifilesystem.h"
+		},
+		{
+			"path": "../../../../../ccl/public/io/iattributelist.h"
+		},
+		{
+			"path": "../../../../../ccl/public/plugins/stubobject.h"
+		},
+		{
+			"path": "../../../../../ccl/public/plugins/ipluginmanager.h"
+		},
+		{
+			"path": "../../../../../ccl/public/text/cclstring.h",
+			"exclude_patterns":
+			[
+				"CCL_UCHAR"
+			]
+		},
+		{
+			"path": "../../../../../ccl/public/text/cstring.h"
+		},
+		{
+			"path": "../../../../../ccl/public/text/istring.h"
+		},
+		{
+			"path": "../../../../../ccl/public/text/translation.h"
+		}
+	],
+	"conditions":
+	[
+		{
+			"name":  "INIT_IID",
+			"value": false
+		}
+	]
+}

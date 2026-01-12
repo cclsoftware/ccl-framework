@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Skin>
+	
+	<Includes>
+		<Include url="colors.xml"/>
+		<Include url="styles.xml"/>
+		<Include url="fonts.xml"/>
+	</Includes>
+
+	<Externals>
+		<External name="Neutral.*"/>
+	</Externals>	
+
+</Skin>

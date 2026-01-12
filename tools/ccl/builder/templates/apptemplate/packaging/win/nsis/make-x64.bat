@@ -1,0 +1,1 @@
+"C:\Program Files (x86)\NSIS\makensisw.exe" /DX64 /DBUILDDIR=(NativePathToRoot)\build\cmake\win\x64\Release apptemplate.nsi 

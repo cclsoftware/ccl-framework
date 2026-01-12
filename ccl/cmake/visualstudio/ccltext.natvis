@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<AutoVisualizer xmlns="http://schemas.microsoft.com/vstudio/debugger/natvis/2010">
+  <Type Name="CCL::CStringBuffer">
+    <DisplayString>{text,s}</DisplayString>
+    <StringView>text,s</StringView>
+  </Type>
+
+  <Type Name="CCL::UnicodeStringBuffer">
+    <DisplayString>{text,su}</DisplayString>
+    <StringView>text,su</StringView>
+  </Type>
+</AutoVisualizer>

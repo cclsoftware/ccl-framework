@@ -1,0 +1,5 @@
+[*.{c++,cc,cpp,cppm,cxx,h,h++,hh,hpp,hxx,inl,ipp,ixx,tlh,tli,m,mm,export,xml,ts,js,cmake,txt,java}]
+
+indent_style = tab
+indent_size = 4
+tab_width = 4

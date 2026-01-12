@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Skin>
+	<Styles>
+		<Style name="EULAText" inherit="Standard.Label">
+			<Align name="textalign" align="left top"/>			
+		</Style>		
+	</Styles>
+
+	<Forms>
+		<Form name="EULATextForm">
+			<Vertical>
+				<View name="EULATextClient" width="460" style="EULAText"/>
+			</Vertical>
+		</Form>
+	
+		<Form name="EULADialog" windowstyle="dialogstyle sizable" attach="all">
+			<Vertical attach="all">
+				<ScrollView name="scrollView" size="0,0,500,400" options="autohideboth" attach="all">
+					<Target name="EULATextForm" width="480"/>
+				</ScrollView>
+				<Horizontal attach="hcenter">
+					<DialogButton result="okay" title="I Accept"/>
+					<DialogButton result="cancel" title="I Decline"/>
+				</Horizontal>
+			</Vertical>
+		</Form>		
+	</Forms>
+</Skin>

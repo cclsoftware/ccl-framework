@@ -1,0 +1,44 @@
+//************************************************************************************************
+//
+// This file is part of Crystal Class Library (R)
+// Copyright (c) 2025 CCL Software Licensing GmbH.
+// All Rights Reserved.
+//
+// Licensed for use under either:
+//  1. a Commercial License provided by CCL Software Licensing GmbH, or
+//  2. GNU Affero General Public License v3.0 (AGPLv3).
+// 
+// You must choose and comply with one of the above licensing options.
+// For more information, please visit ccl.dev.
+//
+// Filename    : ccl/platform/shared/interfaces/platformgui.h
+// Description : CCL GUI Platform Integration
+//
+//************************************************************************************************
+
+#ifndef _ccl_platformgui_h
+#define _ccl_platformgui_h
+
+#include "ccl/public/base/platform.h"
+
+#include "core/public/coreplugin.h"
+
+namespace CCL {
+namespace PlatformIntegration {
+
+//************************************************************************************************
+// IPlatformGUI
+//************************************************************************************************
+
+struct IPlatformGUI: Core::IPropertyHandler
+{
+	virtual void startup (CStringPtr applicationId) = 0;
+	virtual void onIdle () = 0;
+    
+	static const Core::InterfaceID kIID = FOUR_CHAR_ID ('P','G','U','I');
+};
+
+} // namespace PlatformIntegration
+} // namespace CCL
+
+#endif // _ccl_platformgui_h

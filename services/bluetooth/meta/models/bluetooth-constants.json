@@ -1,0 +1,57 @@
+{
+	"enums":
+	[
+		{
+			"name": "PermissionsState",
+			"brief": "Bluetooth permissions state",
+			"autoValue": true,
+			"enumerators":
+			[
+				{
+					"name": "kPermissionsStateUnknown",
+					"type": "int"
+				},
+				{
+					"name": "kPermissionsStateRequested",
+					"type": "int"
+				},
+				{
+					"name": "kPermissionsStateGranted",
+					"type": "int"
+				},
+				{
+					"name": "kPermissionsStateDenied",
+					"type": "int"
+				}
+			]
+		},
+		{
+			"name": "ConnectionState",
+			"brief": "Bluetooth connection state",
+			"autoValue": true,
+			"enumerators":
+			[
+				{
+					"name": "kConnectionStateUnavailable",
+					"type": "int"
+				},
+				{
+					"name": "kConnectionStateDisconnected",
+					"type": "int"
+				},
+				{
+					"name": "kConnectionStateConnecting",
+					"type": "int"
+				},
+				{
+					"name": "kConnectionStateConnected",
+					"type": "int"
+				},
+				{
+					"name": "kConnectionStateDisconnecting",
+					"type": "int"
+				}
+			]
+		}
+	]
+}

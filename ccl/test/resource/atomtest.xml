@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en-US">
+	<title>This is the feed title</title>
+	<link rel="self" href="http://localhost/atomtest.xml"/>
+	<updated>2023-08-26T01:12:00Z</updated>
+	<author>
+		<name>CCL</name>
+		<email>info@ccl.dev</email>
+	</author>
+	<id>urn:uid:d0effade-e02b-4b2e-ba31-1dc148587dfe</id>
+
+	<entry>
+		<title>This is the entry title</title>
+		<id>urn:uid:062226d7-0fd6-47e5-bfc3-26e8ae4ec8d0</id>
+		<updated>2023-08-26T01:12:00Z</updated>
+		<summary>
+			This is the summary
+		</summary>
+		<content>
+		This is the content.
+		</content>
+	</entry>
+</feed>

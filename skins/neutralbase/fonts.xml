@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Skin>
+	
+	<ThemeElements>
+		<?platform win?>
+		<Font name="StandardUI" face="MS Shell Dlg" size="12"/>
+		<?platform mac ios?>
+		<Font name="StandardUI" face="Helvetica Neue" size="12"/>
+		<?platform android?>
+		<Font name="StandardUI" face="Roboto" size="12"/>
+		<?platform linux?>
+		<Font name="StandardUI" face="sans" size="12"/>
+		<?platform?>
+	</ThemeElements>
+
+</Skin>

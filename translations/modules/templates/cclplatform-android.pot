@@ -1,0 +1,15 @@
+#: ./strings.xml
+msgctxt "launch_failed"
+msgid "Launch failed"
+msgstr ""
+
+#: ./strings.xml
+msgctxt "init_failed_message"
+msgid "The app could not be initialized properly."
+msgstr ""
+
+#: ./strings.xml
+msgctxt "load_failed_message"
+msgid "The app is not installed correctly or the operating system is not supported."
+msgstr ""
+

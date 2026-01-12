@@ -1,0 +1,7 @@
+{
+	"version": 4,
+	"include":
+	[
+		"(RelPathToRoot)/build/cmake/modules/shared/CMakePresets.json"
+	]
+}

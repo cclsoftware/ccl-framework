@@ -1,0 +1,145 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Model.ClassRepository xmlns:x="https://ccl.dev/xml" name="Meta Information XML">
+	<List x:id="classes">
+
+		<Model.Class name="MetaInformation">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text="Extension meta information file (metainfo.xml) root element."/>
+				<String x:id="detailed" text=""/>
+			</Model.Documentation>
+			<List x:id="members">
+			</List>
+			<Attributes x:id="attributes">
+				<Attribute id="Class:DocGroup" value="Package Info"/>
+			</Attributes>
+		</Model.Class>
+
+		<Model.Class name="language">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text="Language prolog."/>
+				<String x:id="detailed" text=""/>
+			</Model.Documentation>
+			<List x:id="members">
+			</List>
+			<Attributes x:id="attributes">
+				<Attribute id="Class:DocGroup" value="Package Info"/>
+			</Attributes>
+		</Model.Class>
+
+		<Model.Class name="Attribute">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text="Set an extension or package specific attribute."/>
+				<String x:id="detailed" text=""/>
+			</Model.Documentation>
+			<List x:id="members">
+				<Model.Member name="id" type="string" typeName="enum">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="Package attribute ID"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="value" type="string" typeName="string">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="Package attribute value to set"/>
+					</Model.Documentation>
+				</Model.Member>
+			</List>
+			<Attributes x:id="attributes">
+				<Attribute id="Class:DocGroup" value="Package Info"/>
+			</Attributes>
+		</Model.Class>
+	</List>
+
+	<!-- ******************************************************************************************** -->
+	<!-- Enumerations -->
+	<!-- ******************************************************************************************** -->
+
+	<List x:id="enums">
+
+		<Model.Enumeration name="Attribute.id">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+			<List x:id="enumerators">
+
+				<Model.Enumerator name="Package:ID" value="Package:ID">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="Unique package identifier (e.g. 'com.vendor.package')"/>
+					</Model.Documentation>
+				</Model.Enumerator>
+
+				<Model.Enumerator name="Package:ShortID" value="Package:ShortID">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="Short package identifier (optional, e.g. 'package')"/>
+					</Model.Documentation>
+				</Model.Enumerator>
+
+				<Model.Enumerator name="Package:Name" value="Package:Name">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="Package name"/>
+					</Model.Documentation>
+				</Model.Enumerator>
+
+				<Model.Enumerator name="Package:LocalizedName" value="Package:LocalizedName">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="Localized package name"/>
+					</Model.Documentation>
+				</Model.Enumerator>
+
+				<Model.Enumerator name="Package:Copyright" value="Package:Copyright">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="Package copyright information"/>
+					</Model.Documentation>
+				</Model.Enumerator>
+
+				<Model.Enumerator name="Package:Vendor" value="Package:Vendor">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="Package vendor name"/>
+					</Model.Documentation>
+				</Model.Enumerator>
+
+				<Model.Enumerator name="Package:Description" value="Package:Description">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="Package description"/>
+					</Model.Documentation>
+				</Model.Enumerator>
+
+				<Model.Enumerator name="Package::LocalizedDescription" value="Package::LocalizedDescription">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="Localized package description"/>
+					</Model.Documentation>
+				</Model.Enumerator>
+
+				<Model.Enumerator name="Package:Version" value="Package:Version">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="Package version number"/>
+					</Model.Documentation>
+				</Model.Enumerator>
+
+				<Model.Enumerator name="Package:Website" value="Package:Website">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="Package vendor or product website"/>
+					</Model.Documentation>
+				</Model.Enumerator>
+
+				<Model.Enumerator name="Package:Executable" value="Package:Executable">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="Package executable path"/>
+					</Model.Documentation>
+				</Model.Enumerator>
+
+				<Model.Enumerator name="Package:Icon" value="Package:Icon">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="Package icon (path to image file)"/>
+					</Model.Documentation>
+				</Model.Enumerator>
+
+				<Model.Enumerator name="Package:IconSet" value="Package:IconSet">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="Package icon set (path to image file)"/>
+					</Model.Documentation>
+				</Model.Enumerator>
+
+			</List>
+		</Model.Enumeration>
+	</List>
+</Model.ClassRepository>

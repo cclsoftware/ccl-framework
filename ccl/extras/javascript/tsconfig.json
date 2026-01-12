@@ -1,0 +1,16 @@
+{
+	"compileOnSave": true,
+	"compilerOptions":
+	{
+		"allowJs": true,
+		"declaration": true,
+		"emitDeclarationOnly": true,
+		"removeComments": false,
+		"sourceMap": false,
+		"outDir": "."
+	},
+	"files":
+	[
+		"cclapp.js"
+	]
+}

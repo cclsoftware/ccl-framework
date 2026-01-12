@@ -1,0 +1,11 @@
+{% include ../corefileheader.in %}
+
+#ifndef _coregui_constants_generated_h
+#define _coregui_constants_generated_h
+
+namespace Core {
+
+{% include shared/enumsflat.h.in %}
+} // Core
+
+#endif // _coregui_constants_generated_h

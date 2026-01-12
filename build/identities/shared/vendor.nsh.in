@@ -1,0 +1,10 @@
+;-----------------------------------------------------------------------
+; Vendor definitions
+;-----------------------------------------------------------------------
+
+!define COMPANY					"${VENDOR_NAME}" ; Company folder and registry key
+!define PUBLISHER				"${VENDOR_PUBLISHER}" ; Publisher name displayed for uninstall
+!define PUBLISHER_WEBSITE		"${VENDOR_PUBLISHER_WEBSITE}" ; Publisher website
+!define COPYRIGHT				"${VENDOR_COPYRIGHT}" ; Copyright notice
+
+!define VENDOR_PACKAGE_DOMAIN	"${VENDOR_PACKAGE_DOMAIN}"

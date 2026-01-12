@@ -1,0 +1,11 @@
+{% include ../cclfileheader.in %}
+
+#ifndef _ccl_gui_constants_generated_h
+#define _ccl_gui_constants_generated_h
+
+namespace CCL {
+
+{% include ../../../../core/meta/templates/cpp/shared/enumsflat.h.in %}
+} // CCL
+
+#endif // _ccl_gui_constants_generated_h

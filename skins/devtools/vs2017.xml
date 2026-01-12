@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Skin>
+	<Resources>
+		<ShapeImage name="2Columns" url="icons/vs2017/2Columns_16x.svg"/>
+		<ShapeImage name="2Rows" url="icons/vs2017/2Rows_16x.svg"/>
+		<ShapeImage name="AddThin" url="icons/vs2017/Add_thin_10x_16x.svg"/>
+		<ShapeImage name="AddFont" url="icons/vs2017/AddFont_16x.svg"/>
+		<ShapeImage name="AddForm" url="icons/vs2017/AddForm_16x.svg"/>
+		<ShapeImage name="AddImage" url="icons/vs2017/AddImage_16x.svg"/>
+		<ShapeImage name="AddStyleRule" url="icons/vs2017/AddStyleRule_16x.svg"/>
+		<ShapeImage name="Box" url="icons/vs2017/Box_16x.svg"/>
+		<ShapeImage name="BreakpointEnable" url="icons/vs2017/BreakpointEnable_16x.svg"/>
+		<ShapeImage name="Button" url="icons/vs2017/Button_16x.svg"/>
+		<ShapeImage name="CheckBox" url="icons/vs2017/CheckBox_16x.svg"/>
+		<ShapeImage name="ChildWindow" url="icons/vs2017/ChildWindow_16x.svg"/>
+		<ShapeImage name="Class" url="icons/vs2017/Class_16x.svg"/>
+		<ShapeImage name="ComboBox" url="icons/vs2017/ComboBox_16x.svg"/>
+		<ShapeImage name="Control" url="icons/vs2017/Control_16x.svg"/>
+		<ShapeImage name="DelegationArrow" url="icons/vs2017/DelegationArrow_16x.svg"/>
+		<ShapeImage name="Edit" url="icons/vs2017/Edit_grey_16x.svg"/>
+		<ShapeImage name="Enumerator" url="icons/vs2017/Enumerator_16x.svg"/>
+		<ShapeImage name="EnumItem" url="icons/vs2017/EnumItem_16x.svg"/>
+		<ShapeImage name="Font" url="icons/vs2017/Font_16x.svg"/>
+		<ShapeImage name="GaugeLinear" url="icons/vs2017/GaugeLinear_16x.svg"/>
+		<ShapeImage name="Image" url="icons/vs2017/Image_16x.svg"/>
+		<ShapeImage name="ImageButton" url="icons/vs2017/ImageButton_16x.svg"/>
+		<ShapeImage name="Label" url="icons/vs2017/Label_16x.svg"/>
+		<ShapeImage name="LinkButton" url="icons/vs2017/LinkButton_16x.svg"/>
+		<ShapeImage name="ListView" url="icons/vs2017/ListView_16x.svg"/>
+		<ShapeImage name="Lock" url="icons/vs2017/Lock_16x.svg"/>
+		<ShapeImage name="Member" url="icons/vs2017/Member_16x.svg"/>
+		<ShapeImage name="Method" url="icons/vs2017/Method_16x.svg"/>
+		<ShapeImage name="Module" url="icons/vs2017/Module_16x.svg"/>
+		<ShapeImage name="Namespace" url="icons/vs2017/Namespace_16x.svg"/>
+		<ShapeImage name="Object" url="icons/vs2017/Object_16x.svg"/>
+		<ShapeImage name="Pen4" url="icons/vs2017/Pen4_16x.svg"/>
+		<ShapeImage name="RadioButton" url="icons/vs2017/RadioButton_16x.svg"/>
+		<ShapeImage name="RemoveThin" url="icons/vs2017/Remove_thin_10x_16x.svg"/>
+		<ShapeImage name="Resize" url="icons/vs2017/Resize_16x.svg"/>
+		<ShapeImage name="Script" url="icons/vs2017/Script_16x.svg"/>
+		<ShapeImage name="ScrollBox" url="icons/vs2017/ScrollBox_16x.svg"/>
+		<ShapeImage name="Separator" url="icons/vs2017/Separator_16x.svg"/>
+		<ShapeImage name="Slider" url="icons/vs2017/Slider_16x.svg"/>
+		<ShapeImage name="StyleBlock" url="icons/vs2017/StyleBlock_16x.svg"/>
+		<ShapeImage name="Table" url="icons/vs2017/Table_16x.svg"/>
+		<ShapeImage name="TextBox" url="icons/vs2017/TextBox_16x.svg"/>
+		<ShapeImage name="Toggle" url="icons/vs2017/Toggle_16x.svg"/>
+		<ShapeImage name="TreeView" url="icons/vs2017/TreeView_16x.svg"/>
+		<ShapeImage name="Type" url="icons/vs2017/Type_16x.svg"/>
+		<ShapeImage name="UserControl" url="icons/vs2017/UserControl_16x.svg"/>
+		<ShapeImage name="Visible" url="icons/vs2017/Visible_16x.svg"/>
+		<ShapeImage name="WindowsForm" url="icons/vs2017/WindowsForm_16x.svg"/>
+	</Resources>
+</Skin>
+

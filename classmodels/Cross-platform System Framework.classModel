@@ -1,0 +1,1940 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Model.ClassRepository xmlns:x="https://ccl.dev/xml" name="Cross-platform System Framework">
+	<List x:id="classes">
+		<Model.Class name="Association" namespace="CCL" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="Attribute" namespace="CCL" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="AttributeQueue" namespace="CCL" parent="ObjectArray" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="Attributes" namespace="CCL" scriptable="1" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+			<List x:id="methods">
+				<Model.Method name="countAttributes">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="int">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+				</Model.Method>
+				<Model.Method name="getAttributeName">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="string">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="index" type="int" typeName="int">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="getAttributeValue">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="variant">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="index" type="int" typeName="int">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="getAttribute">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="variant">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="name" type="string" typeName="string">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="setAttribute">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="bool">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="name" type="string" typeName="string">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+						<Model.MethodArg name="value" type="variant" typeName="variant">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="queueAttribute">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="bool">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="id" type="string" typeName="string">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+						<Model.MethodArg name="value" type="variant" typeName="variant">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="newQueueIterator">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="object" typeName="Iterator">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="id" type="string" typeName="string">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+			</List>
+		</Model.Class>
+		<Model.Class name="CStringDictionary" namespace="CCL" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="ClassDescription" namespace="CCL" scriptable="1" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+			<List x:id="methods">
+				<Model.Method name="getClassAttribute">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="void">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+				</Model.Method>
+			</List>
+		</Model.Class>
+		<Model.Class name="CodeModule" namespace="CCL" parent="Module">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="CodeResource" namespace="CCL" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="CodeResourceLoader" namespace="CCL" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="Configuration" namespace="CCL" parent="PersistentAttributes" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="CryptoMaterial" namespace="CCL" parent="StorableObject">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="DateTime" namespace="CCL" scriptable="1" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+			<List x:id="methods">
+				<Model.Method name="toOrdinal">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="void">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+				</Model.Method>
+			</List>
+		</Model.Class>
+		<Model.Class name="FileArchive" namespace="CCL" abstract="1" scriptable="1" parent="FileResource" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+			<List x:id="methods">
+				<Model.Method name="setOption">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="void">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+				</Model.Method>
+				<Model.Method name="create">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="void">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+				</Model.Method>
+				<Model.Method name="embedd">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="void">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+				</Model.Method>
+				<Model.Method name="extract">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="void">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+				</Model.Method>
+				<Model.Method name="extractAll">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="void">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+				</Model.Method>
+				<Model.Method name="flush">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="void">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+				</Model.Method>
+				<Model.Method name="close">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="void">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+				</Model.Method>
+			</List>
+		</Model.Class>
+		<Model.Class name="FileResource" namespace="CCL" abstract="1" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="FileType" namespace="CCL" scriptable="1" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+			<List x:id="members">
+				<Model.Member name="description" type="string">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="extension" type="string">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="mimetype" type="string">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+				</Model.Member>
+			</List>
+		</Model.Class>
+		<Model.Class name="FileTypeRegistry" namespace="CCL" scriptable="1" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+			<List x:id="methods">
+				<Model.Method name="registerFileType">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="object" typeName="tresult">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="fileType" type="void" typeName="Object | string">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="getFileTypeByExtension">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="object" typeName="Object">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="extension" type="string" typeName="string">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="getFileTypeByMimeType">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="object" typeName="Object">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="mimetype" type="string" typeName="string">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="registerHandler">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="object" typeName="tresult">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="fileType" type="void" typeName="Object | string">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+						<Model.MethodArg name="location" type="object" typeName="Url">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+						<Model.MethodArg name="observer" type="object" typeName="Object">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="unregisterHandler">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="object" typeName="tresult">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="fileType" type="void" typeName="Object | string">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+			</List>
+		</Model.Class>
+		<Model.Class name="Formatter" namespace="CCL" scriptable="1" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+			<List x:id="methods">
+				<Model.Method name="print">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="string">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="value" type="variant" typeName="variant">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="scan">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="variant">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="value" type="string" typeName="string">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+			</List>
+		</Model.Class>
+		<Model.Class name="InstanceAssoc" namespace="CCL" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="Iterator" namespace="CCL" abstract="1" scriptable="1" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+			<List x:id="methods">
+				<Model.Method name="done">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="void">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+				</Model.Method>
+				<Model.Method name="first">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="void">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+				</Model.Method>
+				<Model.Method name="last">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="void">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+				</Model.Method>
+				<Model.Method name="next">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="void">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+				</Model.Method>
+				<Model.Method name="previous">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="void">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+				</Model.Method>
+			</List>
+		</Model.Class>
+		<Model.Class name="Linkable" namespace="CCL" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="LocaleInfo" namespace="CCL" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="LocaleManager" namespace="CCL" scriptable="1" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+			<List x:id="methods">
+				<Model.Method name="getStrings">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="object" typeName="LocaleManager.TranslationTable">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="tableId" type="void">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+			</List>
+		</Model.Class>
+		<Model.Class name="LocaleManager.TranslationTable" namespace="CCL" scriptable="1" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+			<List x:id="methods">
+				<Model.Method name="getString">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="void">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+				</Model.Method>
+			</List>
+		</Model.Class>
+		<Model.Class name="Locales" namespace="CCL" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="LogEvent" namespace="CCL" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="LogEventList" namespace="CCL" parent="StorableObject">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="Message" namespace="CCL" scriptable="1" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+			<List x:id="members">
+				<Model.Member name="id" type="string">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="argCount" type="int" readOnly="1">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+				</Model.Member>
+			</List>
+			<List x:id="methods">
+				<Model.Method name="getArg">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="variant">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="index" type="int" typeName="int">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="getArgCount">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="int">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+				</Model.Method>
+			</List>
+		</Model.Class>
+		<Model.Class name="MountPoint" namespace="CCL" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="NativeModule" namespace="CCL" parent="Module">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="Object" namespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="ObjectArray" namespace="CCL" parent="Container">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="ObjectHashTable" namespace="CCL" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="ObjectList" namespace="CCL" parent="Container">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="ObjectNode" namespace="CCL" scriptable="1" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+			<List x:id="methods">
+				<Model.Method name="find">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="object" typeName="ObjectNode">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="childName" type="string" typeName="string">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+			</List>
+		</Model.Class>
+		<Model.Class name="ObjectStack" namespace="CCL" parent="ObjectList" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="ObjectTable" namespace="CCL" scriptable="1" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+			<List x:id="methods">
+				<Model.Method name="registerObject">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="object" typeName="tresult">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="obj" type="void">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+						<Model.MethodArg name="name" type="void">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="unregisterObject">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="object" typeName="tresult">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="obj" type="void">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="getObjectByName">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="object" typeName="Object">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="name" type="void">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="getObjectByID">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="object" typeName="Object">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="uidString" type="void">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="getObjectByUrl">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="object" typeName="Object">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="url" type="void">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+						<Model.MethodArg name="optional" type="void">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+			</List>
+		</Model.Class>
+		<Model.Class name="PackageFile" namespace="CCL" parent="FileArchive" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="PackageInfo" namespace="CCL" parent="PersistentAttributes" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="PersistentAttributes" namespace="CCL" parent="Attributes" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="PersistentStore" namespace="System" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="PlugInCollection" namespace="CCL" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="PlugInManager" namespace="CCL" scriptable="1" parent="PlugInCollection" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+			<List x:id="methods">
+				<Model.Method name="createInstance">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="object" typeName="Object">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="className_or_cid" type="void" typeName="UID | string">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="getClassDescription">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="object" typeName="ClassDescription">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="className_or_cid" type="void" typeName="UID | string">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="newIterator">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="object" typeName="Iterator">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="category" type="void">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+			</List>
+		</Model.Class>
+		<Model.Class name="RelativeFileSystem" namespace="CCL" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="ScriptClass" parent="ClassDescription" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="ScriptClassResource" namespace="CCL" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="ScriptMetaClass" parent="ScriptClass">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="ScriptingHost" namespace="CCL" scriptable="1" mutable="1" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+			<List x:id="members">
+				<Model.Member name="Interfaces" type="object" typeName="ScriptingHost.InterfaceList" readOnly="1">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="Results" type="object" typeName="ScriptingHost.ResultsList" readOnly="1">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="Classes" type="object" typeName="PlugInManager" readOnly="1">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="Objects" type="object" typeName="ObjectTable" readOnly="1">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="Services" type="object" typeName="ServiceManager" readOnly="1">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="Console" type="object" typeName="ScriptingHost.Console" readOnly="1">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="Signals" type="object" typeName="ScriptingHost.Signals" readOnly="1">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="Locales" type="object" typeName="LocaleManager" readOnly="1">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="SystemInfo" type="object" typeName="SystemInformation" readOnly="1">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="IO" type="object" typeName="ScriptingHost.ScriptableIO" readOnly="1">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="FileTypes" type="object" typeName="FileTypeRegistry" readOnly="1">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+				</Model.Member>
+			</List>
+			<List x:id="methods">
+				<Model.Method name="retain">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="void">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="obj" type="void">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="release">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="void">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="obj" type="void">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="UID">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="object" typeName="UID">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+				</Model.Method>
+				<Model.Method name="Url">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="object" typeName="Url">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="url" type="void" typeName="Url | string">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="Attributes">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="variant">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="vargs" type="void">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="DateTime">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="object" typeName="DateTime">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+				</Model.Method>
+				<Model.Method name="getPlatform">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="string">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+				</Model.Method>
+				<Model.Method name="sleep">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="void">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="ms" type="int" typeName="int">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+			</List>
+		</Model.Class>
+		<Model.Class name="ScriptingHost.Console" namespace="CCL" scriptable="1" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+			<List x:id="methods">
+				<Model.Method name="writeLine">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="void">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="string" type="void">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+			</List>
+		</Model.Class>
+		<Model.Class name="ScriptingHost.InterfaceList" namespace="CCL" scriptable="1" mutable="1" parent="Object"
+		             parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+			<List x:id="members">
+				<Model.Member name="IUnknown" type="object" typeName="UID" readOnly="1">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+				</Model.Member>
+			</List>
+		</Model.Class>
+		<Model.Class name="ScriptingHost.ResultsList" namespace="CCL" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="ScriptingHost.ScriptableIO" namespace="CCL" scriptable="1" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+			<List x:id="methods">
+				<Model.Method name="File">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="void">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+				</Model.Method>
+				<Model.Method name="findFiles">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="object" typeName="Iterator">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="startPoint" type="void">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+						<Model.MethodArg name="searchPattern" type="void">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="openTextFile">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="object" typeName="TextFile">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="path" type="void">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+						<Model.MethodArg name="[encoding]" type="void">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="createTextFile">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="object" typeName="TextFile">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="path" type="void">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+						<Model.MethodArg name="[encoding]" type="void">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="XmlTree">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="void">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+				</Model.Method>
+				<Model.Method name="toBase64">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="string">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="string" type="void">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+						<Model.MethodArg name="[encoding]" type="void">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="fromBase64">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="string">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="string" type="void">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+						<Model.MethodArg name="[encoding]" type="void">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="openPackage">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="object" typeName="PackageFile">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="path" type="void">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="createPackage">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="object" typeName="PackageFile">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="path" type="void">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+						<Model.MethodArg name="[mimeType]" type="void">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="getDevelopmentFileLocation">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="object" typeName="Url">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="root" type="string" typeName="string">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+						<Model.MethodArg name="relativePath" type="string" typeName="string">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+			</List>
+		</Model.Class>
+		<Model.Class name="ScriptingHost.Signals" namespace="CCL" scriptable="1" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+			<List x:id="methods">
+				<Model.Method name="signal">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="void">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="subject_or_atom" type="void" typeName="Object | string">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+						<Model.MethodArg name="messageId" type="string" typeName="string">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+						<Model.MethodArg name="arg0" type="string" typeName="string" defaultValue="null">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+						<Model.MethodArg name="arg1" type="string" typeName="string" defaultValue="null">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="flush">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="void">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+				</Model.Method>
+				<Model.Method name="advise">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="void">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="subject_or_atom" type="void" typeName="Object | string">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+						<Model.MethodArg name="observer" type="object" typeName="Object">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="unadvise">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="void">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="subject_or_atom" type="void" typeName="Object | string">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+						<Model.MethodArg name="observer" type="object" typeName="Object">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="postMessage">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="void">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="observer" type="object" typeName="Object">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+						<Model.MethodArg name="delay" type="int" typeName="int">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+						<Model.MethodArg name="messageId" type="string" typeName="string">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+						<Model.MethodArg name="arg1" type="void" defaultValue="null">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+						<Model.MethodArg name="arg2" type="void" defaultValue="null">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+						<Model.MethodArg name="arg3" type="void" defaultValue="null">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+			</List>
+		</Model.Class>
+		<Model.Class name="Section" namespace="CCL" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="ServiceManager" namespace="CCL" scriptable="1" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+			<List x:id="methods">
+				<Model.Method name="getInstance">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="void">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="cid" type="void">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+			</List>
+		</Model.Class>
+		<Model.Class name="Settings" namespace="CCL" scriptable="1" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+			<List x:id="methods">
+				<Model.Method name="getAttributes">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="string">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="Attributes" type="void">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+			</List>
+		</Model.Class>
+		<Model.Class name="String" namespace="CCL" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="StringDictionary" namespace="CCL" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="StringList" namespace="CCL" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="SystemInformation" namespace="CCL" scriptable="1" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+			<List x:id="methods">
+				<Model.Method name="getLocalTime">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="object" typeName="DateTime">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+				</Model.Method>
+			</List>
+		</Model.Class>
+		<Model.Class name="TextFile" namespace="CCL" scriptable="1" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+			<List x:id="members">
+				<Model.Member name="endOfStream" type="void">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+				</Model.Member>
+			</List>
+			<List x:id="methods">
+				<Model.Method name="readLine">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="void">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+				</Model.Method>
+				<Model.Method name="writeLine">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="void">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+				</Model.Method>
+				<Model.Method name="writeString">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="void">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+				</Model.Method>
+				<Model.Method name="close">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="void">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+				</Model.Method>
+			</List>
+		</Model.Class>
+		<Model.Class name="UID" namespace="CCL" scriptable="1" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+			<List x:id="methods">
+				<Model.Method name="equals">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="bool">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="id" type="void" typeName="UID | string">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+			</List>
+		</Model.Class>
+		<Model.Class name="Url" namespace="CCL" scriptable="1" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+			<List x:id="members">
+				<Model.Member name="name" type="void">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="url" type="void">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="extension" type="void">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="protocol" type="void">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="hostname" type="void">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+				</Model.Member>
+			</List>
+			<List x:id="methods">
+				<Model.Method name="ascend">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="void">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+				</Model.Method>
+				<Model.Method name="descend">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="void">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="name" type="void">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+						<Model.MethodArg name="folder" type="void" defaultValue="false">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="makeUnique">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="void">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="forceSuffix" type="void" defaultValue="false">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="toDisplayString">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="string">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+				</Model.Method>
+				<Model.Method name="fromDisplayString">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="void">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="string" type="void">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+						<Model.MethodArg name="folder" type="void" defaultValue="false">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="contains">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="void">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="childUrl" type="object" typeName="Url">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="getName">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="string">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="withExtension" type="bool" typeName="bool" defaultValue="true">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+			</List>
+		</Model.Class>
+		<Model.Class name="UrlWithTitle" namespace="CCL" parent="Url" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="Variant" namespace="CCL" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="Version" namespace="CCL" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="VirtualFileSystem" namespace="CCL" parent="Object" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="XmlNode" namespace="CCL" scriptable="1" parent="ObjectNode" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+			<List x:id="members">
+				<Model.Member name="name" type="void">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="parent" type="void">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="text" type="void">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="comment" type="void">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+				</Model.Member>
+			</List>
+			<List x:id="methods">
+				<Model.Method name="newNode">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="object" typeName="XmlNode">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="title" type="void" defaultValue="&apos;&apos;">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="setAttribute">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="void">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="key" type="void">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+						<Model.MethodArg name="value" type="void">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="getAttribute">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="string">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="key" type="void">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="addChild">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="void">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="node" type="void">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="findNode">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="object" typeName="XmlNode">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+					<List x:id="args">
+						<Model.MethodArg name="name" type="void">
+							<Model.Documentation x:id="doc">
+								<String x:id="brief" text=""/>
+							</Model.Documentation>
+						</Model.MethodArg>
+					</List>
+				</Model.Method>
+				<Model.Method name="newIterator">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+					<Model.ReturnValue x:id="retval" type="object" typeName="Iterator">
+						<Model.Documentation x:id="doc">
+							<String x:id="brief" text=""/>
+						</Model.Documentation>
+					</Model.ReturnValue>
+				</Model.Method>
+			</List>
+		</Model.Class>
+		<Model.Class name="XmlSettings" namespace="CCL" parent="Settings" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="XmlTree" namespace="CCL" scriptable="1" parent="StorableObject">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+			<List x:id="members">
+				<Model.Member name="root" type="void">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="errorMessage" type="void">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text=""/>
+					</Model.Documentation>
+				</Model.Member>
+			</List>
+		</Model.Class>
+		<Model.Class name="ZipFile" namespace="CCL" parent="FileArchive" parentNamespace="CCL">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text=""/>
+			</Model.Documentation>
+		</Model.Class>
+	</List>
+</Model.ClassRepository>

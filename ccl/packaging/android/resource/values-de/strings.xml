@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="launch_failed">Start fehlgeschlagen</string>
+    <string name="load_failed_message">Die App wurde nicht korrekt installiert oder das Betriebssystem wird nicht unterstützt.</string>
+    <string name="init_failed_message">Die App konnte nicht korrekt initialisiert werden.</string>
+</resources>
