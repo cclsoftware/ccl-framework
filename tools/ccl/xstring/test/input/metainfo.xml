@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<MetaInformation>
+	<Attribute id="Package:ID" value="some.package"/>
+	<Attribute id="Package:Name" value="Test package"/>
+	<Attribute id="Package:Description" value="Test package description"/>
+</MetaInformation>

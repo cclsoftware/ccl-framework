@@ -204,6 +204,9 @@ tbool CCL_API PosixNativeFileSystem::moveFile (UrlRef dstPath, UrlRef srcPath, i
 {
 	createParentFolder (dstPath); // create folder structure first
 
+	if(!fileExists (srcPath))
+		return false;
+
 	if((mode & kDoNotOverwrite) && fileExists (dstPath))
 		return false;
 
@@ -225,6 +228,9 @@ tbool CCL_API PosixNativeFileSystem::moveFile (UrlRef dstPath, UrlRef srcPath, i
 tbool CCL_API PosixNativeFileSystem::copyFile (UrlRef dstPath, UrlRef srcPath, int mode, IProgressNotify* progress)
 {
 	createParentFolder (dstPath); // create folder structure first
+
+	if(!fileExists (srcPath))
+		return false;
 
 	if((mode & kDoNotOverwrite) && fileExists (dstPath))
 		return false;

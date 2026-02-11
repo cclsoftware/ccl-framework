@@ -1168,6 +1168,9 @@ bool EditBox::onContextMenu (const ContextMenuEvent& event)
 
 bool EditBox::onKeyDown (const KeyEvent& event)
 {
+	if(!shouldUseNativeControl ())
+		GUI.hideTooltip ();
+
 	ScopedVar<bool> guard (inKeyDown, true);
 	selectionLocked = false;
 
@@ -1997,6 +2000,8 @@ Control& NativeTextControl::getOwner () const
 
 bool NativeTextControl::handleKeyDown (const KeyEvent& e)
 {
+	GUI.hideTooltip ();
+
 	switch(e.vKey)
 	{
 	case VKey::kEscape :

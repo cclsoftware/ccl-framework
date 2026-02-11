@@ -1,0 +1,172 @@
+{
+  "description": "Built-in languages",
+  "languages": [
+    {
+      "name": "C/C++",
+      "extensions": [
+        ".cpp",
+        ".cc",
+        ".c",
+        ".h",
+        ".hpp",
+        ".rc"
+      ]
+    },
+    {
+      "name": "Objective-C",
+      "extensions": [
+        ".m",
+        ".mm"
+      ]
+    },
+    {
+      "name": "XC",
+      "extensions": [
+        ".xc"
+      ]
+    },
+    {
+      "name": "Python",
+      "extensions": [
+        ".py"
+      ]
+    },
+    {
+      "name": "Ruby",
+      "extensions": [
+        ".rb"
+      ]
+    },
+    {
+      "name": "JavaScript",
+      "extensions": [
+        ".js",
+        ".json"
+      ]
+    },
+    {
+      "name": "TypeScript",
+      "extensions": [
+        ".ts",
+        ".tsx"
+      ]
+    },
+    {
+      "name": "Batch Script",
+      "extensions": [
+        ".bat",
+        ".cmd"
+      ]
+    },
+    {
+      "name": "Shell Script",
+      "extensions": [
+        ".sh"
+      ]
+    },
+    {
+      "name": "NSIS",
+      "extensions": [
+        ".nsi"
+      ]
+    },
+    {
+      "name": "HTML",
+      "extensions": [
+        ".htm",
+        ".html",
+        ".xhtml"
+      ]
+    },
+    {
+      "name": "XML",
+      "extensions": [
+        ".xml"
+      ]
+    },
+    {
+      "name": "ReST",
+      "extensions": [
+        ".rst"
+      ]
+    },
+    {
+      "name": "Markdown",
+      "extensions": [
+        ".md"
+      ]
+    },
+    {
+      "name": "VHDL",
+      "extensions": [
+        ".vhd",
+        ".vhdl"
+      ]
+    },
+    {
+      "name": "Verilog",
+      "extensions": [
+        ".v",
+        ".vh"
+      ]
+    },
+    {
+      "name": "LaTeX",
+      "extensions": [
+        ".tex"
+      ]
+    },
+    {
+      "name": "GNU gettext",
+      "extensions": [
+        ".po",
+        ".pot"
+      ]
+    },
+    {
+      "name": "Text",
+      "extensions": [
+        ".txt",
+        "license",
+        "readme"
+      ]
+    },
+    {
+      "name": "Visual Studio",
+      "extensions": [
+        ".sln",
+        ".vcxproj",
+        ".vcxproj.filters",
+        ".vcxitems",
+        ".props",
+        ".targets"
+      ]
+    },
+    {
+      "name": "Xcode",
+      "extensions": [
+        ".pbxproj",
+        ".xcworkspacedata",
+        ".plist",
+        ".strings",
+        ".xcconfig",
+        ".export"
+      ]
+    },
+    {
+      "name": "Git",
+      "extensions": [
+        ".git",
+        ".gitignore",
+        ".gitmodules"
+      ]
+    },
+    {
+      "name": "CCL ClassModel",
+      "extensions": [
+        ".classModel",
+        ".classmodel"
+      ]
+    }
+  ]
+}

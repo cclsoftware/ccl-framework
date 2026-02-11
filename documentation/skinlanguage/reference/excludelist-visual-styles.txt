@@ -1,0 +1,15 @@
+####################
+# Classes
+####################
+
+# Examples:
+# class.BasicStyle
+# class.BorderStyle
+
+####################
+# Enumerations
+####################
+
+# Examples:
+# enumeration.DefaultColors
+# enumeration.StandardStyles

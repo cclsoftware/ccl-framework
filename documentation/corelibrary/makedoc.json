@@ -1,0 +1,28 @@
+{
+	"id": "dev.ccl.doc.corelibrary",
+	"title": "Core Framework",
+	"build":
+	[
+		{
+			"action": "doxygen",
+			"description": "Create Doxygen XML",
+			"config": "resource/doxygen/config.doxy",
+			"output_path": "resource/doxyout/xml"
+		},
+		{
+			"action": "doxyrest",
+			"description": "Convert Doxygen XML to RST",
+			"config": "doxyrest-config.lua",
+			"output_path": "reference/"
+		},
+		{
+			"action": "crefdbfix",
+			"description": "Fix Doxyrest crefdb file",
+			"args":
+			[
+				"reference/crefdb.py",
+				"reference/crefdb.py"
+			]
+		}
+	]
+}

@@ -1,0 +1,61 @@
+###########################################
+{{report_job_data.description}}
+###########################################
+
+Generated on *{{ report_job_data.timestamp }}*.
+
+=======
+Summary
+=======
+
+.. list-table::
+   :widths: 15 10 10 10 10 10
+   :header-rows: 1
+
+   * - Language
+     - Files [#]
+     - Files [%]
+     - Lines [#]
+     - Lines [%]
+     - Lines Avg. [#]
+{% for language_name, language_stats in report_data.language_stats | dictsort(by='key') %}
+   * - {{ language_name }}
+     - :ref:`{{ language_stats.filecount|format_int }} <{{ report_job_data.description|path_to_rst_anchor }}_{{ language_name|str_to_rst_anchor }}>`
+     - {{ language_stats.filecount_pct|format_float }}
+     - {{ language_stats.linecount|format_int }}
+     - {{ language_stats.linecount_pct|format_float }}
+     {% set average = language_stats.linecount / language_stats.filecount %}
+     - {{ average | round(2) | format_float }}
+{% endfor %}
+
+Total files **{{ report_data.total_files|format_int }}**, total lines: **{{ report_data.total_lines|format_int }}**
+
+
+=========
+Top files
+=========
+
+{% for language_name, language_stats in report_data.language_stats | dictsort(by='key') %}
+
+.. _{{ report_job_data.description|path_to_rst_anchor }}_{{ language_name|str_to_rst_anchor }}:
+
+{{ language_name }} ({{ language_stats.files|length }} of {{ language_stats.filecount}})
+-----------------------------------------------
+
+{% for file in language_stats.files %}
+   * [**{{ file.linecount|format_int }}**] {{ file.path|path_to_rst_string }}
+{% endfor %}
+
+{% endfor %}
+
+
+
+============
+Scan details
+============
+
+* **timestamp**: {{ report_job_data.timestamp }}
+* **duration**: {{ report_job_data.duration|format_float }} secs
+* **root path**: {{ report_job_data.scan_path|path_to_rst_string }}
+* **excluded sub paths**: {{ report_job_data.excluded_dirs }}
+* **file extensions**: {{ report_job_data.file_extensions }}

@@ -449,6 +449,57 @@ tresult CCL_API AndroidGraphicsLayer::removeSublayer (IGraphicsLayer* layer)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
+tresult CCL_API AndroidGraphicsLayer::placeAbove (IGraphicsLayer* layer, IGraphicsLayer* sibling)
+{
+    tresult tr = SuperClass::placeAbove (layer, sibling);
+    if(tr == kResultOk)
+        return moveLayerView (layer, sibling, true);
+
+    return tr;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+tresult CCL_API AndroidGraphicsLayer::placeBelow (IGraphicsLayer* layer, IGraphicsLayer* sibling)
+{
+    tresult tr = SuperClass::placeBelow (layer, sibling);
+    if(tr == kResultOk)
+        return moveLayerView (layer, sibling, false);
+
+    return tr;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+tresult AndroidGraphicsLayer::moveLayerView (IGraphicsLayer* layer, IGraphicsLayer* sibling, bool above)
+{
+    auto* androidLayer= unknown_cast<AndroidGraphicsLayer> (layer);
+    auto* androidSibling= unknown_cast<AndroidGraphicsLayer> (sibling);
+    if(androidLayer && androidSibling)
+    {
+        int currentIndex = ViewGroup.indexOfChild (layerView, androidLayer->layerView);
+        int siblingIndex = ViewGroup.indexOfChild (layerView, androidSibling->layerView);
+        if(siblingIndex < 0 || currentIndex < 0)
+            return kResultFailed;
+
+        int insertIndex = siblingIndex;
+        if(above)
+            insertIndex++;
+        if(currentIndex < siblingIndex)
+            insertIndex += 1;
+
+        if(currentIndex != insertIndex)
+        {
+            ViewGroup.removeView (layerView, androidLayer->layerView);
+            ViewGroup.addViewAt (layerView, androidLayer->layerView, insertIndex);
+        }
+        return kResultOk;
+    }
+    return kResultFailed;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
 tresult CCL_API AndroidGraphicsLayer::addAnimation (StringID propertyId, const IAnimation* _animation)
 {
 	const Animation* animation = Animation::cast<Animation> (_animation);

@@ -1,0 +1,1528 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Model.ClassRepository xmlns:x="https://ccl.dev/xml" name="Cross-platform GUI Framework">
+	<List x:id="classes">
+		<Model.Class name="AlertBox" parent="DialogInformation">
+		</Model.Class>
+		<Model.Class name="AliasParam" namespace="CCL" scriptable="1" parent="Object" parentNamespace="CCL">
+			<List x:id="members">
+				<Model.Member name="value" type="variant"/>
+				<Model.Member name="default" type="variant"/>
+				<Model.Member name="type" type="int"/>
+				<Model.Member name="min" type="variant"/>
+				<Model.Member name="max" type="variant"/>
+				<Model.Member name="name" type="string"/>
+				<Model.Member name="string" type="string"/>
+				<Model.Member name="enabled" type="bool"/>
+				<Model.Member name="signalAlways" type="bool"/>
+				<Model.Member name="reverse" type="bool"/>
+			</List>
+			<List x:id="methods">
+				<Model.Method name="setOriginal">
+					<Model.ReturnValue x:id="retval" type="void"/>
+					<List x:id="args">
+						<Model.MethodArg name="original" type="object" typeName="Parameter"/>
+					</List>
+				</Model.Method>
+				<Model.Method name="hasOriginal">
+					<Model.ReturnValue x:id="retval" type="bool"/>
+				</Model.Method>
+				<Model.Method name="setFeedbackNeeded">
+					<Model.ReturnValue x:id="retval" type="void"/>
+					<List x:id="args">
+						<Model.MethodArg name="needed" type="bool" typeName="bool"/>
+					</List>
+				</Model.Method>
+				<Model.Method name="setValue">
+					<Model.ReturnValue x:id="retval" type="void"/>
+					<List x:id="args">
+						<Model.MethodArg name="value" type="variant" typeName="variant"/>
+						<Model.MethodArg name="update" type="bool" typeName="bool" defaultValue="false"/>
+					</List>
+				</Model.Method>
+				<Model.Method name="fromString">
+					<Model.ReturnValue x:id="retval" type="void"/>
+					<List x:id="args">
+						<Model.MethodArg name="str" type="string" typeName="string"/>
+						<Model.MethodArg name="update" type="bool" typeName="bool" defaultValue="false"/>
+					</List>
+				</Model.Method>
+				<Model.Method name="setNormalized">
+					<Model.ReturnValue x:id="retval" type="void"/>
+					<List x:id="args">
+						<Model.MethodArg name="value" type="float" typeName="float"/>
+						<Model.MethodArg name="upate" type="bool" typeName="bool" defaultValue="false"/>
+					</List>
+				</Model.Method>
+				<Model.Method name="getNormalized">
+					<Model.ReturnValue x:id="retval" type="float"/>
+				</Model.Method>
+				<Model.Method name="setFormatter">
+					<Model.ReturnValue x:id="retval" type="void"/>
+					<List x:id="args">
+						<Model.MethodArg name="formatter" type="object" typeName="Formatter"/>
+					</List>
+				</Model.Method>
+				<Model.Method name="setCurve">
+					<Model.ReturnValue x:id="retval" type="void"/>
+					<List x:id="args">
+						<Model.MethodArg name="curve" type="string" typeName="string"/>
+					</List>
+				</Model.Method>
+				<Model.Method name="isType">
+					<Model.ReturnValue x:id="retval" type="bool"/>
+					<List x:id="args">
+						<Model.MethodArg name="type" type="string" typeName="string"/>
+					</List>
+				</Model.Method>
+				<Model.Method name="setSignalAlways">
+					<Model.ReturnValue x:id="retval" type="void"/>
+					<List x:id="args">
+						<Model.MethodArg name="state" type="bool" typeName="bool" defaultValue="true"/>
+					</List>
+				</Model.Method>
+				<Model.Method name="appendString">
+					<Model.ReturnValue x:id="retval" type="void"/>
+					<List x:id="args">
+						<Model.MethodArg name="str" type="string" typeName="string"/>
+					</List>
+				</Model.Method>
+				<Model.Method name="appendValue">
+					<Model.ReturnValue x:id="retval" type="void"/>
+					<List x:id="args">
+						<Model.MethodArg name="value" type="variant" typeName="variant"/>
+					</List>
+				</Model.Method>
+				<Model.Method name="removeAll">
+					<Model.ReturnValue x:id="retval" type="void"/>
+				</Model.Method>
+				<Model.Method name="getValueAt">
+					<Model.ReturnValue x:id="retval" type="variant"/>
+					<List x:id="args">
+						<Model.MethodArg name="index" type="int" typeName="int"/>
+					</List>
+				</Model.Method>
+				<Model.Method name="getSelectedValue">
+					<Model.ReturnValue x:id="retval" type="variant"/>
+				</Model.Method>
+				<Model.Method name="selectValue">
+					<Model.ReturnValue x:id="retval" type="void"/>
+					<List x:id="args">
+						<Model.MethodArg name="value" type="variant" typeName="variant"/>
+						<Model.MethodArg name="update" type="bool" typeName="bool" defaultValue="false"/>
+					</List>
+				</Model.Method>
+				<Model.Method name="setImage">
+					<Model.ReturnValue x:id="retval" type="void"/>
+					<List x:id="args">
+						<Model.MethodArg name="image" type="object" typeName="Object"/>
+						<Model.MethodArg name="update" type="bool" typeName="bool"/>
+					</List>
+				</Model.Method>
+			</List>
+		</Model.Class>
+		<Model.Class name="AlignView" parent="Control">
+		</Model.Class>
+		<Model.Class name="AmbientLight3D" parent="SceneNode3D">
+		</Model.Class>
+		<Model.Class name="AnimationManager" parent="Object" parentNamespace="CCL">
+		</Model.Class>
+		<Model.Class name="Association" namespace="CCL" parent="Object" parentNamespace="CCL">
+		</Model.Class>
+		<Model.Class name="Attribute" namespace="CCL" parent="Object" parentNamespace="CCL">
+		</Model.Class>
+		<Model.Class name="AttributeQueue" namespace="CCL" parent="ObjectArray" parentNamespace="CCL">
+		</Model.Class>
+		<Model.Class name="Attributes" namespace="CCL" scriptable="1" parent="Object" parentNamespace="CCL">
+			<List x:id="methods">
+				<Model.Method name="countAttributes">
+					<Model.ReturnValue x:id="retval" type="int"/>
+				</Model.Method>
+				<Model.Method name="getAttributeName">
+					<Model.ReturnValue x:id="retval" type="string"/>
+					<List x:id="args">
+						<Model.MethodArg name="index" type="int" typeName="int"/>
+					</List>
+				</Model.Method>
+				<Model.Method name="getAttributeValue">
+					<Model.ReturnValue x:id="retval" type="variant"/>
+					<List x:id="args">
+						<Model.MethodArg name="index" type="int" typeName="int"/>
+					</List>
+				</Model.Method>
+				<Model.Method name="getAttribute">
+					<Model.ReturnValue x:id="retval" type="variant"/>
+					<List x:id="args">
+						<Model.MethodArg name="name" type="string" typeName="string"/>
+					</List>
+				</Model.Method>
+				<Model.Method name="setAttribute">
+					<Model.ReturnValue x:id="retval" type="bool"/>
+					<List x:id="args">
+						<Model.MethodArg name="name" type="string" typeName="string"/>
+						<Model.MethodArg name="value" type="variant" typeName="variant"/>
+					</List>
+				</Model.Method>
+				<Model.Method name="queueAttribute">
+					<Model.ReturnValue x:id="retval" type="bool"/>
+					<List x:id="args">
+						<Model.MethodArg name="id" type="string" typeName="string"/>
+						<Model.MethodArg name="value" type="variant" typeName="variant"/>
+					</List>
+				</Model.Method>
+				<Model.Method name="newQueueIterator">
+					<Model.ReturnValue x:id="retval" type="object" typeName="Iterator"/>
+					<List x:id="args">
+						<Model.MethodArg name="id" type="string" typeName="string"/>
+					</List>
+				</Model.Method>
+			</List>
+		</Model.Class>
+		<Model.Class name="AutoScroller" parent="Object" parentNamespace="CCL">
+		</Model.Class>
+		<Model.Class name="BasicAnimation" parent="Animation">
+		</Model.Class>
+		<Model.Class name="BitmapFilter" namespace="CCL" abstract="1" parent="Object" parentNamespace="CCL">
+		</Model.Class>
+		<Model.Class name="BitmapPainter" parent="Object" parentNamespace="CCL">
+		</Model.Class>
+		<Model.Class name="BitmapProcessor" parent="Object" parentNamespace="CCL">
+		</Model.Class>
+		<Model.Class name="BoxLayout" parent="Layout">
+		</Model.Class>
+		<Model.Class name="BoxLayoutView" parent="LayoutView">
+		</Model.Class>
+		<Model.Class name="BufferAllocator3D" parent="Object" parentNamespace="CCL">
+		</Model.Class>
+		<Model.Class name="Button" scriptable="1" parent="Control">
+			<List x:id="methods">
+				<Model.Method name="push">
+					<Model.ReturnValue x:id="retval" type="void"/>
+				</Model.Method>
+			</List>
+		</Model.Class>
+		<Model.Class name="CStringDictionary" namespace="CCL" parent="Object" parentNamespace="CCL">
+		</Model.Class>
+		<Model.Class name="Camera3D" parent="SceneNode3D">
+		</Model.Class>
+		<Model.Class name="CheckBox" parent="Toggle">
+		</Model.Class>
+		<Model.Class name="Clipboard" scriptable="1" parent="Object" parentNamespace="CCL">
+			<List x:id="methods">
+				<Model.Method name="setText">
+					<Model.ReturnValue x:id="retval" type="void"/>
+					<List x:id="args">
+						<Model.MethodArg name="text" type="void"/>
+					</List>
+				</Model.Method>
+				<Model.Method name="getText">
+					<Model.ReturnValue x:id="retval" type="string"/>
+				</Model.Method>
+			</List>
+		</Model.Class>
+		<Model.Class name="ClipperLayout" parent="Layout">
+		</Model.Class>
+		<Model.Class name="ColorPalette" scriptable="1" parent="PaletteBase">
+			<List x:id="methods">
+				<Model.Method name="setColor">
+					<Model.ReturnValue x:id="retval" type="void"/>
+					<List x:id="args">
+						<Model.MethodArg name="index" type="int" typeName="int"/>
+						<Model.MethodArg name="color" type="void" typeName="int | string"/>
+					</List>
+				</Model.Method>
+				<Model.Method name="removeColors">
+					<Model.ReturnValue x:id="retval" type="void"/>
+					<List x:id="args">
+						<Model.MethodArg name="startIndex" type="int" typeName="int" defaultValue="0"/>
+						<Model.MethodArg name="count" type="int" typeName="int" defaultValue="-1"/>
+					</List>
+				</Model.Method>
+			</List>
+		</Model.Class>
+		<Model.Class name="ColorPaletteModel" parent="PaletteModel">
+		</Model.Class>
+		<Model.Class name="ColorParam" namespace="CCL" parent="Parameter" parentNamespace="CCL">
+		</Model.Class>
+		<Model.Class name="ColorSchemes" parent="Object" parentNamespace="CCL">
+		</Model.Class>
+		<Model.Class name="ColoredBitmap" parent="ModifiedBitmap">
+		</Model.Class>
+		<Model.Class name="ColumnHeaderList" scriptable="1" parent="Object" parentNamespace="CCL">
+			<List x:id="methods">
+				<Model.Method name="addColumn">
+					<Model.ReturnValue x:id="retval" type="void"/>
+					<List x:id="args">
+						<Model.MethodArg name="width" type="void"/>
+						<Model.MethodArg name="title" type="void"/>
+						<Model.MethodArg name="id" type="void"/>
+						<Model.MethodArg name="minWidth" type="void"/>
+						<Model.MethodArg name="flags" type="void"/>
+					</List>
+				</Model.Method>
+			</List>
+		</Model.Class>
+		<Model.Class name="Command" parent="Object" parentNamespace="CCL">
+		</Model.Class>
+		<Model.Class name="CommandBar.Button" scriptable="1" parent="CommandBar.Item">
+			<List x:id="members">
+				<Model.Member name="commandCategory" type="void"/>
+				<Model.Member name="commandName" type="void"/>
+				<Model.Member name="icon" type="void"/>
+				<Model.Member name="menuContent" type="void"/>
+			</List>
+		</Model.Class>
+		<Model.Class name="CommandBar.CustomItem" parent="CommandBar.Item">
+		</Model.Class>
+		<Model.Class name="CommandBar.Group" scriptable="1" parent="CommandBar.Item">
+			<List x:id="members">
+				<Model.Member name="name" type="void"/>
+				<Model.Member name="layout" type="void"/>
+				<Model.Member name="revision" type="void"/>
+			</List>
+			<List x:id="methods">
+				<Model.Method name="addChildItem">
+					<Model.ReturnValue x:id="retval" type="bool"/>
+					<List x:id="args">
+						<Model.MethodArg name="Item" type="void"/>
+					</List>
+				</Model.Method>
+				<Model.Method name="removeChildItem">
+					<Model.ReturnValue x:id="retval" type="bool"/>
+					<List x:id="args">
+						<Model.MethodArg name="Item" type="void"/>
+					</List>
+				</Model.Method>
+				<Model.Method name="removeAll">
+					<Model.ReturnValue x:id="retval" type="object" typeName="void"/>
+					<List x:id="args">
+						<Model.MethodArg name="void" type="void"/>
+					</List>
+				</Model.Method>
+			</List>
+		</Model.Class>
+		<Model.Class name="CommandBar.Icon" parent="Object" parentNamespace="CCL">
+		</Model.Class>
+		<Model.Class name="CommandBar.Item" scriptable="1" parent="Object" parentNamespace="CCL">
+			<List x:id="members">
+				<Model.Member name="id" type="void"/>
+				<Model.Member name="title" type="void"/>
+				<Model.Member name="type" type="void"/>
+				<Model.Member name="numChilds" type="void"/>
+				<Model.Member name="flags" type="void"/>
+				<Model.Member name="isReadOnly" type="void"/>
+				<Model.Member name="isTemporary" type="void"/>
+				<Model.Member name="isLeftClickContextMenu" type="void"/>
+			</List>
+			<List x:id="methods">
+				<Model.Method name="getChildItem">
+					<Model.ReturnValue x:id="retval" type="object" typeName="Item"/>
+					<List x:id="args">
+						<Model.MethodArg name="int" type="void"/>
+					</List>
+				</Model.Method>
+				<Model.Method name="getChildIndex">
+					<Model.ReturnValue x:id="retval" type="int"/>
+					<List x:id="args">
+						<Model.MethodArg name="Item" type="void"/>
+					</List>
+				</Model.Method>
+				<Model.Method name="saveToFile">
+					<Model.ReturnValue x:id="retval" type="bool"/>
+					<List x:id="args">
+						<Model.MethodArg name="Url" type="void"/>
+					</List>
+				</Model.Method>
+				<Model.Method name="cloneItem">
+					<Model.ReturnValue x:id="retval" type="object" typeName="Item"/>
+					<List x:id="args">
+						<Model.MethodArg name="void" type="void"/>
+					</List>
+				</Model.Method>
+			</List>
+		</Model.Class>
+		<Model.Class name="CommandBar.Menu" parent="CommandBar.Group">
+		</Model.Class>
+		<Model.Class name="CommandBar.MenuItem" parent="CommandBar.Button">
+		</Model.Class>
+		<Model.Class name="CommandBar.MenuSeparator" parent="CommandBar.Item">
+		</Model.Class>
+		<Model.Class name="CommandBar.Page" parent="CommandBar.Group">
+		</Model.Class>
+		<Model.Class name="CommandBar.Root" parent="CommandBar.Group">
+		</Model.Class>
+		<Model.Class name="CommandBar.SetupGroup" parent="CommandBar.Group">
+		</Model.Class>
+		<Model.Class name="CommandBar.Tabs" parent="CommandBar.Group">
+		</Model.Class>
+		<Model.Class name="CommandBarModel" scriptable="1" parent="StorableObject">
+			<List x:id="methods">
+				<Model.Method name="getRootItem">
+					<Model.ReturnValue x:id="retval" type="object" typeName="Item"/>
+					<List x:id="args">
+						<Model.MethodArg name="void" type="void"/>
+					</List>
+				</Model.Method>
+				<Model.Method name="getParentItem">
+					<Model.ReturnValue x:id="retval" type="object" typeName="Item"/>
+					<List x:id="args">
+						<Model.MethodArg name="item" type="void"/>
+					</List>
+				</Model.Method>
+				<Model.Method name="invalidate">
+					<Model.ReturnValue x:id="retval" type="object" typeName="void"/>
+					<List x:id="args">
+						<Model.MethodArg name="void" type="void"/>
+					</List>
+				</Model.Method>
+				<Model.Method name="loadItemFromFile">
+					<Model.ReturnValue x:id="retval" type="object" typeName="Item"/>
+					<List x:id="args">
+						<Model.MethodArg name="Url" type="void"/>
+					</List>
+				</Model.Method>
+				<Model.Method name="createPage">
+					<Model.ReturnValue x:id="retval" type="object" typeName="PageItem"/>
+					<List x:id="args">
+						<Model.MethodArg name="void" type="void"/>
+					</List>
+				</Model.Method>
+				<Model.Method name="getPage">
+					<Model.ReturnValue x:id="retval" type="object" typeName="PageItem"/>
+					<List x:id="args">
+						<Model.MethodArg name="int" type="void"/>
+					</List>
+				</Model.Method>
+				<Model.Method name="countPages">
+					<Model.ReturnValue x:id="retval" type="int"/>
+					<List x:id="args">
+						<Model.MethodArg name="void" type="void"/>
+					</List>
+				</Model.Method>
+				<Model.Method name="addItem">
+					<Model.ReturnValue x:id="retval" type="bool"/>
+					<List x:id="args">
+						<Model.MethodArg name="item" type="void"/>
+						<Model.MethodArg name="parent" type="void"/>
+						<Model.MethodArg name="index" type="void"/>
+					</List>
+				</Model.Method>
+				<Model.Method name="checkItemsIDs">
+					<Model.ReturnValue x:id="retval" type="object" typeName="void"/>
+					<List x:id="args">
+						<Model.MethodArg name="void" type="void"/>
+					</List>
+				</Model.Method>
+			</List>
+		</Model.Class>
+		<Model.Class name="CommandBarView" scriptable="1" parent="View">
+			<List x:id="methods">
+				<Model.Method name="dragItem">
+					<Model.ReturnValue x:id="retval" type="void"/>
+				</Model.Method>
+			</List>
+		</Model.Class>
+		<Model.Class name="CommandContainer" parent="Object" parentNamespace="CCL">
+		</Model.Class>
+		<Model.Class name="CommandEditor" parent="CommandSelector">
+		</Model.Class>
+		<Model.Class name="CommandParam" namespace="CCL" parent="Parameter" parentNamespace="CCL">
+		</Model.Class>
+		<Model.Class name="CommandSelector" scriptable="1" parent="Object" parentNamespace="CCL">
+			<List x:id="members">
+				<Model.Member name="name" type="void"/>
+				<Model.Member name="argColumnEnabled" type="void"/>
+				<Model.Member name="focusCommand" type="void"/>
+			</List>
+			<List x:id="methods">
+				<Model.Method name="addExcludedCategory">
+					<Model.ReturnValue x:id="retval" type="void"/>
+					<List x:id="args">
+						<Model.MethodArg name="displayName" type="void"/>
+					</List>
+				</Model.Method>
+			</List>
+		</Model.Class>
+		<Model.Class name="CommandTable" namespace="CCL" scriptable="1" parent="Object" parentNamespace="CCL">
+			<List x:id="methods">
+				<Model.Method name="interpretCommand">
+					<Model.ReturnValue x:id="retval" type="bool"/>
+					<List x:id="args">
+						<Model.MethodArg name="category" type="string" typeName="string"/>
+						<Model.MethodArg name="name" type="string" typeName="string"/>
+						<Model.MethodArg name="checkOnly" type="bool" typeName="bool" defaultValue="false"/>
+						<Model.MethodArg name="invoker" type="object" typeName="Object" defaultValue="null"/>
+					</List>
+				</Model.Method>
+				<Model.Method name="deferCommand">
+					<Model.ReturnValue x:id="retval" type="bool"/>
+					<List x:id="args">
+						<Model.MethodArg name="category" type="string" typeName="string"/>
+						<Model.MethodArg name="name" type="string" typeName="string"/>
+						<Model.MethodArg name="checkOnly" type="bool" typeName="bool" defaultValue="false"/>
+						<Model.MethodArg name="invoker" type="object" typeName="Object" defaultValue="null"/>
+					</List>
+				</Model.Method>
+				<Model.Method name="addHandler">
+					<Model.ReturnValue x:id="retval" type="void"/>
+					<List x:id="args">
+						<Model.MethodArg name="ICommandHandler" type="void"/>
+					</List>
+				</Model.Method>
+				<Model.Method name="removeHandler">
+					<Model.ReturnValue x:id="retval" type="void"/>
+					<List x:id="args">
+						<Model.MethodArg name="ICommandHandler" type="void"/>
+					</List>
+				</Model.Method>
+				<Model.Method name="findCommand">
+					<Model.ReturnValue x:id="retval" type="object" typeName="Object"/>
+					<List x:id="args">
+						<Model.MethodArg name="category" type="string" typeName="string"/>
+						<Model.MethodArg name="name" type="string" typeName="string"/>
+					</List>
+				</Model.Method>
+				<Model.Method name="registerCommand">
+					<Model.ReturnValue x:id="retval" type="void"/>
+					<List x:id="args">
+						<Model.MethodArg name="category" type="string" typeName="string"/>
+						<Model.MethodArg name="name" type="string" typeName="string"/>
+						<Model.MethodArg name="displayCategory" type="string" typeName="string"/>
+						<Model.MethodArg name="displayName" type="string" typeName="string"/>
+						<Model.MethodArg name="englishName" type="string" typeName="string"/>
+						<Model.MethodArg name="arguments" type="string" typeName="string" defaultValue="&apos;&apos;"/>
+					</List>
+				</Model.Method>
+				<Model.Method name="unregisterCommand">
+					<Model.ReturnValue x:id="retval" type="void"/>
+					<List x:id="args">
+						<Model.MethodArg name="category" type="string" typeName="string"/>
+						<Model.MethodArg name="name" type="string" typeName="string"/>
+					</List>
+				</Model.Method>
+				<Model.Method name="newCommandIterator">
+					<Model.ReturnValue x:id="retval" type="void"/>
+				</Model.Method>
+				<Model.Method name="newCategoryIterator">
+					<Model.ReturnValue x:id="retval" type="void"/>
+				</Model.Method>
+				<Model.Method name="lookupBindings">
+					<Model.ReturnValue x:id="retval" type="object" typeName="Object"/>
+					<List x:id="args">
+						<Model.MethodArg name="command" type="void"/>
+					</List>
+				</Model.Method>
+				<Model.Method name="lookupKeyEvent">
+					<Model.ReturnValue x:id="retval" type="object" typeName="Key"/>
+					<List x:id="args">
+						<Model.MethodArg name="command" type="object" typeName="Command"/>
+						<Model.MethodArg name="layoutSensitive" type="bool" typeName="bool" defaultValue="true"/>
+					</List>
+				</Model.Method>
+				<Model.Method name="assignKey">
+					<Model.ReturnValue x:id="retval" type="void"/>
+					<List x:id="args">
+						<Model.MethodArg name="command" type="void"/>
+						<Model.MethodArg name="key" type="void"/>
+					</List>
+				</Model.Method>
+				<Model.Method name="beginTransaction">
+					<Model.ReturnValue x:id="retval" type="void"/>
+				</Model.Method>
+				<Model.Method name="endTransaction">
+					<Model.ReturnValue x:id="retval" type="void"/>
+				</Model.Method>
+			</List>
+		</Model.Class>
+		<Model.Class name="Commands" parent="StorableObject">
+		</Model.Class>
+		<Model.Class name="Configuration" namespace="CCL" parent="PersistentAttributes" parentNamespace="CCL">
+		</Model.Class>
+		<Model.Class name="ContextPopupMenu" parent="ContextMenu">
+		</Model.Class>
+		<Model.Class name="CoreSkinLoader" parent="Object" parentNamespace="CCL">
+		</Model.Class>
+		<Model.Class name="CryptoMaterial" namespace="CCL" parent="StorableObject">
+		</Model.Class>
+		<Model.Class name="CubeTessellator3D" parent="Object" parentNamespace="CCL">
+		</Model.Class>
+		<Model.Class name="CubicBezierTimingFunction" parent="Object" parentNamespace="CCL">
+		</Model.Class>
+		<Model.Class name="DateTime" namespace="CCL" scriptable="1" parent="Object" parentNamespace="CCL">
+			<List x:id="methods">
+				<Model.Method name="toSeconds">
+					<Model.ReturnValue x:id="retval" type="void"/>
+				</Model.Method>
+			</List>
+		</Model.Class>
+		<Model.Class name="DetachedFrameItem" parent="PopupFrameItem">
+		</Model.Class>
+		<Model.Class name="DialogBuilder" parent="Object" parentNamespace="CCL">
+		</Model.Class>
+		<Model.Class name="DialogGroup" parent="View">
+		</Model.Class>
+		<Model.Class name="DialogInformation" parent="Object" parentNamespace="CCL">
+		</Model.Class>
+		<Model.Class name="DirectionalLight3D" parent="SceneNode3D">
+		</Model.Class>
+		<Model.Class name="Divider" scriptable="1" parent="Control">
+			<List x:id="methods">
+				<Model.Method name="jump">
+					<Model.ReturnValue x:id="retval" type="void"/>
+				</Model.Method>
+			</List>
+		</Model.Class>
+		<Model.Class name="DividerItem" parent="DockPanelItem">
+		</Model.Class>
+		<Model.Class name="DockPanelGroup" parent="DockPanelItem">
+		</Model.Class>
+		<Model.Class name="DockPanelItem" parent="ObjectNode" parentNamespace="CCL">
+		</Model.Class>
+		<Model.Class name="DockPanelRoot" parent="DockPanelGroup">
+		</Model.Class>
+		<Model.Class name="DockPanelView" parent="View">
+		</Model.Class>
+		<Model.Class name="DpiInfo" parent="Object" parentNamespace="CCL">
+		</Model.Class>
+		<Model.Class name="DragSession" parent="Object" parentNamespace="CCL">
+		</Model.Class>
+		<Model.Class name="DropBox" parent="ItemViewBase">
+		</Model.Class>
+		<Model.Class name="DropBoxControl" parent="ItemControlBase">
+		</Model.Class>
+		<Model.Class name="EditBox" parent="TextBox">
+		</Model.Class>
+		<Model.Class name="EmbeddedFrameItem" parent="FrameItem">
+		</Model.Class>
+		<Model.Class name="ExtendedMenu" scriptable="1" parent="Menu">
+			<List x:id="methods">
+				<Model.Method name="addHeaderItem">
+					<Model.ReturnValue x:id="retval" type="object" typeName="MenuItem"/>
+					<List x:id="args">
+						<Model.MethodArg name="title" type="void"/>
+					</List>
+				</Model.Method>
+			</List>
+		</Model.Class>
+		<Model.Class name="FileFilter" parent="StorableObject">
+		</Model.Class>
+		<Model.Class name="FileFilter.File" parent="FileFilter.Item">
+		</Model.Class>
+		<Model.Class name="FileFilter.Folder" parent="FileFilter.Item">
+		</Model.Class>
+		<Model.Class name="FileSelector" parent="NativeFileSelector">
+		</Model.Class>
+		<Model.Class name="FileType" namespace="CCL" scriptable="1" parent="Object" parentNamespace="CCL">
+			<List x:id="members">
+				<Model.Member name="description" type="string"/>
+				<Model.Member name="extension" type="string"/>
+				<Model.Member name="mimetype" type="string"/>
+			</List>
+		</Model.Class>
+		<Model.Class name="Filmstrip" parent="Image" parentNamespace="CCL">
+		</Model.Class>
+		<Model.Class name="FloatParam" namespace="CCL" parent="Parameter" parentNamespace="CCL">
+		</Model.Class>
+		<Model.Class name="FloatingSprite" parent="ManagedSprite">
+		</Model.Class>
+		<Model.Class name="FolderSelector" parent="NativeFolderSelector">
+		</Model.Class>
+		<Model.Class name="Form" parent="ImageView">
+		</Model.Class>
+		<Model.Class name="Formatter" namespace="CCL" scriptable="1" parent="Object" parentNamespace="CCL">
+			<List x:id="methods">
+				<Model.Method name="print">
+					<Model.ReturnValue x:id="retval" type="string"/>
+					<List x:id="args">
+						<Model.MethodArg name="value" type="variant" typeName="variant"/>
+					</List>
+				</Model.Method>
+				<Model.Method name="scan">
+					<Model.ReturnValue x:id="retval" type="variant"/>
+					<List x:id="args">
+						<Model.MethodArg name="value" type="string" typeName="string"/>
+					</List>
+				</Model.Method>
+			</List>
+		</Model.Class>
+		<Model.Class name="FrameGroupItem" parent="FrameItem">
+		</Model.Class>
+		<Model.Class name="FrameItem" parent="DockPanelItem">
+		</Model.Class>
+		<Model.Class name="FrameItem.ViewState" parent="Object" parentNamespace="CCL">
+		</Model.Class>
+		<Model.Class name="FunctionParam" parent="Parameter" parentNamespace="CCL">
+		</Model.Class>
+		<Model.Class name="Geometry3D" parent="Object" parentNamespace="CCL">
+		</Model.Class>
+		<Model.Class name="GraphicsHelper" namespace="CCL" abstract="1" scriptable="1" parent="Object" parentNamespace="CCL">
+			<List x:id="methods">
+				<Model.Method name="loadImage">
+					<Model.ReturnValue x:id="retval" type="object" typeName="Image"/>
+					<List x:id="args">
+						<Model.MethodArg name="path" type="void"/>
+					</List>
+				</Model.Method>
+				<Model.Method name="saveImage">
+					<Model.ReturnValue x:id="retval" type="void"/>
+					<List x:id="args">
+						<Model.MethodArg name="path" type="void"/>
+						<Model.MethodArg name="image" type="void"/>
+					</List>
+				</Model.Method>
+				<Model.Method name="createBitmap">
+					<Model.ReturnValue x:id="retval" type="object" typeName="Image"/>
+					<List x:id="args">
+						<Model.MethodArg name="width" type="void"/>
+						<Model.MethodArg name="height" type="void"/>
+					</List>
+				</Model.Method>
+				<Model.Method name="createFilmstrip">
+					<Model.ReturnValue x:id="retval" type="object" typeName="Image"/>
+					<List x:id="args">
+						<Model.MethodArg name="image" type="void"/>
+						<Model.MethodArg name="frames" type="void"/>
+					</List>
+				</Model.Method>
+				<Model.Method name="createImagePart">
+					<Model.ReturnValue x:id="retval" type="object" typeName="Image"/>
+					<List x:id="args">
+						<Model.MethodArg name="image" type="void"/>
+						<Model.MethodArg name="left" type="void"/>
+						<Model.MethodArg name="top" type="void"/>
+						<Model.MethodArg name="width" type="void"/>
+						<Model.MethodArg name="height" type="void"/>
+					</List>
+				</Model.Method>
+				<Model.Method name="copyBitmap">
+					<Model.ReturnValue x:id="retval" type="void"/>
+					<List x:id="args">
+						<Model.MethodArg name="dstBitmap" type="void"/>
+						<Model.MethodArg name="srcBitmap" type="void"/>
+						<Model.MethodArg name="offsetX" type="void"/>
+						<Model.MethodArg name="offsetY" type="void"/>
+					</List>
+				</Model.Method>
+				<Model.Method name="createBitmapFilter">
+					<Model.ReturnValue x:id="retval" type="object" typeName="BitmapFilter"/>
+					<List x:id="args">
+						<Model.MethodArg name="name" type="void"/>
+					</List>
+				</Model.Method>
+				<Model.Method name="processBitmap">
+					<Model.ReturnValue x:id="retval" type="object" typeName="Image"/>
+					<List x:id="args">
+						<Model.MethodArg name="bitmap" type="void"/>
+						<Model.MethodArg name="filter" type="void"/>
+						<Model.MethodArg name="inplace" type="void" defaultValue="false"/>
+					</List>
+				</Model.Method>
+			</List>
+		</Model.Class>
+		<Model.Class name="GridTessellator3D" parent="Object" parentNamespace="CCL">
+		</Model.Class>
+		<Model.Class name="HelpCatalog" parent="Object" parentNamespace="CCL">
+		</Model.Class>
+		<Model.Class name="HelpInfoBuilder" scriptable="1" parent="Object" parentNamespace="CCL">
+			<List x:id="methods">
+				<Model.Method name="addOption">
+					<Model.ReturnValue x:id="retval" type="void"/>
+				</Model.Method>
+			</List>
+		</Model.Class>
+		<Model.Class name="HelpInfoCollection" parent="Object" parentNamespace="CCL">
+		</Model.Class>
+		<Model.Class name="HelpReference" parent="Object" parentNamespace="CCL">
+		</Model.Class>
+		<Model.Class name="HelpTutorial" scriptable="1" parent="Object" parentNamespace="CCL">
+			<List x:id="methods">
+				<Model.Method name="getID">
+					<Model.ReturnValue x:id="retval" type="string"/>
+				</Model.Method>
+				<Model.Method name="getTitle">
+					<Model.ReturnValue x:id="retval" type="string"/>
+				</Model.Method>
+				<Model.Method name="getCategory">
+					<Model.ReturnValue x:id="retval" type="string"/>
+				</Model.Method>
+			</List>
+		</Model.Class>
+		<Model.Class name="HelpTutorial.Step" parent="Object" parentNamespace="CCL">
+		</Model.Class>
+		<Model.Class name="Image" namespace="CCL" abstract="1" parent="Object" parentNamespace="CCL">
+		</Model.Class>
+		<Model.Class name="ImageCache" parent="Object" parentNamespace="CCL">
+		</Model.Class>
+		<Model.Class name="ImagePalette" parent="PaletteBase">
+		</Model.Class>
+		<Model.Class name="ImageProvider" namespace="CCL" scriptable="1" parent="Parameter" parentNamespace="CCL">
+			<List x:id="methods">
+				<Model.Method name="setImage">
+					<Model.ReturnValue x:id="retval" type="void"/>
+					<List x:id="args">
+						<Model.MethodArg name="image" type="object" typeName="Object"/>
+						<Model.MethodArg name="update" type="bool" typeName="bool"/>
+					</List>
+				</Model.Method>
+			</List>
+		</Model.Class>
+		<Model.Class name="ImageView" parent="View">
+		</Model.Class>
+		<Model.Class name="IntParam" namespace="CCL" parent="Parameter" parentNamespace="CCL">
+		</Model.Class>
+		<Model.Class name="ItemListSelection" parent="Object" parentNamespace="CCL">
+		</Model.Class>
+		<Model.Class name="ItemModel.BoxedEditInfo" scriptable="1" parent="Object" parentNamespace="CCL">
+			<List x:id="members">
+				<Model.Member name="view" type="void"/>
+				<Model.Member name="rect" type="void"/>
+				<Model.Member name="editEvent" type="void"/>
+			</List>
+		</Model.Class>
+		<Model.Class name="Iterator" namespace="CCL" abstract="1" scriptable="1" parent="Object" parentNamespace="CCL">
+			<List x:id="methods">
+				<Model.Method name="done">
+					<Model.ReturnValue x:id="retval" type="void"/>
+				</Model.Method>
+				<Model.Method name="first">
+					<Model.ReturnValue x:id="retval" type="void"/>
+				</Model.Method>
+				<Model.Method name="last">
+					<Model.ReturnValue x:id="retval" type="void"/>
+				</Model.Method>
+				<Model.Method name="next">
+					<Model.ReturnValue x:id="retval" type="void"/>
+				</Model.Method>
+				<Model.Method name="previous">
+					<Model.ReturnValue x:id="retval" type="void"/>
+				</Model.Method>
+			</List>
+		</Model.Class>
+		<Model.Class name="Key" namespace="CCL" parent="KeyEvent" parentNamespace="CCL">
+		</Model.Class>
+		<Model.Class name="KeyEvent" namespace="CCL" scriptable="1" parent="Object" parentNamespace="CCL">
+			<List x:id="methods">
+				<Model.Method name="toString">
+					<Model.ReturnValue x:id="retval" type="object" typeName="String"/>
+					<List x:id="args">
+						<Model.MethodArg name="translated" type="bool" typeName="bool" defaultValue="false"/>
+					</List>
+				</Model.Method>
+			</List>
+		</Model.Class>
+		<Model.Class name="Knob" parent="Slider">
+		</Model.Class>
+		<Model.Class name="Label" parent="View">
+		</Model.Class>
+		<Model.Class name="LayoutView" parent="View">
+		</Model.Class>
+		<Model.Class name="LightAdaptedBitmap" parent="ColoredBitmap">
+		</Model.Class>
+		<Model.Class name="LightSource3D" parent="SceneNode3D">
+		</Model.Class>
+		<Model.Class name="LinkView" parent="Button">
+		</Model.Class>
+		<Model.Class name="Linkable" namespace="CCL" parent="Object" parentNamespace="CCL">
+		</Model.Class>
+		<Model.Class name="ListControl" parent="ItemControl">
+		</Model.Class>
+		<Model.Class name="ListParam" namespace="CCL" scriptable="1" parent="IntParam" parentNamespace="CCL">
+			<List x:id="methods">
+				<Model.Method name="appendString">
+					<Model.ReturnValue x:id="retval" type="void"/>
+					<List x:id="args">
+						<Model.MethodArg name="str" type="string" typeName="string"/>
+					</List>
+				</Model.Method>
+				<Model.Method name="appendValue">
+					<Model.ReturnValue x:id="retval" type="void"/>
+					<List x:id="args">
+						<Model.MethodArg name="value" type="variant" typeName="variant"/>
+					</List>
+				</Model.Method>
+				<Model.Method name="removeAll">
+					<Model.ReturnValue x:id="retval" type="void"/>
+				</Model.Method>
+				<Model.Method name="getValueAt">
+					<Model.ReturnValue x:id="retval" type="variant"/>
+					<List x:id="args">
+						<Model.MethodArg name="index" type="int" typeName="int"/>
+					</List>
+				</Model.Method>
+				<Model.Method name="getSelectedValue">
+					<Model.ReturnValue x:id="retval" type="variant"/>
+				</Model.Method>
+				<Model.Method name="selectValue">
+					<Model.ReturnValue x:id="retval" type="void"/>
+					<List x:id="args">
+						<Model.MethodArg name="value" type="variant" typeName="variant"/>
+						<Model.MethodArg name="update" type="bool" typeName="bool" defaultValue="false"/>
+					</List>
+				</Model.Method>
+			</List>
+		</Model.Class>
+		<Model.Class name="ListView" parent="ItemView">
+		</Model.Class>
+		<Model.Class name="LogEvent" namespace="CCL" parent="Object" parentNamespace="CCL">
+		</Model.Class>
+		<Model.Class name="LogEventList" namespace="CCL" parent="StorableObject">
+		</Model.Class>
+		<Model.Class name="Menu" parent="PopupMenu">
+		</Model.Class>
+		<Model.Class name="MenuBar" parent="Object" parentNamespace="CCL">
+		</Model.Class>
+		<Model.Class name="MenuItem" parent="MenuItemBase">
+		</Model.Class>
+		<Model.Class name="MenuParam" namespace="CCL" parent="ListParam" parentNamespace="CCL">
+		</Model.Class>
+		<Model.Class name="MenuPlaceholder" parent="Object" parentNamespace="CCL">
+		</Model.Class>
+		<Model.Class name="MenuSeparator" parent="Object" parentNamespace="CCL">
+		</Model.Class>
+		<Model.Class name="Message" namespace="CCL" scriptable="1" parent="Object" parentNamespace="CCL">
+			<List x:id="members">
+				<Model.Member name="id" type="string"/>
+				<Model.Member name="argCount" type="int" readOnly="1"/>
+			</List>
+			<List x:id="methods">
+				<Model.Method name="getArg">
+					<Model.ReturnValue x:id="retval" type="variant"/>
+					<List x:id="args">
+						<Model.MethodArg name="index" type="int" typeName="int"/>
+					</List>
+				</Model.Method>
+				<Model.Method name="getArgCount">
+					<Model.ReturnValue x:id="retval" type="int"/>
+				</Model.Method>
+			</List>
+		</Model.Class>
+		<Model.Class name="ModalProgressDialog" parent="ProgressDialog">
+		</Model.Class>
+		<Model.Class name="Model3D" parent="Object" parentNamespace="CCL">
+		</Model.Class>
+		<Model.Class name="ModelNode3D" parent="SceneNode3D">
+		</Model.Class>
+		<Model.Class name="ModifiedImageCache" parent="Object" parentNamespace="CCL">
+		</Model.Class>
+		<Model.Class name="MountPoint" namespace="CCL" parent="Object" parentNamespace="CCL">
+		</Model.Class>
+		<Model.Class name="MouseEvent" parent="Object" parentNamespace="CCL">
+		</Model.Class>
+		<Model.Class name="MultiImage" parent="Image" parentNamespace="CCL">
+		</Model.Class>
+		<Model.Class name="MutableRegion" parent="Object" parentNamespace="CCL">
+		</Model.Class>
+		<Model.Class name="NativeColorSelector" parent="ColorSelector">
+		</Model.Class>
+		<Model.Class name="NativeFileSelector" parent="FileSelector">
+		</Model.Class>
+		<Model.Class name="NativeFolderSelector" scriptable="1" parent="Object" parentNamespace="CCL">
+			<List x:id="methods">
+				<Model.Method name="run">
+					<Model.ReturnValue x:id="retval" type="bool"/>
+					<List x:id="args">
+						<Model.MethodArg name="[title]" type="void"/>
+					</List>
+				</Model.Method>
+				<Model.Method name="getPath">
+					<Model.ReturnValue x:id="retval" type="object" typeName="Url"/>
+				</Model.Method>
+			</List>
+		</Model.Class>
+		<Model.Class name="NonModalPopupSelectorWindow" parent="PopupWindow">
+		</Model.Class>
+		<Model.Class name="NotificationAction" parent="Object" parentNamespace="CCL">
+		</Model.Class>
+		<Model.Class name="NotifyIcon" parent="NotifyIcon">
+		</Model.Class>
+		<Model.Class name="NullView" parent="View">
+		</Model.Class>
+		<Model.Class name="Object" namespace="CCL">
+		</Model.Class>
+		<Model.Class name="ObjectArray" namespace="CCL" parent="Container">
+		</Model.Class>
+		<Model.Class name="ObjectList" namespace="CCL" parent="Container">
+		</Model.Class>
+		<Model.Class name="ObjectNode" namespace="CCL" scriptable="1" parent="Object" parentNamespace="CCL">
+			<List x:id="methods">
+				<Model.Method name="find">
+					<Model.ReturnValue x:id="retval" type="object" typeName="ObjectNode"/>
+					<List x:id="args">
+						<Model.MethodArg name="childName" type="string" typeName="string"/>
+					</List>
+				</Model.Method>
+			</List>
+		</Model.Class>
+		<Model.Class name="ObjectStack" namespace="CCL" parent="ObjectList" parentNamespace="CCL">
+		</Model.Class>
+		<Model.Class name="PackageInfo" namespace="CCL" parent="PersistentAttributes" parentNamespace="CCL">
+		</Model.Class>
+		<Model.Class name="PaletteModel" parent="Object" parentNamespace="CCL">
+		</Model.Class>
+		<Model.Class name="PaletteParam" namespace="CCL" parent="ListParam" parentNamespace="CCL">
+		</Model.Class>
+		<Model.Class name="ParamContainer" namespace="CCL" scriptable="1" parent="Object" parentNamespace="CCL">
+			<List x:id="methods">
+				<Model.Method name="add">
+					<Model.ReturnValue x:id="retval" type="object" typeName="Parameter"/>
+					<List x:id="args">
+						<Model.MethodArg name="param" type="object" typeName="Parameter"/>
+					</List>
+				</Model.Method>
+				<Model.Method name="addParam">
+					<Model.ReturnValue x:id="retval" type="object" typeName="Parameter"/>
+					<List x:id="args">
+						<Model.MethodArg name="name" type="string" typeName="string"/>
+					</List>
+				</Model.Method>
+				<Model.Method name="addFloat">
+					<Model.ReturnValue x:id="retval" type="object" typeName="FloatParam"/>
+					<List x:id="args">
+						<Model.MethodArg name="min" type="float" typeName="float"/>
+						<Model.MethodArg name="max" type="float" typeName="float"/>
+						<Model.MethodArg name="name" type="string" typeName="string"/>
+					</List>
+				</Model.Method>
+				<Model.Method name="addInteger">
+					<Model.ReturnValue x:id="retval" type="object" typeName="IntParam"/>
+					<List x:id="args">
+						<Model.MethodArg name="min" type="int" typeName="int"/>
+						<Model.MethodArg name="max" type="int" typeName="int"/>
+						<Model.MethodArg name="name" type="string" typeName="string"/>
+					</List>
+				</Model.Method>
+				<Model.Method name="addString">
+					<Model.ReturnValue x:id="retval" type="object" typeName="StringParam"/>
+					<List x:id="args">
+						<Model.MethodArg name="name" type="string" typeName="string"/>
+					</List>
+				</Model.Method>
+				<Model.Method name="addList">
+					<Model.ReturnValue x:id="retval" type="object" typeName="ListParam"/>
+					<List x:id="args">
+						<Model.MethodArg name="name" type="string" typeName="string"/>
+					</List>
+				</Model.Method>
+				<Model.Method name="addMenu">
+					<Model.ReturnValue x:id="retval" type="object" typeName="MenuParam"/>
+					<List x:id="args">
+						<Model.MethodArg name="name" type="string" typeName="string"/>
+					</List>
+				</Model.Method>
+				<Model.Method name="addCommand">
+					<Model.ReturnValue x:id="retval" type="object" typeName="CommandParam"/>
+					<List x:id="args">
+						<Model.MethodArg name="commandCategory" type="string" typeName="string"/>
+						<Model.MethodArg name="commandName" type="string" typeName="string"/>
+						<Model.MethodArg name="name" type="string" typeName="string"/>
+					</List>
+				</Model.Method>
+				<Model.Method name="addColor">
+					<Model.ReturnValue x:id="retval" type="object" typeName="ColorParam"/>
+					<List x:id="args">
+						<Model.MethodArg name="name" type="string" typeName="string"/>
+					</List>
+				</Model.Method>
+				<Model.Method name="addAlias">
+					<Model.ReturnValue x:id="retval" type="object" typeName="AliasParam"/>
+					<List x:id="args">
+						<Model.MethodArg name="name" type="string" typeName="string"/>
+					</List>
+				</Model.Method>
+				<Model.Method name="addImage">
+					<Model.ReturnValue x:id="retval" type="object" typeName="ImageProvider"/>
+					<List x:id="args">
+						<Model.MethodArg name="name" type="string" typeName="string"/>
+					</List>
+				</Model.Method>
+				<Model.Method name="remove">
+					<Model.ReturnValue x:id="retval" type="object" typeName="Parameter"/>
+					<List x:id="args">
+						<Model.MethodArg name="name" type="string" typeName="string"/>
+					</List>
+				</Model.Method>
+				<Model.Method name="lookup">
+					<Model.ReturnValue x:id="retval" type="object" typeName="Parameter"/>
+					<List x:id="args">
+						<Model.MethodArg name="name" type="string" typeName="string"/>
+					</List>
+				</Model.Method>
+			</List>
+		</Model.Class>
+		<Model.Class name="ParamItemModel" parent="Object" parentNamespace="CCL">
+		</Model.Class>
+		<Model.Class name="ParamList" parent="ParamContainer" parentNamespace="CCL">
+		</Model.Class>
+		<Model.Class name="Parameter" namespace="CCL" scriptable="1" parent="Object" parentNamespace="CCL">
+			<List x:id="members">
+				<Model.Member name="type" type="int"/>
+				<Model.Member name="value" type="variant"/>
+				<Model.Member name="min" type="variant"/>
+				<Model.Member name="max" type="variant"/>
+				<Model.Member name="default" type="variant"/>
+				<Model.Member name="name" type="string"/>
+				<Model.Member name="string" type="string"/>
+				<Model.Member name="enabled" type="bool"/>
+				<Model.Member name="signalAlways" type="bool"/>
+				<Model.Member name="reverse" type="bool"/>
+			</List>
+			<List x:id="methods">
+				<Model.Method name="setValue">
+					<Model.ReturnValue x:id="retval" type="void"/>
+					<List x:id="args">
+						<Model.MethodArg name="value" type="variant" typeName="variant"/>
+						<Model.MethodArg name="update" type="bool" typeName="bool" defaultValue="false"/>
+					</List>
+				</Model.Method>
+				<Model.Method name="fromString">
+					<Model.ReturnValue x:id="retval" type="void"/>
+					<List x:id="args">
+						<Model.MethodArg name="str" type="string" typeName="string"/>
+						<Model.MethodArg name="update" type="bool" typeName="bool" defaultValue="false"/>
+					</List>
+				</Model.Method>
+				<Model.Method name="setNormalized">
+					<Model.ReturnValue x:id="retval" type="void"/>
+					<List x:id="args">
+						<Model.MethodArg name="value" type="float" typeName="float"/>
+						<Model.MethodArg name="upate" type="bool" typeName="bool" defaultValue="false"/>
+					</List>
+				</Model.Method>
+				<Model.Method name="getNormalized">
+					<Model.ReturnValue x:id="retval" type="float"/>
+				</Model.Method>
+				<Model.Method name="setFormatter">
+					<Model.ReturnValue x:id="retval" type="void"/>
+					<List x:id="args">
+						<Model.MethodArg name="formatter" type="object" typeName="Formatter"/>
+					</List>
+				</Model.Method>
+				<Model.Method name="setCurve">
+					<Model.ReturnValue x:id="retval" type="void"/>
+					<List x:id="args">
+						<Model.MethodArg name="curve" type="string" typeName="string"/>
+					</List>
+				</Model.Method>
+				<Model.Method name="isType">
+					<Model.ReturnValue x:id="retval" type="bool"/>
+					<List x:id="args">
+						<Model.MethodArg name="type" type="string" typeName="string"/>
+					</List>
+				</Model.Method>
+				<Model.Method name="setSignalAlways">
+					<Model.ReturnValue x:id="retval" type="void"/>
+					<List x:id="args">
+						<Model.MethodArg name="state" type="bool" typeName="bool" defaultValue="true"/>
+					</List>
+				</Model.Method>
+			</List>
+		</Model.Class>
+		<Model.Class name="ParameterMenuBuilder" parent="Object" parentNamespace="CCL">
+		</Model.Class>
+		<Model.Class name="PersistentAttributes" namespace="CCL" parent="Attributes" parentNamespace="CCL">
+		</Model.Class>
+		<Model.Class name="Perspective" parent="Object" parentNamespace="CCL">
+		</Model.Class>
+		<Model.Class name="PerspectiveFrameState" parent="Object" parentNamespace="CCL">
+		</Model.Class>
+		<Model.Class name="PerspectiveState" parent="Object" parentNamespace="CCL">
+		</Model.Class>
+		<Model.Class name="PlugInViewStatics" parent="Object" parentNamespace="CCL">
+		</Model.Class>
+		<Model.Class name="Point" scriptable="1" parent="Object" parentNamespace="CCL">
+			<List x:id="methods">
+				<Model.Method name="equals">
+					<Model.ReturnValue x:id="retval" type="void"/>
+				</Model.Method>
+			</List>
+		</Model.Class>
+		<Model.Class name="PointLight3D" parent="SceneNode3D">
+		</Model.Class>
+		<Model.Class name="PopupBox" scriptable="1" parent="View">
+			<List x:id="methods">
+				<Model.Method name="showPopup">
+					<Model.ReturnValue x:id="retval" type="void"/>
+				</Model.Method>
+				<Model.Method name="closePopup">
+					<Model.ReturnValue x:id="retval" type="void"/>
+				</Model.Method>
+			</List>
+		</Model.Class>
+		<Model.Class name="PopupFrameItem" parent="FrameItem">
+		</Model.Class>
+		<Model.Class name="PopupMenu" parent="Menu">
+		</Model.Class>
+		<Model.Class name="PopupSelector" parent="Object" parentNamespace="CCL">
+		</Model.Class>
+		<Model.Class name="ProgressBar" parent="ValueBar">
+		</Model.Class>
+		<Model.Class name="ProgressDialog" parent="ProgressStep">
+		</Model.Class>
+		<Model.Class name="RadioButton" parent="CheckBox">
+		</Model.Class>
+		<Model.Class name="Rect" scriptable="1" parent="Object" parentNamespace="CCL">
+			<List x:id="methods">
+				<Model.Method name="equals">
+					<Model.ReturnValue x:id="retval" type="void"/>
+				</Model.Method>
+				<Model.Method name="pointInside">
+					<Model.ReturnValue x:id="retval" type="void"/>
+				</Model.Method>
+				<Model.Method name="clone">
+					<Model.ReturnValue x:id="retval" type="void"/>
+				</Model.Method>
+			</List>
+		</Model.Class>
+		<Model.Class name="RootFrameItem" parent="FrameGroupItem">
+		</Model.Class>
+		<Model.Class name="Scene3D" parent="ContainerNode3D">
+		</Model.Class>
+		<Model.Class name="SceneView3D" parent="View3D">
+		</Model.Class>
+		<Model.Class name="ScreenManager" parent="Object" parentNamespace="CCL">
+		</Model.Class>
+		<Model.Class name="ScriptComponent" scriptable="1" parent="Object" parentNamespace="CCL">
+			<List x:id="methods">
+				<Model.Method name="construct">
+					<Model.ReturnValue x:id="retval" type="void"/>
+				</Model.Method>
+				<Model.Method name="addChild">
+					<Model.ReturnValue x:id="retval" type="void"/>
+				</Model.Method>
+			</List>
+		</Model.Class>
+		<Model.Class name="ScriptGUIHost" namespace="CCL" abstract="1" scriptable="1" parent="Object" parentNamespace="CCL">
+			<List x:id="members">
+				<Model.Member name="Constants" type="void"/>
+				<Model.Member name="Commands" type="object" typeName="CommandTable" readOnly="1"/>
+				<Model.Member name="Themes" type="void"/>
+				<Model.Member name="Desktop" type="void"/>
+				<Model.Member name="Help" type="void"/>
+				<Model.Member name="Configuration" type="void"/>
+			</List>
+			<List x:id="methods">
+				<Model.Method name="flushUpdates">
+					<Model.ReturnValue x:id="retval" type="void"/>
+				</Model.Method>
+				<Model.Method name="alert">
+					<Model.ReturnValue x:id="retval" type="void"/>
+					<List x:id="args">
+						<Model.MethodArg name="text" type="void"/>
+					</List>
+				</Model.Method>
+				<Model.Method name="ask">
+					<Model.ReturnValue x:id="retval" type="void"/>
+					<List x:id="args">
+						<Model.MethodArg name="text" type="void"/>
+					</List>
+				</Model.Method>
+				<Model.Method name="runDialog">
+					<Model.ReturnValue x:id="retval" type="int"/>
+					<List x:id="args">
+						<Model.MethodArg name="theme" type="object" typeName="Object"/>
+						<Model.MethodArg name="formName" type="string" typeName="string"/>
+						<Model.MethodArg name="controller" type="object" typeName="Object" defaultValue="null"/>
+						<Model.MethodArg name="buttons" type="int" typeName="int" defaultValue="0"/>
+					</List>
+				</Model.Method>
+				<Model.Method name="runDialogWithParameters">
+					<Model.ReturnValue x:id="retval" type="int"/>
+					<List x:id="args">
+						<Model.MethodArg name="paramList" type="void"/>
+						<Model.MethodArg name="title" type="void"/>
+					</List>
+				</Model.Method>
+				<Model.Method name="addIdleTask">
+					<Model.ReturnValue x:id="retval" type="void"/>
+				</Model.Method>
+				<Model.Method name="removeIdleTask">
+					<Model.ReturnValue x:id="retval" type="void"/>
+				</Model.Method>
+				<Model.Method name="openUrl">
+					<Model.ReturnValue x:id="retval" type="void"/>
+				</Model.Method>
+				<Model.Method name="showInBrowser">
+					<Model.ReturnValue x:id="retval" type="void"/>
+				</Model.Method>
+				<Model.Method name="keyStateToString">
+					<Model.ReturnValue x:id="retval" type="void"/>
+				</Model.Method>
+			</List>
+		</Model.Class>
+		<Model.Class name="ScrollBar" parent="Control">
+		</Model.Class>
+		<Model.Class name="ScrollButton" parent="ScrollBar">
+		</Model.Class>
+		<Model.Class name="ScrollParam" namespace="CCL" parent="IntParam" parentNamespace="CCL">
+		</Model.Class>
+		<Model.Class name="ScrollView" parent="View">
+		</Model.Class>
+		<Model.Class name="Section" namespace="CCL" parent="Object" parentNamespace="CCL">
+		</Model.Class>
+		<Model.Class name="SegmentBox" parent="Control">
+		</Model.Class>
+		<Model.Class name="SelectBox" scriptable="1" parent="TextBox">
+			<List x:id="methods">
+				<Model.Method name="showMenu">
+					<Model.ReturnValue x:id="retval" type="void"/>
+				</Model.Method>
+			</List>
+		</Model.Class>
+		<Model.Class name="SelectionRegion" parent="Object" parentNamespace="CCL">
+		</Model.Class>
+		<Model.Class name="Settings" namespace="CCL" scriptable="1" parent="Object" parentNamespace="CCL">
+			<List x:id="methods">
+				<Model.Method name="getAttributes">
+					<Model.ReturnValue x:id="retval" type="string"/>
+					<List x:id="args">
+						<Model.MethodArg name="Attributes" type="void"/>
+					</List>
+				</Model.Method>
+			</List>
+		</Model.Class>
+		<Model.Class name="SharedDetachedFrameItem" parent="DetachedFrameItem">
+		</Model.Class>
+		<Model.Class name="SizeVariantLayout" parent="Layout">
+		</Model.Class>
+		<Model.Class name="SkinWizard" parent="Object" parentNamespace="CCL">
+		</Model.Class>
+		<Model.Class name="Slider" parent="ValueControl">
+		</Model.Class>
+		<Model.Class name="SolidColorMaterial3D" parent="Material3D">
+		</Model.Class>
+		<Model.Class name="String" namespace="CCL" parent="Object" parentNamespace="CCL">
+		</Model.Class>
+		<Model.Class name="StringDictionary" namespace="CCL" parent="Object" parentNamespace="CCL">
+		</Model.Class>
+		<Model.Class name="StringList" namespace="CCL" parent="Object" parentNamespace="CCL">
+		</Model.Class>
+		<Model.Class name="StringParam" namespace="CCL" parent="Parameter" parentNamespace="CCL">
+		</Model.Class>
+		<Model.Class name="SublayerSprite" parent="ManagedSprite">
+		</Model.Class>
+		<Model.Class name="SwipeBox" parent="Control">
+		</Model.Class>
+		<Model.Class name="SystemFrameItem" parent="FrameItem">
+		</Model.Class>
+		<Model.Class name="SystemWindow" parent="Window">
+		</Model.Class>
+		<Model.Class name="TableLayout" parent="Layout">
+		</Model.Class>
+		<Model.Class name="TaskBarDelegate" namespace="CCL" parent="Object" parentNamespace="CCL">
+		</Model.Class>
+		<Model.Class name="TextBox" parent="Control">
+		</Model.Class>
+		<Model.Class name="TextEditor" parent="Control">
+		</Model.Class>
+		<Model.Class name="TextFile" namespace="CCL" scriptable="1" parent="Object" parentNamespace="CCL">
+			<List x:id="members">
+				<Model.Member name="endOfStream" type="void"/>
+			</List>
+			<List x:id="methods">
+				<Model.Method name="readLine">
+					<Model.ReturnValue x:id="retval" type="void"/>
+				</Model.Method>
+				<Model.Method name="writeLine">
+					<Model.ReturnValue x:id="retval" type="void"/>
+				</Model.Method>
+				<Model.Method name="writeString">
+					<Model.ReturnValue x:id="retval" type="void"/>
+				</Model.Method>
+				<Model.Method name="close">
+					<Model.ReturnValue x:id="retval" type="void"/>
+				</Model.Method>
+			</List>
+		</Model.Class>
+		<Model.Class name="TextLayoutBuilder" parent="Object" parentNamespace="CCL">
+		</Model.Class>
+		<Model.Class name="TextModelProvider" parent="Parameter" parentNamespace="CCL">
+		</Model.Class>
+		<Model.Class name="TextureMaterial3D" parent="Material3D">
+		</Model.Class>
+		<Model.Class name="ThemeStatics" parent="Object" parentNamespace="CCL">
+		</Model.Class>
+		<Model.Class name="TiledImage" parent="Image" parentNamespace="CCL">
+		</Model.Class>
+		<Model.Class name="TintedBitmap" parent="ColoredBitmap">
+		</Model.Class>
+		<Model.Class name="Toggle" parent="Button">
+		</Model.Class>
+		<Model.Class name="ToolButton" parent="RadioButton">
+		</Model.Class>
+		<Model.Class name="TooltipWindow" parent="TooltipPopup">
+		</Model.Class>
+		<Model.Class name="TouchInputManager" parent="Object" parentNamespace="CCL">
+		</Model.Class>
+		<Model.Class name="TransformAnimation" parent="Animation">
+		</Model.Class>
+		<Model.Class name="Tree" parent="TreeItem">
+		</Model.Class>
+		<Model.Class name="TreeControl" parent="ItemControl">
+		</Model.Class>
+		<Model.Class name="TreeItem" parent="Object" parentNamespace="CCL">
+		</Model.Class>
+		<Model.Class name="UID" namespace="CCL" scriptable="1" parent="Object" parentNamespace="CCL">
+			<List x:id="methods">
+				<Model.Method name="equals">
+					<Model.ReturnValue x:id="retval" type="bool"/>
+					<List x:id="args">
+						<Model.MethodArg name="id" type="void" typeName="UID | string"/>
+					</List>
+				</Model.Method>
+			</List>
+		</Model.Class>
+		<Model.Class name="UVSphereTessellator3D" parent="Object" parentNamespace="CCL">
+		</Model.Class>
+		<Model.Class name="UpDownButton" parent="Button">
+		</Model.Class>
+		<Model.Class name="Url" namespace="CCL" scriptable="1" parent="Object" parentNamespace="CCL">
+			<List x:id="members">
+				<Model.Member name="name" type="void"/>
+				<Model.Member name="url" type="void"/>
+				<Model.Member name="extension" type="void"/>
+				<Model.Member name="protocol" type="void"/>
+				<Model.Member name="hostname" type="void"/>
+			</List>
+			<List x:id="methods">
+				<Model.Method name="ascend">
+					<Model.ReturnValue x:id="retval" type="void"/>
+				</Model.Method>
+				<Model.Method name="descend">
+					<Model.ReturnValue x:id="retval" type="void"/>
+					<List x:id="args">
+						<Model.MethodArg name="name" type="void"/>
+						<Model.MethodArg name="folder" type="void" defaultValue="false"/>
+					</List>
+				</Model.Method>
+				<Model.Method name="makeUnique">
+					<Model.ReturnValue x:id="retval" type="void"/>
+					<List x:id="args">
+						<Model.MethodArg name="forceSuffix" type="void" defaultValue="false"/>
+					</List>
+				</Model.Method>
+				<Model.Method name="toDisplayString">
+					<Model.ReturnValue x:id="retval" type="string"/>
+				</Model.Method>
+				<Model.Method name="fromDisplayString">
+					<Model.ReturnValue x:id="retval" type="void"/>
+					<List x:id="args">
+						<Model.MethodArg name="string" type="void"/>
+						<Model.MethodArg name="folder" type="void" defaultValue="false"/>
+					</List>
+				</Model.Method>
+				<Model.Method name="contains">
+					<Model.ReturnValue x:id="retval" type="void"/>
+					<List x:id="args">
+						<Model.MethodArg name="childUrl" type="object" typeName="Url"/>
+					</List>
+				</Model.Method>
+				<Model.Method name="getName">
+					<Model.ReturnValue x:id="retval" type="string"/>
+					<List x:id="args">
+						<Model.MethodArg name="withExtension" type="bool" typeName="bool" defaultValue="true"/>
+					</List>
+				</Model.Method>
+			</List>
+		</Model.Class>
+		<Model.Class name="UrlWithTitle" namespace="CCL" parent="Url" parentNamespace="CCL">
+		</Model.Class>
+		<Model.Class name="UserControlHost" parent="View">
+		</Model.Class>
+		<Model.Class name="UserOptionDialog" parent="Object" parentNamespace="CCL">
+		</Model.Class>
+		<Model.Class name="UserView3D" parent="View3D">
+		</Model.Class>
+		<Model.Class name="ValueBox" parent="EditBox">
+		</Model.Class>
+		<Model.Class name="Variant" namespace="CCL" parent="Object" parentNamespace="CCL">
+		</Model.Class>
+		<Model.Class name="View" parent="Linkable" parentNamespace="CCL">
+		</Model.Class>
+		<Model.Class name="ViewScreenCapture" parent="Object" parentNamespace="CCL">
+		</Model.Class>
+		<Model.Class name="VisualStyle" parent="Object" parentNamespace="CCL">
+		</Model.Class>
+		<Model.Class name="WebBrowserView" parent="View">
+		</Model.Class>
+		<Model.Class name="Win32PageSetupDialog" parent="PageSetupDialog">
+		</Model.Class>
+		<Model.Class name="Window" scriptable="1" parent="WindowBase">
+			<List x:id="methods">
+				<Model.Method name="popupContextMenu">
+					<Model.ReturnValue x:id="retval" type="void"/>
+				</Model.Method>
+				<Model.Method name="showPlatformInformation">
+					<Model.ReturnValue x:id="retval" type="void"/>
+				</Model.Method>
+				<Model.Method name="close">
+					<Model.ReturnValue x:id="retval" type="void"/>
+				</Model.Method>
+			</List>
+		</Model.Class>
+		<Model.Class name="WindowBase" parent="View">
+		</Model.Class>
+		<Model.Class name="WindowsAlertBox" parent="AlertBox">
+		</Model.Class>
+		<Model.Class name="WindowsDragSession" parent="DragSession">
+		</Model.Class>
+		<Model.Class name="WindowsMenuBar" parent="MenuBar">
+		</Model.Class>
+		<Model.Class name="WindowsTooltip" parent="TooltipPopup">
+		</Model.Class>
+		<Model.Class name="WindowsVariantMenuBar" parent="WindowsMenuBar">
+		</Model.Class>
+		<Model.Class name="Workspace" parent="Object" parentNamespace="CCL">
+		</Model.Class>
+		<Model.Class name="XmlNode" namespace="CCL" scriptable="1" parent="ObjectNode" parentNamespace="CCL">
+			<List x:id="members">
+				<Model.Member name="name" type="void"/>
+				<Model.Member name="parent" type="void"/>
+				<Model.Member name="text" type="void"/>
+				<Model.Member name="comment" type="void"/>
+			</List>
+			<List x:id="methods">
+				<Model.Method name="newNode">
+					<Model.ReturnValue x:id="retval" type="object" typeName="XmlNode"/>
+					<List x:id="args">
+						<Model.MethodArg name="title" type="void" defaultValue="&apos;&apos;"/>
+					</List>
+				</Model.Method>
+				<Model.Method name="setAttribute">
+					<Model.ReturnValue x:id="retval" type="void"/>
+					<List x:id="args">
+						<Model.MethodArg name="key" type="void"/>
+						<Model.MethodArg name="value" type="void"/>
+					</List>
+				</Model.Method>
+				<Model.Method name="getAttribute">
+					<Model.ReturnValue x:id="retval" type="string"/>
+					<List x:id="args">
+						<Model.MethodArg name="key" type="void"/>
+					</List>
+				</Model.Method>
+				<Model.Method name="addChild">
+					<Model.ReturnValue x:id="retval" type="void"/>
+					<List x:id="args">
+						<Model.MethodArg name="node" type="void"/>
+					</List>
+				</Model.Method>
+				<Model.Method name="findNode">
+					<Model.ReturnValue x:id="retval" type="object" typeName="XmlNode"/>
+					<List x:id="args">
+						<Model.MethodArg name="name" type="void"/>
+					</List>
+				</Model.Method>
+				<Model.Method name="newIterator">
+					<Model.ReturnValue x:id="retval" type="object" typeName="Iterator"/>
+				</Model.Method>
+			</List>
+		</Model.Class>
+		<Model.Class name="XmlSettings" namespace="CCL" parent="Settings" parentNamespace="CCL">
+		</Model.Class>
+		<Model.Class name="XmlTree" namespace="CCL" scriptable="1" parent="StorableObject">
+			<List x:id="members">
+				<Model.Member name="root" type="void"/>
+				<Model.Member name="errorMessage" type="void"/>
+			</List>
+		</Model.Class>
+	</List>
+</Model.ClassRepository>

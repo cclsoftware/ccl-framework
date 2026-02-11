@@ -1,0 +1,15 @@
+{
+	"id": "dev.ccl.doc.coreskin",
+	"title": "Core Skin Documentation",
+	"build":
+	[
+		{
+			"action": "classmodelrst",
+			"description": "Convert classmodels to RST",
+			"args":
+			[
+				"classmodel-config.json"
+			]
+		}
+	]
+}

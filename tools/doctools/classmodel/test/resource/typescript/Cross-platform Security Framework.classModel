@@ -1,0 +1,310 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Model.ClassRepository xmlns:x="https://ccl.dev/xml" name="Cross-platform Security Framework">
+	<List x:id="classes">
+		<Model.Class name="AccessAllowed" parent="AccessItem">
+		</Model.Class>
+		<Model.Class name="AccessDenied" parent="AccessItem">
+		</Model.Class>
+		<Model.Class name="AccessItem" parent="Item">
+		</Model.Class>
+		<Model.Class name="Association" namespace="CCL" parent="Object" parentNamespace="CCL">
+		</Model.Class>
+		<Model.Class name="Attribute" namespace="CCL" parent="Object" parentNamespace="CCL">
+		</Model.Class>
+		<Model.Class name="AttributeQueue" namespace="CCL" parent="ObjectArray" parentNamespace="CCL">
+		</Model.Class>
+		<Model.Class name="Attributes" namespace="CCL" scriptable="1" parent="Object" parentNamespace="CCL">
+			<List x:id="methods">
+				<Model.Method name="countAttributes">
+					<Model.ReturnValue x:id="retval" type="int"/>
+				</Model.Method>
+				<Model.Method name="getAttributeName">
+					<Model.ReturnValue x:id="retval" type="string"/>
+					<List x:id="args">
+						<Model.MethodArg name="index" type="int" typeName="int"/>
+					</List>
+				</Model.Method>
+				<Model.Method name="getAttributeValue">
+					<Model.ReturnValue x:id="retval" type="variant"/>
+					<List x:id="args">
+						<Model.MethodArg name="index" type="int" typeName="int"/>
+					</List>
+				</Model.Method>
+				<Model.Method name="getAttribute">
+					<Model.ReturnValue x:id="retval" type="variant"/>
+					<List x:id="args">
+						<Model.MethodArg name="name" type="string" typeName="string"/>
+					</List>
+				</Model.Method>
+				<Model.Method name="setAttribute">
+					<Model.ReturnValue x:id="retval" type="bool"/>
+					<List x:id="args">
+						<Model.MethodArg name="name" type="string" typeName="string"/>
+						<Model.MethodArg name="value" type="variant" typeName="variant"/>
+					</List>
+				</Model.Method>
+				<Model.Method name="queueAttribute">
+					<Model.ReturnValue x:id="retval" type="bool"/>
+					<List x:id="args">
+						<Model.MethodArg name="id" type="string" typeName="string"/>
+						<Model.MethodArg name="value" type="variant" typeName="variant"/>
+					</List>
+				</Model.Method>
+				<Model.Method name="newQueueIterator">
+					<Model.ReturnValue x:id="retval" type="object" typeName="Iterator"/>
+					<List x:id="args">
+						<Model.MethodArg name="id" type="string" typeName="string"/>
+					</List>
+				</Model.Method>
+			</List>
+		</Model.Class>
+		<Model.Class name="AuthAssociatedData" parent="ContainerItem">
+		</Model.Class>
+		<Model.Class name="AuthClient" parent="ContainerItem">
+		</Model.Class>
+		<Model.Class name="AuthCondition" parent="ContainerItem">
+		</Model.Class>
+		<Model.Class name="AuthData" parent="Item">
+		</Model.Class>
+		<Model.Class name="AuthResource" parent="ContainerItem">
+		</Model.Class>
+		<Model.Class name="AuthorizationPolicy" parent="StorableObject">
+		</Model.Class>
+		<Model.Class name="CStringDictionary" namespace="CCL" parent="Object" parentNamespace="CCL">
+		</Model.Class>
+		<Model.Class name="Configuration" namespace="CCL" parent="PersistentAttributes" parentNamespace="CCL">
+		</Model.Class>
+		<Model.Class name="CryptoMaterial" namespace="CCL" parent="StorableObject">
+		</Model.Class>
+		<Model.Class name="DateTime" namespace="CCL" scriptable="1" parent="Object" parentNamespace="CCL">
+			<List x:id="methods">
+				<Model.Method name="toSeconds">
+					<Model.ReturnValue x:id="retval" type="void"/>
+				</Model.Method>
+			</List>
+		</Model.Class>
+		<Model.Class name="FileType" namespace="CCL" scriptable="1" parent="Object" parentNamespace="CCL">
+			<List x:id="members">
+				<Model.Member name="description" type="string"/>
+				<Model.Member name="extension" type="string"/>
+				<Model.Member name="mimetype" type="string"/>
+			</List>
+		</Model.Class>
+		<Model.Class name="Formatter" namespace="CCL" scriptable="1" parent="Object" parentNamespace="CCL">
+			<List x:id="methods">
+				<Model.Method name="print">
+					<Model.ReturnValue x:id="retval" type="string"/>
+					<List x:id="args">
+						<Model.MethodArg name="value" type="variant" typeName="variant"/>
+					</List>
+				</Model.Method>
+				<Model.Method name="scan">
+					<Model.ReturnValue x:id="retval" type="variant"/>
+					<List x:id="args">
+						<Model.MethodArg name="value" type="string" typeName="string"/>
+					</List>
+				</Model.Method>
+			</List>
+		</Model.Class>
+		<Model.Class name="Iterator" namespace="CCL" abstract="1" scriptable="1" parent="Object" parentNamespace="CCL">
+			<List x:id="methods">
+				<Model.Method name="done">
+					<Model.ReturnValue x:id="retval" type="void"/>
+				</Model.Method>
+				<Model.Method name="first">
+					<Model.ReturnValue x:id="retval" type="void"/>
+				</Model.Method>
+				<Model.Method name="last">
+					<Model.ReturnValue x:id="retval" type="void"/>
+				</Model.Method>
+				<Model.Method name="next">
+					<Model.ReturnValue x:id="retval" type="void"/>
+				</Model.Method>
+				<Model.Method name="previous">
+					<Model.ReturnValue x:id="retval" type="void"/>
+				</Model.Method>
+			</List>
+		</Model.Class>
+		<Model.Class name="Message" namespace="CCL" scriptable="1" parent="Object" parentNamespace="CCL">
+			<List x:id="members">
+				<Model.Member name="id" type="string"/>
+				<Model.Member name="argCount" type="int" readOnly="1"/>
+			</List>
+			<List x:id="methods">
+				<Model.Method name="getArg">
+					<Model.ReturnValue x:id="retval" type="variant"/>
+					<List x:id="args">
+						<Model.MethodArg name="index" type="int" typeName="int"/>
+					</List>
+				</Model.Method>
+				<Model.Method name="getArgCount">
+					<Model.ReturnValue x:id="retval" type="int"/>
+				</Model.Method>
+			</List>
+		</Model.Class>
+		<Model.Class name="Object" namespace="CCL">
+		</Model.Class>
+		<Model.Class name="ObjectArray" namespace="CCL" parent="Container">
+		</Model.Class>
+		<Model.Class name="ObjectList" namespace="CCL" parent="Container">
+		</Model.Class>
+		<Model.Class name="ObjectNode" namespace="CCL" scriptable="1" parent="Object" parentNamespace="CCL">
+			<List x:id="methods">
+				<Model.Method name="find">
+					<Model.ReturnValue x:id="retval" type="object" typeName="ObjectNode"/>
+					<List x:id="args">
+						<Model.MethodArg name="childName" type="string" typeName="string"/>
+					</List>
+				</Model.Method>
+			</List>
+		</Model.Class>
+		<Model.Class name="ObjectStack" namespace="CCL" parent="ObjectList" parentNamespace="CCL">
+		</Model.Class>
+		<Model.Class name="PersistentAttributes" namespace="CCL" parent="Attributes" parentNamespace="CCL">
+		</Model.Class>
+		<Model.Class name="Section" namespace="CCL" parent="Object" parentNamespace="CCL">
+		</Model.Class>
+		<Model.Class name="SecurityHost" namespace="CCL" abstract="1" scriptable="1" parent="Object" parentNamespace="CCL">
+			<List x:id="methods">
+				<Model.Method name="checkAccess">
+					<Model.ReturnValue x:id="retval" type="bool"/>
+					<List x:id="args">
+						<Model.MethodArg name="resourceSid" type="void"/>
+						<Model.MethodArg name="itemSid" type="void"/>
+					</List>
+				</Model.Method>
+			</List>
+		</Model.Class>
+		<Model.Class name="Settings" namespace="CCL" scriptable="1" parent="Object" parentNamespace="CCL">
+			<List x:id="methods">
+				<Model.Method name="getAttributes">
+					<Model.ReturnValue x:id="retval" type="string"/>
+					<List x:id="args">
+						<Model.MethodArg name="Attributes" type="void"/>
+					</List>
+				</Model.Method>
+			</List>
+		</Model.Class>
+		<Model.Class name="String" namespace="CCL" parent="Object" parentNamespace="CCL">
+		</Model.Class>
+		<Model.Class name="StringDictionary" namespace="CCL" parent="Object" parentNamespace="CCL">
+		</Model.Class>
+		<Model.Class name="StringList" namespace="CCL" parent="Object" parentNamespace="CCL">
+		</Model.Class>
+		<Model.Class name="UID" namespace="CCL" scriptable="1" parent="Object" parentNamespace="CCL">
+			<List x:id="methods">
+				<Model.Method name="equals">
+					<Model.ReturnValue x:id="retval" type="bool"/>
+					<List x:id="args">
+						<Model.MethodArg name="id" type="void" typeName="UID | string"/>
+					</List>
+				</Model.Method>
+			</List>
+		</Model.Class>
+		<Model.Class name="Url" namespace="CCL" scriptable="1" parent="Object" parentNamespace="CCL">
+			<List x:id="members">
+				<Model.Member name="name" type="void"/>
+				<Model.Member name="url" type="void"/>
+				<Model.Member name="extension" type="void"/>
+				<Model.Member name="protocol" type="void"/>
+				<Model.Member name="hostname" type="void"/>
+			</List>
+			<List x:id="methods">
+				<Model.Method name="ascend">
+					<Model.ReturnValue x:id="retval" type="void"/>
+				</Model.Method>
+				<Model.Method name="descend">
+					<Model.ReturnValue x:id="retval" type="void"/>
+					<List x:id="args">
+						<Model.MethodArg name="name" type="void"/>
+						<Model.MethodArg name="folder" type="void" defaultValue="false"/>
+					</List>
+				</Model.Method>
+				<Model.Method name="makeUnique">
+					<Model.ReturnValue x:id="retval" type="void"/>
+					<List x:id="args">
+						<Model.MethodArg name="forceSuffix" type="void" defaultValue="false"/>
+					</List>
+				</Model.Method>
+				<Model.Method name="toDisplayString">
+					<Model.ReturnValue x:id="retval" type="string"/>
+				</Model.Method>
+				<Model.Method name="fromDisplayString">
+					<Model.ReturnValue x:id="retval" type="void"/>
+					<List x:id="args">
+						<Model.MethodArg name="string" type="void"/>
+						<Model.MethodArg name="folder" type="void" defaultValue="false"/>
+					</List>
+				</Model.Method>
+				<Model.Method name="contains">
+					<Model.ReturnValue x:id="retval" type="void"/>
+					<List x:id="args">
+						<Model.MethodArg name="childUrl" type="object" typeName="Url"/>
+					</List>
+				</Model.Method>
+				<Model.Method name="getName">
+					<Model.ReturnValue x:id="retval" type="string"/>
+					<List x:id="args">
+						<Model.MethodArg name="withExtension" type="bool" typeName="bool" defaultValue="true"/>
+					</List>
+				</Model.Method>
+			</List>
+		</Model.Class>
+		<Model.Class name="UrlWithTitle" namespace="CCL" parent="Url" parentNamespace="CCL">
+		</Model.Class>
+		<Model.Class name="Variant" namespace="CCL" parent="Object" parentNamespace="CCL">
+		</Model.Class>
+		<Model.Class name="XmlNode" namespace="CCL" scriptable="1" parent="ObjectNode" parentNamespace="CCL">
+			<List x:id="members">
+				<Model.Member name="name" type="void"/>
+				<Model.Member name="parent" type="void"/>
+				<Model.Member name="text" type="void"/>
+				<Model.Member name="comment" type="void"/>
+			</List>
+			<List x:id="methods">
+				<Model.Method name="newNode">
+					<Model.ReturnValue x:id="retval" type="object" typeName="XmlNode"/>
+					<List x:id="args">
+						<Model.MethodArg name="title" type="void" defaultValue="&apos;&apos;"/>
+					</List>
+				</Model.Method>
+				<Model.Method name="setAttribute">
+					<Model.ReturnValue x:id="retval" type="void"/>
+					<List x:id="args">
+						<Model.MethodArg name="key" type="void"/>
+						<Model.MethodArg name="value" type="void"/>
+					</List>
+				</Model.Method>
+				<Model.Method name="getAttribute">
+					<Model.ReturnValue x:id="retval" type="string"/>
+					<List x:id="args">
+						<Model.MethodArg name="key" type="void"/>
+					</List>
+				</Model.Method>
+				<Model.Method name="addChild">
+					<Model.ReturnValue x:id="retval" type="void"/>
+					<List x:id="args">
+						<Model.MethodArg name="node" type="void"/>
+					</List>
+				</Model.Method>
+				<Model.Method name="findNode">
+					<Model.ReturnValue x:id="retval" type="object" typeName="XmlNode"/>
+					<List x:id="args">
+						<Model.MethodArg name="name" type="void"/>
+					</List>
+				</Model.Method>
+				<Model.Method name="newIterator">
+					<Model.ReturnValue x:id="retval" type="object" typeName="Iterator"/>
+				</Model.Method>
+			</List>
+		</Model.Class>
+		<Model.Class name="XmlSettings" namespace="CCL" parent="Settings" parentNamespace="CCL">
+		</Model.Class>
+		<Model.Class name="XmlTree" namespace="CCL" scriptable="1" parent="StorableObject">
+			<List x:id="members">
+				<Model.Member name="root" type="void"/>
+				<Model.Member name="errorMessage" type="void"/>
+			</List>
+		</Model.Class>
+	</List>
+</Model.ClassRepository>

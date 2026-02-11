@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Model.ClassRepository xmlns:x="https://ccl.dev/xml" name="Test Repository">
+	<List x:id="objects">
+		<Model.Object name="Test Object" class="Test Class">
+			<List x:id="methods">
+				<Model.Method name="method1">
+					<Model.ReturnValue x:id="retval" type="void"/>
+					<List x:id="args">
+						<Model.MethodArg name="arg1" type="void"/>
+					</List>
+				</Model.Method>
+			</List>
+		</Model.Object>
+	</List>
+</Model.ClassRepository>

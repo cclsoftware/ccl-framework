@@ -1,0 +1,23 @@
+/* Enable to allow content to expand to full width:
+.wy-nav-content {
+    max-width: none;
+}
+*/
+
+pre.doxyrest-overview-code-block {
+	border: 1px solid #ccc !important;
+	background-color: #fff !important;
+}
+
+pre.doxyrest-overview-inherited-code-block {
+	border: 1px solid #ccc !important;
+	background-color: #eee !important;
+}
+
+pre.doxyrest-title-code-block {
+	font-size: small !important;
+	border: none !important;
+    border-top: solid #ccc !important;
+    background-color: #f0f0f0 !important;
+    font-weight: bold !important;
+}

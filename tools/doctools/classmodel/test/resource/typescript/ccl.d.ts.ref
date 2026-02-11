@@ -1,0 +1,414 @@
+declare namespace CCL
+{
+  export class Attributes extends Object
+  {
+    private CCL_Attributes: never;
+    countAttributes: () => number;
+    getAttributeName: (index: number) => string;
+    getAttributeValue: (index: number) => any;
+    getAttribute: (name: string) => any;
+    setAttribute: (name: string, value: any) => boolean;
+    queueAttribute: (id: string, value: any) => boolean;
+    newQueueIterator: (id: string) => Iterator;
+  }
+  export class DateTime extends Object
+  {
+    private CCL_DateTime: never;
+    toSeconds: () => void;
+  }
+  export class Formatter extends Object
+  {
+    private CCL_Formatter: never;
+    print: (value: any) => string;
+    scan: (value: string) => any;
+  }
+  export class Iterator extends Object
+  {
+    private CCL_Iterator: never;
+    done: () => void;
+    first: () => void;
+    last: () => void;
+    next: () => void;
+    previous: () => void;
+  }
+  export class Message extends Object
+  {
+    private CCL_Message: never;
+    id: string;
+    readonly argCount: number;
+    getArg: (index: number) => any;
+    getArgCount: () => number;
+  }
+  export class Object
+  {
+    private CCL_Object: never;
+  }
+  export class ObjectNode extends Object
+  {
+    private CCL_ObjectNode: never;
+    find: (childName: string) => ObjectNode;
+  }
+  export class SecurityHost extends Object
+  {
+    private CCL_SecurityHost: never;
+    checkAccess: (resourceSid: any, itemSid: any) => boolean;
+  }
+  export class Settings extends Object
+  {
+    private CCL_Settings: never;
+    getAttributes: (Attributes: any) => string;
+  }
+  export class UID extends Object
+  {
+    private CCL_UID: never;
+    equals: (id: UID | string) => boolean;
+  }
+  export class Url extends Object
+  {
+    private CCL_Url: never;
+    name: any;
+    url: any;
+    extension: any;
+    protocol: any;
+    hostname: any;
+    ascend: () => void;
+    descend: (name: any, folder?: any) => void;
+    makeUnique: (forceSuffix?: any) => void;
+    toDisplayString: () => string;
+    fromDisplayString: (string: any, folder?: any) => void;
+    contains: (childUrl: Url) => void;
+    getName: (withExtension?: boolean) => string;
+  }
+  export class XmlSettings extends Settings
+  {
+    private CCL_XmlSettings: never;
+  }
+  export class ClassDescription extends Object
+  {
+    private CCL_ClassDescription: never;
+    getClassAttribute: () => void;
+  }
+  export class FileArchive extends FileResource
+  {
+    private CCL_FileArchive: never;
+    setOption: () => void;
+    create: () => void;
+    embedd: () => void;
+    extract: () => void;
+    extractAll: () => void;
+    flush: () => void;
+    close: () => void;
+  }
+  export class FileResource extends Object
+  {
+    private CCL_FileResource: never;
+  }
+  export class FileTypeRegistry extends Object
+  {
+    private CCL_FileTypeRegistry: never;
+    registerFileType: (fileType: Object | string) => tresult;
+    getFileTypeByExtension: (extension: string) => Object;
+    getFileTypeByMimeType: (mimetype: string) => Object;
+    registerHandler: (fileType: Object | string, location: Url, observer: Object) => tresult;
+    unregisterHandler: (fileType: Object | string) => tresult;
+  }
+  export class LocaleManager extends Object
+  {
+    private CCL_LocaleManager: never;
+    getStrings: (tableId: any) => LocaleManager.TranslationTable;
+  }
+  export namespace LocaleManager
+  {
+    export class TranslationTable extends Object
+    {
+      private CCL_LocaleManager_TranslationTable: never;
+      getString: () => void;
+    }
+  }
+  export class ObjectTable extends Object
+  {
+    private CCL_ObjectTable: never;
+    registerObject: (obj: any, name: any) => tresult;
+    unregisterObject: (obj: any) => tresult;
+    getObjectByName: (name: any) => Object;
+    getObjectByID: (uidString: any) => Object;
+    getObjectByUrl: (url: any, optional: any) => Object;
+  }
+  export class PackageFile extends FileArchive
+  {
+    private CCL_PackageFile: never;
+  }
+  export class PlugInCollection extends Object
+  {
+    private CCL_PlugInCollection: never;
+  }
+  export class PlugInManager extends PlugInCollection
+  {
+    private CCL_PlugInManager: never;
+    createInstance: (className_or_cid: UID | string) => Object;
+    getClassDescription: (className_or_cid: UID | string) => ClassDescription;
+    newIterator: (category: any) => Iterator;
+  }
+  export class ScriptingHost extends Object
+  {
+    private CCL_ScriptingHost: never;
+    readonly Interfaces: ScriptingHost.InterfaceList;
+    readonly Results: ScriptingHost.ResultsList;
+    readonly Classes: PlugInManager;
+    readonly Objects: ObjectTable;
+    readonly Services: ServiceManager;
+    readonly Console: ScriptingHost.Console;
+    readonly Signals: ScriptingHost.Signals;
+    readonly Locales: LocaleManager;
+    readonly SystemInfo: SystemInformation;
+    readonly IO: ScriptingHost.ScriptableIO;
+    readonly FileTypes: FileTypeRegistry;
+    retain: (obj: any) => void;
+    release: (obj: any) => void;
+    UID: () => UID;
+    Url: (url: Url | string) => Url;
+    Attributes: (...vargs: any[]) => any;
+    DateTime: () => DateTime;
+    getPlatform: () => string;
+    sleep: (ms: number) => void;
+  }
+  export namespace ScriptingHost
+  {
+    export class Console extends Object
+    {
+      private CCL_ScriptingHost_Console: never;
+      writeLine: (string: any) => void;
+    }
+    export class InterfaceList extends Object
+    {
+      private CCL_ScriptingHost_InterfaceList: never;
+      readonly IUnknown: UID;
+    }
+    export class ResultsList extends Object
+    {
+      private CCL_ScriptingHost_ResultsList: never;
+    }
+    export class ScriptableIO extends Object
+    {
+      private CCL_ScriptingHost_ScriptableIO: never;
+      File: () => void;
+      findFiles: (startPoint: any, searchPattern: any) => Iterator;
+      openTextFile: (path: any, [encoding]: any) => TextFile;
+      createTextFile: (path: any, [encoding]: any) => TextFile;
+      XmlTree: () => void;
+      toBase64: (string: any, [encoding]: any) => string;
+      fromBase64: (string: any, [encoding]: any) => string;
+      openPackage: (path: any) => PackageFile;
+      createPackage: (path: any, [mimeType]: any) => PackageFile;
+      getDevelopmentFileLocation: (root: string, relativePath: string) => Url;
+    }
+    export class Signals extends Object
+    {
+      private CCL_ScriptingHost_Signals: never;
+      signal: (subject_or_atom: Object | string, messageId: string, arg0?: string, arg1?: string) => void;
+      flush: () => void;
+      advise: (subject_or_atom: Object | string, observer: Object) => void;
+      unadvise: (subject_or_atom: Object | string, observer: Object) => void;
+    }
+  }
+  export class ServiceManager extends Object
+  {
+    private CCL_ServiceManager: never;
+    getInstance: (cid: any) => void;
+  }
+  export class SystemInformation extends Object
+  {
+    private CCL_SystemInformation: never;
+    getLocalTime: () => DateTime;
+  }
+  export class TextFile extends Object
+  {
+    private CCL_TextFile: never;
+    endOfStream: any;
+    readLine: () => void;
+    writeLine: () => void;
+    writeString: () => void;
+    close: () => void;
+  }
+  export class AliasParam extends Object
+  {
+    private CCL_AliasParam: never;
+    value: any;
+    default: any;
+    type: number;
+    min: any;
+    max: any;
+    name: string;
+    string: string;
+    enabled: boolean;
+    signalAlways: boolean;
+    reverse: boolean;
+    setOriginal: (original: Parameter) => void;
+    hasOriginal: () => boolean;
+    setFeedbackNeeded: (needed: boolean) => void;
+    setValue: (value: any, update?: boolean) => void;
+    fromString: (str: string, update?: boolean) => void;
+    setNormalized: (value: number, upate?: boolean) => void;
+    getNormalized: () => number;
+    setFormatter: (formatter: Formatter) => void;
+    setCurve: (curve: string) => void;
+    isType: (type: string) => boolean;
+    setSignalAlways: (state?: boolean) => void;
+    appendString: (str: string) => void;
+    appendValue: (value: any) => void;
+    removeAll: () => void;
+    getValueAt: (index: number) => any;
+    getSelectedValue: () => any;
+    selectValue: (value: any, update?: boolean) => void;
+    setImage: (image: Object, update: boolean) => void;
+  }
+  export class BitmapFilter extends Object
+  {
+    private CCL_BitmapFilter: never;
+  }
+  export class ColorParam extends Parameter
+  {
+    private CCL_ColorParam: never;
+  }
+  export class CommandParam extends Parameter
+  {
+    private CCL_CommandParam: never;
+  }
+  export class CommandTable extends Object
+  {
+    private CCL_CommandTable: never;
+    interpretCommand: (category: string, name: string, checkOnly?: boolean, invoker?: Object) => boolean;
+    deferCommand: (category: string, name: string, checkOnly?: boolean, invoker?: Object) => boolean;
+    addHandler: (ICommandHandler: any) => void;
+    removeHandler: (ICommandHandler: any) => void;
+    findCommand: (category: string, name: string) => Object;
+    registerCommand: (category: string, name: string, displayCategory: string, displayName: string, englishName: string, arguments?: string) => void;
+    unregisterCommand: (category: string, name: string) => void;
+    newCommandIterator: () => void;
+    newCategoryIterator: () => void;
+    lookupBindings: (command: any) => Object;
+    lookupKeyEvent: (command: Command, layoutSensitive?: boolean) => Key;
+    assignKey: (command: any, key: any) => void;
+    beginTransaction: () => void;
+    endTransaction: () => void;
+  }
+  export class FloatParam extends Parameter
+  {
+    private CCL_FloatParam: never;
+  }
+  export class GraphicsHelper extends Object
+  {
+    private CCL_GraphicsHelper: never;
+    loadImage: (path: any) => Image;
+    saveImage: (path: any, image: any) => void;
+    createBitmap: (width: any, height: any) => Image;
+    createFilmstrip: (image: any, frames: any) => Image;
+    createImagePart: (image: any, left: any, top: any, width: any, height: any) => Image;
+    copyBitmap: (dstBitmap: any, srcBitmap: any, offsetX: any, offsetY: any) => void;
+    createBitmapFilter: (name: any) => BitmapFilter;
+    processBitmap: (bitmap: any, filter: any, inplace?: any) => Image;
+  }
+  export class Image extends Object
+  {
+    private CCL_Image: never;
+  }
+  export class ImageProvider extends Parameter
+  {
+    private CCL_ImageProvider: never;
+    setImage: (image: Object, update: boolean) => void;
+  }
+  export class IntParam extends Parameter
+  {
+    private CCL_IntParam: never;
+  }
+  export class Key extends KeyEvent
+  {
+    private CCL_Key: never;
+  }
+  export class KeyEvent extends Object
+  {
+    private CCL_KeyEvent: never;
+    toString: (translated?: boolean) => String;
+  }
+  export class ListParam extends IntParam
+  {
+    private CCL_ListParam: never;
+    appendString: (str: string) => void;
+    appendValue: (value: any) => void;
+    removeAll: () => void;
+    getValueAt: (index: number) => any;
+    getSelectedValue: () => any;
+    selectValue: (value: any, update?: boolean) => void;
+  }
+  export class MenuParam extends ListParam
+  {
+    private CCL_MenuParam: never;
+  }
+  export class ParamContainer extends Object
+  {
+    private CCL_ParamContainer: never;
+    add: (param: Parameter) => Parameter;
+    addParam: (name: string) => Parameter;
+    addFloat: (min: number, max: number, name: string) => FloatParam;
+    addInteger: (min: number, max: number, name: string) => IntParam;
+    addString: (name: string) => StringParam;
+    addList: (name: string) => ListParam;
+    addMenu: (name: string) => MenuParam;
+    addCommand: (commandCategory: string, commandName: string, name: string) => CommandParam;
+    addColor: (name: string) => ColorParam;
+    addAlias: (name: string) => AliasParam;
+    addImage: (name: string) => ImageProvider;
+    remove: (name: string) => Parameter;
+    lookup: (name: string) => Parameter;
+  }
+  export class Parameter extends Object
+  {
+    private CCL_Parameter: never;
+    type: number;
+    value: any;
+    min: any;
+    max: any;
+    default: any;
+    name: string;
+    string: string;
+    enabled: boolean;
+    signalAlways: boolean;
+    reverse: boolean;
+    setValue: (value: any, update?: boolean) => void;
+    fromString: (str: string, update?: boolean) => void;
+    setNormalized: (value: number, upate?: boolean) => void;
+    getNormalized: () => number;
+    setFormatter: (formatter: Formatter) => void;
+    setCurve: (curve: string) => void;
+    isType: (type: string) => boolean;
+    setSignalAlways: (state?: boolean) => void;
+  }
+  export class ScriptGUIHost extends Object
+  {
+    private CCL_ScriptGUIHost: never;
+    Constants: any;
+    readonly Commands: CommandTable;
+    Themes: any;
+    Desktop: any;
+    Help: any;
+    Configuration: any;
+    flushUpdates: () => void;
+    alert: (text: any) => void;
+    ask: (text: any) => void;
+    runDialog: (theme: Object, formName: string, controller?: Object, buttons?: number) => number;
+    runDialogWithParameters: (paramList: any, title: any) => number;
+    addIdleTask: () => void;
+    removeIdleTask: () => void;
+    openUrl: () => void;
+    showInBrowser: () => void;
+    keyStateToString: () => void;
+  }
+  export class StringParam extends Parameter
+  {
+    private CCL_StringParam: never;
+  }
+}
+declare class Command extends CCL.Object
+{
+  private Command: never;
+}

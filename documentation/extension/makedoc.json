@@ -1,0 +1,15 @@
+{
+	"id": "dev.ccl.doc.extension",
+	"title": "Extension Developer Documentation",
+	"build":
+	[
+		{
+			"action": "classmodelrst",
+			"description": "Convert classmodels to RST",
+			"args":
+			[
+				"classmodel-config.json"
+			]
+		}
+	]
+}

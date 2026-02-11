@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Leave out the required 'localization' attribute here. Expect file to be skipped. -->
+<RootConditionTest>
+	<SomeElement text="Root condition text from mismatching file"/>
+</RootConditionTest>

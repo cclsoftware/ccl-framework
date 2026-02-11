@@ -34,6 +34,8 @@
 #include "ccl/app/controls/dragcontrol.h"
 #include "ccl/app/paramcontainer.h"
 
+#include "ccl/app/utilities/pluginclass.h"
+
 #include "ccl/base/storage/url.h"
 #include "ccl/base/storage/packageinfo.h"
 #include "ccl/base/storage/storage.h"
@@ -191,7 +193,13 @@ public:
 					// presets with classID are identified by classID
 					UID cid;
 					if(metaAttributes.getClassID (cid))
-						return cid == targetClassID || (alternativeClassID.isValid () && cid == alternativeClassID);
+					{
+						if(cid == targetClassID)
+							return true;
+						if(alternativeClassID.isValid () && cid == alternativeClassID)
+							return true;
+						return PlugIn::isAlternativeCID (targetClassID, cid);
+					}
 					else
 					{
 						// presets with no classID are identified by gategory and subcategory

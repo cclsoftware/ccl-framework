@@ -1,0 +1,10 @@
+#: ./metainfo.xml
+msgctxt "MetaInfo"
+msgid "Test package"
+msgstr ""
+
+#: ./metainfo.xml
+msgctxt "MetaInfo"
+msgid "Test package description"
+msgstr ""
+

@@ -1,0 +1,18 @@
+{
+	"files": [
+		{
+			"input": "../../classmodels/MetaInfo.classModel",
+			"output": "reference/metainfo-classmodel",
+			"external-files-path": "reference/",
+			"ref-prefix": "extension-metainfo-classmodel",
+			"generate-shortcut-file": 1
+		},
+		{
+			"input": "../../classmodels/InstallData.classModel",
+			"output": "reference/installdata-classmodel",
+			"external-files-path": "reference/",
+			"ref-prefix": "extension-installdata-classmodel",
+			"generate-shortcut-file": 1
+		}
+	]
+}

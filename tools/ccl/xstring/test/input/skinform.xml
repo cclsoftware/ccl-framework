@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Skin>
+	<Resources>
+		<Image name="SomeImage"/>
+	</Resources>
+	<Shapes>
+		<Shape name="SomeShape" style="scale"/>
+	</Shapes>
+	<Forms>
+		<Form name="TestForm" >
+			<Horizontal>
+				<HelpAnchor helpid="Anchor">
+					<Horizontal>
+						<Button title="TestButton" tooltip="Button tooltip"/>
+						<EditBox name="TestEditBox" placeholder="EditBox placeholder"/>
+						<Link command.category="File" command.name="New" tooltip="@cmd.title[]">
+							<Link title="New..." command.category="File" command.name="New"/>
+						</Link>
+					</Horizontal>
+				</HelpAnchor>
+			</Horizontal>
+		</Form>
+	</Forms>
+</Skin>

@@ -287,7 +287,7 @@ protected:
 	Settings& getSettings () override;
 	bool isModule (UrlRef url) const override;
 	Module* createModule (UrlRef url) const override;
-	void getModuleTime (DateTime& modifiedTime, Module* module) override;
+	void getModuleTime (int64& modifiedTime, Module* module) override;
 	bool restoreModuleInfo (StringRef settingsID, Module* module) override;
 	bool registerModuleInfo (StringRef settingsID, Module* module) override;
 

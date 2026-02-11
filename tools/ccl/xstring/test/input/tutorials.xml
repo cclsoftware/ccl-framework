@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HelpTutorialCollection contentType="application/x.ccl-skin" content="./content/;./content.package">
+	<HelpTutorial id="Some.Tutorial" title="Non-global tutorial title"/>
+	<HelpTutorial id="Some.Tutorial.Global" title="Global tutorial title" category="global"/>
+</HelpTutorialCollection>

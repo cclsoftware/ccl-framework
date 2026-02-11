@@ -1,0 +1,15 @@
+#: ./document.template
+msgctxt "DocumentTemplate"
+msgid "Document description."
+msgstr ""
+
+#: ./document.template
+msgctxt "DocumentTemplate"
+msgid "Document subtitle"
+msgstr ""
+
+#: ./document.template
+msgctxt "DocumentTemplate"
+msgid "Document title"
+msgstr ""
+

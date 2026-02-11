@@ -1,0 +1,7 @@
+conf.py
+doxyrest-config.lua
+reference/*.*
+resource/doxygen/config.doxy
+resource/doxyout/xml/
+resource/doxyout/html/
+resource/doxyout/warnings.txt

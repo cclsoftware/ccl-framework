@@ -1,0 +1,18 @@
+""""
+Home
+""""
+
+Welcome to the Core Library Documentation!
+
+.. toctree::
+  :caption: Contents
+  :maxdepth: 1
+
+  Core Library <{dev.ccl.doc.corelibrary}/index>
+  Core Skin Reference <{dev.ccl.doc.coreskin}/reference/core-skin-elements-classmodel>
+
+
+Index
+=====
+* :ref:`genindex`
+

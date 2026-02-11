@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DocumentTemplate>
+	<Attribute id="Document:Title" value="Inherited document template title"/>
+	<Attribute id="Document:SubTitle" value="Inherited document template subtitle"/>
+	<Attribute id="Document:Description" value="Inherited document template description"/>
+</DocumentTemplate>

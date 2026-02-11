@@ -164,7 +164,7 @@ bool ApplicationWindow::onKeyUp (const KeyEvent& event)
 {
 	bool result = SuperClass::onKeyUp (event);
 
-	if(!result && !optionKeyDownHandled && isUsingCustomMenuBar ())
+	if(!result && !optionKeyDownHandled && isUsingCustomMenuBar () && isActive ())
 	{
 		// delegate to menu bar control: option key (up) sets focus to menu bar
 		if(event.vKey == VKey::kOption)

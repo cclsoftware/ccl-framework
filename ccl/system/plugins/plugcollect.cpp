@@ -254,18 +254,18 @@ String& PlugInCollection::getSettingsID (String& settingsID, UrlRef url) const
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void PlugInCollection::getModuleTime (DateTime& modifiedTime, Module* module)
+void PlugInCollection::getModuleTime (int64& modifiedTime, Module* module)
 {
 	FileInfo info;
 	System::GetFileSystem ().getFileInfo (info, module->getPath ());
-	modifiedTime = info.modifiedTime;
+	modifiedTime = UnixTime::fromLocal (info.modifiedTime);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool PlugInCollection::restoreModule (StringRef settingsID, const DateTime& moduleTime, Module* module)
+bool PlugInCollection::restoreModule (StringRef settingsID, int64 moduleTime, Module* module)
 {
-	DateTime savedTime;
+	int64 savedTime = 0;
 	if(restoreModuleTime (savedTime, settingsID) && savedTime == moduleTime)
 	{
 		if(restoreModuleInfo (settingsID, module))
@@ -276,20 +276,28 @@ bool PlugInCollection::restoreModule (StringRef settingsID, const DateTime& modu
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void PlugInCollection::storeModuleTime (StringRef settingsID, const DateTime& moduleTime)
+void PlugInCollection::storeModuleTime (StringRef settingsID, int64 moduleTime)
 {
-	getSettings ().getSection (settingsID)->setObject ("modifiedTime", NEW Boxed::DateTime (moduleTime));
+	getSettings ().getSection (settingsID)->getAttributes ().setAttribute ("modifiedTimeUTC", moduleTime);
+
+	// store legacy local time format for compatiblity
+	getSettings ().getSection (settingsID)->setObject ("modifiedTime", NEW Boxed::DateTime (UnixTime::toLocal (moduleTime)));
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool PlugInCollection::restoreModuleTime (DateTime& moduleTime, StringRef settingsID)
+bool PlugInCollection::restoreModuleTime (int64& moduleTime, StringRef settingsID)
 {
-	Boxed::DateTime* time = getSettings ().getSection (settingsID)->getObject<Boxed::DateTime> ("modifiedTime");
-	if(time == nullptr)
-		return false;
-	moduleTime = *time;
-	return true;
+	if(getSettings ().getSection (settingsID)->getAttributes ().getInt64 (moduleTime, "modifiedTimeUTC"))
+		return true;
+
+	// falback to legacy local time format
+	if(auto* time = getSettings ().getSection (settingsID)->getObject<Boxed::DateTime> ("modifiedTime"))
+	{
+		moduleTime = UnixTime::fromLocal (*time);
+		return true;
+	}
+	return false;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -299,7 +307,7 @@ bool PlugInCollection::scanModule (Module* module)
 	String settingsID;
 	getSettingsID (settingsID, module);
 
-	DateTime moduleTime;
+	int64 moduleTime = 0;
 	getModuleTime (moduleTime, module);
 
 	// try to restore module information if not modified...

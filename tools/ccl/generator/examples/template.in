@@ -1,0 +1,114 @@
+//************************************************************************************************
+//
+// This file is part of Crystal Class Library (R)
+// Copyright (c) 2025 CCL Software Licensing GmbH.
+// All Rights Reserved.
+//
+// Licensed for use under either:
+//  1. a Commercial License provided by CCL Software Licensing GmbH, or
+//  2. GNU Affero General Public License v3.0 (AGPLv3).
+// 
+// You must choose and comply with one of the above licensing options.
+// For more information, please visit ccl.dev.
+//
+// Filename    : template.in
+// Description : CCL Generator demo template file
+//
+//************************************************************************************************
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+// C++ Constants
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+{% for const in constants %}
+public static const {{ const.type | cpptype }} {{ const.name }} = {{ const.value | cppvalue }};
+{% endfor %}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+// C++ Grouped Constants
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+{% for group in groups %}
+// GROUP = '{{ group.name }}'
+{% for const in group.constants %}
+public static const {{ const.type | cpptype }} {{ const.name }} = {{ const.value | cppvalue }};
+{% endfor %}
+
+{% endfor %}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+// C++ Constants, Optional Comments
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+{% for const in constants %}
+{% if const.brief %}
+/** {{ const.brief }} */
+public static const {{ const.type | cpptype }} {{ const.name }} = {{ const.value | cppvalue }};
+
+{% else %}
+public static const {{ const.type | cpptype }} {{ const.name }} = {{ const.value | cppvalue }};
+{% endif %}
+{% endfor %}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+// C++ Definitions
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+{% for def in definitions %}
+#define {{ def.name }} {{ def.value | cppvalue }}
+{% endfor %}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+// C++ Enums
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+{% for enum in enums %}
+enum {{ enum.name }}
+{
+{% for enumerator in enum.enumerators %}
+	{{ enumerator.name }} = {{ enumerator.value | cppvalue }},
+{% endfor %}
+}
+{% endfor %}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+// C++ Enums - Constified
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+{% for enum in enums %}
+{% for enumerator in enum.enumerators %}
+export const {{ enum.name }}{{ enumerator.name | capitalize }} = {{ enumerator.name | escapestring }};
+{% endfor %}
+{% endfor %}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+// Java Constants
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+public class ExampleClass
+{
+{% for const in constants %}
+	public static final {{ const.type | javatype }} {{ const.name }} = {{ const.value | javavalue }};
+{% endfor %}
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+// TypeScript Constants
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+{% for const in constants %}
+export const {{ const.name | upper }}: {{ const.type | tstype }} = {{ const.value | tsvalue }};
+{% endfor %}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+// Common String Filters
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+{% for group in groups %}
+{% for def in group.definitions %}
+'{{ def.name }}' -> capitalize -> '{{ def.name | capitalize }}'
+'{{ def.name }}' -> identifier -> '{{ def.name | identifier }}'
+'{{ def.name }}' -> lower -> '{{ def.name | lower }}'
+'{{ def.name }}' -> upper -> '{{ def.name | upper }}'
+{% endfor %}
+{% endfor %}

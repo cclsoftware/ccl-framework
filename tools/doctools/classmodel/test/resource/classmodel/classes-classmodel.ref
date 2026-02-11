@@ -1,0 +1,85 @@
+#########################
+Test Repository Reference
+#########################
+
+******
+Groups
+******
+
+.. _classes-classmodel-docgroup-Test Group:
+
+Test Group (1)
+==============
+
+[:ref:`TestClass <classes-classmodel-class-TestClass>`]
+
+
+*******
+Classes
+*******
+
+.. _classes-classmodel-class-BaseClass:
+
+BaseClass
+=========
+
+No info available.
+
+**Meta**
+
+* Children: [:ref:`TestClass <classes-classmodel-class-TestClass>`]
+
+
+
+.. _classes-classmodel-class-TestClass:
+
+TestClass
+=========
+
+Test Class Brief Doc.
+
+**Description**
+
+Test Class Detailed Doc
+
+**Attributes (2)**
+
+* **member1** (*string*): Brief doc member1. Detailed doc member1.
+* :ref:`member2 <classes-classmodel-enumeration-TestClass.member2>`  (*enum*): Brief doc member2
+
+
+**Meta**
+
+* Parents: [:ref:`BaseClass <classes-classmodel-class-BaseClass>`]
+* Group: [:ref:`Test Group <classes-classmodel-docgroup-Test Group>`]
+
+
+
+*****
+Enums
+*****
+
+.. _classes-classmodel-enumeration-TestClass.member2:
+
+TestClass.member2
+=================
+
+TestClass.member2 Brief Doc
+
+**Description**
+
+TestClass.member2 Detailed Doc
+
+**Enumerators**
+
+* **enumerator1**: Brief doc enumerator1. Detailed doc enumerator1.
+* **enumerator2**: Brief doc enumerator2
+
+
+
+
+
+.. raw:: latex
+
+	\clearpage
+

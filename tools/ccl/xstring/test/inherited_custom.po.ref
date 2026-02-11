@@ -1,0 +1,15 @@
+#: ./document.inherited
+msgctxt "DocumentTemplate"
+msgid "Inherited document template description"
+msgstr ""
+
+#: ./document.inherited
+msgctxt "DocumentTemplate"
+msgid "Inherited document template subtitle"
+msgstr ""
+
+#: ./document.inherited
+msgctxt "DocumentTemplate"
+msgid "Inherited document template title"
+msgstr ""
+

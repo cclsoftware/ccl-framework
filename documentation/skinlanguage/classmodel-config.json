@@ -1,0 +1,18 @@
+{
+	"files": [
+		{
+			"input": "../../classmodels/Visual Styles.classModel",
+			"output": "reference/visual-styles-classmodel",
+			"exclude-list-file": "reference/excludelist-visual-styles.txt",
+			"generate-shortcut-file": 1
+		},
+
+		{
+			"input": "../../classmodels/Skin Elements.classModel",
+			"output": "reference/skin-elements-classmodel",
+			"exclude-list-file": "reference/excludelist-skin-elements.txt",
+			"generate-shortcut-file": 1
+		}
+	]
+}
+

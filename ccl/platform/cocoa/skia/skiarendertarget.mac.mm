@@ -55,7 +55,8 @@ MetalMacWindowRenderTarget::MetalMacWindowRenderTarget (Window& window)
 : MetalWindowRenderTarget (window),
   hostView (nullptr),
   sizeObserver (nil),
-  scaleObserver (nil)
+  scaleObserver (nil),
+  siblingViewCount (0)
 {}
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -137,51 +138,55 @@ void MetalMacWindowRenderTarget::onSize ()
 
 void MetalMacWindowRenderTarget::onRender ()
 {
-	if(!invalidateRegion.getRects ().isEmpty ())
+	// according to Apple documentation, clipping of overlapping sibling views is not handled at all by Cocoa -> so we need to take care of this
+	NSView* parentView = [hostView superview];
+	if([parentView isKindOfClass:[CCL_ISOLATED (ContentView) class]])
 	{
-		// according to Apple documentation, clipping of overlapping sibling views is not handled at all by Cocoa -> so we need to take care of this
-		NSView* parentView = [hostView superview];
-		if([parentView isKindOfClass:[CCL_ISOLATED (ContentView) class]])
+		unsigned long nSiblings = [[parentView subviews] count] - 1;
+		if(nSiblings != siblingViewCount)
 		{
-			unsigned long nSubviews = [[parentView subviews] count];
-			if(unsigned long nSiblings = nSubviews - 1)
-			{
-				// find own view
-				unsigned long ownIndex = 0;
-				for(unsigned long i = 0; i < nSubviews; i++)
-					if([[parentView subviews] objectAtIndex:i] == hostView)
-					{
-						ownIndex = i;
-						break;
-					}
-				
-				if(ownIndex + 1 < nSubviews) // true if siblings lie above own view (have higher index)
-				{
-					SkCanvas* canvas = getCanvas ();
-					canvas->save ();
-					// determine intersections and clip
-					for(unsigned long i = ownIndex + 1; i < nSubviews; i++)
-					{
-						NSView* subView = [[parentView subviews] objectAtIndex:i];
-						NSRect siblingFrame = [subView frame];
-						NSRect intersection = NSIntersectionRect ([hostView frame], siblingFrame);
-						if(!NSIsEmptyRect (intersection))
-						{
-							NSRect clip = NSOffsetRect (intersection, [hostView frame].origin.x, [hostView frame].origin.x);
+			siblingViewCount = nSiblings;
+			invalidateRegion.addRect (Rect (0, 0, window.getWidth (), window.getHeight ()));
+		}
+	}
 
-							SkRect clipRect = SkRect::MakeXYWH (static_cast<float> (clip.origin.x), static_cast<float> (clip.origin.y), static_cast<float> (clip.size.width), static_cast<float> (clip.size.height));
-							SkPaint paint;
-							paint.setStyle (SkPaint::kFill_Style);
-							paint.setBlendMode (SkBlendMode::kClear);
-							canvas->drawRect (clipRect, paint);
-							canvas->clipRect (clipRect, SkClipOp::kDifference);
-						}
-					}
-					MetalWindowRenderTarget::onRender ();
-					canvas->restore ();
-					return;
+	if(!invalidateRegion.getRects ().isEmpty () && siblingViewCount > 0)
+	{
+		unsigned long nSubviews = siblingViewCount + 1;
+		// find own view
+		unsigned long ownIndex = 0;
+		for(unsigned long i = 0; i < nSubviews; i++)
+			if([[parentView subviews] objectAtIndex:i] == hostView)
+			{
+				ownIndex = i;
+				break;
+			}
+
+		if(ownIndex + 1 < nSubviews) // true if siblings lie above own view (have higher index)
+		{
+			SkCanvas* canvas = getCanvas ();
+			canvas->save ();
+			// determine intersections and clip
+			for(unsigned long i = ownIndex + 1; i < nSubviews; i++)
+			{
+				NSView* subView = [[parentView subviews] objectAtIndex:i];
+				NSRect siblingFrame = [subView frame];
+				NSRect intersection = NSIntersectionRect ([hostView frame], siblingFrame);
+				if(!NSIsEmptyRect (intersection) && [subView isOpaque])
+				{
+					NSRect clip = NSOffsetRect (intersection, [hostView frame].origin.x, [hostView frame].origin.x);
+
+					SkRect clipRect = SkRect::MakeXYWH (static_cast<float> (clip.origin.x), static_cast<float> (clip.origin.y), static_cast<float> (clip.size.width), static_cast<float> (clip.size.height));
+					SkPaint paint;
+					paint.setStyle (SkPaint::kFill_Style);
+					paint.setBlendMode (SkBlendMode::kClear);
+					canvas->drawRect (clipRect, paint);
+					canvas->clipRect (clipRect, SkClipOp::kDifference);
 				}
 			}
+			MetalWindowRenderTarget::onRender ();
+			canvas->restore ();
+			return;
 		}
 	}
 	MetalWindowRenderTarget::onRender ();

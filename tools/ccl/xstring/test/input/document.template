@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DocumentTemplate>
+	<Attribute id="Document:Title" value="Document title"/>
+	<Attribute id="Document:SubTitle" value="Document subtitle"/>
+	<Attribute id="Document:Description" value="Document description."/>
+</DocumentTemplate>

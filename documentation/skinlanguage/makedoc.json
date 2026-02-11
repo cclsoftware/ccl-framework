@@ -1,0 +1,15 @@
+{
+	"id": "dev.ccl.doc.skinlanguage",
+	"title": "CCL Skin Definition Language",
+	"build":
+	[
+		{
+			"action": "classmodelrst",
+			"description": "Convert classmodels to RST",
+			"args":
+			[
+				"classmodel-config.json"
+			]
+		}
+	]
+}

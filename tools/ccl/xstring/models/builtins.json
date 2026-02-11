@@ -1,0 +1,278 @@
+{
+	"models":
+	[
+		{
+			"root":
+			{
+				"name": "MenuBar"
+			},
+			"extensions": "xml",
+			"scope":
+			{
+				"kind": "static",
+				"value": "Menu"
+			},
+			"matchers":
+			[
+				{
+					"kind": "element",
+					"name": "Menu",
+					"attribute":
+					[
+						"title",
+						"name"
+					]
+				},
+				{
+					"kind": "element",
+					"name": "MenuItem",
+					"attribute":
+					[
+						"title",
+						"name"
+					]
+				}
+			]
+		},
+		{
+			"root":
+			{
+				"name": "Skin"
+			},
+			"extensions": "xml",
+			"scope":
+			{
+				"kind": "parent",
+				"element":
+				[
+					"Form",
+					"WindowClass",
+					"Perspective"
+				],
+				"attribute": "name",
+				"fallback": "Skin"
+			},
+			"matchers":
+			[
+				{
+					"kind": "attribute",
+					"name": "title"
+				},
+				{
+					"kind": "attribute",
+					"name": "tooltip"
+				},
+				{
+					"kind": "attribute",
+					"name": "placeholder"
+				},
+				{
+					"kind": "attribute",
+					"name": "command.name",
+					"scope":
+					{
+						"kind": "static",
+						"value": "Command"
+					}
+				},
+				{
+					"kind": "attribute",
+					"name": "command.category",
+					"scope":
+					{
+						"kind": "static",
+						"value": "Command"
+					}
+				},
+				{
+					"kind": "attribute",
+					"name": "range",
+					"conditions":
+					[
+						{
+							"kind": "element",
+							"name": "Parameter",
+							"operator": "equal"
+						},
+						{
+							"kind": "attribute",
+							"name": "type",
+							"value": "string",
+							"operator": "equal"
+						}
+					]
+				},
+				{
+					"kind": "attribute",
+					"name": "range",
+					"options": "split",
+					"conditions":
+					[
+						{
+							"kind": "element",
+							"name": "Parameter",
+							"operator": "equal"
+						},
+						{
+							"kind": "attribute",
+							"name": "type",
+							"value": "list",
+							"operator": "equal"
+						}
+					]
+				}
+			]
+		},
+		{
+			"root":
+			{
+				"name": "MetaInformation"
+			},
+			"extensions": "xml",
+			"scope":
+			{
+				"kind": "static",
+				"value": "MetaInfo"
+			},
+			"matchers":
+			[
+				{
+					"kind": "element",
+					"name": "Attribute",
+					"attribute": "value",
+					"conditions":
+					[
+						{
+							"kind": "attribute",
+							"name": "id",
+							"value": "Package:Name",
+							"operator": "equal"
+						}
+					]
+				},
+				{
+					"kind": "element",
+					"name": "Attribute",
+					"attribute": "value",
+					"conditions":
+					[
+						{
+							"kind": "attribute",
+							"name": "id",
+							"value": "Package:Description",
+							"operator": "equal"
+						}
+					]
+				}
+			]
+		},
+		{
+			"root":
+			{
+				"name": "HelpTutorialCollection"
+			},
+			"extensions": "xml",
+			"scope":
+			{
+				"kind": "static",
+				"value": "HelpTutorial"
+			},
+			"matchers":
+			[
+				{
+					"kind": "element",
+					"name": "HelpTutorial",
+					"attribute": "title",
+					"conditions":
+					[
+						{
+							"kind": "attribute",
+							"name": "category",
+							"value": "global",
+							"operator": "equal"
+						}
+					]
+				}
+			]
+		},
+		{
+			"root":
+			{
+				"name": "DocumentTemplate"
+			},
+			"extensions": "template",
+			"scope":
+			{
+				"kind": "static",
+				"value": "DocumentTemplate"
+			},
+			"matchers":
+			[
+				{
+					"kind": "attribute",
+					"name": "value",
+					"conditions":
+					[
+						{
+							"kind": "attribute",
+							"name": "id",
+							"value": "Document:Title",
+							"operator": "equal"
+						}
+					]
+				},
+				{
+					"kind": "attribute",
+					"name": "value",
+					"conditions":
+					[
+						{
+							"kind": "attribute",
+							"name": "id",
+							"value": "Document:SubTitle",
+							"operator": "equal"
+						}
+					]
+				},
+				{
+					"kind": "attribute",
+					"name": "value",
+					"conditions":
+					[
+						{
+							"kind": "attribute",
+							"name": "id",
+							"value": "Document:Description",
+							"operator": "equal"
+						}
+					]
+				}
+			]
+		},
+		{
+			"root":
+			{
+				"name": "resources"
+			},
+			"extensions": "xml",
+			"scope":
+			{
+				"kind": "parent",
+				"element":
+				[
+					"string"
+				],
+				"attribute": "name",
+				"fallback": "Android"
+			},
+			"matchers":
+			[
+				{
+					"kind": "element",
+					"name": "string",
+					"text": true
+				}
+			]
+		}
+	]
+}

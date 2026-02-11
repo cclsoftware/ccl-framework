@@ -103,6 +103,7 @@ void OpenGLESWindowRenderTarget::onSize ()
 	
 	if(eglSurface == nullptr)
 	{
+		applyContentScaleFactor ();
 		applySize ();
 		initialize ();
 	}

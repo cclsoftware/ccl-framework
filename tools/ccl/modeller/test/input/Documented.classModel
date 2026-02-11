@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Model.ClassRepository xmlns:x="https://ccl.dev/xml" name="Test Model">
+	<List x:id="classes">
+		<Model.Class name="TestClass">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text="TestClass Brief"/>
+				<String x:id="detailed" text="TestClass Detailed"/>
+			</Model.Documentation>
+		</Model.Class>
+	</List>
+</Model.ClassRepository>

@@ -1,0 +1,15 @@
+#: ./skinform.xml
+msgctxt "CustomSkin"
+msgid "New..."
+msgstr ""
+
+#: ./skinform.xml
+msgctxt "CustomSkin"
+msgid "TestButton"
+msgstr ""
+
+#: ./skinwindowclass.xml
+msgctxt "CustomSkin"
+msgid "TestWindowClass Title"
+msgstr ""
+

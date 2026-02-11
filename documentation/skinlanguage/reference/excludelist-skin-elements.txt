@@ -1,0 +1,15 @@
+####################
+# Classes
+####################
+
+# Examples:
+# class.ActivityIndicator
+# class.AlignView
+
+####################
+# Enumerations
+####################
+
+# Examples:
+# enumeration.Align.align
+# enumeration.AlignView.options

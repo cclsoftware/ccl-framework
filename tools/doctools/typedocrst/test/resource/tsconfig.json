@@ -1,0 +1,14 @@
+{
+	"compilerOptions":
+	{
+		"noEmit": true,
+		"declaration": true,
+		"removeComments": false,
+		"sourceMap": false,
+		"outFile": "nooutput.d.ts"
+	},
+	"files":
+	[
+		"../../../../../../submodules/cclsoftware/framework/ccl/extras/javascript/ccl_native.d.ts"
+	]
+}

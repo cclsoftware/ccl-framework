@@ -1,0 +1,122 @@
+{
+	"constants":
+	[
+		{
+			"name": "StringConst",
+			"value": "SomeValue",
+			"type": "string",
+			"brief": "A brief description for StringConst"
+		},
+		{
+			"name": "IntConst",
+			"value": "1234",
+			"type": "int",
+			"brief": "A brief description for IntConst"
+		},
+		{
+			"name": "FloatConst",
+			"value": "12.5",
+			"type": "float"
+		},
+		{
+			"name": "DoubleConst",
+			"value": "12.5",
+			"type": "double"
+		},
+		{
+			"name": "BoolConst",
+			"value": "true",
+			"type": "bool"
+		}
+	],
+	"definitions":
+	[
+		{
+			"name": "StringDef",
+			"value": "StringDefinitionValue",
+			"type": "string"
+		},
+		{
+			"name": "NumericalDef",
+			"value": "12.12345",
+			"type": "double"
+		},
+		{
+			"name": "ExpressionDef",
+			"value": "log(2)",
+			"type": "int",
+			"expression": true
+		}
+	],
+	"enums":
+	[
+		{
+			"name": "SomeEnum",
+			"enumerators":
+			[
+				{
+					"name": "first",
+					"value": "0",
+					"type": "int"
+				},
+				{
+					"name": "second",
+					"value": "1<<0",
+					"type": "int",
+					"expression": true
+				}
+			]
+		}
+	],
+	"groups":
+	[
+		{
+			"name": "TestGroup 1",
+			"constants":
+			[
+				{
+					"name": "GroupedStringConst",
+					"value": "SomeValue",
+					"type": "string"
+				},
+				{
+					"name": "GroupedIntConst",
+					"value": "1234",
+					"type": "int"
+				}
+			],
+			"definitions":
+			[
+				{
+					"name": "DemoDef1",
+					"value": "SomeValue",
+					"type": "string"
+				}
+			]
+		},
+		{
+			"name": "TestGroup 2",
+			"constants":
+			[
+				{
+					"name": "GroupedStringConst2",
+					"value": "SomeValue2",
+					"type": "string"
+				},
+				{
+					"name": "GroupedIntConst2",
+					"value": "12345",
+					"type": "int"
+				}
+			],
+			"definitions":
+			[
+				{
+					"name": "DemoDef2",
+					"value": "SomeValue",
+					"type": "string"
+				}
+			]
+		}
+	]
+}

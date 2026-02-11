@@ -75,24 +75,6 @@ CCL_EXPORT ICommandTable& CCL_API System::CCL_ISOLATED (GetCommandTable) ()
 }
 
 //************************************************************************************************
-// UserInterface::TooltipSuspender
-//************************************************************************************************
-
-UserInterface::TooltipSuspender::TooltipSuspender ()
-: wasSuspended (GUI.tooltipSuspended)
-{
-	GUI.tooltipSuspended = true;
-	GUI.hideTooltip ();
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
-UserInterface::TooltipSuspender::~TooltipSuspender ()
-{
-	GUI.tooltipSuspended = wasSuspended;
-}
-
-//************************************************************************************************
 // UserInterface::TimerBlocker
 //************************************************************************************************
 

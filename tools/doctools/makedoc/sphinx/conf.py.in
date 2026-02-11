@@ -1,0 +1,94 @@
+{{ config.warning_hint }}
+from sphinx.highlighting import PygmentsBridge
+from pygments.formatters.latex import LatexFormatter
+
+import os
+import sys
+
+# path to doxyrest
+sys.path.insert(1, os.path.abspath('{{ config.doxyrest_path }}/sphinx'))
+sys.path.insert(1, os.path.abspath('{{ config.cmakedoc_path }}/sphinx'))
+
+# -- Project information -----------------------------------------------------
+project = '{{ config.project_title }}'
+copyright = '{{ vendor.copyright }}'
+author = '{{ vendor.author }}'
+version = '{{ config.build_version }}'
+
+# -- General configuration ---------------------------------------------------
+extensions = [
+    'cmakerole',
+    'doxyrest',
+    'cpplexer'
+]
+
+# set primary programming language
+primary_domain = 'cpp'
+
+# set pygments highlight language
+highlight_language = 'cpp'
+
+templates_path = ['{{ config.sphinx_common_path }}/_templates']
+
+# File/path patterns to include or exclude in the project.
+# Exclude patterns have higher priority than includes.
+include_patterns = ['**']
+exclude_patterns = ['{{ config.exclude_patterns }}']
+
+# -- Options for HTML output -------------------------------------------------
+html_theme = 'sphinx_rtd_theme'
+html_static_path = ['{{ config.sphinx_common_path }}/_static']
+html_title = "{{ config.project_title }}"
+html_logo = "{{ vendor.logo }}"
+html_last_updated_fmt = '%b %d, %Y'
+html_show_sourcelink = False
+html_copy_source = False
+html_show_sphinx = False
+
+# RTD Theme options
+html_theme_options = {
+    'logo_only': True,
+    'style_nav_header_background': '{{ vendor.header }}',
+}
+
+# -- Configuration options for LaTeX output ----------------------------------
+
+# 'extraclassoptions': 'openany,oneside': disable duplex print
+# format, omits blank pages before chapters in PDF output
+
+latex_elements = {
+    'releasename': u'{{ config.build_version }}',
+    'extraclassoptions': 'openany,oneside',
+    'pointsize': r'12pt',
+    'sphinxsetup': 'VerbatimColor={RGB}{255, 255, 242}, TitleColor={RGB}{62, 62, 71}, VerbatimBorderColor={RGB}{161, 161, 161}, verbatimwrapslines=0',
+    'preamble': r'''
+\usepackage{mdframed}
+\renewenvironment{sphinxalltt}{
+\begin{alltt}
+\begin{mdframed}[backgroundcolor=gray!10,rightline=false,leftline=false, topline=false, bottomline=false]
+\scriptsize}
+{\end{mdframed}\end{alltt}}
+'''
+}
+
+# Use different root file better suited for LaTeX / PDF output
+latex_documents = [
+  ('{{ config.latex_index }}', '{{ config.latex_file }}.tex', u'{{ config.project_title }}',
+   u'{{ vendor.author }}', 'manual')
+
+]
+
+# -- Derived configuration classes for LaTeX output --------------------------
+
+class CustomLatexFormatter(LatexFormatter):
+    """
+    Inject footnotesize to have small text in verbatim blocks.
+    """
+
+    def __init__(self, **options):
+        super(CustomLatexFormatter, self).__init__(**options)
+        self.verboptions = r"formatcom=\footnotesize"
+
+
+# Replace the default formatter.
+PygmentsBridge.latex_formatter = CustomLatexFormatter

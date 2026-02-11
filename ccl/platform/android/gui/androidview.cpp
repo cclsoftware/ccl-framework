@@ -47,8 +47,10 @@ END_DEFINE_JNI_CLASS
 
 DEFINE_JNI_CLASS (ViewGroup)
 	DEFINE_JNI_METHOD (addView,  "(Landroid/view/View;)V")
+    DEFINE_JNI_METHOD_NAME (addViewAt, addView, "(Landroid/view/View;I)V")
 	DEFINE_JNI_METHOD (removeView, "(Landroid/view/View;)V")
 	DEFINE_JNI_METHOD (setClipChildren, "(Z)V")
+	DEFINE_JNI_METHOD (indexOfChild, "(Landroid/view/View;)I")
 END_DEFINE_JNI_CLASS
 
 } // namespace Android

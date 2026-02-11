@@ -1,0 +1,65 @@
+#: ./skinform.xml
+msgctxt "TestForm"
+msgid "@cmd.title[]"
+msgstr ""
+
+#: ./skinperspective.xml
+msgctxt "TestPerspective"
+msgid "Align Center"
+msgstr ""
+
+#: ./skinperspective.xml
+msgctxt "TestPerspective"
+msgid "Align Left"
+msgstr ""
+
+#: ./skinperspective.xml
+msgctxt "TestPerspective"
+msgid "Align Right"
+msgstr ""
+
+#: ./skinwindowclass.xml
+msgctxt "Command"
+msgid "Application"
+msgstr ""
+
+#: ./skinform.xml
+msgctxt "TestForm"
+msgid "Button tooltip"
+msgstr ""
+
+#: ./skinform.xml
+msgctxt "TestForm"
+msgid "EditBox placeholder"
+msgstr ""
+
+#: ./skinform.xml
+msgctxt "Command"
+msgid "File"
+msgstr ""
+
+#: ./skinform.xml
+msgctxt "Command"
+msgid "New"
+msgstr ""
+
+#: ./skinform.xml
+msgctxt "TestForm"
+msgid "New..."
+msgstr ""
+
+#: ./skinform.xml
+msgctxt "TestForm"
+msgid "TestButton"
+msgstr ""
+
+#: ./skinwindowclass.xml
+msgctxt "Command"
+msgid "TestWindow"
+msgstr ""
+
+#: ./skinwindowclass.xml
+msgctxt "TestWindowClass"
+msgid "TestWindowClass Title"
+msgstr ""
+

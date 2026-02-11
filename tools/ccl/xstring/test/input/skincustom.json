@@ -1,0 +1,19 @@
+{
+	"root":
+	{
+		"name": "Skin"
+	},
+	"extensions": "xml",
+	"scope":
+	{
+		"kind": "static",
+		"value": "CustomSkin"
+	},
+	"matchers":
+	[
+		{
+			"kind": "attribute",
+			"name": "title"
+		}
+	]
+}

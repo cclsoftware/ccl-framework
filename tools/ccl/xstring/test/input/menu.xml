@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<MenuBar>
+
+	<!-- ********************************************************************************** -->
+	<!-- *** Test menu (Mac) ******************************************************* -->
+	<!-- ********************************************************************************** -->
+
+	<?platform mac?>
+	<Menu name="Test" title="Extra Test Title">
+		<MenuItem category="Help" name="About" title="About $APPNAME"/>
+		<MenuSeparator/>
+		<MenuItem name="Options" title="Preferences" follow="1"/>
+		<MenuItem name="Keyboard Shortcuts" follow="1"/>
+		<MenuPlaceholder name="Languages"/>
+	</Menu>
+	<?platform?>
+
+	<!-- ********************************************************************************** -->
+	<!-- *** Test Menu (Windows) *************************************************** -->
+	<!-- ********************************************************************************** -->
+
+	<?not:platform mac?>
+	<Menu name="Test" title="$APPNAME">
+		<MenuItem name="Installation" title="$APPNAME Installation" follow="1"/>
+		<MenuItem name="Activation" title="$APPNAME Activation" follow="1"/>
+		<MenuItem name="Backup and Restore" follow="1"/>
+		<MenuItem name="Activate Purchased Items" follow="1"/>
+		<MenuItem name="Login" follow="1"/>
+		<MenuSeparator/>
+		<MenuPlaceholder name="Gadgets"/>
+	</Menu>
+	<?platform?>
+
+</MenuBar>

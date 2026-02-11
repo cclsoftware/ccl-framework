@@ -21,7 +21,6 @@
 
 #include "ccl/public/text/cclstring.h"
 #include "ccl/base/collections/objectlist.h"
-#include "ccl/public/base/datetime.h"
 
 namespace CCL {
 
@@ -70,9 +69,9 @@ protected:
 	Settings* blocklist;
 
 	bool scanModule (Module* module);
-	bool restoreModule (StringRef settingsID, const DateTime& moduleTime, Module* module);
-	void storeModuleTime (StringRef settingsID, const DateTime& moduleTime);
-	bool restoreModuleTime (DateTime& moduleTime, StringRef settingsID);
+	bool restoreModule (StringRef settingsID, int64 moduleTime, Module* module);
+	void storeModuleTime (StringRef settingsID, int64 moduleTime);
+	bool restoreModuleTime (int64& moduleTime, StringRef settingsID);
 
 	String& getSettingsID (String& settingsID, UrlRef url) const;
 	String& getSettingsID (String& settingsID, Module* module) const;
@@ -83,7 +82,7 @@ protected:
 	virtual bool isModule (UrlRef url) const;
 	virtual Module* createModule (UrlRef url) const;
 
-	virtual void getModuleTime (DateTime& modifiedTime, Module* module);
+	virtual void getModuleTime (int64& modifiedTime, Module* module);
 	virtual bool restoreModuleInfo (StringRef settingsID, Module* module);
 	virtual bool registerModuleInfo (StringRef settingsID, Module* module);
 	virtual void registerModuleFailed (StringRef settingsID, Module* module);

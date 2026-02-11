@@ -275,6 +275,7 @@ void InputHandler::onKeyEvent (const KeyEvent& event, wl_surface* focus)
 				
 				collectedEvents.append (NEW EventItem (event, surface));
 			}
+			break;
 		}
 	}
 }
@@ -283,6 +284,7 @@ void InputHandler::onKeyEvent (const KeyEvent& event, wl_surface* focus)
 
 void InputHandler::onFocusChanged (wl_surface* previousFocus, wl_surface* focus)
 {
+	stopTimer ();
 	for(Surface* surface : listeners)
 	{
 		if(surface->getWaylandSurface () == previousFocus)

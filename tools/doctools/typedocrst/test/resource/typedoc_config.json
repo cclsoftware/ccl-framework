@@ -1,0 +1,11 @@
+{
+	"name": "CCL Script API",
+	"json": "cclnative.json",
+	"excludeExternals": true,
+	"entryPoints":
+	[
+		"../../../../../../submodules/cclsoftware/framework/ccl/extras/javascript/ccl_native.d.ts"
+	],
+	"excludePrivate": true,
+	"excludeProtected": true
+}

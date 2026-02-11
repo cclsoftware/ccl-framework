@@ -1,0 +1,28 @@
+{
+	"root":
+	{
+		"name": "RootConditionTest",
+		"conditions":
+		[
+			{
+				"kind": "attribute",
+				"name": "localization",
+				"value": "",
+				"operator": "notequal"
+			}
+		]
+	},
+	"extensions": "xml",
+	"scope":
+	{
+		"kind": "static",
+		"value": "RootConditionTestScope"
+	},
+	"matchers":
+	[
+		{
+			"kind": "attribute",
+			"name": "text"
+		}
+	]
+}

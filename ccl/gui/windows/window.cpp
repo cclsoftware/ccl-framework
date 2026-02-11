@@ -619,6 +619,20 @@ void Window::killFocusView (bool permanent)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
+void Window::onViewRemoved (View* view)
+{
+	// check if focus view was removed
+	if(focusView && (view == focusView || view->isChild (focusView, true)))
+		killFocusView ();
+
+	// cancel mouse handler if it works on a removed view
+	View* mouseHandlerView = mouseHandler ? mouseHandler->getView () :  nullptr;
+	if(mouseHandlerView && (view == mouseHandlerView || view->isChild (mouseHandlerView, true)))
+		setMouseHandler (nullptr);
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
 Window* Window::getWindow ()
 {
 	return this;

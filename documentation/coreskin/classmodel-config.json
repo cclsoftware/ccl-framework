@@ -1,0 +1,10 @@
+{
+	"files": [
+		{
+			"input": "../../classmodels/Core Skin Elements.classModel",
+			"output": "reference/core-skin-elements-classmodel",
+			"external-files-path": "reference/",
+			"ref-prefix": "core-skin-elements-classmodel"
+		}
+	]
+}

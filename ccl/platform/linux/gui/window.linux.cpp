@@ -627,7 +627,7 @@ void LinuxWindow::showWindow (bool state)
 		{
 			if(getWaylandSurface () == nullptr)
 				createSurface ();
-			
+
 			windowContext.waylandSurface = getWaylandSurface ();
 			if(windowContext.waylandSurface == nullptr)
 			{
@@ -635,6 +635,9 @@ void LinuxWindow::showWindow (bool state)
 				return;
 			}
 		
+			if(parentWindow)
+				setScaleFactor (parentWindow->getContentScaleFactor ());
+			
 			windowContext.xdgSurface = xdg_wm_base_get_xdg_surface (windowManager, windowContext.waylandSurface);
 			if(windowContext.xdgSurface == nullptr)
 			{

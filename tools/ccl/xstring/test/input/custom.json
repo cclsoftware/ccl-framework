@@ -1,0 +1,70 @@
+{
+	"root":
+	{
+		"name": "TestFormat"
+	},
+	"extensions": "xml",
+	"scope":
+	{
+		"kind": "static",
+		"value": "TestFormat"
+	},
+	"matchers":
+	[
+		{
+			"kind": "element",
+			"name": "GroupItem",
+			"attribute": "text",
+			"scope":
+			{
+				"kind": "parent",
+				"element":
+				[
+					"Group"
+				],
+				"attribute":
+				[
+					"name",
+					"label"
+				]
+			}
+		},
+		{
+			"kind": "element",
+			"text": true,
+			"name": "Random",
+			"attribute":
+			[
+				"text",
+				"name",
+				"label"
+			]
+		},
+		{
+			"kind": "element",
+			"name": "Item",
+			"attribute": "text",
+			"options":
+			[
+				"split"
+			]
+		},
+		{
+			"kind": "attribute",
+			"name": "title",
+			"conditions":
+			[
+				{
+					"kind": "element",
+					"name": "Data",
+					"operator": "equal"
+				}
+			]
+		},
+		{
+			"kind": "attribute",
+			"name": "tooltip",
+			"options": "split"
+		}
+	]
+}

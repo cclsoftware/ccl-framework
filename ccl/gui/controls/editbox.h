@@ -245,7 +245,6 @@ protected:
 	bool canceled;
 	bool isSubmitted;
 	bool inSubmitText;
-	UserInterface::TooltipSuspender tooltipSuspender;
 
 	NativeTextControl (Control& owner, int returnKeyType, int keyboardType);
 };

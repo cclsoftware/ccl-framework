@@ -1,0 +1,29 @@
+{
+	"id": "dev.ccl.doc.cmakeguide",
+	"title": "CMake Guide",
+	"build":
+	[
+		{
+			"action": "cmakedoc",
+			"description": "Generate Cmake commands reference",
+			"args":
+			[
+				"reference.rst",
+				"../../core/cmake/coremacros.cmake",
+				"../../core/cmake/coremacros.android.cmake",
+				"../../core/cmake/coremacros.ios.cmake",
+				"../../core/cmake/coremacros.linux.cmake",
+				"../../core/cmake/coremacros.mac.cmake",
+				"../../core/cmake/coremacros.win.cmake",
+				"../../ccl/cmake/cclgui.ios.cmake",
+				"../../ccl/cmake/cclmacros.cmake",
+				"../../ccl/cmake/cclmacros.linux.cmake",
+				"../../ccl/cmake/cclmacros.mac.cmake",
+				"../../ccl/cmake/cclmacros.win.cmake",
+				"../../ccl/cmake/repomacros.cmake",
+				"../../skins/cmake/skins-config.cmake",
+				"../../translations/cmake/translations-config.cmake"
+			]
+		}
+	]	
+}

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Model.ClassRepository xmlns:x="https://ccl.dev/xml" name="Skin Elements">
+	<List x:id="classes">
+		<Model.Class name="TestElement"/>
+		<Model.Class name="AnotherTestElement"/>
+	</List>
+</Model.ClassRepository>

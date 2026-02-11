@@ -632,6 +632,7 @@ void DialogBuilder::prepareStandardDialog (StandardDialog& dialog, View* view, S
 		dialog.setVisualStyle (theme->getStandardStyle (ThemePainter::kBackgroundRenderer));
 
 	dialog.setFirstFocusView (firstFocus);
+	firstFocus = nullptr; // view will be destroyed when dialog closes, reset for another run
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////

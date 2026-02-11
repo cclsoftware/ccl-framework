@@ -1,0 +1,465 @@
+.. _cmake-reference-topofpage:
+
+#########
+Reference
+#########
+
+******
+Groups
+******
+
+
+Shared (28)
+================================================
+
+[:ref:`ccl_add_app <coremacros.cmake-ccl_add_app-macro>`] [:ref:`ccl_add_core_app <coremacros.cmake-ccl_add_core_app-macro>`] [:ref:`ccl_add_core_library <coremacros.cmake-ccl_add_core_library-macro>`] [:ref:`ccl_add_core_plugin_library <coremacros.cmake-ccl_add_core_plugin_library-macro>`] [:ref:`ccl_add_dependencies <coremacros.cmake-ccl_add_dependencies-macro>`] [:ref:`ccl_add_library <coremacros.cmake-ccl_add_library-macro>`] [:ref:`ccl_add_optional <coremacros.cmake-ccl_add_optional-macro>`] [:ref:`ccl_add_resources <coremacros.cmake-ccl_add_resources-macro>`] [:ref:`ccl_configure_target <coremacros.cmake-ccl_configure_target-macro>`] [:ref:`ccl_evaluate_macros <coremacros.cmake-ccl_evaluate_macros-macro>`] [:ref:`ccl_export_symbols <coremacros.cmake-ccl_export_symbols-macro>`] [:ref:`ccl_find_path <coremacros.cmake-ccl_find_path-macro>`] [:ref:`ccl_find_platform_file <coremacros.cmake-ccl_find_platform_file-macro>`] [:ref:`ccl_get_build_output_directory <coremacros.cmake-ccl_get_build_output_directory-macro>`] [:ref:`ccl_get_library_path <coremacros.cmake-ccl_get_library_path-macro>`] [:ref:`ccl_include_platform_specifics <coremacros.cmake-ccl_include_platform_specifics-macro>`] [:ref:`ccl_link_whole_archive <coremacros.cmake-ccl_link_whole_archive-macro>`] [:ref:`ccl_makebin <coremacros.cmake-ccl_makebin-macro>`] [:ref:`ccl_makebin_export <coremacros.cmake-ccl_makebin_export-macro>`] [:ref:`ccl_print_properties <coremacros.cmake-ccl_print_properties-function>`] [:ref:`ccl_print_target_properties <coremacros.cmake-ccl_print_target_properties-function>`] [:ref:`ccl_print_variables <coremacros.cmake-ccl_print_variables-function>`] [:ref:`ccl_read_version <coremacros.cmake-ccl_read_version-macro>`] [:ref:`ccl_set_debug_arguments <coremacros.cmake-ccl_set_debug_arguments-macro>`] [:ref:`ccl_set_product_name <coremacros.cmake-ccl_set_product_name-macro>`] [:ref:`ccl_set_project_vendor <coremacros.cmake-ccl_set_project_vendor-macro>`] [:ref:`ccl_set_startup_project <coremacros.cmake-ccl_set_startup_project-macro>`] [:ref:`ccl_set_vendor <coremacros.cmake-ccl_set_vendor-macro>`]
+
+
+-----
+
+
+*************************************************
+Functions (3)
+*************************************************
+
+.. _coremacros.cmake-ccl_print_properties-function:
+
+.. py:function:: ccl_print_properties()
+
+	``function`` ``shared`` ``coremacros.cmake``
+
+	Print all properties cmake supports.
+
+> :ref:`back to top <cmake-reference-topofpage>`
+
+
+.. _coremacros.cmake-ccl_print_target_properties-function:
+
+.. py:function:: ccl_print_target_properties(target)
+
+	``function`` ``shared`` ``coremacros.cmake``
+
+	Print all properties that are defined for a target.
+
+	:param string target:  Name of the target to print the properties for.
+
+> :ref:`back to top <cmake-reference-topofpage>`
+
+
+.. _coremacros.cmake-ccl_print_variables-function:
+
+.. py:function:: ccl_print_variables()
+
+	``function`` ``shared`` ``coremacros.cmake``
+
+	Print all variables.
+
+> :ref:`back to top <cmake-reference-topofpage>`
+
+
+
+*************************************************
+Macros (25)
+*************************************************
+
+.. _coremacros.cmake-ccl_add_app-macro:
+
+.. py:function:: ccl_add_app(target, SUBDIR, VENDOR, VERSION_FILE, VERSION_PREFIX, flags)
+
+	``macro`` ``shared`` ``coremacros.cmake``
+
+	Add an application, preconfigured to match vendor guidelines.
+
+	:param string target:  Name of the target to add.
+	:param string SUBDIR:  [optional] Subdirectory to place the build artifact in, e.g. "Plugins".
+	:param string VENDOR:  [optional] Vendor ID, used to determine version information. See ccl_set_vendor.
+	:param filepath VERSION_FILE:  [optional] Path to a version header file.
+	:param string VERSION_PREFIX:  [optional] Prefix used in the version header file, e.g. APP or PLUG.
+	:param flags:  [variadic] Use BUNDLE for applications that contain resources. Use GUI for applications that have an application window, implies BUNDLE.
+
+> :ref:`back to top <cmake-reference-topofpage>`
+
+
+.. _coremacros.cmake-ccl_add_core_app-macro:
+
+.. py:function:: ccl_add_core_app(target, SUBDIR, VENDOR, VERSION_FILE, VERSION_PREFIX, flags)
+
+	``macro`` ``shared`` ``coremacros.cmake``
+
+	Add an application using core, preconfigured to match vendor guidelines.
+
+	:param string target:  Name of the target to add.
+	:param string SUBDIR:  [optional] Subdirectory to place the build artifact in, e.g. "Plugins".
+	:param string VENDOR:  [optional] Vendor ID, used to determine version information. See :cmake:`ccl_set_vendor`.
+	:param filepath VERSION_FILE:  [optional] Path to a version header file.
+	:param string VERSION_PREFIX:  [optional] Prefix used in the version header file, e.g. APP or PLUG.
+	:param flags:  [variadic] Use BUNDLE for applications that contain resources. Use GUI for applications that have an application window, implies BUNDLE.
+
+> :ref:`back to top <cmake-reference-topofpage>`
+
+
+.. _coremacros.cmake-ccl_add_core_library-macro:
+
+.. py:function:: ccl_add_core_library(target, type, SUBDIR, VENDOR, VERSION_FILE, VERSION_PREFIX)
+
+	``macro`` ``shared`` ``coremacros.cmake``
+
+	Add a library using core, preconfigured to match vendor guidelines.
+
+	:param string target:  Name of the target to add.
+	:param string type:  Target type, e.g. STATIC, MODULE, INTERFACE.
+	:param string SUBDIR:  [optional] Subdirectory to place the build artifact in, e.g. "Plugins".
+	:param string VENDOR:  [optional] Vendor ID, used to determine version information. See ccl_set_vendor.
+	:param filepath VERSION_FILE:  [optional] Path to a version header file.
+	:param string VERSION_PREFIX:  [optional] Prefix used in the version header file, e.g. APP or PLUG.
+
+> :ref:`back to top <cmake-reference-topofpage>`
+
+
+.. _coremacros.cmake-ccl_add_core_plugin_library-macro:
+
+.. py:function:: ccl_add_core_plugin_library(target, type)
+
+	``macro`` ``shared`` ``coremacros.cmake``
+
+	Add a plug-in library, preconfigured to match vendor guidelines.
+
+	:param string target:  Name of the target to add.
+
+> :ref:`back to top <cmake-reference-topofpage>`
+
+
+.. _coremacros.cmake-ccl_add_dependencies-macro:
+
+.. py:function:: ccl_add_dependencies(target, args)
+
+	``macro`` ``shared`` ``coremacros.cmake``
+
+	Add dependencies to a target.
+	Unlike CMake's add_dependencies, this macro skips non-existing targets silently.
+
+	:param string target:  Name of the target to add dependencies to.
+	:param args:  [variadic] Dependencies.
+
+> :ref:`back to top <cmake-reference-topofpage>`
+
+
+.. _coremacros.cmake-ccl_add_library-macro:
+
+.. py:function:: ccl_add_library(target, type, SUBDIR, VENDOR, VERSION_FILE, VERSION_PREFIX)
+
+	``macro`` ``shared`` ``coremacros.cmake``
+
+	Add a library, preconfigured to match vendor guidelines.
+
+	:param string target:  Name of the target to add.
+	:param string type:  Target type, e.g. STATIC, MODULE, INTERFACE.
+	:param string SUBDIR:  [optional] Subdirectory to place the build artifact in, e.g. "Plugins".
+	:param string VENDOR:  [optional] Vendor ID, used to determine version information. See ccl_set_vendor.
+	:param filepath VERSION_FILE:  [optional] Path to a version header file.
+	:param string VERSION_PREFIX:  [optional] Prefix used in the version header file, e.g. APP or PLUG.
+
+> :ref:`back to top <cmake-reference-topofpage>`
+
+
+.. _coremacros.cmake-ccl_add_optional-macro:
+
+.. py:function:: ccl_add_optional(target, optionname, description, default, sources)
+
+	``macro`` ``shared`` ``coremacros.cmake``
+
+	Add source files for an optional feature to a target.
+
+	:param string target:  Name of the target to add source files to.
+	:param string optionname:  Name of an option to check.
+	:param string description:  Description of the optional feature.
+	:param bool default:  Default value of the option.
+	:param string sources:  Name of a variable that contains the source files of the feature.
+
+> :ref:`back to top <cmake-reference-topofpage>`
+
+
+.. _coremacros.cmake-ccl_add_resources-macro:
+
+.. py:function:: ccl_add_resources(target, args)
+
+	``macro`` ``shared`` ``coremacros.cmake``
+
+	Add resource files to a target.
+	All resource files are placed in a flat resource directory.
+	You may place all resource files in a subdirectory using an optional `PATH <subdirectory>` argument.
+
+	:param string target:  Name of the target to add resource files to.
+	:param args:  [variadic] Resource files.
+
+> :ref:`back to top <cmake-reference-topofpage>`
+
+
+.. _coremacros.cmake-ccl_configure_target-macro:
+
+.. py:function:: ccl_configure_target(target)
+
+	``macro`` ``shared`` ``coremacros.cmake``
+
+	Preconfigure a target to match vendor guidelines.
+
+	:param string target:  Name of the target to configure.
+
+> :ref:`back to top <cmake-reference-topofpage>`
+
+
+.. _coremacros.cmake-ccl_evaluate_macros-macro:
+
+.. py:function:: ccl_evaluate_macros(file, args)
+
+	``macro`` ``shared`` ``coremacros.cmake``
+
+	Preprocess a header file and read the values of peprocessor definitions.
+
+	:param filepath file:  Source file with preprocessor definitions.
+	:param args:  [variadic] List of pairs <var> <macro>, where <var> is the name of an output variable and <macro> is a macro to evaluate and store into <var>.
+
+> :ref:`back to top <cmake-reference-topofpage>`
+
+
+.. _coremacros.cmake-ccl_export_symbols-macro:
+
+.. py:function:: ccl_export_symbols(target, args)
+
+	``macro`` ``shared`` ``coremacros.cmake``
+
+	Generate an export definition for a target.
+
+	:param string target:  Name of the target to add resource files to.
+	:param args:  [variadic] List of functions to export.
+
+> :ref:`back to top <cmake-reference-topofpage>`
+
+
+.. _coremacros.cmake-ccl_find_path-macro:
+
+.. py:function:: ccl_find_path(var)
+
+	``macro`` ``shared`` ``coremacros.cmake``
+
+	Find a directory containing a named file.
+	This command is equivalent to the built-in find_path CMake provides.
+	The only exception is that it checks for a revision number to make sure that CMake
+	updates paths after a developer moved or renamed a previously cached directoy.
+	Whenever you move or rename a directory which might be used in any calls to ccl_find_path,
+	update the revision number CCL_CMAKE_REVISION_NUMBER at the top of this file
+
+
+> :ref:`back to top <cmake-reference-topofpage>`
+
+
+.. _coremacros.cmake-ccl_find_platform_file-macro:
+
+.. py:function:: ccl_find_platform_file(target)
+
+	``macro`` ``shared`` ``coremacros.cmake``
+
+	Try to find a platform configuration file for a target.
+
+	:param string target:  Name of a target to find a platform-specific configuration file for.
+
+> :ref:`back to top <cmake-reference-topofpage>`
+
+
+.. _coremacros.cmake-ccl_get_build_output_directory-macro:
+
+.. py:function:: ccl_get_build_output_directory(result, subdir)
+
+	``macro`` ``shared`` ``coremacros.cmake``
+
+	Get the default build output directory, optionally appending a subdirectory.
+
+	:param path result:  Output argument, the vendor and platform specific build directory.
+	:param string subdir:  [optional] Additional subdirectory, e.g. "Plugins".
+
+> :ref:`back to top <cmake-reference-topofpage>`
+
+
+.. _coremacros.cmake-ccl_get_library_path-macro:
+
+.. py:function:: ccl_get_library_path(result, name, type, subdir)
+
+	``macro`` ``shared`` ``coremacros.cmake``
+
+	Get the build output path of a library.
+
+	:param path result:  Output argument, vendor and platform specific library build directory.
+	:param string name:  Library name.
+	:param string type:  Build type (import, static, shared).
+	:param string subdir:  [optional] Additional subdirectory, e.g. "Plugins" or an absolute build output directory.
+
+> :ref:`back to top <cmake-reference-topofpage>`
+
+
+.. _coremacros.cmake-ccl_include_platform_specifics-macro:
+
+.. py:function:: ccl_include_platform_specifics(args)
+
+	``macro`` ``shared`` ``coremacros.cmake``
+
+	Include platform specific cmake files for a list of targets.
+	Looks for files in the form of `<target>.<platform>.cmake`.
+
+	:param args:  [variadic] A list of target names.
+
+> :ref:`back to top <cmake-reference-topofpage>`
+
+
+.. _coremacros.cmake-ccl_link_whole_archive-macro:
+
+.. py:function:: ccl_link_whole_archive(target, args)
+
+	``macro`` ``shared`` ``coremacros.cmake``
+
+	Link a library as whole archive, i.e. don't remove any symbols.
+
+	:param string target:  Name of the target to link libraries to.
+	:param args:  [variadic] Libraries to link to <target>.
+
+> :ref:`back to top <cmake-reference-topofpage>`
+
+
+.. _coremacros.cmake-ccl_makebin-macro:
+
+.. py:function:: ccl_makebin(INPUT, OUTPUT, SCRIPT_FILE, PREFIX, BYTE_ARRAY)
+
+	``macro`` ``shared`` ``coremacros.cmake``
+
+	Convert a file to a byte array and write it to a cpp file.
+	Defines two variables <PREFIX>_Ptr and <PREFIX>_Size in the resulting cpp file.
+
+	:param filepath INPUT:  Path to the input file.
+	:param filepath OUTPUT:  [optional] Path to the resulting cpp file.
+	:param filepath SCRIPT_FILE:  [optional] Path to a temporary script file.
+	:param string PREFIX:  Variable name prefix used in the generated cpp file.
+	:param bool BYTE_ARRAY:  Use a byte array instead of a string literal. Using a string literal can speed up linking, but some compilers might have a size limit for string literals.
+
+> :ref:`back to top <cmake-reference-topofpage>`
+
+
+.. _coremacros.cmake-ccl_makebin_export-macro:
+
+.. py:function:: ccl_makebin_export(INPUT, OUTPUT, SCRIPT_FILE, PREFIX, VARIABLE_NAME)
+
+	``macro`` ``shared`` ``coremacros.cmake``
+
+	Convert a file to a byte array and write it to a cpp file.
+	Defines two exported functions <PREFIX>Data and <PREFIX>Size in the resulting cpp file.
+
+	:param filepath INPUT:  Path to the input file.
+	:param filepath OUTPUT:  [optional] Path to the resulting cpp file.
+	:param filepath SCRIPT_FILE:  [optional] Path to a temporary script file.
+	:param string PREFIX:  Function name prefix used in the generated cpp file.
+	:param string VARIABLE_NAME:  Variable name used in the generated cpp file.
+
+> :ref:`back to top <cmake-reference-topofpage>`
+
+
+.. _coremacros.cmake-ccl_read_version-macro:
+
+.. py:function:: ccl_read_version(target, versionfile, prefix, fallback)
+
+	``macro`` ``shared`` ``coremacros.cmake``
+
+	Preprocess a version header file and read version information.
+	Defines the following variables:
+	
+	* <target>_VERSION
+	* <target>_VERSION_MAJOR
+	* <target>_VERSION_MINOR
+	* <target>_VERSION_REVISION
+	* <target>_VERSION_BUILD
+	* <target>_NAME
+	* <target>_COMPANY_NAME
+	* <target>_COPYRIGHT
+	* <target>_WEBSITE
+	* <target>_PACKAGE_DOMAIN
+	* <target>_PACKAGE_ID
+	* <target>_MIME_TYPE
+	
+
+	:param string target:  Prefix of the result variables.
+	:param filepath versionfile:  Version header file of the target.
+	:param string prefix:  [optional] Prefix of preprocessor definitions in the header file, e.g. APP.
+	:param string fallback:  [optional] Fallback prefix for fields that are not defined in the version header, e.g. CCL.
+
+> :ref:`back to top <cmake-reference-topofpage>`
+
+
+.. _coremacros.cmake-ccl_set_debug_arguments-macro:
+
+.. py:function:: ccl_set_debug_arguments(target, args)
+
+	``macro`` ``shared`` ``coremacros.cmake``
+
+	Set default debug arguments.
+
+	:param string target:  Name of the target to set debug arguments for.
+	:param args:  [variadic] Debug arguments.
+
+> :ref:`back to top <cmake-reference-topofpage>`
+
+
+.. _coremacros.cmake-ccl_set_product_name-macro:
+
+.. py:function:: ccl_set_product_name(target, name)
+
+	``macro`` ``shared`` ``coremacros.cmake``
+
+	Set the product name for a target.
+	Depending on the platform, this name might be used to set the name of the resulting binary or the IDE project name.
+
+	:param string target:  Name of the target.
+	:param string name:  Product name.
+
+> :ref:`back to top <cmake-reference-topofpage>`
+
+
+.. _coremacros.cmake-ccl_set_project_vendor-macro:
+
+.. py:function:: ccl_set_project_vendor(vendor)
+
+	``macro`` ``shared`` ``coremacros.cmake``
+
+	Set the project vendor.
+	The project vendor name is used to set installation directories, the code signing identity and other properties that apply to all targets in the project.
+	Most applications won't call this macro directly. Instead, set the variable `PROJECT_VENDOR` to your vendor identity right after the first `project` call.
+
+	:param string vendor: Vendor name.
+
+> :ref:`back to top <cmake-reference-topofpage>`
+
+
+.. _coremacros.cmake-ccl_set_startup_project-macro:
+
+.. py:function:: ccl_set_startup_project(project)
+
+	``macro`` ``shared`` ``coremacros.cmake``
+
+	Set the default target, i.e. the startup project for the current solution / workspace.
+
+	:param string project:  Name of the target that should be the startup project.
+
+> :ref:`back to top <cmake-reference-topofpage>`
+
+
+.. _coremacros.cmake-ccl_set_vendor-macro:
+
+.. py:function:: ccl_set_vendor(target, vendor)
+
+	``macro`` ``shared`` ``coremacros.cmake``
+
+	Set the target vendor.
+	The vendor name is used to find signing certificates as well as copyright information.
+
+	:param string target:  Name of the target.
+	:param string vendor: Vendor name.
+
+> :ref:`back to top <cmake-reference-topofpage>`
+
+

@@ -1,0 +1,3 @@
+.. Test Repository Reference
+
+.. |xml.object.test object| replace:: <:ref:`Test Object <objects-classmodel-object-Test Object>`>

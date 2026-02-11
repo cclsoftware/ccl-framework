@@ -50,7 +50,9 @@ END_DECLARE_JNI_CLASS (AndroidView)
 
 DECLARE_JNI_CLASS (ViewGroup, "android/view/ViewGroup")
 	DECLARE_JNI_METHOD (void, addView, jobject)
+    DECLARE_JNI_METHOD (void, addViewAt, jobject, int)
 	DECLARE_JNI_METHOD (void, removeView, jobject)
+    DECLARE_JNI_METHOD (int, indexOfChild, jobject)
 	DECLARE_JNI_METHOD (void, setClipChildren, bool)
 END_DECLARE_JNI_CLASS (ViewGroup)
 

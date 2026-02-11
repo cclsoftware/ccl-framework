@@ -1,0 +1,49 @@
+{
+	"languages":
+	[
+		{
+			"id": "cpp",
+			"boolType": "bool",
+			"intType": "int",
+			"bigIntType": "int64",
+			"floatType": "float",
+			"doubleType": "double",
+			"stringType": "String",
+			"boolValueTrue": "true",
+			"boolValueFalse": "false"
+		},
+		{
+			"id": "java",
+			"boolType": "boolean",
+			"intType": "int",
+			"bigIntType": "long",
+			"floatType": "float",
+			"doubleType": "double",
+			"stringType": "String",
+			"boolValueTrue": "true",
+			"boolValueFalse": "false"
+		},
+		{
+			"id": "js",
+			"boolType": "boolean",
+			"intType": "number",
+			"bigIntType": "bigint",
+			"floatType": "number",
+			"doubleType": "number",
+			"stringType": "string",
+			"boolValueTrue": "true",
+			"boolValueFalse": "false"
+		},
+		{
+			"id": "ts",
+			"boolType": "boolean",
+			"intType": "number",
+			"bigIntType": "bigint",
+			"floatType": "number",
+			"doubleType": "number",
+			"stringType": "string",
+			"boolValueTrue": "true",
+			"boolValueFalse": "false"
+		}
+	]
+}

@@ -1,0 +1,8 @@
+{
+	"inherit": "DocumentTemplate",
+	"extensions":
+	[
+		"inherited",
+		"template"
+	]
+}

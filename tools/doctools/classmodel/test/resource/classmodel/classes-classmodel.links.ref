@@ -1,0 +1,6 @@
+.. Test Repository Reference
+
+.. |xml.docgroup.test group| replace:: <:ref:`Test Group <classes-classmodel-docgroup-Test Group>`>
+.. |xml.class.baseclass| replace:: <:ref:`BaseClass <classes-classmodel-class-BaseClass>`>
+.. |xml.class.testclass| replace:: <:ref:`TestClass <classes-classmodel-class-TestClass>`>
+.. |xml.enumeration.testclass.member2| replace:: <:ref:`TestClass.member2 <classes-classmodel-enumeration-TestClass.member2>`>

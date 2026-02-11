@@ -1,0 +1,50 @@
+#: ./menu.xml
+msgctxt "Menu"
+msgid "$APPNAME"
+msgstr ""
+
+#: ./menu.xml
+msgctxt "Menu"
+msgid "$APPNAME Activation"
+msgstr ""
+
+#: ./menu.xml
+msgctxt "Menu"
+msgid "$APPNAME Installation"
+msgstr ""
+
+#: ./menu.xml
+msgctxt "Menu"
+msgid "About $APPNAME"
+msgstr ""
+
+#: ./menu.xml
+msgctxt "Menu"
+msgid "Activate Purchased Items"
+msgstr ""
+
+#: ./menu.xml
+msgctxt "Menu"
+msgid "Backup and Restore"
+msgstr ""
+
+#: ./menu.xml
+msgctxt "Menu"
+msgid "Extra Test Title"
+msgstr ""
+
+#: ./menu.xml
+msgctxt "Menu"
+msgid "Keyboard Shortcuts"
+msgstr ""
+
+#: ./menu.xml
+msgctxt "Menu"
+msgid "Login"
+msgstr ""
+
+#: ./menu.xml
+msgctxt "Menu"
+msgid "Preferences"
+msgstr ""
+

@@ -64,6 +64,8 @@ public:
 	void CCL_API setUpdateNeeded (RectRef rect) override;
 	tresult CCL_API addSublayer (IGraphicsLayer* layer) override;
 	tresult CCL_API removeSublayer (IGraphicsLayer* layer) override;
+	tresult CCL_API placeAbove (IGraphicsLayer* layer, IGraphicsLayer* sibling) override;
+	tresult CCL_API placeBelow (IGraphicsLayer* layer, IGraphicsLayer* sibling) override;
 	tresult CCL_API addAnimation (StringID propertyId, const IAnimation* animation) override;
 	tresult CCL_API removeAnimation (StringID propertyId) override;
 	tbool CCL_API getPresentationProperty (Variant& value, StringID propertyId) const override;
@@ -88,6 +90,8 @@ protected:
 	SharedPtr<IUnknown> content;
 	Rect size;
 	float contentScaleFactor;
+
+    tresult moveLayerView (IGraphicsLayer* layer, IGraphicsLayer* sibling, bool above);
 
 	#if USE_LAYER_DIRTY_REGION
 	Core::RectList dirtyRegion;

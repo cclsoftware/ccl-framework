@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.0//EN" "http://www.w3.org/TR/2001/PR-SVG-20010719/DTD/svg10.dtd">
+<svg width="53cm" height="53cm" viewBox="-220 -156 1058 1042" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <g>
+    <rect style="fill: #ffffff" x="79.3778" y="63.99" width="140.9" height="28"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="79.3778" y="63.99" width="140.9" height="28"/>
+    <text font-size="16" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:oblique;font-weight:normal" x="149.828" y="82.99">IContainer</text>
+    <rect style="fill: #ffffff" x="79.3778" y="91.99" width="140.9" height="20"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="79.3778" y="91.99" width="140.9" height="20"/>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="82.3778" y="105.99">+createIterator()</text>
+  </g>
+  <g>
+    <rect style="fill: #ffffff" x="90.1202" y="-138.452" width="117.15" height="28"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="90.1202" y="-138.452" width="117.15" height="28"/>
+    <text font-size="16" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:oblique;font-weight:normal" x="148.695" y="-119.452">IUnknownList</text>
+    <rect style="fill: #ffffff" x="90.1202" y="-110.452" width="117.15" height="116"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="90.1202" y="-110.452" width="117.15" height="116"/>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="93.1202" y="-96.4518">+isEmpty()</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="93.1202" y="-80.4518">+getFirst()</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="93.1202" y="-64.4518">+getLast()</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="93.1202" y="-48.4518">+contains()</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="93.1202" y="-32.4518">+add()</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="93.1202" y="-16.4518">+remove()</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="93.1202" y="-0.4518">+removeAll()</text>
+  </g>
+  <g>
+    <polyline style="fill: none; fill-opacity:0; stroke-width: 2; stroke-dasharray: 8; stroke: #000000" points="149.828,44.7478 149.828,26.7705 148.695,26.7705 148.695,6.55711 "/>
+    <polygon style="fill: #ffffff" points="141.828,44.7478 149.828,60.7478 157.828,44.7478 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="141.828,44.7478 149.828,60.7478 157.828,44.7478 "/>
+  </g>
+  <g>
+    <rect style="fill: #ffffff" x="284.478" y="73.4382" width="89" height="28"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="284.478" y="73.4382" width="89" height="28"/>
+    <text font-size="16" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:oblique;font-weight:normal" x="328.978" y="92.4382">IUnknown</text>
+  </g>
+  <g>
+    <rect style="fill: #add8e6" x="83.5058" y="160.267" width="133.2" height="28"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="83.5058" y="160.267" width="133.2" height="28"/>
+    <text font-size="16" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:oblique;font-weight:normal" x="150.106" y="179.267">Container</text>
+    <rect style="fill: #add8e6" x="83.5058" y="188.267" width="133.2" height="276"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="83.5058" y="188.267" width="133.2" height="276"/>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="86.5058" y="202.267">+objectCleanup()</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="86.5058" y="218.267">+newIterator()</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="86.5058" y="234.267">+count()</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="86.5058" y="250.267">+isEmpty()</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="86.5058" y="266.267">+at()</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="86.5058" y="282.267">+index()</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="86.5058" y="298.267">+add()</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="86.5058" y="314.267">+remove()</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="86.5058" y="330.267">+removeAll()</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="86.5058" y="346.267">+findEqual()</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="86.5058" y="362.267">+addSorted()</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="86.5058" y="378.267">+contains()</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="86.5058" y="394.267">+find()</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="86.5058" y="410.267">+add()</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="86.5058" y="426.267">+addOnce()</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="86.5058" y="442.267">+load()</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="86.5058" y="458.267">+save()</text>
+  </g>
+  <g>
+    <polyline style="fill: none; fill-opacity:0; stroke-width: 2; stroke-dasharray: 8; stroke: #000000" points="149.828,131.232 149.828,144.127 150.106,144.127 150.106,159.257 "/>
+    <polygon style="fill: #ffffff" points="157.828,131.232 149.828,115.232 141.828,131.232 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="157.828,131.232 149.828,115.232 141.828,131.232 "/>
+  </g>
+  <g>
+    <polyline style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="246.458,87.99 259.379,87.99 259.379,87.4382 283.472,87.4382 "/>
+    <polygon style="fill: #ffffff" points="221.287,87.99 235.287,83.19 249.287,87.99 235.287,92.79 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="221.287,87.99 235.287,83.19 249.287,87.99 235.287,92.79 "/>
+    <text font-size="12.7998" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="261.379" y="84.7141"></text>
+    <text font-size="12.7998" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="253.287" y="84.99"></text>
+    <text font-size="12.7998" style="fill: #000000;text-anchor:end;font-family:monospace;font-style:normal;font-weight:normal" x="279.472" y="84.4382"></text>
+  </g>
+  <g>
+    <rect style="fill: #ffffff" x="160.902" y="757.85" width="164" height="28"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="160.902" y="757.85" width="164" height="28"/>
+    <text font-size="16" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:700" x="242.902" y="776.85">ArrayBox</text>
+    <rect style="fill: #ffffff" x="160.902" y="785.85" width="164" height="20"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="160.902" y="785.85" width="164" height="20"/>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="163.902" y="799.85">#items: IArrayObject</text>
+    <rect style="fill: #ffffff" x="160.902" y="805.85" width="164" height="20"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="160.902" y="805.85" width="164" height="20"/>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="163.902" y="819.85">+convert()</text>
+  </g>
+  <g>
+    <polyline style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="150.106,483.512 150.106,619.059 242.902,619.059 242.902,756.841 "/>
+    <polygon style="fill: #ffffff" points="158.106,483.512 150.106,467.512 142.106,483.512 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="158.106,483.512 150.106,467.512 142.106,483.512 "/>
+  </g>
+  <g>
+    <rect style="fill: #ffffff" x="477.038" y="649.208" width="119.2" height="28"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="477.038" y="649.208" width="119.2" height="28"/>
+    <text font-size="16" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:700" x="536.638" y="668.208">LinkableList</text>
+    <rect style="fill: #ffffff" x="477.038" y="677.208" width="119.2" height="8"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="477.038" y="677.208" width="119.2" height="8"/>
+    <rect style="fill: #ffffff" x="477.038" y="685.208" width="119.2" height="20"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="477.038" y="685.208" width="119.2" height="20"/>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="480.038" y="699.208">+convert()</text>
+  </g>
+  <g>
+    <polyline style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="150.106,483.512 150.106,564.738 536.638,564.738 536.638,648.201 "/>
+    <polygon style="fill: #ffffff" points="158.106,483.512 150.106,467.512 142.106,483.512 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="158.106,483.512 150.106,467.512 142.106,483.512 "/>
+  </g>
+  <g>
+    <polyline style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="737.126,483.539 737.126,564.762 536.638,564.762 536.638,648.204 "/>
+    <polygon style="fill: #ffffff" points="745.126,483.539 737.126,467.539 729.126,483.539 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="745.126,483.539 737.126,467.539 729.126,483.539 "/>
+  </g>
+  <g>
+    <rect style="fill: #c7f685" x="469.048" y="298.5" width="102.9" height="28"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="469.048" y="298.5" width="102.9" height="28"/>
+    <text font-size="16" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:700" x="520.498" y="317.5">LinkedList</text>
+    <rect style="fill: #c7f685" x="525.948" y="284.5" width="54" height="20"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke-dasharray: 6; stroke: #000000" x="525.948" y="284.5" width="54" height="20"/>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="531.948" y="298.5">T:</text>
+  </g>
+  <g>
+    <polyline style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="599.088,312.5 620.664,312.5 620.664,312.316 644.37,312.316 "/>
+    <polygon style="fill: #ffffff" points="599.088,304.5 583.088,312.5 599.088,320.5 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="599.088,304.5 583.088,312.5 599.088,320.5 "/>
+  </g>
+  <g>
+    <rect style="fill: #c7f685" x="645.376" y="160.315" width="183.5" height="28"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="645.376" y="160.315" width="183.5" height="28"/>
+    <text font-size="16" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:700" x="737.126" y="179.315">IntrusiveLinkedList</text>
+    <rect style="fill: #c7f685" x="645.376" y="188.315" width="183.5" height="276"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="645.376" y="188.315" width="183.5" height="276"/>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="648.376" y="202.315">+append()</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="648.376" y="218.315">+prepend()</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="648.376" y="234.315">+insertBefore()</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="648.376" y="250.315">+insertAfter()</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="648.376" y="266.315">+remove()</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="648.376" y="282.315">+removeAll()</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="648.376" y="298.315">+removeFirst()</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="648.376" y="314.315">+removeLast()</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="648.376" y="330.315">+isEmpty()</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="648.376" y="346.315">+isMultiple()</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="648.376" y="362.315">+count()</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="648.376" y="378.315">+at()</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="648.376" y="394.315">+insertAt()</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="648.376" y="410.315">+getFirst()</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="648.376" y="426.315">+getLast()</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="648.376" y="442.315">+addSorted()</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="648.376" y="458.315">+swapContent()</text>
+    <rect style="fill: #c7f685" x="782.876" y="146.315" width="54" height="20"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke-dasharray: 6; stroke: #000000" x="782.876" y="146.315" width="54" height="20"/>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="788.876" y="160.315">T:</text>
+  </g>
+  <g>
+    <rect style="fill: #add8e6" x="285.708" y="298.254" width="101.4" height="28"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="285.708" y="298.254" width="101.4" height="28"/>
+    <text font-size="16" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:700" x="336.408" y="317.254">ObjectList</text>
+  </g>
+  <g>
+    <polyline style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="235.95,312.267 259.208,312.267 259.208,312.254 284.702,312.254 "/>
+    <polygon style="fill: #ffffff" points="235.95,304.267 219.95,312.267 235.95,320.267 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="235.95,304.267 219.95,312.267 235.95,320.267 "/>
+  </g>
+  <g>
+    <polyline style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="449.821,312.5 419.582,312.5 419.582,312.254 388.118,312.254 "/>
+    <polygon style="fill: #ffffff" points="449.821,320.5 465.821,312.5 449.821,304.5 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="449.821,320.5 465.821,312.5 449.821,304.5 "/>
+  </g>
+  <g>
+    <rect style="fill: #c7f685" x="465.574" y="397.264" width="110.1" height="28"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="465.574" y="397.264" width="110.1" height="28"/>
+    <text font-size="16" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:700" x="520.624" y="416.264">Stack</text>
+    <rect style="fill: #c7f685" x="465.574" y="425.264" width="110.1" height="68"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="465.574" y="425.264" width="110.1" height="68"/>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="468.574" y="439.264">+push()</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="468.574" y="455.264">+pushBehind()</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="468.574" y="471.264">+pop()</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="468.574" y="487.264">+peek()</text>
+    <rect style="fill: #c7f685" x="529.674" y="383.264" width="54" height="20"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke-dasharray: 6; stroke: #000000" x="529.674" y="383.264" width="54" height="20"/>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="535.674" y="397.264">T:</text>
+  </g>
+  <g>
+    <polyline style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="520.498,345.743 520.498,362.882 520.624,362.882 520.624,382.256 "/>
+    <polygon style="fill: #ffffff" points="528.498,345.743 520.498,329.743 512.498,345.743 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="528.498,345.743 520.498,329.743 512.498,345.743 "/>
+  </g>
+  <g>
+    <rect style="fill: #add8e6" x="277.49" y="399.236" width="118.65" height="28"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="277.49" y="399.236" width="118.65" height="28"/>
+    <text font-size="16" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:700" x="336.815" y="418.236">ObjectStack</text>
+    <rect style="fill: #add8e6" x="277.49" y="427.236" width="118.65" height="52"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="277.49" y="427.236" width="118.65" height="52"/>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="280.49" y="441.236">+push()</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="280.49" y="457.236">+pop()</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="280.49" y="473.236">+peek()</text>
+  </g>
+  <g>
+    <polyline style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="336.408,345.497 336.408,370.746 336.815,370.746 336.815,398.231 "/>
+    <polygon style="fill: #ffffff" points="344.408,345.497 336.408,329.497 328.408,345.497 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="344.408,345.497 336.408,329.497 328.408,345.497 "/>
+  </g>
+  <g>
+    <rect style="fill: #add8e6" x="-62.7512" y="756.268" width="140.9" height="28"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="-62.7512" y="756.268" width="140.9" height="28"/>
+    <text font-size="16" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:700" x="7.6988" y="775.268">ObjectArray</text>
+    <rect style="fill: #add8e6" x="-62.7512" y="784.268" width="140.9" height="100"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="-62.7512" y="784.268" width="140.9" height="100"/>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-59.7512" y="798.268">+sort()</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-59.7512" y="814.268">+addSorted()</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-59.7512" y="830.268">+search()</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-59.7512" y="846.268">+searchIndex()</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-59.7512" y="862.268">+insertAt()</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-59.7512" y="878.268">+getInsertIndex()</text>
+  </g>
+  <g>
+    <polyline style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="150.106,483.512 150.106,618.268 7.6988,618.268 7.6988,755.26 "/>
+    <polygon style="fill: #ffffff" points="158.106,483.512 150.106,467.512 142.106,483.512 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="158.106,483.512 150.106,467.512 142.106,483.512 "/>
+  </g>
+  <g>
+    <rect style="fill: #c7f685" x="-172.239" y="548.884" width="117.8" height="28"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="-172.239" y="548.884" width="117.8" height="28"/>
+    <text font-size="16" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:700" x="-113.339" y="567.884">Vector</text>
+    <rect style="fill: #c7f685" x="-172.239" y="576.884" width="117.8" height="68"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="-172.239" y="576.884" width="117.8" height="68"/>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-169.239" y="590.884">+copyVector()</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-169.239" y="606.884">+resize()</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-169.239" y="622.884">+setDelta()</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-169.239" y="638.884">+getCapacity()</text>
+    <rect style="fill: #c7f685" x="-100.439" y="534.884" width="54" height="20"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke-dasharray: 6; stroke: #000000" x="-100.439" y="534.884" width="54" height="20"/>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-94.4388" y="548.884">T:</text>
+  </g>
+  <g>
+    <polyline style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="-113.339,664.126 -113.339,708.575 7.6988,708.575 7.6988,755.26 "/>
+    <polygon style="fill: #ffffff" points="-105.339,664.126 -113.339,648.126 -121.339,664.126 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="-105.339,664.126 -113.339,648.126 -121.339,664.126 "/>
+  </g>
+  <g>
+    <rect style="fill: #c7f685" x="-176.481" y="164.052" width="127.2" height="28"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="-176.481" y="164.052" width="127.2" height="28"/>
+    <text font-size="16" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:oblique;font-weight:normal" x="-112.881" y="183.052">MutableVector</text>
+    <rect style="fill: #c7f685" x="-176.481" y="192.052" width="127.2" height="292"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="-176.481" y="192.052" width="127.2" height="292"/>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-173.481" y="206.052">+zeroFill()</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-173.481" y="222.052">+fill()</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-173.481" y="238.052">+add()</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-173.481" y="254.052">+adOnce()</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-173.481" y="270.052">+addAll()</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-173.481" y="286.052">+addAllOnce()</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-173.481" y="302.052">+remove()</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-173.481" y="318.052">+removeAt()</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-173.481" y="334.052">+removeFirst()</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-173.481" y="350.052">+removeLast()</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-173.481" y="366.052">+insertAt()</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-173.481" y="382.052">+removeAll()</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-173.481" y="398.052">+setCount()</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-173.481" y="414.052">+empty()</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-173.481" y="430.052">+sort()</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-173.481" y="446.052">+reverse()</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-173.481" y="462.052">+addSorted()</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-173.481" y="478.052">+swap()</text>
+    <rect style="fill: #c7f685" x="-95.2814" y="134.052" width="108.1" height="36"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke-dasharray: 6; stroke: #000000" x="-95.2814" y="134.052" width="108.1" height="36"/>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-89.2814" y="148.052">T:</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-89.2814" y="164.052">ResizePolicy:</text>
+  </g>
+  <g>
+    <polyline style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="-112.881,503.298 -112.881,517.469 -113.339,517.469 -113.339,533.876 "/>
+    <polygon style="fill: #ffffff" points="-104.881,503.298 -112.881,487.298 -120.881,503.298 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="-104.881,503.298 -112.881,487.298 -120.881,503.298 "/>
+  </g>
+  <g>
+    <rect style="fill: #c7f685" x="-180.468" y="-140.784" width="133.2" height="28"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="-180.468" y="-140.784" width="133.2" height="28"/>
+    <text font-size="16" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:700" x="-113.868" y="-121.784">ConstVector</text>
+    <rect style="fill: #c7f685" x="-180.468" y="-112.784" width="133.2" height="20"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="-180.468" y="-112.784" width="133.2" height="20"/>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-177.468" y="-98.7844">#items: T*</text>
+    <rect style="fill: #c7f685" x="-180.468" y="-92.7844" width="133.2" height="196"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="-180.468" y="-92.7844" width="133.2" height="196"/>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-177.468" y="-78.7844">+isEmpty()</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-177.468" y="-62.7844">+count()</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-177.468" y="-46.7844">+isValidIndex()</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-177.468" y="-30.7844">+at()</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-177.468" y="-14.7844">+first()</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-177.468" y="1.2156">+last()</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-177.468" y="17.2156">+isEqual()</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-177.468" y="33.2156">+index()</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-177.468" y="49.2156">+contains()</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-177.468" y="65.2156">+containsAnyOf()</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-177.468" y="81.2156">+search()</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-177.468" y="97.2156">+getItems()</text>
+    <rect style="fill: #c7f685" x="-93.268" y="-154.784" width="54" height="20"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke-dasharray: 6; stroke: #000000" x="-93.268" y="-154.784" width="54" height="20"/>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-87.268" y="-140.784">T:</text>
+  </g>
+  <g>
+    <polyline style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="-199.712,-18.7844 -218.476,-18.7844 -218.476,324.052 -177.489,324.052 "/>
+    <polygon style="fill: #ffffff" points="-199.712,-10.7844 -183.712,-18.7844 -199.712,-26.7844 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="-199.712,-10.7844 -183.712,-18.7844 -199.712,-26.7844 "/>
+  </g>
+  <g>
+    <rect style="fill: #ffffff" x="456.9" y="-79.9548" width="126.5" height="28"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="456.9" y="-79.9548" width="126.5" height="28"/>
+    <text font-size="16" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:700" x="520.15" y="-60.9548">UnknownList</text>
+  </g>
+  <g>
+    <polyline style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="226.514,-66.4518 340.085,-66.4518 340.085,-65.9548 455.892,-65.9548 "/>
+    <polygon style="fill: #ffffff" points="226.514,-74.4518 210.514,-66.4518 226.514,-58.4518 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="226.514,-74.4518 210.514,-66.4518 226.514,-58.4518 "/>
+  </g>
+  <g>
+    <polyline style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="520.15,-25.7759 520.15,123.273 520.498,123.273 520.498,283.493 "/>
+    <polygon style="fill: #ffffff" points="520.15,-50.9475 524.95,-36.9475 520.15,-22.9475 515.35,-36.9475 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="520.15,-50.9475 524.95,-36.9475 520.15,-22.9475 515.35,-36.9475 "/>
+    <text font-size="12.7998" style="fill: #000000;text-anchor:middle;font-family:monospace;font-style:normal;font-weight:normal" x="520.324" y="120.273"></text>
+    <text font-size="12.7998" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="531.15" y="-38.9475"></text>
+    <text font-size="12.7998" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="524.498" y="279.493"></text>
+  </g>
+</svg>

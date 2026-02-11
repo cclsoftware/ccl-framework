@@ -1,0 +1,230 @@
+#: ./menu.xml
+msgctxt "Menu"
+msgid "$APPNAME"
+msgstr ""
+
+#: ./menu.xml
+msgctxt "Menu"
+msgid "$APPNAME Activation"
+msgstr ""
+
+#: ./menu.xml
+msgctxt "Menu"
+msgid "$APPNAME Installation"
+msgstr ""
+
+#: ./skinform.xml
+msgctxt "TestForm"
+msgid "@cmd.title[]"
+msgstr ""
+
+#: ./menu.xml
+msgctxt "Menu"
+msgid "About $APPNAME"
+msgstr ""
+
+#: ./menu.xml
+msgctxt "Menu"
+msgid "Activate Purchased Items"
+msgstr ""
+
+#: ./skinperspective.xml
+msgctxt "TestPerspective"
+msgid "Align Center"
+msgstr ""
+
+#: ./skinperspective.xml
+msgctxt "TestPerspective"
+msgid "Align Left"
+msgstr ""
+
+#: ./skinperspective.xml
+msgctxt "TestPerspective"
+msgid "Align Right"
+msgstr ""
+
+#: ./androidresources.xml
+msgctxt "app_name"
+msgid "App Name Test String"
+msgstr ""
+
+#: ./skinwindowclass.xml
+msgctxt "Command"
+msgid "Application"
+msgstr ""
+
+#: ./menu.xml
+msgctxt "Menu"
+msgid "Backup and Restore"
+msgstr ""
+
+#: ./skinform.xml
+msgctxt "TestForm"
+msgid "Button tooltip"
+msgstr ""
+
+#: ./custom.xml
+msgctxt "TestFormat"
+msgid "Data title"
+msgstr ""
+
+#: ./document.template
+msgctxt "DocumentTemplate"
+msgid "Document description."
+msgstr ""
+
+#: ./document.template
+msgctxt "DocumentTemplate"
+msgid "Document subtitle"
+msgstr ""
+
+#: ./document.template
+msgctxt "DocumentTemplate"
+msgid "Document title"
+msgstr ""
+
+#: ./skinform.xml
+msgctxt "TestForm"
+msgid "EditBox placeholder"
+msgstr ""
+
+#: ./menu.xml
+msgctxt "Menu"
+msgid "Extra Test Title"
+msgstr ""
+
+#: ./skinform.xml
+msgctxt "Command"
+msgid "File"
+msgstr ""
+
+#: ./source.cpp
+msgctxt "Test strings"
+msgid "First string"
+msgstr ""
+
+#: ./tutorials.xml
+msgctxt "HelpTutorial"
+msgid "Global tutorial title"
+msgstr ""
+
+#: ./custom.xml
+msgctxt "TestGroupName"
+msgid "Group item text"
+msgstr ""
+
+#: ./custom.xml
+msgctxt "TestGroupLabel"
+msgid "Group item text 2"
+msgstr ""
+
+#: ./custom.xml
+msgctxt "TestFormat"
+msgid "Item text 1"
+msgstr ""
+
+#: ./custom.xml
+msgctxt "TestFormat"
+msgid "Item text 2"
+msgstr ""
+
+#: ./menu.xml
+msgctxt "Menu"
+msgid "Keyboard Shortcuts"
+msgstr ""
+
+#: ./menu.xml
+msgctxt "Menu"
+msgid "Login"
+msgstr ""
+
+#: ./skinform.xml
+msgctxt "Command"
+msgid "New"
+msgstr ""
+
+#: ./skinform.xml
+msgctxt "TestForm"
+msgid "New..."
+msgstr ""
+
+#: ./menu.xml
+msgctxt "Menu"
+msgid "Preferences"
+msgstr ""
+
+#: ./custom.xml
+msgctxt "TestFormat"
+msgid "Random element text"
+msgstr ""
+
+#: ./custom.xml
+msgctxt "TestFormat"
+msgid "Random label"
+msgstr ""
+
+#: ./custom.xml
+msgctxt "TestFormat"
+msgid "Random name"
+msgstr ""
+
+#: ./custom.xml
+msgctxt "TestFormat"
+msgid "Random text"
+msgstr ""
+
+#: ./translation.js
+msgctxt "Script strings"
+msgid "Script test string 1."
+msgstr ""
+
+#: ./translation.js
+msgctxt "Script strings"
+msgid "Script test string 2."
+msgstr ""
+
+#: ./source.cpp
+msgctxt "Test strings"
+msgid "Second string"
+msgstr ""
+
+#: ./metainfo.xml
+msgctxt "MetaInfo"
+msgid "Test package"
+msgstr ""
+
+#: ./metainfo.xml
+msgctxt "MetaInfo"
+msgid "Test package description"
+msgstr ""
+
+#: ./skinform.xml
+msgctxt "TestForm"
+msgid "TestButton"
+msgstr ""
+
+#: ./skinwindowclass.xml
+msgctxt "Command"
+msgid "TestWindow"
+msgstr ""
+
+#: ./skinwindowclass.xml
+msgctxt "TestWindowClass"
+msgid "TestWindowClass Title"
+msgstr ""
+
+#: ./source.cpp
+msgctxt "Test strings"
+msgid "Third string"
+msgstr ""
+
+#: ./custom.xml
+msgctxt "TestFormat"
+msgid "Tooltip 1"
+msgstr ""
+
+#: ./custom.xml
+msgctxt "TestFormat"
+msgid "Tooltip 2"
+msgstr ""
+

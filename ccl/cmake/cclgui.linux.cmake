@@ -1,6 +1,6 @@
 
 if (CCL_ENABLE_VULKAN)
-	if (Vulkan_LIBRARIES AND glslc_executable AND spirv_cross_executable)
+	if (Vulkan_LIBRARIES AND "${Vulkan_VERSION}" VERSION_GREATER_EQUAL "1.3.230" AND glslc_executable AND spirv_cross_executable)
 		ccl_find_path (vulkan_enum_include_directory NAMES vulkan/vk_enum_string_helper.h HINTS /usr/include)
 		if (vulkan_enum_include_directory)
 			ccl_list_append_once (cclgui_graphics_includes ${vulkan_enum_include_directory})

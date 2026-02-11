@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Skin>
+	<WindowClasses>
+		<WindowClass name="TestWindowClass"
+			title="TestWindowClass Title"
+			command.category="Application" command.name="TestWindow"
+		/>
+	</WindowClasses>
+</Skin>

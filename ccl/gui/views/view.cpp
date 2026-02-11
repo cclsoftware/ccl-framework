@@ -404,11 +404,8 @@ bool View::removeView (View* view)
 
 	invalidate (view->getSize ());
 
-	// check if focus view was removed...
-	Window* w = getWindow ();
-	View* currentFocus = w ? w->getFocusView () : nullptr;
-	if(currentFocus && (view == currentFocus || view->isChild (currentFocus, true)))
-		w->killFocusView ();
+	if(Window* window = getWindow ())
+		window->onViewRemoved (view);
 
 	onViewsChanged ();
 	return true;

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TestFormat>
+
+	<!-- General test: scope defaults to 'TestFormat' for any exported string. -->
+
+	<!-- Test: scope is picked from parent <Group> name attribute. -->
+	<Group name="TestGroupName">
+		<GroupItem text="Group item text">Ignored Text</GroupItem>
+	</Group>
+
+	<!-- Test: scope is picked from parent <Group> name attribute with fallback -->
+	<Group label="TestGroupLabel">
+		<GroupItem text="Group item text 2"/>
+	</Group>
+
+	<!-- Test: export <Item> text, split option for element matcher. -->
+	<Item text="Item text 1, Item text 2"/>
+
+	<!-- Test: export <Random> element text. -->
+	<Random>Random element text</Random>
+
+	<!-- Test: export <Random> text attribute. -->
+	<Random text="Random text"/>
+
+	<!-- Test fallback: export name if text is missing. -->
+	<Random name="Random name"/>
+
+	<!-- Test fallback: export label if both text and name are missing. -->
+	<Random label="Random label"/>
+
+	<!-- Test: export <Data> title attribute. -->
+	<Data title="Data title"/>
+
+	<!-- Test: do not export <Info> title attribute. -->
+	<Info title="Info title"/>
+
+	<!-- Test: export any 'tooltip'  attribute, split option for attribute matcher. -->
+	<Info tooltip="Tooltip 1, Tooltip 2"/>
+</TestFormat>

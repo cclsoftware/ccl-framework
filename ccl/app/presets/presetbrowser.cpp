@@ -644,8 +644,12 @@ void CCL_API PresetBrowser::notify (ISubject* subject, MessageRef msg)
 
 tbool CCL_API PresetBrowser::mouseWheelOnSource (const MouseWheelEvent& event, IView* source)
 {
-	selectNextPreset (event.delta < 0 ? +1 : -1, false);
-	return true;
+	if(event.isVertical ())
+	{
+		selectNextPreset (event.delta < 0 ? +1 : -1, false);
+		return true;
+	}
+	return false;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -836,16 +840,28 @@ tbool CCL_API PresetBrowser::PresetFilter::matches (IUnknown* object) const
 {
 	if(unknown_cast<PresetContainerNode> (object) != nullptr)
 		return true;
-	
-	auto* presetNode = unknown_cast<PresetNode> (object);
-	if(presetNode == nullptr)
+
+	auto matchesPresetNode = [&] (IUnknown* object)
+	{
+		if(auto* presetNode = unknown_cast<PresetNode> (object))
+			if(IPreset* preset = presetNode->getPreset ())
+				return matches (*preset);
+
 		return false;
+	};
+
+	if(auto* folderNode = unknown_cast<SortFolderNode> (object))
+	{
+		// folder node should be visible if it contains any visible preset node
+		AutoPtr<IRecognizer> recognizer (Recognizer::create ([&] (IUnknown* obj)
+		{
+			return matchesPresetNode (obj);
+		}));
+
+		return folderNode->findNode (recognizer) != nullptr;
+	}
 	
-	IPreset* preset = presetNode->getPreset ();
-	if(preset == nullptr)
-		return false;
-	
-	return matches (*preset);
+	return matchesPresetNode (object);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////

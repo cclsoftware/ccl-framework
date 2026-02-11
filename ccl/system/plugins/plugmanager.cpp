@@ -1505,12 +1505,12 @@ tresult CCL_API PlugInManager::restoreFile (UrlRef url, ICodeResourceLoader* loa
 
 	String settingsID;
 	getSettingsID (settingsID, module);
-	DateTime moduleTime;
+	int64 moduleTime = 0;
 	getModuleTime (moduleTime, module);
 
 	if(modules.contains (*module))
 	{
-		DateTime savedTime;
+		int64 savedTime = 0;
 		if(restoreModuleTime (savedTime, settingsID) && savedTime == moduleTime)
 			return kResultAlreadyExists;
 	}
@@ -1744,10 +1744,12 @@ tresult CCL_API PlugInManager::getLastModifiedTime (DateTime& lastModified, UrlR
 	String settingsID;
 	getSettingsID (settingsID, url);
 
-	if(!restoreModuleTime (lastModified, settingsID))
+	int64 unixTime = 0;
+	if(!restoreModuleTime (unixTime, settingsID))
 		return kResultFailed;
-	if(lastModified == DateTime ())
+	if(unixTime <= 0) // e.g. -1 when before 1970 (could be 1900 from DateTime default constructor)
 		return kResultFailed;
+	lastModified = UnixTime::toLocal (unixTime);
 	return kResultOk;
 }
 
@@ -1924,6 +1926,16 @@ Settings& PlugInManager::getSettings ()
 		settings->isAutoSaveEnabled (true);
 		settings->enableSignals (true);
 		settings->restore ();
+
+		// make sure all legacy local times are converted to UTC unix time
+		AutoPtr<Iterator> iterator (settings->getSections ());
+		for(auto section : iterate_as<Settings::Section> (*iterator))
+		{
+			int64 utcTime = 0;
+			if(!section->getAttributes ().getInt64 (utcTime, "modifiedTimeUTC"))
+				if(auto* localTime = section->getObject<Boxed::DateTime> ("modifiedTime"))
+					section->getAttributes ().setAttribute ("modifiedTimeUTC", UnixTime::fromLocal (*localTime));
+		}
 	}
 	return *settings;
 }
@@ -2027,7 +2039,7 @@ Module* PlugInManager::createModule (UrlRef url) const
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void PlugInManager::getModuleTime (DateTime& modifiedTime, Module* _module)
+void PlugInManager::getModuleTime (int64& modifiedTime, Module* _module)
 {
 	CodeModule* module = (CodeModule*)_module;
 
@@ -2035,9 +2047,7 @@ void PlugInManager::getModuleTime (DateTime& modifiedTime, Module* _module)
 	if(module->getType () == CodeResourceType::kScript)
 		if(module->getPath ().isFolder ())
 		{
-			DateTime now;
-			System::GetSystem ().getLocalTime (now);
-			modifiedTime = now;
+			modifiedTime = UnixTime::getTime ();
 			return;
 		}
 

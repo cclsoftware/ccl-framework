@@ -1,0 +1,2088 @@
+#######################
+Visual Styles Reference
+#######################
+
+*******
+Classes
+*******
+
+.. _visual-styles-classmodel-class-BasicStyle:
+
+BasicStyle
+==========
+
+Basic visual style attributes inherited by all other styles.
+
+**Attributes (9)**
+
+* **backcolor** (*color*): backgound color
+* **background** (*image*): background image
+* **forecolor** (*color*): color used for foreground elements
+* **hilitecolor** (*color*): color used for a hilite state
+* **strokewidth** (*metric*): width in pixels used when lines are drawn
+* **textalign** (*enum*): alignment of text
+* **textcolor** (*color*): color used for drawing text
+* **textfont** (*string*): font used for drawing text
+* **textoptions** (*enum*): additional options for drawing text. Supported option: "wordbreak" (for multiline text).
+
+
+**Meta**
+
+* Children: [:ref:`BorderStyle <visual-styles-classmodel-class-BorderStyle>`] [:ref:`ButtonStyle <visual-styles-classmodel-class-ButtonStyle>`] [:ref:`ComboBoxStyle <visual-styles-classmodel-class-ComboBoxStyle>`] [:ref:`DialogGroupStyle <visual-styles-classmodel-class-DialogGroupStyle>`] [:ref:`DividerStyle <visual-styles-classmodel-class-DividerStyle>`] [:ref:`DropBoxStyle <visual-styles-classmodel-class-DropBoxStyle>`] [:ref:`HeaderViewStyle <visual-styles-classmodel-class-HeaderViewStyle>`] [:ref:`ImageViewStyle <visual-styles-classmodel-class-ImageViewStyle>`] [:ref:`ItemViewStyle <visual-styles-classmodel-class-ItemViewStyle>`] [:ref:`KnobStyle <visual-styles-classmodel-class-KnobStyle>`] [:ref:`LabelStyle <visual-styles-classmodel-class-LabelStyle>`] [:ref:`ListViewStyle <visual-styles-classmodel-class-ListViewStyle>`] [:ref:`MenuBarControlStyle <visual-styles-classmodel-class-MenuBarControlStyle>`] [:ref:`MenuControlStyle <visual-styles-classmodel-class-MenuControlStyle>`] [:ref:`PageControlStyle <visual-styles-classmodel-class-PageControlStyle>`] [:ref:`PopupSelectorStyle <visual-styles-classmodel-class-PopupSelectorStyle>`] [:ref:`ProgressBarStyle <visual-styles-classmodel-class-ProgressBarStyle>`] [:ref:`RangeSliderStyle <visual-styles-classmodel-class-RangeSliderStyle>`] [:ref:`SceneView3DStyle <visual-styles-classmodel-class-SceneView3DStyle>`] [:ref:`ScrollBarStyle <visual-styles-classmodel-class-ScrollBarStyle>`] [:ref:`ScrollButtonStyle <visual-styles-classmodel-class-ScrollButtonStyle>`] [:ref:`ScrollPickerStyle <visual-styles-classmodel-class-ScrollPickerStyle>`] [:ref:`ScrollViewStyle <visual-styles-classmodel-class-ScrollViewStyle>`] [:ref:`SegmentBox <visual-styles-classmodel-class-SegmentBox>`] [:ref:`SelectBoxStyle <visual-styles-classmodel-class-SelectBoxStyle>`] [:ref:`SliderStyle <visual-styles-classmodel-class-SliderStyle>`] [:ref:`TabViewStyle <visual-styles-classmodel-class-TabViewStyle>`] [:ref:`TextBoxStyle <visual-styles-classmodel-class-TextBoxStyle>`] [:ref:`ToolButtonStyle <visual-styles-classmodel-class-ToolButtonStyle>`] [:ref:`TriVectorPadStyle <visual-styles-classmodel-class-TriVectorPadStyle>`] [:ref:`UpDownButtonStyle <visual-styles-classmodel-class-UpDownButtonStyle>`] [:ref:`ValueBarStyle <visual-styles-classmodel-class-ValueBarStyle>`] [:ref:`VectorPadStyle <visual-styles-classmodel-class-VectorPadStyle>`] [:ref:`WindowBackgroundStyle <visual-styles-classmodel-class-WindowBackgroundStyle>`]
+
+
+
+.. _visual-styles-classmodel-class-BorderStyle:
+
+BorderStyle
+===========
+
+Draws either the "background" image if availble, or the "backcolor".
+
+See also: [:ref:`Border <skin-elements-classmodel-class-Border>`] 
+
+**Attributes (10)**
+
+* **border.background** (*image*): a "border.background" image can be used, with the default "background" image is its fallback
+
+
+Inherited from [:ref:`BasicStyle <visual-styles-classmodel-class-BasicStyle>`]
+
+* **backcolor** (*color*): backgound color
+* **background** (*image*): background image
+* **forecolor** (*color*): color used for foreground elements
+* **hilitecolor** (*color*): color used for a hilite state
+* **strokewidth** (*metric*): width in pixels used when lines are drawn
+* **textalign** (*enum*): alignment of text
+* **textcolor** (*color*): color used for drawing text
+* **textfont** (*string*): font used for drawing text
+* **textoptions** (*enum*): additional options for drawing text. Supported option: "wordbreak" (for multiline text).
+
+
+**Meta**
+
+* Parents: [:ref:`BasicStyle <visual-styles-classmodel-class-BasicStyle>`]
+
+
+
+.. _visual-styles-classmodel-class-ButtonStyle:
+
+ButtonStyle
+===========
+
+A button draws a background and some content.
+
+**Description**
+
+The background is not drawn when the option "transparent" is set.
+The background can be an image "background" (or "left" or "right" when the correspending option is set).
+
+A frame of the image is chosen depending on the mouse state and parameter value.
+Supported frame names are "normal[On]", "pressed[On]", "mouseover[On]", "disabled[On]", "focus[On]".
+
+When an image is used, an additonal background color "backcolor.on" or "backcolor.off" can be drawn underneath the button image.
+When no image is specified, a rectangular frame in color "forecolor" can be drawn with option "border".
+For the content, a padding can be specified. The content can be an "icon", "title" or both.
+
+See also: [:ref:`Button <skin-elements-classmodel-class-Button>`] 
+
+**Attributes (60)**
+
+* **animation.filmstrip** (*image*): an animation filmstrip could be used to show intermediate button states - the visualstyle is responisble to define the appropriate animiation triggers for the phase property
+* **backcolor.off** (*color*): background color drawn underneath button image when button is switched off (even when a colorParam is used)
+* **backcolor.on** (*color*): background color drawn underneath button image when button is switched on (overwritten by opaque colorParam color)
+* **backcolor.radius** (*metric*): radius for backcolor / forcolor
+* **backcolor.transparent** (*color*): background color drawn underneath button image when button is switched off (when colorParam color is transparent)
+* **buttonMinHeight** (*metric*): use minimal button height
+* **buttonMinWidth** (*metric*): use minimal button width
+* **colorize.icon** (*metric*): set to use "iconcolor" / "iconcolor.on" to colorize the icon (checkmark of CheckBox is always colorized!)
+* **fill.icon** (*metric*): scalable icons (shapes/svgs) are resized to fill out the button size (aspectratio is kept) value: ]0-1]
+* **icon** (*image*): fallback when no icon at the button is defined
+* **iconcolor** (*color*): "iconcolor" is used when "colorize.icon" is set ("iconcolor" is CheckBox's "checkmark" color)
+* **iconcolor.alphablend** (*color*): the non-transparent "colorname" color will be alphablended with this color (using "color.alphablend" as fallback) and used as iconcolor
+* **iconcolor.bright** (*color*): "iconcolor.bright" is used when "colorize.icon" is set and the current colorparam luminance is above the "textcolor.threshold"
+* **iconcolor.brightOn** (*color*): "iconcolor.brightOn" is used when "colorize.icon" is set, the parameter is on and the current colorparam luminance is above the "textcolor.threshold"
+* **iconcolor.disabled** (*color*): "iconcolor.disabled" is used when button is disabled
+* **iconcolor.mouseover** (*color*): "iconcolor.mouseover" is used when "colorize.icon" is set
+* **iconcolor.mouseoverOn** (*color*): "iconcolor.mouseoverOn" is used when "colorize.icon" is set
+* **iconcolor.on** (*color*): "iconcolor.on" is used when "colorize.icon" is set and button is switched on
+* **iconcolor.pressed** (*color*): "iconcolor.pressed" is used when "colorize.icon" is set
+* **iconcolor.pressedOn** (*color*): "iconcolor.pressedOn" is used when "colorize.icon" is set
+* **iconcolor.transparent** (*color*): "iconcolor.transparent" is used when "colorize.icon" is set and the current color from colorparam is transparent
+* **iconcolor.transparentOn** (*color*): "iconcolor.transparentOn" is used when "colorize.icon" is set, the parameter is on and the current color from colorparam is transparent
+* **left** (*image*): used instead of "background" image when button has option "left"
+* **lightadapt.icon** (*metric*): set to use "iconcolor" / "iconcolor.on" to modify the icon and adapt the luminance of dark/light pixels to the iconcolor
+* **middle** (*image*): used instead of "background" image when button has option "middle"
+* **padding** (*metric*): padding for icon & title, used if one of the paddings for left, top, right, bottom is not specified
+* **padding.bottom** (*metric*): bottom padding for title and/or icon
+* **padding.left** (*metric*): left padding for title and/or icon
+* **padding.right** (*metric*): right padding for title and/or icon
+* **padding.top** (*metric*): top padding for title and/or icon
+* **right** (*image*): used instead of "background" image when button has option "right"
+* **scaletext.maxfont** (*metric*): explicit maximal fontsize when scaletext option is set
+* **scaletext.minfont** (*metric*): explicit minimal fontsize when scaletext option is set
+* **single** (*image*): used instead of "background" image when button has option "left" and "right"
+* **spacing.icon** (*metric*): customizable space between icon and the text (default is 3 points)
+* **text.width** (*metric*): truncate title to fit into this width
+* **textcolor.alphablend** (*color*): the non-transparent "colorname" color will be alphablended with this color (using "color.alphablend" as fallback) and used as textcolor
+* **textcolor.bright** (*color*): "textcolor.bright" is used when "colorize.icon" is set and the current luminance of the "colorname" color is below the "textcolor.threshold"
+* **textcolor.brightOn** (*color*): "textcolor.brightOn" is used when "colorize.icon" is set, the parameter is on and the current colorparam luminance is above the "textcolor.threshold"
+* **textcolor.disabled** (*color*): text color used (instead of "textcolor") when button is disabled
+* **textcolor.mouseover** (*color*): "textcolor.mouseover" used (instead of "textcolor") when mouse is over button
+* **textcolor.mouseoverOn** (*color*): "textcolor.mouseoverOn" used (instead of "textcolor.on") when mouse is over button
+* **textcolor.on** (*color*): "textcolor.on" is used (instead of "textcolor") when button is switched on
+* **textcolor.phaseOn** (*color*): text color used (instead of "textcolor") when phase is on
+* **textcolor.pressed** (*color*): "textcolor.pressed" used (instead of "textcolor.on") when button is pressed and off
+* **textcolor.pressedOn** (*color*): "textcolor.pressedOn" used (instead of "textcolor.pressed") when button is pressed and on
+* **textcolor.threshold** (*metric*): "textcolor.bright" is used instead of "textcolor" if the luminance threshold for the current "colorname" color is below this value - default is 0. 35.
+* **textcolor.transparent** (*color*): "textcolor.transparent" is used when "colorize.icon" is set and the current color from colorparam is transparent
+* **textcolor.transparentOn** (*color*): "textcolor.transparent" is used when "colorize.icon" is set, the parameter is on and the current color from colorparam is transparent
+* **textshiftdown** (*metric*): the text baseline will be offsetted by one pixel if the button is on
+* **useButtonMinSize** (*metric*): use minimal button size (uses theme size as default)
+
+
+Inherited from [:ref:`BasicStyle <visual-styles-classmodel-class-BasicStyle>`]
+
+* **backcolor** (*color*): backgound color
+* **background** (*image*): background image
+* **forecolor** (*color*): color used for foreground elements
+* **hilitecolor** (*color*): color used for a hilite state
+* **strokewidth** (*metric*): width in pixels used when lines are drawn
+* **textalign** (*enum*): alignment of text
+* **textcolor** (*color*): textcolor for the button title
+* **textfont** (*string*): font used for drawing text
+* **textoptions** (*enum*): additional options for drawing text. Supported option: "wordbreak" (for multiline text).
+
+
+**Meta**
+
+* Parents: [:ref:`BasicStyle <visual-styles-classmodel-class-BasicStyle>`]
+* Children: [:ref:`CheckBoxStyle <visual-styles-classmodel-class-CheckBoxStyle>`]
+
+
+
+.. _visual-styles-classmodel-class-CheckBoxStyle:
+
+CheckBoxStyle
+=============
+
+Draws an image that shows the parameter state (typically a checkmark) and an additional title besides the image.
+
+See also: [:ref:`CheckBox <skin-elements-classmodel-class-CheckBox>`] 
+
+**Attributes (63)**
+
+* **buttonstyle** (*metric*): if this is set ("1"), the control is drawn like a button
+* **checkboxrightside** (*metric*): if this is set ("1"), the checkbox is drawn algined to the right side of the view rect
+* **mixedicon** (*image*): fallback when no mixedicon at the checkbox is defined
+
+
+Inherited from [:ref:`ButtonStyle <visual-styles-classmodel-class-ButtonStyle>`]
+
+* **animation.filmstrip** (*image*): an animation filmstrip could be used to show intermediate button states - the visualstyle is responisble to define the appropriate animiation triggers for the phase property
+* **backcolor.off** (*color*): background color drawn underneath button image when button is switched off (even when a colorParam is used)
+* **backcolor.on** (*color*): background color drawn underneath button image when button is switched on (overwritten by opaque colorParam color)
+* **backcolor.radius** (*metric*): radius for backcolor / forcolor
+* **backcolor.transparent** (*color*): background color drawn underneath button image when button is switched off (when colorParam color is transparent)
+* **buttonMinHeight** (*metric*): use minimal button height
+* **buttonMinWidth** (*metric*): use minimal button width
+* **colorize.icon** (*metric*): set to use "iconcolor" / "iconcolor.on" to colorize the icon (checkmark of CheckBox is always colorized!)
+* **fill.icon** (*metric*): scalable icons (shapes/svgs) are resized to fill out the button size (aspectratio is kept) value: ]0-1]
+* **icon** (*image*): fallback when no icon at the button is defined
+* **iconcolor** (*color*): "iconcolor" is used when "colorize.icon" is set ("iconcolor" is CheckBox's "checkmark" color)
+* **iconcolor.alphablend** (*color*): the non-transparent "colorname" color will be alphablended with this color (using "color.alphablend" as fallback) and used as iconcolor
+* **iconcolor.bright** (*color*): "iconcolor.bright" is used when "colorize.icon" is set and the current colorparam luminance is above the "textcolor.threshold"
+* **iconcolor.brightOn** (*color*): "iconcolor.brightOn" is used when "colorize.icon" is set, the parameter is on and the current colorparam luminance is above the "textcolor.threshold"
+* **iconcolor.disabled** (*color*): "iconcolor.disabled" is used when button is disabled
+* **iconcolor.mouseover** (*color*): "iconcolor.mouseover" is used when "colorize.icon" is set
+* **iconcolor.mouseoverOn** (*color*): "iconcolor.mouseoverOn" is used when "colorize.icon" is set
+* **iconcolor.on** (*color*): "iconcolor.on" is used when "colorize.icon" is set and button is switched on
+* **iconcolor.pressed** (*color*): "iconcolor.pressed" is used when "colorize.icon" is set
+* **iconcolor.pressedOn** (*color*): "iconcolor.pressedOn" is used when "colorize.icon" is set
+* **iconcolor.transparent** (*color*): "iconcolor.transparent" is used when "colorize.icon" is set and the current color from colorparam is transparent
+* **iconcolor.transparentOn** (*color*): "iconcolor.transparentOn" is used when "colorize.icon" is set, the parameter is on and the current color from colorparam is transparent
+* **left** (*image*): used instead of "background" image when button has option "left"
+* **lightadapt.icon** (*metric*): set to use "iconcolor" / "iconcolor.on" to modify the icon and adapt the luminance of dark/light pixels to the iconcolor
+* **middle** (*image*): used instead of "background" image when button has option "middle"
+* **padding** (*metric*): padding for icon & title, used if one of the paddings for left, top, right, bottom is not specified
+* **padding.bottom** (*metric*): bottom padding for title and/or icon
+* **padding.left** (*metric*): left padding for title and/or icon
+* **padding.right** (*metric*): right padding for title and/or icon
+* **padding.top** (*metric*): top padding for title and/or icon
+* **right** (*image*): used instead of "background" image when button has option "right"
+* **scaletext.maxfont** (*metric*): explicit maximal fontsize when scaletext option is set
+* **scaletext.minfont** (*metric*): explicit minimal fontsize when scaletext option is set
+* **single** (*image*): used instead of "background" image when button has option "left" and "right"
+* **spacing.icon** (*metric*): customizable space between icon and the text (default is 3 points)
+* **text.width** (*metric*): truncate title to fit into this width
+* **textcolor.alphablend** (*color*): the non-transparent "colorname" color will be alphablended with this color (using "color.alphablend" as fallback) and used as textcolor
+* **textcolor.bright** (*color*): "textcolor.bright" is used when "colorize.icon" is set and the current luminance of the "colorname" color is below the "textcolor.threshold"
+* **textcolor.brightOn** (*color*): "textcolor.brightOn" is used when "colorize.icon" is set, the parameter is on and the current colorparam luminance is above the "textcolor.threshold"
+* **textcolor.disabled** (*color*): text color used (instead of "textcolor") when button is disabled
+* **textcolor.mouseover** (*color*): "textcolor.mouseover" used (instead of "textcolor") when mouse is over button
+* **textcolor.mouseoverOn** (*color*): "textcolor.mouseoverOn" used (instead of "textcolor.on") when mouse is over button
+* **textcolor.on** (*color*): "textcolor.on" is used (instead of "textcolor") when button is switched on
+* **textcolor.phaseOn** (*color*): text color used (instead of "textcolor") when phase is on
+* **textcolor.pressed** (*color*): "textcolor.pressed" used (instead of "textcolor.on") when button is pressed and off
+* **textcolor.pressedOn** (*color*): "textcolor.pressedOn" used (instead of "textcolor.pressed") when button is pressed and on
+* **textcolor.threshold** (*metric*): "textcolor.bright" is used instead of "textcolor" if the luminance threshold for the current "colorname" color is below this value - default is 0. 35.
+* **textcolor.transparent** (*color*): "textcolor.transparent" is used when "colorize.icon" is set and the current color from colorparam is transparent
+* **textcolor.transparentOn** (*color*): "textcolor.transparent" is used when "colorize.icon" is set, the parameter is on and the current color from colorparam is transparent
+* **textshiftdown** (*metric*): the text baseline will be offsetted by one pixel if the button is on
+* **useButtonMinSize** (*metric*): use minimal button size (uses theme size as default)
+
+
+Inherited from [:ref:`BasicStyle <visual-styles-classmodel-class-BasicStyle>`]
+
+* **backcolor** (*color*): backgound color
+* **background** (*image*): background image
+* **forecolor** (*color*): color used for foreground elements
+* **hilitecolor** (*color*): color used for a hilite state
+* **strokewidth** (*metric*): width in pixels used when lines are drawn
+* **textalign** (*enum*): alignment of text
+* **textcolor** (*color*): textcolor for the button title
+* **textfont** (*string*): font used for drawing text
+* **textoptions** (*enum*): additional options for drawing text. Supported option: "wordbreak" (for multiline text).
+
+
+**Meta**
+
+* Parents: [:ref:`ButtonStyle <visual-styles-classmodel-class-ButtonStyle>`] <- [:ref:`BasicStyle <visual-styles-classmodel-class-BasicStyle>`]
+
+
+
+.. _visual-styles-classmodel-class-ComboBoxStyle:
+
+ComboBoxStyle
+=============
+
+If option "transparent" is not set, a ComboBox draws a background image.
+
+**Description**
+
+When no image is specified, it is filled in "backcolor, and a rectangular frame in color "forecolor" can be drawn with option "border".
+
+The "button" image is drawn at the right. The remaining space shows the text field to edit the parameter value with an optional padding.
+
+See also: [:ref:`ComboBox <skin-elements-classmodel-class-ComboBox>`] 
+
+**Attributes (15)**
+
+* **button** (*image*): image used to draw the button that indicates that something can popup
+* **padding** (*metric*): padding for title, used if one of the paddings for left, top, right, bottom is not specified
+* **padding.bottom** (*metric*): bottom padding for the text
+* **padding.left** (*metric*): left padding for the text
+* **padding.right** (*metric*): right padding for the text
+* **padding.top** (*metric*): top padding for the text
+
+
+Inherited from [:ref:`BasicStyle <visual-styles-classmodel-class-BasicStyle>`]
+
+* **backcolor** (*color*): backgound color
+* **background** (*image*): background image
+* **forecolor** (*color*): color used for foreground elements
+* **hilitecolor** (*color*): color used for a hilite state
+* **strokewidth** (*metric*): width in pixels used when lines are drawn
+* **textalign** (*enum*): alignment of text
+* **textcolor** (*color*): color used for drawing text
+* **textfont** (*string*): font used for drawing text
+* **textoptions** (*enum*): additional options for drawing text. Supported option: "wordbreak" (for multiline text).
+
+
+**Meta**
+
+* Parents: [:ref:`BasicStyle <visual-styles-classmodel-class-BasicStyle>`]
+
+
+
+.. _visual-styles-classmodel-class-DialogGroupStyle:
+
+DialogGroupStyle
+================
+
+A dialog group draws a background image and optional title.
+
+**Description**
+
+The style contains 2 images "Image" and "SecondaryImage", that can be selected via the option "primary" or "secondary".
+If the DialogGroup has a title, it is drawn at the top edge.
+
+See also: [:ref:`DialogGroup <skin-elements-classmodel-class-DialogGroup>`] 
+
+**Attributes (14)**
+
+* **Image** (*image*): used when options "primary" is set (or as default)
+* **SecondaryImage** (*image*): used when options "secondary" is set
+* **headergap** (*metric*): a gap between the header and body is left of "headergap" pixels
+* **headerheight** (*metric*): height of text rectangle when title is drawn
+* **headerlinecolor** (*color*): color for simple divider line between header and body when there is no headergap
+
+
+Inherited from [:ref:`BasicStyle <visual-styles-classmodel-class-BasicStyle>`]
+
+* **backcolor** (*color*): backgound color
+* **background** (*image*): background image
+* **forecolor** (*color*): color used for foreground elements
+* **hilitecolor** (*color*): color used for a hilite state
+* **strokewidth** (*metric*): width in pixels used when lines are drawn
+* **textalign** (*enum*): alignment of text
+* **textcolor** (*color*): color used for drawing text
+* **textfont** (*string*): font used for drawing text
+* **textoptions** (*enum*): additional options for drawing text. Supported option: "wordbreak" (for multiline text).
+
+
+**Meta**
+
+* Parents: [:ref:`BasicStyle <visual-styles-classmodel-class-BasicStyle>`]
+
+
+
+.. _visual-styles-classmodel-class-DividerStyle:
+
+DividerStyle
+============
+
+A divider draws a background image, and optionally a handle centered on top.
+
+See also: [:ref:`Divider <skin-elements-classmodel-class-Divider>`] 
+
+**Attributes (13)**
+
+* **hGrip** (*image*): handle for a horizontal divider
+* **hImage** (*image*): background for a horizontal divider
+* **vGrip** (*image*): handle for a vertical divider
+* **vImage** (*image*): background for a vertical divider
+
+
+Inherited from [:ref:`BasicStyle <visual-styles-classmodel-class-BasicStyle>`]
+
+* **backcolor** (*color*): backgound color
+* **background** (*image*): background image
+* **forecolor** (*color*): color used for foreground elements
+* **hilitecolor** (*color*): color used for a hilite state
+* **strokewidth** (*metric*): width in pixels used when lines are drawn
+* **textalign** (*enum*): alignment of text
+* **textcolor** (*color*): color used for drawing text
+* **textfont** (*string*): font used for drawing text
+* **textoptions** (*enum*): additional options for drawing text. Supported option: "wordbreak" (for multiline text).
+
+
+**Meta**
+
+* Parents: [:ref:`BasicStyle <visual-styles-classmodel-class-BasicStyle>`]
+
+
+
+.. _visual-styles-classmodel-class-DropBoxStyle:
+
+DropBoxStyle
+============
+
+**Attributes (12)**
+
+* **freespace** (*metric*): free space after last item
+* **noSnap** (*metric*): don't snap to views size
+* **spacing** (*metric*): spacing between items
+
+
+Inherited from [:ref:`BasicStyle <visual-styles-classmodel-class-BasicStyle>`]
+
+* **backcolor** (*color*): backgound color
+* **background** (*image*): background image
+* **forecolor** (*color*): color used for foreground elements
+* **hilitecolor** (*color*): color used for a hilite state
+* **strokewidth** (*metric*): width in pixels used when lines are drawn
+* **textalign** (*enum*): alignment of text
+* **textcolor** (*color*): color used for drawing text
+* **textfont** (*string*): font used for drawing text
+* **textoptions** (*enum*): additional options for drawing text. Supported option: "wordbreak" (for multiline text).
+
+
+**Meta**
+
+* Parents: [:ref:`BasicStyle <visual-styles-classmodel-class-BasicStyle>`]
+
+
+
+.. _visual-styles-classmodel-class-EditBoxStyle:
+
+EditBoxStyle
+============
+
+An EditBox is drawn just like a TextBox.
+
+See also: [:ref:`EditBox <skin-elements-classmodel-class-EditBox>`] 
+
+**Attributes (29)**
+
+* **native.padding** (*metric*): padding for the native text control, used if one of the paddings for left, top, right, bottom is not specified
+* **native.padding.bottom** (*metric*): bottom padding for the native text control
+* **native.padding.left** (*metric*): left padding for the native text control
+* **native.padding.right** (*metric*): right padding for the native text control
+* **native.padding.top** (*metric*): top padding for the native text control
+* **selectioncolor** (*color*): background color for selected ranges
+* **textcolor.placeholder** (*color*): dedicated color for optional placeholder string
+* **textfont.placeholder** (*string*): dedicated font for optional placeholder string
+
+
+Inherited from [:ref:`TextBoxStyle <visual-styles-classmodel-class-TextBoxStyle>`]
+
+* **padding** (*metric*): padding for the text, used if one of the paddings for left, top, right, bottom is not specified
+* **padding.bottom** (*metric*): bottom padding for the text
+* **padding.left** (*metric*): left padding for the text
+* **padding.right** (*metric*): right padding for the text
+* **padding.top** (*metric*): top padding for the text
+* **scaletext.maxfont** (*metric*): explicit maximal fontsize when scaletext option is set
+* **scaletext.minfont** (*metric*): explicit minimal fontsize when scaletext option is set
+* **textcolor.alphablend** (*color*): the non-transparent "colorname" color will be alphablended with this color (using "color.alphablend" as fallback) and used as textcolor
+* **textcolor.bright** (*color*): used instead of "textcolor" if the current luminance of the "colorname" color is below the "textcolor.threshold"
+* **textcolor.disabled** (*color*): text color used (instead of "textcolor") when control is disabled
+* **textcolor.threshold** (*metric*): "textcolor.bright" is used instead of "textcolor" if the luminance threshold for the current "colorname" color is below this value - default is 0. 35.
+* **textcolor.transparent** (*color*): used instead of "textcolor" if the TextBox's option "transparent" is set or "colorname" color is transparent
+
+
+Inherited from [:ref:`BasicStyle <visual-styles-classmodel-class-BasicStyle>`]
+
+* **backcolor** (*color*): backgound color
+* **background** (*image*): background image
+* **forecolor** (*color*): color used for foreground elements
+* **hilitecolor** (*color*): color used for a hilite state
+* **strokewidth** (*metric*): width in pixels used when lines are drawn
+* **textalign** (*enum*): alignment of text
+* **textcolor** (*color*): textcolor for the displayed string
+* **textfont** (*string*): font used for drawing text
+* **textoptions** (*enum*): additional options for drawing text. Supported option: "wordbreak" (for multiline text).
+
+
+**Meta**
+
+* Parents: [:ref:`TextBoxStyle <visual-styles-classmodel-class-TextBoxStyle>`] <- [:ref:`BasicStyle <visual-styles-classmodel-class-BasicStyle>`]
+* Children: [:ref:`ValueBoxStyle <visual-styles-classmodel-class-ValueBoxStyle>`]
+
+
+
+.. _visual-styles-classmodel-class-HeaderViewStyle:
+
+HeaderViewStyle
+===============
+
+A headerView draws column headers for each column of a column list.
+
+**Description**
+
+The "backgound" image is draw in each column rectangle, and the column title is drawn in top.
+
+**Attributes (11)**
+
+* **backcolor.spacing** (*color*): color for the space between two columns
+* **spacing** (*metric*): space between two columns
+
+
+Inherited from [:ref:`BasicStyle <visual-styles-classmodel-class-BasicStyle>`]
+
+* **backcolor** (*color*): backgound color
+* **background** (*image*): background image
+* **forecolor** (*color*): color used for foreground elements
+* **hilitecolor** (*color*): color used for a hilite state
+* **strokewidth** (*metric*): width in pixels used when lines are drawn
+* **textalign** (*enum*): alignment of text
+* **textcolor** (*color*): color used for drawing text
+* **textfont** (*string*): font used for drawing text
+* **textoptions** (*enum*): additional options for drawing text. Supported option: "wordbreak" (for multiline text).
+
+
+**Meta**
+
+* Parents: [:ref:`BasicStyle <visual-styles-classmodel-class-BasicStyle>`]
+
+
+
+.. _visual-styles-classmodel-class-ImageViewStyle:
+
+ImageViewStyle
+==============
+
+See also: [:ref:`ImageView <skin-elements-classmodel-class-ImageView>`] 
+
+**Attributes (18)**
+
+* **border** (*metric*): (set automatically for tiled images) - used to optimize redraws when the ImageView is resized
+* **fill.image** (*metric*): image is resized to fill out the ImageView size (aspectratio is kept) value: ]0-1]
+* **imagecolor** (*color*): imagecolor is used to colorize the image (colorize option set)
+* **imagecolor.alphablend** (*color*): the non-transparent "colorname" color will be alphablended with this color (using "color.alphablend" as fallback) and used as imagecolor
+* **imagecolor.bright** (*color*): imagecolor. Bright is used when colorize option is set and the current luminance of the "colorname" color is below the "imagecolor.threshold".
+* **imagecolor.context** (*color*): imagecolor. Context is used (colorize option NOT set) to modify the image automatically when supported - needs to be a template/monochrome image (colorize filter is used) or an adaptive image (lightadapt filter is used).
+* **imagecolor.on** (*color*): imagecolor. On is used to colorize the image when the "selectname" is on (colorize option set).
+* **imagecolor.threshold** (*metric*): imagecolor. Bright is used instead of "imagecolor" if the luminance threshold for the current "colorname" color is below this value - default is 0.35.
+* **imagecolor.transparent** (*color*): imagecolor. Transparent is used (colorize option set) when current colorparam color is transparent.
+
+
+Inherited from [:ref:`BasicStyle <visual-styles-classmodel-class-BasicStyle>`]
+
+* **backcolor** (*color*): fill the view when "selectname" is off (colorize option set) and no image is available
+* **background** (*image*): the image to be drawn
+* **forecolor** (*color*): fill the view when "selectname" is on (colorize option set) and no image is available
+* **hilitecolor** (*color*): color used for a hilite state
+* **strokewidth** (*metric*): width in pixels used when lines are drawn
+* **textalign** (*enum*): alignment of text
+* **textcolor** (*color*): color used for drawing text
+* **textfont** (*string*): font used for drawing text
+* **textoptions** (*enum*): additional options for drawing text. Supported option: "wordbreak" (for multiline text).
+
+
+**Meta**
+
+* Parents: [:ref:`BasicStyle <visual-styles-classmodel-class-BasicStyle>`]
+
+
+
+.. _visual-styles-classmodel-class-ItemViewStyle:
+
+ItemViewStyle
+=============
+
+**Attributes (38)**
+
+* **backcolor2** (*color*): used to draw alternating backgrounds, the other color is "backcolor"
+* **columnWidth.xxx** (*metric*): overrides the default width (in pixels) for the column with name "xxx"
+* **folderIcon** (*image*): icon for folder items (closed)
+* **highQualityMode** (*metric*): set highQualityMode for image interpolations
+* **iconcolor** (*color*): color to colorize icons of unselected items
+* **margin** (*metric*): margin (in pixels) of itemview content
+* **menu.separatorcolor** (*color*): color of separating line for menu separators
+* **openFolderIcon** (*image*): icon for open folder items
+* **rowHeight** (*metric*): height of rows (in pixels)
+* **scrollRows** (*metric*): how many rows should scroll on mousewheel
+* **scrolling.background** (*image*): background for the whole view
+* **selectediconcolor** (*color*): color to colorize icons of selected items
+* **selectedtextcolor** (*color*): used instead of "textcolor" for selected items
+* **selectionColor** (*color*): used to fill a rectangle around selected items
+* **separatorBeneath** (*metric*): draw one pixel separator beneath items (on the bottom border - not below)
+* **separatorcolor** (*color*): color of separating line between rows
+* **thumbnailFrameColor** (*color*): color of separating frame around thumbnails
+* **thumbnailLimit.height** (*metric*): thumbnails will be scaled down to (at least) this limit
+* **thumbnailLimit.width** (*metric*): thumbnails will be scaled down to (at least) this limit
+* **thumbnailMarginV** (*metric*): additional vertical margin for itemContent if thumbnails available
+* **thumbnailPadding.bottom** (*metric*): bottom padding for thumbnails
+* **thumbnailPadding.left** (*metric*): left padding for thumbnails
+* **thumbnailPadding.top** (*metric*): top padding for thumbnails
+* **thumbnailRatio** (*metric*): thumbnails exceeding the thumbnail limits will be scaled with this ratio
+* **vSnapEnabled** (*metric*): enable snapping to itemSize after scrolling
+* **xxx.backcolor** (*color*): custom background color for items of kind "xxx"
+* **xxx.backcolor2** (*color*): custom alternating background color for items of kind "xxx"
+* **xxx.rowHeight** (*metric*): custom rowHeight for items of kind "xxx"
+* **xxx.separatorcolor** (*color*): custom separator line color for items of kind "xxx"
+
+
+Inherited from [:ref:`BasicStyle <visual-styles-classmodel-class-BasicStyle>`]
+
+* **backcolor** (*color*): backgound color
+* **background** (*image*): background image
+* **forecolor** (*color*): color used for foreground elements
+* **hilitecolor** (*color*): color used for a hilite state
+* **strokewidth** (*metric*): width in pixels used when lines are drawn
+* **textalign** (*enum*): alignment of text
+* **textcolor** (*color*): color used for drawing text
+* **textfont** (*string*): font used for drawing text
+* **textoptions** (*enum*): additional options for drawing text. Supported option: "wordbreak" (for multiline text).
+
+
+**Meta**
+
+* Parents: [:ref:`BasicStyle <visual-styles-classmodel-class-BasicStyle>`]
+* Children: [:ref:`TreeViewStyle <visual-styles-classmodel-class-TreeViewStyle>`]
+
+
+
+.. _visual-styles-classmodel-class-KnobStyle:
+
+KnobStyle
+=========
+
+See also: [:ref:`Knob <skin-elements-classmodel-class-Knob>`] 
+
+**Attributes (38)**
+
+* **allowstretch** (*metric*): allowstretch of background image (default is TRUE)
+* **althilitecolor** (*color*): color used to draw a circle from the current position to the current position of an optional offset parameter. Set via Knob attribute "referencename".
+* **circle** (*metric*): a partial circle around the center is drawn. Same as Knob option "circle". the circle color is the "hilitecolor" or set from the "colorname" parameter.
+* **circle.indicatorwidth** (*metric*): draw a partial circle indicator with the given width in degrees around the center. The circle indicator uses "indicatorcolor".
+* **circle.reversecolor** (*color*): color used to draw a circle from the current position to range end
+* **disabledoverlay** (*image*): optional disabled overlay image to show an individual disabled state
+* **filmstrip** (*metric*): specifies that the "background" image should be used as a filmstrip. Same as Knob option "filmstrip".
+* **foreground** (*image*): overlay image above the circle (alternative name "overlay" can be used)
+* **framecount** (*metric*): an external framecount can be used to repeat the existing filmstrip frames and reduce the overall memory footprint
+* **indicator** (*metric*): a line from the center to the end of the circle is drawn. Same as Knob option "indicator". Color "indicatorcolor" is used.
+* **indicatorcolor** (*color*): color used for drawing the "indicator"
+* **indicatormargin** (*metric*): margin between view boudaries and indicator
+* **indicatorwidth** (*metric*): used when it should be different from the strokewidth (which is the default)
+* **linearOffset** (*metric*): used to remap filmstrip frames. LinearOffset is the optional offset used to transform the normalized value.
+* **linearScaler** (*metric*): used to remap filmstrip frames. LinearScaler is the slope used to transform the normalized value.
+* **logscaler** (*metric*): used to remap filmstrip frames. 1/logscaler * log(normalizedValue) is used to map frames onto a logarithmic curve.
+* **margin** (*metric*): margin between view boudaries and circle
+* **overlay.filmstrip** (*metric*): specifies that the "foreground" image should be used as a filmstrip
+* **padding** (*metric*): padding for background image, used if one of the paddings for left, top, right, bottom is not specified
+* **padding.bottom** (*metric*): bottom padding for background image
+* **padding.left** (*metric*): left padding for background image
+* **padding.right** (*metric*): right padding for background image
+* **padding.top** (*metric*): top padding for background image
+* **range** (*metric*): the range in degrees for circle and indicator
+* **state1** (*color*): color used for drawing a special marker when the knob's visual state is 1
+* **state2** (*color*): color used for drawing a special marker when the knob's visual state is 2
+* **state3** (*color*): color used for drawing a special marker when the knob's visual state is 3
+* **topoverlay** (*image*): topoverlay image (above the indicator)
+* **topoverlay.filmstrip** (*metric*): specifies that the "topoverlay" image should be used as a filmstrip
+
+
+Inherited from [:ref:`BasicStyle <visual-styles-classmodel-class-BasicStyle>`]
+
+* **backcolor** (*color*): backgound color
+* **background** (*image*): background image
+* **forecolor** (*metric*): color used to draw a circle from the range start to range end (when no overlay is used)
+* **hilitecolor** (*color*): color used to draw a circle from range start to the current position
+* **strokewidth** (*metric*): strokewidth of the optional circle
+* **textalign** (*enum*): alignment of text
+* **textcolor** (*color*): color used for drawing text
+* **textfont** (*string*): font used for drawing text
+* **textoptions** (*enum*): additional options for drawing text. Supported option: "wordbreak" (for multiline text).
+
+
+**Meta**
+
+* Parents: [:ref:`BasicStyle <visual-styles-classmodel-class-BasicStyle>`]
+
+
+
+.. _visual-styles-classmodel-class-LabelStyle:
+
+LabelStyle
+==========
+
+A label draws it's title using the style's "textfont", "textcolor", and "textalignment" (for single line text) or "textoptions" (for multiline text).
+
+See also: [:ref:`Label <skin-elements-classmodel-class-Label>`] 
+
+**Attributes (9)**
+
+Inherited from [:ref:`BasicStyle <visual-styles-classmodel-class-BasicStyle>`]
+
+* **backcolor** (*color*): backgound color
+* **background** (*image*): background image
+* **forecolor** (*color*): color used for foreground elements
+* **hilitecolor** (*color*): color used for a hilite state
+* **strokewidth** (*metric*): width in pixels used when lines are drawn
+* **textalign** (*enum*): alignment of text
+* **textcolor** (*color*): color used for drawing text
+* **textfont** (*string*): font used for drawing text
+* **textoptions** (*enum*): additional options for drawing text. Supported option: "wordbreak" (for multiline text).
+
+
+**Meta**
+
+* Parents: [:ref:`BasicStyle <visual-styles-classmodel-class-BasicStyle>`]
+
+
+
+.. _visual-styles-classmodel-class-ListViewStyle:
+
+ListViewStyle
+=============
+
+**Attributes (34)**
+
+* **icons.background** (*image*): for "viewtype="icons": draw background for each cell (use second frame for selection)
+* **icons.dataheight** (*metric*): for "viewtype="icons": height of icon
+* **icons.dataleft** (*metric*): for "viewtype="icons": left of icon inside item rectangle
+* **icons.datatop** (*metric*): for "viewtype="icons": top of icon inside item rectangle
+* **icons.datawidth** (*metric*): for "viewtype="icons": width of icon
+* **icons.fixedColumns** (*metric*): for "viewtype="icons": use a fixed number of columns
+* **icons.height** (*metric*): for "viewtype="icons": total height of one item
+* **icons.iconsethalfsize** (*metric*): for "viewtype="icons": alternative way of displaying iconset images in half-size
+* **icons.mirrored** (*metric*): for "viewtype="icons": draw icon columns in reverse order
+* **icons.multiLineTitle** (*metric*): for "viewtype="icons": draw title as multiline text
+* **icons.showthumbnails** (*metric*): for "viewtype="icons": draw thumbnails (if available) instead of icons,
+* **icons.textfont** (*string*): for "viewtype="icons": optional alternative font in icons mode (falls back to "textfont" if not specified)
+* **icons.textheight** (*metric*): for "viewtype="icons": height of title
+* **icons.textleft** (*metric*): for "viewtype="icons": left of title inside item rectangle
+* **icons.texttop** (*metric*): for "viewtype="icons": top of title inside item rectangle
+* **icons.textwidth** (*metric*): for "viewtype="icons": width of title
+* **icons.width** (*metric*): for "viewtype="icons": total width of one item
+* **list.dataheight** (*metric*): for "viewtype="list": height of list
+* **list.dataleft** (*metric*): for "viewtype="list": left of list inside item rectangle
+* **list.datatop** (*metric*): for "viewtype="list": top of list inside item rectangle
+* **list.datawidth** (*metric*): for "viewtype="list": width of list
+* **list.padding.bottom** (*metric*): for "viewtype="list": bottom padding of list
+* **list.selectionbackground** (*image*): for "viewtype="list": use a color for selectionbackground as an image
+* **list.textalign** (*enum*): for "viewtype="list": set text alignment for cells (default: kLeftCenter)
+* **list.textmargin** (*metric*): for "viewtype="list": left text margin in cell
+
+
+Inherited from [:ref:`BasicStyle <visual-styles-classmodel-class-BasicStyle>`]
+
+* **backcolor** (*color*): backgound color
+* **background** (*image*): background image
+* **forecolor** (*color*): color used for foreground elements
+* **hilitecolor** (*color*): color used for a hilite state
+* **strokewidth** (*metric*): width in pixels used when lines are drawn
+* **textalign** (*enum*): alignment of text
+* **textcolor** (*color*): color used for drawing text
+* **textfont** (*string*): font used for drawing text
+* **textoptions** (*enum*): additional options for drawing text. Supported option: "wordbreak" (for multiline text).
+
+
+**Meta**
+
+* Parents: [:ref:`BasicStyle <visual-styles-classmodel-class-BasicStyle>`]
+
+
+
+.. _visual-styles-classmodel-class-MenuBarControlStyle:
+
+MenuBarControlStyle
+===================
+
+**Attributes (13)**
+
+* **activecolor** (*color*): used to draw instead of "backcolor" for the active menu (when no button image available)
+* **activetextcolor** (*color*): used instead of "textcolor" for the active menu
+* **menuButton** (*image*): background for menu buttons
+* **menuHeight** (*metric*): height of menu buttons
+
+
+Inherited from [:ref:`BasicStyle <visual-styles-classmodel-class-BasicStyle>`]
+
+* **backcolor** (*color*): backgound color
+* **background** (*image*): background image
+* **forecolor** (*color*): color used for foreground elements
+* **hilitecolor** (*color*): color used for a hilite state
+* **strokewidth** (*metric*): width in pixels used when lines are drawn
+* **textalign** (*enum*): alignment of text
+* **textcolor** (*color*): color used for drawing text
+* **textfont** (*string*): font used for drawing text
+* **textoptions** (*enum*): additional options for drawing text. Supported option: "wordbreak" (for multiline text).
+
+
+**Meta**
+
+* Parents: [:ref:`BasicStyle <visual-styles-classmodel-class-BasicStyle>`]
+
+
+
+.. _visual-styles-classmodel-class-MenuControlStyle:
+
+MenuControlStyle
+================
+
+A MenuControl is a custom implementation of a menu (e.g. a context menu).
+
+**Attributes (31)**
+
+* **bordercolor** (*color*): used to draw a border around the whole menu
+* **checkmarkicon** (*image*): a checkmark icon drawn after a checked item
+* **checkmarkwidth** (*metric*): width (in points) used to draw the checkmark icon
+* **disabledtextcolor** (*color*): used instead of "textcolor" for disabled items
+* **explicitrowheight** (*metric*): row height (in points) is not determined by the iconsize and spacing anymore
+* **headercolor** (*color*): used to fill the header area
+* **headertextcolor** (*color*): used instead of "textcolor" in the header area
+* **iconcolor** (*color*): color to colorize icons of unselected items
+* **largeiconsize** (*metric*): icon size (in points) for a large menu
+* **menuarrowwidth** (*metric*): width (in points) of the arrow that indicates a sub menu
+* **normaliconsize** (*metric*): icon size (in points) for a normal menu
+* **segmentmargin** (*metric*): margin (in points) between left border and first segment of an item (icon, title, key, arrow)
+* **segmentspacing** (*metric*): spacing (in points) between segments of an item (icon, title, key, arrow)
+* **selectediconcolor** (*color*): used instead of "iconcolor" to colorize icons of selected items
+* **selectedtextcolor** (*color*): used instead of "textcolor" for the currently selected item
+* **selectionbackcolor** (*color*): used to hihlite selected items, if no "selectionbarimage" is available
+* **selectionbarimage** (*image*): background image for a selected item
+* **selectionframecolor** (*color*): used to draw a frame around selected items
+* **separatorSpacing** (*metric*): optional spacing definition for spacing (in points) between separated items
+* **separatorcolor** (*color*): used to draw separator lines
+* **smallfont** (*string*): used for menu item descriptions
+* **spacing** (*metric*): spacing (in points) between items
+
+
+Inherited from [:ref:`BasicStyle <visual-styles-classmodel-class-BasicStyle>`]
+
+* **backcolor** (*color*): backgound color
+* **background** (*image*): background image
+* **forecolor** (*color*): color used for foreground elements
+* **hilitecolor** (*color*): color used for a hilite state
+* **strokewidth** (*metric*): width in pixels used when lines are drawn
+* **textalign** (*enum*): alignment of text
+* **textcolor** (*color*): color used for drawing text
+* **textfont** (*string*): font used for drawing text
+* **textoptions** (*enum*): additional options for drawing text. Supported option: "wordbreak" (for multiline text).
+
+
+**Meta**
+
+* Parents: [:ref:`BasicStyle <visual-styles-classmodel-class-BasicStyle>`]
+
+
+
+.. _visual-styles-classmodel-class-PageControlStyle:
+
+PageControlStyle
+================
+
+A PageControl draws a row of dots, with one dot per scroll page.
+
+See also: [:ref:`PageControl <skin-elements-classmodel-class-PageControl>`] 
+
+**Attributes (11)**
+
+* **dot** (*image*): dot image with frames "normal" and "normalOn" for the current page
+* **spacing** (*metric*): spacing (in pixels) between the dots
+
+
+Inherited from [:ref:`BasicStyle <visual-styles-classmodel-class-BasicStyle>`]
+
+* **backcolor** (*color*): backgound color
+* **background** (*image*): image drawn undeneath the dots
+* **forecolor** (*color*): color used for foreground elements
+* **hilitecolor** (*color*): color used for a hilite state
+* **strokewidth** (*metric*): width in pixels used when lines are drawn
+* **textalign** (*enum*): alignment of text
+* **textcolor** (*color*): color used for drawing text
+* **textfont** (*string*): font used for drawing text
+* **textoptions** (*enum*): additional options for drawing text. Supported option: "wordbreak" (for multiline text).
+
+
+**Meta**
+
+* Parents: [:ref:`BasicStyle <visual-styles-classmodel-class-BasicStyle>`]
+
+
+
+.. _visual-styles-classmodel-class-PopupSelectorStyle:
+
+PopupSelectorStyle
+==================
+
+**Attributes (11)**
+
+* **popup.offset.x** (*metric*): an additional horizontal offset to the popup position, applied when opened from SelectBox or PopupBox
+* **popup.offset.y** (*metric*): an additional vertical offset to the popup position, applied when opened from SelectBox or PopupBox
+
+
+Inherited from [:ref:`BasicStyle <visual-styles-classmodel-class-BasicStyle>`]
+
+* **backcolor** (*color*): backgound color
+* **background** (*image*): background image
+* **forecolor** (*color*): color used for foreground elements
+* **hilitecolor** (*color*): color used for a hilite state
+* **strokewidth** (*metric*): width in pixels used when lines are drawn
+* **textalign** (*enum*): alignment of text
+* **textcolor** (*color*): color used for drawing text
+* **textfont** (*string*): font used for drawing text
+* **textoptions** (*enum*): additional options for drawing text. Supported option: "wordbreak" (for multiline text).
+
+
+**Meta**
+
+* Parents: [:ref:`BasicStyle <visual-styles-classmodel-class-BasicStyle>`]
+
+
+
+.. _visual-styles-classmodel-class-ProgressBarStyle:
+
+ProgressBarStyle
+================
+
+A Progres bar draws a bar that reflects the parameter value over a background.
+
+See also: [:ref:`ProgressBar <skin-elements-classmodel-class-ProgressBar>`] 
+
+**Attributes (11)**
+
+* **foreground** (*image*): used to draw a bar over the background that reflects the parameter value
+* **indicator** (*image*): drawn at the boundary between the background and the bar
+
+
+Inherited from [:ref:`BasicStyle <visual-styles-classmodel-class-BasicStyle>`]
+
+* **backcolor** (*color*): backgound color
+* **background** (*image*): background image
+* **forecolor** (*color*): color used for foreground elements
+* **hilitecolor** (*color*): color used for a hilite state
+* **strokewidth** (*metric*): width in pixels used when lines are drawn
+* **textalign** (*enum*): alignment of text
+* **textcolor** (*color*): color used for drawing text
+* **textfont** (*string*): font used for drawing text
+* **textoptions** (*enum*): additional options for drawing text. Supported option: "wordbreak" (for multiline text).
+
+
+**Meta**
+
+* Parents: [:ref:`BasicStyle <visual-styles-classmodel-class-BasicStyle>`]
+
+
+
+.. _visual-styles-classmodel-class-RangeSliderStyle:
+
+RangeSliderStyle
+================
+
+A Range Slider draws two handle moving over a background.
+
+See also: [:ref:`RangeSlider <skin-elements-classmodel-class-RangeSlider>`] 
+
+**Attributes (13)**
+
+* **hHandle2** (*image*): handle (horizontal slider)
+* **hSmallHandle2** (*image*): handle (horizontal slider with option "small")
+* **vHandle2** (*image*): handle (vertical slider)
+* **vSmallHandle2** (*image*): handle (vertical slider with option "small")
+
+
+Inherited from [:ref:`BasicStyle <visual-styles-classmodel-class-BasicStyle>`]
+
+* **backcolor** (*color*): backgound color
+* **background** (*image*): background image
+* **forecolor** (*color*): color used for foreground elements
+* **hilitecolor** (*color*): color used for a hilite state
+* **strokewidth** (*metric*): width in pixels used when lines are drawn
+* **textalign** (*enum*): alignment of text
+* **textcolor** (*color*): color used for drawing text
+* **textfont** (*string*): font used for drawing text
+* **textoptions** (*enum*): additional options for drawing text. Supported option: "wordbreak" (for multiline text).
+
+
+**Meta**
+
+* Parents: [:ref:`BasicStyle <visual-styles-classmodel-class-BasicStyle>`]
+
+
+
+.. _visual-styles-classmodel-class-SceneView3DStyle:
+
+SceneView3DStyle
+================
+
+**Attributes (10)**
+
+* **camera** (*string*)
+
+
+Inherited from [:ref:`BasicStyle <visual-styles-classmodel-class-BasicStyle>`]
+
+* **backcolor** (*color*): backgound color
+* **background** (*image*): background image
+* **forecolor** (*color*): color used for foreground elements
+* **hilitecolor** (*color*): color used for a hilite state
+* **strokewidth** (*metric*): width in pixels used when lines are drawn
+* **textalign** (*enum*): alignment of text
+* **textcolor** (*color*): color used for drawing text
+* **textfont** (*string*): font used for drawing text
+* **textoptions** (*enum*): additional options for drawing text. Supported option: "wordbreak" (for multiline text).
+
+
+**Meta**
+
+* Parents: [:ref:`BasicStyle <visual-styles-classmodel-class-BasicStyle>`]
+
+
+
+.. _visual-styles-classmodel-class-ScrollBarStyle:
+
+ScrollBarStyle
+==============
+
+A Scrollbar indicates the scrolling position of a scroll view.
+
+**Description**
+
+A scroll bar has a background, up/down buttons (vertical) and a handle (thumb).
+
+See also: [:ref:`ScrollBar <skin-elements-classmodel-class-ScrollBar>`] 
+
+**Attributes (22)**
+
+* **clipBackground** (*metric*): background is only drawn outside of handle area
+* **hBack** (*image*): background (horizontal bar)
+* **hButtonDown** (*image*): "right" button (horizontal bar)
+* **hButtonUp** (*image*): "left" button (horizontal bar)
+* **hSmallBack** (*image*): background (horizontal bar with option "small")
+* **hSmallThumb** (*image*): small handle (horizontal bar with option "small")
+* **hThumb** (*image*): handle (horizontal bar)
+* **vBack** (*image*): background (vertical bar)
+* **vButtonDown** (*image*): "down" button (vertical bar)
+* **vButtonUp** (*image*): "up" button (vertical bar)
+* **vSmallBack** (*image*): background (vertical bar with option "small")
+* **vSmallThumb** (*image*): small handle (vertical bar with option "small")
+* **vThumb** (*image*): handle (vertical bar)
+
+
+Inherited from [:ref:`BasicStyle <visual-styles-classmodel-class-BasicStyle>`]
+
+* **backcolor** (*color*): backgound color
+* **background** (*image*): background image
+* **forecolor** (*color*): color used for foreground elements
+* **hilitecolor** (*color*): color used for a hilite state
+* **strokewidth** (*metric*): width in pixels used when lines are drawn
+* **textalign** (*enum*): alignment of text
+* **textcolor** (*color*): color used for drawing text
+* **textfont** (*string*): font used for drawing text
+* **textoptions** (*enum*): additional options for drawing text. Supported option: "wordbreak" (for multiline text).
+
+
+**Meta**
+
+* Parents: [:ref:`BasicStyle <visual-styles-classmodel-class-BasicStyle>`]
+
+
+
+.. _visual-styles-classmodel-class-ScrollButtonStyle:
+
+ScrollButtonStyle
+=================
+
+See also: [:ref:`ScrollButton <skin-elements-classmodel-class-ScrollButton>`] 
+
+**Attributes (17)**
+
+* **hButtonDown** (*image*): "left" button background (horizontal button)
+* **hButtonUp** (*image*): "right" button background (horizontal button)
+* **hIconDown** (*image*): "left" icon (horizontal button)
+* **hIconUp** (*image*): "right" icon (horizontal button)
+* **vButtonDown** (*image*): "down" button background (vertical button)
+* **vButtonUp** (*image*): "up" button background (vertical button)
+* **vIconDown** (*image*): "down" icon (vertical button)
+* **vIconUp** (*image*): "up" icon (vertical button)
+
+
+Inherited from [:ref:`BasicStyle <visual-styles-classmodel-class-BasicStyle>`]
+
+* **backcolor** (*color*): backgound color
+* **background** (*image*): background image
+* **forecolor** (*color*): color used for foreground elements
+* **hilitecolor** (*color*): color used for a hilite state
+* **strokewidth** (*metric*): width in pixels used when lines are drawn
+* **textalign** (*enum*): alignment of text
+* **textcolor** (*color*): color used for drawing text
+* **textfont** (*string*): font used for drawing text
+* **textoptions** (*enum*): additional options for drawing text. Supported option: "wordbreak" (for multiline text).
+
+
+**Meta**
+
+* Parents: [:ref:`BasicStyle <visual-styles-classmodel-class-BasicStyle>`]
+
+
+
+.. _visual-styles-classmodel-class-ScrollPickerStyle:
+
+ScrollPickerStyle
+=================
+
+**Attributes (20)**
+
+* **barrelTextColor** (*color*): textcolor for the neighboring unselected values on the barrel
+* **barrelTextFont** (*string*): barrel font
+* **centerBackcolor** (*color*): backcolor for the center view
+* **centerOffset** (*metric*): optional vertical/horizontal offset of the center view - default is (clientSize - centerSize) / 2
+* **centerOverlayImage** (*image*): additional optional overlay for the center view
+* **centerSize** (*metric*): optional height/width of the vertical/horizontal center view, where the current value is displayed
+* **centerTextColor** (*color*): textcolor for the center view
+* **centerTextFont** (*string*): center view font
+* **gradientThickness** (*metric*): thickness of the fade-out area at the border of the barrel
+* **itemSize** (*metric*): optional explicit item size (height/width in vertical/horizontal case)
+* **minimalEditWidth** (*metric*): optional minimal width for the horizontal scrollpicker edit control
+
+
+Inherited from [:ref:`BasicStyle <visual-styles-classmodel-class-BasicStyle>`]
+
+* **backcolor** (*color*): backcolor for the control
+* **background** (*image*): background image
+* **forecolor** (*color*): color used for foreground elements
+* **hilitecolor** (*color*): color used for a hilite state
+* **strokewidth** (*metric*): width in pixels used when lines are drawn
+* **textalign** (*enum*): alignment of text
+* **textcolor** (*color*): color used for drawing text
+* **textfont** (*string*): font used for drawing text
+* **textoptions** (*enum*): additional options for drawing text. Supported option: "wordbreak" (for multiline text).
+
+
+**Meta**
+
+* Parents: [:ref:`BasicStyle <visual-styles-classmodel-class-BasicStyle>`]
+
+
+
+.. _visual-styles-classmodel-class-ScrollViewStyle:
+
+ScrollViewStyle
+===============
+
+**Attributes (14)**
+
+* **borderSize** (*metric*): size (in pixels) of an optional border
+* **buttonSize** (*metric*): size of scroll buttons in pixels. For example: width for a vertical button.
+* **buttonSpacing** (*metric*): spacing between scroll buttons and scrollview edge
+* **inertialDuration** (*metric*): duration in seconds for inertial motion after user release the scrollview (not supported on all platforms)
+* **scrollBarSize** (*metric*): size of scrollbars in pixels. For example: width for a vertical bar.
+
+
+Inherited from [:ref:`BasicStyle <visual-styles-classmodel-class-BasicStyle>`]
+
+* **backcolor** (*color*): backgound color
+* **background** (*image*): background image
+* **forecolor** (*color*): color used for foreground elements
+* **hilitecolor** (*color*): color used for a hilite state
+* **strokewidth** (*metric*): width in pixels used when lines are drawn
+* **textalign** (*enum*): alignment of text
+* **textcolor** (*color*): color used for drawing text
+* **textfont** (*string*): font used for drawing text
+* **textoptions** (*enum*): additional options for drawing text. Supported option: "wordbreak" (for multiline text).
+
+
+**Meta**
+
+* Parents: [:ref:`BasicStyle <visual-styles-classmodel-class-BasicStyle>`]
+
+
+
+.. _visual-styles-classmodel-class-SegmentBox:
+
+SegmentBox
+==========
+
+See also: [:ref:`SegmentBox <visual-styles-classmodel-class-SegmentBox>`]
+
+**Attributes (12)**
+
+* **state1** (*color*): alternative text color when the parameter's visual state is 1
+* **state2** (*color*): alternative text color when the parameter's visual state is 2
+* **state3** (*color*): alternative text color when the parameter's visual state is 3
+
+
+Inherited from [:ref:`BasicStyle <visual-styles-classmodel-class-BasicStyle>`]
+
+* **backcolor** (*color*): backgound color
+* **background** (*image*): background image
+* **forecolor** (*color*): color used for foreground elements
+* **hilitecolor** (*color*): color used for a hilite state
+* **strokewidth** (*metric*): width in pixels used when lines are drawn
+* **textalign** (*enum*): alignment of text
+* **textcolor** (*color*): color used for drawing text
+* **textfont** (*string*): font used for drawing text
+* **textoptions** (*enum*): additional options for drawing text. Supported option: "wordbreak" (for multiline text).
+
+
+**Meta**
+
+* Parents: [:ref:`BasicStyle <visual-styles-classmodel-class-BasicStyle>`]
+
+
+
+.. _visual-styles-classmodel-class-SelectBoxStyle:
+
+SelectBoxStyle
+==============
+
+If option "transparent" is not set, a SelectBox draws a background image.
+
+**Description**
+
+When no image is specified, it is filled in "backcolor, and a rectangular frame in color "forecolor" can be drawn with option "border".
+
+An image "states" can be used to show a different frame for (integer) each parameter value.
+
+The "button" image is drawn at the right (can be changed with option "leadingbutton").
+The remaining space shows the text representation of the parameter, with an optional "padding".
+
+See also: [:ref:`SelectBox <skin-elements-classmodel-class-SelectBox>`] 
+
+**Attributes (24)**
+
+* **button** (*image*): image used to draw the button that indicates that somthing can popup
+* **button.beneath** (*metric*): button image is drawn beneath text or state images and doesn't affect their drawrect
+* **button.leading** (*metric*): button image is drawn before the text - set can also be set with button-option "leadingbutton"
+* **button.trailing** (*metric*): button image is drawn after the text - can also be set with button-option "trailingbutton"
+* **contextcolor** (*color*): if set, used to create a modified version of the image given by the imageprovider
+* **fill.button** (*metric*): button image is resized to fill out the selectbox height (aspectratio is kept) value: ]0-1]
+* **fill.image** (*metric*): image from imageprovider is resized to fill out the selectbox size (aspectratio is kept) value: ]0-1]
+* **padding** (*metric*): padding for title, used if one of the paddings for left, top, right, bottom is not specified
+* **padding.bottom** (*metric*): bottom padding for the text
+* **padding.left** (*metric*): left padding for the text
+* **padding.right** (*metric*): right padding for the text
+* **padding.top** (*metric*): top padding for the text
+* **scaletext.maxfont** (*metric*): explicit maximal fontsize when scaletext option is set
+* **scaletext.minfont** (*metric*): explicit minimal fontsize when scaletext option is set
+* **states** (*image*): image with frames for each (integer) parameter state
+
+
+Inherited from [:ref:`BasicStyle <visual-styles-classmodel-class-BasicStyle>`]
+
+* **backcolor** (*color*): backgound color
+* **background** (*image*): background image
+* **forecolor** (*color*): color used for foreground elements
+* **hilitecolor** (*color*): color used for a hilite state
+* **strokewidth** (*metric*): width in pixels used when lines are drawn
+* **textalign** (*enum*): alignment of text
+* **textcolor** (*color*): color used for drawing text
+* **textfont** (*string*): font used for drawing text
+* **textoptions** (*enum*): additional options for drawing text. Supported option: "wordbreak" (for multiline text).
+
+
+**Meta**
+
+* Parents: [:ref:`BasicStyle <visual-styles-classmodel-class-BasicStyle>`]
+
+
+
+.. _visual-styles-classmodel-class-SliderStyle:
+
+SliderStyle
+===========
+
+A Slider draws handle moving over a background.
+
+See also: [:ref:`Slider <skin-elements-classmodel-class-Slider>`] 
+
+**Attributes (29)**
+
+* **centerlinecolor** (*color*): color for a centerline, when the parameter is bipolar and style is "bargraph"
+* **centerlinewidth** (*metric*): width for the centerline
+* **disabledHandleColor** (*color*): color to colorize the handle, when the parameter is disabled (usually handles are not drawn in this case)
+* **hBack** (*image*): background image (horizontal slider) - with optional frames (see above)
+* **hDeepBack** (*image*): additional background (horizontal slider)
+* **hHandle** (*image*): handle (horizontal slider) - with optional frames (see above)
+* **hSmallBack** (*image*): background image (horizontal slider with option "small") - with optional frames (see above)
+* **hSmallHandle** (*image*): handle (horizontal slider with option "small") - with optional frames (see above)
+* **handleColor** (*color*): color to colorize the handle, when the parameter is bipolar and style is "bargraph"
+* **margin** (*metric*): margin between handle and view edges in min/max handle positions
+* **scaleHandle** (*metric*): when handles are too big or small they are scaled with respect to their aspectratio
+* **touchFineMaxScale** (*metric*): max finescale factor (0...1)
+* **touchFineMaxSpeed** (*metric*): upper bound for finescale factor interpolation
+* **touchFineMinScale** (*metric*): min finescale factor (0...1)
+* **touchFineMinSpeed** (*metric*): lower bound for finescale factor interpolation
+* **vBack** (*image*): background image (vertical slider) - can have optional second frame for on-state of style "bargraph" - optional "disabled" on-state frame cannot be the first one
+* **vDeepBack** (*image*): additional background (vertical slider)
+* **vHandle** (*image*): handle (vertical slider) - can have optional second "pressed" frame - and optional third "mouseover" frame - optional "disabled" frame cannot be the first one
+* **vSmallBack** (*image*): background image (vertical slider with option "small") - with optional frames (see above)
+* **vSmallHandle** (*image*): handle (vertical slider with option "small") - with optional frames (see above)
+
+
+Inherited from [:ref:`BasicStyle <visual-styles-classmodel-class-BasicStyle>`]
+
+* **backcolor** (*color*): backgound color
+* **background** (*image*): background image
+* **forecolor** (*color*): color used for foreground elements
+* **hilitecolor** (*color*): color used for a hilite state
+* **strokewidth** (*metric*): width in pixels used when lines are drawn
+* **textalign** (*enum*): alignment of text
+* **textcolor** (*color*): color used for drawing text
+* **textfont** (*string*): font used for drawing text
+* **textoptions** (*enum*): additional options for drawing text. Supported option: "wordbreak" (for multiline text).
+
+
+**Meta**
+
+* Parents: [:ref:`BasicStyle <visual-styles-classmodel-class-BasicStyle>`]
+
+
+
+.. _visual-styles-classmodel-class-TabViewStyle:
+
+TabViewStyle
+============
+
+See also: [:ref:`TabView <skin-elements-classmodel-class-TabView>`] 
+
+**Attributes (21)**
+
+* **activecolor** (*color*): used to draw instead of "backcolor" for the active tab (when no button image available)
+* **activetextcolor** (*color*): used instead of "textcolor" for the active tab
+* **borderColor** (*color*): color of border frame, drawn when no"background" image is available
+* **first** (*image*): background for the first of multiple buttons
+* **headerBackground** (*image*): background for header rect
+* **last** (*image*): background for the last of multiple buttons
+* **menuBackground** (*image*): background for menu button (shown when not all tabs fit in the view)
+* **menuIcon** (*image*): icon shown on menu button
+* **middle** (*image*): background for the middle buttons
+* **prefericon** (*metric*): in case of an icon and a title - only show the icon
+* **single** (*image*): background for a single button
+* **tabHeight** (*metric*): height of tab buttons
+
+
+Inherited from [:ref:`BasicStyle <visual-styles-classmodel-class-BasicStyle>`]
+
+* **backcolor** (*color*): backgound color
+* **background** (*image*): background for content rect
+* **forecolor** (*color*): color used for foreground elements
+* **hilitecolor** (*color*): color used for a hilite state
+* **strokewidth** (*metric*): width in pixels used when lines are drawn
+* **textalign** (*enum*): alignment of text
+* **textcolor** (*color*): color used for drawing text
+* **textfont** (*string*): font used for drawing text
+* **textoptions** (*enum*): additional options for drawing text. Supported option: "wordbreak" (for multiline text).
+
+
+**Meta**
+
+* Parents: [:ref:`BasicStyle <visual-styles-classmodel-class-BasicStyle>`]
+
+
+
+.. _visual-styles-classmodel-class-TextBoxStyle:
+
+TextBoxStyle
+============
+
+If option "transparent" is not set, a TextBox draws a background image.
+
+**Description**
+
+When no image is specified, it is filled in "backcolor, and a rectangular frame in color "forecolor" can be drawn with option "border".
+
+The text is drawn with an optional "padding".
+
+See also: [:ref:`TextBox <skin-elements-classmodel-class-TextBox>`] 
+
+**Attributes (21)**
+
+* **padding** (*metric*): padding for the text, used if one of the paddings for left, top, right, bottom is not specified
+* **padding.bottom** (*metric*): bottom padding for the text
+* **padding.left** (*metric*): left padding for the text
+* **padding.right** (*metric*): right padding for the text
+* **padding.top** (*metric*): top padding for the text
+* **scaletext.maxfont** (*metric*): explicit maximal fontsize when scaletext option is set
+* **scaletext.minfont** (*metric*): explicit minimal fontsize when scaletext option is set
+* **textcolor.alphablend** (*color*): the non-transparent "colorname" color will be alphablended with this color (using "color.alphablend" as fallback) and used as textcolor
+* **textcolor.bright** (*color*): used instead of "textcolor" if the current luminance of the "colorname" color is below the "textcolor.threshold"
+* **textcolor.disabled** (*color*): text color used (instead of "textcolor") when control is disabled
+* **textcolor.threshold** (*metric*): "textcolor.bright" is used instead of "textcolor" if the luminance threshold for the current "colorname" color is below this value - default is 0. 35.
+* **textcolor.transparent** (*color*): used instead of "textcolor" if the TextBox's option "transparent" is set or "colorname" color is transparent
+
+
+Inherited from [:ref:`BasicStyle <visual-styles-classmodel-class-BasicStyle>`]
+
+* **backcolor** (*color*): backgound color
+* **background** (*image*): background image
+* **forecolor** (*color*): color used for foreground elements
+* **hilitecolor** (*color*): color used for a hilite state
+* **strokewidth** (*metric*): width in pixels used when lines are drawn
+* **textalign** (*enum*): alignment of text
+* **textcolor** (*color*): textcolor for the displayed string
+* **textfont** (*string*): font used for drawing text
+* **textoptions** (*enum*): additional options for drawing text. Supported option: "wordbreak" (for multiline text).
+
+
+**Meta**
+
+* Parents: [:ref:`BasicStyle <visual-styles-classmodel-class-BasicStyle>`]
+* Children: [:ref:`EditBoxStyle <visual-styles-classmodel-class-EditBoxStyle>`]
+
+
+
+.. _visual-styles-classmodel-class-ToolButtonStyle:
+
+ToolButtonStyle
+===============
+
+See also: [:ref:`ToolButton <skin-elements-classmodel-class-ToolButton>`] 
+
+**Attributes (14)**
+
+* **popup.offset.x** (*metric*): an additional horizontal offset to the popup position
+* **popup.offset.y** (*metric*): an additional vertical offset to the popup position
+* **popup.palette.bottom** (*metric*): popup the palette on the bottom (mode parameter must be a IPaletteProvider)
+* **popup.palette.right** (*metric*): popup the palette on the right side (mode parameter must be a IPaletteProvider)
+* **popupstyle** (*metric*): when "popupstyle" is true - the toolButton visualStyle is also used for the popup
+
+
+Inherited from [:ref:`BasicStyle <visual-styles-classmodel-class-BasicStyle>`]
+
+* **backcolor** (*color*): backgound color
+* **background** (*image*): background image
+* **forecolor** (*color*): color used for foreground elements
+* **hilitecolor** (*color*): color used for a hilite state
+* **strokewidth** (*metric*): width in pixels used when lines are drawn
+* **textalign** (*enum*): alignment of text
+* **textcolor** (*color*): color used for drawing text
+* **textfont** (*string*): font used for drawing text
+* **textoptions** (*enum*): additional options for drawing text. Supported option: "wordbreak" (for multiline text).
+
+
+**Meta**
+
+* Parents: [:ref:`BasicStyle <visual-styles-classmodel-class-BasicStyle>`]
+
+
+
+.. _visual-styles-classmodel-class-TreeViewStyle:
+
+TreeViewStyle
+=============
+
+**Attributes (42)**
+
+* **expandSize** (*metric*): size of expand symbol (same width & height)
+* **iconSize** (*metric*): size of item icons (same width & height)
+* **itemInset** (*metric*): inset (in pixels) per tree depth level
+* **leafInset** (*metric*): additional inset for leaf items
+
+
+Inherited from [:ref:`ItemViewStyle <visual-styles-classmodel-class-ItemViewStyle>`]
+
+* **backcolor2** (*color*): used to draw alternating backgrounds, the other color is "backcolor"
+* **columnWidth.xxx** (*metric*): overrides the default width (in pixels) for the column with name "xxx"
+* **folderIcon** (*image*): icon for folder items (closed)
+* **highQualityMode** (*metric*): set highQualityMode for image interpolations
+* **iconcolor** (*color*): color to colorize icons of unselected items
+* **margin** (*metric*): margin (in pixels) of itemview content
+* **menu.separatorcolor** (*color*): color of separating line for menu separators
+* **openFolderIcon** (*image*): icon for open folder items
+* **rowHeight** (*metric*): height of rows (in pixels)
+* **scrollRows** (*metric*): how many rows should scroll on mousewheel
+* **scrolling.background** (*image*): background for the whole view
+* **selectediconcolor** (*color*): color to colorize icons of selected items
+* **selectedtextcolor** (*color*): used instead of "textcolor" for selected items
+* **selectionColor** (*color*): used to fill a rectangle around selected items
+* **separatorBeneath** (*metric*): draw one pixel separator beneath items (on the bottom border - not below)
+* **separatorcolor** (*color*): color of separating line between rows
+* **thumbnailFrameColor** (*color*): color of separating frame around thumbnails
+* **thumbnailLimit.height** (*metric*): thumbnails will be scaled down to (at least) this limit
+* **thumbnailLimit.width** (*metric*): thumbnails will be scaled down to (at least) this limit
+* **thumbnailMarginV** (*metric*): additional vertical margin for itemContent if thumbnails available
+* **thumbnailPadding.bottom** (*metric*): bottom padding for thumbnails
+* **thumbnailPadding.left** (*metric*): left padding for thumbnails
+* **thumbnailPadding.top** (*metric*): top padding for thumbnails
+* **thumbnailRatio** (*metric*): thumbnails exceeding the thumbnail limits will be scaled with this ratio
+* **vSnapEnabled** (*metric*): enable snapping to itemSize after scrolling
+* **xxx.backcolor** (*color*): custom background color for items of kind "xxx"
+* **xxx.backcolor2** (*color*): custom alternating background color for items of kind "xxx"
+* **xxx.rowHeight** (*metric*): custom rowHeight for items of kind "xxx"
+* **xxx.separatorcolor** (*color*): custom separator line color for items of kind "xxx"
+
+
+Inherited from [:ref:`BasicStyle <visual-styles-classmodel-class-BasicStyle>`]
+
+* **backcolor** (*color*): backgound color
+* **background** (*image*): background image
+* **forecolor** (*color*): color used for foreground elements
+* **hilitecolor** (*color*): color used for a hilite state
+* **strokewidth** (*metric*): width in pixels used when lines are drawn
+* **textalign** (*enum*): alignment of text
+* **textcolor** (*color*): color used for drawing text
+* **textfont** (*string*): font used for drawing text
+* **textoptions** (*enum*): additional options for drawing text. Supported option: "wordbreak" (for multiline text).
+
+
+**Meta**
+
+* Parents: [:ref:`ItemViewStyle <visual-styles-classmodel-class-ItemViewStyle>`] <- [:ref:`BasicStyle <visual-styles-classmodel-class-BasicStyle>`]
+
+
+
+.. _visual-styles-classmodel-class-TriVectorPadStyle:
+
+TriVectorPadStyle
+=================
+
+See also: [:ref:`TriVectorPad <skin-elements-classmodel-class-TriVectorPad>`] 
+
+**Attributes (23)**
+
+* **handle** (*image*): handle image
+* **handleColor** (*color*): color for the handle when no image is provided
+* **handlesize** (*metric*): size where handle can be clicked (in pixels) when handle is drawn as a circle (no "handle" image)
+* **handlethickness** (*metric*): width of pen in pixels when handle is drawn as a circle (no "handle" image)
+* **padding** (*metric*): padding fallback
+* **padding.bottom** (*metric*): bottom padding triangle base (or peak if upside down)
+* **padding.left** (*metric*): left padding for triangle base
+* **padding.right** (*metric*): right padding for triangle base
+* **padding.top** (*metric*): top padding triangle peak (or base if upside down)
+* **peakpadding.left** (*image*): left padding for triangle peak
+* **snapPointColor** (*color*): color for the snap point highlights
+* **snapsize** (*metric*): size of the snappoint at corner (or at the edge-center when "invert" option is set)
+* **triangle** (*image*): triangle image
+* **triangleColor** (*color*): color of the triangle when no image is provided
+
+
+Inherited from [:ref:`BasicStyle <visual-styles-classmodel-class-BasicStyle>`]
+
+* **backcolor** (*color*): backcolor when no image is provided
+* **background** (*image*): background image
+* **forecolor** (*color*): color used for foreground elements
+* **hilitecolor** (*color*): color used for a hilite state
+* **strokewidth** (*metric*): width in pixels used when lines are drawn
+* **textalign** (*enum*): alignment of text
+* **textcolor** (*color*): color used for drawing text
+* **textfont** (*string*): font used for drawing text
+* **textoptions** (*enum*): additional options for drawing text. Supported option: "wordbreak" (for multiline text).
+
+
+**Meta**
+
+* Parents: [:ref:`BasicStyle <visual-styles-classmodel-class-BasicStyle>`]
+
+
+
+.. _visual-styles-classmodel-class-UpDownButtonStyle:
+
+UpDownButtonStyle
+=================
+
+See also: [:ref:`UpDownButton <skin-elements-classmodel-class-UpDownButton>`] 
+
+**Attributes (9)**
+
+Inherited from [:ref:`BasicStyle <visual-styles-classmodel-class-BasicStyle>`]
+
+* **backcolor** (*color*): backgound color
+* **background** (*image*): background image
+* **forecolor** (*color*): color used for foreground elements
+* **hilitecolor** (*color*): color used for a hilite state
+* **strokewidth** (*metric*): width in pixels used when lines are drawn
+* **textalign** (*enum*): alignment of text
+* **textcolor** (*color*): color used for drawing text
+* **textfont** (*string*): font used for drawing text
+* **textoptions** (*enum*): additional options for drawing text. Supported option: "wordbreak" (for multiline text).
+
+
+**Meta**
+
+* Parents: [:ref:`BasicStyle <visual-styles-classmodel-class-BasicStyle>`]
+
+
+
+.. _visual-styles-classmodel-class-ValueBarStyle:
+
+ValueBarStyle
+=============
+
+Displays a value as a horizontal or verical bar.
+
+**Description**
+
+If no image is specified, "forecolor" and "backcolor" are used to draw the bar and the background as a filled rectangle.
+
+See also: [:ref:`ValueBar <skin-elements-classmodel-class-ValueBar>`] 
+
+**Attributes (14)**
+
+* **centerlinecolor** (*color*): color for a centerline, when the parameter is bipolar
+* **centerlinewidth** (*metric*): width for the centerline
+* **colorize.hilite** (*metric*): use hilitecolor or colorparam color if applicable to colorize the hiliteimage
+* **hilitecolor.alphablend** (*color*): the non-transparent "colorname" color will be alphablended with this color (using "color.alphablend" as fallback) and used to colorize the hiliteimage
+* **hilitecolor.transparent** (*color*): hilitecolor. Transparent is used when colorize.hilite is set and the current color from colorparam is transparent.
+
+
+Inherited from [:ref:`BasicStyle <visual-styles-classmodel-class-BasicStyle>`]
+
+* **backcolor** (*color*): the background valuebar color when no valueBarImage is available
+* **background** (*image*): used to draw the background (frame "normal") and bar (frame "normalOn")
+* **forecolor** (*color*): color used for foreground elements
+* **hilitecolor** (*color*): the active valuebar color (using "forecolor" as fallback) - also used to colorize the valueBarImage when "colorize.hilite" is true
+* **strokewidth** (*metric*): width in pixels used when lines are drawn
+* **textalign** (*enum*): alignment of text
+* **textcolor** (*color*): color used for drawing text
+* **textfont** (*string*): font used for drawing text
+* **textoptions** (*enum*): additional options for drawing text. Supported option: "wordbreak" (for multiline text).
+
+
+**Meta**
+
+* Parents: [:ref:`BasicStyle <visual-styles-classmodel-class-BasicStyle>`]
+
+
+
+.. _visual-styles-classmodel-class-ValueBoxStyle:
+
+ValueBoxStyle
+=============
+
+Drawn like an EditBox.
+
+See also: [:ref:`ValueBox <skin-elements-classmodel-class-ValueBox>`] 
+
+**Attributes (29)**
+
+Inherited from [:ref:`EditBoxStyle <visual-styles-classmodel-class-EditBoxStyle>`]
+
+* **native.padding** (*metric*): padding for the native text control, used if one of the paddings for left, top, right, bottom is not specified
+* **native.padding.bottom** (*metric*): bottom padding for the native text control
+* **native.padding.left** (*metric*): left padding for the native text control
+* **native.padding.right** (*metric*): right padding for the native text control
+* **native.padding.top** (*metric*): top padding for the native text control
+* **selectioncolor** (*color*): background color for selected ranges
+* **textcolor.placeholder** (*color*): dedicated color for optional placeholder string
+* **textfont.placeholder** (*string*): dedicated font for optional placeholder string
+
+
+Inherited from [:ref:`TextBoxStyle <visual-styles-classmodel-class-TextBoxStyle>`]
+
+* **padding** (*metric*): padding for the text, used if one of the paddings for left, top, right, bottom is not specified
+* **padding.bottom** (*metric*): bottom padding for the text
+* **padding.left** (*metric*): left padding for the text
+* **padding.right** (*metric*): right padding for the text
+* **padding.top** (*metric*): top padding for the text
+* **scaletext.maxfont** (*metric*): explicit maximal fontsize when scaletext option is set
+* **scaletext.minfont** (*metric*): explicit minimal fontsize when scaletext option is set
+* **textcolor.alphablend** (*color*): the non-transparent "colorname" color will be alphablended with this color (using "color.alphablend" as fallback) and used as textcolor
+* **textcolor.bright** (*color*): used instead of "textcolor" if the current luminance of the "colorname" color is below the "textcolor.threshold"
+* **textcolor.disabled** (*color*): text color used (instead of "textcolor") when control is disabled
+* **textcolor.threshold** (*metric*): "textcolor.bright" is used instead of "textcolor" if the luminance threshold for the current "colorname" color is below this value - default is 0. 35.
+* **textcolor.transparent** (*color*): used instead of "textcolor" if the TextBox's option "transparent" is set or "colorname" color is transparent
+
+
+Inherited from [:ref:`BasicStyle <visual-styles-classmodel-class-BasicStyle>`]
+
+* **backcolor** (*color*): backgound color
+* **background** (*image*): background image
+* **forecolor** (*color*): color used for foreground elements
+* **hilitecolor** (*color*): color used for a hilite state
+* **strokewidth** (*metric*): width in pixels used when lines are drawn
+* **textalign** (*enum*): alignment of text
+* **textcolor** (*color*): textcolor for the displayed string
+* **textfont** (*string*): font used for drawing text
+* **textoptions** (*enum*): additional options for drawing text. Supported option: "wordbreak" (for multiline text).
+
+
+**Meta**
+
+* Parents: [:ref:`EditBoxStyle <visual-styles-classmodel-class-EditBoxStyle>`] <- [:ref:`TextBoxStyle <visual-styles-classmodel-class-TextBoxStyle>`] <- [:ref:`BasicStyle <visual-styles-classmodel-class-BasicStyle>`]
+
+
+
+.. _visual-styles-classmodel-class-VectorPadStyle:
+
+VectorPadStyle
+==============
+
+See also: [:ref:`VectorPad <skin-elements-classmodel-class-VectorPad>`] 
+
+**Attributes (17)**
+
+* **crosshair** (*color*): draw crosshair
+* **crosshair.color** (*color*): color for crosshair
+* **drawlabels** (*metric*): draws labels with min / max values for both parameters
+* **handle** (*image*): handle
+* **handlecolor** (*color*): used when "handle" image is not available
+* **handlesize** (*metric*): size where handle can be clicked (in pixels) when handle is drawn as a circle (no "handle" image)
+* **handlethickness** (*metric*): width of line in pixels) when handle is drawn as a circle (no "handle" image)
+* **reference.color** (*color*): used to draw the second frame of the "background" image, when the luminacnce of this "reference.color" is > 0. 5f.
+
+
+Inherited from [:ref:`BasicStyle <visual-styles-classmodel-class-BasicStyle>`]
+
+* **backcolor** (*color*): used when "back" image is not available
+* **background** (*image*): background image
+* **forecolor** (*color*): color used for foreground elements
+* **hilitecolor** (*color*): color used for a hilite state
+* **strokewidth** (*metric*): width in pixels used when lines are drawn
+* **textalign** (*enum*): alignment of text
+* **textcolor** (*color*): used for "drawlabels"
+* **textfont** (*string*): font used for drawing text
+* **textoptions** (*enum*): additional options for drawing text. Supported option: "wordbreak" (for multiline text).
+
+
+**Meta**
+
+* Parents: [:ref:`BasicStyle <visual-styles-classmodel-class-BasicStyle>`]
+
+
+
+.. _visual-styles-classmodel-class-WindowBackgroundStyle:
+
+WindowBackgroundStyle
+=====================
+
+Draws a background image.
+
+**Description**
+
+Two separate images can be specified for normal windows and dialogs.
+if no image is available, "backcolor" is used.
+
+**Attributes (11)**
+
+* **DialogBack** (*image*): used when window is a dialog
+* **WindowBack** (*image*): used when window is not a dialog
+
+
+Inherited from [:ref:`BasicStyle <visual-styles-classmodel-class-BasicStyle>`]
+
+* **backcolor** (*color*): backgound color
+* **background** (*image*): background image
+* **forecolor** (*color*): color used for foreground elements
+* **hilitecolor** (*color*): color used for a hilite state
+* **strokewidth** (*metric*): width in pixels used when lines are drawn
+* **textalign** (*enum*): alignment of text
+* **textcolor** (*color*): color used for drawing text
+* **textfont** (*string*): font used for drawing text
+* **textoptions** (*enum*): additional options for drawing text. Supported option: "wordbreak" (for multiline text).
+
+
+**Meta**
+
+* Parents: [:ref:`BasicStyle <visual-styles-classmodel-class-BasicStyle>`]
+
+
+
+*****
+Enums
+*****
+
+.. _visual-styles-classmodel-enumeration-DefaultColors:
+
+DefaultColors
+=============
+
+**Enumerators**
+
+* **aliceblue**
+* **antiquewhite**
+* **aqua**
+* **aquamarine**
+* **azure**
+* **beige**
+* **bisque**
+* **black**
+* **blanchedalmond**
+* **blue**
+* **blueviolet**
+* **brown**
+* **burlywood**
+* **cadetblue**
+* **chartreuse**
+* **chocolate**
+* **coral**
+* **cornflowerblue**
+* **cornsilk**
+* **crimson**
+* **cyan**
+* **darkblue**
+* **darkcyan**
+* **darkgoldenrod**
+* **darkgray**
+* **darkgreen**
+* **darkgrey**
+* **darkkhaki**
+* **darkmagenta**
+* **darkolivegreen**
+* **darkorange**
+* **darkorchid**
+* **darkred**
+* **darksalmon**
+* **darkseagreen**
+* **darkslateblue**
+* **darkslategray**
+* **darkslategrey**
+* **darkturquoise**
+* **darkviolet**
+* **deeppink**
+* **deepskyblue**
+* **dimgray**
+* **dimgrey**
+* **dodgerblue**
+* **firebrick**
+* **floralwhite**
+* **forestgreen**
+* **fuchsia**
+* **gainsboro**
+* **ghostwhite**
+* **gold**
+* **goldenrod**
+* **gray**
+* **green**
+* **greenyellow**
+* **grey**
+* **honeydew**
+* **hotpink**
+* **indianred**
+* **indigo**
+* **ivory**
+* **khaki**
+* **lavender**
+* **lavenderblush**
+* **lawngreen**
+* **lemonchiffon**
+* **lightblue**
+* **lightcoral**
+* **lightcyan**
+* **lightgoldenrodyellow**
+* **lightgray**
+* **lightgreen**
+* **lightgrey**
+* **lightpink**
+* **lightsalmon**
+* **lightseagreen**
+* **lightskyblue**
+* **lightslategray**
+* **lightslategrey**
+* **lightsteelblue**
+* **lightyellow**
+* **lime**
+* **limegreen**
+* **linen**
+* **magenta**
+* **maroon**
+* **mediumaquamarine**
+* **mediumblue**
+* **mediumnightblue**
+* **mediumorchid**
+* **mediumpurple**
+* **mediumseagreen**
+* **mediumslateblue**
+* **mediumspringgreen**
+* **mediumturquoise**
+* **mediumvioletred**
+* **mintcream**
+* **mintyrose**
+* **moccasin**
+* **navajowhite**
+* **navy**
+* **oldlace**
+* **olive**
+* **olivedrab**
+* **orange**
+* **orangered**
+* **orchid**
+* **palegoldenrod**
+* **palegreen**
+* **paleturquoise**
+* **palevioletred**
+* **papayawhip**
+* **peachpuff**
+* **peru**
+* **pink**
+* **plum**
+* **powderblue**
+* **purple**
+* **red**
+* **rosybrown**
+* **royalblue**
+* **saddlebrown**
+* **salmon**
+* **sandybrown**
+* **seagreen**
+* **seashell**
+* **sienna**
+* **silver**
+* **skyblue**
+* **slateblue**
+* **slategray**
+* **slategrey**
+* **snow**
+* **springgreen**
+* **steelblue**
+* **tan**
+* **teal**
+* **thistle**
+* **tomato**
+* **turquoise**
+* **violet**
+* **wheat**
+* **white**
+* **whitesmoke**
+* **yellow**
+* **yellowgreen**
+
+
+
+
+
+.. _visual-styles-classmodel-enumeration-StandardStyles:
+
+StandardStyles
+==============
+
+**Enumerators**
+
+* **Border**
+* **Button**
+* **CheckBox**
+* **ComboBox**
+* **ContextMenu**
+* **DialogGroup**
+* **Divider**
+* **EditBox**
+* **HeaderView**
+* **Knob**
+* **Label**
+* **ListView**
+* **MenuBarControl**
+* **MenuControl**
+* **PageControl**
+* **PalettePopup**
+* **PerspectiveSwitcher**
+* **PopupMenu**
+* **PopupMenuLarge**
+* **ProgressBar**
+* **RadioButton**
+* **RangeSlider**
+* **ScrollBar**
+* **ScrollButton**
+* **ScrollPicker**
+* **SegmentBox**
+* **SelectBox**
+* **Slider**
+* **TabView**
+* **TextBox**
+* **TreeView**
+* **TriVectorPad**
+* **UpDownBox**
+* **ValueBar**
+* **ValueBox**
+* **VectorPad**
+* **WindowBackground**
+
+
+
+
+
+.. _visual-styles-classmodel-enumeration-ThemeColors:
+
+ThemeColors
+===========
+
+**Enumerators**
+
+* **AlphaCursorColor**
+* **AlphaSelectionColor**
+* **HyperlinkColor**
+* **ListViewBackColor**
+* **PushButtonTextColor**
+* **SelectionColor**
+* **SelectionTextColor**
+* **TooltipBackColor**
+* **TooltipTextColor**
+
+
+
+
+
+.. _visual-styles-classmodel-enumeration-ThemeCursors:
+
+ThemeCursors
+============
+
+**Enumerators**
+
+* **ArrowCursor**
+* **CopyCursor**
+* **CrosshairCursor**
+* **GrabCursor**
+* **GrabbingCursor**
+* **NoDropCursor**
+* **PointhandCursor**
+* **SizeDownCursor**
+* **SizeHorizontalCursor**
+* **SizeLeftCursor**
+* **SizeLeftDownCursor**
+* **SizeLeftDownRightUpCursor**
+* **SizeLeftUpCursor**
+* **SizeLeftUpRightDownCursor**
+* **SizeRightCursor**
+* **SizeRightDownCursor**
+* **SizeRightUpCursor**
+* **SizeUpCursor**
+* **SizeVerticalCursor**
+* **TextCursor**
+* **WaitCursor**
+* **ZoomInCursor**
+* **ZoomOutCursor**
+
+
+
+
+
+.. _visual-styles-classmodel-enumeration-ThemeElementImages:
+
+ThemeElementImages
+==================
+
+**Enumerators**
+
+* **Button**
+* **CheckBox**
+* **RadioButton**
+* **TreeViewExpandButton**
+
+
+
+
+
+.. _visual-styles-classmodel-enumeration-ThemeElementStates:
+
+ThemeElementStates
+==================
+
+**Enumerators**
+
+* **disabled**
+* **focus**
+* **mouseover**
+* **normal**
+* **pressed**
+
+
+
+
+
+.. _visual-styles-classmodel-enumeration-ThemeElementStatesOn:
+
+ThemeElementStatesOn
+====================
+
+**Enumerators**
+
+* **disabledOn**
+* **focus**
+* **mouseoverOn**
+* **normalOn**
+* **pressedOn**
+
+
+
+
+
+.. _visual-styles-classmodel-enumeration-ThemeFonts:
+
+ThemeFonts
+==========
+
+**Enumerators**
+
+* **MenuFont**
+
+
+
+
+
+.. _visual-styles-classmodel-enumeration-ThemeMetrics:
+
+ThemeMetrics
+============
+
+**Enumerators**
+
+* **Border**
+* **ButtonHeight**
+* **ButtonWidth**
+* **CheckBoxSize**
+* **DividerOutreach**
+* **DividerSize**
+* **HeaderHeight**
+* **Margin**
+* **ScrollBarSize**
+* **SliderHandleSize**
+* **Spacing**
+* **SystemMarginLeft**
+* **SystemMarginRight**
+* **SystemNavigationBarHeight**
+* **SystemStatusBarHeight**
+* **TextBoxHeight**
+* **TitleBarHeight**
+
+
+
+
+
+.. raw:: latex
+
+	\clearpage
+

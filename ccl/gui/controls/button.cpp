@@ -1509,6 +1509,7 @@ BEGIN_VISUALSTYLE_CLASS (ToolButton, VisualStyle, "ToolButtonStyle")
 	ADD_VISUALSTYLE_STRING  ("decorform")			///< an optional "decorform" name identifying the form that decorates the popup
 	ADD_VISUALSTYLE_METRIC  ("popup.palette.right")	///< popup the palette on the right side (mode parameter must be a IPaletteProvider)
 	ADD_VISUALSTYLE_METRIC  ("popup.palette.bottom") ///< popup the palette on the bottom (mode parameter must be a IPaletteProvider)
+	ADD_VISUALSTYLE_METRIC  ("popup.extended") 		///< displays the popup as an extended menu instead of the default tree menu
 END_VISUALSTYLE_CLASS (ToolButton)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1690,8 +1691,12 @@ void ToolButton::showModeMenu ()
 				popupSelector->setBehavior (popupSelector->getBehavior ()|IPopupSelector::kAcceptsAfterSwipe);
 		}
 	}
-	
-	Promise promise (popupSelector->popupAsync (modeParam, sizeInfo, MenuPresentation::kTree));
+
+	CString menuType = MenuPresentation::kTree;
+	if(visualStyle && visualStyle->getMetric<bool> ("popup.extended", false))
+		menuType = MenuPresentation::kExtended;
+
+	Promise promise (popupSelector->popupAsync (modeParam, sizeInfo, menuType));
 	promise.then ([=] (IAsyncOperation& operation)
 	{
 		This->popupSelector = nullptr;

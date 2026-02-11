@@ -264,20 +264,6 @@ protected:
 extern UserInterface& GUI;	///< global GUI instance
 
 //************************************************************************************************
-// UserInterface::TooltipSuspender
-//************************************************************************************************
-
-class UserInterface::TooltipSuspender
-{
-public:
-	TooltipSuspender ();
-	~TooltipSuspender ();
-
-private:
-	bool wasSuspended;
-};
-
-//************************************************************************************************
 // UserInterface::TimerBlocker
 //************************************************************************************************
 

@@ -107,6 +107,7 @@ void RasterWindowRenderTarget::onSize ()
 
 	if(listener == nullptr && linuxWindow->wantsFrameCallback ())
 	{
+		applyContentScaleFactor ();
 		listener = NEW Listener (this);
 		onPresent ();
 	}

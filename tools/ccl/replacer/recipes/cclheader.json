@@ -1,0 +1,29 @@
+{
+	"root": "../../../../../../..",
+	"fileTypes": "*.cpp;*.h;*.c;*.mm;*.js;*.ts;*.java;*.sh;*.bat;*.nsh;*.nsi;*.txt;*.cmake;*.frag;*.hlsl;*.metal;*.vert;*.py;*.in",
+	"commentStyles":
+	[
+		"//",
+		"#",
+		";"
+	],
+	"options":
+	{
+		"maxLineCount": 20
+	},
+	"replacements":
+	[
+		{
+			"searchString": "Core Library",
+			"replaceMode": "remove+1"
+		},
+		{
+			"searchString": "Crystal Class Library",
+			"replaceMode": "remove+1"
+		},
+		{
+			"searchString": "Copyright (c)*CCL Software Licensing GmbH.",
+			"replaceString": "Copyright (c) 2025 CCL Software Licensing GmbH."
+		}
+	]
+}

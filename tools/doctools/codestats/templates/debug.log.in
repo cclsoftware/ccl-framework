@@ -1,0 +1,11 @@
+Timestamp: {{ log_data.timestamp }}
+Path: {{ log_data.scan_path }}
+[+]: included file
+[-]: excluded file
+
+--------------------------
+
+{% for file_stat in log_data.file_stats -%}
+{% set include_exclude = "-" if file_stat.excluded else "+" -%}
+[{{ include_exclude }}] [{{ file_stat.linecount | rjust_int(6) }}] {{ file_stat.path }}
+{% endfor %}

@@ -42,6 +42,7 @@ protected:
 	NSView* hostView;
 	id<NSObject> sizeObserver;
 	id<NSObject> scaleObserver;
+	unsigned long siblingViewCount;
 
     // MetalWindowRenderTarget
 	void initialize () override;

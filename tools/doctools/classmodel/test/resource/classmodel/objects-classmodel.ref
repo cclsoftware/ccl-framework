@@ -1,0 +1,24 @@
+#########################
+Test Repository Reference
+#########################
+
+*******
+Objects
+*******
+
+.. _objects-classmodel-object-Test Object:
+
+Test Object
+===========
+
+**Methods**
+
+* void **method1** (void: *arg1*)
+
+
+
+
+.. raw:: latex
+
+	\clearpage
+

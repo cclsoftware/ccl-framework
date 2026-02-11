@@ -164,6 +164,7 @@ public:
 	void tryMaximize (bool state);
 	void inflate ();
 	bool cancelDragSession ();
+	void onViewRemoved (View* view);
 
 	virtual void updateSize ();
 	virtual void moveWindow ();

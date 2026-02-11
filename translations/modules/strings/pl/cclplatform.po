@@ -7,7 +7,7 @@ msgstr ""
 #: android/system/filemanager.android.cpp
 msgctxt "FileManager"
 msgid "Internal Storage"
-msgstr ""
+msgstr "Wewnętrzna pamięć masowa"
 
 #: cocoa/gui/fileselector.cocoa.mm
 msgctxt "FileSelector"

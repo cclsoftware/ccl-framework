@@ -1757,7 +1757,7 @@ msgstr "Duplikaty wtyczek zostały ukryte"
 #: browser/pluginmanagement.cpp
 msgctxt "PlugInManagement"
 msgid "Remove Plug-in Settings"
-msgstr "Usuń ustawienia wtyczki"
+msgstr "Usuń ustawienia wtyczek"
 
 #: browser/pluginmanagement.cpp
 msgctxt "PlugInManagement"

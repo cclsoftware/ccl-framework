@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Model.ClassRepository xmlns:x="https://ccl.dev/xml" name="Test Repository">
+	<List x:id="classes">
+		<Model.Class name="BaseClass">
+		</Model.Class>
+		<Model.Class name="TestClass" parent="BaseClass">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text="Test Class Brief Doc"/>
+				<String x:id="detailed" text="Test Class Detailed Doc"/>
+			</Model.Documentation>
+			<List x:id="members">
+				<Model.Member name="member1" type="string" typeName="string">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="Brief doc member1"/>
+						<String x:id="detailed" text="Detailed doc member1."/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="member2" type="string" typeName="enum">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="Brief doc member2"/>
+					</Model.Documentation>
+				</Model.Member>
+			</List>
+			<Attributes x:id="attributes">
+				<Attribute id="Class:DocGroup" value="Test Group"/>
+			</Attributes>
+		</Model.Class>
+	</List>
+	<List x:id="enums">
+		<Model.Enumeration name="TestClass.member2">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text="TestClass.member2 Brief Doc"/>
+				<String x:id="detailed" text="TestClass.member2 Detailed Doc"/>
+			</Model.Documentation>
+			<List x:id="enumerators">
+				<Model.Enumerator name="enumerator1" value="0">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="Brief doc enumerator1"/>
+						<String x:id="detailed" text="Detailed doc enumerator1"/>
+					</Model.Documentation>
+				</Model.Enumerator>
+				<Model.Enumerator name="enumerator2" value="1">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="Brief doc enumerator2"/>
+					</Model.Documentation>
+				</Model.Enumerator>
+			</List>
+		</Model.Enumeration>
+	</List>
+</Model.ClassRepository>

@@ -1,0 +1,25 @@
+#: ./source.cpp
+msgctxt "Test strings"
+msgid "First string"
+msgstr ""
+
+#: ./translation.js
+msgctxt "Script strings"
+msgid "Script test string 1."
+msgstr ""
+
+#: ./translation.js
+msgctxt "Script strings"
+msgid "Script test string 2."
+msgstr ""
+
+#: ./source.cpp
+msgctxt "Test strings"
+msgid "Second string"
+msgstr ""
+
+#: ./source.cpp
+msgctxt "Test strings"
+msgid "Third string"
+msgstr ""
+

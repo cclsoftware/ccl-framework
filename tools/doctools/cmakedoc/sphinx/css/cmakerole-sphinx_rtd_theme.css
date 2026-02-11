@@ -1,0 +1,4 @@
+﻿/* Order sensitive, hover must be last, may also be a:visited:hover */
+code.cmake-ref a { color: #000000 !important; text-decoration: none !important }
+code.cmake-ref a:visited { color: #000000 !important }
+code.cmake-ref a:hover { color: #00bbff !important; text-decoration: underline !important }

@@ -141,6 +141,7 @@ void VulkanWindowRenderTarget::onSize ()
 
 	if(listener == nullptr && linuxWindow->wantsFrameCallback ())
 	{
+		applyContentScaleFactor ();
 		applySize ();
 		listener = NEW Listener (this);
 		onPresent ();

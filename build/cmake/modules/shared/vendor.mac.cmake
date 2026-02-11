@@ -22,6 +22,7 @@ add_compile_options (
 	"-fno-aligned-allocation"
 	"-Wno-undefined-bool-conversion"
 	"-Wno-expansion-to-defined"
+	"$<$<CONFIG:RELEASE>:-ffast-math>"
 )
 
 # add default linker options
