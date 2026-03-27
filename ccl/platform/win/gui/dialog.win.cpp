@@ -319,6 +319,20 @@ IAsyncOperation* PopupSelectorWindow::showPlatformDialog (IWindow* parent)
 	if(previousHook == NULL)
 		gActiveMouseHook = ::SetWindowsHookEx (WH_MOUSE, (HOOKPROC)CCLMouseHook, g_hMainInstance, ::GetCurrentThreadId ());
 
+	float scaleFactor = Win32::gScreens.screenForCoordRect (size).scaleFactor; // note: savedDpiFactor has not been set yet
+
+	// avoid an unwanted "gap" between the popup and the reference view in the parent window, which could be caused by
+	// rounding up in coordToPixel, when Win32Window::setWindowSize () later converts to pixels
+	Point position (getSize ().getLeftTop ());
+	DpiScale::adjustPositionPixelAligned (position, scaleFactor);
+
+	if(position != getSize ().getLeftTop ())
+	{
+		Rect shiftedSize (getSize ());
+		shiftedSize.moveTo (position);
+		setSize (shiftedSize);
+	}
+
 	ObservedPtr<IWindow> parentWindow (parent);
 	IAsyncOperation* operation = Dialog::showPlatformDialog (parent);
 

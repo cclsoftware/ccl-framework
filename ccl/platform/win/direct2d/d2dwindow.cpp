@@ -241,16 +241,17 @@ void D2DWindowRenderTarget::flush ()
 
 		Rect maxRect;
 		window.getClientRect (maxRect);
-		for(int i = 0; i < rectList.rectCount; i++)
-			rectList.rects[i].bound (maxRect);
+		DpiScale::toPixelRect (maxRect, getContentScaleFactor (), DpiScale::kScaleRectFrame);
 
-		rectList.removeEmptyRects ();
 		if(rectList.rectCount > 0 || !scrollRect.isEmpty ())
 		{
 			DXGI_PRESENT_PARAMETERS params = {};
 			if(rectList.rectCount > 0)
 			{
 				rectList.adjustToPixels (getContentScaleFactor ());
+				for(int i = 0; i < rectList.rectCount; i++)
+					rectList.rects[i].bound (maxRect);
+				rectList.removeEmptyRects ();
 
 				params.DirtyRectsCount = rectList.rectCount;
 				params.pDirtyRects = reinterpret_cast<RECT*> (rectList.rects);

@@ -335,8 +335,7 @@ macro (ccl_configure_target target)
 		set_target_properties (${target} PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${target_buildoutput_directory}")
 		set_target_properties (${target} PROPERTIES COMPILE_PDB_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}")
 		
-		cmake_path (RELATIVE_PATH target_buildoutput_directory BASE_DIRECTORY "${REPOSITORY_ROOT}/build" OUTPUT_VARIABLE relative_build_directory)
-		target_compile_definitions (${target} PRIVATE "CORE_BUILD_PATH=\"${relative_build_directory}\"")
+		target_compile_definitions (${target} PRIVATE "CORE_BUILD_PATH=\"${target_buildoutput_directory}\"")
 	endif ()
 	
 	# add platform implementation files and other platform-specific definitions
@@ -452,7 +451,7 @@ endmacro ()
 macro (ccl_add_app target)
 	set (executable_flags "")	
 
-	cmake_parse_arguments (app_params "GUI;BUNDLE" "SUBDIR;VENDOR;VERSION_FILE;VERSION_PREFIX" "" ${ARGN})
+	cmake_parse_arguments (app_params "GUI;BUNDLE" "SUBDIR;VENDOR;VERSION_FILE;VERSION_PREFIX;BASEDIR" "" ${ARGN})
 	if (app_params_GUI)
 		set (app_params_BUNDLE ON)
 		if ("${VENDOR_PLATFORM}" STREQUAL "win")
@@ -474,6 +473,12 @@ macro (ccl_add_app target)
 	if (app_params_VENDOR)
 		ccl_set_vendor (${target} ${app_params_VENDOR})
 	endif ()
+	
+	if (NOT app_params_BASEDIR)
+		set (app_params_BASEDIR "${CMAKE_CURRENT_LIST_DIR}/..")
+	endif ()
+	cmake_path (NORMAL_PATH app_params_BASEDIR)
+	target_compile_definitions (${target} PRIVATE "$<$<CONFIG:DEBUG>:CCL_APPLICATION_BASEDIR=\"${app_params_BASEDIR}\">")
 	
 	if (app_params_VERSION_FILE)
 		ccl_read_version (${target} "${app_params_VERSION_FILE}" ${app_params_VERSION_PREFIX})
@@ -564,6 +569,8 @@ macro (ccl_set_vendor target vendor)
 	configure_file ("${CCL_IDENTITIES_DIR}/shared/vendor.h.in" "${vendor_include_directory}/vendor.h.new")
 	file (COPY_FILE "${vendor_include_directory}/vendor.h.new" "${vendor_include_directory}/vendor.h" ONLY_IF_DIFFERENT)
 	target_include_directories (${target} BEFORE PRIVATE "${vendor_include_directory}")
+	
+	target_compile_definitions (${target} PRIVATE "$<$<CONFIG:DEBUG>:VENDOR_IDENTITY_DIR=\"${${vendor}_IDENTITY_DIR}/${vendor}\">")
 	
 	# apply platform-specific configuration
 	if (COMMAND ccl_configure_vendor)

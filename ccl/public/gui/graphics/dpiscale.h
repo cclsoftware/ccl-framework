@@ -20,8 +20,7 @@
 #define _ccl_dpiscale_h
 
 #include "ccl/public/gui/graphics/rect.h"
-
-#include <math.h>
+#include "ccl/public/math/mathprimitives.h"
 
 namespace CCL {
 
@@ -32,6 +31,12 @@ namespace CCL {
 namespace DpiScale 
 {
 	constexpr float kFloatCoordPrecision = 0.00195; // precision of float to integer conversion (32768 / 2^24)
+
+	enum RectScalingMode
+	{
+		kScaleRectArea,		///< scale width/height, rounding differences affect right/bottom
+		kScaleRectFrame		///< scale right/bottom, rounding differences affect width/height
+	};
 
 	float getDpi (float dpiFactor);
 	float getFactor (int dpi);
@@ -44,8 +49,8 @@ namespace DpiScale
 	int pixelToCoord (int pixel, float dpiFactor);
 	void toPixelPoint (Point& p, float dpiFactor);
 	void toCoordPoint (Point& p, float dpiFactor);
-	void toPixelRect (Rect& size, float dpiFactor);
-	void toCoordRect (Rect& size, float dpiFactor);
+	void toPixelRect (Rect& size, float dpiFactor, RectScalingMode mode = kScaleRectArea);
+	void toCoordRect (Rect& size, float dpiFactor, RectScalingMode mode = kScaleRectArea);
 	void toPixelPointF (PointF& p, float dpiFactor);
 	void toCoordPointF (PointF& p, float dpiFactor);
 	void toPixelRectF (RectF& size, float dpiFactor);
@@ -54,6 +59,7 @@ namespace DpiScale
 	bool isIntAligned (float); // check if float can be converted to int without remainder
 	bool isPointIntAligned (const PointF& p);
 	bool isRectIntAligned (const RectF& r);
+	void adjustPositionPixelAligned (Point& p, float dpiFactor);
 }
 
 //************************************************************************************************
@@ -63,10 +69,10 @@ namespace DpiScale
 class PixelRect: public Rect
 {
 public:
-	PixelRect (RectRef rect, float dpiFactor)
+	PixelRect (RectRef rect, float dpiFactor, DpiScale::RectScalingMode mode = DpiScale::kScaleRectArea)
 	: Rect (rect)
 	{
-		DpiScale::toPixelRect (*this, dpiFactor);
+		DpiScale::toPixelRect (*this, dpiFactor, mode);
 	}
 };
 
@@ -143,17 +149,17 @@ inline float DpiScale::pixelFToCoordF (float pixel, float dpiFactor) { return (p
 inline int DpiScale::coordToPixel (int coord, float dpiFactor)
 {
 	if(coord >= 0)
-		return int (coordToPixelF (coord, dpiFactor) + kFloatCoordPrecision);
+		return int (ccl_round<0> (coordToPixelF (coord, dpiFactor)) + kFloatCoordPrecision);
 	else
-		return int (coordToPixelF (coord, dpiFactor) - kFloatCoordPrecision);
+		return int (ccl_round<0> (coordToPixelF (coord, dpiFactor)) - kFloatCoordPrecision);
 }
 
 inline int DpiScale::pixelToCoord (int pixel, float dpiFactor)
 {
 	if(pixel >= 0)
-		return int (ceil (pixelToCoordF (pixel, dpiFactor) - kFloatCoordPrecision));
+		return int (ccl_round<0> (pixelToCoordF (pixel, dpiFactor)) + kFloatCoordPrecision);
 	else
-		return int (floor (pixelToCoordF (pixel, dpiFactor) + kFloatCoordPrecision));
+		return int (ccl_round<0> (pixelToCoordF (pixel, dpiFactor)) - kFloatCoordPrecision);
 }
 
 inline void DpiScale::toPixelPoint (Point& p, float dpiFactor)
@@ -174,29 +180,57 @@ inline void DpiScale::toCoordPoint (Point& p, float dpiFactor)
 	}
 }
 
-inline void DpiScale::toPixelRect (Rect& size, float dpiFactor)
+inline void DpiScale::toPixelRect (Rect& size, float dpiFactor, RectScalingMode mode)
 { 
-	if(dpiFactor != 1.f) 
+	if(dpiFactor == 1.f)
+		return;
+
+	switch(mode)
 	{
-		int w = size.getWidth ();
-		int h = size.getHeight ();		
+	case kScaleRectArea :
+		{
+			int w = size.getWidth ();
+			int h = size.getHeight ();
+			size.left = coordToPixel (size.left, dpiFactor);
+			size.top = coordToPixel (size.top, dpiFactor);
+			size.setWidth (coordToPixel (w, dpiFactor));
+			size.setHeight (coordToPixel (h, dpiFactor));
+		}
+		break;
+
+	case kScaleRectFrame :
 		size.left = coordToPixel (size.left, dpiFactor);
 		size.top = coordToPixel (size.top, dpiFactor);
-		size.setWidth (coordToPixel (w, dpiFactor));
-		size.setHeight (coordToPixel (h, dpiFactor));
+		size.right = coordToPixel (size.right, dpiFactor);
+		size.bottom = coordToPixel (size.bottom, dpiFactor);
+		break;
 	}
 }
 
-inline void DpiScale::toCoordRect (Rect& size, float dpiFactor)
+inline void DpiScale::toCoordRect (Rect& size, float dpiFactor, RectScalingMode mode)
 {
-	if(dpiFactor != 1.f)
+	if(dpiFactor == 1.f)
+		return;
+
+	switch(mode)
 	{
-		int w = size.getWidth ();
-		int h = size.getHeight ();		
+	case kScaleRectArea :
+		{
+			int w = size.getWidth ();
+			int h = size.getHeight ();
+			size.left = pixelToCoord (size.left, dpiFactor);
+			size.top = pixelToCoord (size.top, dpiFactor);
+			size.setWidth (pixelToCoord (w, dpiFactor));
+			size.setHeight (pixelToCoord (h, dpiFactor));
+		}
+		break;
+
+	case kScaleRectFrame :
 		size.left = pixelToCoord (size.left, dpiFactor);
 		size.top = pixelToCoord (size.top, dpiFactor);
-		size.setWidth (pixelToCoord (w, dpiFactor));
-		size.setHeight (pixelToCoord (h, dpiFactor));
+		size.right = pixelToCoord (size.right, dpiFactor);
+		size.bottom = pixelToCoord (size.bottom, dpiFactor);
+		break;
 	}
 }
 
@@ -257,6 +291,22 @@ inline bool DpiScale::isRectIntAligned (const RectF& r)
 		&& isIntAligned (r.top)
 		&& isIntAligned (r.right)
 		&& isIntAligned (r.bottom);
+}
+
+inline void DpiScale::adjustPositionPixelAligned (Point& p, float dpiFactor)
+{
+	if(dpiFactor < 2.f && !isIntAligned (dpiFactor))
+	{
+		PixelPointF pixelPos (p, dpiFactor);
+		PointF fractionalPixels (fmod (pixelPos.x, 1), fmod (pixelPos.y, 1));
+
+		// coordToPixel rounds up if the fractional part is >= 0.5
+		constexpr float kRoundupThreshold = 0.4999;
+		if(fractionalPixels.x >= kRoundupThreshold)
+			p.x--;
+		if(fractionalPixels.y >= kRoundupThreshold)
+			p.y--;
+	}
 }
 
 } // namespace CCL

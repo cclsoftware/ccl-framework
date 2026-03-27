@@ -65,15 +65,15 @@ void GdiClipRegion::RectList::removeEmptyRects ()
 
 void GdiClipRegion::RectList::adjustToCoords (float scaleFactor)
 {
-	if(scaleFactor != 1.f)
+	if(scaleFactor == 1.f)
+		return;
+
+	bool fractionalScaling = DpiScale::isIntAligned (scaleFactor) == false;
+	for(int i = 0; i < rectCount; i++)
 	{
-		bool fractionalScaling = DpiScale::isIntAligned (scaleFactor) == false;
-		for(int i = 0; i < rectCount; i++)
-		{
-			DpiScale::toCoordRect (rects[i], scaleFactor);
-			if(fractionalScaling)
-				rects[i].expand (1); 
-		}
+		DpiScale::toCoordRect (rects[i], scaleFactor, DpiScale::kScaleRectFrame);
+		if(fractionalScaling)
+			rects[i].expand (1); 
 	}
 }
 
@@ -81,9 +81,16 @@ void GdiClipRegion::RectList::adjustToCoords (float scaleFactor)
 
 void GdiClipRegion::RectList::adjustToPixels (float scaleFactor)
 {
-	if(scaleFactor != 1.f)
-		for(int i = 0; i < rectCount; i++)
-			DpiScale::toPixelRect (rects[i], scaleFactor);					
+	if(scaleFactor == 1.f)
+		return;
+
+	bool fractionalScaling = DpiScale::isIntAligned (scaleFactor) == false;
+	for(int i = 0; i < rectCount; i++)
+	{
+		DpiScale::toPixelRect (rects[i], scaleFactor, DpiScale::kScaleRectFrame);
+		if(fractionalScaling)
+			rects[i].contract (1);
+	}
 }
 
 //************************************************************************************************

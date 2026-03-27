@@ -189,7 +189,7 @@ IUnknown* PluginSearchProvider::customizeSearchResult (CustomizeArgs& args, IUnk
 				args.presentation.setTitle (classInfo.getTitle ().isEmpty () ? classInfo.getName () : classInfo.getTitle ());
 
 				args.resultCategory = getResultCategory ();
-				args.sortString = PlugInSortMethods::getType (*description);
+				args.sortString = classInfo.getName ();
 			}
 		}
 	return nullptr;

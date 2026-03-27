@@ -73,6 +73,13 @@ class Metal3DBuffer: public Native3DGraphicsBuffer
 public:
 	DECLARE_CLASS (Metal3DBuffer, Native3DGraphicsBuffer)
 
+	#if CCL_PLATFORM_MAC || TARGET_OS_SIMULATOR
+	static constexpr uint32 kBufferAlignment = 256;
+	#else
+	static constexpr uint32 kBufferAlignment = 16;
+	#endif
+	static constexpr uint32 kConstantAlignment = 4;
+
 	bool create (GraphicsBuffer3DType type, BufferUsage3D usage,
 				 uint32 sizeInBytes, uint32 strideInBytes, const void* initialData);
 	id<MTLBuffer> getBuffer () const { return metalBuffer; }
@@ -266,6 +273,7 @@ protected:
 	DataFormat3D indexBufferFormat;
 	
 	void prepareEncoder ();
+	void clear ();
 };
 
 //************************************************************************************************

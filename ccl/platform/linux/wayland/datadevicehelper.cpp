@@ -164,7 +164,7 @@ bool DataDeviceHelper::hasClipboardTextChanged () const
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void DataDeviceHelper::finishInternalDrag ()
+bool DataDeviceHelper::finishInternalDrag ()
 {
 	if(wl_data_offer* offer = listener.getOffer ())
 	{
@@ -173,7 +173,9 @@ void DataDeviceHelper::finishInternalDrag ()
 		wl_data_offer_finish (offer);
 		wl_data_offer_destroy (offer);
 		listener.setOffer (nullptr);
+		return true;
 	}
+	return false;
 }
 
 //************************************************************************************************

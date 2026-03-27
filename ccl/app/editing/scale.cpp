@@ -573,13 +573,11 @@ int Scale::getCenter () const
 Coord Scale::unitToPixel (Unit value) const
 {
 	Unit unitOffset = isReversed () ? -1 : 0;
-
-	Unit minValue = unitOffset;
 	Unit maxValue = numUnits + unitOffset;
 	if(isReversed ())
 		value = maxValue - value;
 
-	value = ccl_bound<Unit> (value, minValue, maxValue);
+	value = ccl_bound<Unit> (value, 0, numUnits);
 
 	Coord position = ccl_to_int<Coord> ((double)value / unitsPerPixel);
 	position += isReversed () ? -offset : offset;
@@ -595,11 +593,12 @@ Scale::Unit Scale::pixelToUnit (Coord position) const
 
 	Unit value = (Unit)(position * unitsPerPixel);
 
-	Unit maxValue = numUnits - 1;
+	Unit unitOffset = isReversed () ? -1 : 0;
+	Unit maxValue = numUnits + unitOffset;
 	if(isReversed ())
 		value = maxValue - value;
 
-	value = ccl_bound<Unit> (value, 0, maxValue);
+	value = ccl_bound<Unit> (value, 0, numUnits);
 
 	return value;
 }

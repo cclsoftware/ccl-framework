@@ -174,9 +174,12 @@ void* IOSWindow::getTopViewController () const
 {
 	UIViewController* viewController = VIEWCONTROLLER;
     
-    while([viewController presentedViewController])
-        viewController = [viewController presentedViewController];
-
+    while(UIViewController* child = [viewController presentedViewController])
+    {
+		if([child isBeingDismissed])
+			break;
+		viewController = child;
+	}
     return (void*)viewController;
 }
 

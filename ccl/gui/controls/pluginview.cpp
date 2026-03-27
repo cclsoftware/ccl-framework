@@ -643,7 +643,7 @@ void PlugInView::attached (View* parent)
 	}
 	else
 	{
-		// Use child window on Windows, Linux, and sometimes Mac platforms.
+		// Use child window on Windows, Linux and Mac platforms.
 		// Assume other platforms attach to the parent window directly.
 	
 		bool useChildWindow = false;

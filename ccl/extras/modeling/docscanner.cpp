@@ -2263,6 +2263,8 @@ bool GuiDocuScanner::MacroHandler::handleVisualStyle (SourceFileParser::Element&
 			pushProperty ("enum");
 		else if(token.text == "ADD_VISUALSTYLE_IMAGE")
 			pushProperty ("image");
+		else if(token.text == "ADD_VISUALSTYLE_STRING")
+			pushProperty ("string");
 
 		else
 		{

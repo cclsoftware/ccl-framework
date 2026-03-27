@@ -95,7 +95,7 @@ protected:
 	void setLayeredRenderTarget (bool state);
 	void setLayeredMode (bool state);
 
-	bool hasVisibleMenuBar () const;
+	bool hasVisiblePlatformMenuBar () const;
 
 	// Window
 	void updateMenuBar () override;

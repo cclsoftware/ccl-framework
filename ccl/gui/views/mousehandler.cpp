@@ -243,14 +243,22 @@ void MouseHandler::cancel ()
 void CCL_API MouseHandler::notify (ISubject* subject, MessageRef msg)
 {
 	if(msg == "cancel")
+	{
 		if(Window* window = view->getWindow ())
 			window->setMouseHandler (nullptr); // handler is destroyed here!!
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 void CCL_API MouseHandler::onTimer (ITimer*)
 {
+	if(view == nullptr || !view->isAttached ())
+	{
+		cancel ();
+		return;
+	}
+
 	if(canEscape () && GUI.isKeyPressed (VKey::kEscape))
 	{
 		cancel ();

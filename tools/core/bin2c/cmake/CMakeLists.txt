@@ -42,7 +42,7 @@ if (CCL_INSTALL_TOOLS)
 endif ()
 
 list (APPEND bin2c_source_files
-	${CMAKE_CURRENT_LIST_DIR}/../source/bin2c.h
+	${corelib_DIR}/extras/tools/bin2c.h
 	${CMAKE_CURRENT_LIST_DIR}/../source/main.cpp
 )
 

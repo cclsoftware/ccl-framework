@@ -28,6 +28,8 @@
 #include "ccl/platform/cocoa/quartz/cghelper.h"
 #include "ccl/platform/cocoa/cclcocoa.h"
 
+#include "ccl/public/math/mathprimitives.h"
+
 #include "ccl/public/base/ccldefpush.h"
 
 #include <QuartzCore/CAAnimation.h>
@@ -48,7 +50,7 @@ using namespace MacOS;
 
 inline ::CATransform3D toCATransform (CCL::TransformRef t)
 {
-	::CGAffineTransform cgt = {t.a0, t.b0, t.a1, t.b1, t.t0, t.t1};
+	::CGAffineTransform cgt = {t.a0, t.a1, t.b0, t.b1, t.t0, t.t1};
 	::CATransform3D cat = CATransform3DMakeAffineTransform (cgt);
 	return cat;
 }
@@ -151,7 +153,7 @@ void CCL_API CoreAnimationLayer::setOffset (PointRef offset)
 	CGRect frame = nativeLayer.frame;
 	frame.origin = CGPointMake (offset.x, offset.y);
 	nativeLayer.frame = frame;
-	
+
 	CCL_PRINTF ("layer \"%s\" ", name.str ()) PRINT_CGRECT ("setOffset ", nativeLayer.frame)
 }
 
@@ -327,7 +329,7 @@ tresult CCL_API CoreAnimationLayer::addAnimation (StringID propertyId, const IAn
 	const Animation* animation = Animation::cast<Animation> (_animation);
 	if(!animation)
 		return kResultInvalidArgument;
-	
+
 	NSString* keyPath = getNativePropertyPath (propertyId);
 	if(!keyPath)
 		return kResultInvalidArgument;
@@ -335,17 +337,21 @@ tresult CCL_API CoreAnimationLayer::addAnimation (StringID propertyId, const IAn
 	CAMediaTimingFunction* timingFunction = getNativeTimingFunction (animation->getTimingType (), animation->getControlPoints ());
 	if(!timingFunction)
 		return kResultInvalidArgument;
-	
-	NSValue* fromValue = nil;
-	NSValue* toValue = nil;
+
+	NSString* key = nil;
+	CAAnimation* nativeAnimation = nil;
+
 	if(const BasicAnimation* basicAnimation = ccl_cast<BasicAnimation> (animation))
 	{
+		CABasicAnimation* nativeBasicAnimation = [CABasicAnimation animation];
+		NSValue* fromValue = nil;
+		NSValue* toValue = nil;
 		if(basicAnimation->getValueType () == UIValue::kNil) // scalar value
 		{
 			float start = basicAnimation->getStartValue ();
 			float end = basicAnimation->getEndValue ();
-			fromValue = [NSNumber numberWithFloat:start];
-			toValue	= [NSNumber numberWithFloat:end];
+			fromValue = @(start);
+			toValue	= @(end);
 		}
 		else if(propertyId == kOffset)
 		{
@@ -359,43 +365,86 @@ tresult CCL_API CoreAnimationLayer::addAnimation (StringID propertyId, const IAn
 			fromValue = valueWithPoint (startPoint);
 			toValue = valueWithPoint (endPoint);
 		}
+		nativeBasicAnimation.keyPath = keyPath;
+		nativeBasicAnimation.fromValue = fromValue;
+		nativeBasicAnimation.toValue = toValue;
+		nativeAnimation = nativeBasicAnimation;
+
+		// set the final value, so the animation does not snap back
+		[nativeLayer setValue:nativeBasicAnimation.toValue forKeyPath:keyPath];
+		key = [NSString stringWithCString:propertyId encoding:(NSASCIIStringEncoding)];
 	}
-	else if(const TransformAnimation* transfromAnimation = ccl_cast<TransformAnimation> (animation))
+	else if(const TransformAnimation* transformAnimation = ccl_cast<TransformAnimation> (animation))
 	{
-		Transform t1, t2;
-		transfromAnimation->getStartTransform (t1);
-		transfromAnimation->getEndTransform (t2);
+		CAAnimationGroup* nativeAnimationGroup = [CAAnimationGroup animation];
+		NSMutableArray* animations = [NSMutableArray array];
+		VectorForEach (transformAnimation->getOperations (), TransformAnimation::MatrixOp, op)
+			CABasicAnimation* nativeBasicAnimation = [CABasicAnimation animation];
+			if(op.type == TransformAnimation::kRotate)
+			{
+				nativeBasicAnimation.fromValue = @(Math::degreesToRad (op.startValue));
+				nativeBasicAnimation.toValue = @(Math::degreesToRad (op.endValue));
+			}
+			else if(op.type == TransformAnimation::kSkewX)
+			{
+				Transform t1, t2;
+				t1.skewX (Math::degreesToRad (op.startValue));
+				t2.skewX (Math::degreesToRad (op.endValue));
+				nativeBasicAnimation.fromValue = [NSValue valueWithCATransform3D:toCATransform (t1)];
+				nativeBasicAnimation.toValue = [NSValue valueWithCATransform3D:toCATransform (t2)];
+			}
+			else if(op.type == TransformAnimation::kSkewY)
+			{
+				Transform t1, t2;
+				t1.skewY (Math::degreesToRad (op.startValue));
+				t2.skewY (Math::degreesToRad (op.endValue));
+				nativeBasicAnimation.fromValue = [NSValue valueWithCATransform3D:toCATransform (t1)];
+				nativeBasicAnimation.toValue = [NSValue valueWithCATransform3D:toCATransform (t2)];
+			}
+			else
+			{
+				nativeBasicAnimation.fromValue = @(op.startValue);
+				nativeBasicAnimation.toValue = @(op.endValue);
+			}
+
+			switch(op.type)
+			{
+				case TransformAnimation::kTranslateX : nativeBasicAnimation.keyPath = @"transform.translation.x"; break;
+				case TransformAnimation::kTranslateY : nativeBasicAnimation.keyPath = @"transform.translation.y"; break;
+				case TransformAnimation::kScaleX 	 : nativeBasicAnimation.keyPath = @"transform.scale.x"; break;
+				case TransformAnimation::kScaleY 	 : nativeBasicAnimation.keyPath = @"transform.scale.y"; break;
+				case TransformAnimation::kRotate	 : nativeBasicAnimation.keyPath = @"transform.rotation.z"; break;
+				case TransformAnimation::kSkewX		 : nativeBasicAnimation.keyPath = @"transform"; break;
+				case TransformAnimation::kSkewY		 : nativeBasicAnimation.keyPath = @"transform"; break;
+			}
+			[animations addObject:nativeBasicAnimation];
 		
-		fromValue = [NSValue valueWithCATransform3D:toCATransform (t1)];
-		toValue = [NSValue valueWithCATransform3D:toCATransform (t2)];
+			// set the final value, so the animation does not snap back
+			[nativeLayer setValue:nativeBasicAnimation.toValue forKeyPath:nativeBasicAnimation.keyPath];
+		EndFor
+		nativeAnimationGroup.animations = animations;
+		nativeAnimation = nativeAnimationGroup;
 	}
-	
-	if(fromValue && toValue)
-	{		
-		CABasicAnimation* nativeAnimation = [CABasicAnimation animation];
-		nativeAnimation.keyPath = keyPath;
-		nativeAnimation.fromValue = fromValue;
-		nativeAnimation.toValue = toValue;
-		nativeAnimation.duration = animation->getDuration ();
-		nativeAnimation.autoreverses = animation->isAutoReverse ();
-		nativeAnimation.repeatCount = animation->getRepeatCount ();
-		nativeAnimation.timingFunction = timingFunction;
-		nativeAnimation.fillMode = kCAFillModeForwards;
-		
-		if(animation->getCompletionHandler ())
-		{		
-			CCL_ISOLATED (CoreAnimationHandler)* completionHandler = [[CCL_ISOLATED (CoreAnimationHandler) alloc] initWithCompletionHandler:animation->getCompletionHandler ()];
-			nativeAnimation.delegate = completionHandler;
-			[completionHandler release]; // retained by CAAnimation (exception to usual memory management rules)
-		}
-		
-		NSString* key = [NSString stringWithCString:propertyId encoding:(NSASCIIStringEncoding)];
-		[nativeLayer addAnimation:nativeAnimation forKey:key];
-		[nativeLayer setValue:nativeAnimation.toValue forKeyPath:keyPath];
-		return kResultOk;
-	}
-	else
+
+	if(!nativeAnimation)
 		return kResultInvalidArgument;
+
+	nativeAnimation.duration = animation->getDuration ();
+	nativeAnimation.autoreverses = animation->isAutoReverse ();
+	nativeAnimation.repeatCount = animation->getRepeatCount ();
+	nativeAnimation.timingFunction = timingFunction;
+	nativeAnimation.fillMode = kCAFillModeForwards;
+
+	if(animation->getCompletionHandler ())
+	{
+		CCL_ISOLATED (CoreAnimationHandler)* completionHandler = [[CCL_ISOLATED (CoreAnimationHandler) alloc] initWithCompletionHandler:animation->getCompletionHandler ()];
+		nativeAnimation.delegate = completionHandler;
+		[completionHandler release]; // retained by CAAnimation (exception to usual memory management rules)
+	}
+
+	[nativeLayer addAnimation:nativeAnimation forKey:key];
+
+	return kResultOk;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////

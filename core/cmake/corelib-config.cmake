@@ -141,8 +141,11 @@ ccl_list_append_once (corelib_api_headers
 	${corelib_DIR}/portable/gui/coreviewshared.h
 
 	${corelib_DIR}/gui/corebitmapprimitives.h
+	${corelib_DIR}/gui/corebitmapprimitives.impl.h
 	${corelib_DIR}/gui/coregesturerecognition.h
+	${corelib_DIR}/gui/coregesturerecognition.impl.h
 	${corelib_DIR}/gui/coreskinformat.h
+	${corelib_DIR}/gui/coreskinformat.impl.h
 
 	${corelib_DIR}/platform/shared/coreplatformatomicstack.h
 	${corelib_DIR}/platform/shared/coreplatformdiscovery.h
@@ -195,6 +198,8 @@ ccl_list_append_once (corelib_api_headers
 	${corelib_DIR}/text/corejsonhandler.h
 	${corelib_DIR}/text/coretexthelper.h
 	${corelib_DIR}/text/coreutfcodec.h
+	
+	${corelib_DIR}/extras/tools/bin2c.h
 )
 
 ccl_list_append_once (corelib_network_sources
@@ -205,9 +210,6 @@ ccl_list_append_once (corelib_network_sources
 )
 
 ccl_list_append_once (corelib_gui_sources
-	${corelib_DIR}/gui/coregesturerecognition.impl.h
-	${corelib_DIR}/gui/coreskinformat.impl.h
-	${corelib_DIR}/gui/corebitmapprimitives.impl.h
 	${corelib_DIR}/gui/corebmphandler.h 
 	${corelib_DIR}/gui/corepnghandler.h # not included in api headers to avoid libpng header dependency
 	${corelib_DIR}/portable/gui/corealertbox.cpp

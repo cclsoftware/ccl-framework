@@ -148,7 +148,11 @@ int AlertHandler::showTaskDialog (AlertBox& alert)
 	}
 
 	IWindow* parentWindow = Desktop.getDialogParentWindow ();
-		
+
+	// if the parent window is minimized, restore it first to avoid an unexpected position of the task dialog
+	if(parentWindow && parentWindow->isMinimized ())
+		::ShowWindow ((HWND)parentWindow->getSystemWindow (), SW_RESTORE);
+
 	TASKDIALOGCONFIG config = {};
 	config.cbSize = sizeof(TASKDIALOGCONFIG);
 	config.hwndParent = parentWindow ? (HWND)parentWindow->getSystemWindow () : NULL;

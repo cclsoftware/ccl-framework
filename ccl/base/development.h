@@ -48,7 +48,7 @@ CCL::Development::makeAbsolutePath (url, rootProject, relativePath, CCL::Url::kF
 
 /** Get build output folder of working copy. */
 #define GET_BUILD_FOLDER_LOCATION(url) \
-CCL::Development::makeAbsolutePath (url, BUILD_FOLDER_NAME, RELATIVE_BUILD_PATH, CCL::Url::kFolder);
+CCL::Development::makeAbsolutePath (url, CORE_BUILD_PATH, "", CCL::Url::kFolder);
 
 #else // !DEBUG
 #define GET_DEVELOPMENT_FOLDER_LOCATION(url, rootProject, relativePath)

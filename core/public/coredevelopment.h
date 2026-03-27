@@ -28,9 +28,7 @@
 #define BUILD_FOLDER_NAME "build"
 
 // CORE_BUILD_PATH is defined by CMake, see coremacros.cmake
-#ifdef CORE_BUILD_PATH
-	#define RELATIVE_BUILD_PATH CORE_BUILD_PATH
-#else
+#ifndef CORE_BUILD_PATH
 	#error Core build path not defined
 #endif
 

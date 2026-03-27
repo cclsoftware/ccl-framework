@@ -26,7 +26,7 @@ include_guard (GLOBAL)
 
 # Find CCL
 include (vendor)
-find_package (ccl REQUIRED COMPONENTS cclbase ccltext cclsystem cclgui)
+find_package (ccl REQUIRED COMPONENTS cclbase ccltext cclsystem cclgui cclextras-modeling)
 
 # Add targets
 ccl_add_app (modeller BUNDLE
@@ -37,7 +37,7 @@ ccl_add_app (modeller BUNDLE
 ccl_set_startup_project (modeller)
 ccl_set_product_name (modeller "cclmodeller")
 target_link_ccl_framework (modeller PRIVATE 
-	cclbase ccltext cclsystem cclgui
+	cclbase ccltext cclsystem cclgui cclextras-modeling
 )
 
 if (CCL_SYSTEM_INSTALL)
@@ -53,17 +53,6 @@ list (APPEND modeller_source_files
 	${CMAKE_CURRENT_LIST_DIR}/../source/modellermain.cpp
 )
 
-list (APPEND modeller_modelling_sources
-	${CCL_DIR}/extras/modeling/classmodel.cpp
-	${CCL_DIR}/extras/modeling/classmodel.h
-	${CCL_DIR}/extras/modeling/classrepository.cpp
-	${CCL_DIR}/extras/modeling/classrepository.h
-	${CCL_DIR}/extras/modeling/docscanner.cpp
-	${CCL_DIR}/extras/modeling/docscanner.h
-	${CCL_DIR}/extras/modeling/modeltool.cpp
-	${CCL_DIR}/extras/modeling/modeltool.h
-)
-
 list (APPEND modeller_ccl_sources
 	${CCL_DIR}/main/cclconsolemain.cpp
 	${CCL_DIR}/extras/tools/argumentparser.cpp
@@ -73,12 +62,10 @@ list (APPEND modeller_ccl_sources
 )
 
 source_group ("source" FILES ${modeller_source_files})
-source_group ("source/modelling" FILES ${modeller_modelling_sources})
 source_group ("source/ccl" FILES ${modeller_ccl_sources})
 
 list (APPEND modeller_sources
 	${modeller_source_files}
-	${modeller_modelling_sources} 
 	${modeller_ccl_sources}
 )
 

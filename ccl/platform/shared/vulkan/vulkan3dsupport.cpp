@@ -669,7 +669,7 @@ Vulkan3DBuffer::Vulkan3DBuffer ()
 : bufferInfo {},
   buffer (VK_NULL_HANDLE),
   memory (VK_NULL_HANDLE),
-  memoryAlignment (1),
+  constantElementAlignment (16),
   mapCount (0),
   mappedData (nullptr)
 {}
@@ -722,7 +722,7 @@ bool Vulkan3DBuffer::create (Type _type, BufferUsage3D usage, uint32 sizeInBytes
 		{	
 			VkPhysicalDeviceProperties deviceProperties;
 			vkGetPhysicalDeviceProperties (VulkanClient::instance ().getPhysicalDevice (), &deviceProperties);
-			memoryAlignment = uint32 (deviceProperties.limits.minUniformBufferOffsetAlignment);
+			constantElementAlignment = uint32 (deviceProperties.limits.minUniformBufferOffsetAlignment);
 		}
 		break;
 	}
@@ -859,18 +859,25 @@ void Vulkan3DBuffer::unmap ()
 
 bool Vulkan3DBuffer::ensureSegmentAlignment (uint32& byteOffset, uint32& size, uint32 stride) const
 {
-	uint32 alignment = memoryAlignment;
+	uint32 alignment = 16;
 	if(buffer != VK_NULL_HANDLE)
 	{
 		VkDevice device = VulkanClient::instance ().getLogicalDevice ();
 		VkMemoryRequirements requirements {};
 		vkGetBufferMemoryRequirements (device, buffer, &requirements);
-		alignment = ccl_lowest_common_multiple<uint32> (uint32 (requirements.alignment), alignment);
+		alignment = uint32(requirements.alignment);
 	}
-	alignment = ccl_lowest_common_multiple<uint32> (alignment, stride);
+
+	if(type == kConstantBuffer)
+	{
+		uint32 elementCount = (size + stride - 1) / stride;
+		stride = ccl_align_to (stride, constantElementAlignment);
+		size = elementCount * stride;
+	}
+	else if(type == kVertexBuffer || type == kIndexBuffer)
+		alignment = ccl_lowest_common_multiple (alignment, stride);
 
 	byteOffset = ccl_align_to (byteOffset, alignment);
-	size = ccl_align_to (size, alignment);
 	
 	return true;
 }

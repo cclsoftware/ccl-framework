@@ -480,10 +480,7 @@ inline void VariantMenuBar<MenuBase>::showMenu (Menu* menu, bool state, int inde
 	else
 	{
 		if(MenuBase::menus.contains (menu))
-		{
 			MenuBase::removeMenu (menu);
-			ASSERT (menu->getRetainCount () == 1)
-		}
 	}
 }
 

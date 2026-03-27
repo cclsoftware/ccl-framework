@@ -20,13 +20,18 @@
 
 #include "ccl/base/message.h"
 
+#include "ccl/public/base/buffer.h"
 #include "ccl/public/gui/framework/iwindow.h"
+#include "ccl/public/plugins/versionnumber.h"
+#include "ccl/public/system/ipackagemetainfo.h"
 #include "ccl/public/guiservices.h"
 
 #include "ccl/platform/win/system/cclcppwinrt.h"
 
 #include <winrt/Windows.Foundation.Collections.h>
 #include <winrt/Windows.Services.Store.h>
+
+#include <appmodel.h>
 
 using namespace winrt;
 
@@ -56,6 +61,7 @@ public:
 	IAsyncOperation* purchaseProduct (StringRef productId) override;
 	IAsyncOperation* getTransactions () override;
 	IAsyncOperation* getLocalLicenses () override;
+	tresult getAppInformation (Attributes& attributes, StringRef packageId) override;
 
 private:
 	StoreContext context = StoreContext::GetDefault ();
@@ -204,6 +210,46 @@ CCL::IAsyncOperation* StoreContextManager::getLocalLicenses ()
 
 		return Variant (licenses->asUnknown (), true);
 	});
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+tresult StoreContextManager::getAppInformation (Attributes& attributes, StringRef packageFamilyId)
+{
+	UINT32 count = 0;
+	UINT32 bufferSize = 0;
+	::GetPackagesByPackageFamily (StringChars (packageFamilyId), &count, NULL, &bufferSize, NULL);
+	if(count == 0)
+		return kResultFalse;
+
+	Array<PWSTR> packageFullNames (count);
+	Array<WCHAR> buffer (bufferSize);
+	if(::GetPackagesByPackageFamily (StringChars (packageFamilyId), &count, packageFullNames, &bufferSize, buffer) != ERROR_SUCCESS)
+		return kResultFailed;
+
+	// get package information
+	UINT32 packageIdSize = 0;
+	::PackageIdFromFullName (packageFullNames[0], PACKAGE_INFORMATION_FULL, &packageIdSize, NULL);
+
+	Array<BYTE> packageIdBuffer (packageIdSize);
+	if(::PackageIdFromFullName (packageFullNames[0], PACKAGE_INFORMATION_FULL, &packageIdSize, packageIdBuffer) != ERROR_SUCCESS)
+		return kResultFailed;
+
+	PACKAGE_ID* packageId = reinterpret_cast<PACKAGE_ID*>(packageIdBuffer.getAddress ());
+
+	attributes.set (Meta::kPackageID, String (packageId->name));
+	attributes.set (Meta::kPackageVendor, String (packageId->publisher));
+	attributes.set (Meta::kPackageVersion, VersionNumber (packageId->version.Major, packageId->version.Minor, packageId->version.Build, 0));
+
+	// get install path
+	UINT32 pathLength = 0;
+	::GetPackagePathByFullName (packageFullNames[0], &pathLength, NULL);
+
+	Array<WCHAR> packagePath (pathLength);
+	if(::GetPackagePathByFullName (packageFullNames[0], &pathLength, packagePath) == ERROR_SUCCESS)
+		attributes.set (Meta::kPackageInstallPath, String (packagePath.getAddress ()));
+
+	return kResultOk;
 }
 
 DEFINE_CLASS_HIDDEN (StoreContextManager, PlatformStoreManager)

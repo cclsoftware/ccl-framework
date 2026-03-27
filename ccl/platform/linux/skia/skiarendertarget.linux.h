@@ -20,7 +20,6 @@
 #define _skiarendertarget_linux_h
 
 #include "ccl/platform/shared/skia/skiarendertarget.h"
-#include "ccl/platform/shared/vulkan/vulkanskiarendertarget.h"
 
 struct wl_surface;
 

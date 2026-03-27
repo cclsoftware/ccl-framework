@@ -7,7 +7,7 @@
 // Licensed for use under either:
 //  1. a Commercial License provided by CCL Software Licensing GmbH, or
 //  2. GNU Affero General Public License v3.0 (AGPLv3).
-// 
+//
 // You must choose and comply with one of the above licensing options.
 // For more information, please visit ccl.dev.
 //
@@ -37,31 +37,45 @@ public:
 				   CCL_MODULE_NAME ("cclsecurity"),
 				   CCL_MODULE_NAME ("cclnet"),
 				   CCL_MODULE_NAME ("cclgui")}
+	#ifdef CCL_VERSIONED_MODULE_NAME
+	, versionedModuleNames {CCL_VERSIONED_MODULE_NAME ("ccltext"),
+				   CCL_VERSIONED_MODULE_NAME ("cclsystem"),
+				   CCL_VERSIONED_MODULE_NAME ("cclsecurity"),
+				   CCL_VERSIONED_MODULE_NAME ("cclnet"),
+				   CCL_VERSIONED_MODULE_NAME ("cclgui")}
+	#endif
 	{}
 
 	void init ()
 	{
 		for(int i = 0; i < kModuleCount; i++)
-			if(ModuleRef ref = getModule (moduleNames[i]))
+		{
+			if(ModuleRef ref = getModuleAt (i))
 			{
 				callModuleMain (ref, kModuleInit);
 				closeModule (ref);
 			}
+		}
 	}
 
 	void exit ()
 	{
 		for(int i = kModuleCount-1; i >= 0; i--)
-			if(ModuleRef ref = getModule (moduleNames[i]))
+		{
+			if(ModuleRef ref = getModuleAt (i))
 			{
 				callModuleMain (ref, kModuleExit);
 				closeModule (ref);
 			}
+		}
 	}
 
 protected:
 	static const int kModuleCount = 5;
 	ModuleName moduleNames[kModuleCount];
+	#ifdef CCL_VERSIONED_MODULE_NAME
+	ModuleName versionedModuleNames[kModuleCount];
+	#endif
 
 	static void callModuleMain (ModuleRef ref, ModuleEntryReason reason)
 	{
@@ -69,6 +83,15 @@ protected:
 		ASSERT (moduleMain != nullptr)
 		if(moduleMain)
 			(*moduleMain) (ref, reason);
+	}
+
+	ModuleRef getModuleAt (int index) const
+	{
+		#ifdef CCL_VERSIONED_MODULE_NAME
+		if(ModuleRef ref = getModule (versionedModuleNames[index]))
+			return ref;
+		#endif
+		return getModule (moduleNames[index]);
 	}
 };
 

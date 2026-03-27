@@ -64,6 +64,9 @@ namespace Meta
 	/** Package vendor or product website [String]. */
 	DEFINE_STRINGID (kPackageWebsite, "Package:Website")
 
+	/** Package installation path [String]. */
+	DEFINE_STRINGID (kPackageInstallPath, "Package:InstallPath")
+
 	/** Package executable path [String]. */
 	DEFINE_STRINGID (kPackageExecutable, "Package:Executable")
 

@@ -18,7 +18,7 @@
 #
 #************************************************************************************************
 
-find_package (ccl REQUIRED COMPONENTS cclapp cclbase ccltext cclsystem cclgui)
+find_package (ccl REQUIRED COMPONENTS cclapp cclbase ccltext cclsystem cclgui cclextras-modeling)
 find_package (skins)
 
 # Find CCL Spy sources
@@ -36,7 +36,7 @@ ccl_add_plugin_library (cclspy
 	VERSION_PREFIX PLUG
 )
 ccl_set_product_name (${cclspy_target} ${cclspy_ID})
-target_link_ccl_framework (${cclspy_target} PRIVATE cclapp cclbase ccltext cclsystem cclgui)
+target_link_ccl_framework (${cclspy_target} PRIVATE cclapp cclbase ccltext cclsystem cclgui cclextras-modeling)
 set_target_properties (${cclspy_target} PROPERTIES USE_FOLDERS ON FOLDER "services/ccl/${CCL_ISOLATION_POSTFIX}")
 
 ccl_use_skin_packages (${cclspy_target} devtools)
@@ -93,24 +93,10 @@ list (APPEND cclspy_ccl_sources
     ${CCL_DIR}/public/gui/framework/designsize.cpp
 )
 
-list (APPEND cclspy_modeling_sources
-    ${CCL_DIR}/extras/modeling/classmodel.cpp
-    ${CCL_DIR}/extras/modeling/classmodel.h
-    ${CCL_DIR}/extras/modeling/classrepository.cpp
-    ${CCL_DIR}/extras/modeling/classrepository.h
-    ${CCL_DIR}/extras/modeling/docscanner.cpp
-    ${CCL_DIR}/extras/modeling/docscanner.h
-    ${CCL_DIR}/extras/modeling/modelbrowser.cpp
-    ${CCL_DIR}/extras/modeling/modelbrowser.h
-    ${CCL_DIR}/extras/modeling/modelinspector.cpp
-    ${CCL_DIR}/extras/modeling/modelinspector.h
-)
-
 source_group ("source" FILES ${cclspy_source_files})
-source_group ("source\\modeling" FILES ${cclspy_modeling_sources})
 source_group ("cmake" FILES ${CMAKE_CURRENT_LIST_FILE})
 
-list (APPEND cclspy_sources ${cclspy_source_files} ${cclspy_modeling_sources} ${cclspy_ccl_sources} ${CMAKE_CURRENT_LIST_FILE})
+list (APPEND cclspy_sources ${cclspy_source_files} ${cclspy_ccl_sources} ${CMAKE_CURRENT_LIST_FILE})
 
 ccl_add_resources (${cclspy_target} ${cclspy_resources})
 target_sources (${cclspy_target} PRIVATE ${cclspy_sources})

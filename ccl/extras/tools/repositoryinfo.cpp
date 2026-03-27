@@ -64,42 +64,43 @@ bool RepositoryInfo::load (UrlRef startFolder, bool reload)
 	
 	Url folder (startFolder);
 	Url infoFilePath;
-	while(!folder.isRootPath ())
+	while(true)
 	{
 		infoFilePath = folder;
 		infoFilePath.descend (kFileName, IUrl::kFile);
 		if(File (infoFilePath).exists ())
 		{
 			AutoPtr<IStream> fileStream = System::GetFileSystem ().openStream (infoFilePath, IStream::kOpenMode);
-			if(!fileStream.isValid ())
-				continue;
-
-			Attributes a;
-			if(!JsonArchive (*fileStream).loadAttributes (nullptr, a))
-				return false;
-
-			rootDirectory = folder;
-
-			for(StringID category : { kSubmoduleDirectories, kTemplateDirectories, kIdentityDirectories,
-				kClassModelDirectories, kDocumentationDirectories, kSkinDirectories, kSigningDirectories,
-				kTranslationsDirectories })
+			if(fileStream.isValid ())
 			{
-				Entry entry;
-				entry.category = category;
+				Attributes a;
+				if(!JsonArchive (*fileStream).loadAttributes (nullptr, a))
+					return false;
 
-				Variant value;
-				while(a.unqueueAttribute (category, value))
+				rootDirectory = folder;
+
+				for(StringID category : { kSubmoduleDirectories, kTemplateDirectories, kIdentityDirectories,
+					kClassModelDirectories, kDocumentationDirectories, kSkinDirectories, kSigningDirectories,
+					kTranslationsDirectories })
 				{
-					Url* path = NEW Url (folder);
-					path->descend (value.asString (), IUrl::kFolder);
-					entry.paths.add (path);
+					Entry entry;
+					entry.category = category;
+
+					Variant value;
+					while(a.unqueueAttribute (category, value))
+					{
+						Url* path = NEW Url (folder);
+						path->descend (value.asString (), IUrl::kFolder);
+						entry.paths.add (path);
+					}
+
+					entries.add (entry);
 				}
-
-				entries.add (entry);
+				return true;
 			}
-
-			return true;
 		}
+		if(folder.isRootPath ())
+			break;
 		folder.ascend ();
 	}
 	return false;

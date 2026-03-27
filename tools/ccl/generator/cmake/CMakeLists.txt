@@ -15,7 +15,7 @@ set (PROJECT_VENDOR ccl)
 
 # Find dependencies
 include (vendor OPTIONAL)
-find_package (ccl REQUIRED COMPONENTS cclapp cclbase ccltext cclsystem cclextras-tools)
+find_package (ccl REQUIRED COMPONENTS cclapp cclbase ccltext cclsystem cclextras-tools cclextras-modeling)
 
 # Add targets
 ccl_add_app (cclgenerator
@@ -50,14 +50,6 @@ list (APPEND cclgenerator_source_files
 	${CMAKE_CURRENT_LIST_DIR}/../source/appversion.h
 )
 
-list (APPEND cclgenerator_modelling_sources
-	${CCL_DIR}/extras/modeling/classmodel.cpp
-	${CCL_DIR}/extras/modeling/classmodel.h
-	${CCL_DIR}/extras/modeling/classrepository.cpp
-	${CCL_DIR}/extras/modeling/classrepository.h
-	${CCL_DIR}/extras/modeling/cplusplus.h
-)
-
 list (APPEND cclgenerator_ccl_sources
 	${CCL_DIR}/main/cclconsolemain.cpp
 )
@@ -70,13 +62,11 @@ list (APPEND cclgenerator_bincpp_files
 source_group ("cmake" FILES ${CMAKE_CURRENT_LIST_FILE})
 source_group (TREE ${CMAKE_CURRENT_LIST_DIR}/../resource PREFIX "resource" FILES ${cclgenerator_resource_files})
 source_group (TREE ${CMAKE_CURRENT_LIST_DIR}/../source PREFIX "source" FILES ${cclgenerator_source_files})
-source_group ("source/modelling" FILES ${cclgenerator_modelling_sources})
 source_group ("source/ccl" FILES ${cclgenerator_ccl_sources})
 source_group ("bincpp" FILES ${cclgenerator_bincpp_files})
 
 list (APPEND cclgenerator_sources 
 	${cclgenerator_source_files} 
-	${cclgenerator_modelling_sources}
 	${cclgenerator_ccl_sources}
 	${cclgenerator_bincpp_files}
 )
@@ -86,5 +76,5 @@ ccl_add_resources (cclgenerator ${cclgenerator_resources})
 target_sources (cclgenerator PRIVATE ${cclgenerator_sources} ${CMAKE_CURRENT_LIST_FILE})
 
 target_link_libraries (cclgenerator PRIVATE 
-	cclapp cclbase ccltext cclsystem cclextras-tools
+	cclapp cclbase ccltext cclsystem cclextras-tools cclextras-modeling
 )

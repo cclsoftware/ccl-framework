@@ -51,7 +51,7 @@ public:
 	bool hasClipboardTextChanged () const;
 	void setClipboardText (StringRef text);
 	
-	void finishInternalDrag ();
+	bool finishInternalDrag ();
 	
 protected:	
     struct Listener: wl_data_device_listener,

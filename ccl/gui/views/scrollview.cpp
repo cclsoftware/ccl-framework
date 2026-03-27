@@ -2803,6 +2803,9 @@ tbool ScrollView::makeVisible (RectRef _rect, tbool relaxed)
 		return false;
 	}
 	
+	if(getSize ().isEmpty ())
+		return false;
+
 	bool scrollH = true;
 	bool scrollV = true;
 	if(relaxed)

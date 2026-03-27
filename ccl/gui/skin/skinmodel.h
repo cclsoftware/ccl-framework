@@ -910,6 +910,7 @@ public:
 	PROPERTY_VARIABLE (int, sizeMode, SizeMode)
 	PROPERTY_MUTABLE_CSTRING (styleClass, StyleClass)
 	PROPERTY_STRING (sizeLimitsString, SizeLimitsString)
+	PROPERTY_STRING (sizeModeString, SizeModeString)
 	PROPERTY_OBJECT (SizeLimit, sizeLimits, SizeLimits)
 	PROPERTY_OBJECT (StyleFlags, options, Options)
 	
@@ -1003,7 +1004,8 @@ protected:
 		kResolveName = kLastSizeParserFlag << 1,
 		kResolveTitle = kLastSizeParserFlag << 2,
 		kResolveTip = kLastSizeParserFlag << 3,
-		kResolveSizeLimits = kLastSizeParserFlag << 4,
+		kResolveSizeMode = kLastSizeParserFlag << 4,
+		kResolveSizeLimits = kLastSizeParserFlag << 5,
 
 		kLastViewElementFlag = kResolveSizeLimits
 	};
@@ -1011,6 +1013,7 @@ protected:
 	PROPERTY_FLAG (parseFlags, kResolveName, mustResolveName)
 	PROPERTY_FLAG (parseFlags, kResolveTitle, mustResolveTitle)
 	PROPERTY_FLAG (parseFlags, kResolveTip, mustResolveTip)
+	PROPERTY_FLAG (parseFlags, kResolveSizeMode, mustResolveSizeMode)
 	PROPERTY_FLAG (parseFlags, kResolveSizeLimits, mustResolveSizeLimits)
 	
 	void calculateViewSize (Rect& r, View* view) const;

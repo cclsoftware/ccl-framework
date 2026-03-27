@@ -1062,6 +1062,9 @@ bool Window::onClose ()
 		if(!handler->onWindowEvent (closeEvent) && !isQuit)
 			return false;
 	EndFor
+
+	setMouseHandler (nullptr);
+
 	return true;
 }
 

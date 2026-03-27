@@ -23,7 +23,7 @@
 
 #include "ccl/platform/linux/skia/skiarendertarget.linux.h"
 
-#include "ccl/platform/shared/vulkan/vulkanrendertarget.h"
+#include "ccl/platform/shared/vulkan/vulkanskiarendertarget.h"
 
 namespace CCL {
 class LinuxWindow;

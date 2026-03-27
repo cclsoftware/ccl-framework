@@ -188,7 +188,8 @@ IAsyncOperation* CCL_API LinuxDragSession::dragAsync ()
 				GUI.flushUpdates ();
 			if(!terminated)
 			{
-				DataDeviceHelper::instance ().finishInternalDrag ();
+				if(!DataDeviceHelper::instance ().finishInternalDrag ())
+					terminate (false);
 				GUI.runModalLoop (parentWindow, terminated);
 			}
 		}

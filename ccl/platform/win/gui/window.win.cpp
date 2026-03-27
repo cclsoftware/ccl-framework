@@ -226,7 +226,7 @@ void Win32Window::makeNativePopupWindow (IWindow* parent)
 	const WCHAR* className = style.isCustomStyle (Styles::kWindowAppearanceDropShadow) ? Win32::kShadowWindowClass : Win32::kDefaultWindowClass;
 
 	Rect r (size);
-	Win32::AdjustWindowSize (r, style, wstyle, xstyle, hasVisibleMenuBar (), getContentScaleFactor ());
+	Win32::AdjustWindowSize (r, style, wstyle, xstyle, hasVisiblePlatformMenuBar (), getContentScaleFactor ());
 	limitSizeToScreen (r);
 	moveWindowRectInsideScreen (r);
 	screen.toPixelRect (r);
@@ -431,7 +431,7 @@ void Win32Window::onDpiChanged (float dpiFactor, RectRef newPixelRect, bool supp
 
 			DWORD wstyle = ::GetWindowLong ((HWND)handle, GWL_STYLE);
 			DWORD xstyle = ::GetWindowLong ((HWND)handle, GWL_EXSTYLE);
-			Win32::AdjustWindowSizeInPixels (newSize, style, wstyle, xstyle, hasVisibleMenuBar (), dpiFactor);
+			Win32::AdjustWindowSizeInPixels (newSize, style, wstyle, xstyle, hasVisiblePlatformMenuBar (), dpiFactor);
 
 			newSize.moveTo (newPixelRect.getLeftTop ());		
 
@@ -504,9 +504,10 @@ void Win32Window::updateMenuBar ()
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool Win32Window::hasVisibleMenuBar () const
+bool Win32Window::hasVisiblePlatformMenuBar () const
 {
-	return menuBar && menuBar->countMenus () > 0;
+	auto* windowsMenuBar = ccl_cast<WindowsMenuBar> (menuBar);
+	return windowsMenuBar && windowsMenuBar->countMenus () > 0;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -617,7 +618,7 @@ void Win32Window::setWindowSize (Rect& size)
 	else
 	{
 		DWORD xstyle = ::GetWindowLong ((HWND)handle, GWL_EXSTYLE);
-		Win32::AdjustWindowSize (newSize, style, wstyle, xstyle, hasVisibleMenuBar (), getContentScaleFactor ());
+		Win32::AdjustWindowSize (newSize, style, wstyle, xstyle, hasVisiblePlatformMenuBar (), getContentScaleFactor ());
 
 		Rect unlimited (newSize);
 		if(!isSizeModeDisabled ()) // when autosizing to childs, limiting our size would break the attachment relationship (parts of the child could be clipped)
@@ -1747,7 +1748,7 @@ EventResult Win32Window::handleEvent (SystemEvent& e)
 			getSizeLimits ();
 			Rect minSize (0, 0, sizeLimits.minWidth, sizeLimits.minHeight);
 			Rect maxSize (0, 0, sizeLimits.maxWidth, sizeLimits.maxHeight);
-			Win32::AdjustWindowSize (minSize, style, wstyle, xstyle, hasVisibleMenuBar (), getContentScaleFactor ());
+			Win32::AdjustWindowSize (minSize, style, wstyle, xstyle, hasVisiblePlatformMenuBar (), getContentScaleFactor ());
 
 			// also apply the delta from AdjustWindowSize to maxSize
 			if(sizeLimits.maxWidth < kMaxCoord)

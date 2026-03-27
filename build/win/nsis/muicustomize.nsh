@@ -38,13 +38,13 @@
 
   !ifdef nsResize_LicensePage
   !define MUI_PAGE_CUSTOMFUNCTION_SHOW LicensePage_Show
-  !insertmacro MUI_PAGE_LICENSE ${LicenseFileName}
+  !insertmacro MUI_PAGE_LICENSE "${LicenseFileName}"
 
   Function LicensePage_Show
     ${nsResize_LicensePage} ${MUI_CUSTOMIZE_ADDITIONAL_WIDTH} ${MUI_CUSTOMIZE_ADDITIONAL_HEIGHT}
   FunctionEnd
   !else
-  !insertmacro MUI_PAGE_LICENSE ${LicenseFileName}
+  !insertmacro MUI_PAGE_LICENSE "${LicenseFileName}"
   !endif
   
 !macroend

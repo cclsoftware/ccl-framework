@@ -87,6 +87,9 @@ public:
 
 	/** Restore purchases made by user (e.g. when restoring device from backup). */
 	virtual IAsyncOperation* restorePurchases () { return nullptr; }
+
+	/** Get information about installed app identified by package ID. */
+	virtual tresult getAppInformation (Attributes& attributes, StringRef packageId) { return kResultNotImplemented; }
 	
 	// Notifications
 	DECLARE_STRINGID_MEMBER (kTransactionsChanged) ///< state of one or more transactions changed

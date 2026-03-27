@@ -422,20 +422,22 @@ void Metal3DBuffer::unmap ()
 
 bool Metal3DBuffer::ensureSegmentAlignment (uint32& byteOffset, uint32& size, uint32 stride) const
 {
-	uint32 alignment = stride;
-	if(getType () == kConstantBuffer || getType () == kVertexBuffer)
+	uint32 alignment = kBufferAlignment;
+	CCL_PRINTF ("Buffer type %d, alignment=%d, size=%d ", getType (), alignment, size)
+
+	if(getType () == kConstantBuffer)
 	{
-		uint32 bufferAlignment = 16;
-		// see documentation of MTLRenderCommandEncoder setVertexBuffer:offset:atIndex and setFragmentBuffer:offset:atIndex
-		#if CCL_PLATFORM_MAC || TARGET_OS_SIMULATOR
-		bufferAlignment = 256;
-		#endif
-		alignment = ccl_lowest_common_multiple<uint32> (alignment, bufferAlignment);
+		uint32 elementCount = (size + stride - 1) / stride;
+		stride = ccl_align_to<uint32> (stride, kConstantAlignment);
+		size = elementCount * stride;
 	}
-	
+	else
+		alignment = ccl_lowest_common_multiple<uint32> (alignment, stride);
+
 	byteOffset = ccl_align_to<uint32> (byteOffset, alignment);
-	size = ccl_align_to<uint32> (size, alignment);
-	
+
+	CCL_PRINTF ("aligned size=%d\n", size)
+
 	return true;
 }
 
@@ -1020,12 +1022,16 @@ Metal3DGraphicsContext::Metal3DGraphicsContext (MTKView* _view)
 Metal3DGraphicsContext::~Metal3DGraphicsContext ()
 {
 	if(encoder)
-		[encoder endEncoding];
-	if(commandBuffer)
 	{
-		[commandBuffer presentDrawable:view.currentDrawable];
-		[commandBuffer commit];
+		[encoder endEncoding];
+		if(commandBuffer)
+		{
+			[commandBuffer presentDrawable:view.currentDrawable];
+			[commandBuffer commit];
+		}
 	}
+	else
+		clear ();
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1156,8 +1162,10 @@ void Metal3DGraphicsContext::prepareEncoder ()
 		[encoder setTriangleFillMode:static_cast<MTLTriangleFillMode> (pipeline->getFillMode ())];
 		activePipeline = pipeline;
 	}
+
+	if(vertexBuffer)
+		[encoder setVertexBuffer:vertexBuffer->getBuffer () offset:0 atIndex:kMetalVertexBufferIndex];
 	
-	[encoder setVertexBuffer:vertexBuffer->getBuffer () offset:0 atIndex:kMetalVertexBufferIndex];
 	if(shaderParameters)
 	{
 		const Vector<Native3DShaderParameters>& vsParameters = shaderParameters->getVertexShaderParameters ();
@@ -1192,4 +1200,21 @@ void Metal3DGraphicsContext::prepareEncoder ()
 				}];
 			}
 	}
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+void Metal3DGraphicsContext::clear ()
+{
+	prepareEncoder ();
+	if(encoder)
+		[encoder endEncoding];
+	encoder = nil;
+
+	if(commandBuffer)
+	{
+		[commandBuffer presentDrawable:view.currentDrawable];
+		[commandBuffer commit];
+	}
+	commandBuffer = nil;
 }

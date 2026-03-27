@@ -601,7 +601,7 @@ int CCL_API TreeView::getItemTextInset (ITreeItem* _item)
 	{
 		if(item->canExpand ())
 			inset += treeStyle.getExpandSize ().x + treeStyle.getMarginH ();
-		else
+		else if(!style.isCustomStyle (Styles::kTreeViewAppearanceNoRoot) || item->getParent () != getRootItem ())
 			inset += treeStyle.getLeafInset () + treeStyle.getMarginH ();
 	}
 	if(Image* icon = getIcon (item))
@@ -2192,7 +2192,11 @@ void TreeView::drawItemContent (GraphicsPort& port, RectRef _itemRect, RectRef c
 			inset += treeStyle.getExpandSize ().x + treeStyle.getMarginH ();
 		}
 		else
-			inset += treeStyle.getLeafInset () + treeStyle.getMarginH ();
+		{
+			// but no additional inset for first-level items when root is hidden
+			if(!style.isCustomStyle (Styles::kTreeViewAppearanceNoRoot) || item->getParent () != getRootItem ())
+				inset += treeStyle.getLeafInset () + treeStyle.getMarginH ();
+		}
 	}
 
 	Rect thumbnailRect (itemRect);

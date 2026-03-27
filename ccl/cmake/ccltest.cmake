@@ -89,6 +89,17 @@ if (NOT ${CCL_STATIC_ONLY} AND NOT TARGET ccltest)
 		ccl_add_resources (ccltest ${ccltest_resources})
 		target_sources (ccltest PRIVATE ${ccltest_sources})
 		target_link_libraries (ccltest PRIVATE cclapp cclbase cclsystem cclsecurity ccltext cclnet cclgui coretest)
+		
+		if (CCL_SYSTEM_INSTALL)
+			set_target_properties (ccltest PROPERTIES SOVERSION ${CCL_VERSION})
+			install (TARGETS ccltest EXPORT ccl-targets DESTINATION "${CCL_LIBRARY_DESTINATION}"
+									 LIBRARY DESTINATION "${CCL_LIBRARY_DESTINATION}" COMPONENT prebuilt_libraries_${VENDOR_NATIVE_COMPONENT_SUFFIX}
+									 RUNTIME DESTINATION "${CCL_LIBRARY_DESTINATION}" COMPONENT prebuilt_libraries_${VENDOR_NATIVE_COMPONENT_SUFFIX}
+									 ARCHIVE DESTINATION "${CCL_IMPORT_LIBRARY_DESTINATION}" COMPONENT prebuilt_libraries_${VENDOR_NATIVE_COMPONENT_SUFFIX}
+									 FRAMEWORK DESTINATION "${CCL_LIBRARY_DESTINATION}" COMPONENT prebuilt_libraries_${VENDOR_NATIVE_COMPONENT_SUFFIX}
+			)
+			install (FILES $<TARGET_FILE_DIR:ccltest>/ccltest.pdb DESTINATION "${CCL_LIBRARY_DESTINATION}" OPTIONAL COMPONENT prebuilt_libraries_${VENDOR_NATIVE_COMPONENT_SUFFIX})
+		endif ()
 	endif ()
 else ()
 	ccl_include_platform_specifics (ccltest)

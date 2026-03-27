@@ -215,14 +215,19 @@ void CCL_API SkiaPath::addArc (RectRef r, float startAngle, float sweepAngle)
 void CCL_API SkiaPath::addArc (RectFRef r, float startAngle, float sweepAngle)
 {
 	// without this adjustment, a full circle arc would be drawn as a line
-	if(sweepAngle >= 360.)
+	bool drawCircle = false;
+	if(sweepAngle >= 360.f)
 	{
 		sweepAngle = 359.99995f;
 		startAngle = 0.f;
+		drawCircle = true;
 	}
 
 	SkRect rect;
 	path.arcTo (SkiaDevice::toSkRect (rect, r), startAngle, sweepAngle, false);
+
+	if(drawCircle)
+		closeFigure ();
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////

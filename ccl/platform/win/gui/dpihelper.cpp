@@ -142,6 +142,9 @@ tbool CCL_API DpiInfo::isDpiAware () const
 
 float DpiInfo::getDpiFactorForMonitor (void* hMonitor)
 {
+	if(!active)
+		return systemDpiFactor;
+
 	UINT dpiX = 0, dpiY = 0;
 	HRESULT hr = ::GetDpiForMonitor ((HMONITOR)hMonitor, MDT_EFFECTIVE_DPI, &dpiX, &dpiY);
 	ASSERT (SUCCEEDED (hr))
@@ -159,6 +162,9 @@ void DpiInfo::enableNonClientDpiScaling (void* hwnd)
 
 bool DpiInfo::adjustWindowRectForDpiFactor (void* rect, uint32 wstyle, bool hasMenu, uint32 xstyle, float dpiFactor)
 {
+	if(!active)
+		return false;
+
 	UINT dpi = (UINT)DpiScale::getDpi (dpiFactor);	
 	::AdjustWindowRectExForDpi ((LPRECT)rect, wstyle, hasMenu, xstyle, dpi);
 	return true;
@@ -184,13 +190,16 @@ void DpiInfo::physicalToLogicalPoint (void* hwnd, void* point) const
 
 tbool CCL_API DpiInfo::canSwitchDpiAwarenessContext () const
 {
-	return true;
+	return active;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 tbool CCL_API DpiInfo::switchToDpiAwarenessContext (DpiAwarenessContext which)
 {
+	if(!active)
+		return false;
+
 	CCL_PRINTF ("*** Switch to DPI Awareness Context %s ***\n", 
 				which == kDpiContextUnaware ? "Unaware" : 
 				which == kDpiContextSystemAware ? "System" :
@@ -206,6 +215,9 @@ tbool CCL_API DpiInfo::switchToDpiAwarenessContext (DpiAwarenessContext which)
 
 DpiAwarenessContext CCL_API DpiInfo::getCurrentDpiAwarenessContext () const
 {
+	if(!active)
+		return kDpiContextDefault;
+
 	DPI_AWARENESS_CONTEXT context = ::GetThreadDpiAwarenessContext ();
 	return toCCLDpiAwareness (context);
 }
@@ -214,6 +226,9 @@ DpiAwarenessContext CCL_API DpiInfo::getCurrentDpiAwarenessContext () const
 
 DpiAwarenessContext CCL_API DpiInfo::getWindowDpiAwarenessContext (void* hwnd) const
 {
+	if(!active)
+		return kDpiContextDefault;
+
 	DPI_AWARENESS_CONTEXT context = ::GetWindowDpiAwarenessContext ((HWND)hwnd);
 	return toCCLDpiAwareness (context);
 }
@@ -222,13 +237,16 @@ DpiAwarenessContext CCL_API DpiInfo::getWindowDpiAwarenessContext (void* hwnd) c
 
 tbool CCL_API DpiInfo::canSwitchDpiHostingBehavior ()
 {
-	return true;
+	return active;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 tbool CCL_API DpiInfo::switchToDpiHostingBehavior (DpiHostingBehavior which)
 {
+	if(!active)
+		return false;
+
 	CCL_PRINTF ("*** Switch to DPI Hosting Behavior %s ***\n", which == kDpiHostingMixed ? "Mixed" : "Default")
 
 	DPI_HOSTING_BEHAVIOR newBehavior = which == kDpiHostingMixed ? DPI_HOSTING_BEHAVIOR_MIXED :

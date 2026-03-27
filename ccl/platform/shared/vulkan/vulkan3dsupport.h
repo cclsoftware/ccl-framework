@@ -72,7 +72,7 @@ public:
 private:
 	VkBufferCreateInfo bufferInfo;
 	VkDeviceMemory memory;
-	uint32 memoryAlignment;
+	uint32 constantElementAlignment;
 	int mapCount;
 	void* mappedData;
 	

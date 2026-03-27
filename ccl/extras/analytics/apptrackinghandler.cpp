@@ -658,9 +658,21 @@ public:
 	{
 		Attributes data;
 
+		// "analytics/Export/context" (no type given)
 		MutableCString context (kDiagnosticsPrefix);
-		context.append ("*/*");
+		context.append ("*");
+		evaluateDataInternal (data, context);
 
+		// "analytics/Export/context/type"
+		context.append ("/*");
+		evaluateDataInternal (data, context);
+
+		if(!data.isEmpty ())
+			ccl_analytics_event (AnalyticsID::kFileExportReport, &data);
+	}
+
+	void evaluateDataInternal (Attributes& data, StringID context)
+	{
 		AutoPtr<IDiagnosticResultSet> results = System::GetDiagnosticStore ().queryResults (context, AnalyticsID::kFileExportCount);
 		if(results)
 		{
@@ -685,9 +697,6 @@ public:
 				data.queue (AnalyticsID::kFileExports, exportAttribs, Attributes::kOwns);
 			}
 		}
-
-		if(!data.isEmpty ())
-			ccl_analytics_event (AnalyticsID::kFileExportReport, &data);
 	}
 
 	void CCL_API onWriteCompleted (StringID eventId) override

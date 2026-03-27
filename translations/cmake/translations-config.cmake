@@ -32,7 +32,7 @@ macro (ccl_use_translation_packages apptarget)
 		foreach (po_file ${po_files})
 			string (REGEX REPLACE "\\.po" ".mo" mo_file "${po_file}")
 			file (APPEND "${mo_tmp}" "
-				${msgfmt} ${po_file} -o ${mo_file}"
+				\"${msgfmt}\" \"${po_file}\" -o \"${mo_file}\""
 			)
 		endforeach ()
 		list (APPEND all_mo_files ${mo_files})

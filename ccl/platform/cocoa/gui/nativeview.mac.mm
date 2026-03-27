@@ -250,8 +250,19 @@ bool CustomView::embedInto (NSView* parent)
 		// unless new windows should be activated, we deny giving up first responder status while a PlugInView is being attached
 		// to the same window (in case a plug-in tries to become first responder)
 		PlugInView* plugView = PlugInView::getAttachingView ();
-		if(plugView && plugView->getWindow() == window)
-			return NO;
+		if(plugView)
+		{
+			// check if PlugInView is directly embedded into our window
+			Window* parentWindow = plugView->getWindow ();
+			if(parentWindow == window)
+				return NO;
+
+			// check if PlugInView is in a ChildWindow inside our window
+			NSView* childWindowNSView = window ? (NSView*)window->getSystemWindow () : nullptr;
+			NSView* parentWindowNSView = parentWindow ? (NSView*)parentWindow->getSystemWindow () : nullptr;
+			if(parentWindowNSView && childWindowNSView && childWindowNSView.superview == parentWindowNSView)
+				return NO;
+		}
 	}
 	return YES;
 }

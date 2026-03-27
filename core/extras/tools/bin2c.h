@@ -1,7 +1,5 @@
 //************************************************************************************************
 //
-// Bin2C Tool
-//
 // This file is part of Crystal Class Library (R)
 // Copyright (c) 2025 CCL Software Licensing GmbH.
 // All Rights Reserved.
@@ -13,10 +11,13 @@
 // You must choose and comply with one of the above licensing options.
 // For more information, please visit ccl.dev.
 //
-// Filename    : bin2c.h
-// Description : Bin2C Tool
+// Filename    : core/extras/tools/bin2c.h
+// Description : Binary to C conversion
 //
 //************************************************************************************************
+
+#ifndef _corebin2c_h
+#define _corebin2c_h
 
 #include "core/public/corestream.h"
 #include "core/public/corestringbuffer.h"
@@ -66,3 +67,5 @@ static void bin2c (Core::IO::Stream& writer, Core::IO::Stream& reader, Core::CSt
 	str = "\n};\n";
 	writer.writeBytes ((const void*)str.getBuffer (), str.length ());
 }
+
+#endif // _corebin2c_h

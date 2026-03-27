@@ -959,7 +959,8 @@ tbool CCL_API DocumentTemplateListModel::createColumnHeaders (IColumnHeaderList&
 	list.addColumn (columnMargin);		// kLeftMarginColumn
 	list.addColumn (iconColumnWidth);  	// kIconColumn
 	list.addColumn (columnMargin);		// kMiddleMarginColumn
-	list.addColumn (titleColumnWidth); 	// kTitleColumn
+	list.addColumn (titleColumnWidth, 0, 0, 0, IColumnHeaderList::kFill); 	// kTitleColumn
+	list.addColumn (columnMargin);		// kRightMarginColumn
 	return true;
 }
 

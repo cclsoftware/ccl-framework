@@ -1,5 +1,27 @@
 # Changelog
 
+**CCL 5.0.2 (2026-03-27)**
+
+*New features and improvements:*
+
+- CCL maintainer documentation added
+- Skin XML | Support variables in "attach" attribute
+- Windows | Query installed store app information 
+- Linux | Improved drag session behavior
+- Vulkan | Improved buffer allocation and alignment
+- Metal | Improved clear behavior and buffer alignment
+
+*The following issues have been fixed:*
+
+- TreeView | Wrong indentation when used in menus
+- Windows | Rendering issues with fractional scaling
+- Windows | Rendering issues when DPI awareness disabled
+- Windows | Rounding issues in DpiScale functions
+- macOS/iOS | Rotation animation not working correctly
+- iOS | Alert not shown on disappearing UIViewController
+- Linux | Initialize versioned framework modules
+- Skia | Graphics path clipping broken in some situations
+
 **CCL 5.0.1 (2026-02-11)**
 
 *New features and improvements:*

@@ -1399,6 +1399,7 @@ void LinuxWindow::handlePointerEvent (const InputHandler::PointerEvent& pointerE
 			{
 				shouldClose = true;
 			}
+			cancelDragSession ();
 		}
 		else
 		{

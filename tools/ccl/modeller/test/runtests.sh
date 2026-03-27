@@ -75,6 +75,14 @@ compare_output ()
 
 # ///////////////////////////////////////////////////////////////////////////
 
+create_output_folder ()
+{
+	# Ensure output folder exists.
+	mkdir -p ./output
+}
+
+# ///////////////////////////////////////////////////////////////////////////
+
 cleanup_output ()
 {
 	# Cleanup output folder.
@@ -201,6 +209,8 @@ main ()
 	# Run series of test cases.
 
 	log "Using binary ${modeller}"
+
+	create_output_folder
 
 	############################################
 	# Action: -update

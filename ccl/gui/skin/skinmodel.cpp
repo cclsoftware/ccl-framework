@@ -2694,7 +2694,12 @@ bool ViewElement::setAttributes (const SkinAttributes& a)
 	mustResolveTitle (title.contains (SkinVariable::prefix));
 	mustResolveTip (tooltip.contains (SkinVariable::prefix));
 
-	sizeMode = a.getOptions (ATTR_ATTACH, View::resizeStyles);
+	sizeModeString = a.getString (ATTR_ATTACH);
+	mustResolveSizeMode (sizeModeString.contains (SkinVariable::prefix));
+
+	if(!mustResolveSizeMode ())
+		sizeMode = SkinAttributes::parseOptions (sizeModeString, View::resizeStyles);
+
 	styleClass = a.getString (ATTR_STYLE);
 	layerBackingType = static_cast<LayerBackingType> (a.getOptions (ATTR_LAYERBACKING, layerBackingTypes, true, kLayerBackingFalse));
 	accessibilityType = static_cast<AccessibilityType> (a.getOptions (ATTR_ACCESSIBILITY, accessibilityTypes, true, kAccessibilityEnabled));
@@ -2950,6 +2955,9 @@ View* ViewElement::createView (const CreateArgs& args, View* view)
 	calculateViewSize (r, view);
 	applyZoomFactor (r, view, args);
 	view->setSize (r);
+
+	if(mustResolveSizeMode ())
+		sizeMode = SkinAttributes::parseOptions (args.wizard.resolveTitle (sizeModeString), View::resizeStyles);
 
 	// Don't overide sizemode flags from views that are created by controller
 	if(sizeMode || isForm)

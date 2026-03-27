@@ -320,12 +320,15 @@ macro (ccl_configure_project_vendor vendor)
 		ccl_get_sign_args (sign_args "${vendor}")
 		
 		find_program (CMD REQUIRED NAMES cmd)
-		find_file (sign_script REQUIRED NAMES "sign_binaries.bat" PATHS "${REPOSITORY_ROOT}/build/win" "${CCL_REPOSITORY_ROOT}/build/win")
+		find_file (sign_script NAMES "sign_binaries.bat" PATHS "${REPOSITORY_ROOT}/build/win" "${CCL_REPOSITORY_ROOT}/build/win")
 		cmake_path (NATIVE_PATH sign_script NORMALIZE sign_script_native)
 		find_file (sign_extensions_script NAMES "sign_extensions.bat" PATHS "${REPOSITORY_ROOT}/build/win")
 		cmake_path (NATIVE_PATH sign_extensions_script NORMALIZE sign_extensions_script_native)
+		find_file (sign_file_script REQUIRED NAMES "sign_file.bat" PATHS "${REPOSITORY_ROOT}/build/win" "${CCL_REPOSITORY_ROOT}/build/win")
+		cmake_path (NATIVE_PATH sign_file_script NORMALIZE sign_file_script_native)
 		
 		ccl_get_build_output_directory (artifacts_directory)
+		cmake_path (NATIVE_PATH artifacts_directory NORMALIZE artifacts_directory)
 	
 		if (sign_script AND sign_extensions_script)
 		
@@ -350,15 +353,12 @@ macro (ccl_configure_project_vendor vendor)
 			
 		else ()
 		
-			find_file (sign_file_script REQUIRED NAMES "sign_file.bat" PATHS "${REPOSITORY_ROOT}/build/win")
-			cmake_path (NATIVE_PATH sign_file_script NORMALIZE sign_file_script_native)	
-			
 			add_custom_command (OUTPUT ${sign_target_name}_run_always
 				COMMENT "Signing binaries"
 				COMMAND "${CMD}" /c "${${vendor}_SIGNING_PRE_COMMAND}"
-				COMMAND "${CMD}" /c "${sign_script_native}" ${sign_args} "${artifacts_directory}/*.exe"
-				COMMAND "${CMD}" /c "${sign_script_native}" ${sign_args} "${artifacts_directory}/*.dll"
-				COMMAND "${CMD}" /c "${sign_script_native}" ${sign_args} "${artifacts_directory}/Plugins/*.dll"
+				COMMAND "${CMD}" /c "${sign_file_script_native}" ${sign_args} "${artifacts_directory}/*.exe"
+				COMMAND "${CMD}" /c "${sign_file_script_native}" ${sign_args} "${artifacts_directory}/*.dll"
+				COMMAND "${CMD}" /c "${sign_file_script_native}" ${sign_args} "${artifacts_directory}/Plugins/*.dll"
 				COMMAND "${CMD}" /c "${${vendor}_SIGNING_POST_COMMAND}"
 				VERBATIM
 			)
@@ -550,7 +550,13 @@ macro (ccl_nsis_package target script)
 		foreach (definition ${CCL_NSIS_DEFINITIONS})
 			list (APPEND nsis_definitions "/D${definition}")
 		endforeach ()
-
+		
+		foreach (includedir ${VENDOR_NSIS_INCLUDE_DIRECTORIES})
+			cmake_path (NATIVE_PATH includedir NORMALIZE include_directory_native)
+			list (APPEND nsis_definitions "/X!addincludedir \"${include_directory_native}\"")
+		endforeach ()
+		list (APPEND nsis_definitions "/X!addincludedir \"${VENDOR_NSIS_INCLUDE_DIR}\"")
+		
 		if (REPOSITORY_ROOT)
 			list (APPEND nsis_definitions "/DBASEDIR=${REPOSITORY_ROOT}")
 		endif ()
@@ -559,10 +565,9 @@ macro (ccl_nsis_package target script)
 			list (APPEND nsis_definitions "/DBUILD_REVISION=0")
 		endif ()
 
-		if (CCL_REPOSITORY_ROOT)
-			list (APPEND nsis_definitions "/DCCL_BASEDIR=${CCL_REPOSITORY_ROOT}")
-		elseif (CCL_DIR)
-			list (APPEND nsis_definitions "/DCCL_BASEDIR=${CCL_DIR}")
+		find_path (ccl_nsis_basedir NAMES core/public/coreversion.h HINTS ${CCL_REPOSITORY_ROOT} ${CCL_DIR} PATH_SUFFIXES ..)
+		if (ccl_nsis_basedir)
+			list (APPEND nsis_definitions "/DCCL_BASEDIR=${ccl_nsis_basedir}")
 		endif ()
 
 		if (CCL_IDENTITIES_DIR)

@@ -78,6 +78,7 @@ struct PlatformModuleHelper
 	//////////////////////////////////////////////////////////////////////////////////////////////
 	
 	#define CCL_MODULE_NAME(name) "lib" name CCL_FUNCTION_POSTFIX ".so"
+	#define CCL_VERSIONED_MODULE_NAME(name) CCL_MODULE_NAME (name) "." CCL_VERSION_STRING
 	#define CCL_FUNCTION_NAME(name) name
 
 	typedef CStringPtr ModuleName;

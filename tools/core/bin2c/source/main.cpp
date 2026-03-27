@@ -18,7 +18,7 @@
 //
 //************************************************************************************************
 
-#include "bin2c.h"
+#include "core/extras/tools/bin2c.h"
 
 #include "core/portable/corefile.h"
 
