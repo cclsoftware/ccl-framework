@@ -8,7 +8,7 @@ Welcome to Crystal Class Library\ |reg| (CCL), a cross-platform framework for de
 
 - Windows (based on Win32)
 - macOS and iOS/iPadOS (based on Cocoa)
-- Linux (with support for Gnome and KDE)
+- Linux (using Wayland)
 - Android
 
 You can think of CCL as a unified virtual operating system. Instead of using platform-specific APIs and UI elements, applications are based on an additional abstract layer to make them portable between OS platforms. For example, you can develop and debug most of a mobile app for iOS/iPadOS on a PC using Visual Studio or VS Code, or release an application for all supported platforms simultaneously with little overhead.

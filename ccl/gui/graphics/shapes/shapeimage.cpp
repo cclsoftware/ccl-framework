@@ -51,6 +51,19 @@ ShapeImage::~ShapeImage ()
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
+ShapeImage* ShapeImage::cloneDeep () const
+{
+	ShapeImage* imageCopy = NEW ShapeImage;
+	if(shape)
+	{
+		AutoPtr<Shape> shapeCopy = static_cast<Shape*> (shape->clone ());
+		imageCopy->setShape (shapeCopy);
+	}
+	return imageCopy;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
 void ShapeImage::setFilmstrip (bool state)
 {
 	filmstrip = state;

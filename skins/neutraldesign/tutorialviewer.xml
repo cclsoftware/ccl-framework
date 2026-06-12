@@ -126,7 +126,7 @@
 		<!-- Used with dynamic content height, requires autoSize () when content is replaced. -->
 		<!-- ******************************************************************************************** -->
 
-		<Form name="TutorialViewer" width="600" style="TutorialViewer.TransparentWindow" title="Tutorial" windowstyle="customframe center translucent" options="colorize windowmovable" attach="fitsize">
+		<Form name="TutorialViewer" width="600" style="TutorialViewer.TransparentWindow" title="Tutorial" windowstyle="customframe roundedcorners center translucent" options="colorize windowmovable" attach="fitsize">
 			<!-- "content" view must keep a minimum sizelimit.
 				Otherwise, when views are removed and "fitsize" mode is active,
 				Window::setSize() skips resizing (due to `if(size.isEmpty())`). -->

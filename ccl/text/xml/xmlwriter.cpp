@@ -58,6 +58,13 @@ tresult CCL_API XmlWriter::beginDocument (IStream& stream, TextEncoding encoding
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
+ITextBuilder* CCL_API XmlWriter::createTextBuilder ()
+{
+	return TextWriter::createTextBuilder ();
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
 tresult CCL_API XmlWriter::characterData (IStream& charData, TextEncoding encoding)
 {
 	ASSERT (streamer != nullptr)

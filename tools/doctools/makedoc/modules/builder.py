@@ -17,6 +17,15 @@ from modules.tools import SphinxTool, PdfTool
 
 __copyright__ = "Copyright (c) 2023 CCL Software Licensing GmbH"
 
+
+class BuildException(Exception):
+    """Exception raised when build errors occur, used
+    to stop main() with exit code 1."""
+
+    def __init__(self, message: str):
+        super().__init__(message)
+
+
 class InFileHandler:
 
     def __init__(self, input_path: pathlib.Path, env: BuildEnvironment):
@@ -134,24 +143,23 @@ class BuilderBase:
         for action_config in project_info.config.build:
             action_config.attrs["verbose"] = self.verbose
             action: IBuildAction = ActionFactory.create(action_config, self.env, project_info.path)
-            if action is None:
-                logging.error(f"unsupported build action '{action_config.action}'")
-                continue
 
             log_prefix = f"[BUILD ACTION] [{action_config.action}]"
+
+            # User configuration error.
+            if action is None:
+                raise BuildException(f"{log_prefix} failed to create action")
 
             try:
                 log = log_prefix
                 if action_config.description:
                     log = f"{log} '{action_config.description}'"
-                logging.info(log)
 
-                result = action.run()
-                if not result:
-                    logging.error(f"{log_prefix} failed")
+                logging.info(log)
+                action.run()
 
             except BuildActionException as e:
-                logging.error(f"{log_prefix} error: {e}")
+                raise BuildException(f"{log_prefix} error: {e}")
 
 
 class MetaProjectBuilder(BuilderBase):

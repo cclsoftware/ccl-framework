@@ -60,6 +60,7 @@ ccl_add_resources (dapservice ${dapservice_resources})
 target_sources (dapservice PRIVATE ${dapservice_sources})
 target_link_libraries (dapservice PRIVATE cclapp cclbase ccltext cclsystem cclgui cclnet)
 
+ccl_export_target (dapservice)
 if (CCL_SYSTEM_INSTALL)
 	install (TARGETS dapservice 
 		EXPORT ccl-targets DESTINATION "${CCL_LIBRARY_DESTINATION}"
@@ -70,6 +71,6 @@ if (CCL_SYSTEM_INSTALL)
         install (FILES $<TARGET_FILE_DIR:dapservice>/dapservice.pdb DESTINATION "${CCL_PLUGINS_DESTINATION}" OPTIONAL COMPONENT services_${VENDOR_NATIVE_COMPONENT_SUFFIX})
     endif ()
 elseif (VENDOR_PLUGINS_RUNTIME_DIRECTORY)
-	install (TARGETS dapservice LIBRARY DESTINATION ${VENDOR_PLUGINS_RUNTIME_DIRECTORY}
+	install (TARGETS dapservice LIBRARY DESTINATION ${VENDOR_PLUGINS_RUNTIME_DIRECTORY} FRAMEWORK DESTINATION ${VENDOR_PLUGINS_RUNTIME_DIRECTORY}
 								FRAMEWORK DESTINATION ${VENDOR_PLUGINS_RUNTIME_DIRECTORY})
 endif ()

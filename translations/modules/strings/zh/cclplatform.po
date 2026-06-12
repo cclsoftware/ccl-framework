@@ -7,7 +7,7 @@ msgstr ""
 #: android/system/filemanager.android.cpp
 msgctxt "FileManager"
 msgid "Internal Storage"
-msgstr "内置存储"
+msgstr "内部存储"
 
 #: cocoa/gui/fileselector.cocoa.mm
 msgctxt "FileSelector"
@@ -83,7 +83,7 @@ msgid ""
 "%(1)"
 msgstr ""
 "在此应用程序或插件中发生了意外错误。\n"
-"问题报告已创建在：\n"
+"问题报告已创建于：\n"
 "\n"
 "%(1)"
 
@@ -95,7 +95,7 @@ msgstr "检测到图形硬件加速问题。"
 #: win/direct2d/d2dengine.cpp
 msgctxt "Win32"
 msgid "This application requires Windows 10 or later."
-msgstr "该应用需在Windows 10或更新版本下运行。"
+msgstr "该应用需在 Windows 10 或更新版本中运行。"
 
 #~ msgctxt "Alert"
 #~ msgid "Information"

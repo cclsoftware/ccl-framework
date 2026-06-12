@@ -27,6 +27,7 @@
 namespace CCL {
 
 class Component;
+class Attributes;
 
 //************************************************************************************************
 // DropBoxModel
@@ -62,6 +63,8 @@ protected:
 	Component* owner;
 	ObjectList items;
 	SharedPtr<Object> focusItem;
+
+	virtual void getSkinVariablesForItem (Attributes& variables, const Object& item);
 };
 
 //////////////////////////////////////////////////////////////////////////////////////////////////

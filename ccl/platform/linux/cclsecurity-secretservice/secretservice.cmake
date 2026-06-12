@@ -22,49 +22,59 @@ if (CCL_ISOLATION_POSTFIX)
 endif ()
 
 option (CCL_BUILD_SECRETSERVICE_INTEGRATION "secretservice integration for cclsecurity" ON)
-if (${CCL_BUILD_SECRETSERVICE_INTEGRATION} AND NOT TARGET ${cclsecurity-secretservice})
-	find_package (ccl REQUIRED COMPONENTS cclbase)
-
-	ccl_add_library (cclsecurity-secretservice SHARED VENDOR ccl POSTFIX "${CCL_ISOLATION_POSTFIX}"
-		SUBDIR "PlatformIntegration/${CCL_PACKAGE_DOMAIN}cclsecurity"
-		VERSION_FILE ${CMAKE_CURRENT_LIST_DIR}/version.h
-		VERSION_PREFIX PLUG
-	)
-	set_target_properties (${cclsecurity-secretservice} PROPERTIES FOLDER "ccl")
-    
-	ccl_list_append_once (secretservice_ccl_sources
-		${CCL_DIR}/main/cclmodmain.cpp
-		${CCL_DIR}/main/cclmodmain.empty.cpp
-		${CCL_DIR}/platform/linux/interfaces/linuxiids.cpp
-	)
-
-	ccl_list_append_once (secretservice_source_files
-		${CMAKE_CURRENT_LIST_DIR}/secretservice.cpp
-		${CMAKE_CURRENT_LIST_DIR}/version.h
-		${CMAKE_CURRENT_LIST_FILE}
-	)
-
-	ccl_list_append_once (secretservice_sources
-		${secretservice_ccl_sources}
-		${secretservice_source_files}	
-	)
-
-	source_group ("source" FILES ${secretservice_source_files})
-	source_group ("cmake" FILES ${CMAKE_CURRENT_LIST_FILE})
-	target_sources (${cclsecurity-secretservice} PRIVATE ${secretservice_sources})
-    
-	target_link_libraries (${cclsecurity-secretservice} PRIVATE ${cclbase})
-	target_include_directories (${cclsecurity-secretservice} PRIVATE "${CCL_INCLUDE_DIRS}")
-	
-	if (CCL_SYSTEM_INSTALL)
-		install (TARGETS ${cclsecurity-secretservice} LIBRARY DESTINATION "${CCL_BINARY_DESTINATION}/PlatformIntegration/${CCL_PACKAGE_DOMAIN}cclsecurity/")
-	else ()
-		install (TARGETS ${cclsecurity-secretservice} LIBRARY DESTINATION "${VENDOR_PLATFORMINTEGRATION_DIRECTORY}/${CCL_PACKAGE_DOMAIN}cclsecurity/")
+if (CCL_BUILD_SECRETSERVICE_INTEGRATION)
+	ccl_import_prebuilt_targets (cclgui-xdgportal ISOLATED)
+	if (TARGET ${cclsecurity-secretservice} AND NOT CCL_SYSTEM_INSTALL)
+		ccl_install_imported (${cclsecurity-secretservice} LIBRARY DESTINATION "${VENDOR_PLATFORMINTEGRATION_DIRECTORY}/${CCL_PACKAGE_DOMAIN}cclsecurity/")
+		return ()
 	endif ()
 
-	ccl_use_dbus_interface (${cclsecurity-secretservice} "${CMAKE_CURRENT_LIST_DIR}/dbus/org.freedesktop.Secret.Service.xml")
-	ccl_use_dbus_interface (${cclsecurity-secretservice} "${CMAKE_CURRENT_LIST_DIR}/dbus/org.freedesktop.Secret.Session.xml")
-	ccl_use_dbus_interface (${cclsecurity-secretservice} "${CMAKE_CURRENT_LIST_DIR}/dbus/org.freedesktop.Secret.Prompt.xml")
-	ccl_use_dbus_interface (${cclsecurity-secretservice} "${CMAKE_CURRENT_LIST_DIR}/dbus/org.freedesktop.Secret.Collection.xml")
-	ccl_use_dbus_interface (${cclsecurity-secretservice} "${CMAKE_CURRENT_LIST_DIR}/dbus/org.freedesktop.Secret.Item.xml")
+	if (NOT TARGET ${cclsecurity-secretservice})
+		find_package (ccl REQUIRED COMPONENTS cclbase)
+
+		ccl_add_library (cclsecurity-secretservice SHARED VENDOR ccl POSTFIX "${CCL_ISOLATION_POSTFIX}"
+			SUBDIR "PlatformIntegration/${CCL_PACKAGE_DOMAIN}cclsecurity"
+			VERSION_FILE ${CMAKE_CURRENT_LIST_DIR}/version.h
+			VERSION_PREFIX PLUG
+		)
+		set_target_properties (${cclsecurity-secretservice} PROPERTIES FOLDER "ccl")
+
+		ccl_list_append_once (secretservice_ccl_sources
+			${CCL_DIR}/main/cclmodmain.cpp
+			${CCL_DIR}/main/cclmodmain.empty.cpp
+			${CCL_DIR}/platform/linux/interfaces/linuxiids.cpp
+		)
+
+		ccl_list_append_once (secretservice_source_files
+			${CMAKE_CURRENT_LIST_DIR}/secretservice.cpp
+			${CMAKE_CURRENT_LIST_DIR}/version.h
+			${CMAKE_CURRENT_LIST_FILE}
+		)
+
+		ccl_list_append_once (secretservice_sources
+			${secretservice_ccl_sources}
+			${secretservice_source_files}
+		)
+
+		source_group ("source" FILES ${secretservice_source_files})
+		source_group ("cmake" FILES ${CMAKE_CURRENT_LIST_FILE})
+		target_sources (${cclsecurity-secretservice} PRIVATE ${secretservice_sources})
+
+		target_link_libraries (${cclsecurity-secretservice} PRIVATE ${cclbase})
+		target_include_directories (${cclsecurity-secretservice} PRIVATE "${CCL_INCLUDE_DIRS}")
+
+		if (CCL_SYSTEM_INSTALL)
+			install (TARGETS ${cclsecurity-secretservice} LIBRARY DESTINATION "${CCL_BINARY_DESTINATION}/PlatformIntegration/${CCL_PACKAGE_DOMAIN}cclsecurity/")
+		else ()
+			install (TARGETS ${cclsecurity-secretservice} LIBRARY DESTINATION "${VENDOR_PLATFORMINTEGRATION_DIRECTORY}/${CCL_PACKAGE_DOMAIN}cclsecurity/")
+		endif ()
+
+		ccl_use_dbus_interface (${cclsecurity-secretservice} "${CMAKE_CURRENT_LIST_DIR}/dbus/org.freedesktop.Secret.Service.xml")
+		ccl_use_dbus_interface (${cclsecurity-secretservice} "${CMAKE_CURRENT_LIST_DIR}/dbus/org.freedesktop.Secret.Session.xml")
+		ccl_use_dbus_interface (${cclsecurity-secretservice} "${CMAKE_CURRENT_LIST_DIR}/dbus/org.freedesktop.Secret.Prompt.xml")
+		ccl_use_dbus_interface (${cclsecurity-secretservice} "${CMAKE_CURRENT_LIST_DIR}/dbus/org.freedesktop.Secret.Collection.xml")
+		ccl_use_dbus_interface (${cclsecurity-secretservice} "${CMAKE_CURRENT_LIST_DIR}/dbus/org.freedesktop.Secret.Item.xml")
+
+		ccl_export_target (${cclsecurity-secretservice})
+	endif ()
 endif ()

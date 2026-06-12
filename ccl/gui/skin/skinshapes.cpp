@@ -234,6 +234,11 @@ void ComplexShapeElement::loadFinished ()
 				Shape& subShape= shapeElement->getShape ();
 				subShape.retain ();
 				shape.addShape (&subShape);
+
+				// resolve embedded image
+				if(auto* imageElement = ccl_cast<EmbeddedImageShapeElement> (shapeElement))
+					if(auto* imageShape = ccl_cast<ImageShape> (&subShape))
+						resolveEmbeddedImage (*imageShape, *imageElement);
 			}
 		EndFor
 	}
@@ -251,6 +256,29 @@ bool ComplexShapeElement::resolveShapeReference ()
 		((ComplexShape&)getShape ()).setSize (r);
 
 	return result;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+void ComplexShapeElement::resolveEmbeddedImage (ImageShape& imageShape, EmbeddedImageShapeElement& imageElement) const
+{					
+	SharedPtr<Image> image;
+	
+	SkinModel* model = SkinModel::getModel (this);
+	if(model)
+		image = model->getImage (imageElement.getImageName (), &imageElement);
+					
+	if(!image && SkinModel::loadingModel && SkinModel::loadingModel != model) // access outer loading skin model (not current include)
+		image = SkinModel::loadingModel->getImage (imageElement.getImageName (), &imageElement);
+
+	// deep-copy shapes for potential color mapping
+	if(auto* shapeImage = ccl_cast<ShapeImage> (image))
+	{
+		AutoPtr<ShapeImage> imageCopy = shapeImage->cloneDeep ();
+		image = imageCopy;
+	}
+
+	imageShape.setImage (image);
 }
 
 //************************************************************************************************
@@ -414,6 +442,55 @@ bool TriangleShapeElement::getAttributes (SkinAttributes& a) const
 }
 
 //************************************************************************************************
+// EmbeddedImageShapeElement
+//************************************************************************************************
+
+BEGIN_SKIN_ELEMENT_WITH_MEMBERS (EmbeddedImageShapeElement, ShapeElement, TAG_GRAPHIC, DOC_GROUP_SHAPES, ImageShape)
+	ADD_SKIN_ELEMENT_MEMBER (ATTR_IMAGE, TYPE_STRING) ///< name of image to embed (from resources section)
+	ADD_SKIN_ELEMENT_MEMBER (ATTR_SOURCE, TYPE_RECT) ///< image source rectangle
+	ADD_SKIN_ELEMENT_MEMBER (ATTR_DESTINATION, TYPE_RECT) ///< image destination rectangle
+END_SKIN_ELEMENT_WITH_MEMBERS (EmbeddedImageShapeElement)
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+Shape* EmbeddedImageShapeElement::newShape () const
+{
+	return NEW ImageShape;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+bool EmbeddedImageShapeElement::setAttributes (const SkinAttributes& a)
+{
+	ImageShape& imageShape = (ImageShape&)getShape ();
+
+	imageName = a.getString (ATTR_IMAGE);
+
+	Rect srcRect;
+	a.getRect (srcRect, ATTR_SOURCE);
+	imageShape.setSrcRect (srcRect);
+
+	Rect dstRect;
+	a.getRect (dstRect, ATTR_DESTINATION);
+	imageShape.setDstRect (dstRect);
+
+	return ShapeElement::setAttributes (a);
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+bool EmbeddedImageShapeElement::getAttributes (SkinAttributes& a) const
+{
+	ImageShape& imageShape = (ImageShape&)getShape ();
+
+	a.setString (ATTR_IMAGE, imageName);
+	a.setRect (ATTR_SOURCE, imageShape.getSrcRect ());
+	a.setRect (ATTR_DESTINATION, imageShape.getDstRect ());
+
+	return ShapeElement::getAttributes (a);
+}
+
+//************************************************************************************************
 // ShapeImageElement
 //************************************************************************************************
 
@@ -486,7 +563,15 @@ void ShapeImageElement::applyShapeModification ()
 void ShapeImageElement::applyShapeModificationDeep (ShapeColorMappingElement* mapping, Shape* shape)
 {
 	if(shape->countShapes () == 0)
-	{
+	{		
+		// check for embedded shape image
+		if(auto* imageShape = ccl_cast<ImageShape> (shape))
+			if(auto* embeddedImage = unknown_cast<ShapeImage> (imageShape->getImage ()))
+				if(Shape* embeddedShape = embeddedImage->getShape ())
+				{
+					applyShapeModificationDeep (mapping, embeddedShape);
+				}
+
 		if(mapping->getScheme () != nullptr)
 		{
 			if(shape->getStrokePen ().getColor () == mapping->getColor ())

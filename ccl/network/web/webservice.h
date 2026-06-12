@@ -57,7 +57,7 @@ public:
 	tresult CCL_API uploadData (UrlRef remotePath, IStream& localStream, IWebHeaderCollection* headers, IStream& response, 
 					StringID method = nullptr, IWebCredentials* credentials = nullptr, IProgressNotify* progress = nullptr, int* status = nullptr) override;
 	tresult CCL_API uploadInBackground (IObserver* observer, UrlRef remotePath, IStream& localStream, IWebHeaderCollection* headers,
-					StringID method = nullptr, IWebCredentials* credentials = nullptr) override;
+					StringID method = nullptr, IWebCredentials* credentials = nullptr, IStream* response = nullptr) override;
 	tresult CCL_API cancelOperation (IObserver* observer) override;
 	tresult CCL_API cancelOnExit () override;
 	tresult CCL_API setUserAgent (StringRef userAgent) override;

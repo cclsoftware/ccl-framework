@@ -50,13 +50,17 @@ ccl_list_append_once (cclsystem_apple_frameworks
 	${AUDIOTOOLBOX_LIBRARY}
 )
 
-set_target_properties (${cclsystem} PROPERTIES
-	FRAMEWORK TRUE
-)
+ccl_check_imported (${cclsystem} imported)
+if (NOT imported)
+	set_target_properties (${cclsystem} PROPERTIES
+		FRAMEWORK TRUE
+	)
 
-if (NOT ${CCL_STATIC_ONLY})
-	target_link_libraries (${cclsystem} PUBLIC ${cclsystem_apple_frameworks})
+	if (NOT ${CCL_STATIC_ONLY})
+		target_link_libraries (${cclsystem} PUBLIC ${cclsystem_apple_frameworks})
+	endif ()
 endif ()
+
 ccl_list_append_once (CCL_STATIC_LINK_LIBRARIES ${cclsystem_apple_frameworks})
 
 

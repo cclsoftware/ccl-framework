@@ -217,16 +217,7 @@ CoordF CCL_API NativeGraphicsDevice::getStringWidthF (StringRef text, FontRef fo
 
 tresult CCL_API NativeGraphicsDevice::drawTextLayout (PointRef pos, ITextLayout* _textLayout, BrushRef brush, int options)
 {
-	SimpleTextLayout* textLayout = unknown_cast<SimpleTextLayout> (_textLayout);
-	if(!textLayout)
-		return kResultInvalidArgument;
-
-	Rect rect (0, 0, textLayout->getWidthInt (), textLayout->getHeightInt ());
-	rect.offset (pos);
-	if(textLayout->getLineMode () == ITextLayout::kSingleLine)
-		return drawString (rect, textLayout->getText (), textLayout->getFont (), brush, textLayout->getFormat ().getAlignment ());
-	else
-		return drawText (rect, textLayout->getText (), textLayout->getFont (), brush, textLayout->getFormat ());
+	return drawTextLayout (pointIntToF (pos), _textLayout, brush, options);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -237,7 +228,8 @@ tresult CCL_API NativeGraphicsDevice::drawTextLayout (PointFRef pos, ITextLayout
 	if(!textLayout)
 		return kResultInvalidArgument;
 
-	RectF rect (0, 0, textLayout->getWidth (), textLayout->getHeight ());
+	RectF rect;
+	textLayout->getBounds (rect);
 	rect.offset (pos);
 	if(textLayout->getLineMode () == ITextLayout::kSingleLine)
 		return drawString (rect, textLayout->getText (), textLayout->getFont (), brush, textLayout->getFormat ().getAlignment ());
@@ -736,6 +728,13 @@ tresult CCL_API NativeTextLayout::getExplicitLineRange (Range& range, int textIn
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
+FontRef CCL_API NativeTextLayout::getFont () const
+{
+	return font;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
 tresult NativeTextLayout::getWordOrLineRange (Range& range, RangeMode mode, bool tryNonWord) const
 {
 	range.length = 0;
@@ -806,7 +805,7 @@ tresult CCL_API SimpleTextLayout::construct (StringRef text, CoordF width, Coord
 	this->text = text;
 	setWidth (width);
 	setHeight (height);
-	setFont (font);
+	this->font = font;
 	setLineMode (mode);
 	setFormat (format);
 	return kResultOk;
@@ -835,6 +834,14 @@ tresult CCL_API SimpleTextLayout::resize (CoordF width, CoordF height)
 	setWidth (width);
 	setHeight (height);
 	return kResultOk;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+tresult CCL_API SimpleTextLayout::setFontFace (const Range& range, StringRef faceName)
+{
+	// range formatting is not supported
+	return kResultNotImplemented;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -903,7 +910,7 @@ tresult CCL_API SimpleTextLayout::setSubscript (const Range& range)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-tresult CCL_API SimpleTextLayout::getBounds (Rect& bounds, int flags) const
+tresult CCL_API SimpleTextLayout::getBounds (Rect& bounds) const
 {
 	// provide a very rough estimate of the bounds
 	float fontSizePixel = font.getSize () / 72.f * DpiScale::getDpi (1);
@@ -924,7 +931,7 @@ tresult CCL_API SimpleTextLayout::getBounds (Rect& bounds, int flags) const
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-tresult CCL_API SimpleTextLayout::getBounds (RectF& bounds, int flags) const
+tresult CCL_API SimpleTextLayout::getBounds (RectF& bounds) const
 {
 	// provide a very rough estimate of the bounds
 	float fontSizePixel = font.getSize () / 72.f * DpiScale::getDpi (1);

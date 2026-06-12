@@ -63,6 +63,12 @@ namespace Colors
 
 	/** Get color from Unicode string. */
 	bool fromString (Color& color, StringRef string);
+
+	/** Get color from Variant (integer or string). */
+	bool fromVariant (Color& color, VariantRef value);
+
+	/** Convert color to Variant (integer). */
+	void toVariant (Variant& value, ColorRef color);
 }
 
 } // namespace CCL

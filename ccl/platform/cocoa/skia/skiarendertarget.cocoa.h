@@ -29,6 +29,7 @@
 #include <QuartzCore/CALayer.h>
 
 @class CAMetalLayer;
+@class CADisplayLink;
 @protocol MTLDevice;
 @protocol MTLCommandQueue;
 @protocol MTLTexture;
@@ -36,13 +37,39 @@
 
 @protocol CAMetalDrawable;
 
+namespace CCL {
+
+class MetalWindowRenderTarget;
+class Metal3DSurface;
+
+} // namespace CCL
+
 //************************************************************************************************
 // LayerDelegate
 //************************************************************************************************
 
-@interface CCL_ISOLATED (LayerDelegate) : NSObject<CALayerDelegate>
+@interface CCL_ISOLATED (LayerDelegate): NSObject<CALayerDelegate>
 @end
 
+//************************************************************************************************
+// DisplayTimer
+//************************************************************************************************
+
+API_AVAILABLE(macos(14.0))
+@interface CCL_ISOLATED (DisplayTimer): NSObject
+{
+	CCL::MetalWindowRenderTarget* target;
+	CCL::Metal3DSurface* surface;
+}
+
+@property (nonatomic, strong) CADisplayLink* caDisplayLink;
+
+- (instancetype)initWithView:(id)view;
+- (void)setTarget:(CCL::MetalWindowRenderTarget*)target;
+- (void)setSurface:(CCL::Metal3DSurface*)surface;
+- (void)refresh:(CADisplayLink*)sender;
+
+@end
 
 namespace CCL {
 
@@ -169,13 +196,15 @@ protected:
 	Vector<IGraphicsLayer*> removedLayers;
 	Vector<Metal3DSurface*> surfaces;
 	bool suspended;
+	int64 lastRefreshTime;
+	static constexpr int64 kRefreshInterval = 1000 / 60; // cap at 60Hz
 
 	bool hasClients () const;
 	void removePendingLayers ();
 };
 
 
-}; // namespace CCL
+} // namespace CCL
 
 #include "ccl/public/base/ccldefpop.h"
 

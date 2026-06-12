@@ -1583,13 +1583,16 @@ bool DocumentationScanner::SourceFileParser::parseDoxyComment (DocuSnippet& targ
 		out << s;
 	};
 
+	bool insideQuotes = false;
+
 	int len = comment.length ();
 	String result;
 	for(int i = 0; i < len; ++i)
 	{
 		uchar c = comment.at (i);
 		static const Vector<uchar> controlChars = { '\\', '@' };
-		if(controlChars.contains (c))
+
+		if(controlChars.contains (c) && !insideQuotes)
 		{
 			uchar next = comment.at (++i);
 			// skip redundancies like '@@'
@@ -1606,17 +1609,7 @@ bool DocumentationScanner::SourceFileParser::parseDoxyComment (DocuSnippet& targ
 				i--;
 			}
 		}
-		// interpret quotations as text, do not scan for commands
-		else if(c == '"')
-		{
-			int rangeStart = i;
-			uchar next = comment.at (++i);
-			while(next != '"' && i < len)
-				next = comment.at (++i);
-			// extend range by one to include closing "
-			result.append (String () << comment.subString (rangeStart, i - rangeStart + 1));
-		}
-		else if (c == '.')
+		else if(c == '.' && !insideQuotes)
 		{
 			// assume end of brief on occurence of non-escaped '.', set brief only once
 			if(target.brief.isEmpty ())
@@ -1628,9 +1621,17 @@ bool DocumentationScanner::SourceFileParser::parseDoxyComment (DocuSnippet& targ
 			else
 				appendChar (result, c);
 		}
+		else if(c == '"')
+		{
+			insideQuotes = !insideQuotes;
+			appendChar (result, c);
+		}
 		else
 			appendChar (result, c);
 	}
+
+	// syntax error in comment: uneven number of quote characters
+	ASSERT (insideQuotes == false)
 
 	result = cleanupParsedString (result);
 

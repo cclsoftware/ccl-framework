@@ -177,7 +177,7 @@ protected:
 // HTTP::Transaction
 //************************************************************************************************
 
-class Transaction
+class Transaction: public WebTransaction
 {
 public:
 	Transaction (Connection& connection, 
@@ -215,6 +215,7 @@ protected:
 	void finish (bool failed);
 
 	bool sendData (IStream& srcStream, int64 length, IProgressNotify* progress = nullptr);
+
 	bool receiveData (IStream& dstStream, int64 length, IProgressNotify* progress = nullptr);
 	bool receiveChunked (IStream& dstStream, int64& length, IProgressNotify* progress = nullptr);
 };

@@ -20,14 +20,15 @@
 #define _ccl_textbox_h
 
 #include "ccl/gui/controls/control.h"
-#include "ccl/gui/graphics/textlayoutbuilder.h"
+#include "ccl/gui/graphics/markupsupport.h"
 #include "ccl/gui/theme/renderer/compositedrenderer.h"
+#include "ccl/gui/theme/textscaler.h"
 
 #include "ccl/public/gui/icommandhandler.h"
 
 namespace CCL {
 
-interface ITextModel;
+interface IMutableTextModel;
 
 //************************************************************************************************
 // ITextParamProvider
@@ -83,7 +84,7 @@ public:
 	IParameter* getColorParam () const;
 	void setColorParam (IParameter* colorParam);
 
-	ITextModel* getTextModel () const;
+	IMutableTextModel* getTextModel () const;
 
 	Rect getTextRect () const;
 	Rect getTextRect (RectRef size) const;
@@ -123,7 +124,7 @@ public:
 
 protected:
 	AutoPtr<ITextLayout> textLayout;
-	ITextModel* textModel;
+	IMutableTextModel* textModel;
 	TextScaler textScaler;
 	String displayedText; // possibly truncated to fit into the box and has the labelParam text prepended
 	String plainTextCache; // read-only cache that mirrors textModel.toDisplayString ()
@@ -139,7 +140,7 @@ protected:
 	Coord explicitMaxWidth;
 	Coord displayOffset;
 
-	void setTextModel (ITextModel* model);
+	void setTextModel (IMutableTextModel* model);
 
 	void createTextModel ();
 	bool tryModelEditText (const MouseEvent& event);

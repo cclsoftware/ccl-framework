@@ -782,7 +782,6 @@ BEGIN_STYLEDEF (ScrollView::customStyles)
 	{"noswipe",			Styles::kScrollViewBehaviorNoSwipe},
 	{"allowzoom",		Styles::kScrollViewBehaviorAllowZoomGesture},
 	{"limittoscreen",	Styles::kScrollViewBehaviorLimitToScreen},
-	{"latchwheel",		Styles::kScrollViewBehaviorLatchWheel},
 	{"pagecontrol",		Styles::kScrollViewAppearancePageControl},
 	{"centertarget",    Styles::kScrollViewBehaviorCenterTarget},
 	{"vscrollspace",    Styles::kScrollViewBehaviorVScrollSpace},
@@ -2632,8 +2631,7 @@ bool ScrollView::onMouseWheel (const MouseWheelEvent& event)
 		if(View::onMouseWheel (event))
 			return true;
 	
-	if(!scrollWheelLatched && style.isCustomStyle (Styles::kScrollViewBehaviorLatchWheel))
-		scrollWheelLatched = true;
+	scrollWheelLatched = true;
 	lastScrollWheelEventTime = scrollEventTime;
 	
 	int sign = (int)ccl_sign (-event.delta);

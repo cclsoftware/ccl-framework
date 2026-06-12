@@ -45,11 +45,12 @@ interface ISignalHandler: IUnknown
 	/** This will call IObserver::notify() on all dependent observers of given subject. */
 	virtual tresult CCL_API performSignal (ISubject* subject, MessageRef msg) = 0;
 
-	/**	Queue signal message of given subject. It is performed next time flush() is called. 
-		If equal messages are queued for a subject, the signal is performed only once. */
-	virtual tresult CCL_API queueSignal (ISubject* subject, IMessage* msg) = 0;
+	/**	Queue signal message of given subject. It is performed next time flush() is called.
+		Behavior of multiple messages queued with same id depends on policy argument. */
+	virtual tresult CCL_API queueSignal (ISubject* subject, IMessage* msg, SignalQueuePolicy policy) = 0;
 
-	/** Optimized version of queueSignal() for kChanged message without arguments. */
+	/** Optimized version of queueSignal() for kChanged message without arguments.
+		If queued multiple times for the same subject, the signal is performed only once. */
 	virtual tresult CCL_API queueChanged (ISubject* subject) = 0;
 
 	/** Discard any queued signal messages of given subject. */
@@ -71,7 +72,7 @@ interface ISignalHandler: IUnknown
 	virtual tbool CCL_API hasObservers (ISubject* subject) = 0;
 
 	/** Return true, if there are undelivered messages for the observer. */
-	virtual tbool CCL_API messagesPending (IObserver* observer) = 0;
+	virtual tbool CCL_API isMessagePending (IObserver* observer) = 0;
 
 	DECLARE_IID (ISignalHandler)
 };

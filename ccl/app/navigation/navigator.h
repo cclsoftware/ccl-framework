@@ -42,7 +42,7 @@ public:
 	~Navigator ();
 
 	class CommandLink;
-	CommandLink* addCommandLink (StringRef name, StringRef title, UrlRef url, IImage* icon = nullptr, int index = -1);
+	virtual CommandLink* addCommandLink (StringRef name, StringRef title, UrlRef url, IImage* icon = nullptr, int index = -1);
 
 	PROPERTY_BOOL (autoShow, AutoShow)
 	PROPERTY_BOOL (autoHide, AutoHide)
@@ -57,6 +57,11 @@ public:
 
 	void setVisibilityParam (StringRef linkName, IParameter* param); // (shared)
 
+	void moveCommandLinkBefore (CommandLink* movingLink, const CommandLink* referenceLink);
+	void storeCommandLinkOrder (String& order) const;
+	void restoreCommandLinkOrder (StringRef order);
+	void resetCommandLinkOrder ();
+
 	// INavigator
 	tresult CCL_API navigate (UrlRef url) override;
 	tresult CCL_API navigateDeferred (UrlRef url) override;
@@ -67,6 +72,7 @@ public:
 	tbool CCL_API loadViewState (StringID viewID, StringID viewName, const IAttributeList& attributes, CCL::IViewState* state) override;
 
 	// Component
+	tresult CCL_API initialize (IUnknown* context) override;
 	IObjectNode* CCL_API findChild (StringRef id) const override;
 	tbool CCL_API paramChanged (IParameter* param) override;
 	IView* CCL_API createView (StringID name, VariantRef data, const Rect& bounds) override;
@@ -85,6 +91,8 @@ protected:
 	void updateCommandLinks ();
 	CommandLink* findCommandLink (StringRef name) const;
 	IUnknown* getContentComponent () const;
+
+	virtual void onCommandLinksReordered ();
 
 	// Navigation Events
 	void onNavigated () override;
@@ -112,6 +120,9 @@ public:
 	PROPERTY_SHARED_AUTO (IImage, icon, Icon)
 	PROPERTY_POINTER (IParameter, parameter, Parameter)
 	PROPERTY_SHARED_AUTO (IParameter, visibilityParam, VisibilityParam)
+	PROPERTY_VARIABLE (int, index, Index)
+	PROPERTY_FLAG (flags, 1 << 0, canMove)
+	PROPERTY_FLAG (flags, 1 << 1, isUnavailable)
 
 	bool isVisible () const;
 
@@ -119,6 +130,9 @@ public:
 	bool equals (const Object& obj) const override;
 	bool toString (String& string, int flags = 0) const override;
 	tresult CCL_API queryInterface (UIDRef iid, void** ptr) override;
+
+private:
+	int flags;
 };
 
 } // namespace CCL

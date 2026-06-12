@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 # === Key Tool ===
 keytool="$JAVA_HOME/bin/keytool"

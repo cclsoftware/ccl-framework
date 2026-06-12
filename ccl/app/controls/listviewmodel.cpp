@@ -81,6 +81,7 @@ DEFINE_STRINGID_MEMBER_ (ListViewModelBase, kIconID, "icon")
 DEFINE_STRINGID_MEMBER_ (ListViewModelBase, kTitleID, "title")
 DEFINE_STRINGID_MEMBER_ (ListViewModelBase, kSubtitleID, "subtitle")
 DEFINE_STRINGID_MEMBER_ (ListViewModelBase, kCheckBoxID, "check")
+DEFINE_STRINGID_MEMBER_ (ListViewModelBase, kColorID, "color")
 DEFINE_STRINGID_MEMBER_ (ListViewModelBase, kEditSelectID, "edit")
 
 DEFINE_STRINGID_MEMBER_ (ListViewModelBase, kEditItemCell, "editItemCell")
@@ -137,6 +138,8 @@ ListViewModel::ColumnType ListViewModelBase::getColumnType (CString& id, int col
 			return kEditSelectColumn;
 		if(id == kCheckBoxID)
 			return kCheckBoxColumn;
+		if(id == kColorID)
+			return kColorColumn;
 	}
 	else // no columns defined
 	{
@@ -391,6 +394,27 @@ tbool CCL_API ListViewModelBase::drawCell (ItemIndexRef index, int column, const
 		drawCheckBox (info, item->isChecked (), item->isEnabled ());
 		break;
 
+	case kColorColumn :
+		{
+			Variant colorCode;
+			if(item->getDetail (colorCode, kColorID))
+			{
+				Color color;
+				if(Colors::fromVariant (color, colorCode))
+				{
+					Rect rect (info.rect);
+					rect.setWidth (rect.getHeight ());
+					rect.contract (2);
+
+					if(color.getAlphaF () == 0.f)
+						color.setAlphaF (1.f);
+
+					info.graphics.fillRect (rect, SolidBrush (color));
+				}
+			}
+		}
+		break;
+
 	case kEditSelectColumn :
 		{
 			const IVisualStyle& vs = ViewBox (info.view).getVisualStyle ();
@@ -522,6 +546,29 @@ void CCL_API ListViewModelBase::notify (ISubject* subject, MessageRef msg)
 				savedSelectedItem = getFirstSelectedItem ();
 		}
 	}
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+tbool CCL_API ListViewModelBase::getItemAccessibilityInfo (AccessibilityInfo& info, ItemIndexRef index, int column) const
+{
+	ListViewItem* item = resolve (index);
+	if(item == nullptr)
+		return false;
+	
+	StringID columnID = getColumnID (column);
+
+	item->getTooltip (info.name, columnID);
+	
+	if(info.name.isEmpty () || columnID == kTitleID)
+		info.name = item->getTitle ();
+
+	Variant value;
+	if(item->getDetail (value, columnID) && value.isString ())
+		info.value = value.asString ();
+
+	info.role = int(AccessibilityElementRole::kDataItem);
+	return true;
 }
 
 //************************************************************************************************
@@ -934,7 +981,8 @@ tbool CCL_API ListViewModel::openItem (ItemIndexRef index, int column, const Edi
 {
 	if(ListViewItem* item = resolve (index))
 	{
-		signal (Message (kItemOpened, item->asUnknown (), column));
+		CCL_BOX (BoxedEditInfo, boxedEditInfo, info)
+		signal (Message (kItemOpened, item->asUnknown (), column, boxedEditInfo->asUnknown ()));
 		return true;
 	}
 	return false;
@@ -1214,27 +1262,6 @@ tbool CCL_API ListViewModel::getProperty (Variant& var, MemberID propertyId) con
 		return true;
 	}
 	return SuperClass::getProperty (var, propertyId);
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
-tbool CCL_API ListViewModel::getItemAccessibilityInfo (AccessibilityInfo& info, ItemIndexRef index, int column) const
-{
-	ListViewItem* item = resolve (index);
-	if(item == nullptr)
-		return false;
-	
-	StringID columnID = getColumnID (column);
-
-	if(!item->getTooltip (info.name, columnID) || info.name.isEmpty ())
-		info.name = item->getTitle ();
-
-	Variant value;
-	if(item->getDetail (value, columnID) && value.isString ())
-		info.value = value.asString ();
-
-	info.role = int(AccessibilityElementRole::kDataItem);
-	return true;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////

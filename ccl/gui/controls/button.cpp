@@ -25,6 +25,7 @@
 #include "ccl/gui/graphics/imaging/multiimage.h"
 #include "ccl/gui/layout/layoutprimitives.h"
 #include "ccl/gui/popup/popupselector.h"
+#include "ccl/gui/commands.h"
 
 #include "ccl/base/message.h"
 #include "ccl/base/asyncoperation.h"
@@ -567,6 +568,7 @@ public:
 	
 	// ControlAccessibilityProvider
 	AccessibilityElementRole CCL_API getElementRole () const override;
+	void CCL_API getElementName (String& name) const override;
 
 	// IAccessibilityActionProvider
 	tresult CCL_API performAction () override;
@@ -862,7 +864,6 @@ void CCL_API Button::push ()
 	SharedPtr<Unknown> lifeGuard (this);
 	if(param)
 	{
-		SharedPtr<Unknown> lifeGuard (this);
 		param->setValue (param->getMax (), true);
 		param->setValue (param->getMin (), false); // <-- target is not notified!
 	}
@@ -1938,6 +1939,28 @@ Button& ButtonAccessibilityProvider::getButton () const
 AccessibilityElementRole CCL_API ButtonAccessibilityProvider::getElementRole () const
 {
 	return AccessibilityElementRole::kButton;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+void CCL_API ButtonAccessibilityProvider::getElementName (String& name) const
+{
+	if(view.getTitle ().isEmpty ())
+	{
+		UnknownPtr<ICommandParameter> commandParam (getControl ().getParameter ());
+		if(commandParam)
+		{
+			if(ICommand* command = CommandTable::instance ().findCommand (commandParam->getCommandCategory (), commandParam->getCommandName ()))
+			{
+				CommandDescription commandDescription;
+				command->getDescription (commandDescription);
+				name = commandDescription.displayName;
+				if(!name.isEmpty ())
+					return;
+			}
+		}
+	}
+	return SuperClass::getElementName (name);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////

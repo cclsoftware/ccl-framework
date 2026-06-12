@@ -38,6 +38,9 @@
 		
 		<Color name="SeverityColorNormal"	color="hsl(55,90,50)"/>
 		<Color name="SeverityColorHigh"	 	color="hsl(15,55,50)"/>
+		
+		<Color name="ActionColor30"			color="hsl(114,46,30)"/>
+		<Color name="ActionColor35"	 		color="hsl(114,46,35)"/>
 	</Resources>
 	
 </Skin>

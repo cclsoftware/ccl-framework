@@ -38,7 +38,7 @@ public:
 
 	PROPERTY_MUTABLE_CSTRING (formName, FormName)
 
-	bool startup (const IUrl* defaultPath = nullptr);
+	bool startup (const IUrl* defaultPath = nullptr, int version = 0);
 	
 	enum AgreementType
 	{
@@ -47,8 +47,8 @@ public:
 		kCustom		///< A custom title is provided
 	};
 
-	bool run (StringRef id, UrlRef path, StringRef title, AgreementType type = kEULA);
-	IAsyncOperation* runAsync (StringRef id, UrlRef path, StringRef title, AgreementType type = kEULA);
+	bool run (StringRef id, UrlRef path, StringRef title, AgreementType type = kEULA, int version = 0);
+	IAsyncOperation* runAsync (StringRef id, UrlRef path, StringRef title, AgreementType type = kEULA, int version = 0);
 
 	// Component
 	IView* CCL_API createView (StringID name, VariantRef data, const Rect& bounds) override;
@@ -58,7 +58,8 @@ protected:
 	IAsyncOperation* runDialogAsync (StringRef title);
 
 	static CString getAcceptedAttributeID ();
-	bool checkAcceptedAndLoadText (StringRef id, UrlRef path);
+	static String getVersionedID (StringRef id, int version);
+	bool checkAcceptedAndLoadText (StringRef id, UrlRef path, int version);
 	String getDialogTitle (StringRef title, AgreementType type) const;
 	IView* createDialogView (StringRef title);
 };

@@ -136,6 +136,7 @@ BEGIN_XSTRINGS ("FileType")
 	XSTRING (JsonFile, "JSON File")
 	XSTRING (UBJsonFile, "UBJSON File")
 	XSTRING (CsvFile, "Spreadsheet")
+	XSTRING (MarkdownFile, "Markdown File")
 END_XSTRINGS
 
 namespace CCL {
@@ -176,6 +177,8 @@ namespace FileTypes
 	static FileType ubjson	(nullptr, "ubj", "application/ubjson");
 
 	static FileType csv		(nullptr, "csv", "text/csv");
+
+	static FileType markdown (nullptr, "md", "text/markdown");
 }}
 
 #if 1
@@ -203,6 +206,7 @@ CCL_KERNEL_INIT_LEVEL (FileTypeRegistry, kFrameworkLevelFirst + 1) // after tran
 	REGISTER_DEFAULT_TYPE (json, JsonFile)
 	REGISTER_DEFAULT_TYPE (ubjson, UBJsonFile)
 	REGISTER_DEFAULT_TYPE (csv, CsvFile)
+	REGISTER_DEFAULT_TYPE (markdown, MarkdownFile)		
 	return true;
 }
 
@@ -861,6 +865,7 @@ const FileType& CCL_API FileTypeRegistry::getDefaultFileType (int which) const
 	case FileTypes::kJson	: return FileTypes::json;
 	case FileTypes::kUBJson	: return FileTypes::ubjson;
 	case FileTypes::kCsv    : return FileTypes::csv;
+	case FileTypes::kMarkdown : return FileTypes::markdown;
 	}
 
 	CCL_DEBUGGER ("Unknown default file type!")

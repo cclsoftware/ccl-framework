@@ -28,13 +28,13 @@ using namespace CCL;
 // Constants
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-static const String theConstant1 = CCLSTR ("This is a constant string!");
-static const String theConstant2 = CCLSTR ("Hello World!");
+static const String kTestString = CCLSTR ("This is a constant string!");
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 #define TEST_SYSTEM_ENCODINGS 1 // not available on all platforms!
 #define kNumTestEncodings ARRAY_COUNT (testEncodings)
+
 static const struct { TextEncoding encoding; const char* string; } testEncodings[] =
 {
 	{Text::kASCII,			"US-ASCII"},
@@ -47,6 +47,8 @@ static const struct { TextEncoding encoding; const char* string; } testEncodings
 	#endif
 	{Text::kSystemEncoding,	"(System)"}
 };
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
 
 static const char* getEncodingString (TextEncoding encoding)
 {
@@ -69,9 +71,9 @@ inline IString* getIString (StringRef s)
 
 CCL_TEST (StringTest, TestAccess)
 {
-	String s (theConstant1);
+	String s (kTestString);
 	int length = s.length ();
-	StringChars chars (theConstant1);
+	StringChars chars (kTestString);
 	for(int i = 0; i < length; i++)
 		CCL_TEST_ASSERT (chars[i] == s[i]);
 
@@ -83,7 +85,7 @@ CCL_TEST (StringTest, TestAccess)
 
 CCL_TEST (StringTest, TestCopyOnWrite)
 {
-	String s1 (theConstant1);
+	String s1 (kTestString);
 	IString* iString1 = getIString (s1);
 	s1.appendASCII ("...");
 	IString* iString2 = getIString (s1);
@@ -100,7 +102,7 @@ CCL_TEST (StringTest, TestCopyOnWrite)
 
 CCL_TEST (StringTest, TestPlainAccess)
 {
-	String s1 (theConstant1);
+	String s1 (kTestString);
 	IString* iString = getIString (s1);
 	CCL_TEST_ASSERT (s1.length () == iString->getLength ());
 }
@@ -123,7 +125,7 @@ CCL_TEST (StringTest, TestCharMethods)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-CCL_TEST (StringTest, TEST_STL_CONTAINERS)
+CCL_TEST (StringTest, TestSTLContainers)
 {
 	String s (CCLSTR ("  Hello World!  \t"));
 	CCL_TEST_ASSERT (s.trimWhitespace () == CCLSTR ("Hello World!"));
@@ -147,7 +149,7 @@ CCL_TEST (StringTest, TestCaseConversion)
 
 CCL_TEST (StringTest, TestCStringEncodings)
 {
-	return; // This test fails (Bug: #75)
+	return; // TODO: This test fails (Bug: #75)
 	
 	#if TEST_SYSTEM_ENCODINGS
 	int passCount = 2;
@@ -159,7 +161,7 @@ CCL_TEST (StringTest, TestCStringEncodings)
 	{
 		String prototype;
 		if(pass == 1)
-			prototype = theConstant1;
+			prototype = kTestString;
 		else
 			prototype.appendCString (Text::kSystemEncoding, "Ein Text mit \u00FCml\u00E4uten ...!");
 
@@ -204,13 +206,13 @@ CCL_TEST (StringTest, TestPascalString)
 	{
 		TextEncoding encoding = testEncodings[i].encoding;
 
-		String s (theConstant1);
+		String s (kTestString);
 		unsigned char pString[256] = {0};
 		CCL_TEST_ASSERT (s.toPascalString (encoding, pString, sizeof(pString)) == true);
 
 		s.empty ();
 		CCL_TEST_ASSERT (s.appendPascalString (encoding, pString) == true);
-		CCL_TEST_ASSERT (s == theConstant1);
+		CCL_TEST_ASSERT (s == kTestString);
 	}
 }
 
@@ -256,12 +258,16 @@ CCL_TEST (StringTest, TestFind)
 
 CCL_TEST (StringTest, TestTokenizer)
 {
-	static const String inputString = CCLSTR ("folder1/folder2/folder3/file.xxx:port");
-	static const String delimiters = CCLSTR ("/.:");
+	String inputString = "folder1/folder2/folder3/file.xxx:port";
+	String delimiters = "/.:";
 
+	int tokenCount = 0;
 	ForEachStringToken (inputString, delimiters, token)
 		Logging::debug (token);
+		tokenCount++;
 	EndFor
+
+	CCL_TEST_ASSERT_EQUAL (6, tokenCount);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -335,7 +341,30 @@ CCL_TEST (StringTest, TestUnicodeSubstitution)
 	prototype.toASCII (asciiBuffer, asciiLength + 1);
 	CCL_TEST_ASSERT (strcmp (asciiBuffer, expectedDiacriticSubstitution) == 0);
 	delete[] asciiBuffer;	
-	
+
+	uchar foreignCharacters[] = 
+	{
+		0x0048, // H - ASCII, keep
+		0x0414, // Д - Cyrillic
+		0x03A9, // Ω - Greek
+		0x05D0, // א - Hebrew
+		0x0627, // ا - Arabic
+		0x4E16, // 世 - CJK
+		0xD55C, // 한 - Korean
+		0x004F, // O - ASCII, keep
+		0x0E17, // ท - Thai
+		0x10D0, // ა - Georgian
+		0x0561, // ա - Armenian
+		0x0000
+	};
+	char expectedForeignSubstitution[] = "HO";
+	prototype = foreignCharacters;
+	prototype.substitute ();
+	asciiLength = prototype.length ();
+	asciiBuffer = NEW char[asciiLength + 1];
+	prototype.toASCII (asciiBuffer, asciiLength + 1);
+	CCL_TEST_ASSERT (strcmp (asciiBuffer, expectedForeignSubstitution) == 0);
+	delete[] asciiBuffer;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -475,4 +504,35 @@ CCL_TEST (StringTest, TestAppendFloatValue)
 	String negative;
 	negative.appendFloatValue (value, -1);
 	CCL_TEST_ASSERT_EQUAL (String ("1234567.12345678894780576229095458984375"), negative);
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+CCL_TEST (StringTest, TestSubString)
+{
+	String s ("Hello, World!");
+
+	// Basic substring extraction
+	CCL_TEST_ASSERT_EQUAL (String ("Hello"), s.subString (0, 5));
+	CCL_TEST_ASSERT_EQUAL (String ("World"), s.subString (7, 5));
+	CCL_TEST_ASSERT_EQUAL (s, s.subString (0, s.length ()));
+
+	// Substring with length exceeding string
+	CCL_TEST_ASSERT_EQUAL (String ("World!"), s.subString (7, 100));
+
+	// Substring with zero length
+	CCL_TEST_ASSERT_EQUAL (String::kEmpty, s.subString (0, 0));
+
+	// Substring from middle to end (negative count)
+	CCL_TEST_ASSERT_EQUAL (String ("World!"), s.subString (7));
+	CCL_TEST_ASSERT_EQUAL (String ("World!"), s.subString (7, -1));
+
+	// Substring with start index at end
+	CCL_TEST_ASSERT_EQUAL (String::kEmpty, s.subString (s.length ()));
+
+	// Substring with start index out of bounds
+	CCL_TEST_ASSERT_EQUAL (String::kEmpty, s.subString (100, 5));
+
+	// Substring with negative start returns no result
+	CCL_TEST_ASSERT_EQUAL (String::kEmpty, s.subString (-1, 5));
 }

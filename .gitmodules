@@ -110,3 +110,7 @@
 	path = submodules/vulkan-utility-libraries
 	url = git@github.com:KhronosGroup/Vulkan-Utility-Libraries.git
 	branch = main
+[submodule "submodules/cmark"]
+	path = submodules/cmark
+	url = git@github.com:cclsoftware/cmark.git
+	branch = master

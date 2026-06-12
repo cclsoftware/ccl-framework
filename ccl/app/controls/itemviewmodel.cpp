@@ -18,7 +18,7 @@
 
 #include "ccl/app/controls/itemviewmodel.h"
 #include "ccl/app/utilities/boxedguitypes.h"
-#include "ccl/app/params.h"
+#include "ccl/app/paramalias.h"
 
 #include "ccl/base/asyncoperation.h"
 
@@ -785,7 +785,8 @@ AbstractTouchHandler* ItemModel::wrapMouseHandler (IMouseHandler* mouseHandler, 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 BEGIN_METHOD_NAMES (ItemModel)
-	DEFINE_METHOD_NAME ("doPopup")
+	DEFINE_METHOD_ARGS ("doPopup", "param: Parameter, editInfo: Object")
+	DEFINE_METHOD_ARGS ("editValue", "param: Parameter, editInfo: Object")
 END_METHOD_NAMES (ItemModel)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -799,6 +800,20 @@ tbool CCL_API ItemModel::invokeMethod (Variant& returnValue, MessageRef msg)
 		ASSERT (param && editInfo)
 		if(param && editInfo)
 			doPopup (param, *editInfo);
+		return true;
+	}
+	else if(msg == "editValue")
+	{
+		UnknownPtr<IParameter> param (msg[0]);
+		BoxedEditInfo* editInfo = unknown_cast<BoxedEditInfo> (msg[1]);
+		ASSERT (param && editInfo)
+		if(param && editInfo)
+		{
+			// EditControlOperation will connect to parameter, use an alias to keep controller and tag of original
+			AutoPtr<AliasParam> alias (NEW AliasParam);
+			alias->setOriginal (param);
+			Promise (editValue (alias, *editInfo));
+		}
 		return true;
 	}
 	return SuperClass::invokeMethod (returnValue, msg);

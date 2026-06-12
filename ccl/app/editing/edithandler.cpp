@@ -22,10 +22,15 @@
 
 #include "ccl/app/editing/editview.h"
 #include "ccl/app/editing/editmodel.h"
+#include "ccl/app/editing/editor.h"
 
 #include "ccl/public/base/variant.h"
 #include "ccl/public/gui/framework/isprite.h"
 #include "ccl/public/gui/framework/itheme.h"
+#include "ccl/public/gui/framework/iscrollview.h"
+#include "ccl/public/gui/iparameter.h"
+#include "ccl/public/system/isignalhandler.h"
+#include "ccl/public/systemservices.h"
 #include "ccl/public/plugservices.h"
 
 using namespace CCL;
@@ -334,4 +339,118 @@ bool DeleteEditHandler::onMove (int moveFlags)
 		}
 	}
 	return true;
+}
+
+//************************************************************************************************
+// ScrollEditHandler
+//************************************************************************************************
+
+ScrollEditHandler::ScrollEditHandler (EditView* view)
+: EditHandler (view),
+  hasMoved (false)
+{
+	autoScroll (false);
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+void ScrollEditHandler::onBegin ()
+{
+	if(EditView* editView = getEditView ())
+	{
+		firstPos = first.where;
+		editView->clientToWindow (firstPos);
+		prevPos = firstPos;
+
+		editView->setCursor (editView->getTheme ().getThemeCursor (ThemeElements::kGrabCursor));
+		editView->scrollHandlerActive (true);
+	}
+	SuperClass::onBegin ();
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+bool ScrollEditHandler::onMove (int moveFlags)
+{
+	EditView* editView = getEditView ();
+
+	if(editView && current.keys.isSet (KeyState::kMButton))
+	{
+		// our view can move between calls, calculate in window coords
+		Point currentPos (current.where);
+		editView->clientToWindow (currentPos);
+
+		if(!hasMoved)
+		{
+			// ignore until moved out of a tolerance area (distingish from simple click which will open tool palette popup)
+			constexpr Coord kMoveTolerance = 4;
+
+			Point totalDelta (currentPos - firstPos);
+			hasMoved = ccl_abs (totalDelta.x) >= kMoveTolerance || ccl_abs (totalDelta.y) >= kMoveTolerance;
+		}
+
+		if(hasMoved)
+		{
+			Point delta (currentPos - prevPos);
+			performScrolling (delta);
+			prevPos = currentPos;
+
+			// ScrollView receives deferred parameter changes; flush to stay in sync, so that the next clientToWindow () uses the new position
+			System::GetSignalHandler ().flush ();
+		}
+	}
+
+	return SuperClass::onMove (moveFlags);
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+void ScrollEditHandler::performScrolling (PointRef delta)
+{
+	EditView* editView = getEditView ();
+	bool horizontal = ccl_abs (delta.x) >= ccl_abs (delta.y);
+
+	// find scrollable view
+	IScrollable* scrollable = editView ? GetViewInterfaceUpwards<IScrollable> (*editView) : nullptr;
+	if(scrollable)
+	{
+		// check if scrollable can scroll in the chosen direction, otherwise try one level more upwards
+		IParameter* scrollParam = horizontal ? scrollable->getHScrollParam () : scrollable->getVScrollParam ();
+		if(!scrollParam || scrollParam->getMin () == scrollParam->getMax ())
+		{
+			// IScrollable can be a framework view or a UserControl
+			IView* scrollableView = UnknownPtr<IView> (scrollable);
+			if(!scrollableView)
+				if(auto* userControl = unknown_cast<UserControl> (scrollable))
+					scrollableView = *userControl;
+
+			if(scrollableView)
+				scrollable = GetViewInterfaceUpwards<IScrollable> (scrollableView->getParentView ());
+		}
+	}
+
+	if(scrollable)
+	{
+		if(horizontal)
+			scrollable->scrollByH (-delta.x);
+		else
+			scrollable->scrollByV (-delta.y);
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+void ScrollEditHandler::onRelease (bool canceled)
+{
+	EditView* editView = getEditView ();
+	if(editView)
+	{
+		editView->scrollHandlerActive (false);
+
+		// if not moved / scrolled: popup tool palette (EditView default behavior on middle click)
+		EditorComponent* editor = editView->getModel ().getEditorComponent ();
+		if(!hasMoved && editor)
+			editor->popupToolPalette (*editView, first.where);
+	}
+	SuperClass::onRelease (canceled);
 }

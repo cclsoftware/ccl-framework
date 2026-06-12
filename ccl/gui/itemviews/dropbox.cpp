@@ -771,7 +771,15 @@ View* DropBox::createView (IUnknown* object) const
 		itemViewName.append (kItemSuffix);
 		IView* itemView = viewFactory->createView (itemViewName, Variant (object), size);
 		if(itemView == nullptr)
+		{
+			if(!scopeName.isEmpty () && !itemViewName.contains ("/"))
+			{
+				// prepend <scopeName>/
+				itemViewName.insert (0, "/");
+				itemViewName.insert (0, scopeName);
+			}
 			itemView = getTheme ().createView (itemViewName, object, dropBoxArguments);
+		}
 
 		if(itemView == nullptr)
 			return nullptr;

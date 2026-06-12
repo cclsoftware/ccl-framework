@@ -42,6 +42,9 @@
 #include "ccl/text/xml/xmlwriter.h"
 #include "ccl/text/xml/xmlstringdict.h"
 
+#include "ccl/text/markdown/markdownparser.h"
+#include "ccl/text/markdown/markdownwriter.h"
+
 #include "ccl/text/transform/zlibcompression.h"
 #include "ccl/text/transform/encodings/baseencoding.h"
 #include "ccl/text/transform/transformstreams.h"
@@ -229,6 +232,22 @@ CCL_EXPORT IAttributeHandler* CCL_API CCL_ISOLATED (UBJsonWrite) (IStream& dstSt
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
+// Markdown API
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+CCL_EXPORT IMarkdownParser* CCL_API CCL_ISOLATED (CreateMarkdownParser) ()
+{
+	return NEW MarkdownParser;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+CCL_EXPORT IMarkdownWriter* CCL_API CCL_ISOLATED (CreateMarkdownWriter) ()
+{
+	return NEW MarkdownWriter;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
 // Transformation APIs
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -308,6 +327,8 @@ CCL_EXPORT ITextWriter* CCL_API CCL_ISOLATED (CreateTextWriter) (UIDRef cid)
 		writer = NEW HtmlWriter;
 	else if(cid == ccl_iid<IPlainTextWriter> ())
 		writer = NEW PlainTextWriter;
+	else if(cid == ccl_iid<IMarkdownWriter> ())
+		writer = NEW MarkdownWriter;
 
 	return writer;
 }

@@ -26,7 +26,7 @@ using namespace CCL;
 //************************************************************************************************
 // ComboBoxRenderer
 /** If option "transparent" is not set, a ComboBox draws a background image. 
-When no image is specified, it is filled in "backcolor, and a rectangular frame in color "forecolor" can be drawn with option "border".
+When no image is specified, it is filled in "backcolor", and a rectangular frame in color "forecolor" can be drawn with option "border".
 
 The "button" image is drawn at the right. The remaining space shows the text field to edit the parameter value with an optional padding. */
 //************************************************************************************************

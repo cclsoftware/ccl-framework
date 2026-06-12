@@ -373,6 +373,7 @@ void LinuxDragSession::DragListener::onTarget (void *data, wl_data_source* dataS
 {
 	DragListener* This = static_cast<DragListener*> (data);
 	This->mimeType = mimeType;
+	This->updateCursor ();
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -423,17 +424,20 @@ void LinuxDragSession::DragListener::onSourceAction (void* data, wl_data_source*
 void LinuxDragSession::DragListener::updateCursor ()
 {
 	ThemeCursorID newCursorId = ThemeElements::kNoDropCursor;
-	switch(action)
+	if(session.getResult () != kDropNone)
 	{
-	case WL_DATA_DEVICE_MANAGER_DND_ACTION_ASK :
-	case WL_DATA_DEVICE_MANAGER_DND_ACTION_COPY :
-		newCursorId = ThemeElements::kCopyCursor;
-		break;
-	case WL_DATA_DEVICE_MANAGER_DND_ACTION_MOVE :
-		newCursorId = ThemeElements::kGrabbingCursor;
-		break;
-	case WL_DATA_DEVICE_MANAGER_DND_ACTION_NONE :
-		break;
+		switch(action)
+		{
+		case WL_DATA_DEVICE_MANAGER_DND_ACTION_ASK :
+		case WL_DATA_DEVICE_MANAGER_DND_ACTION_COPY :
+			newCursorId = ThemeElements::kCopyCursor;
+			break;
+		case WL_DATA_DEVICE_MANAGER_DND_ACTION_MOVE :
+			newCursorId = ThemeElements::kGrabbingCursor;
+			break;
+		case WL_DATA_DEVICE_MANAGER_DND_ACTION_NONE :
+			break;
+		}
 	}
 
 	if(cursorId != newCursorId)

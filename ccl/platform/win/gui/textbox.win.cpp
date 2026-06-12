@@ -292,23 +292,16 @@ void WindowsTextControl::setSize (RectRef clientRect)
 	const IVisualStyle& visualStyle = getVisualStyle ();
 	if(!owner.getStyle ().isCustomStyle (Styles::kTextBoxAppearanceMultiLine))
 	{
-		#define ADDSIZE 5
-		#if 0
-		Coord minHeight = (Coord) visualStyle.getTextFont ().getSize () + ADDSIZE;
-		#else
 		Rect stringSize;
 		Font::measureString (stringSize, "Xgjpq", visualStyle.getTextFont ()); // todo: add any taller character you know
 
-		CCL_PRINTF ("text height: %d (ADDSIZE), %d (measureString) \n", (Coord) visualStyle.getTextFont ().getSize () + ADDSIZE, stringSize.bottom)
 		Coord minHeight = stringSize.bottom;
-		#endif
+		if(owner.getStyle ().isCommonStyle (Styles::kBorder))
+			minHeight += 2;
 
-		if(1)//rect.getHeight () < minHeight)
-		{
-			// center the minHeight rect vertically with rounding (up)
-			rect.top += (Coord) ccl_round<0> (rect.getHeight () / 2.f) - (Coord) ccl_round<0> (minHeight / 2.f);
-			rect.setHeight (minHeight);
-		}
+		// center the minHeight rect vertically with rounding (up)
+		rect.top += (Coord) ccl_round<0> (rect.getHeight () / 2.f) - (Coord) ccl_round<0> (minHeight / 2.f);
+		rect.setHeight (minHeight);
 	}
 
 	Point offset;

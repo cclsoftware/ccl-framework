@@ -41,7 +41,7 @@ public:
 	DECLARE_METHOD_NAMES (Message)
 	DECLARE_PROPERTY_NAMES (Message)
 
-	enum Limits { kMaxMessageArgs = 8 };
+	static constexpr int kMaxMessageArgs = 8;
 
 	Message (StringID id = nullptr);
 	Message (StringID id, VariantRef arg0);
@@ -80,7 +80,7 @@ protected:
 	tbool CCL_API setProperty (MemberID propertyId, const Variant& var) override;
 	tbool CCL_API invokeMethod (Variant& returnValue, MessageRef msg) override;
 };
-	
+
 //************************************************************************************************
 // MessageArgument
 /** Base class for typed message argument, do not use directly.

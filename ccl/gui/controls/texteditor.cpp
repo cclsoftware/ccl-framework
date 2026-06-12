@@ -192,7 +192,7 @@ void TextEditor::updateScrollTargetSize ()
 		Rect clipViewRect;
 		scrollView->getClipViewRect (clipViewRect);
 		Coord maxWidth = -1;
-		if(visualStyle->getTextOptions () & TextFormat::kWordBreak)
+		if(getVisualStyle ().getTextOptions () & TextFormat::kWordBreak)
 			maxWidth = clipViewRect.getWidth ();
 
 		editBox->setSizeLimits (SizeLimit (clipViewRect.getWidth (), clipViewRect.getHeight (), maxWidth, -1));

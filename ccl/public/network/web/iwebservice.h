@@ -114,11 +114,12 @@ interface IWebService: IUnknown
 
 	/** Upload data. Headers must include content type. Returns result at network level, use status for application level. */
 	virtual tresult CCL_API uploadData (UrlRef remotePath, IStream& data, IWebHeaderCollection* headers, IStream& response,
-							StringID method = nullptr, IWebCredentials* credentials = nullptr, IProgressNotify* progress = nullptr, int* status = nullptr) = 0;
+							StringID method = nullptr, IWebCredentials* credentials = nullptr, IProgressNotify* progress = nullptr,
+							int* status = nullptr) = 0;
 
 	/** Upload data asynchronously. Headers must include content type. Observer receives kBackgroundProgressNotify + kUploadComplete messages. */
 	virtual tresult CCL_API uploadInBackground (IObserver* observer, UrlRef remotePath, IStream& localStream, IWebHeaderCollection* headers,
-							StringID method = nullptr, IWebCredentials* credentials = nullptr) = 0;
+							StringID method = nullptr, IWebCredentials* credentials = nullptr, IStream* response = nullptr) = 0;
 
 	/** Cancel asynchronous upload or download. */
 	virtual tresult CCL_API cancelOperation (IObserver* observer) = 0;

@@ -153,6 +153,9 @@ EventResult Win32Dialog::handleEvent (SystemEvent& e)
 		{
 			handle = e.hwnd;
 
+			if(style.isCustomStyle (Styles::kWindowAppearanceCustomFrame) && style.isCustomStyle (Styles::kWindowAppearanceRoundedCorners))
+				Win32::SetRoundedWindowCornerPreference ((HWND)handle, true); // Supported starting with Windows 11
+
 			if(mustRestoreDpiHostingBehavior)
 			{
 				Win32::gDpiInfo.switchToDpiHostingBehavior (Win32::kDpiHostingDefault);
@@ -176,6 +179,7 @@ EventResult Win32Dialog::handleEvent (SystemEvent& e)
 			dropTarget->release ();
 
 			Win32::TouchHelper::prepareWindow (*this);
+
 
 			// don't steal the focus from a view that creates a NativeTextControl (EditBox, ComboBox)
 			UnknownPtr<ITextParamProvider> textParamProvider (static_cast<IObject*> (getFocusView ()));

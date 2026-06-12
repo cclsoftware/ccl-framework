@@ -22,6 +22,7 @@
 #include "ccl/gui/views/view.h"
 
 #include "ccl/gui/controls/commandbar/commandbarmodel.h"
+
 #include "ccl/public/gui/icommandhandler.h"
 #include "ccl/public/gui/icontextmenu.h"
 #include "ccl/public/gui/framework/imenu.h"

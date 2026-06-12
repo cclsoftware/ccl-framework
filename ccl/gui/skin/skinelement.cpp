@@ -49,7 +49,7 @@ class SkinElementLibrary: public TypeLibrary,
 public:
 	SkinElementLibrary ();
 
-	const StyleDef* getStyleDef (CStringRef name) const;
+	const StyleDef* getStyleDef (CStringRef name, bool partialMatching = false) const;
 };
 
 } // namespace SkinElements
@@ -116,12 +116,24 @@ SkinElementLibrary::SkinElementLibrary ()
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-const StyleDef* SkinElementLibrary::getStyleDef (CStringRef name) const
+const StyleDef* SkinElementLibrary::getStyleDef (CStringRef name, bool partialMatching) const
 {
-	const Enumeration* e = (const Enumeration*)findEnum (name);
-	if(e)
-		return e->def;
-	return nullptr;
+	const Enumeration* result = nullptr;
+	if(partialMatching == true)
+	{
+		for(auto* e : iterate_as<Enumeration> (enums))
+			if(CString (e->getName ()).contains (name))
+			{
+				result = e;
+				break;
+			}
+	}
+	else
+	{
+		result = static_cast<const Enumeration*> (findEnum (name));
+	}
+	 
+	return result ? result->def : nullptr;
 }
 
 //************************************************************************************************
@@ -209,9 +221,9 @@ bool MetaElement::getDetails (ITypeInfoDetails& details) const
 // Enumeration
 //************************************************************************************************
 
-const StyleDef* Enumeration::getStyleDef (CStringRef name)
+const StyleDef* Enumeration::getStyleDef (CStringRef name, bool partialMatching)
 {
-	return SkinElementLibrary::instance ().getStyleDef (name);
+	return SkinElementLibrary::instance ().getStyleDef (name, partialMatching);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -576,6 +588,11 @@ tbool CCL_API Element::removeAttribute (StringID name, int* oldIndex)
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 void Element::loadFinished ()
+{}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+void Element::appendCharacterData (const uchar* data, int length)
 {}
 
 //////////////////////////////////////////////////////////////////////////////////////////////////

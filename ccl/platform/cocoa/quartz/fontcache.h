@@ -46,7 +46,10 @@ public:
 	bool isUserFont (StringRef familyName) const;
 	CTFontRef getStyledFont (FontRef font, int style);
 	const LinkedList<String>& getUserFonts () const { return userFontList; }
+
 protected:
+	enum Constants { kStylesUsed = Font::kBold|Font::kItalic };
+
 	struct FontCacheRecord
 	{
 		FontCacheRecord (FontRef _font, CTFontRef _fontRef, float _ascent, float _descent, float _leading)
@@ -120,6 +123,8 @@ protected:
 	LinkedList<FontCacheRecord> cache;
 	LinkedList<StyledFont> styledFontList;
 	LinkedList<String> userFontList;
+
+	static int getUsedStyle (FontRef font) {return font.getStyle () & kStylesUsed;}
 };
 
 } // namespace CCL

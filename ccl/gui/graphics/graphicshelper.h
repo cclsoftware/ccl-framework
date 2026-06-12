@@ -48,8 +48,8 @@ public:
 	
 	// Font
 	const Font& CCL_API Font_getDefaultFont () override;
-	void CCL_API Font_measureString (Rect& size, StringRef text, const Font& f, int flags) override;
-	void CCL_API Font_measureString (RectF& size, StringRef text, const Font& f, int flags) override;
+	void CCL_API Font_measureString (Rect& size, StringRef text, const Font& f) override;
+	void CCL_API Font_measureString (RectF& size, StringRef text, const Font& f) override;
 	void CCL_API Font_measureStringImage (RectF& size, StringRef text, const Font& font, tbool shiftToBaseline) override;
 	void CCL_API Font_measureText (Rect& size, Coord lineWidth, StringRef text, const Font& f, TextFormatRef format) override;
 	void CCL_API Font_measureText (RectF& size, CoordF lineWidth, StringRef text, const Font& f, TextFormatRef format) override;

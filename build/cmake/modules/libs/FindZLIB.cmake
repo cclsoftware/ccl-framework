@@ -3,7 +3,10 @@ option (ZLIB_USE_ZLIB_NG "Use zlib-ng instead of zlib" OFF)
 if (ZLIB_USE_ZLIB_NG)
     find_package (zlib-ng)
 	set (ZLIB_LIBRARY ${ZLIBNG_LIBRARY})
+	set (ZLIB_LIBRARIES ${ZLIBNG_LIBRARY})
+	set (ZLIB_INCLUDE_DIR "${ZLIBNG_INCLUDE_DIR}")
 	set (ZLIB_VERSION_STRING "${ZLIBNG_VERSION_STRING}")
+	include (FindPackageHandleStandardArgs)
 	find_package_handle_standard_args (ZLIB
 		REQUIRED_VARS ZLIB_LIBRARY
 		VERSION_VAR ZLIB_VERSION_STRING
@@ -52,7 +55,9 @@ target_sources (zlib PRIVATE ${zlib_sources})
 #ccl_target_headers (zlib INSTALL ${CCL_SYSTEM_INSTALL} DESTINATION ${VENDOR_PUBLIC_HEADERS_DESTINATION}/zlib BASE_DIRS ${ZLIB_INCLUDE_DIR} FILES ${zlib_public_headers})
 target_include_directories (zlib PUBLIC $<BUILD_INTERFACE:${ZLIB_INCLUDE_DIR}>)# $<INSTALL_INTERFACE:${VENDOR_PUBLIC_HEADERS_DESTINATION}/zlib>)
 
-if (CCL_SYSTEM_INSTALL)
+if (CCL_EXPORTS_PATH)
+	install (TARGETS zlib EXPORT ccl-targets)
+elseif (CCL_SYSTEM_INSTALL)
 	if (VENDOR_STATIC_LIBRARY_DESTINATION)
 		set (zlib_destination "${VENDOR_STATIC_LIBRARY_DESTINATION}")
 	else ()

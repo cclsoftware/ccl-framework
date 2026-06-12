@@ -99,7 +99,8 @@ namespace FileTypes
 		kPackage,
 		kJson,
 		kUBJson,
-		kCsv
+		kCsv,
+		kMarkdown
 	};
 	
 	const FileType& getDefault (int which);
@@ -119,6 +120,7 @@ namespace FileTypes
 	inline const FileType& Json ()			{ return getDefault (kJson); }
 	inline const FileType& UBJson ()		{ return getDefault (kUBJson); }
 	inline const FileType& Csv ()			{ return getDefault (kCsv); }
+	inline const FileType& Markdown ()		{ return getDefault (kMarkdown); }
 
 	inline const FileType& init (FileType& fileType, StringRef description)
 	{

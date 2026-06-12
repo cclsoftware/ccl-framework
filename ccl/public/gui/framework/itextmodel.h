@@ -46,20 +46,40 @@ DEFINE_IID (ITextModelProvider, 0x694a2c48, 0x7e84, 0x434a, 0x85, 0xc4, 0x98, 0x
 
 //************************************************************************************************
 // ITextModel
-/** Text model interface for use in a TextBox and EditBox.
+/** Text model interface.
 	\ingroup gui */
 //************************************************************************************************
 
 interface ITextModel: IUnknown
 {
-	/** Draw information. */
-	struct DrawInfo
-	{
-		IView* view;
-		IGraphics& graphics;
-		const Rect& rect;
-	};
+	/** Update text layout with formatting. */
+	virtual void CCL_API updateLayout (ITextLayout& layout) const = 0;
 
+	/** Copy a range of text in a representation that is accepted as input for insertText. */
+	virtual void CCL_API copyText (String& text, int textIndex = 0, int length = -1) const = 0;
+
+	/** Get plain string representation for display (without formatting). */
+	virtual void CCL_API toDisplayString (String& string) const = 0;
+
+	/** Get string representation for use in a parameter. */
+	virtual void CCL_API toParamString (String& string) const = 0;
+
+	DECLARE_STRINGID_MEMBER (kRequestLayoutUpdate) ///< request text layout update call from text control
+
+	DECLARE_IID (ITextModel)
+};
+
+DEFINE_IID (ITextModel, 0xd1c7dcb2, 0x71d8, 0x44b0, 0xa7, 0x1d, 0x32, 0x17, 0xf3, 0xb9, 0x3, 0xae)
+DEFINE_STRINGID_MEMBER (ITextModel, kRequestLayoutUpdate, "requestLayoutUpdate")
+
+//************************************************************************************************
+// IMutableTextModel
+/** Mutable Text model interface for use in TextBox and EditBox.
+	\ingroup gui */
+//************************************************************************************************
+
+interface IMutableTextModel: ITextModel
+{
 	/** Interaction information. */
 	struct InteractionInfo
 	{
@@ -72,12 +92,6 @@ interface ITextModel: IUnknown
 		kMergeUndo = 1 << 0 ///< merge into previous undo step
 	};
 
-	/** Get plain string representation for display (without formatting). */
-	virtual void CCL_API toDisplayString (String& string) const = 0;
-
-	/** Update text layout with formatting. */
-	virtual void CCL_API updateLayout (ITextLayout& layout) = 0;
-
 	/**	Insert text into data model at given display text index.
 		Returns the number of inserted characters and signals kChanged if successful. */
 	virtual int CCL_API insertText (int textIndex, StringRef text, EditOptions options) = 0;
@@ -87,9 +101,6 @@ interface ITextModel: IUnknown
 		The length argument may be negative if the text should be removed backwards from the given index. */
 	virtual int CCL_API removeText (int textIndex, int length, EditOptions options) = 0;
 
-	/** Copy a range of text in a representation that is accepted as input for insertText. */
-	virtual void CCL_API copyText (String& text, int textIndex = 0, int length = -1) const = 0;
-
 	/**	Undo the last change.
 		Returns true if the last change was caused by the text model and signals kChanged if successful. */
 	virtual tbool CCL_API undo () = 0;
@@ -98,45 +109,36 @@ interface ITextModel: IUnknown
 		Returns true if the next change was caused by the text model and signals kChanged if successful. */
 	virtual tbool CCL_API redo () = 0;
 
-	/** Draw additional background. */
-	virtual tbool CCL_API drawBackground (const ITextLayout& layout, const DrawInfo& info) = 0;
-
 	/** Text interaction notification. */
 	virtual tbool CCL_API onTextInteraction (const ITextLayout& layout, const InteractionInfo& info) = 0;
-
-	/** Get string representation for use in a parameter. */
-	virtual void CCL_API toParamString (String& string) const = 0;
 
 	/** Restore text from string representation of parameter. Signals kChanged if successful. */
 	virtual void CCL_API fromParamString (StringRef string) = 0;
 
-	DECLARE_STRINGID_MEMBER (kRequestLayoutUpdate) ///< request text layout update call from text control
-
-	DECLARE_IID (ITextModel)
+	DECLARE_IID (IMutableTextModel)
 };
 
-DEFINE_IID (ITextModel, 0xd1c7dcb2, 0x71d8, 0x44b0, 0xa7, 0x1d, 0x32, 0x17, 0xf3, 0xb9, 0x3, 0xae)
-DEFINE_STRINGID_MEMBER (ITextModel, kRequestLayoutUpdate, "requestLayoutUpdate")
+DEFINE_IID (IMutableTextModel, 0x15025752, 0x52d0, 0x48a0, 0xbf, 0x19, 0xb4, 0x02, 0xfa, 0x4c, 0xdd, 0xdc)
 
 //************************************************************************************************
 // AbstractTextModel
 //************************************************************************************************
 
-class AbstractTextModel: public ITextModel
+class AbstractTextModel: public IMutableTextModel
 {
 public:
 	// Note: toDisplayString() needs to be implemented by each TextModel
 
-	// ITextModel
-	void CCL_API updateLayout (ITextLayout& layout) override
+	// IMutableTextModel
+	void CCL_API updateLayout (ITextLayout& layout) const override
 	{}
 
-	int CCL_API insertText (int textIndex, StringRef text, ITextModel::EditOptions) override
+	int CCL_API insertText (int textIndex, StringRef text, IMutableTextModel::EditOptions) override
 	{
 		return 0;
 	}
 
-	int CCL_API removeText (int textIndex, int length, ITextModel::EditOptions) override
+	int CCL_API removeText (int textIndex, int length, IMutableTextModel::EditOptions) override
 	{
 		return 0;
 	}
@@ -153,11 +155,6 @@ public:
 	}
 
 	tbool CCL_API redo () override
-	{
-		return false;
-	}
-
-	tbool CCL_API drawBackground (const ITextLayout& layout, const DrawInfo& info) override
 	{
 		return false;
 	}

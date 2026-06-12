@@ -19,7 +19,7 @@
 #ifndef _ccl_itextwriter_h
 #define _ccl_itextwriter_h
 
-#include "ccl/public/textservices.h"
+#include "ccl/public/text/cclstring.h"
 
 namespace CCL {
 
@@ -45,6 +45,9 @@ interface ITextWriter: IUnknown
 	/** Write line of text. */
 	virtual tresult CCL_API writeLine (StringRef text) = 0;
 
+	/** Create text builder (optional, if supported by underlying format). */
+	virtual ITextBuilder* CCL_API createTextBuilder () = 0;
+
 	DECLARE_IID (ITextWriter)
 };
 
@@ -57,8 +60,6 @@ DEFINE_IID (ITextWriter, 0xd7e06d6b, 0x9c01, 0x426b, 0xb8, 0x7d, 0x28, 0x75, 0xb
 
 interface IPlainTextWriter: ITextWriter
 {
-	virtual ITextBuilder* CCL_API createPlainTextBuilder () = 0;
-
 	DECLARE_IID (IPlainTextWriter)
 };
 

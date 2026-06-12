@@ -549,17 +549,15 @@ DEFINE_CLASS (DockPanelView, View)
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 DockPanelView::DockPanelView (const Rect& size, StyleRef style)
-: ImageView (nullptr, size, style),
-  items (nullptr)
+: ImageView (nullptr, size, style)
 {}
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 DockPanelView::~DockPanelView ()
 {
-	items->reset ();
 	if(items)
-		items->release ();
+		items->reset ();
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -574,9 +572,7 @@ void CCL_API DockPanelView::setItems (IDockPanelItem* _items)
 	// remove old views
 	removeAll ();
 
-	take_shared<DockPanelItem> (items, group);
-	if(!items)
-		return;
+	items = group;
 
 	View* v = items->createView (getTheme ());
 	if(v)

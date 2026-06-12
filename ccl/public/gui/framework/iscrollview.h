@@ -72,11 +72,10 @@ namespace Styles
 		kScrollViewBehaviorNoSwipe			= 1<<21,		///< no swipe gesture used for scrollviews
 		kScrollViewBehaviorAllowZoomGesture	= 1<<22,		///< let another touch handler take over on a zoom gesture
 		kScrollViewBehaviorLimitToScreen	= 1<<23,		///< don't grow larger than current monitor size when autosizing to content
-		kScrollViewBehaviorLatchWheel		= 1<<24,		///< view locks the mouse wheel scroll to itself (no child handling) for a limited time after the last handled mouse wheel event
-		kScrollViewAppearancePageControl	= 1<<25,		///< use page controls instead of scroll bars
-		kScrollViewBehaviorCenterTarget     = 1<<26,        ///< center target if target is smaller than scroll view (do not combine with kScrollViewBehaviorExtendTarget)
-		kScrollViewBehaviorVScrollSpace		= 1<<27,		///< addional reserved space for vertical scrollbar (avoid automatic horizontal scrollbar, because of space covered when vertical bar is shown)
-		kScrollViewBehaviorHScrollSpace		= 1<<28 		///< addional reserved space for horizontal scrollbar (avoid resizing of clip view, when kScrollViewBehaviorAutoHideHBar is set)
+		kScrollViewAppearancePageControl	= 1<<24,		///< use page controls instead of scroll bars
+		kScrollViewBehaviorCenterTarget     = 1<<25,        ///< center target if target is smaller than scroll view (do not combine with kScrollViewBehaviorExtendTarget)
+		kScrollViewBehaviorVScrollSpace		= 1<<26,		///< addional reserved space for vertical scrollbar (avoid automatic horizontal scrollbar, because of space covered when vertical bar is shown)
+		kScrollViewBehaviorHScrollSpace		= 1<<27 		///< addional reserved space for horizontal scrollbar (avoid resizing of clip view, when kScrollViewBehaviorAutoHideHBar is set)
 	};
 }
 

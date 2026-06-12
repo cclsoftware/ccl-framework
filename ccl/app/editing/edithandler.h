@@ -137,6 +137,30 @@ public:
 };
 
 //************************************************************************************************
+// ScrollEditHandler
+//************************************************************************************************
+
+class ScrollEditHandler: public EditHandler
+{
+public:
+	ScrollEditHandler (EditView* view = nullptr);
+
+	// EditHandler
+	void onBegin () override;
+	bool onMove (int moveFlags) override;
+	void onRelease (bool canceled) override;
+
+private:
+	CCL::Point firstPos;
+	CCL::Point prevPos;
+	bool hasMoved;
+
+	using SuperClass = EditHandler;
+
+	virtual void performScrolling (PointRef delta);
+};
+
+//************************************************************************************************
 // AbstractEditHandlerHook
 //************************************************************************************************
 

@@ -318,7 +318,7 @@ export const FORM_WINDOWSTYLE_INTERMEDIATE = "intermediate"; // (behavior) windo
 export const FORM_WINDOWSTYLE_PLUGINHOST = "pluginhost"; // (behavior) window hosts foreign views
 export const FORM_WINDOWSTYLE_FULLSCREEN = "fullscreen"; // (behavior) window can enter fullscreen mode
 export const FORM_WINDOWSTYLE_SHEETSTYLE = "sheetstyle"; // (behavior) sheet presentation (not available on all platforms)
-export const FORM_WINDOWSTYLE_ROUNDEDCORNERS = "roundedcorners"; // (appearance) window can have rounded corners (not available on all platforms)
+export const FORM_WINDOWSTYLE_ROUNDEDCORNERS = "roundedcorners"; // (appearance) window with custom frame can have rounded corners (not available on all platforms)
 export const FORM_WINDOWSTYLE_WINDOWSTYLE = "windowstyle"; // default window style: title bar
 export const FORM_WINDOWSTYLE_PANELSTYLE = "panelstyle"; // panel window style: title bar, floating
 export const FORM_WINDOWSTYLE_DIALOGSTYLE = "dialogstyle"; // default dialog window style: title bar, centered
@@ -648,7 +648,6 @@ export const SCROLLVIEW_OPTIONS_OMNIDIRECTIONAL = "omnidirectional"; // scrollvi
 export const SCROLLVIEW_OPTIONS_NOSWIPE = "noswipe"; // no swipe gesture used for scrollviews
 export const SCROLLVIEW_OPTIONS_ALLOWZOOM = "allowzoom"; // let another touch handler take over on a zoom gesture
 export const SCROLLVIEW_OPTIONS_LIMITTOSCREEN = "limittoscreen"; // don't grow larger than current monitor size when autosizing to content
-export const SCROLLVIEW_OPTIONS_LATCHWHEEL = "latchwheel"; // view locks the mouse wheel scroll to itself (no child handling) for a limited time after the last handled mouse wheel event
 export const SCROLLVIEW_OPTIONS_PAGECONTROL = "pagecontrol"; // use page controls instead of scroll bars
 export const SCROLLVIEW_OPTIONS_CENTERTARGET = "centertarget"; // center target if target is smaller than scroll view (do not combine with kScrollViewBehaviorExtendTarget)
 export const SCROLLVIEW_OPTIONS_VSCROLLSPACE = "vscrollspace"; // addional reserved space for vertical scrollbar (avoid automatic horizontal scrollbar, because of space covered when vertical bar is shown)
@@ -740,6 +739,7 @@ export const TABVIEW_OPTIONS_TABMENU = "tabmenu"; // the active tab displays a m
 export const TABVIEW_OPTIONS_NOWHEEL = "nowheel"; // no mousewheel
 export const TABVIEW_OPTIONS_NOHOVERACTIVATE = "nohoveractivate"; // do not activate tab when any drag enters view
 export const TABVIEW_OPTIONS_FITALLVIEWS = "fitallviews"; // when autosizing, use largest size of all content views
+export const TABVIEW_OPTIONS_TOOLTIP = "tooltip"; // show tab tooltips
 export const TABVIEW_OPTIONS_CENTERED = "centered"; // center tabs if possible (no "extendtabs" and combined tab width smaller than view width)
 
 /////////////////////////////////////////////////////////////////////////////////////////

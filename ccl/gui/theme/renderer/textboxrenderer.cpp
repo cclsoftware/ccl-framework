@@ -20,9 +20,9 @@
 
 #include "ccl/gui/controls/textbox.h"
 
-#include "ccl/public/gui/framework/itextmodel.h"
 #include "ccl/public/gui/iparameter.h"
 #include "ccl/public/gui/graphics/iimage.h"
+#include "ccl/public/gui/framework/itextmodel.h"
 
 using namespace CCL;
 
@@ -31,7 +31,7 @@ extern const char* ButtonStateNames[]; // buttonrenderer.cpp
 //************************************************************************************************
 // TextBoxRenderer
 /** If option "transparent" is not set, a TextBox draws a background image. 
-When no image is specified, it is filled in "backcolor, and a rectangular frame in color "forecolor" can be drawn with option "border".
+When no image is specified, it is filled in "backcolor", and a rectangular frame in color "forecolor" can be drawn with option "border".
 
 The text is drawn with an optional "padding". */
 //************************************************************************************************
@@ -189,11 +189,9 @@ bool TextBoxRenderer::drawLayout (View* view, GraphicsPort& port, ITextLayout* l
 	t.translate (-textBox->getDisplayOffset (), 0);
 	port.addTransform (t);
 
-	if(ITextModel* textModel = textBox->getTextModel ())
-	{
-		ITextModel::DrawInfo drawInfo = { view, port, r };
-		textModel->drawBackground (*layout, drawInfo);
-	}
+	UnknownPtr<ITextBackgroundRenderer> backgroundRenderer (textBox->getTextModel ());
+	if(backgroundRenderer.isValid ())
+		backgroundRenderer->drawTextBackground (port, *layout, rectIntToF (r));
 
 	bool succeeded = port.drawTextLayout (textBox->getTextRect ().getLeftTop (), layout, textBrush) == kResultOk;
 	port.restoreState ();

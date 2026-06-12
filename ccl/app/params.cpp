@@ -374,8 +374,9 @@ void ColorParam::setBit (int index, bool state)
 
 Variant CCL_API ColorParam::getValue () const
 {
-	uint32 colorCode = *colorValue;
-	return Variant ((int)colorCode);
+	Variant variant;
+	Colors::toVariant (variant, *colorValue);
+	return variant;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -679,9 +680,10 @@ void CCL_API TextModelProvider::toString (String& string) const
 
 void CCL_API TextModelProvider::fromString (StringRef string, tbool update)
 {
-	if(textModel)
+	UnknownPtr<IMutableTextModel> mutableTextModel (textModel);
+	if(mutableTextModel.isValid ())
 	{
-		textModel->fromParamString (string);
+		mutableTextModel->fromParamString (string);
 		deferChanged ();
 
 		if(update)

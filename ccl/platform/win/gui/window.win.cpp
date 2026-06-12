@@ -57,9 +57,6 @@
 #include "ccl/public/cclversion.h"
 
 #include <windowsx.h>
-#include <dwmapi.h>
-
-#pragma comment (lib, "Dwmapi.lib")
 
 #ifndef WM_DPICHANGED
 #define WM_DPICHANGED 0x02E0
@@ -528,8 +525,7 @@ void Win32Window::updateBackgroundColor ()
 		{
 			// Supported starting with Windows 11
 			Color backColor = backgroundStyle->getBackColor ();
-			COLORREF captionColor = Win32::GdiInterop::toSystemColor (backColor);
-			::DwmSetWindowAttribute ((HWND)handle, DWMWA_CAPTION_COLOR, &captionColor, sizeof(captionColor));
+			Win32::SetCaptionColor ((HWND)handle, Win32::GdiInterop::toSystemColor (backColor));
 		}
 	}
 
@@ -1974,14 +1970,10 @@ LRESULT CALLBACK CCLWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPara
 			return 1;
 		}
 		else // WM_CREATE
-		{
+		{			
 			StyleRef style = window->getStyle ();
 			if(style.isCustomStyle (Styles::kWindowAppearanceCustomFrame) && style.isCustomStyle (Styles::kWindowAppearanceRoundedCorners))
-			{
-				// Supported starting with Windows 11
-				DWM_WINDOW_CORNER_PREFERENCE preference = DWMWCP_ROUND;
-				::DwmSetWindowAttribute (hwnd, DWMWA_WINDOW_CORNER_PREFERENCE, &preference, sizeof(preference));
-			}
+				Win32::SetRoundedWindowCornerPreference (hwnd, true); // Supported starting with Windows 11
 			return 0;
 		}
 	}

@@ -41,7 +41,7 @@ void CCL_API setDocumentLineFormat (TextLineFormat lineFormat) override \
 tresult CCL_API endDocument () override \
 { return Parent::endDocument (); } \
 tresult CCL_API writeLine (StringRef text) override \
-{ return Parent::writeLine (text); } \
+{ return Parent::writeLine (text); }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 // Markup Writer Macros
@@ -100,6 +100,7 @@ public:
 	tresult CCL_API beginDocument (IStream& stream, TextEncoding encoding = Text::kUnknownEncoding) override;
 	tresult CCL_API endDocument () override;
 	tresult CCL_API writeLine (StringRef text) override;
+	ITextBuilder* CCL_API createTextBuilder () override;
 
 	CLASS_INTERFACE (ITextWriter, Unknown)
 

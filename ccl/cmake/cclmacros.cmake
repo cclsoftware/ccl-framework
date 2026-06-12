@@ -61,6 +61,25 @@ macro (ccl_add_plugin_library target)
 		CCLGetClassFactory
 	)
 	target_include_directories (${_current_plugin_target} PRIVATE ${VENDOR_INCLUDE_DIRS})
+	if (COMMAND ccl_configure_plugin)
+		ccl_configure_plugin (${_current_plugin_target})
+	endif ()
+endmacro ()
+
+# Add an extension library, preconfigured to match vendor guidelines.
+# @group extensions
+# @param {STRING} target  Name of the target to add.
+# @param {STRING} subdir  Subdirectory of the extension library, e.g. plugins or dsp.
+# @param {STRING} extension  [optional] Name of the extension. Defaults to <target>.
+macro (ccl_extensions_add_library target subdir)
+	if (${ARGC} GREATER 3)
+		set (extension "${ARGV3}")
+	else ()
+		set (extension "${target}")
+	endif ()
+
+	ccl_add_plugin_library (${target})
+	ccl_extensions_configure_target (${target} ${subdir} ${extension})
 endmacro ()
 
 # File glob and filter for files starting with a "." (hidden on many OSs)
@@ -301,10 +320,12 @@ macro (ccl_add_extension target input)
 
 	add_subdirectory ("${REPOSITORY_EXTENSIONS_DIR}/development/${input}/cmake" "extensions/${input}")
 	set (packagePath "${REPOSITORY_EXTENSIONS_DIR}/deployment/${input}")
-	set_target_properties (${input} PROPERTIES USE_FOLDERS ON FOLDER extensions)
+	if (TARGET ${input})
+		set_target_properties (${input} PROPERTIES USE_FOLDERS ON FOLDER extensions)
+	endif ()
 	
 	if (extension_params_SKIP_DEPLOYMENT)
-		add_dependencies (${target} ${input})
+		ccl_add_dependencies (${target} ${input})
 	else ()
 		ccl_add_assets ("${target}" DIRECTORY "${packagePath}" PATH "${package_params_PATH}")
 		ccl_add_dependencies (${target} ${input})

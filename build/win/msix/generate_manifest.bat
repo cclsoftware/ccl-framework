@@ -27,6 +27,7 @@ set script=%script%;$minor="(Select-String -path ../../../source/appversion.h -P
 set script=%script%;$offset="(Select-String -path ../../../source/appversion.h -Pattern '#define MSSTORE_BUILD_OFFSET\s+([0-9]+)').matches.groups[1].value"
 set script=%script%;$build="(Select-String -path '%~1' -Pattern '#define BUILD_REVISION_NUMBER\s+([0-9]+)').matches.groups[1].value"
 set script=%script%;$version="$major+'.'+$minor+'.'+([int]$build-[int]$offset)+'.0'"
+set script=%script%;$winver="(Select-String -path AppxManifest.xml.template -Pattern 'Name=.Windows.Desktop. MinVersion=.([0-9\.]+). ').matches.groups[1].value"
 
 set script=%script%;$identity="(Select-String -path publisher.properties -Pattern '%channel%.identity=(.*)').matches.groups[1].value"
 set script=%script%;$publisher="(Select-String -path publisher.properties -Pattern '%channel%.publisher=(.*)').matches.groups[1].value"
@@ -40,6 +41,10 @@ for /f "tokens=1,* delims=+" %%a in ("!architectures!") do (
     set template=AppxManifest-!architecture!.xml.template
     if exist "!template!" (
         set script=!script!;$manifest="(gc !template!)"
+        if "!architecture!" == "arm64ec" (
+            set script=!script!;$version="$major+'.'+$minor+'.'+([int]$build-[int]$offset+1)+'.0'"
+            set script=!script!;$winver="(Select-String -path !template! -Pattern 'Name=.Windows.Desktop. MinVersion=.([0-9\.]+). ').matches.groups[1].value"
+        )
         set script=!script!;$manifest="$manifest.replace('{IDENTITY}', $identity).replace('{PUBLISHER}', $publisher).replace('{VERSION}', $version).replace('{CPUTYPE}', '!cputype!')"
 
         set script=!script!;Out-File -inputobject $manifest -encoding utf8 AppxManifest-!architecture!.xml
@@ -52,7 +57,8 @@ goto architectures
 :continue
 if exist "AppxManifest.xml.template" (
     set script=!script!;$manifest="(gc AppxManifest.xml.template)"
-    set script=!script!;$manifest="$manifest.replace('{IDENTITY}', $identity).replace('{PUBLISHER}', $publisher).replace('{VERSION}', $version).replace('{CPUTYPE}', '!cputypes!')"
+    set script=!script!;$manifest="$manifest -replace '(Name=.Windows.[A-Za-z]+. MinVersion=.)[0-9\.]+(. )', '$1{WINVER}$2'"
+    set script=!script!;$manifest="$manifest.replace('{IDENTITY}', $identity).replace('{PUBLISHER}', $publisher).replace('{VERSION}', $version).replace('{CPUTYPE}', '!cputypes!').replace('{WINVER}', $winver)"
 
     set script=!script!;Out-File -inputobject $manifest -encoding utf8 AppxManifest.xml
 )

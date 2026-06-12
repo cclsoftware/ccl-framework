@@ -124,6 +124,15 @@ HelpManager::~HelpManager ()
 tresult CCL_API HelpManager::setHelpLocation (UrlRef path)
 {
 	helpFolder = NEW Url (path);
+
+	if(!path.isNativePath ())
+	{
+		// try to replace variable $language 
+		String language (System::GetLocaleManager ().getLanguage ());
+		String pathString (helpFolder->getPath ());
+		if(pathString.replace (kLanguageVariable, language) > 0)
+			helpFolder->setPath (pathString, helpFolder->getType ());
+	}
 	return kResultOk;
 }
 
@@ -191,8 +200,6 @@ void HelpManager::makeHelpPath (Url& path, StringRef fileName, StringRef languag
 	 	path.descend (language, Url::kFolder);
 		path.descend (fileName);
 	}
-	else
-		path.descend (language, Url::kFile);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////

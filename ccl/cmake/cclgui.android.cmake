@@ -131,30 +131,33 @@ source_group (TREE ${CCL_DIR}/platform/android PREFIX "source/platform" FILES ${
 source_group (TREE ${CCL_DIR}/platform/shared PREFIX "source/platform" FILES ${cclgui_platform_sources})
 source_group (TREE ${CCL_DIR}/gui PREFIX "source" FILES ${cclgui_android_additional_sources})
 
-find_library (JNIGraphics_LIBRARY NAMES jnigraphics)
-find_library (Vulkan_LIBRARY NAMES vulkan)
+ccl_check_imported (${cclgui} imported)
+if (NOT imported)
+	find_library (JNIGraphics_LIBRARY NAMES jnigraphics)
+	find_library (Vulkan_LIBRARY NAMES vulkan)
 
-if (NOT ${CCL_STATIC_ONLY})
-	target_link_libraries (${cclgui} PRIVATE ${JNIGraphics_LIBRARY} ${Vulkan_LIBRARY} ${Vulkan_Utility_Libraries_LIBRARY})
+	if (NOT ${CCL_STATIC_ONLY})
+		target_link_libraries (${cclgui} PRIVATE ${JNIGraphics_LIBRARY} ${Vulkan_LIBRARY} ${Vulkan_Utility_Libraries_LIBRARY})
+	endif ()
+
+	ccl_list_append_once (CCL_STATIC_LINK_LIBRARIES ${JNIGraphics_LIBRARY} ${Vulkan_LIBRARY} ${Vulkan_Utility_Libraries_LIBRARY})
+
+	ccl_add_aar_project (${cclgui} NAMESPACE "dev.ccl.cclgui" DEPENDS corelib cclsystem)
+	ccl_install_aar (${cclgui} COMPONENT prebuilt_libraries_${VENDOR_NATIVE_COMPONENT_SUFFIX})
+
+	ccl_add_gradle_dependency (${cclgui} "androidx.documentfile:documentfile:1.0.1" TRANSITIVE)
+
+	ccl_add_java_sourcedir (${cclgui} "${CCL_DIR}/meta/generated/java")
+	ccl_add_java_sourcedir (${cclgui} "${CCL_DIR}/platform/android/graphics/java")
+	ccl_add_java_sourcedir (${cclgui} "${CCL_DIR}/platform/android/gui/java")
+	ccl_add_java_sourcedir (${cclgui} "${CCL_DIR}/platform/android/vulkan/java")
+
+	ccl_add_gradle_include (${cclgui} "${CCL_DIR}/packaging/android/cclgui.gradle")
+
+	ccl_add_shader_resource (${cclgui} ${CCL_DIR}/gui/graphics/3d/shader/glsl/vertexshaderPN.vert PATH shaders)
+	ccl_add_shader_resource (${cclgui} ${CCL_DIR}/gui/graphics/3d/shader/glsl/vertexshaderPNT.vert PATH shaders)
+	ccl_add_shader_resource (${cclgui} ${CCL_DIR}/gui/graphics/3d/shader/glsl/vertexshaderPNT2PN.vert PATH shaders)
+	ccl_add_shader_resource (${cclgui} ${CCL_DIR}/gui/graphics/3d/shader/glsl/billboardvertexshader.vert PATH shaders)
+	ccl_add_shader_resource (${cclgui} ${CCL_DIR}/gui/graphics/3d/shader/glsl/solidcolormaterial.frag PATH shaders)
+	ccl_add_shader_resource (${cclgui} ${CCL_DIR}/gui/graphics/3d/shader/glsl/texturematerial.frag PATH shaders)
 endif ()
-
-ccl_list_append_once (CCL_STATIC_LINK_LIBRARIES ${JNIGraphics_LIBRARY} ${Vulkan_LIBRARY} ${Vulkan_Utility_Libraries_LIBRARY})
-
-ccl_add_aar_project (${cclgui} NAMESPACE "dev.ccl.cclgui" DEPENDS corelib cclsystem)
-ccl_install_aar (${cclgui} COMPONENT prebuilt_libraries_${VENDOR_NATIVE_COMPONENT_SUFFIX})
-
-ccl_add_gradle_dependency (${cclgui} "androidx.documentfile:documentfile:1.0.1" TRANSITIVE)
-
-ccl_add_java_sourcedir (${cclgui} "${CCL_DIR}/meta/generated/java")
-ccl_add_java_sourcedir (${cclgui} "${CCL_DIR}/platform/android/graphics/java")
-ccl_add_java_sourcedir (${cclgui} "${CCL_DIR}/platform/android/gui/java")
-ccl_add_java_sourcedir (${cclgui} "${CCL_DIR}/platform/android/vulkan/java")
-
-ccl_add_gradle_include (${cclgui} "${CCL_DIR}/packaging/android/cclgui.gradle")
-
-ccl_add_shader_resource (${cclgui} ${CCL_DIR}/gui/graphics/3d/shader/glsl/vertexshaderPN.vert PATH shaders)
-ccl_add_shader_resource (${cclgui} ${CCL_DIR}/gui/graphics/3d/shader/glsl/vertexshaderPNT.vert PATH shaders)
-ccl_add_shader_resource (${cclgui} ${CCL_DIR}/gui/graphics/3d/shader/glsl/vertexshaderPNT2PN.vert PATH shaders)
-ccl_add_shader_resource (${cclgui} ${CCL_DIR}/gui/graphics/3d/shader/glsl/billboardvertexshader.vert PATH shaders)
-ccl_add_shader_resource (${cclgui} ${CCL_DIR}/gui/graphics/3d/shader/glsl/solidcolormaterial.frag PATH shaders)
-ccl_add_shader_resource (${cclgui} ${CCL_DIR}/gui/graphics/3d/shader/glsl/texturematerial.frag PATH shaders)

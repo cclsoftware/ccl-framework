@@ -300,7 +300,7 @@ macro (ccl_configure_project_vendor vendor)
 	set (VENDOR_NSIS_INCLUDE_DIR "${vendor_include_directory_native}")
 
 	# Code Signing
-	option (VENDOR_ENABLE_CODESIGNING "Enable code signing for build outputs and generated istallers" OFF)
+	option (VENDOR_ENABLE_CODESIGNING "Enable code signing for build outputs and generated installers" OFF)
 
 	set (${vendor}_SIGNING_CERTIFICATE "${SIGNING_CERTIFICATE_WIN}" CACHE STRING "" FORCE)
 	set (${vendor}_SIGNING_CERTIFICATE_THUMBPRINT "${SIGNING_CERTIFICATE_THUMBPRINT_WIN}" CACHE STRING "" FORCE)
@@ -316,7 +316,7 @@ macro (ccl_configure_project_vendor vendor)
 		string (APPEND sign_target_name ".${CCL_ISOLATION_POSTFIX}")
 	endif ()
 	
-	if (VENDOR_ENABLE_CODESIGNING AND NOT TARGET "${sign_target_name}")
+	if (VENDOR_ENABLE_CODESIGNING)
 		ccl_get_sign_args (sign_args "${vendor}")
 		
 		find_program (CMD REQUIRED NAMES cmd)
@@ -327,46 +327,60 @@ macro (ccl_configure_project_vendor vendor)
 		find_file (sign_file_script REQUIRED NAMES "sign_file.bat" PATHS "${REPOSITORY_ROOT}/build/win" "${CCL_REPOSITORY_ROOT}/build/win")
 		cmake_path (NATIVE_PATH sign_file_script NORMALIZE sign_file_script_native)
 		
-		ccl_get_build_output_directory (artifacts_directory)
-		cmake_path (NATIVE_PATH artifacts_directory NORMALIZE artifacts_directory)
-	
-		if (sign_script AND sign_extensions_script)
-		
-			add_custom_command (OUTPUT ${sign_target_name}_run_always
-				COMMENT "Signing binaries"
-				COMMAND "${CMD}" /c "${${vendor}_SIGNING_PRE_COMMAND}"
-				COMMAND "${CMD}" /c "${sign_script_native}" ${sign_args} "${artifacts_directory}"
-				COMMAND "${CMD}" /c "${sign_extensions_script_native}" ${sign_args} ""
-				COMMAND "${CMD}" /c "${${vendor}_SIGNING_POST_COMMAND}"
-				VERBATIM
-			)
-		
-		elseif (sign_script)
-			
-			add_custom_command (OUTPUT ${sign_target_name}_run_always
-				COMMENT "Signing binaries"
-				COMMAND "${CMD}" /c "${${vendor}_SIGNING_PRE_COMMAND}"
-				COMMAND "${CMD}" /c "${sign_script_native}" ${sign_args} "${artifacts_directory}"
-				COMMAND "${CMD}" /c "${${vendor}_SIGNING_POST_COMMAND}"
-				VERBATIM
-			)
-			
-		else ()
-		
-			add_custom_command (OUTPUT ${sign_target_name}_run_always
-				COMMENT "Signing binaries"
-				COMMAND "${CMD}" /c "${${vendor}_SIGNING_PRE_COMMAND}"
-				COMMAND "${CMD}" /c "${sign_file_script_native}" ${sign_args} "${artifacts_directory}/*.exe"
-				COMMAND "${CMD}" /c "${sign_file_script_native}" ${sign_args} "${artifacts_directory}/*.dll"
-				COMMAND "${CMD}" /c "${sign_file_script_native}" ${sign_args} "${artifacts_directory}/Plugins/*.dll"
-				COMMAND "${CMD}" /c "${${vendor}_SIGNING_POST_COMMAND}"
-				VERBATIM
-			)
-			
-		endif ()
-		
-		add_custom_target ("${sign_target_name}" DEPENDS ${sign_target_name}_run_always)
-		set_target_properties ("${sign_target_name}" PROPERTIES USE_FOLDERS ON FOLDER cmake EXCLUDE_FROM_DEFAULT_BUILD_DEBUG ON)		
+		if (NOT TARGET "${sign_target_name}")
+			ccl_get_build_output_directory (artifacts_directory)
+			cmake_path (NATIVE_PATH artifacts_directory NORMALIZE artifacts_directory)
+
+			if (sign_script AND sign_extensions_script)
+				add_custom_command (OUTPUT ${sign_target_name}_run_always
+					COMMENT "Signing binaries"
+					COMMAND "${CMD}" /c "${${vendor}_SIGNING_PRE_COMMAND}"
+					COMMAND "${CMD}" /c "${sign_script_native}" ${sign_args} "${artifacts_directory}"
+					COMMAND "${CMD}" /c "${sign_extensions_script_native}" ${sign_args} ""
+					COMMAND "${CMD}" /c "${${vendor}_SIGNING_POST_COMMAND}"
+					VERBATIM
+				)
+			elseif (sign_script)
+				add_custom_command (OUTPUT ${sign_target_name}_run_always
+					COMMENT "Signing binaries"
+					COMMAND "${CMD}" /c "${${vendor}_SIGNING_PRE_COMMAND}"
+					COMMAND "${CMD}" /c "${sign_script_native}" ${sign_args} "${artifacts_directory}"
+					COMMAND "${CMD}" /c "${${vendor}_SIGNING_POST_COMMAND}"
+					VERBATIM
+				)
+			else ()
+				add_custom_command (OUTPUT ${sign_target_name}_run_always
+					COMMENT "Signing binaries"
+					COMMAND "${CMD}" /c "${${vendor}_SIGNING_PRE_COMMAND}"
+					COMMAND "${CMD}" /c "${sign_file_script_native}" ${sign_args} "${artifacts_directory}/*.exe"
+					COMMAND "${CMD}" /c "${sign_file_script_native}" ${sign_args} "${artifacts_directory}/*.dll"
+					COMMAND "${CMD}" /c "${sign_file_script_native}" ${sign_args} "${artifacts_directory}/Plugins/*.dll"
+					COMMAND "${CMD}" /c "${${vendor}_SIGNING_POST_COMMAND}"
+					VERBATIM
+				)
+			endif ()
+
+			add_custom_target ("${sign_target_name}" DEPENDS ${sign_target_name}_run_always)
+			set_target_properties ("${sign_target_name}" PROPERTIES USE_FOLDERS ON FOLDER cmake EXCLUDE_FROM_DEFAULT_BUILD_DEBUG ON)
+		endif ()		
+
+		# Append installer/uninstaller signing commands to vendor.sh
+		set (sign_args_string "")
+		foreach (sign_arg ${sign_args})
+			if ("${sign_arg}" MATCHES ".* .*")
+				set (sign_args_string "${sign_args_string} \"${sign_arg}\"")
+			else ()
+				set (sign_args_string "${sign_args_string} ${sign_arg}")
+			endif ()
+		endforeach ()
+
+		file (APPEND "${vendor_include_directory}/vendor.nsh"
+			"\n;-----------------------------------------------------------------------\n"
+			"; Code signing\n"
+			";-----------------------------------------------------------------------\n\n"
+			"!finalize '\"${sign_file_script_native}\" ${sign_args_string} \"%1\"' = 0\n"
+			"!uninstfinalize '\"${sign_file_script_native}\" ${sign_args_string} \"%1\"' = 0\n"
+		)
 	endif ()
 	
 	# Installation directories (if using CPack)
@@ -519,7 +533,7 @@ macro (ccl_sign_files target vendor file)
 endmacro ()
 
 # Add a package target using an NSIS installer script.
-# Creates a target names ${target}_installer.
+# Creates a target named ${target}_installer.
 # @group win
 # @param {STRING} target  Name of the target to add a package target for.
 # @param {FILEPATH} script  NSIS script file path.
@@ -581,9 +595,17 @@ macro (ccl_nsis_package target script)
 			list (APPEND nsis_definitions "/DBUILDDIR_MULTIARCH=${VENDOR_OUTPUT_DIRECTORY}/${VENDOR_PLATFORM}/${VENDOR_PLATFORM_SUBDIR}/$<CONFIG>")
 		endif ()
 
+		get_filename_component (script_directory "${script}" DIRECTORY)
+		cmake_path (NATIVE_PATH script_directory NORMALIZE script_directory_native)
+		
+		set (archive_directory "${VENDOR_OUTPUT_DIRECTORY}/archive")
+		cmake_path (NATIVE_PATH archive_directory NORMALIZE archive_directory_native)
+		
 		add_custom_command (OUTPUT ${target}_nsis_run_always
 			COMMENT "Calling NSIS"
 			COMMAND "${NSIS}" ${nsis_definitions} "/DVENDOR_INCLUDE_DIR=${VENDOR_NSIS_INCLUDE_DIR}" ${nsis_arch} ${ARGN} "${script}"
+			COMMAND ${CMAKE_COMMAND} -E make_directory "${archive_directory}"
+			COMMAND copy "${script_directory_native}\\*.exe" "${archive_directory_native}"
 			VERBATIM
 		)
 		# Only add the dependency when codesigning is disabled. Otherwise we might overwrite previously signed binaries.
@@ -591,20 +613,82 @@ macro (ccl_nsis_package target script)
 			add_custom_command (OUTPUT ${target}_nsis_run_always APPEND DEPENDS ${target})
 		endif ()
 		
-		get_filename_component (script_directory "${script}" DIRECTORY)
-		ccl_sign_files (${target}_installer "${PROJECT_VENDOR}" "${script_directory}/*.exe")
+		find_program (CMD REQUIRED NAMES cmd)
+		
+		add_custom_target (${target}_installer DEPENDS ${target}_nsis_run_always)
+		set_target_properties (${target}_installer PROPERTIES USE_FOLDERS ON FOLDER cmake EXCLUDE_FROM_DEFAULT_BUILD_DEBUG ON)	
 		target_sources (${target}_installer PRIVATE "${script}")
 
-		add_custom_command (OUTPUT sign_${target}_installer APPEND DEPENDS ${target}_nsis_run_always)
-		
-		find_program (CMD REQUIRED NAMES cmd)
-		cmake_path (NATIVE_PATH CMD NORMALIZE cmd_native)
-		cmake_path (NATIVE_PATH script_directory NORMALIZE script_directory_native)
-		string (REPLACE "\\" "\\\\" cmd_native "${cmd_native}")
 		string (REPLACE "\\" "\\\\" script_directory_native "${script_directory_native}")
+		cmake_path (NATIVE_PATH CMD NORMALIZE cmd_native)
+		string (REPLACE "\\" "\\\\" cmd_native "${cmd_native}")
 		ccl_set_debug_command (${target}_installer 
 			DEBUG_EXECUTABLE "${cmd_native}"
 			DEBUG_ARGUMENTS "/c for %B in (\"${script_directory_native}\\\\*.exe\") do call \"%B\""
 		)
+	endif ()
+endmacro ()
+
+# Add an MSIX package target.
+# Creates a target named ${target}_packages.
+# @group win
+# @param {STRING} target  Name of the target to add a package target for.
+# @param {PATH} path  Path to folder containing MSIX packaging information.
+# @param {STRING} ARCHITECTURES  [optional] List of separated by +, e.g. x64+arm64.
+macro (ccl_msix_package target path)
+	cmake_parse_arguments ("args" "" "ARCHITECTURES" "" ${ARGN})
+
+	find_program (CMD REQUIRED NAMES cmd)
+	find_file (package_script NAMES "build_msixbundle.bat" PATHS "${CCL_REPOSITORY_ROOT}/build/win/msix")
+	cmake_path (NATIVE_PATH package_script NORMALIZE package_script_native)
+	
+	if (NOT TARGET ${target}_packages)
+		if (NOT args_ARCHITECTURES)
+			set (msix_arches "")
+			if ("${VENDOR_TARGET_ARCHITECTURE}" STREQUAL "x86_64")
+				set (msix_arches "x64")
+				set (msix_suffix "")
+			elseif ("${VENDOR_TARGET_ARCHITECTURE}" STREQUAL "arm64")
+				set (msix_arches "arm64")
+				set (msix_suffix " Arm64")
+			elseif ("${VENDOR_TARGET_ARCHITECTURE}" STREQUAL "arm64ec")
+				set (msix_arches "arm64ec")
+				set (msix_suffix " Arm64")
+			endif ()
+		else ()
+			set (msix_arches "${args_ARCHITECTURES}")
+		endif ()
+
+		set (msix_bundle "${${target}_VENDOR_NAME} ${${target}_NAME}${msix_suffix}")
+
+		add_custom_command (OUTPUT ${target}_msix_run_always
+			COMMENT "Creating MSIX packages"
+			WORKING_DIRECTORY "${path}"
+			COMMAND "${CMD}" /c "${package_script_native}" "/arch" ${msix_arches} "${VENDOR_OUTPUT_DIRECTORY}/${VENDOR_PLATFORM}/{CPUTYPE}/$<CONFIG>" "${REPOSITORY_ROOT}/buildnumber.h" "PackagingLayout.xml" "${msix_bundle}.msixbundle"
+			COMMAND "${CMD}" /c "${package_script_native}" "/store" "/arch" ${msix_arches} "${VENDOR_OUTPUT_DIRECTORY}/${VENDOR_PLATFORM}/{CPUTYPE}/$<CONFIG>" "${REPOSITORY_ROOT}/buildnumber.h" "PackagingLayout.xml" "${msix_bundle}.msixupload"
+			VERBATIM
+		)
+
+		if (VENDOR_ENABLE_CODESIGNING)
+			ccl_get_sign_args (sign_args "${${target}_VENDOR}")
+			
+			find_file (sign_file_script REQUIRED NAMES "sign_file.bat" PATHS "${CCL_REPOSITORY_ROOT}/build/win")
+			cmake_path (NATIVE_PATH sign_file_script NORMALIZE sign_file_script_native)
+
+			add_custom_command (OUTPUT ${target}_msix_run_always
+				APPEND
+				COMMAND "${CMD}" /c "${${vendor}_SIGNING_PRE_COMMAND}"
+				COMMAND "${CMD}" /c "${sign_file_script_native}" ${sign_args} "${path}/${msix_bundle}.msixbundle"
+				COMMAND "${CMD}" /c "${${vendor}_SIGNING_POST_COMMAND}"
+			)
+		endif ()
+
+		# Only add the dependency when codesigning is disabled. Otherwise we might overwrite previously signed binaries.
+		if (NOT VENDOR_ENABLE_CODESIGNING)
+			add_custom_command (OUTPUT ${target}_msix_run_always APPEND DEPENDS ${target})
+		endif ()
+
+		add_custom_target (${target}_packages DEPENDS ${target}_msix_run_always)
+		set_target_properties (${target}_packages PROPERTIES USE_FOLDERS ON FOLDER cmake EXCLUDE_FROM_DEFAULT_BUILD_DEBUG ON)
 	endif ()
 endmacro ()

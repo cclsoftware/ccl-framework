@@ -102,6 +102,9 @@ interface IXMLHttpRequest: IAsyncInfo
 	/** Specifies an HTTP request header. */
 	virtual tresult CCL_API setRequestHeader (StringID header, StringID value) = 0;
 
+	/** Customize stream to receive response (non-standard feature). */
+	virtual tresult CCL_API setResponseStream (IStream* stream) = 0;
+
 	/**	Sends an HTTP request to the server and receives a response.
 		The progress callback interface can be used for synchronous requests. */
 	virtual tresult CCL_API send (VariantRef data = 0, IProgressNotify* progress = nullptr) = 0;

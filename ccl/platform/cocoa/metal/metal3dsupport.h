@@ -41,7 +41,7 @@
 @class MTLRenderPipelineDescriptor;
 @class MTKView;
 @class MTLVertexDescriptor;
-@class MetalViewDelegate;
+@class CCL_ISOLATED (DisplayTimer);
 
 namespace CCL {
 
@@ -300,6 +300,7 @@ public:
 private:
 	bool firstDraw;
 	NSObj<MTKView> view;
+	NSObj<CCL_ISOLATED (DisplayTimer)> displayTimer;
 };
 
 //************************************************************************************************

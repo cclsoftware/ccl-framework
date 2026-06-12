@@ -62,6 +62,17 @@ using namespace SkinElements;
 // SkinParser
 //************************************************************************************************
 
+String SkinParser::customDefinitions;
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+void SkinParser::setCustomDefinitions (StringRef definitions)
+{
+	customDefinitions = definitions;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
 SkinParser::SkinParser (ISkinContext* context)
 : firstTag (true)
 {
@@ -184,11 +195,38 @@ tresult CCL_API SkinParser::endElement (StringRef name)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
+tresult CCL_API SkinParser::characterData (const uchar* data, int length, tbool isCDATA)
+{
+	if(skipping)
+		return kResultOk;
+
+	if(current)
+		current->appendCharacterData (data, length);
+
+	return kResultOk;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
 tresult CCL_API SkinParser::processingInstruction (StringRef target, StringRef data)
 {
 	XmlProcessingInstructionHandler::handleInstruction (target, data);
 	return kResultOk;
 }
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+bool SkinParser::isDefined (StringRef query) const
+{
+	if(XmlProcessingInstructionHandler::isDefined (query))
+		return true;
+
+	if(customDefinitions.contains (query))
+		return true;
+
+	return false;
+}
+
 
 //************************************************************************************************
 // SkinXmlAttributes

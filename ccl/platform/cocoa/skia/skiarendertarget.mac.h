@@ -18,8 +18,6 @@
 
 #include "ccl/platform/cocoa/skia/skiarendertarget.cocoa.h"
 
-@class NSView;
-
 namespace CCL {
 
 //************************************************************************************************
@@ -43,7 +41,9 @@ protected:
 	id<NSObject> sizeObserver;
 	id<NSObject> scaleObserver;
 	unsigned long siblingViewCount;
-
+	#pragma clang diagnostic ignored "-Wunguarded-availability-new" // access to this is guarded by @available
+	NSObj<CCL_ISOLATED (DisplayTimer)> displayTimer;
+	#pragma clang diagnostic pop
     // MetalWindowRenderTarget
 	void initialize () override;
 };

@@ -10,5 +10,8 @@ ccl_list_append_once (cclextras_stores_sources
 	${cclextras_stores_platform_sources}
 )
 
-target_link_libraries (cclextras-stores PRIVATE WindowsApp.lib)
-target_link_options (cclextras-stores PRIVATE "/NODEFAULTLIB:XmlLite.lib")
+ccl_check_imported (cclextras-stores imported)
+if (NOT imported)
+	target_link_libraries (cclextras-stores PRIVATE WindowsApp.lib)
+	target_link_options (cclextras-stores PRIVATE "/NODEFAULTLIB:XmlLite.lib")
+endif ()

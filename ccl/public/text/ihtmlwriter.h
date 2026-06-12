@@ -47,9 +47,6 @@ namespace HtmlTags
 
 interface IHtmlWriter: ISgmlWriter
 {
-	/** Create text block builder for HTML. */
-	virtual ITextBuilder* CCL_API createHtmlBuilder () = 0;
-
 	/** Push <meta> element to be written inside HTML <head>. */
 	virtual tresult CCL_API pushMetaElement (StringRef name, StringRef content, tbool isHttpEquiv) = 0;
 

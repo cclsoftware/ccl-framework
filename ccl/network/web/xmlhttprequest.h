@@ -57,6 +57,7 @@ public:
 	tresult CCL_API open (StringID method, UrlRef url, tbool async = true, 
 						  StringRef user = nullptr, StringRef password = nullptr, StringRef authType = nullptr) override;
 	tresult CCL_API setRequestHeader (StringID header, StringID value) override;
+	tresult CCL_API setResponseStream (IStream* stream) override;
 	tresult CCL_API send (VariantRef data = 0, IProgressNotify* progress = nullptr) override;
 	IWebHeaderCollection* CCL_API getAllResponseHeaders () const override;
 	tresult CCL_API getResponseHeader (CString& result, StringID id) const override;
@@ -84,7 +85,7 @@ protected:
 	void reset ();
 
 	IWebHeaderCollection& getRequestHeaders ();
-	IStream* createStream (MutableCString& contentType, VariantRef data) const;
+	IStream* createLocalStream (MutableCString& contentType, VariantRef data) const;
 	tresult sendAsync (VariantRef data);
 	tresult sendBlocking (VariantRef data, IProgressNotify* progress);
 

@@ -29,6 +29,7 @@
 
 #include "ccl/base/message.h"
 #include "ccl/base/storage/file.h"
+#include "ccl/base/storage/filefilter.h"
 #include "ccl/base/collections/stringdictionary.h"
 
 #include "ccl/public/storage/ifileresource.h"
@@ -110,6 +111,18 @@ DEFINE_IID_ (IExtensionProductHandler, 0xf112d2dc, 0x7269, 0x42b8, 0x83, 0x2c, 0
 // ExtensionNativePluginHandler
 //************************************************************************************************
 
+IUrlFilter* ExtensionNativePluginHandler::createPluginFilter (UrlRef folder)
+{
+	Url filterPath (folder);
+	filterPath.descend ("pluginfilter.xml", Url::kFile);
+	AutoPtr<FileFilter> pluginFilter = NEW FileFilter;
+	if(pluginFilter->loadFromFile (filterPath))
+		return pluginFilter.detach ();
+	return nullptr;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
 int ExtensionNativePluginHandler::startupExtension (ExtensionDescription& description)
 {
 	Url nativePluginFolder (description.getPath ());
@@ -117,7 +130,10 @@ int ExtensionNativePluginHandler::startupExtension (ExtensionDescription& descri
 	nativePluginFolder.descend (EXTENSION_PLATFORM_FOLDER, Url::kFolder);
 
 	if(System::GetFileSystem ().fileExists (nativePluginFolder))
-		return System::GetPlugInManager ().scanFolder (nativePluginFolder, CodeResourceType::kNative);
+	{
+		AutoPtr<IUrlFilter> filter = createPluginFilter (description.getPath ());
+		return System::GetPlugInManager ().scanFolder (nativePluginFolder, CodeResourceType::kNative, PlugScanOption::kRecursive, nullptr, filter);
+	}
 	return 0;
 }
 
@@ -132,7 +148,10 @@ int ExtensionCorePluginHandler::startupExtension (ExtensionDescription& descript
 	corePluginFolder.descend (EXTENSION_PLATFORM_FOLDER, Url::kFolder);
 
 	if(System::GetFileSystem ().fileExists (corePluginFolder))
-		return System::GetPlugInManager ().scanFolder (corePluginFolder, CodeResourceType::kCore);
+	{
+		AutoPtr<IUrlFilter> filter = ExtensionNativePluginHandler::createPluginFilter (description.getPath ());
+		return System::GetPlugInManager ().scanFolder (corePluginFolder, CodeResourceType::kCore, PlugScanOption::kRecursive, nullptr, filter);
+	}
 	return 0;
 }
 

@@ -31,6 +31,7 @@ namespace CCL {
 class Url;
 interface ITheme;
 interface ITranslationTable;
+interface IUrlFilter;
 
 namespace Install {
 
@@ -83,6 +84,8 @@ interface IExtensionProductHandler: IUnknown
 class ExtensionNativePluginHandler: public ExtensionHandler
 {
 public:
+	static CCL::IUrlFilter* createPluginFilter (UrlRef path);
+	
 	// ExtensionHandler
 	int startupExtension (ExtensionDescription& description) override;
 };

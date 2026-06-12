@@ -890,7 +890,10 @@ void AttributesWriter::writeValue (CStringPtr id, const AttributeValue& a, int f
 	switch(a.getType ())
 	{
 	case Attribute::kInt:
-		handler.setValue (id, a.getInt (), flags);
+		if(a.isBoolFormat ())
+			handler.setValue (id, bool(a.getInt ()), flags);
+		else
+			handler.setValue (id, a.getInt (), flags);
 		break;
 
 	case Attribute::kFloat:

@@ -22,47 +22,57 @@ if (CCL_ISOLATION_POSTFIX)
 endif ()
 
 option (CCL_BUILD_XDGPORTAL_INTEGRATION "xdg portal integration for cclgui" ON)
-if (${CCL_BUILD_XDGPORTAL_INTEGRATION} AND NOT TARGET ${cclgui-xdgportal})
-	find_package (ccl REQUIRED COMPONENTS cclbase)
-
-	ccl_add_library (cclgui-xdgportal SHARED VENDOR ccl POSTFIX "${CCL_ISOLATION_POSTFIX}"
-		SUBDIR "PlatformIntegration/${CCL_PACKAGE_DOMAIN}cclgui"
-		VERSION_FILE ${CMAKE_CURRENT_LIST_DIR}/version.h
-		VERSION_PREFIX PLUG
-	)
-	set_target_properties (${cclgui-xdgportal} PROPERTIES FOLDER "ccl")
-    
-	ccl_list_append_once (xdgportal_ccl_sources
-		${CCL_DIR}/main/cclmodmain.cpp
-		${CCL_DIR}/main/cclmodmain.empty.cpp
-		${CCL_DIR}/platform/linux/interfaces/linuxiids.cpp
-	)
-
-	ccl_list_append_once (xdgportal_source_files
-		${CMAKE_CURRENT_LIST_DIR}/xdgportal.cpp
-		${CMAKE_CURRENT_LIST_DIR}/version.h
-		${CMAKE_CURRENT_LIST_FILE}
-	)
-
-	ccl_list_append_once (xdgportal_sources
-		${xdgportal_ccl_sources}
-		${xdgportal_source_files}	
-	)
-
-	source_group ("source" FILES ${xdgportal_source_files})
-	source_group ("cmake" FILES ${CMAKE_CURRENT_LIST_FILE})
-	target_sources (${cclgui-xdgportal} PRIVATE ${xdgportal_sources})
-    
-	target_link_libraries (${cclgui-xdgportal} PRIVATE ${cclbase})
-	target_include_directories (${cclgui-xdgportal} PRIVATE "${CCL_INCLUDE_DIRS}")
-	
-	if (CCL_SYSTEM_INSTALL)
-		install (TARGETS ${cclgui-xdgportal} LIBRARY DESTINATION "${CCL_BINARY_DESTINATION}/PlatformIntegration/${CCL_PACKAGE_DOMAIN}cclgui/")
-	else ()
-		install (TARGETS ${cclgui-xdgportal} LIBRARY DESTINATION "${VENDOR_PLATFORMINTEGRATION_DIRECTORY}/${CCL_PACKAGE_DOMAIN}cclgui/")
+if (CCL_BUILD_XDGPORTAL_INTEGRATION)
+	ccl_import_prebuilt_targets (cclgui-xdgportal ISOLATED)
+	if (TARGET ${cclgui-xdgportal} AND NOT CCL_SYSTEM_INSTALL)
+		ccl_install_imported (${cclgui-xdgportal} LIBRARY DESTINATION "${VENDOR_PLATFORMINTEGRATION_DIRECTORY}/${CCL_PACKAGE_DOMAIN}cclgui/")
+		return ()
 	endif ()
 
-	ccl_use_dbus_interface (${cclgui-xdgportal} org.freedesktop.portal.Request)
-	ccl_use_dbus_interface (${cclgui-xdgportal} org.freedesktop.portal.Notification)
-	ccl_use_dbus_interface (${cclgui-xdgportal} org.freedesktop.portal.FileChooser)
+	if (NOT TARGET ${cclgui-xdgportal})
+		find_package (ccl REQUIRED COMPONENTS cclbase)
+
+		ccl_add_library (cclgui-xdgportal SHARED VENDOR ccl POSTFIX "${CCL_ISOLATION_POSTFIX}"
+			SUBDIR "PlatformIntegration/${CCL_PACKAGE_DOMAIN}cclgui"
+			VERSION_FILE ${CMAKE_CURRENT_LIST_DIR}/version.h
+			VERSION_PREFIX PLUG
+		)
+		set_target_properties (${cclgui-xdgportal} PROPERTIES FOLDER "ccl")
+
+		ccl_list_append_once (xdgportal_ccl_sources
+			${CCL_DIR}/main/cclmodmain.cpp
+			${CCL_DIR}/main/cclmodmain.empty.cpp
+			${CCL_DIR}/platform/linux/interfaces/linuxiids.cpp
+		)
+
+		ccl_list_append_once (xdgportal_source_files
+			${CMAKE_CURRENT_LIST_DIR}/xdgportal.cpp
+			${CMAKE_CURRENT_LIST_DIR}/version.h
+			${CMAKE_CURRENT_LIST_FILE}
+		)
+
+		ccl_list_append_once (xdgportal_sources
+			${xdgportal_ccl_sources}
+			${xdgportal_source_files}
+		)
+
+		source_group ("source" FILES ${xdgportal_source_files})
+		source_group ("cmake" FILES ${CMAKE_CURRENT_LIST_FILE})
+		target_sources (${cclgui-xdgportal} PRIVATE ${xdgportal_sources})
+
+		target_link_libraries (${cclgui-xdgportal} PRIVATE ${cclbase})
+		target_include_directories (${cclgui-xdgportal} PRIVATE "${CCL_INCLUDE_DIRS}")
+
+		if (CCL_SYSTEM_INSTALL)
+			install (TARGETS ${cclgui-xdgportal} LIBRARY DESTINATION "${CCL_BINARY_DESTINATION}/PlatformIntegration/${CCL_PACKAGE_DOMAIN}cclgui/")
+		else ()
+			install (TARGETS ${cclgui-xdgportal} LIBRARY DESTINATION "${VENDOR_PLATFORMINTEGRATION_DIRECTORY}/${CCL_PACKAGE_DOMAIN}cclgui/")
+		endif ()
+
+		ccl_use_dbus_interface (${cclgui-xdgportal} org.freedesktop.portal.Request)
+		ccl_use_dbus_interface (${cclgui-xdgportal} org.freedesktop.portal.Notification)
+		ccl_use_dbus_interface (${cclgui-xdgportal} org.freedesktop.portal.FileChooser)
+
+		ccl_export_target (${cclgui-xdgportal})
+	endif ()
 endif ()

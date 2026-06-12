@@ -323,7 +323,7 @@ public:
 /** Describes an animation of a property.
 Must be placed inside a <StartAnimation>. \see StartAnimationElement
 
-The "property path is relative to the triggering view.
+The "property" path is relative to the triggering view.
 An Animation specifies that the property value should transition "from" a start value "to" an end value for some "duration".
 
 Additionally, a "repeat" mode and a timing "function" can be specified.

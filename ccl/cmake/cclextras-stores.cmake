@@ -58,7 +58,9 @@ if (NOT TARGET cclextras-stores)
 	
 	target_link_libraries (cclextras-stores PRIVATE cclsecurity)
 
-	if (CCL_SYSTEM_INSTALL)
+	if (CCL_EXPORTS_PATH)
+		install (TARGETS cclextras-stores EXPORT ccl-targets  FILE_SET HEADERS DESTINATION ${CCL_PUBLIC_HEADERS_DESTINATION} COMPONENT public_headers)
+	elseif (CCL_SYSTEM_INSTALL)
 		install (TARGETS cclextras-stores EXPORT ccl-targets DESTINATION "${CCL_STATIC_LIBRARY_DESTINATION}"
 										  ARCHIVE DESTINATION "${CCL_STATIC_LIBRARY_DESTINATION}" COMPONENT prebuilt_libraries_${VENDOR_NATIVE_COMPONENT_SUFFIX}
 										  FRAMEWORK DESTINATION "${CCL_STATIC_LIBRARY_DESTINATION}" COMPONENT prebuilt_libraries_${VENDOR_NATIVE_COMPONENT_SUFFIX}

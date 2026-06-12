@@ -9,10 +9,10 @@ import platform
 import sys
 
 __copyright__ = "Copyright (c) 2025 CCL Software Licensing GmbH"
-__version__ = "1.1.2"
+__version__ = "1.1.3"
 
 from modules.buildenv import BuildEnvironment
-from modules.builder import ProjectBuilder, MetaProjectBuilder
+from modules.builder import ProjectBuilder, MetaProjectBuilder, BuildException
 from modules.project import ProjectHandler
 
 makedoc_path = pathlib.Path(__file__).resolve()
@@ -90,7 +90,12 @@ def main() -> None:
     else:
         doc_builder = ProjectBuilder(build_env=build_env, project_info=project_info, builder=builder, revision=rev,
                                      verbose=verbose, rebuild=rebuild)
-    doc_builder.build()
+
+    try:
+        doc_builder.build()
+    except BuildException as e:
+        logging.error(e)
+        sys.exit(1)
 
 
 if __name__ == "__main__":

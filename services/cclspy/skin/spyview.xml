@@ -4,7 +4,8 @@
 		<IconSet name="SpyIcon" url="images/spy.iconset" frames="all"/>
 
 		<!-- Classic Spy Icons -->
-<!--
+		
+		<!--
 		<Image name="icon:UnknownView"			image="SpyIcons/UnknownView"/>
 		<Image name="icon:View"					image="SpyIcons/View"/>
 		<Image name="icon:ImageView"			image="SpyIcons/ImageView"/>
@@ -26,50 +27,52 @@
 		<Image name="icon:ListView"				image="SpyIcons/ItemView"/>
 		<Image name="icon:TreeView"				image="SpyIcons/ItemView"/>
 		<Image name="icon:DropBox"				image="SpyIcons/ItemView"/>
--->
-		<!-- Visual Studio Image Library -->
+		-->
 
-		<Image name="icon:UnknownView"			image="VSImageLibrary/Box.Colored"/>
-		<Image name="icon:View"					image="VSImageLibrary/Box.Colored"/>
-		<Image name="icon:ImageView"			image="VSImageLibrary/Image"/>
-		<Image name="icon:PictureViewer"		image="VSImageLibrary/ImageButton"/>
-		<Image name="icon:Form"					image="VSImageLibrary/WindowsForm.Colored2"/>
-		<Image name="icon:VariantView"			image="VSImageLibrary/Box.Colored"/>
-		<Image name="icon:sizevariant"			image="VSImageLibrary/Resize"/>
-		<Image name="icon:LayoutView"			image="VSImageLibrary/Box.Colored"/>
-		<Image name="icon:Horizontal"			image="VSImageLibrary/2Columns.Colored"/>
-		<Image name="icon:Vertical"				image="VSImageLibrary/2Rows.Colored"/>
-		<Image name="icon:ScrollView"			image="VSImageLibrary/ScrollBox"/>
-		<Image name="icon:Control"				image="VSImageLibrary/Control"/>
-		<Image name="icon:PopupBox"				image="VSImageLibrary/Control"/>
-		<Image name="icon:Label"				image="VSImageLibrary/Label"/>
-		<Image name="icon:Heading"				image="VSImageLibrary/Label"/>
-		<Image name="icon:WindowBase"			image="VSImageLibrary/WindowsForm.Colored"/>
-		<Image name="icon:EmbeddedFrameView"	image="VSImageLibrary/WindowsForm.Colored"/>
-		<Image name="icon:DockPanelView"		image="VSImageLibrary/WindowsForm.Colored"/>
-		<Image name="icon:UserControlHost"		image="VSImageLibrary/UserControl"/>
-		<Image name="icon:ListView"				image="VSImageLibrary/ListView"/>
-		<Image name="icon:TreeView"				image="VSImageLibrary/TreeView"/>
-		<Image name="icon:DropBox"				image="VSImageLibrary/ListView"/>
-				
-		<Image name="icon:Button"				image="VSImageLibrary/Button"/>
-		<Image name="icon:Toggle"				image="VSImageLibrary/Toggle"/>
-		<Image name="icon:RadioButton"			image="VSImageLibrary/RadioButton"/>
-		<Image name="icon:ValueBar"				image="VSImageLibrary/GaugeLinear"/>
-		<Image name="icon:Slider"				image="VSImageLibrary/Slider"/>		
-		<Image name="icon:TextBox"				image="VSImageLibrary/TextBox"/>
-		<Image name="icon:EditBox"				image="VSImageLibrary/TextBox"/>
-		<Image name="icon:SelectBox"			image="VSImageLibrary/ComboBox"/>		
-		<Image name="icon:Table"				image="VSImageLibrary/Table.Colored"/>
-		<Image name="icon:LinkView"				image="VSImageLibrary/LinkButton"/>
-		<Image name="icon:Divider"				image="VSImageLibrary/Separator"/>
-		
-		<Image name="icon:Object"				image="VSImageLibrary/Object"/>
-		<Image name="icon:Delegate"				image="VSImageLibrary/DelegationArrow"/>
-		<Image name="icon:Module"				image="VSImageLibrary/Module"/>
-		<Image name="icon:Script"				image="VSImageLibrary/Script"/>
-		<Image name="icon:Type"					image="VSImageLibrary/Type"/>
-		<Image name="icon:Breakpoint"			image="VSImageLibrary/BreakpointEnable"/>
+		<!-- Pictogrammers Material Design Icons -->
+
+		<Image name="icon:UnknownView"			image="Mdi/CheckboxBlankOutline"/>
+		<Image name="icon:View"					image="Mdi/CheckboxBlankOutline"/>
+		<Image name="icon:ImageView"			image="Mdi/ImageOutline"/>
+		<Image name="icon:PictureViewer"		image="Mdi/ImageOutline"/>
+		<Image name="icon:Form"					image="Mdi/ApplicationOutline"/>
+		<Image name="icon:VariantView"			image="Mdi/CheckboxIntermediateVariant"/>
+		<Image name="icon:sizevariant"			image="Mdi/Resize"/>
+		<Image name="icon:LayoutView"			image="Mdi/PageLayoutBody"/>
+		<Image name="icon:Horizontal"			image="Mdi/LandRowsVertical"/>
+		<Image name="icon:Vertical"				image="Mdi/LandRowsHorizontal"/>
+		<Image name="icon:ScrollView"			image="Mdi/PageLayoutSidebarRight"/>
+		<Image name="icon:Control"				image="Mdi/CheckboxIntermediate"/>
+		<Image name="icon:PopupBox"				image="Mdi/CheckboxIntermediate"/>
+		<Image name="icon:Label"				image="Mdi/FormatTextVariant"/>
+		<Image name="icon:WindowBase"			image="Mdi/ApplicationOutline"/>
+		<Image name="icon:EmbeddedFrameView"	image="Mdi/ApplicationOutline"/>
+		<Image name="icon:DockPanelView"		image="Mdi/ApplicationOutline"/>
+		<Image name="icon:UserControlHost"		image="Mdi/CardAccountDetailsOutline"/>
+		<Image name="icon:ListView"				image="Mdi/FormatListBulleted"/>
+		<Image name="icon:TreeView"				image="Mdi/FileTreeOutline"/>
+		<Image name="icon:DropBox"				image="Mdi/FormatListBulleted"/>
+		<Image name="icon:Heading"				image="Mdi/FormatHeader1"/>
+		<Image name="icon:Button"				image="Mdi/ButtonCursor"/>
+		<Image name="icon:Toggle"				image="Mdi/ToggleSwitchOutline"/>
+		<Image name="icon:RadioButton"			image="Mdi/RadioboxMarked"/>
+		<Image name="icon:ValueBar"				image="Mdi/GradientHorizontal"/>
+		<Image name="icon:ActivityIndicator"	image="Mdi/ProgressHelper"/>
+		<Image name="icon:Slider"				image="Mdi/Tune"/>
+		<Image name="icon:TextBox"				image="Mdi/FormTextbox"/>
+		<Image name="icon:EditBox"				image="Mdi/FormTextbox"/>
+		<Image name="icon:SelectBox"			image="Mdi/FormDropdown"/>
+		<Image name="icon:Table"				image="Mdi/TableLarge"/>
+		<Image name="icon:LinkView"				image="Mdi/LinkBoxVariantOutline"/>
+		<Image name="icon:Divider"				image="Mdi/ArrowSplitVertical"/>
+
+		<!-- Codicons -->
+
+		<Image name="icon:Object"				image="Codicons/Variable"/>
+		<Image name="icon:Delegate"				image="Codicons/Forward"/>
+		<Image name="icon:Module"				image="Codicons/Package"/>
+		<Image name="icon:Script"				image="Codicons/File"/>
+		<Image name="icon:Type"					image="Codicons/Class"/>
 	</Resources>
 
 	<Styles>
@@ -120,7 +123,7 @@
 			<Color name="backcolor"	color="@Main.WindowBackgroundColor"/>
 			<Triggers>
 				<Trigger event="showDocumentationBrowser">
-					<Setter property="children[].activeView" value="DocumentationBrowser"/>				
+					<Setter property="children[].children[].activeView" value="DocumentationBrowser"/>				
 				</Trigger>
 			</Triggers>
 		</Style>

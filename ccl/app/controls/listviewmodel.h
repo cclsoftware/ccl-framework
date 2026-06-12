@@ -44,6 +44,7 @@ public:
 	DECLARE_STRINGID_MEMBER (kTitleID)
 	DECLARE_STRINGID_MEMBER (kSubtitleID)
 	DECLARE_STRINGID_MEMBER (kCheckBoxID)
+	DECLARE_STRINGID_MEMBER (kColorID)
 	DECLARE_STRINGID_MEMBER (kEditSelectID)
 
 	// Signals
@@ -84,6 +85,7 @@ public:
 	tbool CCL_API editCell (ItemIndexRef index, int column, const EditInfo& info) override;
 	IUnknown* CCL_API createDragSessionData (ItemIndexRef index) override;
 	void CCL_API notify (ISubject* subject, MessageRef msg) override;
+	tbool CCL_API getItemAccessibilityInfo (AccessibilityInfo& info, ItemIndexRef index, int column) const override;
 
 protected:
 	AutoPtr<IColumnHeaderList> columns;
@@ -105,7 +107,7 @@ protected:
 	StringID getColumnID (int column) const;
 	int getColumnIndex (StringID id) const;
 
-	enum ColumnType { kIconColumn, kTitleColumn, kCheckBoxColumn, kEditSelectColumn, kDetailColumn, kEmptyColumn };
+	enum ColumnType { kIconColumn, kTitleColumn, kCheckBoxColumn, kEditSelectColumn, kColorColumn, kDetailColumn, kEmptyColumn };
 	ColumnType getColumnType (CString& id, int column) const;
 
 	virtual	ListViewItem* resolve (ItemIndexRef index) const = 0;
@@ -207,7 +209,6 @@ public:
 	tbool CCL_API onItemFocused (ItemIndexRef index) override;
 	tbool CCL_API interpretCommand (const CommandMsg& msg, ItemIndexRef item, const IItemSelection& selection) override;
 	void CCL_API notify (ISubject* subject, MessageRef msg) override;
-	tbool CCL_API getItemAccessibilityInfo (AccessibilityInfo& info, ItemIndexRef index, int column) const override;
 
 protected:
 	class CheckBoxMouseHandler;

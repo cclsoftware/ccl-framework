@@ -30,12 +30,22 @@
 #define FONT_NAME_ATTR NSFontNameAttribute
 #define FONT_FAMILY_ATTR NSFontFamilyAttribute
 #define FONT_FACE_ATTR NSFontFaceAttribute
+#define FONT_TRAITS_CLASS NSFontDescriptorSymbolicTraits
+#define FONT_SYMBOLIC_TRAIT_KEY NSFontSymbolicTrait
+#define FONT_TRAITS_ATTR NSFontTraitsAttribute
+#define FONT_DESCRIPTOR_TRAIT_BOLD NSFontDescriptorTraitBold
+#define FONT_DESCRIPTOR_TRAIT_ITALIC NSFontDescriptorTraitItalic
 #else
 #define FONT_CLASS UIFont
 #define FONT_DESCRIPTOR_CLASS UIFontDescriptor
 #define FONT_NAME_ATTR UIFontDescriptorNameAttribute
 #define FONT_FAMILY_ATTR UIFontDescriptorFamilyAttribute
 #define FONT_FACE_ATTR UIFontDescriptorFaceAttribute
+#define FONT_TRAITS_CLASS UIFontDescriptorSymbolicTraits
+#define FONT_SYMBOLIC_TRAIT_KEY UIFontSymbolicTrait
+#define FONT_TRAITS_ATTR UIFontDescriptorTraitsAttribute
+#define FONT_DESCRIPTOR_TRAIT_BOLD UIFontDescriptorTraitBold
+#define FONT_DESCRIPTOR_TRAIT_ITALIC UIFontDescriptorTraitItalic
 #endif
 
 using namespace CCL;
@@ -70,10 +80,14 @@ void FontCache::removeAll ()
 CTFontRef FontCache::createFont (FontRef font, float& ascent, float& descent, float& leading)
 {
 	CCL::ListIterator<FontCacheRecord> iter (cache);
-	while(!iter.done ()) 
+	while(!iter.done ())
 	{
 		FontCacheRecord& record = iter.next ();
-		if(record.font.isEqual (font))
+		if(record.font.getFace () == font.getFace () &&
+		   record.font.getSize () == font.getSize () &&
+		   ((font.getStyleName ().isEmpty () && record.font.getStyleName ().isEmpty ())
+				? getUsedStyle (record.font) == getUsedStyle (font) // ignore underline, etc.
+				: record.font.getStyleName () == font.getStyleName ()))
 		{
 			ascent = record.ascent;
 			descent = record.descent;
@@ -81,31 +95,37 @@ CTFontRef FontCache::createFont (FontRef font, float& ascent, float& descent, fl
 			return record.fontRef;
 		}
 	}
-	
-	String fontName = font.getFace ();
+
+	StringRef fontFamilyName = font.getFace ();
 	StringRef fontStyleName = font.getStyleName ();
-	NSString* familyName = [fontName.createNativeString<NSString*> () autorelease];
-	NSString* faceName = [fontStyleName.createNativeString<NSString*> () autorelease];
 
-	CCL_PRINTF ("creating font: %s - %s %f %d\n", MutableCString (fontName).str () , MutableCString (fontStyleName).str (), font.getSize (), font.getMode ())
-
-	FONT_DESCRIPTOR_CLASS* fontDescriptor = [FONT_DESCRIPTOR_CLASS fontDescriptorWithFontAttributes:@{ FONT_FAMILY_ATTR : familyName, FONT_FACE_ATTR : faceName }];
-	CTFontRef fontRef = (CTFontRef)[FONT_CLASS fontWithDescriptor:fontDescriptor size:font.getSize ()];
-	if(fontRef)
+	FONT_DESCRIPTOR_CLASS* fontDescriptor = nil;
+	if(fontFamilyName.equals (CCLSTR ("System Font")))
+		fontDescriptor = [[FONT_CLASS systemFontOfSize:font.getSize ()] fontDescriptor];
+	else
 	{
-		// on iOS we always get a fontRef, but it might be a fallback font. To make sure we get the
-		// desired font, we check it's name.
-		NSString* postScriptName = [(NSString*)CTFontCopyPostScriptName (fontRef) autorelease];
-		if(![postScriptName isEqualToString:familyName])
-			fontRef = NULL;
-	}
+	   NSMutableDictionary<NSString *,id>* attributes = [[[NSMutableDictionary alloc] init] autorelease];
+	   NSString* familyName = [fontFamilyName.createNativeString<NSString*> () autorelease];
+	   [attributes setObject:familyName forKey:FONT_FAMILY_ATTR];
 
+	   if(!fontStyleName.isEmpty ())
+		   [attributes setObject:[fontStyleName.createNativeString<NSString*> () autorelease] forKey:FONT_FACE_ATTR];
+
+	   fontDescriptor = [FONT_DESCRIPTOR_CLASS fontDescriptorWithFontAttributes:attributes];
+   }
+
+	FONT_TRAITS_CLASS symbolicTraits = 0;
+	if(font.getStyle () & Font::kBold) symbolicTraits |= FONT_DESCRIPTOR_TRAIT_BOLD;
+	if(font.getStyle () & Font::kItalic) symbolicTraits |= FONT_DESCRIPTOR_TRAIT_ITALIC;
+	if(symbolicTraits)
+		fontDescriptor = [fontDescriptor fontDescriptorWithSymbolicTraits:symbolicTraits];
+
+	CCL_PRINTF ("creating font: %s - %s %f %d\n", MutableCString (fontFamilyName).str () , MutableCString (fontStyleName).str (), font.getSize (), font.getMode ())
+	CTFontRef fontRef = (CTFontRef)[FONT_CLASS fontWithDescriptor:fontDescriptor size:font.getSize ()];
 	if(fontRef == NULL)
 	{
-		if(!fontStyleName.isEmpty ())
-			fontName << " " << fontStyleName;
-
-		NSString* fullName = [fontName.createNativeString<NSString*> () autorelease];
+		NSString* fullName = nil;
+		String fontName (fontFamilyName);
 		if(fontStyleName.isEmpty ())
 		{
 			CCL::ListIterator<StyledFont> iter2 (styledFontList);
@@ -118,10 +138,24 @@ CTFontRef FontCache::createFont (FontRef font, float& ascent, float& descent, fl
 					break;
 				}
 			}
+			if(fullName == nil)
+				fullName = [fontName.createNativeString<NSString*> () autorelease];
+		}
+		else
+		{
+			fontName << " " << fontStyleName;
+			fullName = [fontName.createNativeString<NSString*> () autorelease];
 		}
 
 		fontDescriptor = [FONT_DESCRIPTOR_CLASS fontDescriptorWithFontAttributes:@{ FONT_NAME_ATTR : fullName }];
 		fontRef = (CTFontRef)[FONT_CLASS fontWithDescriptor:fontDescriptor size:font.getSize ()];
+		if(fontRef)
+		{
+			NSString* name = [(NSString*)CTFontCopyFamilyName (fontRef) autorelease];
+			NSString* familyName = [fontName.createNativeString<NSString*> () autorelease];
+			if(![familyName hasPrefix:name])
+				fontRef = NULL;
+		}
 		SOFT_ASSERT (fontRef, "Font not available")
 		if(fontRef == NULL)
 			fontRef = (CTFontRef)[FONT_CLASS systemFontOfSize:font.getSize ()];

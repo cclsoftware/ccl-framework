@@ -569,6 +569,10 @@ void WindowsUserInterface::onPowerManagementEvent (ULONG type, PVOID setting)
 	{
 		onAppStateChanged (IApplication::kAppResumed);
 	}
+	else if(type == PBT_APMRESUMEAUTOMATIC)
+	{
+		Win32::gScreens.displayChanged ();
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////

@@ -7,12 +7,12 @@ msgstr ""
 #: option.xml
 msgctxt "TUIOUserOption"
 msgid "Connect multi-touch device with monitor number"
-msgstr "连接带监视器编号的多点触控设备"
+msgstr "连接带显示器编号的多点触控设备"
 
 #: option.xml
 msgctxt "TUIOUserOption"
 msgid "Enable TUIO multi-touch devices on UDP port"
-msgstr "在UDP端口上启用TUIO多点触控设备"
+msgstr "在 UDP 端口上启用 TUIO 多点触控设备"
 
 #: option.xml
 msgctxt "TUIOUserOption"

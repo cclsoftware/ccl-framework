@@ -116,11 +116,19 @@ int Text::convertToCString (char* cString, int cStringSize, TextEncoding encodin
 	{
 		ASSERT (cString == nullptr)
 		string_free (result);
-		return int (length + 1);
+		if(uString && uString[uStringLength - 1] != '\0')
+			return int(length + 1);
+		return int(length);
 	}
-	if(cString && length < cStringSize)
-		cString[length] = '\0';
-	return int (length + 1);
+	if(cString && length < cStringSize && length > 0)
+	{
+		if(cString[length - 1] != '\0')
+		{
+			cString[length] = '\0';
+			return int(length + 1);
+		}
+	}
+	return int(length);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -141,11 +149,19 @@ int Text::convertToUnicode (uchar* uString, int uStringSize, TextEncoding encodi
 	{
 		ASSERT (uString == nullptr)
 		string_free (result);
-		return int (length + 1);
+		if(cString && cString[cStringLength - 1] != '\0')
+			return int(length + 1);
+		return int(length);
 	}
-	if(uString && length < uStringSize)
-		uString[length] = u'\0';
-	return int (length + 1);
+	if(uString && length < uStringSize && length > 0)
+	{
+		if(uString[length - 1] != '\0')
+		{
+			uString[length] = '\0';
+			return int(length + 1);
+		}
+	}
+	return int(length);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -354,13 +370,13 @@ tresult CCL_API LinuxUnicodeString::normalize (NormalizationForm form)
 		{
 			resizeInternal (0);
 			text = result;
-			textByteSize = int ((length + 1) * sizeof(uchar));
+			textByteSize = int((length + 1) * sizeof(uchar));
 		}
 		
 		ASSERT ((length + 1) * sizeof(uchar) <= textByteSize)
 		if((length + 1) * sizeof(uchar) <= textByteSize)
 			const_cast<uchar*> (text)[length] = u'\0';
-		updateMetadata (length);
+		updateMetadata (int(length));
 	}
 
 	delete[] sourceCopy;

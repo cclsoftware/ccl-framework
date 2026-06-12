@@ -56,7 +56,7 @@ static const XmlEntity built_in_extra_entities[] =
 	{0x00AE,	"reg"},			// registered sign 
 	{0x20AC,	"euro"},		// euro sign
 	{0x2122,	"trade"},		// trademark sign
-	{0x2764,	"heart"}		// heart symbol
+	{0x2764,	"hearts"}		// heart suit
 };
 
 static const XmlEntity linebreak_entities_encode[] =

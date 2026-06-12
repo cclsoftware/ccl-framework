@@ -32,6 +32,8 @@
 #include "ccl/gui/system/dragndrop.h"
 #include "ccl/gui/system/accessibility.h"
 #include "ccl/gui/controls/editbox.h"
+#include "ccl/gui/windows/desktop.h"
+#include "ccl/gui/popup/popupselector.h"
 #include "ccl/gui/gui.h"
 #include "ccl/gui/keyevent.h"
 
@@ -618,6 +620,11 @@ inline int64 makeTouchTime (UITouch* touch)
 	//only accept touches originating from this view
 	if([touch view] != self)
 		return NO;
+		
+	// ignore touches if another modal dialog (not popup) is active
+	if(Window* topModal = Desktop.getTopWindow (kDialogLayer))
+		if(topModal != window && ccl_cast<Dialog> (topModal) && !ccl_cast<PopupSelectorWindow> (topModal))
+			return NO;
 		
 	// note: this is called before touchesBegan
 	// before we can decide to which CCL::Gesture the touch belongs, we need to anticipate a touch begin event,

@@ -16,7 +16,6 @@
 #
 #************************************************************************************************
 
-
 find_file (corelib_MAC_MACROS_FILE NAMES "coremacros.mac.cmake" HINTS "${platformdir}" "${platformdir2}" "${CMAKE_CURRENT_LIST_DIR}")
 
 if (EXISTS "${corelib_MAC_MACROS_FILE}")
@@ -31,11 +30,13 @@ macro (ccl_configure_project_vendor vendor)
 	if (EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/signing.cmake)
 		include (${CMAKE_CURRENT_SOURCE_DIR}/signing.cmake)
 	endif ()
-	if (NOT DEFINED FORCE_SIGNING_TEAMID)
-		set (CMAKE_XCODE_ATTRIBUTE_DEVELOPMENT_TEAM "${SIGNING_TEAMID_IOS}")
-	else()
-		set (CMAKE_XCODE_ATTRIBUTE_DEVELOPMENT_TEAM "${FORCE_SIGNING_TEAMID}")
+
+	if (DEFINED FORCE_SIGNING_TEAMID)
+		set (APP_SIGNING_TEAMID "${FORCE_SIGNING_TEAMID}")
+	else ()
+		set (APP_SIGNING_TEAMID "${SIGNING_TEAMID_IOS}")
 	endif()
+	set (CMAKE_XCODE_ATTRIBUTE_DEVELOPMENT_TEAM "${APP_SIGNING_TEAMID}")
 
 	# Installation directories (if using CPack), for cross compiling on a macOS host system
 	set (VENDOR_LIBRARY_DESTINATION "Frameworks/$<PLATFORM_ID>")
@@ -50,8 +51,17 @@ endmacro ()
 # @group ios
 # @param {STRING} vendor Vendor name.
 macro (ccl_configure_vendor target vendor)
+	if (NOT APP_SIGNING_TEAMID)
+		set (APP_SIGNING_TEAMID "${SIGNING_TEAMID_IOS}")
+	endif ()
+
 	if (DEFINED FORCE_SIGNING_TEAMID)
 		set_target_properties (${target} PROPERTIES
 			XCODE_ATTRIBUTE_DEVELOPMENT_TEAM "${FORCE_SIGNING_TEAMID}")
+	else ()
+		set_target_properties (${target} PROPERTIES
+			XCODE_ATTRIBUTE_DEVELOPMENT_TEAM "${APP_SIGNING_TEAMID}")
 	endif()
+
+	ccl_configure_entitlements (${target})
 endmacro ()

@@ -83,7 +83,10 @@ public:
 	PROPERTY_MUTABLE_CSTRING (formName, FormName)
 	PROPERTY_VARIABLE (int, popupOptions, PopupOptions)
 	PROPERTY_BOOL (wheelEnabled, WheelEnabled)				///< mouse wheel enabled?
-	
+
+	void showPopup ();
+	bool isOpen ();
+
 	// Control
 	StringRef getHelpIdentifier () const override;
 	View* enterMouse (const MouseEvent& event, View* currentMouseView) override;
@@ -98,6 +101,7 @@ public:
 	ITouchHandler* createTouchHandler (const TouchEvent& event) override;
 	tbool CCL_API invokeMethod (Variant& returnValue, MessageRef msg) override;
 	void CCL_API notify (ISubject* subject, MessageRef msg) override;
+	AccessibilityProvider* getAccessibilityProvider () override;
 
 	Attributes& getFormVariables () {return formVariables;}
 	IPopupSelectorClient* getClient () const {return client;}
@@ -120,8 +124,6 @@ protected:
 	Attributes formVariables;
 
 	class ClientTouchHandler;
-
-	void showPopup ();
 
 	// ITimerTask
 	void CCL_API onTimer (ITimer* timer) override;

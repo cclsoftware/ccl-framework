@@ -165,8 +165,7 @@ bool TextUtils::saveTextBlock (UrlRef path, StringRef title, VariantRef data, co
 		writer->writeHead (title);
 		writer->startElement (String (HtmlTags::kBody));
 
-		AutoPtr<ITextBuilder> htmlBuilder = writer->createHtmlBuilder ();
-		TextBlock block (htmlBuilder);
+		TextBlock block (writer->createTextBuilder ());
 		textPromise.createText (block, title, data);
 		writer->writeMarkup (block);
 

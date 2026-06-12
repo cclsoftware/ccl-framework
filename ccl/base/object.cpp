@@ -164,9 +164,9 @@ void CCL_API Object::signal (MessageRef msg)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void CCL_API Object::deferSignal (IMessage* msg)
+void CCL_API Object::deferSignal (IMessage* msg, SignalQueuePolicy policy)
 {
-	System::GetSignalHandler ().queueSignal (this, msg);
+	System::GetSignalHandler ().queueSignal (this, msg, policy);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////

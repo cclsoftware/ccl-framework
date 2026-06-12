@@ -67,17 +67,17 @@ msgstr "二进制文件"
 #: fileutilities.cpp
 msgctxt "FileType"
 msgid "HTML File"
-msgstr "HTML文件"
+msgstr "HTML 文件"
 
 #: fileutilities.cpp
 msgctxt "FileType"
 msgid "JSON File"
-msgstr "JSON文件"
+msgstr "JSON 文件"
 
 #: fileutilities.cpp
 msgctxt "FileType"
 msgid "Java Properties File"
-msgstr "Java属性文件"
+msgstr "Java 属性文件"
 
 #: localization/languagepack.cpp
 msgctxt "FileType"
@@ -86,8 +86,13 @@ msgstr "语言包"
 
 #: fileutilities.cpp
 msgctxt "FileType"
+msgid "Markdown File"
+msgstr "Markdown 文件"
+
+#: fileutilities.cpp
+msgctxt "FileType"
 msgid "PDF File"
-msgstr "PDF文件"
+msgstr "PDF 文件"
 
 #: fileutilities.cpp
 msgctxt "FileType"
@@ -97,7 +102,7 @@ msgstr "包文件"
 #: fileutilities.cpp
 msgctxt "FileType"
 msgid "Rich Text Format"
-msgstr "RTF文件"
+msgstr "RTF 文件"
 
 #: fileutilities.cpp
 msgctxt "FileType"
@@ -112,37 +117,37 @@ msgstr "文本文件"
 #: fileutilities.cpp
 msgctxt "FileType"
 msgid "UBJSON File"
-msgstr "UBJSON文件"
+msgstr "UBJSON 文件"
 
 #: fileutilities.cpp
 msgctxt "FileType"
 msgid "XML File"
-msgstr "XML文件"
+msgstr "XML 文件"
 
 #: fileutilities.cpp
 msgctxt "FileType"
 msgid "ZIP File"
-msgstr "Zip文件"
+msgstr "Zip 文件"
 
 #: localization/localeinfo.cpp
 msgctxt "Locales"
 msgid "%(1) days ago"
-msgstr "%(1)天前"
+msgstr "%(1) 天前"
 
 #: localization/localeinfo.cpp
 msgctxt "Locales"
 msgid "%(1) months ago"
-msgstr "%(1)个月前"
+msgstr "%(1) 个月前"
 
 #: localization/localeinfo.cpp
 msgctxt "Locales"
 msgid "%(1) weeks ago"
-msgstr "%(1)周前"
+msgstr "%(1) 周前"
 
 #: localization/localeinfo.cpp
 msgctxt "Locales"
 msgid "%(1) years ago"
-msgstr "%(1)年前"
+msgstr "%(1) 年前"
 
 #: localization/localeinfo.cpp
 msgctxt "Locales"
@@ -152,27 +157,27 @@ msgstr "GB"
 #: localization/localeinfo.cpp
 msgctxt "Locales"
 msgid "In %(1) days"
-msgstr "%(1)天内"
+msgstr "%(1) 天内"
 
 #: localization/localeinfo.cpp
 msgctxt "Locales"
 msgid "In %(1) hours"
-msgstr "%(1)小时内"
+msgstr "%(1) 小时内"
 
 #: localization/localeinfo.cpp
 msgctxt "Locales"
 msgid "In less than one hour"
-msgstr "不到1小时内"
+msgstr "不到 1 小时内"
 
 #: localization/localeinfo.cpp
 msgctxt "Locales"
 msgid "In one day"
-msgstr "1天内"
+msgstr "1 天内"
 
 #: localization/localeinfo.cpp
 msgctxt "Locales"
 msgid "In one hour"
-msgstr "1小时内"
+msgstr "1 小时内"
 
 #: localization/localeinfo.cpp
 msgctxt "Locales"
@@ -262,17 +267,17 @@ msgstr "从“%(1)”删除的脚本对象仍然被引用。"
 #: plugins/plugcollect.cpp
 msgctxt "PlugIns"
 msgid "%(1) has been blocked."
-msgstr "已忽略%(1)，因为它在黑名单中。"
+msgstr "%(1) 已被拦截。"
 
 #: plugins/servicemanager.cpp
 msgctxt "ServiceManager"
 msgid "%(1) failed!"
-msgstr "%(1)失败！"
+msgstr "%(1) 失败！"
 
 #: plugins/servicemanager.cpp
 msgctxt "ServiceManager"
 msgid "Starting %(1)..."
-msgstr "正在启动%(1)..."
+msgstr "正在启动 %(1)..."
 
 #~ msgctxt "FileType"
 #~ msgid "Zip File"

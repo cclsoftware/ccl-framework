@@ -412,7 +412,7 @@ void SignalHandler::cancelCallback (CallbackID id)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-tbool CCL_API SignalHandler::messagesPending (IObserver* observer)
+tbool CCL_API SignalHandler::isMessagePending (IObserver* observer)
 {
 	Threading::ScopedLock scopedLock (lock);
 
@@ -555,7 +555,7 @@ tresult CCL_API SignalHandler::performSignal (ISubject* subject, MessageRef msg)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-tresult CCL_API SignalHandler::queueSignal (ISubject* subject, IMessage* msg)
+tresult CCL_API SignalHandler::queueSignal (ISubject* subject, IMessage* msg, SignalQueuePolicy policy)
 {
 	ASSERT (subject != nullptr && msg != nullptr)
 	if(subject == nullptr || msg == nullptr)
@@ -566,16 +566,19 @@ tresult CCL_API SignalHandler::queueSignal (ISubject* subject, IMessage* msg)
 	ObserverList* list = lookup (subject);
 	if(list)
 	{
-		// check if message already exists...
-		ListForEach (callbackQueue, CallbackMsg*, cbMsg)
-			if(cbMsg->callback == signalCallback &&
-			   cbMsg->id == list && 
-			   cbMsg->isEqual (msg))
-			{
-				cbMsg->replace (msg);
-				return kResultOk;
-			}
-		EndFor
+		if(policy == kSignalQueueReplaceSameId)
+		{
+			// check if message already exists...
+			ListForEach (callbackQueue, CallbackMsg*, cbMsg)
+				if(cbMsg->callback == signalCallback &&
+				   cbMsg->id == list && 
+				   cbMsg->isEqual (msg))
+				{
+					cbMsg->replace (msg);
+					return kResultOk;
+				}
+			EndFor
+		}
 	
 		queueCallback (signalCallback, list, msg);
 	}

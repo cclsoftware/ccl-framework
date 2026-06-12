@@ -80,9 +80,13 @@ public:
 
 	/** State maintained by edit handler. */
 	PROPERTY_FLAG (editViewFlags, kEditHandlerActive, editHandlerActive)
+	PROPERTY_FLAG (editViewFlags, kScrollHandlerActive, scrollHandlerActive)
 
 	/** EditView wants crosshair cursor. */
 	PROPERTY_FLAG (editViewFlags, kCrossCursor, wantsCrossCursor)
+
+	/** EditView tries to scroll when dragging with middle mouse button. */
+	PROPERTY_FLAG (editViewFlags, kScrollWithMButton, scrollWithMButton)
 
 	/** Set this as active EditView when attached (enabled by default). */
 	PROPERTY_FLAG (editViewFlags, kActivateOnAttach, activateOnAttach)
@@ -154,7 +158,10 @@ protected:
 		kCrossCursor       = 1<<5,	///< cross cursor enabled
 		kActivateOnAttach  = 1<<6,	///< set as active EditView when attached 
 		kContextMenuScope  = 1<<7,	///< set while in method onContextMenu
-		kLastEditViewFlag  = kContextMenuScope
+		kScrollWithMButton = 1<<8,	///< scrolling with middle mouse button enabled
+		kScrollHandlerActive = 1<<9,///< set while ScrollEditHandler is active
+
+		kLastEditViewFlag  = kScrollHandlerActive
 	};
 
 	PROPERTY_FLAG (editViewFlags, kMouseInside, mouseInside)

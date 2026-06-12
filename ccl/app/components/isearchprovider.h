@@ -51,9 +51,10 @@ interface ISearchProvider: IUnknown
 		ListViewItem& presentation;	//< e.g. title, icon
 		String& resultCategory;		//< e.g. displayed as folder in result list
 		String& sortString;			//< customize order of results (inside category); results with same sortString are ordered by url
+		int sortPriority;			//< results with higher sortPriority are ordered before others (regardless of sortString)
 
 		CustomizeArgs (ListViewItem& presentation, String& resultCategory, String& sortString)
-		: presentation (presentation), resultCategory (resultCategory), sortString (sortString)
+		: presentation (presentation), resultCategory (resultCategory), sortString (sortString), sortPriority (0)
 		{}
 	};
 

@@ -632,11 +632,16 @@ tresult CCL_API UnicodeCFString::insert (int index, const IString* _otherString)
 
 tresult CCL_API UnicodeCFString::remove (int index, int count)
 {
-	// TODO: check if behavior is same as on Windows!!!
 	if(cfString)
 	{
-		::CFStringDelete (myCFString, ::CFRangeMake (index, count));
-		updatePrivate ();
+		CFIndex len = ::CFStringGetLength (myCFString);
+		CFIndex actualCount = (count < 0) ? (len - index) : count;
+
+		if(index >= 0 && actualCount > 0 && index + actualCount <= len)
+		{
+			::CFStringDelete (myCFString, ::CFRangeMake (index, actualCount));
+			updatePrivate ();
+		}
 	}
 	return kResultOk;
 }

@@ -67,9 +67,9 @@
 				<Image name="left"       			image="MobileButtonL"/>
 				<Image name="right"       			image="MobileButtonR"/>
 				<Image name="middle"       			image="MobileButtonM"/>
-				<Metric name="padding.left"			value="10"/>
-				<Metric name="padding.right"		value="10"/>
-				<Metric name="padding.top"			value="1"/>
+				<Metric name="padding.left"			value="12"/>
+				<Metric name="padding.right"		value="12"/>
+				<Metric name="padding.top"			value="3"/>
 			<?defined desktopapp?>
 				<Font  name="textfont"         		themeid="StandardUI"/>
 				<Color name="textcolor"        		color="@Main.LabelColor.Secondary"/>
@@ -81,14 +81,42 @@
 				<Image name="left"       			image="ButtonL"/>
 				<Image name="right"       			image="ButtonR"/>
 				<Image name="middle"       			image="ButtonM"/>
-				<Metric name="padding.left"			value="6"/>
-				<Metric name="padding.right"		value="6"/>
+				<Metric name="padding.left"			value="8"/>
+				<Metric name="padding.right"		value="8"/>
 			<?defined?>
 			<Metric name="useButtonMinSize"		value="1"/>
 			<Metric name="buttonstyle"    		value="1"/>
 			<Metric name="fill.icon"    		value="1"/>
 		</Style>
+
+		<Style name="Neutral.ActionButton" inherit="Neutral.Button">
+			<?defined mobileapp?>
+				<Font  name="textfont"    themeid="StandardUI" size="+2"/>
+			<?defined desktopapp?>
+				<Font  name="textfont"    themeid="StandardUI"/>
+			<?defined?>
+			<Color name="textcolor"		color="@Main.ActionButtonTextOnColor"/>
+			<Image name="background"	image="ActionButton"/>
+			<Color name="textcolor.mouseover"	color="@Main.ActionButtonTextOnColor"/>
+			<Color name="textcolor.pressed"		color="@Main.ActionButtonTextPressedColor"/>
+			<Color name="textcolor.on"			color="@Main.ActionButtonTextOnColor"/>
+			<Color name="textcolor.disabled"	color="@Main.LabelColor.Disabled"/>
+			<Metric name="useButtonMinSize"	value="1"/>
+			<Metric name="padding.left"		value="10"/>
+			<Metric name="padding.right"	value="10"/>
+			<Metric name="padding.top"		value="1"/>
+			<Metric name="fill.icon"		value="0"/>
+			<Metric name="colorize.icon"		value="1"/>
+			<Color name="iconcolor.mouseover"	color="@Main.ActionButtonTextOnColor"/>
+			<Color name="iconcolor.pressed"		color="@Main.ActionButtonTextPressedColor"/>
+			<Color name="iconcolor.on"			color="@Main.ActionButtonTextOnColor"/>
+			<Color name="iconcolor.disabled"	color="@Main.LabelColor.Disabled"/>			
+		</Style>
 		
+		<Style name="Neutral.ActionButtonSecondary" inherit="Neutral.ActionButton">
+			<Image name="background"	image="ActionButtonSecondary"/>
+		</Style>
+				
 		<Style name="Neutral.TabButton" inherit="Neutral.Button">
 			<Image name="left"            	image="TabButtonL"/>
 			<Image name="middle"           	image="TabButtonM"/>
@@ -270,8 +298,8 @@
 				<Image name="background"        	image="MobileTextBox"/>
 				<Color name="forecolor"				color="hsl(0,0,0,25)"/>
 				<Color name="textcolor.disabled"	color="@Main.LabelColor.Disabled"/>
-				<Metric name="padding.left"    		value="10"/>
-				<Metric name="padding.right"   		value="10"/>
+				<Metric name="padding.left"    		value="12"/>
+				<Metric name="padding.right"   		value="12"/>
 
 				<Metric name="native.padding.left"  value="4"/>
 				<Metric name="native.padding.right" value="4"/>
@@ -281,8 +309,8 @@
 				<Image name="background"        	image="TextBoxBackground"/>
 				<Color name="forecolor"				color="hsl(0,0,0,25)"/>
 				<Color name="textcolor.disabled"	color="@Main.LabelColor.Disabled"/>
-				<Metric name="padding.left"    		value="5"/>
-				<Metric name="padding.right"   		value="5"/>
+				<Metric name="padding.left"    		value="7"/>
+				<Metric name="padding.right"   		value="7"/>
 
 				<?platform win?>
 					<Metric name="native.padding.left"  value="2"/>
@@ -322,7 +350,7 @@
 		<Style name="Neutral.SelectBox"     inherit="Neutral.EditBox">
 			<?defined mobileapp?>
 				<Image name="button"           		image="MobileSelectBoxButton"/>
-				<Metric name="padding.right"   		value="5"/>
+				<Metric name="padding.right"   		value="7"/>
 			<?defined desktopapp?>
 				<Image name="button"           		image="SelectBoxButton"/>
 			<?defined?>
@@ -437,6 +465,8 @@
 			<Color name="textcolor"        	color="@Main.LabelColor"/>
 			<Color name="backcolor"        	color="@Main.TextBoxBackColor"/>
 			<Align name="textalign"        	align="left vcenter"/>
+			<Metric name="padding.left"     value="2"/>
+			<Metric name="padding.right"    value="2"/>
 		</Style>
 
 		<Style name="Neutral.DialogTitle">
@@ -546,6 +576,34 @@
 
 		<Style name="Neutral.TreeView"		inherit="Neutral.ListView">
 			<!-- auto lookup for default expand icon with name:  TreeViewExpandButton -->
+		</Style>
+
+		<Style name="Neutral.BlockView"		inherit="Neutral.ListView">
+			<StyleCondition name="H1">
+				<Font name="textfont" themeid="StandardUI" size="18"/>
+			</StyleCondition>
+			<StyleCondition name="H2">
+				<Font name="textfont" themeid="StandardUI" size="16"/>
+			</StyleCondition>
+			<StyleCondition name="H3">
+				<Font name="textfont" themeid="StandardUI" size="14"/>
+			</StyleCondition>
+			<StyleCondition name="BlockQuote">
+				<Color name="textcolor"	color="@Main.LabelColor.Secondary"/>
+			</StyleCondition>
+			<StyleCondition name="CodeBlock">
+				<Font name="textfont" themeid="StandardUI Mono"/>
+				<Color name="textcolor"	color="@Main.LabelColor.Secondary"/>
+			</StyleCondition>
+			<StyleCondition name="Code">
+				<Font name="textfont" themeid="StandardUI Mono"/>
+				<Color name="textcolor"	color="@Main.LabelColor.Secondary"/>
+			</StyleCondition>
+			<StyleCondition name="Link">
+				<Color name="textcolor"	color="@Main.HyperlinkColor"/>
+			</StyleCondition>
+			<Image name="background" image="TransparentImage"/>
+			<Metric name="text.margin" value="4"/>
 		</Style>
 
 		<Style name="Neutral.PopupMenu"   	inherit="Neutral.ListView">
@@ -660,8 +718,8 @@
 			<Color name="backcolor" color="@Main.ScrollPickerBackcolor"/>
 			<Color name="centerBackcolor" color="@Main.ScrollPickerCenterColor"/>
 			<Image name="centerOverlayImage" image="ScrollPickerOverlay"/>
-			<Metric name="padding.left"			value="10"/>
-			<Metric name="padding.right"		value="10"/>
+			<Metric name="padding.left"			value="12"/>
+			<Metric name="padding.right"		value="12"/>
 			<Align name="textalign"        		align="center"/>
 			<?defined mobileapp?>
 				<Metric name="itemSize" value="30"/>
@@ -691,7 +749,7 @@
 			<Color name="backcolor" color="@Main.WindowBackgroundColor"/>
 			<Image name="handle"	image="VectorPadHandle"/>
 			<Color name="triangleColor" color="@Main.VectorPadBackcolor"/>
-			<Metric name="padding" value="10"/>
+			<Metric name="padding" value="12"/>
 			<Metric name="snapsize" value="11"/>
 		</Style>
 		
@@ -727,16 +785,16 @@
 				<Image name="background" image="MobileCommandButton"/>
 				<Font name="textfont" themeid="StandardUI" size="+3" style="bold"/>
 				<Color name="textcolor"	color="@Main.ButtonBlueTextColor"/>
-				<Metric name="padding.left"			value="10"/>
-				<Metric name="padding.right"		value="10"/>
-				<Metric name="padding.top"			value="1"/>
+				<Metric name="padding.left"			value="12"/>
+				<Metric name="padding.right"		value="12"/>
+				<Metric name="padding.top"			value="3"/>
 			<?defined desktopapp?>
 <!--				<Image name="background" image="Button"/>-->
 				<Image name="background"	image="ButtonSpecialBlue"/>
 				<Font name="textfont" themeid="StandardUI" size="+1"/>
 				<Color name="textcolor"	color="@Main.LabelColor.Primary.NoInvert"/>
-				<Metric name="padding.left"			value="6"/>
-				<Metric name="padding.right"		value="6"/>
+				<Metric name="padding.left"			value="8"/>
+				<Metric name="padding.right"		value="8"/>
 			<?defined?>
 			<Color name="textcolor.disabled" color="@Main.LabelColor.Disabled"/>
 			<Metric name="buttonMinWidth" value="60"/>

@@ -124,32 +124,34 @@ END_STYLEDEF
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
+// qualify with IView for documentation scan
 BEGIN_STYLEDEF (View::resizeStyles)
-	{"all",		kAttachAll},
-	{"left",	kAttachLeft},
-	{"top",		kAttachTop},
-	{"right",	kAttachRight},
-	{"bottom",	kAttachBottom},
-	{"hcenter",	kHCenter},
-	{"vcenter",	kVCenter},
-	{"hfit",	kHFitSize},
-	{"vfit",	kVFitSize},
-	{"fitsize",	kFitSize},
-	{"prefercurrent", kPreferCurrentSize},
-	{"fill",	kFill},
+	{"all",		IView::kAttachAll},
+	{"left",	IView::kAttachLeft},
+	{"top",		IView::kAttachTop},
+	{"right",	IView::kAttachRight},
+	{"bottom",	IView::kAttachBottom},
+	{"hcenter",	IView::kHCenter},
+	{"vcenter",	IView::kVCenter},
+	{"hfit",	IView::kHFitSize},
+	{"vfit",	IView::kVFitSize},
+	{"fitsize",	IView::kFitSize},
+	{"prefercurrent", IView::kPreferCurrentSize},
+	{"fill",	IView::kFill},
 END_STYLEDEF
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
+// qualify with IView for documentation scan
 BEGIN_STYLEDEF (View::propertyNames)
-	{"mousestate",	View::kMouseState}, // keep most used on top!
-	{"style",		View::kVisualStyle},
-	{"enabled",		View::kInputEnabled},
-	{"name",		View::kName},
-	{"title",		View::kTitle},
-	{"tooltip",		View::kTooltip},
-	{"theme",		View::kTheme},
-	{"controller",	View::kController},
+	{"mousestate", IView::kMouseState}, // keep most used on top!
+	{"style",		IView::kVisualStyle},
+	{"enabled",		IView::kInputEnabled},
+	{"name",		IView::kName},
+	{"title",		IView::kTitle},
+	{"tooltip",		IView::kTooltip},
+	{"theme",		IView::kTheme},
+	{"controller",	IView::kController},
 	// TODO: expose more view attributes via IObject...
 END_STYLEDEF
 
@@ -1137,7 +1139,7 @@ void View::setTheme (Theme* _theme)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-const IVisualStyle& View::getVisualStyle () const
+const IVisualStyle& CCL_API View::getVisualStyle () const
 {
 	if(visualStyle)
 		return *visualStyle;

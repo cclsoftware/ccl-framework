@@ -16,12 +16,39 @@
 //
 //************************************************************************************************
 
+#include "ccl/base/message.h"
 #include "ccl/base/storage/attributes.h"
+
+#include "ccl/public/base/istream.h"
+#include "ccl/public/base/iprogress.h"
+#include "ccl/public/network/web/iwebrequest.h"
 
 // THE CODE IN THIS FILE HAS BEEN MOVED PARTIALLY!
 #include "ccl/extras/web/webprotocol.cpp"
 
 #include "ccl/network/web/webclient.h"
+
+//************************************************************************************************
+// WebTransaction
+//************************************************************************************************
+
+void WebTransaction::receiveMetaData (IStream* dstStream, IProgressNotify* progress, int64 length, 
+									  IWebHeaderCollection& headers, MetaDataEvent e)
+{
+	if(UnknownPtr<IObserver> progressObserver = progress)
+	{
+		if(e == kContinue)
+			progressObserver->notify (nullptr, Message (Meta::kContentLengthNotify, length, static_cast<IUnknown*> (&headers)));
+	}
+
+	if(UnknownPtr<IWebResponseSink> sink = dstStream)
+	{
+		if(e == kContinue)
+			sink->onHeadersUpdated (length, headers);
+		else if(e == kEnd)
+			sink->onResponseCompleted ();
+	}
+}
 
 //************************************************************************************************
 // WebCredentials

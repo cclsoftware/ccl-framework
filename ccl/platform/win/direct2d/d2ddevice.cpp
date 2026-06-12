@@ -733,7 +733,6 @@ tresult D2DGraphicsDevice::drawDirectWrite (RectFRef _rect, StringRef text, Font
 	D2DTextAntialiasModeSetter smoother (*this, font.getMode ());
 
 	RectF rect (_rect);
-	DWInterop::adjustLayoutPosition (rect, format.getAlignment ());
 	if(rect.isEmpty ()) // text layout creation would fail if rect is empty
 		return kResultOk;
 
@@ -832,7 +831,6 @@ tresult D2DGraphicsDevice::measureDirectWrite (RectF& size, CoordF lineWidth, St
 		DWInterop::adjustTabStops (textLayout);
 
 	DWInterop::getTextMetrics (size, textLayout);
-	DWInterop::adjustTextMetrics (size);
 	return kResultOk;
 }
 
@@ -867,8 +865,6 @@ tresult CCL_API D2DGraphicsDevice::drawTextLayout (PointFRef _pos, ITextLayout* 
 			textLayout->getBaselineOffset (offset);
 			pos -= offset;
 		}
-		else
-			DWInterop::adjustLayoutPos (pos, textLayout->getAlignment ());
 
 		ASSERT ((options & (~kDrawAtBaseline)) == 0) // no other options implemented
 		textLayout->getLayout ()->Draw (d2dBrush, &textRenderer, pos.x, pos.y);

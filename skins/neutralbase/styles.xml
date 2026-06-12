@@ -34,6 +34,7 @@
 		<Style name="Standard.ListView" 				inherit="Neutral.ListView" appstyle="true"/>
 		<Style name="Standard.ListViewIcons"			inherit="Neutral.ListViewIcons" appstyle="true"/>
 		<Style name="Standard.TreeView" 				inherit="Neutral.TreeView" appstyle="true"/>
+		<Style name="Standard.BlockView" 				inherit="Neutral.BlockView" appstyle="true"/>
 		<Style name="Standard.PopupMenu"				inherit="Neutral.PopupMenu" appstyle="true"/>
 		<Style name="Standard.PopupMenuLarge"	 		inherit="Neutral.PopupMenuLarge" appstyle="true"/>
 		<Style name="Standard.PalettePopup" 			inherit="Neutral.PalettePopup" appstyle="true"/>
@@ -64,6 +65,8 @@
 		<Style name="Standard.MenuBackcolorStyle"		inherit="Neutral.MenuBackcolorStyle" appstyle="true"/>
 		<Style name="Standard.ViewHighlights"			inherit="Neutral.ViewHighlights" appstyle="true"/>
 		<Style name="Standard.ProgressAnimationTrigger"	inherit="Neutral.ProgressAnimationTrigger" appstyle="true"/>
+		<Style name="Standard.ActionButton"				inherit="Neutral.ActionButton" appstyle="true"/>
+		<Style name="Standard.ActionButtonSecondary"	inherit="Neutral.ActionButtonSecondary" appstyle="true"/>
 	</Styles>
 	
 </Skin>

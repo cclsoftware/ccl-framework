@@ -215,17 +215,6 @@ IView* CCL_API QuickHelp::createView (const Rect& size, const IVisualStyle& styl
 		text.append ("} ");
 	}
 
-	if(!current.title.isEmpty ())
-	{
-		text.append ("[color=$heading][size=$heading][b=$heading][i=$heading][u=$heading]");
-		text.append (current.title);
-		if(!vertical)
-			text.append (": ");
-		text.append ("[/u][/i][/b][/size][/color]");
-		if(vertical)
-			text.append (String::getLineEnd ());
-	}
-	
 	text.append (current.text);
 	
 	StyleFlags flags (0, Styles::kLabelMarkupEnabled);

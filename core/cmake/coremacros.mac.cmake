@@ -20,6 +20,8 @@
 get_filename_component (user_documents_dir "~/Documents" ABSOLUTE)
 list (APPEND VENDOR_IDENTITY_DIRS "${user_documents_dir}/CCL/identities")
 
+include (entitlements)
+
 # Add assets to a bundle
 # @group mac
 # @param {STRING} target_raw  Name of the target to add asset files to.
@@ -69,6 +71,9 @@ endmacro ()
 # @param {STRING} binary_path  Path to file within bundle, typically the binary.
 
 macro (ccl_get_bundle_dir bundle_dir binary_path)
+	if(${binary_path} STREQUAL "" OR ${binary_path} MATCHES "-NOTFOUND$")
+		message(FATAL_ERROR "binary_path not found: ${binary_path}")
+	endif ()
 	set(path "${binary_path}")
 	while (NOT path STREQUAL "/")
 		cmake_path (GET path EXTENSION ext)
@@ -84,7 +89,13 @@ endmacro ()
 # @group mac
 # @param {STRING} target_raw  Name of a target to add the modules to, without isolation
 # evaluates ${target}_FRAMEWORKS, ${target}_DYLIBS and ${target}_PLUGINS, etc. lists
+
 macro (ccl_process_plugins target_raw)
+	# defer the actual processing to ensure that all targets have been created and imported first
+    cmake_language (DEFER CALL _ccl_process_plugins_impl "${target_raw}")
+endmacro ()
+
+macro (_ccl_process_plugins_impl target_raw)
 	ccl_get_isolated_target ("${target_raw}" target)
 	if (NOT TARGET ${target})
 		return ()
@@ -114,6 +125,10 @@ macro (ccl_process_plugins target_raw)
 		endforeach ()
 		set (plugins "")
 		foreach (item IN ITEMS ${${target}_PLUGINS})
+			set (target_isimported FALSE)
+			if (TARGET ${item})
+				get_target_property (target_isimported ${item} IMPORTED)
+			endif()
 			if (${target_isimported})
 				get_target_property (imported_location_debug ${item} IMPORTED_LOCATION_DEBUG)
 				ccl_get_bundle_dir (bundle_dir_debug ${imported_location_debug})
@@ -182,7 +197,6 @@ macro (ccl_process_plugins target_raw)
 			)
 		endif()
 	endif()
-
 endmacro ()
 
 macro (ccl_process_plugins_type target_raw type subdir plugins)
@@ -267,10 +281,19 @@ endmacro ()
 # @group mac
 # @param {STRING} vendor Vendor name.
 macro (ccl_configure_vendor target vendor)
+	if (NOT APP_SIGNING_TEAMID)
+		set (APP_SIGNING_TEAMID "${SIGNING_TEAMID_MAC}")
+	endif ()
+
 	if (DEFINED FORCE_SIGNING_TEAMID)
 		set_target_properties (${target} PROPERTIES
 			XCODE_ATTRIBUTE_DEVELOPMENT_TEAM "${FORCE_SIGNING_TEAMID}")
+	else ()
+		set_target_properties (${target} PROPERTIES
+			XCODE_ATTRIBUTE_DEVELOPMENT_TEAM "${APP_SIGNING_TEAMID}")
 	endif()
+
+	ccl_configure_entitlements (${target})
 endmacro ()
 
 # Configure the project vendor.
@@ -281,11 +304,13 @@ macro (ccl_configure_project_vendor vendor)
 	if (EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/signing.cmake)
 		include (${CMAKE_CURRENT_SOURCE_DIR}/signing.cmake)
 	endif ()
-	if (NOT DEFINED FORCE_SIGNING_TEAMID)
-		set (CMAKE_XCODE_ATTRIBUTE_DEVELOPMENT_TEAM "${SIGNING_TEAMID_MAC}")
-	else()
-		set (CMAKE_XCODE_ATTRIBUTE_DEVELOPMENT_TEAM "${FORCE_SIGNING_TEAMID}")
+	
+	if (DEFINED FORCE_SIGNING_TEAMID)
+		set (APP_SIGNING_TEAMID "${FORCE_SIGNING_TEAMID}")
+	else ()
+		set (APP_SIGNING_TEAMID "${SIGNING_TEAMID_MAC}")
 	endif()
+	set (CMAKE_XCODE_ATTRIBUTE_DEVELOPMENT_TEAM "${APP_SIGNING_TEAMID}")
 
 	# Installation directories (if using CPack)
 	set (VENDOR_LIBRARY_DESTINATION "Frameworks/$<PLATFORM_ID>")
@@ -303,7 +328,15 @@ endmacro ()
 # @param {STRING} pluginTarget  Name of a plugin target to be added.
 macro(add_plugin_to_mac_debug_bundle target_raw pluginTarget)
 	ccl_get_isolated_target ("${target_raw}" target)
-	set (pluginBundlePath "$<TARGET_BUNDLE_DIR:${pluginTarget}>")
+
+	get_target_property (is_imported ${pluginTarget} IMPORTED)
+	if (is_imported)
+		get_target_property (imported_location_debug ${pluginTarget} IMPORTED_LOCATION_DEBUG)
+		ccl_get_bundle_dir (pluginBundlePath ${imported_location_debug})
+	else ()
+		set (pluginBundlePath "$<TARGET_BUNDLE_DIR:${pluginTarget}>")
+	endif ()
+
 	set (pluginBundleName "$<TARGET_FILE_NAME:${pluginTarget}>.bundle")
 	set (pluginDestination "$<TARGET_BUNDLE_CONTENT_DIR:${target}>/PlugIns/${pluginBundleName}")
 

@@ -182,6 +182,7 @@ namespace ThemeNames
 	
 	DEFINE_STRINGID (kStandard, "Standard")
 	DEFINE_STRINGID (kStandardFont, "StandardUI")
+	DEFINE_STRINGID (kStandardFontMonospaced, "StandardUI Mono")
 
 	DEFINE_STRINGID (kMain, "Main") ///< main color scheme
 

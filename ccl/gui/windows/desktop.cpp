@@ -306,7 +306,7 @@ bool DesktopManager::isInModalMode () const
 
 bool DesktopManager::isInTextInput () const
 {
-	return EditBox::isAnyEdtiting ();
+	return EditBox::isAnyEditing ();
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////

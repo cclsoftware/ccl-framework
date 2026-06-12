@@ -263,6 +263,11 @@
                     "name": "TAG_SHAPECOLORMAPPING",
                     "value": "ShapeColorMapping",
                     "type": "string"
+                },
+                {
+                    "name": "TAG_BLOCKCONTENT",
+                    "value": "BlockContent",
+                    "type": "string"
                 }
             ]
         },
@@ -271,8 +276,18 @@
             "definitions": 
 			[
                 {
+                    "name": "TAG_STYLEDATA",
+                    "value": "StyleData",
+                    "type": "string"
+                },
+                {
                     "name": "TAG_STYLE",
                     "value": "Style",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_STYLECONDITION",
+                    "value": "StyleCondition",
                     "type": "string"
                 },
                 {
@@ -655,6 +670,11 @@
                     "name": "TAG_SCROLLPICKER",
                     "value": "ScrollPicker",
                     "type": "string"
+                },
+                {
+                    "name": "TAG_BLOCKVIEW",
+                    "value": "BlockView",
+                    "type": "string"
                 }
             ]
         },
@@ -746,6 +766,11 @@
                 {
                     "name": "TAG_ELLIPSE",
                     "value": "Ellipse",
+                    "type": "string"
+                },
+                {
+                    "name": "TAG_GRAPHIC",
+                    "value": "Graphic",
                     "type": "string"
                 }
             ]
@@ -853,6 +878,11 @@
                 {
                     "name": "ATTR_SOURCE",
                     "value": "source",
+                    "type": "string"
+                },
+                {
+                    "name": "ATTR_DESTINATION",
+                    "value": "destination",
                     "type": "string"
                 },
                 {
@@ -1054,7 +1084,17 @@
                     "name": "ATTR_FACTORS",
                     "value": "factors",
                     "type": "string"
-                }
+                },
+                {
+                    "name": "ATTR_TRANSLATED",
+                    "value": "translated",
+                    "type": "string"
+                },
+				{
+					"name": "ATTR_DEFINES",
+					"value": "defines",
+					"type": "string"
+				}
             ]
         },
         {
@@ -1421,11 +1461,6 @@
                 {
                     "name": "ATTR_FIRSTFOCUS",
                     "value": "firstfocus",
-                    "type": "string"
-                },
-                {
-                    "name": "ATTR_IMAGENAME",
-                    "value": "image",
                     "type": "string"
                 },
                 {

@@ -48,12 +48,12 @@ String TextBuilder::getLineEnd () const
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-String TextBuilder::unpack (const Text::Chunk& chunk) const
+String TextBuilder::unpack (const TextFragment& fragment) const
 {
-	if(chunk.encode)
-		return encoder->encode (chunk.content);
+	if(fragment.encode)
+		return encoder->encode (fragment.content);
 	else
-		return chunk.content;
+		return fragment.content;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -108,9 +108,9 @@ void CCL_API TextTable::getSize (int& rowCount, int& columnCount) const
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void CCL_API TextTable::setTitle (const Text::Chunk& chunk)
+void CCL_API TextTable::setTitle (const TextFragment& fragment)
 {
-	title = builder->unpack (chunk);
+	title = builder->unpack (fragment);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -142,14 +142,13 @@ TextTable::Cell::Cell (TextTable* table)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void CCL_API TextTable::Cell::setContent (const Text::Chunk& chunk)
+void CCL_API TextTable::Cell::setContent (const TextFragment& fragment)
 {
 	ASSERT (table)
 	if(!table)
 		return;
 
-	table->builder->printChunk (content, chunk);
-	//was: content = table->builder->unpack (chunk);
+	table->builder->printFragment (content, fragment);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////

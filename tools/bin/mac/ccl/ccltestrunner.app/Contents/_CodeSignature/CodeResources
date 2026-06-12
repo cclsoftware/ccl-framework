@@ -10,7 +10,7 @@
 		<dict>
 			<key>cdhash</key>
 			<data>
-			VFQJfjLR7M/1XGlK4h74GFNegu4=
+			PrFhIqkvRAe0QGpiKs9g6qFU6IA=
 			</data>
 			<key>requirement</key>
 			<string>identifier "dev.ccl.cclgui" and anchor apple generic and certificate 1[field.1.2.840.113635.100.6.2.6] /* exists */ and certificate leaf[field.1.2.840.113635.100.6.1.13] /* exists */ and certificate leaf[subject.OU] = DAVK35GANN</string>
@@ -19,7 +19,7 @@
 		<dict>
 			<key>cdhash</key>
 			<data>
-			Ja1Q3qFuUi/38WOe6hJRmkCHy5k=
+			ZkutSHonBqfNa7BrQtGxxZaHa+0=
 			</data>
 			<key>requirement</key>
 			<string>identifier "dev.ccl.cclnet" and anchor apple generic and certificate 1[field.1.2.840.113635.100.6.2.6] /* exists */ and certificate leaf[field.1.2.840.113635.100.6.1.13] /* exists */ and certificate leaf[subject.OU] = DAVK35GANN</string>
@@ -28,7 +28,7 @@
 		<dict>
 			<key>cdhash</key>
 			<data>
-			bY+K9kZ4nkT9K7yogymrk6RYWXw=
+			dRudstc+XRSMscB9053wxvP/znI=
 			</data>
 			<key>requirement</key>
 			<string>identifier "dev.ccl.cclsecurity" and anchor apple generic and certificate 1[field.1.2.840.113635.100.6.2.6] /* exists */ and certificate leaf[field.1.2.840.113635.100.6.1.13] /* exists */ and certificate leaf[subject.OU] = DAVK35GANN</string>
@@ -37,7 +37,7 @@
 		<dict>
 			<key>cdhash</key>
 			<data>
-			dhYvGbNee+uu/UIM+veH3/tnmGA=
+			/8hwiGYpYRvnFss+DxYbOVbY0II=
 			</data>
 			<key>requirement</key>
 			<string>identifier "dev.ccl.cclsystem" and anchor apple generic and certificate 1[field.1.2.840.113635.100.6.2.6] /* exists */ and certificate leaf[field.1.2.840.113635.100.6.1.13] /* exists */ and certificate leaf[subject.OU] = DAVK35GANN</string>
@@ -46,7 +46,7 @@
 		<dict>
 			<key>cdhash</key>
 			<data>
-			iW+tFhJ2BfuX9FrEhxRiemClERo=
+			Dmz7sLjoRMxi8Gxv3FgRk3J4AcA=
 			</data>
 			<key>requirement</key>
 			<string>identifier "dev.ccl.ccltext" and anchor apple generic and certificate 1[field.1.2.840.113635.100.6.2.6] /* exists */ and certificate leaf[field.1.2.840.113635.100.6.1.13] /* exists */ and certificate leaf[subject.OU] = DAVK35GANN</string>

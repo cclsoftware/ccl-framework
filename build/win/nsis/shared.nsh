@@ -28,8 +28,6 @@
 !include "${VENDOR_INCLUDE_DIR}\vendor.nsh"
 !endif
 
-!define UNINSTALLER_EXE	"Uninstaller.exe" ; signed wrapper executable for uninstall
-
 ;-----------------------------------------------------------------------
 ; Build Locations
 ;-----------------------------------------------------------------------

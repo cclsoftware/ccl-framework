@@ -18,15 +18,15 @@
 
 #include "ccl/gui/controls/label.h"
 
-#include "ccl/gui/views/viewaccessibility.h"
-
-#include "ccl/gui/graphics/textlayoutbuilder.h"
-#include "ccl/base/message.h"
-
-#include "ccl/gui/theme/renderer/labelrenderer.h"
-#include "ccl/gui/theme/visualstyle.h"
-#include "ccl/gui/layout/layoutprimitives.h"
 #include "ccl/gui/graphics/nativegraphics.h"
+#include "ccl/gui/graphics/markupsupport.h"
+#include "ccl/gui/graphics/textlayoutbuilder.h"
+#include "ccl/gui/views/viewaccessibility.h"
+#include "ccl/gui/theme/visualstyle.h"
+#include "ccl/gui/theme/renderer/labelrenderer.h"
+#include "ccl/gui/layout/layoutprimitives.h"
+
+#include "ccl/base/message.h"
 
 using namespace CCL;
 
@@ -144,12 +144,12 @@ ITextLayout* Label::getTextLayout ()
 
 			if(style.isCustomStyle (Styles::kLabelMarkupEnabled))
 			{
-				MarkupParser parser (title, vs);
+				MarkupParser parser (title);
 				StringRef text = parser.getPlainText ();
 				textLayout->construct (text, rect.getWidth (), rect.getHeight (), font,
 									   multiline ? ITextLayout::kMultiLine : ITextLayout::kSingleLine,
 									   vs.getTextFormat ());
-				TextLayoutBuilder builder (textLayout);
+				TextLayoutBuilder builder (*textLayout);
 				parser.applyFormatting (builder);
 			}
 			else

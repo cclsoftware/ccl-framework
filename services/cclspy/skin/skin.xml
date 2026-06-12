@@ -10,6 +10,7 @@
 	</Imports>
 
 	<Includes>
+		<Include url="modelview.xml"/>
 		<Include url="spyview.xml"/>
 	</Includes>
 </Skin>

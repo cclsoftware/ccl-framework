@@ -79,6 +79,32 @@ protected:
 	Vector<Rect> rects;
 };
 
+//************************************************************************************************
+// RegionWithOffset
+/** Wraps another region and adds an offset to the added rectangles. */
+//************************************************************************************************
+
+class RegionWithOffset: public Object,
+						public IMutableRegion
+{
+public:
+	RegionWithOffset (IMutableRegion& region, PointRef offset)
+	: region (region), offset (offset)
+	{}
+	
+	// IMutableRegion
+	void CCL_API addRect (RectRef rect) override			{ region.addRect (Rect (rect).offset (offset)); }
+	tbool CCL_API rectVisible (RectRef rect) const override	{ return region.rectVisible (Rect (rect).offset (offset)); }
+	void CCL_API setEmpty () override						{ region.setEmpty (); }
+	Rect CCL_API getBoundingBox () const override			{ return region.getBoundingBox ().offset (offset * - 1); }
+	
+	CLASS_INTERFACE (IMutableRegion, Object)
+
+private:
+	IMutableRegion& region;
+	Point offset;
+};
+
 } // namespace CCL
 
 #endif // _ccl_mutableregion_h

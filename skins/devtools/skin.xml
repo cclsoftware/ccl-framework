@@ -2,10 +2,8 @@
 <Skin>
 	<Includes>
 		<Include name="SpyIcons" url="spyicons.xml"/>
-		<Include name="VSImageLibrary" url="vs2017.xml"/>
-		<Include name="VSImageLibrary" url="vscustom.xml"/>
-
-		<Include url="modelview.xml"/>
+		<Include name="Codicons" url="codicons.xml"/>
+		<Include name="Mdi" url="mdi.xml"/>		
 	</Includes>
 
 	<Externals>

@@ -19,7 +19,6 @@
 #include "ccl/network/web/localclient.h"
 #include "ccl/network/web/webrequest.h"
 
-#include "ccl/base/message.h"
 #include "ccl/base/storage/url.h"
 
 #include "ccl/public/text/cstring.h"
@@ -78,7 +77,7 @@ int CCL_API LocalClient::getLastStatus ()
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-tresult CCL_API LocalClient::downloadData (StringRef _remotePath, IStream& localStream, IWebHeaderCollection* headers, IProgressNotify* progress)
+tresult CCL_API LocalClient::downloadData (StringRef _remotePath, IStream& localStream, IWebHeaderCollection* _headers, IProgressNotify* progress)
 {
 	Url path;
 	path.setProtocol (protocol);
@@ -103,18 +102,20 @@ tresult CCL_API LocalClient::downloadData (StringRef _remotePath, IStream& local
 	if(srcStream == nullptr)
 		return kResultFailed;
 
-	// notify content length
-	if(UnknownPtr<IObserver> progressObserver = progress)
-	{
-		ASSERT (srcStream->isSeekable ())
-		int64 contentLength = srcStream->seek (0, IStream::kSeekEnd);
-		srcStream->rewind ();
+	ASSERT (srcStream->isSeekable ())
+	int64 contentLength = srcStream->seek (0, IStream::kSeekEnd);
+	srcStream->rewind ();
 
-		AutoPtr<WebHeaderCollection> headers = NEW WebHeaderCollection;
-		progressObserver->notify (nullptr, Message (Meta::kContentLengthNotify, contentLength, headers->asUnknown ()));
-	}
+	// notify content type/length
+	AutoPtr<WebHeaderCollection> responseHeaders = NEW WebHeaderCollection;
+	responseHeaders->setEntry (Meta::kContentType, MutableCString (path.getFileType ().getMimeType ()));
+	responseHeaders->setEntry (Meta::kContentLength, MutableCString ().appendInteger (contentLength));
+	WebTransaction ().receiveMetaData (&localStream, progress, contentLength, *responseHeaders);
 
 	tbool copied = System::GetFileUtilities ().copyStream (localStream, *srcStream, progress);
+	
+	WebTransaction ().receiveMetaData (&localStream, progress, contentLength, *responseHeaders, WebTransaction::kEnd);
+	
 	return copied ? kResultOk : kResultFailed;
 }
 

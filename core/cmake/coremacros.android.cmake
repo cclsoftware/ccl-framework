@@ -860,6 +860,14 @@ macro (ccl_add_deployment_project project appid)
 		"\t\t\tcmake {\n"
 		"\t\t\t\targuments '--preset=android', '-DENABLE_ASAN=${ENABLE_ASAN}', '-DENABLE_HWASAN=${ENABLE_HWASAN}'")
 
+	if (CCL_PREFER_PREBUILT_EXPORTS)
+		file (APPEND "${gradle_native_build_file}"
+			", \"-DCCL_PREFER_PREBUILT_EXPORTS=ON\"")
+	endif ()
+
+	file (APPEND "${gradle_native_build_file}"
+		", \"-DCCL_EXPORTS_PATH='${VENDOR_OUTPUT_DIRECTORY}/${VENDOR_PLATFORM}/\${buildArchitecture}/\${cmakeConfiguration}/${CCL_ISOLATION_POSTFIX}/exports'\"")
+
 	if (CCL_SPIRV_CROSS_DIR)
 		cmake_path (NORMAL_PATH CCL_SPIRV_CROSS_DIR)
 		file (APPEND "${gradle_native_build_file}"

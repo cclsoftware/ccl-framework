@@ -17,7 +17,7 @@ msgstr "开启"
 #: system/accessibility.cpp
 msgctxt "Accessibility"
 msgid "Page %(1) of %(2)"
-msgstr "第%(1)页，共%(2)页"
+msgstr "页面 %(1) / %(2)"
 
 #: dialogs/alert.cpp
 msgctxt "Alert"
@@ -77,17 +77,17 @@ msgstr "向下"
 #: itemviews/itemview.cpp
 msgctxt "Command"
 msgid "Down Extend"
-msgstr "向下扩选"
+msgstr "向下扩展"
 
 #: itemviews/itemview.cpp
 msgctxt "Command"
 msgid "Down Extend Add"
-msgstr "向下扩选添加"
+msgstr "向下扩展添加"
 
 #: itemviews/itemview.cpp
 msgctxt "Command"
 msgid "Down Skip"
-msgstr "向下跳过"
+msgstr "向下跳进"
 
 #: itemviews/itemview.cpp
 msgctxt "Command"
@@ -102,17 +102,17 @@ msgstr "结束"
 #: itemviews/itemview.cpp
 msgctxt "Command"
 msgid "End Extend"
-msgstr "扩选到结尾"
+msgstr "扩展到结尾"
 
 #: itemviews/itemview.cpp
 msgctxt "Command"
 msgid "End Extend Add"
-msgstr "扩选添加到结尾"
+msgstr "扩展添加到结尾"
 
 #: itemviews/itemview.cpp
 msgctxt "Command"
 msgid "End Skip"
-msgstr "结束跳过"
+msgstr "跳进到结尾"
 
 #: views/focusnavigator.cpp
 msgctxt "Command"
@@ -142,17 +142,17 @@ msgstr "左"
 #: itemviews/itemview.cpp
 msgctxt "Command"
 msgid "Left Extend"
-msgstr "向左扩选"
+msgstr "向左扩展"
 
 #: itemviews/itemview.cpp
 msgctxt "Command"
 msgid "Left Extend Add"
-msgstr "向左扩选添加"
+msgstr "向左扩展添加"
 
 #: itemviews/itemview.cpp
 msgctxt "Command"
 msgid "Left Skip"
-msgstr "左侧跳过"
+msgstr "向左跳进"
 
 #: itemviews/itemview.cpp views/focusnavigator.cpp
 msgctxt "Command"
@@ -162,7 +162,7 @@ msgstr "导航"
 #: layout/workspace.cpp
 msgctxt "Command"
 msgid "Next Perspective"
-msgstr "下一个工作视角"
+msgstr "下一个视角"
 
 #: itemviews/itemview.cpp
 msgctxt "Command"
@@ -172,17 +172,17 @@ msgstr "下翻页"
 #: itemviews/itemview.cpp
 msgctxt "Command"
 msgid "Page Down Extend"
-msgstr "向下扩选翻页"
+msgstr "扩展到下翻页"
 
 #: itemviews/itemview.cpp
 msgctxt "Command"
 msgid "Page Down Extend Add"
-msgstr "下翻页扩选添加"
+msgstr "扩展添加到下翻页"
 
 #: itemviews/itemview.cpp
 msgctxt "Command"
 msgid "Page Down Skip"
-msgstr "下翻页跳过"
+msgstr "下翻页跳进"
 
 #: itemviews/itemview.cpp
 msgctxt "Command"
@@ -192,17 +192,17 @@ msgstr "上翻页"
 #: itemviews/itemview.cpp
 msgctxt "Command"
 msgid "Page Up Extend"
-msgstr "上翻页扩选"
+msgstr "扩展到上翻页"
 
 #: itemviews/itemview.cpp
 msgctxt "Command"
 msgid "Page Up Extend Add"
-msgstr "向上翻页扩选添加"
+msgstr "扩展添加到上翻页"
 
 #: itemviews/itemview.cpp
 msgctxt "Command"
 msgid "Page Up Skip"
-msgstr "上翻页跳过"
+msgstr "上翻页跳进"
 
 #: itemviews/itemview.cpp
 msgctxt "Command"
@@ -217,7 +217,7 @@ msgstr "固定编辑器"
 #: layout/workspace.cpp
 msgctxt "Command"
 msgid "Previous Perspective"
-msgstr "上一个工作视角"
+msgstr "上一个视角"
 
 #: windows/windowmanager.cpp
 msgctxt "Command"
@@ -232,17 +232,17 @@ msgstr "右"
 #: itemviews/itemview.cpp
 msgctxt "Command"
 msgid "Right Extend"
-msgstr "向右扩选"
+msgstr "向右扩展"
 
 #: itemviews/itemview.cpp
 msgctxt "Command"
 msgid "Right Extend Add"
-msgstr "向右扩选添加"
+msgstr "向右扩展添加"
 
 #: itemviews/itemview.cpp
 msgctxt "Command"
 msgid "Right Skip"
-msgstr "向右跳过"
+msgstr "向右跳进"
 
 #: itemviews/itemview.cpp
 msgctxt "Command"
@@ -257,17 +257,17 @@ msgstr "开始"
 #: itemviews/itemview.cpp
 msgctxt "Command"
 msgid "Start Extend"
-msgstr "从开始扩选"
+msgstr "扩展到开始"
 
 #: itemviews/itemview.cpp
 msgctxt "Command"
 msgid "Start Extend Add"
-msgstr "从开始扩选添加"
+msgstr "扩展添加到开始"
 
 #: itemviews/itemview.cpp
 msgctxt "Command"
 msgid "Start Skip"
-msgstr "开始跳过"
+msgstr "跳进到开始"
 
 #: layout/workspace.cpp
 msgctxt "Command"
@@ -287,17 +287,17 @@ msgstr "向上"
 #: itemviews/itemview.cpp
 msgctxt "Command"
 msgid "Up Extend"
-msgstr "向上扩选"
+msgstr "向上扩展"
 
 #: itemviews/itemview.cpp
 msgctxt "Command"
 msgid "Up Extend Add"
-msgstr "向上扩选添加"
+msgstr "向上扩展添加"
 
 #: itemviews/itemview.cpp
 msgctxt "Command"
 msgid "Up Skip"
-msgstr "向上跳过"
+msgstr "向上跳进"
 
 #: layout/workspace.cpp windows/windowmanager.cpp
 msgctxt "Command"
@@ -327,7 +327,7 @@ msgstr "默认"
 #: controls/commandbar/commandbarview.cpp
 msgctxt "CommandBar"
 msgid "Do you want to remove \"%(1)\"?"
-msgstr "是否确定移除 “%(1)”？"
+msgstr "是否要移除“%(1)”？"
 
 #: controls/commandbar/commandbarview.cpp
 msgctxt "CommandBar"
@@ -367,7 +367,7 @@ msgstr "菜单项"
 #: controls/commandbar/commandbarview.cpp
 msgctxt "CommandBar"
 msgid "Move to"
-msgstr "移动至"
+msgstr "移至"
 
 #: controls/commandbar/commandbarview.cpp
 msgctxt "CommandBar"
@@ -382,7 +382,7 @@ msgstr "新建分组"
 #: controls/commandbar/commandbarview.cpp
 msgctxt "CommandBar"
 msgid "New Menu Button"
-msgstr "新建菜单钮"
+msgstr "新建菜单按钮"
 
 #: controls/commandbar/commandbarview.cpp
 msgctxt "CommandBar"
@@ -417,12 +417,12 @@ msgstr "移除按钮"
 #: controls/commandbar/commandbarview.cpp
 msgctxt "CommandBar"
 msgid "Remove Group"
-msgstr "移除编组"
+msgstr "移除分组"
 
 #: controls/commandbar/commandbarview.cpp
 msgctxt "CommandBar"
 msgid "Remove Image"
-msgstr "移除图像"
+msgstr "移除图片"
 
 #: controls/commandbar/commandbarview.cpp
 msgctxt "CommandBar"
@@ -447,7 +447,7 @@ msgstr "移除子菜单"
 #: controls/commandbar/commandbarview.cpp
 msgctxt "CommandBar"
 msgid "Select Image"
-msgstr "选择图像"
+msgstr "选择图片"
 
 #: controls/commandbar/commandbarview.cpp
 msgctxt "CommandBar"
@@ -521,7 +521,7 @@ msgstr "配色方案"
 #: graphics/imaging/bitmap.cpp
 msgctxt "FileType"
 msgid "GIF File"
-msgstr "GIF文件"
+msgstr "GIF 文件"
 
 #: graphics/imaging/multiimage.cpp
 msgctxt "FileType"
@@ -531,7 +531,7 @@ msgstr "图标文件"
 #: graphics/imaging/bitmap.cpp
 msgctxt "FileType"
 msgid "JPEG File"
-msgstr "JPEG文件"
+msgstr "JPEG 文件"
 
 #: commands.cpp
 msgctxt "FileType"
@@ -541,7 +541,7 @@ msgstr "键盘映射方案"
 #: graphics/imaging/bitmap.cpp
 msgctxt "FileType"
 msgid "PNG File"
-msgstr "PNG文件"
+msgstr "PNG 文件"
 
 #: graphics/shapes/svg/svgparser.cpp
 msgctxt "FileType"
@@ -556,7 +556,7 @@ msgstr "皮肤文件"
 #: graphics/imaging/codecs/webpcodec.cpp
 msgctxt "FileType"
 msgid "WebP File"
-msgstr "WebP文件"
+msgstr "WebP 文件"
 
 #: graphics/nativegraphics.cpp
 msgctxt "GraphicsEngine"
@@ -581,12 +581,12 @@ msgstr "调整列至适合大小"
 #: help/helpmanager.cpp
 msgctxt "HelpManager"
 msgid "Help file not found at:\n"
-msgstr "帮助文件没有找到：\n"
+msgstr "未在此处找到帮助文件：\n"
 
 #: help/helpmanager.cpp
 msgctxt "HelpManager"
 msgid "No compatible PDF Viewer installed!"
-msgstr "未安装兼容的PDF阅读器！"
+msgstr "未安装兼容的 PDF 阅读器！"
 
 #: dialogs/progressdialog.cpp
 msgctxt "ProgressDialog"
@@ -636,7 +636,7 @@ msgstr "Alt"
 #: keyevent.cpp
 msgctxt "VirtualKey"
 msgid "Backspace"
-msgstr "BackSpace"
+msgstr "Backspace"
 
 #: keyevent.cpp
 msgctxt "VirtualKey"
@@ -646,17 +646,17 @@ msgstr "Caps Lock"
 #: keyevent.cpp
 msgctxt "VirtualKey"
 msgid "Channel Down"
-msgstr "下移通道"
+msgstr "Channel Down"
 
 #: keyevent.cpp
 msgctxt "VirtualKey"
 msgid "Channel Up"
-msgstr "上移通道"
+msgstr "Channel Up"
 
 #: keyevent.cpp
 msgctxt "VirtualKey"
 msgid "Command"
-msgstr "Cmd"
+msgstr "Command"
 
 #: keyevent.cpp
 msgctxt "VirtualKey"
@@ -816,7 +816,7 @@ msgstr "F9"
 #: keyevent.cpp
 msgctxt "VirtualKey"
 msgid "Forward"
-msgstr "快进"
+msgstr "Forward"
 
 #: keyevent.cpp
 msgctxt "VirtualKey"
@@ -836,82 +836,82 @@ msgstr "←"
 #: keyevent.cpp
 msgctxt "VirtualKey"
 msgid "NumPad*"
-msgstr "数字小键盘*"
+msgstr "小键盘 [*]"
 
 #: keyevent.cpp
 msgctxt "VirtualKey"
 msgid "NumPad+"
-msgstr "数字小键盘+"
+msgstr "小键盘 [+]"
 
 #: keyevent.cpp
 msgctxt "VirtualKey"
 msgid "NumPad-"
-msgstr "数字小键盘-"
+msgstr "小键盘 [-]"
 
 #: keyevent.cpp
 msgctxt "VirtualKey"
 msgid "NumPad."
-msgstr "数字小键盘."
+msgstr "小键盘 [.]"
 
 #: keyevent.cpp
 msgctxt "VirtualKey"
 msgid "NumPad/"
-msgstr "数字小键盘/"
+msgstr "小键盘 [/]"
 
 #: keyevent.cpp
 msgctxt "VirtualKey"
 msgid "NumPad0"
-msgstr "数字小键盘0"
+msgstr "小键盘 [0]"
 
 #: keyevent.cpp
 msgctxt "VirtualKey"
 msgid "NumPad1"
-msgstr "数字小键盘1"
+msgstr "小键盘 [1]"
 
 #: keyevent.cpp
 msgctxt "VirtualKey"
 msgid "NumPad2"
-msgstr "数字小键盘2"
+msgstr "小键盘 [2]"
 
 #: keyevent.cpp
 msgctxt "VirtualKey"
 msgid "NumPad3"
-msgstr "数字小键盘3"
+msgstr "小键盘 [3]"
 
 #: keyevent.cpp
 msgctxt "VirtualKey"
 msgid "NumPad4"
-msgstr "数字小键盘4"
+msgstr "小键盘 [4]"
 
 #: keyevent.cpp
 msgctxt "VirtualKey"
 msgid "NumPad5"
-msgstr "数字小键盘5"
+msgstr "小键盘 [5]"
 
 #: keyevent.cpp
 msgctxt "VirtualKey"
 msgid "NumPad6"
-msgstr "数字小键盘6"
+msgstr "小键盘 [6]"
 
 #: keyevent.cpp
 msgctxt "VirtualKey"
 msgid "NumPad7"
-msgstr "数字小键盘7"
+msgstr "小键盘 [7]"
 
 #: keyevent.cpp
 msgctxt "VirtualKey"
 msgid "NumPad8"
-msgstr "数字小键盘8"
+msgstr "小键盘 [8]"
 
 #: keyevent.cpp
 msgctxt "VirtualKey"
 msgid "NumPad9"
-msgstr "数字小键盘9"
+msgstr "小键盘 [9]"
 
 #: keyevent.cpp
 msgctxt "VirtualKey"
 msgid "Option"
-msgstr "Opt"
+msgstr "Option"
 
 #: keyevent.cpp
 msgctxt "VirtualKey"
@@ -926,27 +926,27 @@ msgstr "Page Up"
 #: keyevent.cpp
 msgctxt "VirtualKey"
 msgid "Pause"
-msgstr "暂停"
+msgstr "Pause"
 
 #: keyevent.cpp
 msgctxt "VirtualKey"
 msgid "Play Pause"
-msgstr "播放暂停"
+msgstr "Play Pause"
 
 #: keyevent.cpp
 msgctxt "VirtualKey"
 msgid "Record"
-msgstr "录音"
+msgstr "Record"
 
 #: keyevent.cpp
 msgctxt "VirtualKey"
 msgid "Return"
-msgstr "返回"
+msgstr "Return"
 
 #: keyevent.cpp
 msgctxt "VirtualKey"
 msgid "Rewind"
-msgstr "快退"
+msgstr "Rewind"
 
 #: keyevent.cpp
 msgctxt "VirtualKey"
@@ -966,7 +966,7 @@ msgstr "Space"
 #: keyevent.cpp
 msgctxt "VirtualKey"
 msgid "Stop"
-msgstr "停止"
+msgstr "Stop"
 
 #: keyevent.cpp
 msgctxt "VirtualKey"
@@ -981,17 +981,17 @@ msgstr "↑"
 #: keyevent.cpp
 msgctxt "VirtualKey"
 msgid "Volume Down"
-msgstr "降低音量"
+msgstr "Volume Down"
 
 #: keyevent.cpp
 msgctxt "VirtualKey"
 msgid "Volume Mute"
-msgstr "音量静音"
+msgstr "Volume Mute"
 
 #: keyevent.cpp
 msgctxt "VirtualKey"
 msgid "Volume Up"
-msgstr "提高音量"
+msgstr "Volume Up"
 
 #: keyevent.cpp
 msgctxt "VirtualKey"

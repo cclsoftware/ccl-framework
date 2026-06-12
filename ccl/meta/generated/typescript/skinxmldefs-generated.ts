@@ -89,12 +89,15 @@ export const TAG_FONTRESOURCE = "FontResource";
 export const TAG_COLORSCHEME = "ColorScheme";
 export const TAG_COLORSCHEMECOLOR = "ColorScheme.Color";
 export const TAG_SHAPECOLORMAPPING = "ShapeColorMapping";
+export const TAG_BLOCKCONTENT = "BlockContent";
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 // Skin XML Tags / Visual Styles
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
+export const TAG_STYLEDATA = "StyleData";
 export const TAG_STYLE = "Style";
+export const TAG_STYLECONDITION = "StyleCondition";
 export const TAG_STYLEALIAS = "StyleAlias";
 export const TAG_THEMESTYLE = "ThemeElements";
 export const TAG_FONT = "Font";
@@ -175,6 +178,7 @@ export const TAG_DROPBOX = "DropBox";
 export const TAG_WEBVIEW = "WebView";
 export const TAG_COMMANDBARVIEW = "CommandBarView";
 export const TAG_SCROLLPICKER = "ScrollPicker";
+export const TAG_BLOCKVIEW = "BlockView";
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 // Skin XML Tags / Interactive
@@ -201,6 +205,7 @@ export const TAG_LINE = "Line";
 export const TAG_RECTSHAPE = "Rectangle";
 export const TAG_TRIANGLE = "Triangle";
 export const TAG_ELLIPSE = "Ellipse";
+export const TAG_GRAPHIC = "Graphic";
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 // Skin XML Tags / 3D
@@ -230,6 +235,7 @@ export const ATTR_COMMENT = "comment";
 export const ATTR_URL = "url";
 export const ATTR_TARGET = "target";
 export const ATTR_SOURCE = "source";
+export const ATTR_DESTINATION = "destination";
 export const ATTR_CONTROLLER = "controller";
 export const ATTR_PROPERTY = "property";
 export const ATTR_PARAMETER = "parameter";
@@ -270,6 +276,8 @@ export const ATTR_ENDCOLOR = "endcolor";
 export const ATTR_STYLES = "styles";
 export const ATTR_FACTOR = "factor";
 export const ATTR_FACTORS = "factors";
+export const ATTR_TRANSLATED = "translated";
+export const ATTR_DEFINES = "defines";
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 // Skin XML Attributes / Animation
@@ -355,7 +363,6 @@ export const ATTR_WINDOWSTYLE = "windowstyle";
 export const ATTR_STORABLE = "storable";
 export const ATTR_DIALOGBUTTONS = "buttons";
 export const ATTR_FIRSTFOCUS = "firstfocus";
-export const ATTR_IMAGENAME = "image";
 export const ATTR_POPUP = "popup";
 export const ATTR_POPUPSTYLE = "popupstyle";
 export const ATTR_CMDCATEGORY = "command.category";

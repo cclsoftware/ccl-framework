@@ -19,7 +19,9 @@
 #ifndef _ccl_itextbuilder_h
 #define _ccl_itextbuilder_h
 
-#include "ccl/public/text/cclstring.h"
+#include "ccl/public/text/textformatting.h"
+
+#include "ccl/public/base/variant.h"
 
 namespace CCL {
 
@@ -29,194 +31,257 @@ interface ITextTable;
 @{ */
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
-// Text Builder Definitions
+// Text Fragments used with ITextBuilder and TextBlock
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 namespace Text 
 {
-
-	/** Heading level. */
-	enum HeadingLevels
+	/** Basic text fragment. */
+	struct Fragment
 	{
-		kH1 = 1,
-		kH2,
-		kH3
-	};
-
-	/** Text decoration. */
-	enum Decorations
-	{
-		kBold = 1<<0,
-		kItalic = 1<<1,
-		kUnderline = 1<<2
-	};
-
-	/** List type. */
-	enum ListTypes
-	{
-		kOrdered,
-		kUnordered
-	};
-
-	/** Text chunk type. */
-	enum ChunkTypes
-	{
-		kPlainText,
-		kLineBreak,
-		kHeading,
-		kDecoration,
-		kAnchor,
-		kLink,
-		kURL,
-		kParagraph,
-		kListItem,
-		kListBegin,
-		kListEnd,
-		kTable,
-		kHorizontalLine,
-		
-		kLastChunk = 1000
-	};
-
-	/** Basic text chunk. */
-	struct Chunk
-	{
-		int chunkType;
+		TextNodeType nodeType;
 		String content;
 		tbool encode;
+		Variant argument;
 
-		Chunk (int chunkType, StringRef content, bool encode)
-		: chunkType (chunkType),
+		Fragment (TextNodeType nodeType, StringRef content, bool encode = true)
+		: nodeType (nodeType),
 		  content (content),
 		  encode (encode)
 		{}
 	};
 
-	/** Plain text. */
-	struct Plain: Chunk
+	/** Heading. */
+	struct Heading: Fragment
 	{
-		Plain (StringRef content, bool encode = true)
-		: Chunk (kPlainText, content, encode)
-		{}
-	};
-
-	/** Line break. */
-	struct Break: Chunk
-	{
-		Break ()
-		: Chunk (kLineBreak, nullptr, false)
-		{}
-	};
-
-	/** Horizontal Line. */
-	struct HorizontalLine: Chunk
-	{
-		HorizontalLine ()
-		: Chunk (kHorizontalLine, nullptr, false)
-		{}
-	};
-
-	/** Heading chunk. */
-	struct Heading: Chunk
-	{
-		int level;
-
 		Heading (int level, StringRef content, bool encode = true)
-		: Chunk (kHeading, content, encode),
-		  level (level)
-		{}
-	};
-
-	/** Decoration chunk. */
-	struct Decoration: Chunk
-	{
-		int decoration;
-
-		Decoration (int decoration, StringRef content, bool encode = true)
-		: Chunk (kDecoration, content, encode),
-		  decoration (decoration)
-		{}
-	};
-
-	/** Anchor definition. */
-	struct Anchor: Chunk
-	{
-		String name;
-
-		Anchor (StringRef name)
-		: Chunk (kAnchor, nullptr, false),
-		  name (name)
-		{}
-	};
-
-	/** Link to local anchor. */
-	struct Link: Chunk
-	{
-		String anchorName;
-
-		Link (StringRef anchorName, StringRef content, bool encode = true)
-		: Chunk (kLink, content, encode),
-		  anchorName (anchorName)
-		{}
-	};
-
-	/** Link to URL. */
-	struct URL: Chunk
-	{
-		String url;
-
-		URL (StringRef url, StringRef content, bool encode = true)
-		: Chunk (kURL, content, encode),
-		  url (url)
-		{}
+		: Fragment (kHeading, content, encode)
+		{
+			argument = level;
+		}
 	};
 
 	/** Paragraph. */
-	struct Paragraph: Chunk
+	struct Paragraph: Fragment
 	{
 		Paragraph (StringRef content, bool encode = true)
-		: Chunk (kParagraph, content, encode)
+		: Fragment (kParagraph, content, encode)
+		{}
+	};
+
+	/** Block quote. */
+	struct BlockQuote: Fragment
+	{
+		BlockQuote (StringRef content, bool encode = true)
+		: Fragment (kBlockQuote, content, encode)
 		{}
 	};
 
 	/** List item. */
-	struct ListItem: Chunk
+	struct ListItem: Fragment
 	{
-		int listType;
-
-		ListItem (int listType, StringRef content, bool encode = true)
-		: Chunk (kListItem, content, encode),
-		  listType (listType) 
-		{}
+		ListItem (TextListType listType, StringRef content, bool encode = true)
+		: Fragment (kListItem, content, encode)
+		{
+			argument = listType;
+		}
 	};
 
 	/** List begin. */
 	struct ListBegin: ListItem
 	{
-		ListBegin (int listType)
+		ListBegin (TextListType listType)
 		: ListItem (listType, nullptr, false)
-		{ chunkType = kListBegin; }
+		{
+			nodeType = kListBegin; 
+		}
 	};
 
 	/** List end. */
 	struct ListEnd: ListItem
 	{
-		ListEnd (int listType)
+		ListEnd (TextListType listType)
 		: ListItem (listType, nullptr, false)
-		{ chunkType = kListEnd; }
+		{
+			nodeType = kListEnd; 
+		}
 	};
 
 	/** Table. */
-	struct Table: Chunk
+	struct Table: Fragment
 	{
-		ITextTable* table;
-
 		Table (ITextTable* table)
-		: Chunk (kTable, nullptr, false),
-		  table (table)
+		: Fragment (kTable, nullptr, false)
+		{
+			argument.takeShared (reinterpret_cast<IUnknown*> (table));
+		}
+	};
+
+	/** Code block. */
+	struct CodeBlock: Fragment
+	{
+		CodeBlock (StringRef content, bool encode = true)
+		: Fragment (kCodeBlock, content, encode)
 		{}
 	};
+
+	/** Horizontal line. */
+	struct HorizontalLine: Fragment
+	{
+		HorizontalLine ()
+		: Fragment (kHorizontalLine, nullptr, false)
+		{}
+	};
+
+	/** Plain text. */
+	struct Plain: Fragment
+	{
+		Plain (StringRef content, bool encode = true)
+		: Fragment (kPlainText, content, encode)
+		{}
+	};
+
+	/** Soft break. */
+	struct SoftBreak: Fragment
+	{
+		SoftBreak ()
+		: Fragment (kSoftBreak, nullptr, false)
+		{}
+	};
+
+	/** Line break. */
+	struct LineBreak: Fragment
+	{
+		LineBreak ()
+		: Fragment (kLineBreak, nullptr, false)
+		{}
+	};
+
+	/** Anchor definition. */
+	struct Anchor: Fragment
+	{
+		Anchor (StringRef name)
+		: Fragment (kAnchor, nullptr, false)
+		{
+			argument = name;
+			argument.share ();
+		}
+	};
+
+	/** Link to local anchor. */
+	struct FragmentLink: Fragment
+	{
+		FragmentLink (StringRef anchorName, StringRef content, bool encode = true)
+		: Fragment (kFragmentLink, content, encode)
+		{
+			argument = anchorName;
+			argument.share ();
+		}
+	};
+
+	/** External link. */
+	struct Link: Fragment
+	{
+		Link (StringRef url, StringRef content, bool encode = true)
+		: Fragment (kLink, content, encode)
+		{
+			argument = url;
+			argument.share ();
+		}
+	};
+
+	/** Emphasis. */
+	struct Emphasis: Fragment
+	{
+		Emphasis (StringRef content, bool encode = true)
+		: Fragment (kEmphasis, content, encode)
+		{}
+	};
+
+	/** Strong. */
+	struct Strong: Fragment
+	{
+		Strong (StringRef content, bool encode = true)
+		: Fragment (kStrong, content, encode)
+		{}
+	};
+
+	/** Bold. */
+	struct Bold: Fragment
+	{
+		Bold (StringRef content, bool encode = true)
+		: Fragment (kBold, content, encode)
+		{}
+	};
+
+	/** Italic. */
+	struct Italic: Fragment
+	{
+		Italic (StringRef content, bool encode = true)
+		: Fragment (kItalic, content, encode)
+		{}
+	};
+
+	/** Underline. */
+	struct Underline: Fragment
+	{
+		Underline (StringRef content, bool encode = true)
+		: Fragment (kUnderline, content, encode)
+		{}
+	};
+
+	/** Superscript. */
+	struct Superscript: Fragment
+	{
+		Superscript (StringRef content, bool encode = true)
+		: Fragment (kSuperscript, content, encode)
+		{}
+	};
+
+	/** Subscript. */
+	struct Subscript: Fragment
+	{
+		Subscript (StringRef content, bool encode = true)
+		: Fragment (kSubscript, content, encode)
+		{}
+	};
+
+	/** Font color. */
+	struct FontColor: Fragment
+	{
+		FontColor (StringRef content, StringRef color, bool encode = true)
+		: Fragment (kFontColor, content, encode)
+		{
+			argument = color;
+			argument.share ();
+		}
+	};
+
+	/** Font size. */
+	struct FontSize: Fragment
+	{
+		FontSize (StringRef content, StringRef size, bool encode = true)
+		: Fragment (kFontSize, content, encode)
+		{
+			argument = size;
+			argument.share ();
+		}
+	};
+
+	/** Style span. */
+	struct StyleSpan: Fragment
+	{
+		StyleSpan (StringRef content, StringRef styleName, bool encode = true)
+		: Fragment (kStyleSpan, content, encode)
+		{
+			argument = styleName;
+			argument.share ();
+		}
+	};
 }
+
+/** Text Fragment Definition. */
+typedef Text::Fragment TextFragment;
 
 /**	@} */
 
@@ -227,11 +292,11 @@ namespace Text
 
 interface ITextBuilder: IUnknown
 {
-	/** Create empty table. */
-	virtual ITextTable* CCL_API createTable () = 0;
+	/** Print given text fragment to string. */
+	virtual tresult CCL_API printFragment (String& result, const TextFragment& fragment) = 0;
 
-	/** Print given chunk to string. */
-	virtual tresult CCL_API printChunk (String& result, const Text::Chunk& chunk) = 0;
+	/** Create table (optional, if supported by underlying format). */
+	virtual ITextTable* CCL_API createTable () = 0;
 
 	DECLARE_IID (ITextBuilder)
 };
@@ -249,7 +314,7 @@ interface ITextTable: IUnknown
 	interface ICell: IUnknown
 	{
 		/** Set cell content. */
-		virtual void CCL_API setContent (const Text::Chunk& chunk) = 0;
+		virtual void CCL_API setContent (const TextFragment& fragment) = 0;
 
 		/** Get cell content. */
 		virtual StringRef CCL_API getContent () const = 0;
@@ -275,7 +340,7 @@ interface ITextTable: IUnknown
 	virtual void CCL_API getSize (int& rowCount, int& columnCount) const = 0;
 
 	/** Set title of table. */
-	virtual void CCL_API setTitle (const Text::Chunk& chunk) = 0;
+	virtual void CCL_API setTitle (const TextFragment& fragment) = 0;
 
 	/** Get title of table. */
 	virtual StringRef CCL_API getTitle () const = 0;
@@ -300,14 +365,14 @@ DEFINE_IID (ITextTable::IRow, 0x70ef9eed, 0xb02, 0x4943, 0x93, 0x7e, 0x9e, 0xc, 
 class TextBlock
 {
 public:
-	TextBlock (ITextBuilder* builder)
+	TextBlock (ITextBuilder* builder) ///< takes ownership!
 	: builder (builder)
 	{}
 
-	TextBlock& operator << (const Text::Chunk& chunk)
+	TextBlock& operator << (const TextFragment& fragment)
 	{
 		String result;
-		builder->printChunk (result, chunk);
+		builder->printFragment (result, fragment);
 		text.append (result);
 		return *this;
 	}
@@ -318,6 +383,7 @@ public:
 		return *this;
 	}
 
+	StringRef asString () const { return text; }
 	operator StringRef () const { return text; }
 	
 	ITextBuilder* getBuilder ()  { return builder; }
@@ -325,7 +391,7 @@ public:
 
 protected:
 	String text;
-	SharedPtr<ITextBuilder> builder;
+	AutoPtr<ITextBuilder> builder;
 };
 
 namespace Text

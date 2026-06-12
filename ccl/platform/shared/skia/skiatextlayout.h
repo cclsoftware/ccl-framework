@@ -115,6 +115,7 @@ public:
 	tresult CCL_API construct (StringRef text, CoordF width, CoordF height, FontRef font, LineMode lineMode, TextFormatRef format) override;
 	tresult CCL_API resize (Coord width, Coord height) override;
 	tresult CCL_API resize (CoordF width, CoordF height) override;
+	tresult CCL_API setFontFace (const Range& range, StringRef faceName) override;
 	tresult CCL_API setFontStyle (const Range& range, int style, tbool state) override;
 	tresult CCL_API setFontSize (const Range& range, float size) override;
 	tresult CCL_API setSpacing (const Range& range, float spacing) override;
@@ -123,8 +124,8 @@ public:
 	tresult CCL_API setBaselineOffset (const Range& range, float offset) override;
 	tresult CCL_API setSuperscript (const Range& range) override;
 	tresult CCL_API setSubscript (const Range& range) override;
-	tresult CCL_API getBounds (Rect& bounds, int flags = 0) const override;
-	tresult CCL_API getBounds (RectF& bounds, int flags = 0) const override;
+	tresult CCL_API getBounds (Rect& bounds) const override;
+	tresult CCL_API getBounds (RectF& bounds) const override;
 	tresult CCL_API getImageBounds (RectF& bounds) const override;
 	tresult CCL_API getBaselineOffset (PointF& offset) const override;
 	tresult CCL_API hitTest (int& textIndex, PointF& position) const override;
@@ -192,6 +193,7 @@ protected:
 	template<typename StyleFunction>
 	void insertStyle (const Range& range, StyleFunction styleFunction);
 
+	void setFontFace (skia::textlayout::TextStyle& style, StringRef familyName);
 	void setFontStyle (skia::textlayout::TextStyle& style, int mask, tbool state);
 	void setFontSize (skia::textlayout::TextStyle& style, float size);
 	void setSpacing (skia::textlayout::TextStyle& style, float spacing);

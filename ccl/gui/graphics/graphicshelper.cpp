@@ -401,33 +401,33 @@ const Font& CCL_API GraphicsHelper::Font_getDefaultFont ()
 	#if CCL_PLATFORM_WINDOWS
 	static const Font defaultFont ("MS Shell Dlg", 12, Font::kNormal);
 	#elif CCL_PLATFORM_IOS
-	static const Font defaultFont ("Helvetica Neue", 12, Font::kNormal);
+	static const Font defaultFont ("System Font", 12, Font::kNormal);
 	#elif CCL_PLATFORM_ANDROID
 	static const Font defaultFont ("Roboto", 12, Font::kNormal);
 	#elif CCL_PLATFORM_LINUX
-	static const Font defaultFont ("sans", 12, Font::kNormal);
+	static const Font defaultFont ("sans-serif", 12, Font::kNormal);
 	#else // CCL_PLATFORM_MAC
-	static const Font defaultFont ("Helvetica", 12, Font::kNormal);
+	static const Font defaultFont ("System Font", 12, Font::kNormal);
 	#endif
 	return defaultFont;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void CCL_API GraphicsHelper::Font_measureString (Rect& size, StringRef text, const Font& font, int flags)
+void CCL_API GraphicsHelper::Font_measureString (Rect& size, StringRef text, const Font& font)
 {
 	AutoPtr<ITextLayout> layout = NativeGraphicsEngine::instance ().createTextLayout ();
 	layout->construct (text, kMaxCoord, kMaxCoord, font, ITextLayout::kSingleLine, TextFormat (Alignment::kLeftTop));
-	layout->getBounds (size, flags);
+	layout->getBounds (size);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void CCL_API GraphicsHelper::Font_measureString (RectF& size, StringRef text, const Font& font, int flags)
+void CCL_API GraphicsHelper::Font_measureString (RectF& size, StringRef text, const Font& font)
 {
 	AutoPtr<ITextLayout> layout = NativeGraphicsEngine::instance ().createTextLayout ();
 	layout->construct (text, (CoordF)kMaxCoord, (CoordF)kMaxCoord, font, ITextLayout::kSingleLine, TextFormat (Alignment::kLeftTop));
-	layout->getBounds (size, flags);
+	layout->getBounds (size);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////

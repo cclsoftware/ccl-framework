@@ -410,12 +410,12 @@ void AuthenticationSessionOperation::setState (State newState)
 	{
 		if(newState == kCanceled)
 			[session cancel];
-		if(newState >= kCompleted)
+		else if(newState >= kCompleted)
 		{
 			SystemShell::instance ().removeOperation (this);
 			deferDestruction (this); // this will release the internal ref count
 		}
-
-		AsyncOperation::setState (newState);
+		if(getState () < kCompleted)
+			AsyncOperation::setState (newState);
 	}
 }

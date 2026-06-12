@@ -140,7 +140,7 @@ void CommandSaver::createText (TextBlock& block, StringRef title, VariantRef dat
 			t[rowIndex][0].setContent (Text::Plain (description.displayName));
 			
 			bool first = true;
-			TextBlock keyBlock (block.getBuilder ());
+			TextBlock keyBlock (return_shared (block.getBuilder ()));
 			IterForEachUnknown (command->newBindingIterator (), unk)
 				UnknownPtr<IKeyBinding> binding (unk);
 				ASSERT (binding)
@@ -152,7 +152,7 @@ void CommandSaver::createText (TextBlock& block, StringRef title, VariantRef dat
 					key.toString (keyString, true);
 
 					if(!first)
-						keyBlock << Text::Break ();
+						keyBlock << Text::LineBreak ();
 
 					keyBlock << Text::Plain (keyString);
 					first = false;

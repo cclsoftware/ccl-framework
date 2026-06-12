@@ -321,7 +321,7 @@ HFONT DWriteEngine::createGdiFont (FontRef font)
 	ComPtr<IDWriteFont> dwFont;
 	ComPtr<IDWriteTextFormat> dwFormat = createCachedTextFormatAndFont (dwFont, font);
 
-	LOGFONTW logFont = {0};
+	LOGFONTW logFont = {};
 	BOOL isSystemFont = FALSE;
 	gdiInterop->ConvertFontToLOGFONT (dwFont, &logFont, &isSystemFont);
 
@@ -383,7 +383,7 @@ IFontTable* DWriteEngine::collectFonts (int flags)
 						if(font)
 						{
 							DWRITE_FONT_SIMULATIONS simulations = font->GetSimulations ();
-							if(simulations == 0 || collectSimulatedFonts) // check if simulated fonts should be collected or only 'real' fonts
+							if(simulations == DWRITE_FONT_SIMULATIONS_NONE || collectSimulatedFonts) // check if simulated fonts should be collected or only 'real' fonts
 							{
 								bool isSymbolic = font->IsSymbolFont ();
 								if(isSymbolic == false || collectSymbolicFonts) 
@@ -819,9 +819,23 @@ tresult CCL_API DWTextLayout::resize (CoordF width, CoordF height)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
+tresult CCL_API DWTextLayout::setFontFace (const Range& range, StringRef faceName)
+{
+	ASSERT (layout.isValid ())
+	if(!layout)
+		return kResultUnexpected;
+
+	DWRITE_TEXT_RANGE textRange = {(UINT32)range.start, (UINT32)range.length};
+
+	layout->SetFontFamilyName (StringChars (faceName), textRange);
+	return kResultOk;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
 tresult CCL_API DWTextLayout::setFontStyle (const Range& range, int style, tbool state)
 {
-	ASSERT (layout != 0)
+	ASSERT (layout.isValid ())
 	if(!layout)
 		return kResultUnexpected;
 
@@ -856,7 +870,7 @@ tresult CCL_API DWTextLayout::setFontStyle (const Range& range, int style, tbool
 
 tresult CCL_API DWTextLayout::setFontSize (const Range& range, float size)
 {
-	ASSERT (layout != 0)
+	ASSERT (layout.isValid ())
 	if(!layout)
 		return kResultUnexpected;
 
@@ -943,57 +957,56 @@ TPoint<TCoord> DWTextLayout::getTextPosition (const TRect<TCoord>& textBounds) c
 	TPoint<TCoord> textPos;
 	switch(alignment.getAlignH ())
 	{
-		case Alignment::kHCenter :
-			textPos.x = (TCoord(layoutSize.x) - textBounds.getWidth ()) / 2;
-			break;
-		case Alignment::kRight :
-			textPos.x = TCoord(layoutSize.x) - textBounds.getWidth ();
-			break;
-		default : // left aligned
-			break;
+	case Alignment::kHCenter :
+		textPos.x = (TCoord(layoutSize.x) - textBounds.getWidth ()) / 2;
+		break;
+
+	case Alignment::kRight :
+		textPos.x = TCoord(layoutSize.x) - textBounds.getWidth ();
+		break;
+
+	default : // left aligned
+		break;
 	}
 
 	switch(alignment.getAlignV ())
 	{
-		case Alignment::kVCenter :
-			textPos.y = (TCoord(layoutSize.y) - textBounds.getHeight ()) / 2;
-			break;
-		case Alignment::kBottom :
-			textPos.y = (TCoord(layoutSize.y) - textBounds.getHeight ());
-			break;
+	case Alignment::kVCenter :
+		textPos.y = (TCoord(layoutSize.y) - textBounds.getHeight ()) / 2;
+		break;
 
-		default : // top aligned
-			break;
+	case Alignment::kBottom :
+		textPos.y = (TCoord(layoutSize.y) - textBounds.getHeight ());
+		break;
+
+	default : // top aligned
+		break;
 	}
 	return textPos;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-tresult CCL_API DWTextLayout::getBounds (Rect& bounds, int flags) const
+tresult CCL_API DWTextLayout::getBounds (Rect& bounds) const
 {
 	ASSERT (layout.isValid ())
 	if(!layout)
 		return kResultUnexpected;
 
 	DWInterop::getTextMetrics (bounds, layout);
-	if(!(flags & kNoMargin))
-		DWInterop::adjustTextMetrics (bounds);
 	bounds.offset (getTextPosition (bounds));
 	return kResultOk;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-tresult CCL_API DWTextLayout::getBounds (RectF& bounds, int flags) const
+tresult CCL_API DWTextLayout::getBounds (RectF& bounds) const
 {
 	ASSERT (layout.isValid ())
 	if(!layout)
 		return kResultUnexpected;
 
 	DWInterop::getTextMetrics (bounds, layout);
-	if(!(flags & kNoMargin))
-		DWInterop::adjustTextMetrics (bounds);
 	bounds.offset (getTextPosition (bounds));
 	return kResultOk;
 }
@@ -1013,7 +1026,7 @@ tresult CCL_API DWTextLayout::getImageBounds (RectF& bounds) const
 	layout->SetMaxWidth (measureSize.x);
 	layout->SetMaxHeight (measureSize.y);
 
-	DWRITE_OVERHANG_METRICS overhangMetrics = { 0 };
+	DWRITE_OVERHANG_METRICS overhangMetrics = {};
 	HRESULT hr = layout->GetOverhangMetrics (&overhangMetrics);
 	bounds (-overhangMetrics.left, -overhangMetrics.top, measureSize.x + overhangMetrics.right, measureSize.y + overhangMetrics.bottom);
 
@@ -1166,7 +1179,7 @@ public:
 	{
 		*hasCurrentFile = FALSE;
 		HRESULT hr = S_OK;
-		if(factory != 0)
+		if(factory.isValid ())
 		{
 			if(currentFileIndex < fontCollection->fontFiles.count ())
 			{
@@ -1475,7 +1488,7 @@ void DWFontManager::loadPendingCollection ()
 	{
 		int key = pendingCollection->getKey ();
 		factory->CreateCustomFontCollection (this, (void*)&key, sizeof(int), pendingCollection->collection);
-		ASSERT (pendingCollection->collection != 0)
+		ASSERT (pendingCollection->collection.isValid ())
 
 		if(pendingCollection->collection)
 		{
@@ -1500,7 +1513,7 @@ void DWFontManager::loadPendingCollection ()
 					{
 						ComPtr<IDWriteFont> font;
 						fontFamily->GetFont (fontIndex, font);
-						if(font && font->GetSimulations () == 0)
+						if(font && font->GetSimulations () == DWRITE_FONT_SIMULATIONS_NONE)
 						{
 							ComPtr<IDWriteLocalizedStrings> faceNames;
 							font->GetFaceNames (faceNames);					
@@ -1525,7 +1538,7 @@ void DWFontManager::loadPendingCollection ()
 			}
 		}
 
-		if(pendingCollection->collection == 0)
+		if(pendingCollection->collection.isValid () == false)
 		{
 			int index = fontCollections.index (AutoPtr<FontCollection> ().share (pendingCollection));
 			if(index >= 0)

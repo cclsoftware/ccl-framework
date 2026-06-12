@@ -17,11 +17,15 @@ ccl_list_append_once (cclnet_apple_frameworks
 	${SECURITY_LIBRARY}
 )
 
-set_target_properties (${cclnet} PROPERTIES
-	FRAMEWORK TRUE
-)
+ccl_check_imported (${cclnet} imported)
+if (NOT imported)
+	set_target_properties (${cclnet} PROPERTIES
+		FRAMEWORK TRUE
+	)
 
-if (NOT ${CCL_STATIC_ONLY})
-	target_link_libraries (${cclnet} PUBLIC ${cclnet_apple_frameworks})
+	if (NOT ${CCL_STATIC_ONLY})
+		target_link_libraries (${cclnet} PUBLIC ${cclnet_apple_frameworks})
+	endif ()
 endif ()
+
 ccl_list_append_once (CCL_STATIC_LINK_LIBRARIES ${cclnet_apple_frameworks})

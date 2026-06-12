@@ -71,6 +71,7 @@ public:
 	CustomizationPreset* getPresetByID (StringRef id) const;
 	CustomizationPreset* getSelectedPreset () const;
 	CustomizationPreset* getLastUserSelectedPreset () const;
+	CustomizationPreset* getWritablePreset ();
 	int countPresets () const;
 	int countUserPresets () const;
 	bool selectPreset (StringRef name, bool userAction = true);
@@ -83,6 +84,8 @@ public:
 	CustomizationPreset* getFactoryPreset (StringRef name) const;
 
 	void setDefaultVisible (StringID key, bool visible);
+
+	DECLARE_STRINGID_MEMBER (kPresetRestored)
 
 	// Component
 	tresult CCL_API initialize (IUnknown* context) override;
@@ -144,6 +147,9 @@ public:
 	const Attributes& getAttributes () const;
 	Attributes& getAttributes ();
 
+	const Attributes& getAuxiliaryAttributes () const;
+	Attributes& getAuxiliaryAttributes ();
+
 	// Object
 	bool load (const Storage& storage) override;
 	bool save (const Storage& storage) const override;
@@ -151,6 +157,7 @@ public:
 
 private:
 	PersistentAttributes attributes;
+	PersistentAttributes auxiliaryAttributes;
 };
 
 //************************************************************************************************
@@ -185,6 +192,12 @@ inline const Attributes& CustomizationPreset::getAttributes () const
 
 inline Attributes& CustomizationPreset::getAttributes ()
 { return attributes; }
+
+inline const Attributes& CustomizationPreset::getAuxiliaryAttributes () const
+{ return auxiliaryAttributes; }
+
+inline Attributes& CustomizationPreset::getAuxiliaryAttributes ()
+{ return auxiliaryAttributes; }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 

@@ -133,6 +133,8 @@ protected:
 	bool avoidScrolling;	///< avoid scrolling in getSizeInfo by adding the required extraHeight
 	Coord extraHeight;		///< temporary extra height to avoid slipping away of a collapsed item
 	int editColumn;
+	bool firstLevelExpandable;
+	bool expandCheckDone;
 	DECLARE_STRINGID_MEMBER (kUpdateSize)
 
 	struct TDrawState
@@ -170,6 +172,7 @@ protected:
 	void getActiveRect (Rect& activeRect, RectRef itemRect, TreeItem* item);
 	bool getColumnRange (Coord& left, Coord& right, int& columnIndex, Coord x);
 	bool isExpandHit (RectRef columnRect, TreeItem* item, PointRef where);
+	void checkFirstLevelExpand ();
 
 	bool drawItem (TreeItem* item, TDrawState& state);
 	bool drawSubItems (TreeItem* item, TDrawState& state);

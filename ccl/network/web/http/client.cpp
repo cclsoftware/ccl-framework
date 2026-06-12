@@ -798,12 +798,11 @@ bool Transaction::receiveResponse (int& httpStatus)
 		if(requestedStart != rangeStart || requestedEnd != rangeEnd)
 		{
 			if(requestedStart > 0 && rangeStart == 0)
-				dstStream->seek (0, IStream::kSeekSet); // rewind, because servers sends all the data
-			// TODO treat more issues
+				dstStream->rewind (); // rewind, because servers sends all the data
 		}
 		
-		if(UnknownPtr<IObserver> progressObserver = progress)
-			progressObserver->notify (nullptr, Message (Meta::kContentLengthNotify, totalLength, response.getWebHeaders ()));
+		receiveMetaData (dstStream, progress, totalLength, response.getHeaders ());
+
 		if(rangeStart > 0 && progress)
 		{
 			ProgressOffsetter offsetter (progress, totalLength, rangeStart);
@@ -823,6 +822,8 @@ bool Transaction::receiveResponse (int& httpStatus)
 		else
 			copied = true; // no content???
 	}
+
+	receiveMetaData (dstStream, progress, outContent.getLength (), response.getHeaders (), kEnd);
 
 	outContent.setType (response.getHeaders ().getContentType ());
 	return copied;
@@ -874,25 +875,26 @@ bool Transaction::receiveChunked (IStream& dstStream, int64& length, IProgressNo
 		if(chunkSize == 0) // end of chunks
 			break;
 
+		length += chunkSize;
+
+		// make sure to inform about length/headers before data
+		receiveMetaData (&dstStream, progress, length, request.getResponse ().getHeaders ());
+
 		bool copied = receiveData (dstStream, chunkSize);
 		if(!copied)
 			return false;
-
-		length += chunkSize;
 
 		if(progress)
 		{
 			if(progress->isCanceled ())
 				return false;
 			progress->updateAnimated ();
-
-			if(UnknownPtr<IObserver> progressObserver = progress)
-				progressObserver->notify (nullptr, Message (Meta::kContentLengthNotify, length, request.getResponse ().getWebHeaders ()));
 		}
 
 		line.empty ();
 		if(!s.readLine (line))
 			return false;
+
 		ASSERT (line.isEmpty () == true)
 	}
 

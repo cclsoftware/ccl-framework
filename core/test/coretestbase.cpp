@@ -19,7 +19,6 @@
 #include "coretestbase.h"
 
 #include "core/public/corestringbuffer.h"
-#include "core/system/coredebug.h"
 
 using namespace Core;
 using namespace Test;
@@ -30,8 +29,10 @@ using namespace Test;
 
 bool TestBase::run (ITestContext& testContext)
 {
-	CORE_TEST_FAILED ("This is the base class for real tests.")
-	return false;
+	setUp (testContext);
+	testBody (testContext);
+	tearDown (testContext);
+	return true;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -53,9 +54,9 @@ void TestRegistry::runAllTests (ITestContext& testContext)
 {
 	for(int i = 0; i < tests.count (); ++i)
 	{
-		CString32 runningMessage ("Running Test: ");
-		runningMessage.append (tests[i]->getName ());
-		CORE_TEST_MESSAGE (runningMessage.str ());
+		CString128 msg ("Running Test: ");
+		msg.append (tests[i]->getName ());
+		CORE_TEST_MESSAGE (msg.str ())
 		tests[i]->run (testContext);
 	}
 }

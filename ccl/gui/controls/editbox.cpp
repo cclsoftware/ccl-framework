@@ -228,7 +228,7 @@ END_STYLEDEF
 
 bool EditBox::inKeyDown = false;
 int EditBox::editCount = 0;
-bool EditBox::isAnyEdtiting ()
+bool EditBox::isAnyEditing ()
 {
 	return editCount > 0;
 }
@@ -1499,7 +1499,7 @@ void EditBox::insertTextInternal (StringRef text, int actionID)
 
 	deleteSelectionInternal (actionID);
 	TransactionScope scope (undoHandler, UndoHandler::ActionID(actionID));
-	int insertedCharacters = textModel->insertText (caretTextPosition, text, undoHandler->isUndoActive () ? 0 : ITextModel::kMergeUndo);
+	int insertedCharacters = textModel->insertText (caretTextPosition, text, undoHandler->isUndoActive () ? 0 : IMutableTextModel::kMergeUndo);
 	setCaretPosition (caretTextPosition + insertedCharacters);
 	setSelectionPosition (caretTextPosition);
 }
@@ -1532,9 +1532,9 @@ int EditBox::removeTextInternal (int textPosition, int length, int actionID)
 
 	TransactionScope scope (undoHandler, UndoHandler::ActionID(actionID));
 
-	ITextModel::EditOptions options = 0;
+	IMutableTextModel::EditOptions options = 0;
 	if(!undoHandler->isUndoActive ())
-		options |= ITextModel::kMergeUndo;
+		options |= IMutableTextModel::kMergeUndo;
 
 	int removedCharacters = textModel->removeText (textPosition, length, options);
 	if(selectionTextPosition > caretTextPosition)

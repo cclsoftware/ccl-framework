@@ -1,8 +1,5 @@
 include_guard (DIRECTORY)
 
-find_package (uninstaller)
-ccl_add_dependencies (apptemplate uninstaller)
-
 list (APPEND apptemplate_ccl_sources
 	${CCL_DIR}/platform/win/winmain.cpp
 )

@@ -121,6 +121,24 @@ interface IWebResponse: IUnknown
 
 DEFINE_IID (IWebResponse, 0x219096f3, 0x4a8a, 0x43c7, 0xae, 0xab, 0x5a, 0x83, 0x74, 0xce, 0xa0, 0xc6)
 
+//************************************************************************************************
+// IWebResponseSink
+/** Interface for low-level response notifications. */
+//************************************************************************************************
+
+interface IWebResponseSink: IUnknown
+{
+	/** Headers have been received and/or content length has been updated (chunked transfer). */
+	virtual void CCL_API onHeadersUpdated (int64 contentLength, IWebHeaderCollection& headers) = 0;
+
+	/** Response is complete. */
+	virtual void CCL_API onResponseCompleted () = 0;
+	
+	DECLARE_IID (IWebResponseSink)
+};
+
+DEFINE_IID (IWebResponseSink, 0x696d9d78, 0x3e25, 0x4f73, 0xaa, 0xd3, 0x70, 0x76, 0xce, 0xc5, 0x76, 0x60)
+
 } // namespace Web
 } // namespace CCL
 

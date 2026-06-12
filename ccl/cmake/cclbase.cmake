@@ -331,8 +331,10 @@ if (NOT TARGET ${cclbase})
 	target_compile_definitions (${cclbase} PRIVATE ${corelib_COMPILE_DEFINITIONS} PUBLIC "CCL_FRAMEWORK_DIRECTORY=\"${ccl_framework_dir}/\"")
 	target_link_libraries (${cclbase} INTERFACE corelib)
 	target_include_directories (${cclbase} INTERFACE "$<INSTALL_INTERFACE:${VENDOR_PUBLIC_HEADERS_DESTINATION}>")
-
-	if (CCL_SYSTEM_INSTALL)
+		
+	if (CCL_EXPORTS_PATH)
+		install (TARGETS ${cclbase} EXPORT ccl-targets FILE_SET HEADERS DESTINATION ${CCL_PUBLIC_HEADERS_DESTINATION} COMPONENT public_headers)
+	elseif (CCL_SYSTEM_INSTALL)
 		install (TARGETS ${cclbase} EXPORT ccl-targets DESTINATION "${CCL_STATIC_LIBRARY_DESTINATION}"
 									ARCHIVE DESTINATION "${CCL_STATIC_LIBRARY_DESTINATION}" COMPONENT prebuilt_libraries_${VENDOR_NATIVE_COMPONENT_SUFFIX}
 									FRAMEWORK DESTINATION "${CCL_STATIC_LIBRARY_DESTINATION}" COMPONENT prebuilt_libraries_${VENDOR_NATIVE_COMPONENT_SUFFIX}

@@ -67,15 +67,15 @@ class ObjectArrayIterator;
 #define LAMBDA_ARRAY_COMPARE(Type, lhs, rhs) \
 	LAMBDA_VECTOR_COMPARE (Type, lhs, rhs)
 
-#endif
+#endif // !DOXYGEN
 
 //************************************************************************************************
 // ObjectArray
 /** Container class for array of objects. \ingroup base_collect */
 //************************************************************************************************
 
-class ObjectArray:	public Container,
-					public Vector<Object*>
+class ObjectArray: public Container,
+				   public Vector<Object*>
 {
 public:
 	DECLARE_CLASS (ObjectArray, Container)

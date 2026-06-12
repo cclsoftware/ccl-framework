@@ -1,7 +1,7 @@
 //************************************************************************************************
 //
 // This file is part of Crystal Class Library (R)
-// Copyright (c) 2025 CCL Software Licensing GmbH.
+// Copyright (c) 2026 CCL Software Licensing GmbH.
 // All Rights Reserved.
 //
 // Licensed for use under either:
@@ -17,70 +17,43 @@
 //************************************************************************************************
 
 #include "ccl/gui/layout/flexboxlayout.h"
+#include "ccl/gui/layout/yogashared.h"
 
-#include "ccl/public/collections/map.h"
 #include "ccl/public/gui/framework/skinxmldefs.h"
-
-#include <yoga/Yoga.h>
 
 namespace CCL {
 
 //************************************************************************************************
-// YogaLayoutNode
+// YogaLayoutItem
 //************************************************************************************************
 
-class YogaLayoutNode: public FlexItem
+class YogaLayoutItem: public FlexLayoutItem,
+					  public YogaNode
 {
 public:
-	DECLARE_CLASS (YogaLayoutNode, FlexItem)
+	DECLARE_CLASS (YogaLayoutItem, FlexLayoutItem)
 	
-	YogaLayoutNode ();
-	YogaLayoutNode (View* view);
-	~YogaLayoutNode ();
+	YogaLayoutItem ();
+	YogaLayoutItem (View* view);
+	~YogaLayoutItem ();
 	
-	operator YGNodeRef () const;
-
-	void insert (int index, YogaLayoutNode* child);
-	void remove (YogaLayoutNode* child);
+	void insert (int index, YogaLayoutItem* child);
+	void remove (YogaLayoutItem* child);
 	int countChildren () const;
-	YogaLayoutNode* findChild (View* view) const;
-	const YogaLayoutNode& findRoot () const;
+	YogaLayoutItem* findChild (View* view) const;
+	YogaLayoutItem& findRoot () const;
 	bool isRoot () const;
 
-	void updateLayoutTree () const;
-	void calculatePreferredSize (Point& preferredSize) const;
-	void setSize (const Rect& size) const;
+	void updateLayoutTree ();
+	void calculatePreferredSize (Point& preferredSize);
+	void setSize (const Rect& size);
 	void onChildSized (View* childView, const Point& delta);
 	
 private:
-	Vector<YogaLayoutNode*> children;
-	YogaLayoutNode* parent;
-	YGNodeRef node;
+	Vector<YogaLayoutItem*> children;
+	YogaLayoutItem* parent;
 
-	void applyLayoutRecursively () const;
-	
-	void resetNodeWidth ();
-	void resetNodeHeight ();
-};
-
-//************************************************************************************************
-// YogaNodeDataAdapter
-//************************************************************************************************
-
-class YogaNodeDataAdapter
-{
-public:
-	YogaNodeDataAdapter (YGNodeRef node);
-	
-	void setContainerData (const FlexData& flexData, const FlexItemData& flexItemData) const;
-	void setItemData (const FlexItemData& flexItemData) const;
-	void applySizeLimits (const FlexItemData& flexItemData) const;
-	
-private:
-	YGNodeRef node;
-	
-	void applyNodeWidth (const FlexItemData& flexItemData) const;
-	void applyNodeHeight (const FlexItemData& flexItemData) const;
+	void applyLayoutRecursively ();
 };
 
 //************************************************************************************************
@@ -90,16 +63,13 @@ private:
 class YogaLayoutContext: public LayoutContext
 {
 public:
-	DECLARE_CLASS (YogaLayoutContext, LayoutContext)
+	DECLARE_CLASS_ABSTRACT (YogaLayoutContext, LayoutContext)
 	
 	YogaLayoutContext (LayoutView* parentView);
 	
-	PROPERTY_POINTER (YogaLayoutNode, node, Node)
+	PROPERTY_POINTER (YogaLayoutItem, yogaItem, YogaItem)
 
 	View* getView ();
-	
-private:
-	using LayoutContext::LayoutContext;
 };
 
 //************************************************************************************************
@@ -117,9 +87,9 @@ public:
 	LayoutItem* createItem (View* view = nullptr) override;
 	
 private:
-	// Try to retrieve a layout node from the provided view. This is successful, if the view is a
+	// Try to retrieve a layout item from the provided view. This is successful, if the view is a
 	// layoutView using a YogaLayout engine and used to build the layout tree.
-	static YogaLayoutNode* retrieveYogaLayoutNode (View* view);
+	static YogaLayoutItem* retrieveYogaLayoutItem (View* view);
 };
 
 //************************************************************************************************
@@ -129,7 +99,7 @@ private:
 class YogaLayoutAlgorithm: public LayoutAlgorithm
 {
 public:
-	YogaLayoutAlgorithm (FlexData& flexData, YogaLayoutContext* context, Layout* layout);
+	YogaLayoutAlgorithm (FlexContainerData& flexData, YogaLayoutContext* context, Layout* layout);
 	~YogaLayoutAlgorithm ();
 	
 	// LayoutAlgorithm
@@ -145,70 +115,11 @@ public:
 	void CCL_API notify (ISubject* subject, MessageRef msg) override;
 	
 protected:
-	FlexData& flexData;
+	FlexContainerData& flexData;
 	YogaLayoutContext* context;
 	Layout* layout;
-	AutoPtr<YogaLayoutNode> node;
+	AutoPtr<YogaLayoutItem> yogaItem;
 };
-
-//////////////////////////////////////////////////////////////////////////////////////////////////
-// Type Conversions
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
-static KeyValue<FlexDirection, YGFlexDirection> flexDirectionMapData[] =
-{
-	{FlexDirection::kRow, 			YGFlexDirectionRow},
-	{FlexDirection::kColumn, 		YGFlexDirectionColumn},
-	{FlexDirection::kRowReverse, 	YGFlexDirectionRowReverse},
-	{FlexDirection::kColumnReverse, YGFlexDirectionColumnReverse}
-};
-
-static KeyValue<FlexWrap, YGWrap> flexWrapMapData[] =
-{
-	{FlexWrap::kNoWrap, 			YGWrapNoWrap},
-	{FlexWrap::kWrap, 				YGWrapWrap},
-	{FlexWrap::kWrapReverse, 		YGWrapWrapReverse}
-};
-
-static KeyValue<FlexJustify, YGJustify> flexJustifyMapData[] =
-{
-	{FlexJustify::kFlexStart, 		YGJustifyFlexStart},
-	{FlexJustify::kFlexEnd, 		YGJustifyFlexEnd},
-	{FlexJustify::kCenter, 			YGJustifyCenter},
-	{FlexJustify::kSpaceBetween, 	YGJustifySpaceBetween},
-	{FlexJustify::kSpaceAround, 	YGJustifySpaceAround},
-	{FlexJustify::kSpaceEvenly, 	YGJustifySpaceEvenly}
-};
-
-static KeyValue<FlexAlign, YGAlign> flexAlignMapData[] =
-{
-	{FlexAlign::kFlexStart, 		YGAlignFlexStart},
-	{FlexAlign::kFlexEnd, 			YGAlignFlexEnd},
-	{FlexAlign::kCenter, 			YGAlignCenter},
-	{FlexAlign::kStretch, 			YGAlignStretch}
-};
-
-static KeyValue<FlexAlignSelf, YGAlign> flexAlignSelfMapData[] =
-{
-	{FlexAlignSelf::kAuto, 			YGAlignAuto},
-	{FlexAlignSelf::kFlexStart, 	YGAlignFlexStart},
-	{FlexAlignSelf::kFlexEnd, 		YGAlignFlexEnd},
-	{FlexAlignSelf::kCenter, 		YGAlignCenter},
-	{FlexAlignSelf::kStretch, 		YGAlignStretch}
-};
-
-static KeyValue<FlexPositionType, YGPositionType> flexPositionTypeMapData[] =
-{
-	{FlexPositionType::kRelative,	YGPositionTypeRelative},
-	{FlexPositionType::kAbsolute,	YGPositionTypeAbsolute}
-};
-
-static ConstMap<FlexDirection, YGFlexDirection> flexDirectionMap (flexDirectionMapData, ARRAY_COUNT (flexDirectionMapData));
-static ConstMap<FlexWrap, YGWrap> flexWrapMap (flexWrapMapData, ARRAY_COUNT (flexWrapMapData));
-static ConstMap<FlexJustify, YGJustify> flexJustifyMap (flexJustifyMapData, ARRAY_COUNT (flexJustifyMapData));
-static ConstMap<FlexAlign, YGAlign> flexAlignMap (flexAlignMapData, ARRAY_COUNT (flexAlignMapData));
-static ConstMap<FlexAlignSelf, YGAlign> flexAlignSelfMap (flexAlignSelfMapData, ARRAY_COUNT (flexAlignSelfMapData));
-static ConstMap<FlexPositionType, YGPositionType> flexPositionTypeMap (flexPositionTypeMapData, ARRAY_COUNT (flexPositionTypeMapData));
 
 } // namespace CCL
 
@@ -225,92 +136,63 @@ CCL_KERNEL_INIT_LEVEL (FlexboxLayout, kFrameworkLevelFirst)
 }
 
 //************************************************************************************************
-// YogaLayoutNode
+// YogaLayoutItem
 //************************************************************************************************
 
-DEFINE_CLASS (YogaLayoutNode, FlexItem)
+DEFINE_CLASS (YogaLayoutItem, FlexLayoutItem)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-YogaLayoutNode::YogaLayoutNode ()
-: FlexItem (),
-  node (YGNodeNew ()),
+YogaLayoutItem::YogaLayoutItem ()
+: parent (nullptr)
+{}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+YogaLayoutItem::YogaLayoutItem (View* view)
+: FlexLayoutItem (view),
   parent (nullptr)
 {}
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-YogaLayoutNode::YogaLayoutNode (View* view)
-: FlexItem (view),
-  node (YGNodeNew ()),
-  parent (nullptr)
+YogaLayoutItem::~YogaLayoutItem ()
 {}
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-YogaLayoutNode::~YogaLayoutNode ()
+void YogaLayoutItem::insert (int index, YogaLayoutItem* child)
 {
-	YGNodeFree (node);
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
-YogaLayoutNode::operator YGNodeRef () const
-{
-	return node;
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
-void YogaLayoutNode::insert (int index, YogaLayoutNode* child)
-{
-	ASSERT (child != nullptr)
-	if(child == nullptr)
-		return;
-	
-	size_t childCount = YGNodeGetChildCount (node);
-	bool indexIsValid = index >= 0 && index <= int(childCount);
-	
-	ASSERT (indexIsValid)
-	if(!indexIsValid)
+	if(!YogaNode::insertNode (index, child))
 		return;
 
-	YGNodeInsertChild (node, child->node, index);
 	child->parent = this;
 	children.insertAt (index, child);
-	
-	YGNodeSetHasNewLayout (node, true);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void YogaLayoutNode::remove (YogaLayoutNode* child)
+void YogaLayoutItem::remove (YogaLayoutItem* child)
 {
-	children.removeIf ([this, child] (YogaLayoutNode* _child)
-	{
-		if(_child != child)
-			return false;
-		
-		YGNodeRemoveChild (node, child->node);
-		child->parent = nullptr;
-		
-		YGNodeSetHasNewLayout (node, true);
-		return true;
-	});
+	if(!YogaNode::removeNode (child))
+		return;
+
+	children.remove (child);
+	child->parent = nullptr;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-int YogaLayoutNode::countChildren () const
+int YogaLayoutItem::countChildren () const
 {
 	return children.count ();
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-YogaLayoutNode* YogaLayoutNode::findChild (View* view) const
+YogaLayoutItem* YogaLayoutItem::findChild (View* view) const
 {
-	if(YogaLayoutNode** child = children.findIf ([view] (YogaLayoutNode* child) {return child->view == view; }))
+	if(YogaLayoutItem** child = children.findIf ([view] (YogaLayoutItem* child) { return child->view == view; }))
 		return *child;
 	
 	return nullptr;
@@ -318,65 +200,56 @@ YogaLayoutNode* YogaLayoutNode::findChild (View* view) const
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-const YogaLayoutNode& YogaLayoutNode::findRoot () const
+YogaLayoutItem& YogaLayoutItem::findRoot () const
 {
 	if(isRoot ())
-		return *this;
+		return const_cast<YogaLayoutItem&> (*this);
 	
 	return parent->findRoot ();
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool YogaLayoutNode::isRoot () const
+bool YogaLayoutItem::isRoot () const
 {
 	return parent == nullptr;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void YogaLayoutNode::updateLayoutTree () const
+void YogaLayoutItem::updateLayoutTree ()
 {
-	const YogaLayoutNode& root = findRoot ();
-	YGNodeCalculateLayout (root, YGUndefined, YGUndefined, YGDirectionLTR);
+	YogaLayoutItem& root = findRoot ();
+	root.calculateLayout ();
 	root.applyLayoutRecursively ();
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void YogaLayoutNode::calculatePreferredSize (Point& preferredSize) const
+void YogaLayoutItem::calculatePreferredSize (Point& preferredSize)
 {
-	const YogaLayoutNode& root = findRoot ();
-	YGNodeCalculateLayout (root.node, YGUndefined, YGUndefined, YGDirectionLTR);
-	
-	preferredSize.x = YGNodeLayoutGetWidth (node);
-	preferredSize.y = YGNodeLayoutGetHeight (node);
+	YogaLayoutItem& root = findRoot ();
+	root.calculateLayout ();
+
+	preferredSize.x = Coord(YogaNode::getLayoutWidth ());
+	preferredSize.y = Coord(YogaNode::getLayoutHeight ());
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void YogaLayoutNode::setSize (const Rect& size) const
+void YogaLayoutItem::setSize (const Rect& size)
 {
-	Coord width = size.getWidth ();
-	if(width <= 0)
-		YGNodeStyleSetWidthAuto (node);
-	else
-		YGNodeStyleSetWidth (node, float(width));
-	
-	Coord height = size.getHeight ();
-	if(height <= 0)
-		YGNodeStyleSetHeightAuto (node);
-	else
-		YGNodeStyleSetHeight (node, float(height));
-	
-	YGNodeSetHasNewLayout (node, true);
+	CoordF width = CoordF(size.getWidth ());
+	CoordF height = CoordF(size.getHeight ());
+
+	YogaNode::applySize (width, height);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void YogaLayoutNode::onChildSized (View* childView, const Point& delta)
+void YogaLayoutItem::onChildSized (View* childView, const Point& delta)
 {
-	if(YogaLayoutNode* child = findChild (childView))
+	if(YogaLayoutItem* child = findChild (childView))
 	{
 		YGValue width = YGNodeStyleGetWidth (*child);
 		if(width.unit != YGUnitAuto)
@@ -386,207 +259,54 @@ void YogaLayoutNode::onChildSized (View* childView, const Point& delta)
 		if(height.unit != YGUnitAuto)
 			YGNodeStyleSetHeight (*child, childView->getHeight ());
 		
-		YGNodeSetHasNewLayout (*child, true);
+		child->setHasNewLayout (true);
 		
-		resetNodeWidth ();
-		resetNodeHeight ();
-		
-		YGNodeSetHasNewLayout (node, true);
+		// reset node width/height
+		bool isAttachedToExternalLayout = getView ()->isAttached () && isRoot ();
+		bool hfit = getView ()->getSizeMode () & IView::kHFitSize;
+		bool vfit = getView ()->getSizeMode () & IView::kVFitSize;
+
+		if((!isAttachedToExternalLayout || hfit) && flexItemData.width.isAuto ())
+			YGNodeStyleSetWidthAuto (node);
+	
+		if((!isAttachedToExternalLayout || vfit) && flexItemData.height.isAuto ())
+			YGNodeStyleSetHeightAuto (node);
+
+		YogaNode::setHasNewLayout (true);
 	}
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void YogaLayoutNode::applyLayoutRecursively () const
+void YogaLayoutItem::applyLayoutRecursively ()
 {
-	if(!YGNodeGetHasNewLayout (node))
-	  return;
-	
-	YGNodeSetHasNewLayout (node, false);
-	
-	// Use left, top, width and height
-	// Yoga's YGNodeLayoutGet<Left, Right...> are distances to the corresponding parent edge
-	
-	Coord left = Coord(YGNodeLayoutGetLeft (node));
-	Coord top = Coord(YGNodeLayoutGetTop (node));
-	Coord width = Coord(YGNodeLayoutGetWidth (node));
-	Coord height = Coord(YGNodeLayoutGetHeight (node));
-	
-	Rect itemSize (left, top, left + width, top + height);
-	
+	if(!YogaNode::hasNewLayout ())
+		return;
+
+	YogaNode::setHasNewLayout (false);
+
 	if(view != nullptr && !isRoot ())
-		view->setSize (itemSize);
+	{
+		RectF itemSize;
+		YogaNode::getLayoutSize (itemSize);
+		view->setSize (rectFToInt (itemSize));
+	}
 	
 	for(auto& child : children)
 		child->applyLayoutRecursively ();
 }
 
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
-void YogaLayoutNode::resetNodeWidth ()
-{
-	bool isAttachedToExternalLayout = getView ()->isAttached () && isRoot ();
-	bool hfit = getView ()->getSizeMode () & IView::kHFitSize;
-
-	if((!isAttachedToExternalLayout || hfit) && flexItemData.width.isAuto ())
-		YGNodeStyleSetWidthAuto (node);
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
-void YogaLayoutNode::resetNodeHeight ()
-{
-	bool isAttachedToExternalLayout = getView ()->isAttached () && isRoot ();
-	bool vfit = getView ()->getSizeMode () & IView::kVFitSize;
-	
-	if((!isAttachedToExternalLayout || vfit) && flexItemData.height.isAuto ())
-		YGNodeStyleSetHeightAuto (node);
-}
-
-//************************************************************************************************
-// YogaNodeDataAdapter
-//************************************************************************************************
-
-YogaNodeDataAdapter::YogaNodeDataAdapter (YGNodeRef node)
-: node (node)
-{}
-	
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
-void YogaNodeDataAdapter::setContainerData (const FlexData& flexData, const FlexItemData& flexItemData) const
-{
-	YGNodeStyleSetFlexDirection (node, flexDirectionMap [flexData.direction]);
-	YGNodeStyleSetFlexWrap (node, flexWrapMap [flexData.wrap]);
-	YGNodeStyleSetJustifyContent (node, flexJustifyMap [flexData.justify]);
-	YGNodeStyleSetAlignItems (node, flexAlignMap [flexData.align]);
-	
-	// Padding
-	auto setYGNodeStylePadding = [this] (const DesignCoord& flexCoord, YGEdge edge)
-	{
-		if(flexCoord.isCoord ())
-			YGNodeStyleSetPadding (node, edge, float(flexCoord.value));
-	};
-	
-	setYGNodeStylePadding (flexData.padding.left, YGEdgeLeft);
-	setYGNodeStylePadding (flexData.padding.top, YGEdgeTop);
-	setYGNodeStylePadding (flexData.padding.right, YGEdgeRight);
-	setYGNodeStylePadding (flexData.padding.bottom, YGEdgeBottom);
-	
-	// Gap
-	auto setYGNodeStyleGap = [this] (const DesignCoord& flexCoord, YGGutter gutter)
-	{
-		if(flexCoord.isCoord ())
-			YGNodeStyleSetGap (node, gutter, float(flexCoord.value));
-	};
-	
-	setYGNodeStyleGap (flexData.gap.row, YGGutterRow);
-	setYGNodeStyleGap (flexData.gap.column, YGGutterColumn);
-	
-	applyNodeWidth (flexItemData);
-	applyNodeHeight (flexItemData);
-	
-	YGNodeSetHasNewLayout (node, true);
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
-void YogaNodeDataAdapter::setItemData (const FlexItemData& flexItemData) const
-{
-	YGNodeStyleSetFlexGrow (node, flexItemData.grow);
-	YGNodeStyleSetFlexShrink (node, flexItemData.shrink);
-	
-	YGNodeStyleSetAlignSelf (node, flexAlignSelfMap [flexItemData.alignSelf]);
-	YGNodeStyleSetPositionType (node, flexPositionTypeMap [flexItemData.positionType]);
-	
-	if(flexItemData.flexBasis.isAuto ())
-		YGNodeStyleSetFlexBasisAuto (node);
-	else if(flexItemData.flexBasis.isPercent ())
-		YGNodeStyleSetFlexBasisPercent (node, float(flexItemData.flexBasis.value));
-	else if(flexItemData.flexBasis.isCoord ())
-		YGNodeStyleSetFlexBasis (node, float(flexItemData.flexBasis.value));
-	
-	auto setYGNodeStyleMargin = [this] (const DesignCoord& flexCoord, YGEdge edge)
-	{
-		if(flexCoord.isAuto ())
-			YGNodeStyleSetMarginAuto (node, edge);
-		else if(flexCoord.isCoord ())
-			YGNodeStyleSetMargin (node, edge, float(flexCoord.value));
-	};
-	
-	setYGNodeStyleMargin (flexItemData.margin.top, YGEdgeTop);
-	setYGNodeStyleMargin (flexItemData.margin.right, YGEdgeRight);
-	setYGNodeStyleMargin (flexItemData.margin.bottom, YGEdgeBottom);
-	setYGNodeStyleMargin (flexItemData.margin.left, YGEdgeLeft);
-	
-	auto setYGNodeStyleInset = [this] (const DesignCoord& flexCoord, YGEdge edge)
-	{
-		if(flexCoord.isCoord ())
-			YGNodeStyleSetPosition (node, edge, float(flexCoord.value));
-	};
-	
-	setYGNodeStyleInset (flexItemData.inset.top, YGEdgeTop);
-	setYGNodeStyleInset (flexItemData.inset.right, YGEdgeRight);
-	setYGNodeStyleInset (flexItemData.inset.bottom, YGEdgeBottom);
-	setYGNodeStyleInset (flexItemData.inset.left, YGEdgeLeft);
-	
-	applySizeLimits (flexItemData);
-	applyNodeWidth (flexItemData);
-	applyNodeHeight (flexItemData);
-	
-	YGNodeSetHasNewLayout (node, true);
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
-void YogaNodeDataAdapter::applySizeLimits (const FlexItemData& flexItemData) const
-{
-	if(flexItemData.minWidth.isCoord ())
-		YGNodeStyleSetMinWidth (node, flexItemData.minWidth.value);
-	if(flexItemData.minHeight.isCoord ())
-		YGNodeStyleSetMinHeight (node, flexItemData.minHeight.value);
-	if(flexItemData.maxWidth.isCoord ())
-		YGNodeStyleSetMaxWidth (node, flexItemData.maxWidth.value);
-	if(flexItemData.maxWidth.isCoord ())
-		YGNodeStyleSetMaxHeight (node, flexItemData.maxHeight.value);
-		
-	YGNodeSetHasNewLayout (node, true);
-}
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
-void YogaNodeDataAdapter::applyNodeWidth (const FlexItemData& flexItemData) const
-{
-	if(flexItemData.width.isAuto ())
-		YGNodeStyleSetWidthAuto (node);
-	else if (flexItemData.width.isPercent ())
-		YGNodeStyleSetWidthPercent(node, flexItemData.width.value);
-	else
-		YGNodeStyleSetWidth (node, flexItemData.width.value);
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
-void YogaNodeDataAdapter::applyNodeHeight (const FlexItemData& flexItemData) const
-{
-	if(flexItemData.height.isAuto ())
-		YGNodeStyleSetHeightAuto (node);
-	else if (flexItemData.height.isPercent ())
-		YGNodeStyleSetHeightPercent(node, flexItemData.height.value);
-	else
-		YGNodeStyleSetHeight (node, flexItemData.height.value);
-}
-
-
 //************************************************************************************************
 // YogaLayoutContext
 //************************************************************************************************
 
-DEFINE_CLASS (YogaLayoutContext, LayoutContext)
+DEFINE_CLASS_ABSTRACT (YogaLayoutContext, LayoutContext)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 YogaLayoutContext::YogaLayoutContext (LayoutView* parentView)
 : LayoutContext (parentView),
-  node (nullptr)
+  yogaItem (nullptr)
 {}
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -622,23 +342,23 @@ LayoutContext* YogaLayout::createContext (LayoutView* parent)
 LayoutItem* YogaLayout::createItem (View* view)
 {
 	if(view == nullptr)
-		return NEW YogaLayoutNode;
+		return NEW YogaLayoutItem;
 	
-	YogaLayoutNode* childNode = retrieveYogaLayoutNode (view);
-	if(childNode == nullptr)
-		return NEW YogaLayoutNode (view);
+	YogaLayoutItem* childItem = retrieveYogaLayoutItem (view);
+	if(childItem == nullptr)
+		return NEW YogaLayoutItem (view);
 
-	// The node is shared between a YogaLayoutAlgorithm instance and the managing LayoutView.
+	// The item is shared between a YogaLayoutAlgorithm instance and the managing LayoutView.
 	// In order to avoid changes to the existing layout architecture, we manually share the
 	// object by increasing the reference count.
 
-	childNode->retain ();
-	return childNode;
+	childItem->retain ();
+	return childItem;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-YogaLayoutNode* YogaLayout::retrieveYogaLayoutNode (View* view)
+YogaLayoutItem* YogaLayout::retrieveYogaLayoutItem (View* view)
 {
 	auto* layoutView = ccl_cast<LayoutView> (view);
 	if(layoutView == nullptr)
@@ -648,21 +368,21 @@ YogaLayoutNode* YogaLayout::retrieveYogaLayoutNode (View* view)
 	if(childContext == nullptr)
 		return nullptr;
 	
-	return childContext->getNode ();
+	return childContext->getYogaItem ();
 }
 
 //************************************************************************************************
 // YogaLayoutAlgorithm
 //************************************************************************************************
 
-YogaLayoutAlgorithm::YogaLayoutAlgorithm (FlexData& flexData, YogaLayoutContext* context, Layout* layout)
+YogaLayoutAlgorithm::YogaLayoutAlgorithm (FlexContainerData& flexData, YogaLayoutContext* context, Layout* layout)
 : flexData (flexData),
   context (context),
   layout (layout),
-  node (NEW YogaLayoutNode (context->getView ()))
+  yogaItem (NEW YogaLayoutItem (context->getView ()))
 {
-	context->setNode (node);
-	YogaNodeDataAdapter (*node).setContainerData (flexData, node->getFlexItemData ());
+	context->setYogaItem (yogaItem);
+	yogaItem->applyContainerData (flexData, yogaItem->getFlexItemData ());
 	layout->addObserver (this);
 }
 
@@ -677,7 +397,7 @@ YogaLayoutAlgorithm::~YogaLayoutAlgorithm ()
 
 const Point& YogaLayoutAlgorithm::getPreferredSize ()
 {
-	node->calculatePreferredSize (preferredSize);
+	yogaItem->calculatePreferredSize (preferredSize);
 	return LayoutAlgorithm::getPreferredSize ();
 }
 
@@ -685,23 +405,23 @@ const Point& YogaLayoutAlgorithm::getPreferredSize ()
 
 void YogaLayoutAlgorithm::doLayout ()
 {
-	node->updateLayoutTree ();
+	yogaItem->updateLayoutTree ();
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 void YogaLayoutAlgorithm::onSize (const Point& delta)
 {
-	// Only the root node can be sized from outside the yoga layout tree (e.g. by other layout systems)
-	if(node->isRoot ())
-		node->setSize (context->getLayoutRect ());
+	// Only the root item can be sized from outside the yoga layout tree (e.g. by other layout systems)
+	if(yogaItem->isRoot ())
+		yogaItem->setSize (context->getLayoutRect ());
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 void YogaLayoutAlgorithm::onChildSized (View* childView, const Point& delta)
 {
-	node->onChildSized (childView, delta);
+	yogaItem->onChildSized (childView, delta);
 	onChildLimitsChanged (childView);
 	context->requestAutoSize ();
 }
@@ -710,12 +430,12 @@ void YogaLayoutAlgorithm::onChildSized (View* childView, const Point& delta)
 
 void YogaLayoutAlgorithm::onChildLimitsChanged (View* childView)
 {
-	if(YogaLayoutNode* child = node->findChild (childView))
+	if(YogaLayoutItem* child = yogaItem->findChild (childView))
 	{
 		child->updateSizeLimits ();
 		const FlexItemData& flexItemData = child->getFlexItemData ();
-		YogaNodeDataAdapter (*child).applySizeLimits (flexItemData);
-		node->updateLayoutTree ();
+		child->applySizeLimits (flexItemData);
+		yogaItem->updateLayoutTree ();
 	}
 }
 
@@ -723,19 +443,19 @@ void YogaLayoutAlgorithm::onChildLimitsChanged (View* childView)
 
 void YogaLayoutAlgorithm::onItemAdded (LayoutItem* item)
 {
-	onItemInserted (node->countChildren (), item);
+	onItemInserted (yogaItem->countChildren (), item);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 void YogaLayoutAlgorithm::onItemInserted (int index, LayoutItem* item)
 {
-	auto* child = ccl_cast<YogaLayoutNode> (item);
+	auto* child = ccl_cast<YogaLayoutItem> (item);
 	if(child != nullptr)
 	{
 		const FlexItemData& flexItemData = child->getFlexItemData ();
-		YogaNodeDataAdapter (*child).setItemData (flexItemData);
-		node->insert (index, child);
+		child->applyItemData (flexItemData);
+		yogaItem->insert (index, child);
 	}
 }
 
@@ -743,19 +463,19 @@ void YogaLayoutAlgorithm::onItemInserted (int index, LayoutItem* item)
 
 void YogaLayoutAlgorithm::onItemRemoved (LayoutItem* item)
 {
-	auto* yogaNode = ccl_cast<YogaLayoutNode> (item);
-	if(yogaNode != nullptr)
-		node->remove (yogaNode);
+	auto* child = ccl_cast<YogaLayoutItem> (item);
+	if(child != nullptr)
+		yogaItem->remove (child);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 void YogaLayoutAlgorithm::onItemChanged (LayoutItem* item)
 {
-	if(auto* child = ccl_cast<YogaLayoutNode> (item))
+	if(auto* child = ccl_cast<YogaLayoutItem> (item))
 	{
 		const FlexItemData& flexItemData = child->getFlexItemData ();
-		YogaNodeDataAdapter (*child).setItemData (flexItemData);
+		child->applyItemData (flexItemData);
 	}
 }
 
@@ -764,5 +484,5 @@ void YogaLayoutAlgorithm::onItemChanged (LayoutItem* item)
 void CCL_API YogaLayoutAlgorithm::notify (ISubject* subject, MessageRef msg)
 {
 	if(msg == kPropertyChanged)
-		YogaNodeDataAdapter (*node).setContainerData (flexData, node->getFlexItemData ());
+		yogaItem->applyContainerData (flexData, yogaItem->getFlexItemData ());
 }

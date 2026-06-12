@@ -61,6 +61,7 @@
 #include "ccl/public/gui/framework/ialert.h"
 #include "ccl/public/gui/framework/dialogbox.h"
 #include "ccl/public/gui/framework/itheme.h"
+#include "ccl/public/gui/framework/iaccessibility.h"
 #include "ccl/public/gui/graphics/graphicsfactory.h"
 #include "ccl/public/gui/graphics/iuivalue.h"
 #include "ccl/public/gui/iviewstate.h"
@@ -400,6 +401,7 @@ public:
 	tbool CCL_API canInsertData (ItemIndexRef index, int column, const IUnknownList& data, IDragSession* session, IView* targetView) override;
 	tbool CCL_API insertData (ItemIndexRef index, int column, const IUnknownList& data, IDragSession* session) override;
 	tbool CCL_API interpretCommand (const CommandMsg& msg, ItemIndexRef item, const IItemSelection& selection) override;
+	tbool CCL_API getItemAccessibilityInfo (AccessibilityInfo& info, ItemIndexRef index, int column) const override;
 
 	void CCL_API notify (ISubject* subject, MessageRef msg) override;
 
@@ -2156,7 +2158,8 @@ void DocumentBlocks::TreeModel::onVisibleChanged (bool state)
 	if(state)
 	{
 		// hide icon column in tree mode (already part of tree column)
-		getColumns ().hideColumn (kIconID, getTreeView () != nullptr);
+		if(getTreeView ())
+			getColumns ().hideColumn (kIconID, true);
 		updateColumns ();
 
 		makeViews (false);
@@ -2227,7 +2230,7 @@ tbool CCL_API DocumentBlocks::TreeModel::drawCell (ItemIndexRef index, int colum
 	Coord left = info.rect.left;
 	if(getColumnID (column) == kTitleID && getTreeView ())
 	{
-		// tree view shortens the given rect by folder indent + icon, wee need the full cell rect
+		// tree view shortens the given rect by folder indent + icon, we need the full cell rect
 		Rect titleRect;
 		getItemView ()->getItemRect (titleRect, index, getColumnIndex (kTitleID));
 		left = titleRect.left;
@@ -2292,7 +2295,7 @@ tbool CCL_API DocumentBlocks::TreeModel::editCell (ItemIndexRef index, int colum
 	MutableCString columnID;
 	getColumnType (columnID, column);
 
-	// tree view does snot distinguish icon and title (tree) column
+	// tree view does not distinguish icon and title (tree) column
 	if(getTreeView () && mouseEvent && columnID == kTitleID)
 		Debugger::printf ("%\n", mouseEvent->where.x - info.rect.left);
 	if(getTreeView () && mouseEvent && columnID == kTitleID)
@@ -2700,6 +2703,26 @@ tbool CCL_API DocumentBlocks::TreeModel::interpretCommand (const CommandMsg& msg
 		return true;
 	}
 	return SuperClass::interpretCommand (msg, item, selection);
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+tbool CCL_API DocumentBlocks::TreeModel::getItemAccessibilityInfo (AccessibilityInfo& info, ItemIndexRef index, int column) const
+{
+	if(auto* item = ccl_cast<DocumentBlocks::Item> (resolve (index)))
+	{
+		StringID columnID = getColumnID (column);
+		if(columnID == TreeModel::kTitleID)
+			info.name = item->getFileName ();
+		else if(columnID == kAgeID)
+			info.name = item->getDescription ().getAge ();
+		else
+			return SuperClass::getItemAccessibilityInfo (info, index, column);
+		
+		info.role = int(AccessibilityElementRole::kDataItem);
+		return true;
+	}
+	return false;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////

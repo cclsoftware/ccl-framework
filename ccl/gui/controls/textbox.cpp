@@ -21,6 +21,7 @@
 
 #include "ccl/gui/system/clipboard.h"
 #include "ccl/gui/system/mousecursor.h"
+#include "ccl/gui/graphics/textlayoutbuilder.h"
 #include "ccl/gui/graphics/nativegraphics.h"
 #include "ccl/gui/theme/thememanager.h"
 
@@ -80,7 +81,7 @@ public:
 		string = getDataString ();
 	}
 
-	int CCL_API insertText (int textIndex, StringRef text, ITextModel::EditOptions options) override
+	int CCL_API insertText (int textIndex, StringRef text, IMutableTextModel::EditOptions options) override
 	{
 		if(textIndex < 0 || textIndex > getDataString ().length ())
 		{
@@ -88,7 +89,7 @@ public:
 			return 0;
 		}
 
-		if(!(options & ITextModel::kMergeUndo))
+		if(!(options & IMutableTextModel::kMergeUndo))
 			saveUndoState ();
 
 		getDataString ().insert (textIndex, text);
@@ -96,12 +97,12 @@ public:
 		return text.length ();
 	}
 
-	int CCL_API removeText (int textIndex, int length, ITextModel::EditOptions options) override
+	int CCL_API removeText (int textIndex, int length, IMutableTextModel::EditOptions options) override
 	{
 		if(!verifyRemoveTextIndex (textIndex, length))
 			return 0;
 
-		if(!(options & ITextModel::kMergeUndo))
+		if(!(options & IMutableTextModel::kMergeUndo))
 			saveUndoState ();
 
 		getDataString ().remove (textIndex, length);
@@ -151,7 +152,7 @@ public:
 		Object::addObserver (observer);
 	}
 
-	CLASS_INTERFACE (ITextModel, Object)
+	CLASS_INTERFACE2 (ITextModel, IMutableTextModel, Object)
 
 protected:
 	static bool verifyRemoveTextIndex (int& index, int& length)
@@ -224,22 +225,22 @@ public:
 		string = getMarkupParser ().getPlainText ();
 	}
 
-	void CCL_API updateLayout (ITextLayout& textLayout) override
+	void CCL_API updateLayout (ITextLayout& textLayout) const override
 	{
-		TextLayoutBuilder builder (&textLayout);
+		TextLayoutBuilder builder (textLayout);
 		getMarkupParser ().applyFormatting (builder);
 	}
 
-	int CCL_API insertText (int textIndex, StringRef text, ITextModel::EditOptions options) override
+	int CCL_API insertText (int textIndex, StringRef text, IMutableTextModel::EditOptions options) override
 	{
 		String escapedText (text);
-		getMarkupParser ().escapePlainText (escapedText);
+		MarkupTags::escapePlainText (escapedText);
 		int markupIndex = getMarkupParser ().getMarkupPosition (textIndex, true);
 		StringTextModel::insertText (markupIndex, escapedText, options);
 		return text.length ();
 	}
 
-	int CCL_API removeText (int textIndex, int length, ITextModel::EditOptions options) override
+	int CCL_API removeText (int textIndex, int length, IMutableTextModel::EditOptions options) override
 	{
 		if(!verifyRemoveTextIndex (textIndex, length))
 			return 0;
@@ -259,7 +260,7 @@ private:
 	MarkupParser& getMarkupParser () const
 	{
 		if(markupParser == nullptr)
-			markupParser = NEW MarkupParser (getDataString (), view.getVisualStyle ());
+			markupParser = NEW MarkupParser (getDataString ());
 		else if(markupDirty)
 			markupParser->parse (getDataString ());
 
@@ -378,12 +379,16 @@ void CCL_API TextBox::setParameter (IParameter* param)
 
 void TextBox::createTextModel ()
 {
-	AutoPtr<ITextModel> model;
+	AutoPtr<IMutableTextModel> model;
 
 	// model provided via parameter
 	UnknownPtr<ITextModelProvider> provider (getTextParameter ());
 	if(provider)
-		model.share (provider->getTextModel ());
+	{
+		UnknownPtr<IMutableTextModel> providedModel (provider->getTextModel ());
+		if(providedModel.isValid ())
+			model.share (providedModel);
+	}
 
 	// model specified by style
 	if(!model)
@@ -408,14 +413,14 @@ IParameter* TextBox::getTextParameter () const
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-ITextModel* TextBox::getTextModel () const
+IMutableTextModel* TextBox::getTextModel () const
 {
 	return textModel;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void TextBox::setTextModel (ITextModel* model)
+void TextBox::setTextModel (IMutableTextModel* model)
 {
 	if(textModel != model)
 	{
@@ -846,14 +851,9 @@ void TextBox::calcAutoSize (Rect& r)
 	if(isAttached () == false)
 		updatePadding ();
 
-	// add kSpaceForPlatformPadding to calculated width,
-	// in order to compensate for potential padding on platforms
-	// i.e. Skia uses kPaddingLeft, kPaddingRight = 2;
-	static constexpr int kSpaceForPlatformPadding = 4;
-	
 	r.left = 0;
 	r.top = 0;
-	r.right = kSpaceForPlatformPadding;
+	r.right = 0;
 	r.bottom = bounds.getHeight () + padding.top + padding.bottom;
 
 	if(isHFitAndFitText ())
@@ -912,7 +912,7 @@ bool TextBox::tryModelEditText (const MouseEvent& event)
 {
 	if(textModel && textLayout)
 	{
-		ITextModel::InteractionInfo interactionInfo = { this, event };
+		IMutableTextModel::InteractionInfo interactionInfo = { this, event };
 		if(textModel->onTextInteraction (*textLayout, interactionInfo))
 			return true;
 	}

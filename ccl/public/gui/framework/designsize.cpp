@@ -1,7 +1,7 @@
 //************************************************************************************************
 //
 // This file is part of Crystal Class Library (R)
-// Copyright (c) 2025 CCL Software Licensing GmbH.
+// Copyright (c) 2026 CCL Software Licensing GmbH.
 // All Rights Reserved.
 //
 // Licensed for use under either:
@@ -30,6 +30,21 @@ const String DesignCoord::kStrPercent = CCLSTR ("%");
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
+int DesignCoord::getIntValue () const
+{
+	return coordFToInt (value);
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+DesignCoord& DesignCoord::setIntValue (int _value)
+{
+	value = float(_value);
+	return *this;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
 Variant DesignCoord::toVariant () const
 {
 	Variant variant (value);
@@ -41,7 +56,7 @@ Variant DesignCoord::toVariant () const
 
 DesignCoord& DesignCoord::fromVariant (VariantRef variant)
 {
-	value = variant.asInt ();
+	value = variant.asFloat ();
 	unit = Unit(variant.getUserValue ());
 	return *this;
 }
@@ -140,7 +155,7 @@ bool DesignCoord::isPercent () const
 // DesignSize
 //************************************************************************************************
 
-DesignSize::DesignSize (const DesignCoord& left, const DesignCoord& top, const DesignCoord& width, const DesignCoord& height)
+DesignSize::DesignSize (DesignCoordRef left, DesignCoordRef top, DesignCoordRef width, DesignCoordRef height)
 : left (left),
   top (top),
   width (width),
@@ -149,7 +164,7 @@ DesignSize::DesignSize (const DesignCoord& left, const DesignCoord& top, const D
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-DesignSize& DesignSize::fromRect (RectRef rect)
+DesignSize& DesignSize::fromRect (RectFRef rect)
 {
 	left.unit = DesignCoord::kCoord;
 	top.unit = DesignCoord::kCoord;
@@ -166,7 +181,14 @@ DesignSize& DesignSize::fromRect (RectRef rect)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void DesignSize::toRect (Rect& rect) const
+DesignSize& DesignSize::fromRect (RectRef rect)
+{
+	return fromRect (rectIntToF (rect));
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+void DesignSize::toRect (RectF& rect) const
 {
 	if(left.unit == DesignCoord::kCoord)
 		rect.left = left.value;
@@ -183,4 +205,13 @@ void DesignSize::toRect (Rect& rect) const
 		rect.setHeight (0);
 	if(height.unit == DesignCoord::kCoord)
 		rect.setHeight (height.value);
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+void DesignSize::toRect (Rect& rect) const
+{
+	RectF rectF;
+	toRect (rectF);
+	rect = rectFToInt (rectF);
 }

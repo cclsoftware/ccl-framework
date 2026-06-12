@@ -29,6 +29,8 @@ else ()
 	set (corelib_STATIC_LIBRARY_DESTINATION "${VENDOR_LIBRARY_DESTINATION}")
 endif ()
 set (corelib_PUBLIC_HEADERS_DESTINATION "${VENDOR_PUBLIC_HEADERS_DESTINATION}/core")
+cmake_path (NORMAL_PATH corelib_STATIC_LIBRARY_DESTINATION)
+cmake_path (NORMAL_PATH corelib_PUBLIC_HEADERS_DESTINATION)
 
 # collect source files
 ccl_list_append_once (corelib_malloc_sources
@@ -296,7 +298,9 @@ if (NOT TARGET corelib)
 	cmake_path (RELATIVE_PATH build_directory BASE_DIRECTORY "${REPOSITORY_ROOT}/build" OUTPUT_VARIABLE relative_build_directory)
 	target_compile_definitions (corelib PRIVATE ${corelib_COMPILE_DEFINITIONS})
 	
-	if (CCL_SYSTEM_INSTALL)
+	if (CCL_EXPORTS_PATH)
+		install (TARGETS corelib EXPORT ccl-targets FILE_SET HEADERS DESTINATION ${corelib_PUBLIC_HEADERS_DESTINATION} COMPONENT public_headers)
+	elseif (CCL_SYSTEM_INSTALL)
 		install (TARGETS corelib EXPORT ccl-targets DESTINATION "${corelib_STATIC_LIBRARY_DESTINATION}"
 								ARCHIVE DESTINATION "${corelib_STATIC_LIBRARY_DESTINATION}" COMPONENT prebuilt_libraries_${VENDOR_NATIVE_COMPONENT_SUFFIX}
 								FRAMEWORK DESTINATION "${corelib_STATIC_LIBRARY_DESTINATION}" COMPONENT prebuilt_libraries_${VENDOR_NATIVE_COMPONENT_SUFFIX}
@@ -363,6 +367,23 @@ if ("${corelib_VERSION}" STREQUAL "")
 	ccl_read_version (corelib "${corelib_VERSION_FILE}" "CORE")
 endif ()
 
+# Export ccl-targets
+if (NOT CCL_USING_PREBUILT_EXPORTS)
+	get_property (ccl_exported GLOBAL PROPERTY ccl_exported)
+	if (NOT ccl_exported)
+		list (GET CCL_EXPORTS_PATH 0 export_destination)
+		if (export_destination)
+			file (MAKE_DIRECTORY "${export_destination}")
+			set (export_file "${export_destination}/ccl.cmake")
+			if (CCL_ISOLATION_POSTFIX)
+				set (export_file "${export_destination}/ccl.${CCL_ISOLATION_POSTFIX}.cmake")
+			endif ()
+			export (EXPORT ccl-targets FILE "${export_file}")
+			set_property (GLOBAL PROPERTY ccl_exported ON)
+		endif ()
+	endif ()
+endif ()
+
 # Set result variables
 include (FindPackageHandleStandardArgs)
 find_package_handle_standard_args (corelib
@@ -372,5 +393,5 @@ find_package_handle_standard_args (corelib
 	HANDLE_COMPONENTS
 )
 
-# make subsequent find_package calls for ccl silent
+# make subsequent find_package calls for corelib silent
 set (corelib_FIND_QUIETLY ON)

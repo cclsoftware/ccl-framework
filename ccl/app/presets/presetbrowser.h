@@ -59,6 +59,7 @@ public:
 	void getCheckedPresets (Vector<IPreset*>& checkedPresets) const;
 	void filterPresets (FilterType type);
 	void selectCurrentPreset ();
+	bool selectNextPreset (int increment, bool checkOnly);
 
 	// Browser
 	tbool CCL_API paramChanged (IParameter* param) override;
@@ -102,7 +103,6 @@ private:
 	IAttributeList* createMetaInfo ();
 	void updateMetaInfo (IPreset* preset);
 	void loadSelectedPreset (bool force);
-	bool selectNextPreset (int increment, bool checkOnly);
 	Browsable::PresetNode* findPresetNodeWithUrl (UrlRef url) const;
 	
 	typedef void (*PresetNodeEditFunc) (Browsable::PresetNode*);

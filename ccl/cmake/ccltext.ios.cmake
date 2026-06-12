@@ -22,7 +22,10 @@ ccl_list_append_once (ccltext_apple_frameworks
 	${FOUNDATION_LIBRARY}
 )
 
-if (NOT ${CCL_STATIC_ONLY})
-	target_link_libraries (${ccltext} PUBLIC ${ccltext_apple_frameworks})
+ccl_check_imported (${ccltext} imported)
+if (NOT imported)
+	if (NOT ${CCL_STATIC_ONLY})
+		target_link_libraries (${ccltext} PUBLIC ${ccltext_apple_frameworks})
+	endif ()
 endif ()
 ccl_list_append_once (CCL_STATIC_LINK_LIBRARIES ${ccltext_apple_frameworks})

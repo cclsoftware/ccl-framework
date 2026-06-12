@@ -43,6 +43,8 @@ public:
 	DropBox (const Rect& size = Rect (), StyleRef style = 0);
 	~DropBox ();
 
+	PROPERTY_MUTABLE_CSTRING (scopeName, ScopeName)
+
 	DECLARE_STYLEDEF (customStyles)
 
 	// IDropBox

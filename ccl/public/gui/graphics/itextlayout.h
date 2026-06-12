@@ -54,12 +54,6 @@ interface ITextLayout: IUnknown
 		kMultiLine = kTextLayoutLineModeMultiLine
 	};
 
-	/** Measure flags. */
-	DEFINE_ENUM (MeasureFlags)
-	{
-		kNoMargin = 1<<0 ///< do not add layout margin
-	};
-
 	/** Initialize text layout. */
 	virtual tresult CCL_API construct (StringRef text, Coord width, Coord height, FontRef font,
 									   LineMode lineMode = kMultiLine, TextFormatRef format = TextFormat ()) = 0;
@@ -71,11 +65,17 @@ interface ITextLayout: IUnknown
 	/** Get plain unformatted text (that was used to construct the layout). */
 	virtual StringRef CCL_API getText () const = 0;
 
+	/** Get the font that was used to construct the layout. */
+	virtual FontRef CCL_API getFont () const = 0;
+
 	/** Resize the text layout */
 	virtual tresult CCL_API resize (Coord width, Coord height) = 0;
 
 	/** Resize the text layout (float coordinates). */
 	virtual tresult CCL_API resize (CoordF width, CoordF height) = 0;
+
+	/** Set font face for given text range. */
+	virtual tresult CCL_API setFontFace (const Range& range, StringRef faceName) = 0;
 
 	/** Set font style for given text range (@see Font::Styles enumeration). */
 	virtual tresult CCL_API setFontStyle (const Range& range, int style, tbool state) = 0;
@@ -93,10 +93,10 @@ interface ITextLayout: IUnknown
 	virtual tresult CCL_API setTextColor (const Range& range, Color color) = 0;
 
 	/** Get bounding rectangle of formatted text. */
-	virtual tresult CCL_API getBounds (Rect& bounds, int flags = 0) const = 0;
+	virtual tresult CCL_API getBounds (Rect& bounds) const = 0;
 
 	/** Get bounding rectangle of formatted text. */
-	virtual tresult CCL_API getBounds (RectF& bounds, int flags = 0) const = 0;
+	virtual tresult CCL_API getBounds (RectF& bounds) const = 0;
 
 	/** Get tightly enclosing rectangle of the text's glyphs. */
 	virtual tresult CCL_API getImageBounds (RectF& bounds) const = 0;
@@ -137,6 +137,22 @@ interface ITextLayout: IUnknown
 };
 
 DEFINE_IID (ITextLayout, 0x86432219, 0x65b4, 0x44cf, 0x87, 0x16, 0x1e, 0xaf, 0x39, 0xe, 0xc0, 0x2a)
+
+//************************************************************************************************
+// ITextBackgroundRenderer
+/** Text background renderer interface.
+	\ingroup gui_graphics */
+//************************************************************************************************
+
+interface ITextBackgroundRenderer: IUnknown
+{
+	/** Draw additional text background. */
+	virtual tbool CCL_API drawTextBackground (IGraphics& graphics, const ITextLayout& layout, RectFRef rect) const = 0;
+
+	DECLARE_IID (ITextBackgroundRenderer)
+};
+
+DEFINE_IID (ITextBackgroundRenderer, 0x86918909, 0x1f74, 0x4af4, 0x8e, 0xca, 0x65, 0x99, 0x61, 0x49, 0x7c, 0x9f)
 
 } // namespace CCL
 

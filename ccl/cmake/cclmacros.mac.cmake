@@ -38,17 +38,46 @@ endmacro ()
 # @param {STRING} target  Name of the target to add a shader resource to.
 # @param {STRING} source  Shader source file.
 macro (ccl_add_shader_resource target source)
-	set (shaders_dir "${VENDOR_OUTPUT_DIRECTORY}/${VENDOR_PLATFORM}/${CMAKE_BUILD_TYPE}/shaders/${target}")
+	cmake_parse_arguments (params "" "PATH" "" ${ARGN})
+
+	set (shaders_dir "${VENDOR_OUTPUT_DIRECTORY}/${VENDOR_PLATFORM}/$<CONFIG>/shaders/${target}")
 	get_filename_component (source_name "${source}" NAME_WE)
 	set (compiled_shader "${shaders_dir}/${source_name}.metallib")
+
+    set (METAL_DEBUG_FLAGS
+        "$<$<CONFIG:Debug>:-gline-tables-only>"
+        "$<$<CONFIG:Debug>:-frecord-sources>"
+    )
+    set (METAL_RELEASE_FLAGS
+        "$<$<CONFIG:Release>:-O3>"
+        "$<$<CONFIG:Release>:-ffast-math>"
+    )
+
 	add_custom_command (
 		OUTPUT "${compiled_shader}"
 		DEPENDS "${source}"
-		COMMAND xcrun -sdk macosx metal -gline-tables-only -frecord-sources -I "${CCL_DIR}/.." -c ${source} -o ${source}.air
-		COMMAND xcrun -sdk macosx metallib ${source}.air -o  "${compiled_shader}" 
+		COMMAND xcrun -sdk macosx metal ${METAL_DEBUG_FLAGS} ${METAL_RELEASE_FLAGS} -I "${CCL_DIR}/.." -c ${source} -o ${source}.air
+		COMMAND xcrun -sdk macosx metallib ${source}.air -o  "${compiled_shader}"
+		COMMAND_EXPAND_LISTS
+        VERBATIM
 	)
-	ccl_add_resources (${target} "${compiled_shader}" ${ARGN})
+
+	add_custom_command (TARGET ${target} PRE_LINK
+        COMMAND ${CMAKE_COMMAND} -E make_directory
+                "$<TARGET_BUNDLE_CONTENT_DIR:${target}>/${params_PATH}"
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different
+                "${compiled_shader}"
+                "$<TARGET_BUNDLE_CONTENT_DIR:${target}>/${params_PATH}/${source_name}.metallib"
+        VERBATIM
+    )
+
 	target_sources (${target} PRIVATE ${source})
-	source_group ("resource/shaders" FILES ${source} ${compiled_shader})
-	ccl_add_resources (${target}  "${compiled_shader}"  PATH shaders)
+	source_group ("shaders" FILES ${source})
+
+	# Phony target hides the genex path from add_dependencies.
+	set (shader_tgt "${target}_shader_${source_name}")
+	add_custom_target (${shader_tgt} DEPENDS "${compiled_shader}")
+	set_target_properties (${shader_tgt} PROPERTIES FOLDER shaders)
+	add_dependencies (${target} ${shader_tgt})
+
 endmacro ()

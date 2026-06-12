@@ -82,6 +82,8 @@ IView* CCL_API DropBoxModel::createView (StringID name, VariantRef data, const R
 		if(item->toString (title))
 			variables.set ("itemTitle", title);
 
+		getSkinVariablesForItem (variables, *item);
+
 		ITheme* theme = RootComponent::instance ().getTheme ();
 		IView* view = theme ? theme->createView (getItemFormName (), this->asUnknown (), &variables) : nullptr;
 		if(UnknownPtr<IForm> form = view)
@@ -90,6 +92,11 @@ IView* CCL_API DropBoxModel::createView (StringID name, VariantRef data, const R
 	}
 	return nullptr;
 }
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+void DropBoxModel::getSkinVariablesForItem (Attributes& variables, const Object& item)
+{}
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 

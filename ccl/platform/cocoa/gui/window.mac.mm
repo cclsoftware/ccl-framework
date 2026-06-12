@@ -102,7 +102,7 @@ static void translateWindowStyle (NSWindowStyleMask& windowMask, StyleRef style)
 		windowMask |= NSWindowStyleMaskClosable | NSWindowStyleMaskMiniaturizable;
 		
 		if(style.isCustomStyle (Styles::kWindowBehaviorFloating) || style.isCustomStyle (Styles::kWindowBehaviorIntermediate))
-			windowMask |= NSWindowStyleMaskUtilityWindow | NSWindowStyleMaskHUDWindow;
+			windowMask |= NSWindowStyleMaskUtilityWindow;
 	}
 	else if(style.isCustomStyle (Styles::kWindowAppearanceRoundedCorners))
 		windowMask |= NSWindowStyleMaskFullSizeContentView | NSWindowStyleMaskTitled;
@@ -701,6 +701,11 @@ void OSXWindow::moveWindow ()
 						loc.y = ccl_bound (loc.y, minY, maxY);
 						[WINDOW setFrameOrigin:loc];
 						continue;
+					}
+					case NSEventTypeMouseEntered:
+					{
+						if(inMoveLoop)
+							continue;
 					}
 				}
 			}

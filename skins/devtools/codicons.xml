@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Skin>
+	<Resources>
+		<ShapeImage name="Class" url="icons/codicons/symbol-class.svg" template="true"/>
+		<ShapeImage name="Enum" url="icons/codicons/symbol-enum.svg" template="true"/>
+		<ShapeImage name="EnumMember" url="icons/codicons/symbol-enum-member.svg" template="true"/>
+		<ShapeImage name="Field" url="icons/codicons/symbol-field.svg" template="true"/>
+		<ShapeImage name="Method" url="icons/codicons/symbol-method.svg" template="true"/>
+		<ShapeImage name="Namespace" url="icons/codicons/symbol-namespace.svg" template="true"/>
+		<ShapeImage name="Variable" url="icons/codicons/symbol-variable.svg" template="true"/>
+		<ShapeImage name="Forward" url="icons/codicons/forward.svg" template="true"/>
+		<ShapeImage name="Package" url="icons/codicons/package.svg" template="true"/>
+		<ShapeImage name="File" url="icons/codicons/symbol-file.svg" template="true"/>
+	</Resources>
+</Skin>
+

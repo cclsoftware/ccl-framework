@@ -483,8 +483,23 @@ void Divider::onMove (const Point& delta)
 {
 	CCL_PRINTF ("Divider %s onMove: delta (%d, %d) -> %d\n", MutableCString (name).str (), delta.x, delta.y, getPosition ());
 
-	if(param && (!style.isCustomStyle (Styles::kDividerBehaviorSlave) || getMouseState () == kMouseDown))
-		param->setValue (positionToValue (getPosition ()), true);
+	if(param)
+	{
+		if(!style.isCustomStyle (Styles::kDividerBehaviorSlave) || getMouseState () == kMouseDown)
+		{
+			param->setValue (positionToValue (getPosition ()), true);
+		}
+		else if(style.isCustomStyle (Styles::kDividerBehaviorSlave))
+		{
+			Coord moved = getStyle ().isVertical () ? delta.y : delta.x;
+			if(moved != 0 && param->getValue ().asInt () != positionToValue (getPosition ()))
+			{
+				// slave divider moved: trigger sync to master
+				UnknownPtr<ISubject> subject (param);
+				System::GetSignalHandler ().queueChanged (subject);
+			}
+		}
+	}
 
 	SuperClass::onMove (delta);
 }

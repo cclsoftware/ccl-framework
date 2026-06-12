@@ -215,8 +215,8 @@ public:
 private:
 	MutableCString horizontalScrollBarStyle;
 	MutableCString verticalScrollBarStyle;
-	MutableCString horizontalScrollValue;
-	MutableCString verticalScrollValue;
+	MutableCString horizontalScrollName;
+	MutableCString verticalScrollName;
 	TargetElement* targetElement;
 	ScrollHeaderElement* headerElement;
 };
@@ -292,7 +292,7 @@ protected:
 class DropBoxElement: public ItemViewElement
 {
 public:
-	DECLARE_SKIN_ELEMENT (DropBoxElement, ViewElement)
+	DECLARE_SKIN_ELEMENT (DropBoxElement, ItemViewElement)
 
 protected:
 	// ItemViewElement

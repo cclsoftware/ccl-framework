@@ -76,7 +76,7 @@
 		<Model.Class name="Animation" parent="Element">
 			<Model.Documentation x:id="doc">
 				<String x:id="brief" text="Describes an animation of a property"/>
-				<String x:id="detailed" text="Must be placed inside a &lt;StartAnimation&gt;. &#10;&#10;The &quot;property path is relative to the triggering view.&#10;An Animation specifies that the property value should transition &quot;from&quot; a start value &quot;to&quot; an end value for some &quot;duration&quot;.&#10;&#10;Additionally, a &quot;repeat&quot; mode and a timing &quot;function&quot; can be specified.&#10;&#10;Multiple animations can be in the same &quot;group&quot; to ensure synchronized execution."/>
+				<String x:id="detailed" text="Must be placed inside a &lt;StartAnimation&gt;. &#10;&#10;The &quot;property&quot; path is relative to the triggering view.&#10;An Animation specifies that the property value should transition &quot;from&quot; a start value &quot;to&quot; an end value for some &quot;duration&quot;.&#10;&#10;Additionally, a &quot;repeat&quot; mode and a timing &quot;function&quot; can be specified.&#10;&#10;Multiple animations can be in the same &quot;group&quot; to ensure synchronized execution."/>
 				<List x:id="links">
 					<String text="StartAnimation"/>
 				</List>
@@ -151,6 +151,36 @@
 			</List>
 			<Attributes x:id="attributes">
 				<Attribute id="Class:DocGroup" value="Shapes"/>
+			</Attributes>
+		</Model.Class>
+		<Model.Class name="BlockContent" parent="Object">
+			<List x:id="members">
+				<Model.Member name="type" type="string" typeName="string">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="markup type, defaults to CCL Markup when empty"/>
+					</Model.Documentation>
+				</Model.Member>
+			</List>
+			<Attributes x:id="attributes">
+				<Attribute id="Class:SchemaGroups" value="Resources.Children"/>
+				<Attribute id="Class:DocGroup" value="Resources"/>
+			</Attributes>
+		</Model.Class>
+		<Model.Class name="BlockView" parent="View">
+			<Model.Documentation x:id="doc">
+				<List x:id="links">
+					<String text="BlockViewStyle"/>
+				</List>
+			</Model.Documentation>
+			<List x:id="members">
+				<Model.Member name="vscroll.name" type="string" typeName="string">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="name of the vertical scroll parameter"/>
+					</Model.Documentation>
+				</Model.Member>
+			</List>
+			<Attributes x:id="attributes">
+				<Attribute id="Class:DocGroup" value="Controls"/>
 			</Attributes>
 		</Model.Class>
 		<Model.Class name="Button" parent="Control">
@@ -808,6 +838,31 @@
 				<Attribute id="Class:DocGroup" value="Resources"/>
 			</Attributes>
 		</Model.Class>
+		<Model.Class name="Graphic" parent="BasicShape">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text="An embedded image in a shape"/>
+			</Model.Documentation>
+			<List x:id="members">
+				<Model.Member name="image" type="string" typeName="string">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="name of image to embed (from resources section)"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="source" type="string" typeName="rect">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="image source rectangle"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="destination" type="string" typeName="rect">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="image destination rectangle"/>
+					</Model.Documentation>
+				</Model.Member>
+			</List>
+			<Attributes x:id="attributes">
+				<Attribute id="Class:DocGroup" value="Shapes"/>
+			</Attributes>
+		</Model.Class>
 		<Model.Class name="Heading" parent="Label">
 			<Model.Documentation x:id="doc">
 				<String x:id="brief" text="A special label used for headings"/>
@@ -815,7 +870,7 @@
 			<List x:id="members">
 				<Model.Member name="level" type="string" typeName="int">
 					<Model.Documentation x:id="doc">
-						<String x:id="brief" text="heading level (1, 2, or 3)"/>
+						<String x:id="brief" text="heading level (1 to 6)"/>
 					</Model.Documentation>
 				</Model.Member>
 			</List>
@@ -989,15 +1044,20 @@
 				<Attribute id="Class:DocGroup" value="General"/>
 			</Attributes>
 		</Model.Class>
-		<Model.Class name="Import" parent="Element">
+		<Model.Class name="Import" parent="Resource">
 			<Model.Documentation x:id="doc">
 				<String x:id="brief" text="Imports the contents of a complete skin package"/>
 				<String x:id="detailed" text="The content of the imported skin is merged into the containing model."/>
 			</Model.Documentation>
 			<List x:id="members">
-				<Model.Member name="url" type="string" typeName="string"/>
+				<Model.Member name="defines" type="string" typeName="string">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="optional defines to be evaluated by the package"/>
+					</Model.Documentation>
+				</Model.Member>
 			</List>
 			<Attributes x:id="attributes">
+				<Attribute id="Class:SchemaGroups" value=""/>
 				<Attribute id="Class:DocGroup" value="General"/>
 			</Attributes>
 		</Model.Class>
@@ -1014,15 +1074,13 @@
 				<Attribute id="Class:DocGroup" value="General"/>
 			</Attributes>
 		</Model.Class>
-		<Model.Class name="Include" parent="Element">
+		<Model.Class name="Include" parent="Resource">
 			<Model.Documentation x:id="doc">
 				<String x:id="brief" text="Includes the content of another Skin xml file"/>
 				<String x:id="detailed" text="The content of the included file is merged into the containing model."/>
 			</Model.Documentation>
-			<List x:id="members">
-				<Model.Member name="url" type="string" typeName="string"/>
-			</List>
 			<Attributes x:id="attributes">
+				<Attribute id="Class:SchemaGroups" value=""/>
 				<Attribute id="Class:DocGroup" value="General"/>
 			</Attributes>
 		</Model.Class>
@@ -1250,7 +1308,7 @@
 				</List>
 			</Model.Documentation>
 			<List x:id="members">
-				<Model.Member name="value" type="string" typeName="float"/>
+				<Model.Member name="value" type="string" typeName="metric"/>
 			</List>
 			<Attributes x:id="attributes">
 				<Attribute id="Class:SchemaGroups" value="Style.Children ThemeElements.Children"/>
@@ -1308,8 +1366,11 @@
 			</Model.Documentation>
 			<List x:id="members">
 				<Model.Member name="type" type="string" typeName="string"/>
-				<Model.Member name="options" type="string" typeName="enum"/>
-				<Model.Member name="value" type="string" typeName="int"/>
+				<Model.Member name="value" type="string" typeName="enum">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="enum or integer"/>
+					</Model.Documentation>
+				</Model.Member>
 			</List>
 			<Attributes x:id="attributes">
 				<Attribute id="Class:SchemaGroups" value="Style.Children"/>
@@ -1667,7 +1728,7 @@
 		<Model.Class name="SceneView3D" parent="View">
 			<Model.Documentation x:id="doc">
 				<List x:id="links">
-					<String text="SceneView3DStylecamera"/>
+					<String text="SceneView3DStyle"/>
 				</List>
 			</Model.Documentation>
 			<Attributes x:id="attributes">
@@ -1998,7 +2059,7 @@
 				<Attribute id="Class:DocGroup" value="Styles"/>
 			</Attributes>
 		</Model.Class>
-		<Model.Class name="Style" parent="Element">
+		<Model.Class name="Style" parent="StyleData">
 			<Model.Documentation x:id="doc">
 				<String x:id="brief" text="Visual Style definition"/>
 				<String x:id="detailed" text="A Style defines the visual appearance of a view. It is collection of definitions for images, colors, metrics and fonts.&#10;It can be assigned to a view element via it&apos;s &quot;style&quot; attribute.&#10;Styles with the attribute &quot;appstyle&quot; can also be accessed directly by the application for specific purposes."/>
@@ -2021,6 +2082,46 @@
 						<String x:id="brief" text="inherit elements from this style"/>
 					</Model.Documentation>
 				</Model.Member>
+			</List>
+			<Attributes x:id="attributes">
+				<Attribute id="Class:ChildGroup" value="Style.Children"/>
+				<Attribute id="Class:DocGroup" value="Styles"/>
+			</Attributes>
+		</Model.Class>
+		<Model.Class name="StyleAlias" parent="Style">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text="Visual Style Alias definition"/>
+				<String x:id="detailed" text="A visual style that dynamically delegates to one of the listed styles based on a paramter value.&#10;The parameter must be globally accessible. The value of the parameter is interpreted as an index in the list of available styles."/>
+				<String x:id="code" text="&lt;StyleAlias name=&quot;MyStyle&quot;&#10;&#9;&#9;parameter=&quot;://hostapp/Configuration/styleIndex&quot;&#10;&#9;&#9;styles=&quot;MyFirstStyle MySecondStyle MyThirdStyle&quot;&gt;&#10;&lt;/StyleAlias&gt;"/>
+				<String x:id="language" text="xml"/>
+			</Model.Documentation>
+			<List x:id="members">
+				<Model.Member name="styles" type="string" typeName="string">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="The available style names, separted by spaces"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="parameter" type="string" typeName="string">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="Url of a parameter that selects on of the styles specified in &quot;styles&quot;"/>
+					</Model.Documentation>
+				</Model.Member>
+			</List>
+			<Attributes x:id="attributes">
+				<Attribute id="Class:DocGroup" value="Styles"/>
+			</Attributes>
+		</Model.Class>
+		<Model.Class name="StyleCondition" parent="StyleData">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text="Style condition"/>
+				<String x:id="detailed" text="Subelement in a visual style to define attributes specific to a certain named condition or state."/>
+			</Model.Documentation>
+			<Attributes x:id="attributes">
+				<Attribute id="Class:DocGroup" value="Styles"/>
+			</Attributes>
+		</Model.Class>
+		<Model.Class name="StyleData" abstract="1" parent="Element">
+			<List x:id="members">
 				<Model.Member name="forecolor" type="string" typeName="color">
 					<Model.Documentation x:id="doc">
 						<String x:id="brief" text="color of foreground"/>
@@ -2084,30 +2185,6 @@
 				<Model.Member name="textsmoothing" type="string" typeName="enum">
 					<Model.Documentation x:id="doc">
 						<String x:id="brief" text="smoothing of font"/>
-					</Model.Documentation>
-				</Model.Member>
-			</List>
-			<Attributes x:id="attributes">
-				<Attribute id="Class:ChildGroup" value="Style.Children"/>
-				<Attribute id="Class:DocGroup" value="Styles"/>
-			</Attributes>
-		</Model.Class>
-		<Model.Class name="StyleAlias" parent="Style">
-			<Model.Documentation x:id="doc">
-				<String x:id="brief" text="Visual Style Alias definition"/>
-				<String x:id="detailed" text="A visual style that dynamically delegates to one of the listed styles based on a paramter value.&#10;The parameter must be globally accessible. The value of the parameter is interpreted as an index in the list of available styles."/>
-				<String x:id="code" text="&lt;StyleAlias name=&quot;MyStyle&quot;&#10;&#9;&#9;parameter=&quot;://hostapp/Configuration/styleIndex&quot;&#10;&#9;&#9;styles=&quot;MyFirstStyle MySecondStyle MyThirdStyle&quot;&gt;&#10;&lt;/StyleAlias&gt;"/>
-				<String x:id="language" text="xml"/>
-			</Model.Documentation>
-			<List x:id="members">
-				<Model.Member name="styles" type="string" typeName="string">
-					<Model.Documentation x:id="doc">
-						<String x:id="brief" text="The available style names, separted by spaces"/>
-					</Model.Documentation>
-				</Model.Member>
-				<Model.Member name="parameter" type="string" typeName="string">
-					<Model.Documentation x:id="doc">
-						<String x:id="brief" text="Url of a parameter that selects on of the styles specified in &quot;styles&quot;"/>
 					</Model.Documentation>
 				</Model.Member>
 			</List>
@@ -2288,7 +2365,7 @@
 				<String x:id="brief" text="A ToolButton is a RadioButton with an additional icon"/>
 				<String x:id="detailed" text="The ToolButton behaves like a RadioButton, but can have an icon like the normal Button.&#10;A ToolButton can also have an an additional &quot;mode parameter&quot; that is used for tools with different modes. &#10;But this feature is not available on skin level."/>
 				<List x:id="links">
-					<String text="ToolButtonStyledecorform"/>
+					<String text="ToolButtonStyle"/>
 				</List>
 			</Model.Documentation>
 			<List x:id="members">
@@ -4865,27 +4942,22 @@
 						<String x:id="brief" text="don&apos;t grow larger than current monitor size when autosizing to content"/>
 					</Model.Documentation>
 				</Model.Enumerator>
-				<Model.Enumerator name="latchwheel" value="16777216">
-					<Model.Documentation x:id="doc">
-						<String x:id="brief" text="view locks the mouse wheel scroll to itself (no child handling) for a limited time after the last handled mouse wheel event"/>
-					</Model.Documentation>
-				</Model.Enumerator>
-				<Model.Enumerator name="pagecontrol" value="33554432">
+				<Model.Enumerator name="pagecontrol" value="16777216">
 					<Model.Documentation x:id="doc">
 						<String x:id="brief" text="use page controls instead of scroll bars"/>
 					</Model.Documentation>
 				</Model.Enumerator>
-				<Model.Enumerator name="centertarget" value="67108864">
+				<Model.Enumerator name="centertarget" value="33554432">
 					<Model.Documentation x:id="doc">
 						<String x:id="brief" text="center target if target is smaller than scroll view (do not combine with kScrollViewBehaviorExtendTarget)"/>
 					</Model.Documentation>
 				</Model.Enumerator>
-				<Model.Enumerator name="vscrollspace" value="134217728">
+				<Model.Enumerator name="vscrollspace" value="67108864">
 					<Model.Documentation x:id="doc">
 						<String x:id="brief" text="addional reserved space for vertical scrollbar (avoid automatic horizontal scrollbar, because of space covered when vertical bar is shown)"/>
 					</Model.Documentation>
 				</Model.Enumerator>
-				<Model.Enumerator name="hscrollspace" value="268435456">
+				<Model.Enumerator name="hscrollspace" value="134217728">
 					<Model.Documentation x:id="doc">
 						<String x:id="brief" text="addional reserved space for horizontal scrollbar (avoid resizing of clip view, when kScrollViewBehaviorAutoHideHBar is set)"/>
 					</Model.Documentation>
@@ -5184,7 +5256,12 @@
 						<String x:id="brief" text="when autosizing, use largest size of all content views"/>
 					</Model.Documentation>
 				</Model.Enumerator>
-				<Model.Enumerator name="centered" value="65536">
+				<Model.Enumerator name="tooltip" value="65536">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="show tab tooltips"/>
+					</Model.Documentation>
+				</Model.Enumerator>
+				<Model.Enumerator name="centered" value="131072">
 					<Model.Documentation x:id="doc">
 						<String x:id="brief" text="center tabs if possible (no &quot;extendtabs&quot; and combined tab width smaller than view width)"/>
 					</Model.Documentation>

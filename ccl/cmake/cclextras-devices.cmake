@@ -45,7 +45,9 @@ if (NOT TARGET cclextras-devices)
 	target_sources (cclextras-devices PRIVATE ${cclextras_devices_sources} ${cclextras_public_sources} ${CMAKE_CURRENT_LIST_FILE})
 	ccl_target_headers (cclextras-devices INSTALL ${CCL_SYSTEM_INSTALL} DESTINATION ${CCL_PUBLIC_HEADERS_DESTINATION} BASE_DIRS ${CCL_DIR} FILES ${cclextras_devices_headers})
 	
-	if (CCL_SYSTEM_INSTALL)
+	if (CCL_EXPORTS_PATH)
+		install (TARGETS cclextras-devices EXPORT ccl-targets FILE_SET HEADERS DESTINATION ${CCL_PUBLIC_HEADERS_DESTINATION} COMPONENT public_headers)
+	elseif (CCL_SYSTEM_INSTALL)
 		install (TARGETS cclextras-devices EXPORT ccl-targets DESTINATION "${CCL_STATIC_LIBRARY_DESTINATION}"
 										   ARCHIVE DESTINATION "${CCL_STATIC_LIBRARY_DESTINATION}" COMPONENT prebuilt_libraries_${VENDOR_NATIVE_COMPONENT_SUFFIX}
 										   FRAMEWORK DESTINATION "${CCL_STATIC_LIBRARY_DESTINATION}" COMPONENT prebuilt_libraries_${VENDOR_NATIVE_COMPONENT_SUFFIX}

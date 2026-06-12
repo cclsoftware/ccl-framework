@@ -56,13 +56,13 @@ private:
 
 
 //************************************************************************************************
-// RowColumnIteraor
+// RowColumnIterator
 //************************************************************************************************
 
-class RowColumnIteraor
+class RowColumnIterator
 {
 public:
-	RowColumnIteraor (TableLayout& layout);
+	RowColumnIterator (TableLayout& layout);
 
 	void next ();
 
@@ -75,7 +75,7 @@ private:
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-RowColumnIteraor::RowColumnIteraor (TableLayout& layout)
+RowColumnIterator::RowColumnIterator (TableLayout& layout)
 : numRows (layout.getNumRows ()),
   numCols (layout.getNumColumns ()),
   rowIndex (0),
@@ -87,7 +87,7 @@ RowColumnIteraor::RowColumnIteraor (TableLayout& layout)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void RowColumnIteraor::next ()
+void RowColumnIterator::next ()
 {
 	if(numCols == 0)
 	{
@@ -265,7 +265,7 @@ void TableLayoutAlgorithm::onViewsChanged ()
 	Coord spacing = coordFToInt (layoutData.spacing * context->getZoomFactor ());
 	
 	// accumulate size limits and preferred sizes for rows and columns
-	RowColumnIteraor iterator (tableLayout);
+	RowColumnIterator iterator (tableLayout);
 	ArrayForEach (context->getLayoutItems (), AnchorLayoutItem, item)
 		AnchorLayoutItem* rowItem = static_cast<AnchorLayoutItem*> (rowItems.at (iterator.rowIndex));
 		AnchorLayoutItem* colItem = static_cast<AnchorLayoutItem*> (colItems.at (iterator.colIndex));
@@ -334,7 +334,7 @@ void TableLayoutAlgorithm::doLayout ()
 	LayoutPrimitives::calcBoxLayout<HorizontalDirection> (colItems, context->getLayoutWidth (),  margin, spacing);
 
 	// apply the calculated layout
-	RowColumnIteraor iterator (tableLayout);
+	RowColumnIterator iterator (tableLayout);
 	ArrayForEach (context->getLayoutItems (), AnchorLayoutItem, item)
 		AnchorLayoutItem* rowItem = static_cast<AnchorLayoutItem*> (rowItems.at (iterator.rowIndex));
 		AnchorLayoutItem* colItem = static_cast<AnchorLayoutItem*> (colItems.at (iterator.colIndex));

@@ -155,7 +155,7 @@ public:
 	CLASS_INTERFACE (IDockPanelView, ImageView)
 
 protected:
-	DockPanelItem* items;
+	CCL::SharedPtr<DockPanelItem> items;
 };
 
 //************************************************************************************************

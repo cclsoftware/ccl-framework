@@ -419,7 +419,9 @@ TreeView::TreeView (const Rect& size, IItemModel* model, StyleRef style)
   extraHeight (0),
   avoidScrolling (false),
   ownTree (true),
-  editColumn (0)
+  editColumn (0),
+  firstLevelExpandable (true),
+  expandCheckDone (false)
 {
 	setItemStyle (NEW TreeStyle);
 	setModel (model);
@@ -597,11 +599,15 @@ int CCL_API TreeView::getItemTextInset (ITreeItem* _item)
 	TreeStyle& treeStyle = getTreeStyle ();
 	Coord inset = (treeStyle.getItemInset () * parentCount);
 
-	if(!style.isCustomStyle (Styles::kTreeViewBehaviorExpandAll))
+	if(style.isCustomStyle (Styles::kTreeViewAppearanceNoRoot))
+		if(!expandCheckDone)
+			checkFirstLevelExpand ();
+
+	if(!style.isCustomStyle (Styles::kTreeViewBehaviorExpandAll) && firstLevelExpandable)
 	{
 		if(item->canExpand ())
 			inset += treeStyle.getExpandSize ().x + treeStyle.getMarginH ();
-		else if(!style.isCustomStyle (Styles::kTreeViewAppearanceNoRoot) || item->getParent () != getRootItem ())
+		else
 			inset += treeStyle.getLeafInset () + treeStyle.getMarginH ();
 	}
 	if(Image* icon = getIcon (item))
@@ -947,7 +953,11 @@ void TreeView::draw (const UpdateRgn& updateRgn)
 	state.indent (getItemStyle ().getMarginH (), getItemStyle ().getMarginV ());
 
 	if(style.isCustomStyle (Styles::kTreeViewAppearanceNoRoot))
+	{
+		if(!expandCheckDone)
+			checkFirstLevelExpand ();
 		drawSubItems (&getTree (), state);
+	}
 	else
 		drawItem (&getTree (), state);
 
@@ -1863,6 +1873,8 @@ void TreeView::modelChanged (int changeType, ItemIndexRef item)
 		anchorItem = nullptr;
 		focusItem = nullptr;
 	}
+	expandCheckDone = false;
+	checkFirstLevelExpand ();
 	ItemView::modelChanged (changeType, item);
 }
 
@@ -2152,6 +2164,24 @@ bool TreeView::drawItem (TreeItem* item, TDrawState& state)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
+void TreeView::checkFirstLevelExpand ()
+{
+	if(getTree ().countItems () > 0)
+	{
+		firstLevelExpandable = false;
+		IterForEach (getTree ().newIterator (), TreeItem, item)
+			if(item->canExpand ())
+			{
+				firstLevelExpandable = true;
+				break;
+			}
+		EndFor
+		expandCheckDone = true;
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
 bool TreeView::drawSubItems (TreeItem* parent, TDrawState& state)
 {
 	IterForEach (parent->newIterator (), TreeItem, item)
@@ -2179,7 +2209,7 @@ void TreeView::drawItemContent (GraphicsPort& port, RectRef _itemRect, RectRef c
 	bool selectfullWidth = style.isCustomStyle (Styles::kItemViewBehaviorSelectFullWidth);
 	
 	// *** Expand Button ***
-	if(!style.isCustomStyle (Styles::kTreeViewBehaviorExpandAll))
+	if(!style.isCustomStyle (Styles::kTreeViewBehaviorExpandAll) && firstLevelExpandable)
 	{
 		if(item->canExpand ())
 		{
@@ -2193,9 +2223,7 @@ void TreeView::drawItemContent (GraphicsPort& port, RectRef _itemRect, RectRef c
 		}
 		else
 		{
-			// but no additional inset for first-level items when root is hidden
-			if(!style.isCustomStyle (Styles::kTreeViewAppearanceNoRoot) || item->getParent () != getRootItem ())
-				inset += treeStyle.getLeafInset () + treeStyle.getMarginH ();
+			inset += treeStyle.getLeafInset () + treeStyle.getMarginH ();
 		}
 	}
 

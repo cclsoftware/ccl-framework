@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 # --- This script creates an Android App Bundle from already compiled APKs ---
 # ---
@@ -129,8 +129,8 @@ for ARCH in "${ARCHES[@]}"; do
   $SEVENZIP x -aoa $APK lib -ostaging > /dev/null
   if [ $? -ne 0 ]; then error_proc; fi
 
-  if [ -e $APP/build/outputs/mapping/${GRADLE_ARCH}${CONFIG}/mapping.txt ]; then
-    cp $APP/build/outputs/mapping/${GRADLE_ARCH}${CONFIG}/mapping.txt staging/proguard.map > /dev/null
+  if [ -e $APP/build/outputs/mapping/${GRADLE_ARCH}${CONFIG^}/mapping.txt ]; then
+    cp $APP/build/outputs/mapping/${GRADLE_ARCH}${CONFIG^}/mapping.txt staging/proguard.map > /dev/null
   fi
 done
 
@@ -151,8 +151,8 @@ if [ -e staging/proguard.map ]; then PROGUARDMAP="--metadata-file=com.android.to
 for ARCH in "${ARCHES[@]}"; do
   setarch_proc $ARCH
 
-  if [ -e $APP/build/outputs/native-debug-symbols/${GRADLE_ARCH}${CONFIG}/native-debug-symbols.zip ]; then
-    $SEVENZIP x -aoa $APP/build/outputs/native-debug-symbols/${GRADLE_ARCH}${CONFIG}/native-debug-symbols.zip -ostaging/BUNDLE-METADATA/com.android.tools.build.debugsymbols $GRADLE_ABI > /dev/null
+  if [ -e $APP/build/outputs/native-debug-symbols/${GRADLE_ARCH}${CONFIG^}/native-debug-symbols.zip ]; then
+    $SEVENZIP x -aoa $APP/build/outputs/native-debug-symbols/${GRADLE_ARCH}${CONFIG^}/native-debug-symbols.zip -ostaging/BUNDLE-METADATA/com.android.tools.build.debugsymbols $GRADLE_ABI > /dev/null
   fi
 done
 

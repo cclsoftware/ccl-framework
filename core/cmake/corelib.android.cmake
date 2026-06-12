@@ -65,10 +65,13 @@ source_group (TREE ${corelib_DIR}/platform/android/java PREFIX "source\\platform
 
 list (APPEND corelib_sources ${corelib_platform_sources} ${corelib_android_sources} ${corelib_java_sources})
 
-find_library (Android_LIBRARY NAMES android)
-find_library (Log_LIBRARY NAMES log)
-find_library (Math_LIBRARY NAMES m)
-target_link_libraries (corelib PUBLIC ${Android_LIBRARY} ${Log_LIBRARY} ${Math_LIBRARY})
+ccl_check_imported (corelib imported)
+if (NOT imported)
+	find_library (Android_LIBRARY NAMES android)
+	find_library (Log_LIBRARY NAMES log)
+	find_library (Math_LIBRARY NAMES m)
+	target_link_libraries (corelib PUBLIC ${Android_LIBRARY} ${Log_LIBRARY} ${Math_LIBRARY})
+endif ()
 
 if (NOT "${gradle_files_generated}" STREQUAL "${CMAKE_CURRENT_BINARY_DIR}")
 	ccl_add_gradle_property (corelib "solutionDir" ${CMAKE_CURRENT_BINARY_DIR})

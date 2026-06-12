@@ -727,14 +727,18 @@ double CCL_API CocoaUserInterface::getDoubleClickDelay () const
 bool CocoaUserInterface::detectDrag (View* view, const Point& where)
 {
 	static int kDragRange = 3;
-	
+
+	if([NSEvent pressedMouseButtons] == 0)
+		return false;
+
 	Window* window = view->getWindow ();
 	if(!window)
 		return false;
+
 	NSWindow* nsWindow = toNSWindow (window);
 	if(!nsWindow)
 		return false;
-	
+
 	Point where2 (where);
 	view->clientToWindow (where2);
 	Rect dragRect (where2.x - kDragRange, where2.y - kDragRange, where2.x + kDragRange, where2.y + kDragRange);

@@ -26,8 +26,6 @@
 #include "ccl/app/editing/edithandler.h"
 #include "ccl/app/editing/selectaction.h"
 #include "ccl/app/editing/tools/edittool.h"
-#include "ccl/app/editing/tools/toolcollection.h"
-#include "ccl/app/editing/tools/toolbar.h"
 #include "ccl/app/editing/addins/editenvironment.h"
 
 #include "ccl/app/utilities/boxedguitypes.h"
@@ -634,9 +632,20 @@ bool EditView::onMouseDown (const MouseEvent& event)
 {
 	if(event.keys.isSet (KeyState::kMButton))
 	{
-		if(component)
-			if(ToolBar* toolBar = component->getTools ().getToolBar ())
-				toolBar->popup (event.where, *this);
+		if(scrollWithMButton ())
+		{
+			// create a mouse handler for scrolling when dragging with middle mouse button
+			// note: we can't use createMouseHandler () or detectDrag (), since both only work with the left button;
+			// so we set the handler here and distinguish between dragging and simple click inside the handler
+			auto* handler = NEW ScrollEditHandler (this);
+			handler->begin (event);
+			setMouseHandler (handler);
+		}
+		else
+		{
+			if(component)
+				component->popupToolPalette (*this, event.where);
+		}
 		return true;
 	}
 	return SuperClass::onMouseDown (event);

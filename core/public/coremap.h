@@ -19,6 +19,8 @@
 #ifndef _ccl_coremap_h
 #define _ccl_coremap_h
 
+#include "core/public/corevector.h"
+
 namespace Core {
 
 //************************************************************************************************

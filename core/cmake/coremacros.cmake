@@ -408,7 +408,7 @@ macro (ccl_add_library target type)
 		endif ()
 	endif ()
 
-	get_target_property (imported ${target_name} IMPORTED)
+	ccl_check_imported (${target_name} imported)
 	if (NOT imported AND NOT ${type} STREQUAL "ALIAS")
 		ccl_configure_target (${target_name} "${target_params_SUBDIR}" "${target}")
 	endif ()
@@ -421,8 +421,14 @@ endmacro ()
 # @param {STRING} VENDOR  [optional] Vendor ID, used to determine version information. See ccl_set_vendor.
 # @param {FILEPATH} VERSION_FILE  [optional] Path to a version header file.
 # @param {STRING} VERSION_PREFIX  [optional] Prefix used in the version header file, e.g. APP or PLUG.
-macro (ccl_add_core_library target type)	
+# @param {STRING} POSTFIX  [optional] Postfix to append to the target name and binary output name.
+macro (ccl_add_core_library target type)
+	cmake_parse_arguments (target_params "" "SUBDIR;VENDOR;VERSION_FILE;VERSION_PREFIX;POSTFIX" "" ${ARGN})
 	ccl_add_library (${target} ${type} ${ARGN})
+	set (target_name "${target}")
+	if (target_params_POSTFIX)
+		string (APPEND target_name ".${target_params_POSTFIX}")
+	endif ()
 	target_sources (${target_name} PRIVATE ${corelib_malloc_sources})
 	source_group ("source\\libs" FILES ${corelib_malloc_sources})
 	target_link_libraries (${target_name} PUBLIC corelib)
@@ -469,8 +475,11 @@ macro (ccl_add_app target)
 	else ()
 		add_executable (${target} ${executable_flags})
 	endif ()
-	
+
 	if (app_params_VENDOR)
+		if (XCODE)
+			set (APP_SIGNING_TEAMID "")
+		endif ()
 		ccl_set_vendor (${target} ${app_params_VENDOR})
 	endif ()
 	
@@ -493,12 +502,6 @@ macro (ccl_add_app target)
 			XCODE_ATTRIBUTE_SKIP_INSTALL "NO"
 			XCODE_ATTRIBUTE_INSTALL_PATH "$(LOCAL_APPS_DIR)"
 		)
-		#code signing identity
-		if(IOS)
-			set_target_properties (${target} PROPERTIES XCODE_ATTRIBUTE_DEVELOPMENT_TEAM "${SIGNING_TEAMID_IOS}")
-		else()
-			set_target_properties (${target} PROPERTIES XCODE_ATTRIBUTE_DEVELOPMENT_TEAM "${SIGNING_TEAMID_MAC}")
-		endif()
 	endif ()
 	
 	ccl_configure_target (${target} ${app_params_SUBDIR})
@@ -537,7 +540,6 @@ endmacro ()
 # @param {STRING} vendor Vendor name.
 macro (ccl_set_vendor target vendor)
 	set (${target}_VENDOR "${vendor}")
-
 	set (VENDOR_NAME "")
 	set (VENDOR_COPYRIGHT_YEAR "")
 	set (VENDOR_COPYRIGHT "")
@@ -1591,6 +1593,13 @@ macro (ccl_check_file_created file result)
 	endif ()
 endmacro ()
 
+# Check if a target is an imported target
+# @param {STRING} target  Target name.
+# @param {STRING} result  Result variable. Set to ON if the target is an imported target. Set to OFF otherwise.
+macro (ccl_check_imported target result)
+	get_target_property (${result} ${target} IMPORTED)
+endmacro ()
+
 # Get the name of an isolated target, if it exists.
 # Returns the plain target name if an isolated variant does not exist
 # @param {STRING} target  Name of the target without isolation postfix.
@@ -1625,7 +1634,67 @@ macro (ccl_create_plugin_file module)
 	file (WRITE "${params_LOCATION}/${module}.plugin" "Lib=lib${module}.${extension}\n")
 endmacro ()
 
+# Include prebuilt targets if CCL_PREFER_PREBUILT_EXPORTS is ON.
+# Searches for a file named ${target}.cmake in ${CMAKE_BINARY_DIR}/exports or ${CCL_EXPORTS_PATH}.
+# @param {STRING} target  Name of the target to import.
+# @param {STRING} NAMES  [variadic,optional] Additional file names to check.
+# @param {STRING} HINTS  [variadic,optional] Additional search locations.
+# @param {STRING} ISOLATED  [optional] Append isolation postfix to search file name.
+macro (ccl_import_prebuilt_targets target)
+	if (CCL_PREFER_PREBUILT_EXPORTS)
+		cmake_parse_arguments (import_params "" "ISOLATED" "NAMES;HINTS" ${ARGN})
+		set (target_name "${target}")
+		if (import_params_ISOLATED)
+			set (target_name "${target}.${CCL_ISOLATION_POSTFIX}")
+		endif ()
+		find_file (${target}_exports_file NAMES "${target_name}.cmake" ${import_params_NAMES} HINTS "${CMAKE_BINARY_DIR}/exports" ${import_params_HINTS} ${CCL_EXPORTS_PATH})
+		if (${target}_exports_file)
+			include ("${${target}_exports_file}")
+			if (TARGET ${target})
+				get_target_property (is_imported ${target} IMPORTED)
+				get_target_property (is_global ${target} IMPORTED_GLOBAL)
+				if (is_imported AND NOT is_global)
+					set_target_properties (${target} PROPERTIES IMPORTED_GLOBAL TRUE)
+				endif ()
+			endif ()
+		endif ()
+	endif ()
+endmacro ()
+
+# Export a target.
+# Allows for later import in a foreign project using \a ccl_import_prebuilt_targets
+# @param {STRING} target  Name of the target to export.
+# @param {STRING} DESTINATION  [optional] Location of the exported file, defaults to ${CMAKE_BINARY_DIR}/exports.
+# @param {STRING} NAME  [optional] Name of the exported file, defaults to ${target}.
+macro (ccl_export_target target)
+	ccl_check_imported (${target} imported)
+	if (NOT imported AND NOT CCL_ISOLATION_POSTFIX)
+		cmake_parse_arguments (export_params "" "DESTINATION;NAME" "" ${ARGN})
+		if (NOT export_params_DESTINATION)
+			list(GET CCL_EXPORTS_PATH 0 export_params_DESTINATION)
+		endif ()
+		if (export_params_DESTINATION)
+			if (NOT export_params_NAME)
+				set (export_params_NAME "${target}")
+			endif ()
+			file (MAKE_DIRECTORY "${export_params_DESTINATION}")
+			set (export_file "${export_params_DESTINATION}/${export_params_NAME}.cmake")
+			export (TARGETS ${target} FILE "${export_file}")
+		endif ()
+	endif ()
+endmacro ()
+
+# Install an imported target.
+# @param {STRING} target  Name of the target to export.
+macro (ccl_install_imported target)
+	ccl_check_imported (${target} imported)
+	if (imported)
+		install (IMPORTED_RUNTIME_ARTIFACTS ${target} ${ARGN})
+	endif ()
+endmacro ()
+
 # Get the build output path of an extension library.
+# @group extensions
 # @param {PATH} result  Output argument, vendor and platform specific library build directory.
 # @param {STRING} subdir  Subdirectory of the extension library, e.g. plugins or dsp.
 # @param {STRING} extension  Name of the extension.
@@ -1636,7 +1705,10 @@ macro (ccl_get_extension_library_path result subdir extension)
 	if (NOT REPOSITORY_EXTENSIONS_DIR)
 		set (REPOSITORY_EXTENSIONS_DIR "${REPOSITORY_ROOT}/extensions")
 	endif ()
-	set (${result} "${REPOSITORY_EXTENSIONS_DIR}/deployment/${extension}/${subdir}/${EXTENSIONS_BINARY_SUBDIRECTORY}")
+	if (NOT EXTENSIONS_DEPLOYMENT_DIR)
+		set (EXTENSIONS_DEPLOYMENT_DIR "${REPOSITORY_EXTENSIONS_DIR}/deployment")
+	endif ()
+	set (${result} "${EXTENSIONS_DEPLOYMENT_DIR}/${extension}/${subdir}/${EXTENSIONS_BINARY_SUBDIRECTORY}")
 endmacro ()
 
 # Preconfigure an extension library to match vendor guidelines.
@@ -1681,22 +1753,6 @@ macro (ccl_extensions_add_core_library target subdir)
 	endif ()
 
 	ccl_add_core_plugin_library (${target} MODULE)
-	ccl_extensions_configure_target (${target} ${subdir} ${extension})
-endmacro ()
-
-# Add an extension library, preconfigured to match vendor guidelines.
-# @group extensions
-# @param {STRING} target  Name of the target to add.
-# @param {STRING} subdir  Subdirectory of the extension library, e.g. plugins or dsp.
-# @param {STRING} extension  [optional] Name of the extension. Defaults to <target>.
-macro (ccl_extensions_add_library target subdir)
-	if (${ARGC} GREATER 3)
-		set (extension "${ARGV3}")
-	else ()
-		set (extension "${target}")
-	endif ()
-
-	ccl_add_plugin_library (${target})
 	ccl_extensions_configure_target (${target} ${subdir} ${extension})
 endmacro ()
 

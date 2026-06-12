@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 # --- This script creates a multi-architecture APK from individual architecture APKs ---
 # ---

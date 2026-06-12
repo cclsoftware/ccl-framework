@@ -19,13 +19,16 @@
 #ifndef _ccl_ivisualstyle_h
 #define _ccl_ivisualstyle_h
 
+#include "ccl/public/gui/framework/designsize.h"
 #include "ccl/public/gui/graphics/types.h"
 
 #include "ccl/public/text/cstring.h"
 
 namespace CCL {
 
+interface IContainer;
 interface IColorScheme;
+interface IStyleConditionContext;
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -34,49 +37,79 @@ namespace ClassID
 	DEFINE_CID (VisualStyle, 0xc5f60f5b, 0x31b5, 0x47c6, 0x8f, 0x79, 0xdd, 0x18, 0x8a, 0xbc, 0x33, 0xb7)
 }
 
+/** Visual style metric type. */
+typedef float VisualStyleMetric;
+
+/** Visual style options type. */
+typedef int VisualStyleOptions;
+
 //************************************************************************************************
-// IVisualStyle
-/** A visual style holds colors, fonts, metrics, etc. describing the appearance of an UI element.
+// IVisualStyleData
+/** Visual style data holds colors, fonts, metrics, etc.
 	\ingroup gui */
 //************************************************************************************************
 
-interface IVisualStyle: IUnknown
-{	
-	/** Metric type. */
-	typedef float Metric;
+interface IVisualStyleData: IUnknown
+{
+	using Metric = VisualStyleMetric;
+	using Options = VisualStyleOptions;
 
-	/** Options type. */
-	typedef int Options;
-
-	/** Get name of visual style. */
+	/** Get name of style data. */
 	virtual StringID CCL_API getName () const = 0;
 
-	/** Get color by name. If color does not exist, the default color is returned. */
+	/** Set name of style data. */
+	virtual void CCL_API setName (StringID name) = 0;
+
+	/** Get color by name, returns default color if not found. */
 	virtual ColorRef CCL_API getColor (StringID name, ColorRef defaultColor = Colors::kBlack) const = 0;
+
+	/** Get color by name, returns false if not found. */
+	virtual tbool CCL_API getColor (Color& color, StringID name) const = 0;
 
 	/** Set color by name. */
 	virtual void CCL_API setColor (StringID name, ColorRef color) = 0;
 
-	/** Get font by name. If font does not exist, the default font is returned. */
+	/** Get font by name, returns default font if not found. */
 	virtual FontRef CCL_API getFont (StringID name, FontRef defaultFont = Font::getDefaultFont ()) const = 0;
+
+	/** Get font by name, returns false if not found. */
+	virtual tbool CCL_API getFont (Font& font, StringID name) const = 0;
 
 	/** Set font by name. */
 	virtual void CCL_API setFont (StringID name, FontRef font) = 0;
 
-	/** Get metric by name. If it does not exist, the default value is returned. */
+	/** Get metric by name (float), returns default value if not found. */
 	virtual Metric CCL_API getMetric (StringID name, Metric defaultValue = 0) const = 0;
 
-	/** Set metric by name. */
+	/** Get metric by name (float), returns false if not found. */
+	virtual tbool CCL_API getMetric (Metric& value, StringID name) const = 0;
+
+	/** Set metric by name (float). */
 	virtual void CCL_API setMetric (StringID name, Metric value) = 0;
 
-	/** Get string by name. If it does not exist, the default value is returned. */
+	/** Get metric by name (DesignCoord), returns default value if not found. */
+	virtual DesignCoord CCL_API getDesignMetric (StringID name, DesignCoordRef defaultValue = DesignCoord::kUndefined) const = 0;
+
+	/** Get metric by name (DesignCoord), returns false if not found. */
+	virtual tbool CCL_API getDesignMetric (DesignCoord& value, StringID name) const = 0;
+
+	/** Set metric by name (DesignCoord). */
+	virtual void CCL_API setDesignMetric (StringID name, DesignCoordRef value) = 0;
+
+	/** Get string by name, returns default value if not found. */
 	virtual CString CCL_API getString (StringID name, StringID defaultValue = CString::kEmpty) const = 0;
+
+	/** Get string by name, returns false if not found. */
+	virtual tbool CCL_API getString (MutableCString& string, StringID name) const = 0;
 
 	/** Set string by name. */
 	virtual void CCL_API setString (StringID name, StringID value) = 0;
 
-	/** Get options by name. If it does not exist, the default options are returned. */
+	/** Get options by name, returns default value if not found. */
 	virtual Options CCL_API getOptions (StringID name, Options defaultOptions = 0) const = 0;
+
+	/** Get options by name, returns false if not found. */
+	virtual tbool CCL_API getOptions (Options& options, StringID name) const = 0;
 
 	/** Set options by name. */
 	virtual void CCL_API setOptions (StringID name, Options options) = 0;
@@ -93,19 +126,10 @@ interface IVisualStyle: IUnknown
 	/** Set gradient by name. */
 	virtual void CCL_API setGradient (StringID name, IGradient* gradient) = 0;
 
-	/** Check if style has references to given color scheme. */
+	/** Check if style data has references to given color scheme. */
 	virtual tbool CCL_API hasReferences (IColorScheme& scheme) const = 0;
 
-	/** Copy columns from other style. */
-	virtual tbool CCL_API copyFrom (const IVisualStyle& other) = 0;
-
-	/** Get inherited visual style. */
-	virtual const IVisualStyle* CCL_API getInherited () const = 0;
-
-	/** Get original visual style (usually this, or a source style this one delegates to, e.g. for a <styleselector>). */
-	virtual const IVisualStyle* CCL_API getOriginal () const = 0;
-
-	DECLARE_IID (IVisualStyle)
+	DECLARE_IID (IVisualStyleData)
 
 	//////////////////////////////////////////////////////////////////////////////////////////////
 	// Additional properties (IObject)
@@ -118,39 +142,150 @@ interface IVisualStyle: IUnknown
 	DECLARE_STRINGID_MEMBER (kOptions)		///< options [IArrayObject]
 	DECLARE_STRINGID_MEMBER (kImages)		///< images [IArrayObject]
 	DECLARE_STRINGID_MEMBER (kGradients)	///< gradients [IArrayObject]
+};
+
+DEFINE_IID (IVisualStyleData, 0x8600e5f1, 0xb98c, 0x444d, 0xa2, 0x5a, 0x71, 0x21, 0x2d, 0xdb, 0x3e, 0x90)
+DEFINE_STRINGID_MEMBER (IVisualStyleData, kColors, "colors")
+DEFINE_STRINGID_MEMBER (IVisualStyleData, kFonts, "fonts")
+DEFINE_STRINGID_MEMBER (IVisualStyleData, kMetrics, "metrics")
+DEFINE_STRINGID_MEMBER (IVisualStyleData, kStrings, "strings")
+DEFINE_STRINGID_MEMBER (IVisualStyleData, kOptions, "options")
+DEFINE_STRINGID_MEMBER (IVisualStyleData, kImages, "images")
+DEFINE_STRINGID_MEMBER (IVisualStyleData, kGradients, "gradients")
+
+//************************************************************************************************
+// StyleDataReader
+/** Read common attributes from visual style data.
+	\ingroup gui */
+//************************************************************************************************
+
+class StyleDataReader
+{
+public:
+	StyleDataReader (const IVisualStyleData& data);
+
+	Color getForeColor () const;				///< Get foreground color
+	Color getBackColor () const;				///< Get background color
+	Color getHiliteColor () const;				///< Get hilite color
+	Color getTextColor () const;				///< Get text color
+	VisualStyleMetric getStrokeWidth () const;	///< Get stroke width
+	Pen getForePen () const;					///< Get foreground pen
+	Pen getBackPen () const;					///< Get background pen
+	Brush getForeBrush () const;				///< Get foreground brush (solid or gradient)
+	Brush getBackBrush () const;				///< Get background brush (solid or gradient)
+	Brush getTextBrush () const;				///< Get text brush (solid or gradient)
+	Font getTextFont () const;					///< Get text font
+	Alignment getTextAlignment () const;		///< Get text alignment
+	VisualStyleOptions getTextOptions () const;	///< Get text options
+	TextFormat getTextFormat () const;			///< Get text format
+	IImage* getBackgroundImage () const;		///< Get background image
+	void getPadding (Rect& padding) const;		///< Get padding
+
+	template <typename T> T getMetric (StringID name, T defaultValue) const;
+
+protected:
+	const IVisualStyleData& data;
+};
+
+//************************************************************************************************
+// IVisualStyle
+/** A visual style describes the appearance of an UI element.
+	\ingroup gui */
+//************************************************************************************************
+
+interface IVisualStyle: IVisualStyleData
+{
+	/** Copy columns from other style. */
+	virtual tbool CCL_API copyFrom (const IVisualStyle& other) = 0;
+
+	/** Get inherited visual style. */
+	virtual const IVisualStyle* CCL_API getInherited () const = 0;
+
+	/** Get original visual style (usually this, or a source style this one delegates to, e.g. for a <styleselector>). */
+	virtual const IVisualStyle* CCL_API getOriginal () const = 0;
+
+	/** Get container with nested visual style conditions. */
+	virtual const IContainer& CCL_API getStyleConditions () const = 0;
+
+	/** Get visual style data for given named condition. */
+	virtual const IVisualStyleData* CCL_API getStyleCondition (StringID name) const = 0;
+
+	/** Get color with conditon context, returns false if not found. */
+	virtual tbool CCL_API getColor (Color& color, StringID name, IStyleConditionContext* context) const = 0;
+
+	/** Get font with conditon context, returns false if not found. */
+	virtual tbool CCL_API getFont (Font& font, StringID name, IStyleConditionContext* context) const = 0;
+
+	/** Get metric with conditon context (float), returns false if not found. */
+	virtual tbool CCL_API getMetric (Metric& value, StringID name, IStyleConditionContext* context) const = 0;
+
+	/** Get metric with conditon context (DesignCoord), returns false if not found. */
+	virtual tbool CCL_API getDesignMetric (DesignCoord& value, StringID name, IStyleConditionContext* context) const = 0;
+
+	/** Get string with conditon context, returns false if not found. */
+	virtual tbool CCL_API getString (MutableCString& string, StringID name, IStyleConditionContext* context) const = 0;
+
+	/** Get options with conditon context, returns false if not found. */
+	virtual tbool CCL_API getOptions (Options& options, StringID name, IStyleConditionContext* context) const = 0;
+
+	/** Get image with conditon context. */
+	virtual IImage* CCL_API getImage (StringID name, IStyleConditionContext* context) const = 0;
+
+	/** Get gradient with conditon context. */
+	virtual IGradient* CCL_API getGradient (StringID name, IStyleConditionContext* context) const = 0;
+
+	using IVisualStyleData::getColor;
+	using IVisualStyleData::getFont;
+	using IVisualStyleData::getMetric;
+	using IVisualStyleData::getDesignMetric;
+	using IVisualStyleData::getString;
+	using IVisualStyleData::getOptions;
+	using IVisualStyleData::getImage;
+	using IVisualStyleData::getGradient;
+
+	DECLARE_IID (IVisualStyle)
 
 	//////////////////////////////////////////////////////////////////////////////////////////////
-	// Common style attributes
+	// Common attributes
 	//////////////////////////////////////////////////////////////////////////////////////////////
 
-	Color getForeColor () const;			///< Get foreground color
-	Color getBackColor () const;			///< Get background color
-	Color getHiliteColor () const;			///< Get hilite color
-	Color getTextColor () const;			///< Get text color
-	Metric getStrokeWidth () const;			///< Get stroke width
-	Pen getForePen () const;				///< Get foreground pen
-	Pen getBackPen () const;				///< Get background pen
-	Brush getForeBrush () const;			///< Get foreground brush (solid or gradient)
-	Brush getBackBrush () const;			///< Get background brush (solid or gradient)
-	Brush getTextBrush () const;			///< Get text brush (solid or gradient)
-	Font getTextFont () const;				///< Get text font
-	Alignment getTextAlignment () const;	///< Get text alignment
-	Options getTextOptions () const;		///< Get text options
-	TextFormat getTextFormat () const;		///< Get text format
-	IImage* getBackgroundImage () const;	///< Get background image
-	void getPadding (Rect& padding) const;	///< Get padding
-	
+	Color getForeColor () const;
+	Color getBackColor () const;
+	Color getHiliteColor () const;
+	Color getTextColor () const;
+	Metric getStrokeWidth () const;
+	Pen getForePen () const;
+	Pen getBackPen () const;
+	Brush getForeBrush () const;
+	Brush getBackBrush () const;
+	Brush getTextBrush () const;
+	Font getTextFont () const;
+	Alignment getTextAlignment () const;
+	Options getTextOptions () const;
+	TextFormat getTextFormat () const;
+	IImage* getBackgroundImage () const;
+	void getPadding (Rect& padding) const;
+
 	template <typename T> T getMetric (StringID name, T defaultValue) const;
 };
 
 DEFINE_IID (IVisualStyle, 0xb5b3485e, 0x1549, 0x483e, 0xb7, 0x58, 0xce, 0x62, 0x16, 0xfd, 0x7e, 0x58)
-DEFINE_STRINGID_MEMBER (IVisualStyle, kColors, "colors")
-DEFINE_STRINGID_MEMBER (IVisualStyle, kFonts, "fonts")
-DEFINE_STRINGID_MEMBER (IVisualStyle, kMetrics, "metrics")
-DEFINE_STRINGID_MEMBER (IVisualStyle, kStrings, "strings")
-DEFINE_STRINGID_MEMBER (IVisualStyle, kOptions, "options")
-DEFINE_STRINGID_MEMBER (IVisualStyle, kImages, "images")
-DEFINE_STRINGID_MEMBER (IVisualStyle, kGradients, "gradients")
+
+//************************************************************************************************
+// IStyleConditionContext
+/** Filter interface to access visual style items based on named conditions.
+	\ingroup gui */
+//************************************************************************************************
+
+interface IStyleConditionContext: IUnknown
+{
+	/** Check if given conditions are matching. */
+	virtual tbool CCL_API matches (StringID conditions) const = 0;
+
+	DECLARE_IID (IStyleConditionContext)
+};
+
+DEFINE_IID (IStyleConditionContext, 0xb3834881, 0x23c9, 0x4734, 0xb3, 0xcb, 0xeb, 0xd8, 0xe0, 0xb8, 0xec, 0xb2)
 
 //************************************************************************************************
 // IVisualStyleItem
@@ -195,78 +330,82 @@ namespace StyleID
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
-// IVisualStyle inline
+// StyleDataReader inline
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-inline Color IVisualStyle::getForeColor () const
-{ return getColor (StyleID::kForeColor, Colors::kBlack); }
+inline StyleDataReader::StyleDataReader (const IVisualStyleData& data)
+: data (data) 
+{}
 
-inline Color IVisualStyle::getHiliteColor () const
-{ return getColor (StyleID::kHiliteColor, Colors::kGray); }
+inline Color StyleDataReader::getForeColor () const
+{ return data.getColor (StyleID::kForeColor, Colors::kBlack); }
 
-inline Color IVisualStyle::getBackColor () const
-{ return getColor (StyleID::kBackColor, Colors::kWhite); }
+inline Color StyleDataReader::getHiliteColor () const
+{ return data.getColor (StyleID::kHiliteColor, Colors::kGray); }
 
-inline Color IVisualStyle::getTextColor () const
-{ return getColor (StyleID::kTextColor, Colors::kBlack); }
+inline Color StyleDataReader::getBackColor () const
+{ return data.getColor (StyleID::kBackColor, Colors::kWhite); }
 
-inline IVisualStyle::Metric IVisualStyle::getStrokeWidth () const
-{ return getMetric (StyleID::kStrokeWidth, 1.f); }
+inline Color StyleDataReader::getTextColor () const
+{ return data.getColor (StyleID::kTextColor, Colors::kBlack); }
 
-inline Pen IVisualStyle::getForePen () const
+inline VisualStyleMetric StyleDataReader::getStrokeWidth () const
+{ return data.getMetric (StyleID::kStrokeWidth, 1.f); }
+
+inline Pen StyleDataReader::getForePen () const
 { return Pen (getForeColor (), getStrokeWidth ()); }
 
-inline Pen IVisualStyle::getBackPen () const
+inline Pen StyleDataReader::getBackPen () const
 { return Pen (getBackColor (), getStrokeWidth ()); }
 
-inline Brush IVisualStyle::getForeBrush () const
+inline Brush StyleDataReader::getForeBrush () const
 { 
-	if(auto gradient = getGradient (StyleID::kForeColor))
+	if(auto* gradient = data.getGradient (StyleID::kForeColor))
 		return GradientBrush (gradient);
 	else	
 		return SolidBrush (getForeColor ()); 
 }
 
-inline Brush IVisualStyle::getBackBrush () const
+inline Brush StyleDataReader::getBackBrush () const
 {
-	if(auto gradient = getGradient (StyleID::kBackColor))
+	if(auto* gradient = data.getGradient (StyleID::kBackColor))
 		return GradientBrush (gradient);
 	else	
 		return SolidBrush (getBackColor ()); 
 }
 
-inline Brush IVisualStyle::getTextBrush () const
+inline Brush StyleDataReader::getTextBrush () const
 {
-	if(auto gradient = getGradient (StyleID::kTextColor))
+	if(auto* gradient = data.getGradient (StyleID::kTextColor))
 		return GradientBrush (gradient);
 	else	
 		return SolidBrush (getTextColor ()); 
 }
 
-inline Font IVisualStyle::getTextFont () const
-{ return getFont (StyleID::kTextFont); }
+inline Font StyleDataReader::getTextFont () const
+{ return data.getFont (StyleID::kTextFont); }
 
-inline Alignment IVisualStyle::getTextAlignment () const
-{ return Alignment (getOptions (StyleID::kTextAlign)); }
+inline Alignment StyleDataReader::getTextAlignment () const
+{ return Alignment (data.getOptions (StyleID::kTextAlign)); }
 
-inline IVisualStyle::Options IVisualStyle::getTextOptions () const
-{ return getOptions (StyleID::kTextOptions); }
+inline VisualStyleOptions StyleDataReader::getTextOptions () const
+{ return data.getOptions (StyleID::kTextOptions); }
 
-inline TextFormat IVisualStyle::getTextFormat () const
+inline TextFormat StyleDataReader::getTextFormat () const
 { return TextFormat (getTextAlignment (), getTextOptions ()); }
 
-inline IImage* IVisualStyle::getBackgroundImage () const
-{ return getImage (StyleID::kBackground); }
+inline IImage* StyleDataReader::getBackgroundImage () const
+{ return data.getImage (StyleID::kBackground); }
 
 template <typename T> 
-T IVisualStyle::getMetric (StringID name, T defaultValue) const
-{ return (T)getMetric (name, (Metric)defaultValue); }
+T StyleDataReader::getMetric (StringID name, T defaultValue) const
+{ return (T)data.getMetric (name, (VisualStyleMetric)defaultValue); }
 
 template <> 
-inline bool IVisualStyle::getMetric (StringID name, bool defaultValue) const
-{ return getMetric (name, (Metric)defaultValue) != 0; }
+inline bool StyleDataReader::getMetric (StringID name, bool defaultValue) const
+{ return getMetric (name, (VisualStyleMetric)defaultValue) != 0; }
 
-inline void IVisualStyle::getPadding (Rect& padding) const
+inline void StyleDataReader::getPadding (Rect& padding) const
 {
 	Coord p = getMetric<Coord> (StyleID::kPadding, 0); // fallback value
 	padding.left = getMetric<Coord> (StyleID::kPaddingLeft, p);
@@ -274,6 +413,62 @@ inline void IVisualStyle::getPadding (Rect& padding) const
 	padding.right = getMetric<Coord> (StyleID::kPaddingRight, p);
 	padding.bottom = getMetric<Coord> (StyleID::kPaddingBottom, p);
 }
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+// IVisualStyle inline
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+inline Color IVisualStyle::getForeColor () const
+{ return StyleDataReader (*this).getForeColor (); }
+
+inline Color IVisualStyle::getHiliteColor () const
+{ return StyleDataReader (*this).getHiliteColor (); }
+
+inline Color IVisualStyle::getBackColor () const
+{ return StyleDataReader (*this).getBackColor (); }
+
+inline Color IVisualStyle::getTextColor () const
+{ return StyleDataReader (*this).getTextColor (); }
+
+inline IVisualStyle::Metric IVisualStyle::getStrokeWidth () const
+{ return StyleDataReader (*this).getStrokeWidth (); }
+
+inline Pen IVisualStyle::getForePen () const
+{ return StyleDataReader (*this).getForePen (); }
+
+inline Pen IVisualStyle::getBackPen () const
+{ return StyleDataReader (*this).getBackPen (); }
+
+inline Brush IVisualStyle::getForeBrush () const
+{ return StyleDataReader (*this).getForeBrush (); }
+
+inline Brush IVisualStyle::getBackBrush () const
+{ return StyleDataReader (*this).getBackBrush (); }
+
+inline Brush IVisualStyle::getTextBrush () const
+{ return StyleDataReader (*this).getTextBrush (); }
+
+inline Font IVisualStyle::getTextFont () const
+{ return StyleDataReader (*this).getTextFont (); }
+
+inline Alignment IVisualStyle::getTextAlignment () const
+{ return StyleDataReader (*this).getTextAlignment (); }
+
+inline IVisualStyle::Options IVisualStyle::getTextOptions () const
+{ return StyleDataReader (*this).getTextOptions (); }
+
+inline TextFormat IVisualStyle::getTextFormat () const
+{ return StyleDataReader (*this).getTextFormat (); }
+
+inline IImage* IVisualStyle::getBackgroundImage () const
+{ return StyleDataReader (*this).getBackgroundImage (); }
+
+template <typename T> 
+T IVisualStyle::getMetric (StringID name, T defaultValue) const
+{ return StyleDataReader (*this).getMetric<T> (name, defaultValue); }
+
+inline void IVisualStyle::getPadding (Rect& padding) const
+{ StyleDataReader (*this).getPadding (padding); }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 

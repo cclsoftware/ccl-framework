@@ -58,6 +58,7 @@ list (APPEND zlibng_generic_sources
 	${ZLIBNG_INCLUDE_DIR}/arch/generic/chunkset_c.c
 	${ZLIBNG_INCLUDE_DIR}/arch/generic/compare256_c.c
 	${ZLIBNG_INCLUDE_DIR}/arch/generic/crc32_braid_c.c
+	${ZLIBNG_INCLUDE_DIR}/arch/generic/crc32_chorba_c.c
 	${ZLIBNG_INCLUDE_DIR}/arch/generic/crc32_fold_c.c
 	${ZLIBNG_INCLUDE_DIR}/arch/generic/slide_hash_c.c
 )
@@ -70,11 +71,14 @@ foreach (arch IN ITEMS ${VENDOR_TARGET_ARCHITECTURE})
 			${ZLIBNG_INCLUDE_DIR}/arch/x86/adler32_avx512_vnni.c
 			${ZLIBNG_INCLUDE_DIR}/arch/x86/adler32_sse42.c
 			${ZLIBNG_INCLUDE_DIR}/arch/x86/adler32_ssse3.c
+			${ZLIBNG_INCLUDE_DIR}/arch/x86/chorba_sse2.c
+			${ZLIBNG_INCLUDE_DIR}/arch/x86/chorba_sse41.c
 			${ZLIBNG_INCLUDE_DIR}/arch/x86/chunkset_avx2.c
 			${ZLIBNG_INCLUDE_DIR}/arch/x86/chunkset_avx512.c
 			${ZLIBNG_INCLUDE_DIR}/arch/x86/chunkset_sse2.c
 			${ZLIBNG_INCLUDE_DIR}/arch/x86/chunkset_ssse3.c
 			${ZLIBNG_INCLUDE_DIR}/arch/x86/compare256_avx2.c
+			${ZLIBNG_INCLUDE_DIR}/arch/x86/compare256_avx512.c
 			${ZLIBNG_INCLUDE_DIR}/arch/x86/compare256_sse2.c
 			${ZLIBNG_INCLUDE_DIR}/arch/x86/crc32_pclmulqdq.c
 			${ZLIBNG_INCLUDE_DIR}/arch/x86/crc32_vpclmulqdq.c
@@ -84,12 +88,15 @@ foreach (arch IN ITEMS ${VENDOR_TARGET_ARCHITECTURE})
 		)
 
 		if (NOT MSVC AND NOT APPLE)
+			set_source_files_properties (${ZLIBNG_INCLUDE_DIR}/arch/x86/chorba_sse2.c PROPERTIES COMPILE_OPTIONS "-msse2")
 			set_source_files_properties (${ZLIBNG_INCLUDE_DIR}/arch/x86/chunkset_sse2.c PROPERTIES COMPILE_OPTIONS "-msse2")
 			set_source_files_properties (${ZLIBNG_INCLUDE_DIR}/arch/x86/compare256_sse2.c PROPERTIES COMPILE_OPTIONS "-msse2")
 			set_source_files_properties (${ZLIBNG_INCLUDE_DIR}/arch/x86/slide_hash_sse2.c PROPERTIES COMPILE_OPTIONS "-msse2")
 
 			set_source_files_properties (${ZLIBNG_INCLUDE_DIR}/arch/x86/adler32_ssse3.c PROPERTIES COMPILE_OPTIONS "-mssse3")
 			set_source_files_properties (${ZLIBNG_INCLUDE_DIR}/arch/x86/chunkset_ssse3.c PROPERTIES COMPILE_OPTIONS "-mssse3")
+
+			set_source_files_properties (${ZLIBNG_INCLUDE_DIR}/arch/x86/chorba_sse41.c PROPERTIES COMPILE_OPTIONS "-msse4.1")
 
 			set_source_files_properties (${ZLIBNG_INCLUDE_DIR}/arch/x86/adler32_sse42.c PROPERTIES COMPILE_OPTIONS "-msse4.2")
 
@@ -101,6 +108,7 @@ foreach (arch IN ITEMS ${VENDOR_TARGET_ARCHITECTURE})
 			set_source_files_properties (${ZLIBNG_INCLUDE_DIR}/arch/x86/adler32_avx512.c PROPERTIES COMPILE_OPTIONS "-mavx512f;-mavx512bw;-mavx512dq;-mavx512vl")
 			set_source_files_properties (${ZLIBNG_INCLUDE_DIR}/arch/x86/adler32_avx512_vnni.c PROPERTIES COMPILE_OPTIONS "-mavx512f;-mavx512bw;-mavx512vl;-mavx512vnni")
 			set_source_files_properties (${ZLIBNG_INCLUDE_DIR}/arch/x86/chunkset_avx512.c PROPERTIES COMPILE_OPTIONS "-mavx512f;-mavx512bw;-mavx512vl;-mbmi2")
+			set_source_files_properties (${ZLIBNG_INCLUDE_DIR}/arch/x86/compare256_avx512.c PROPERTIES COMPILE_OPTIONS "-mavx512f;-mavx512bw;-mavx512vl")
 
 			set_source_files_properties (${ZLIBNG_INCLUDE_DIR}/arch/x86/crc32_pclmulqdq.c PROPERTIES COMPILE_OPTIONS "-mssse3;-mpclmul")
 			set_source_files_properties (${ZLIBNG_INCLUDE_DIR}/arch/x86/crc32_vpclmulqdq.c PROPERTIES COMPILE_OPTIONS "-mavx512f;-mvpclmulqdq")
@@ -133,18 +141,21 @@ target_sources (zlib-ng PRIVATE ${zlibng_sources} ${zlibng_generic_sources} ${zl
 
 target_include_directories (zlib-ng PUBLIC $<BUILD_INTERFACE:${ZLIBNG_INCLUDE_DIR}>)# $<INSTALL_INTERFACE:${VENDOR_PUBLIC_HEADERS_DESTINATION}/zlib>)
 target_include_directories (zlib-ng PUBLIC $<BUILD_INTERFACE:${ZLIBNG_GENERATED_INCLUDES_DIR}>)# $<INSTALL_INTERFACE:${VENDOR_PUBLIC_HEADERS_DESTINATION}/zlib>)
-target_compile_definitions (zlib-ng PRIVATE ZLIB_COMPAT)
+target_compile_definitions (zlib-ng PRIVATE WITH_ALL_FALLBACKS WITH_OPTIM ZLIB_COMPAT)
 
 if (NOT MSVC)
+	target_compile_definitions (zlib-ng PRIVATE HAVE_CPUID_GNU)
 	target_compile_definitions (zlib-ng PRIVATE HAVE_ATTRIBUTE_ALIGNED)
 	target_compile_definitions (zlib-ng PRIVATE HAVE_BUILTIN_CTZ HAVE_BUILTIN_CTZLL)
+else ()
+	target_compile_definitions (zlib-ng PRIVATE HAVE_CPUID_MS)
 endif ()
 
 if (NOT APPLE)
 	foreach (arch IN ITEMS ${VENDOR_TARGET_ARCHITECTURE})
 		if ("${arch}" MATCHES "(x86_64)|(i386)")
 			target_compile_definitions (zlib-ng PRIVATE X86_FEATURES)
-			target_compile_definitions (zlib-ng PRIVATE X86_SSE2 X86_SSSE3 X86_SSE42)
+			target_compile_definitions (zlib-ng PRIVATE X86_SSE2 X86_SSSE3 X86_SSE41 X86_SSE42)
 			target_compile_definitions (zlib-ng PRIVATE X86_AVX2 X86_AVX512 X86_AVX512VNNI)
 			target_compile_definitions (zlib-ng PRIVATE X86_PCLMULQDQ_CRC X86_VPCLMULQDQ_CRC)
 		elseif ("${arch}" MATCHES "(armv7)|(armv8)|(arm64)|(aarch64)")
@@ -154,7 +165,9 @@ if (NOT APPLE)
 	endforeach ()
 endif ()
 
-if (CCL_SYSTEM_INSTALL)
+if (CCL_EXPORTS_PATH)
+	install (TARGETS zlib-ng EXPORT ccl-targets)
+elseif (CCL_SYSTEM_INSTALL)
 	if (VENDOR_STATIC_LIBRARY_DESTINATION)
 		set (zlib_destination "${VENDOR_STATIC_LIBRARY_DESTINATION}")
 	else ()

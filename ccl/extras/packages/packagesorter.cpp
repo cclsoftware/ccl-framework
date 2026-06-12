@@ -73,7 +73,7 @@ int NamePackageSorter::compare (const UnifiedPackage* lhs, const UnifiedPackage*
 {
 	StringRef leftTitle (lhs->getTitle ().isEmpty () && lhs->getChildren ().count () == 1 ? lhs->getChildren ().first ()->getTitle () : lhs->getTitle ());
 	StringRef rightTitle (rhs->getTitle ().isEmpty () && rhs->getChildren ().count () == 1 ? rhs->getChildren ().first ()->getTitle () : rhs->getTitle ());
-	return leftTitle.compare (rightTitle);
+	return leftTitle.compare (rightTitle, false);
 }
 
 //************************************************************************************************

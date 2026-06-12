@@ -43,7 +43,7 @@ public:
 
 	PROPERTY_POINTER (CCL_ISOLATED (TransparentWindowView), transparentView, TransparentView)
 
-    void suspend (bool state);
+	void suspend (bool state);
 
 	// TransparentWindow
 	void show ();
@@ -69,7 +69,7 @@ using namespace MacOS;
 - (id)initWithFrame:(CGRect)frameRect transparentWindow:(CCL::IOSTransparentWindow*)window
 {
 	self = [super initWithFrame:frameRect];
-    [self setOpaque:NO];
+	[self setOpaque:NO];
 
 	self->transparentWindow = window;
 	return self;
@@ -123,13 +123,13 @@ IOSTransparentWindow::IOSTransparentWindow (Window* parentWindow, int options, S
 : TransparentWindow (parentWindow, options, title),
   transparentView (nil)
 {
-    CCL_PRINTLN ("IOSTransparentWindow ctor")
-    UIViewController* viewController = parentWindow ? (UIViewController*)parentWindow->getSystemWindow () : nil;
-    if(viewController && viewController.view)
-    {
-        CGRect bounds = CGRectMake (0, 0, 100, 100);
-        transparentView = [[CCL_ISOLATED (TransparentWindowView) alloc] initWithFrame:bounds transparentWindow:this];
-        [viewController.view addSubview:transparentView];
+	CCL_PRINTLN ("IOSTransparentWindow ctor")
+	UIViewController* viewController = parentWindow ? (UIViewController*)parentWindow->getSystemWindow () : nil;
+	if(viewController && viewController.view)
+	{
+		CGRect bounds = CGRectMake (0, 0, 100, 100);
+		transparentView = [[CCL_ISOLATED (TransparentWindowView) alloc] initWithFrame:bounds transparentWindow:this];
+		[viewController.view addSubview:transparentView];
 		[transparentView setNeedsDisplay];
 	}
 }
@@ -138,48 +138,48 @@ IOSTransparentWindow::IOSTransparentWindow (Window* parentWindow, int options, S
 
 IOSTransparentWindow::~IOSTransparentWindow ()
 {
-    CCL_PRINTLN ("~IOSTransparentWindow" )
-    if(transparentView)
-    {
-        [transparentView removeFromSuperview];
-        [transparentView release];
-    }
+	CCL_PRINTLN ("~IOSTransparentWindow" )
+	if(transparentView)
+	{
+		[transparentView removeFromSuperview];
+		[transparentView release];
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 void IOSTransparentWindow::show ()
 {
-    CCL_PRINTLN ("TransparentWindow::show")
-    if(transparentView)
-        [transparentView setHidden:NO];
+	CCL_PRINTLN ("TransparentWindow::show")
+	if(transparentView)
+		[transparentView setHidden:NO];
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 void IOSTransparentWindow::hide ()
 {
-    CCL_PRINTLN ("TransparentWindow::hide")
-    if(transparentView)
-        [transparentView setHidden:YES];
+	CCL_PRINTLN ("TransparentWindow::hide")
+	if(transparentView)
+		[transparentView setHidden:YES];
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 bool IOSTransparentWindow::isVisible () const
 {
-    return transparentView ? ![transparentView isHidden] : false;
+	return transparentView ? ![transparentView isHidden] : false;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 void IOSTransparentWindow::update (RectRef size, Bitmap& bitmap, PointRef offset, float opacity)
 {
-    CCL_PRINTF ("TransparentWindow::update: pos (%d, %d) size (%d, %d) offset (%d, %d)\n",
-                size.left, size.top, size.getWidth (), size.getHeight (), offset.x, offset.y)
+	CCL_PRINTF ("TransparentWindow::update: pos (%d, %d) size (%d, %d) offset (%d, %d)\n",
+				size.left, size.top, size.getWidth (), size.getHeight (), offset.x, offset.y)
 
 	// copy bitmap into offscreen
-	AutoPtr<Offscreen> offscreen = NEW Offscreen (size.getWidth (), size.getHeight (), IBitmap::kRGBAlpha);
+	AutoPtr<Offscreen> offscreen = NEW Offscreen (size.getWidth (), size.getHeight (), IBitmap::kRGBAlpha, false, parentWindow);
 	{
 		Rect dst (0, 0, size.getWidth (), size.getHeight ());
 		Rect src (dst);
@@ -189,29 +189,41 @@ void IOSTransparentWindow::update (RectRef size, Bitmap& bitmap, PointRef offset
 	}
 	setSavedBitmap (offscreen);
 
-    if(transparentView)
-    {
-        // move/size the view
-        CGRect frame;
-        MacOS::toCGRect (frame, size);
-        [transparentView setFrame:frame];
+	if(transparentView)
+	{
+		// move/size the view
+		CGRect frame;
+		MacOS::toCGRect (frame, size);
 
-        [transparentView setNeedsDisplay];
-    }
+		[transparentView setFrame:frame];
+		move (size.getLeftTop ());
+
+		[transparentView setNeedsDisplay];
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 void IOSTransparentWindow::move (PointRef position)
 {
-    CCL_PRINTF ("TransparentWindow::move: x = %d y = %d\n", position.x, position.y)
-    if(transparentView)
-    {
-        // move/size the view
-        CGRect frame = [transparentView frame];
-        frame.origin.x = position.x;
-        frame.origin.y = position.y;
+	// position is in screen coordinates, so we have to calculate the delta
+	// that we apply to our position in view coordinates
 
-        [transparentView setFrame:frame];
-    }
+	if(transparentView)
+	{
+		CGRect frame = [transparentView frame]; // view coordinates
+
+		CGRect screenRelativeFrame = [transparentView convertRect:transparentView.bounds toView:nil];
+
+		CGPoint delta;
+		delta.x = position.x - screenRelativeFrame.origin.x;
+		delta.y = position.y - screenRelativeFrame.origin.y;
+
+		frame.origin.x += delta.x;
+		frame.origin.y += delta.y;
+
+		CCL_PRINTF ("TransparentWindow::move: (%d, %d), delta: (%d, %d)\n", position.x, position.y, (int)delta.x, (int)delta.y)
+
+		[transparentView setFrame:frame];
+	}
 }

@@ -93,6 +93,14 @@ tresult CCL_API TextWriter::writeLine (StringRef text)
 	return kResultOk;
 }
 
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+ITextBuilder* CCL_API TextWriter::createTextBuilder ()
+{
+	ASSERT (0) // to be implemented by derived class
+	return nullptr;
+}
+
 //************************************************************************************************
 // MarkupWriter
 //************************************************************************************************

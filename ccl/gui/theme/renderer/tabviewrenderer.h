@@ -57,11 +57,11 @@ protected:
 	SharedPtr<IImage> tabMenuIcon;
 
 	int tabMargin;
+	int iconSpacing;
 	int tabSpacing;
 	int tabSlope;
 	int tabHeight;
 	int inset;
-	int iconSpacing;
 	int menuTabWidth;
 	Rect padding;
 

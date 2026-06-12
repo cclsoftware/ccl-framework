@@ -35,10 +35,46 @@
 #include "ccl/platform/shared/skia/skiafontmanager.h"
 #include "ccl/platform/shared/skia/skiatextlayout.h"
 
+#include "include/ports/SkTypeface_mac.h"
+
 #include <CoreText/CoreText.h>
 #include <CoreFoundation/CFData.h>
 
+#if CCL_PLATFORM_MAC
+#define FONT_CLASS NSFont
+#define FONT_DESCRIPTOR_CLASS NSFontDescriptor
+#define FONT_DESCRIPTOR_TRAIT_BOLD NSFontDescriptorTraitBold
+#define FONT_DESCRIPTOR_TRAIT_ITALIC NSFontDescriptorTraitItalic
+#else
+#define FONT_CLASS UIFont
+#define FONT_DESCRIPTOR_CLASS UIFontDescriptor
+#define FONT_DESCRIPTOR_TRAIT_BOLD UIFontDescriptorTraitBold
+#define FONT_DESCRIPTOR_TRAIT_ITALIC UIFontDescriptorTraitItalic
+#endif
+
 namespace CCL {
+
+//************************************************************************************************
+// SkSystemFontStyleSet
+//************************************************************************************************
+
+class SkSystemFontStyleSet: public SkFontStyleSet
+{
+public:
+	SkSystemFontStyleSet ();
+
+	// SkFontStyleSet
+	int count () override;
+	void getStyle (int, SkFontStyle* style, SkString* name) override;
+	sk_sp<SkTypeface> createTypeface (int index) override;
+	sk_sp<SkTypeface> matchStyle (const SkFontStyle& style) override;
+
+private:
+	sk_sp<SkTypeface> normal;
+	sk_sp<SkTypeface> bold;
+	sk_sp<SkTypeface> italic;
+	sk_sp<SkTypeface> boldItalic;
+};
 
 //************************************************************************************************
 // CocoaFontResource
@@ -70,7 +106,10 @@ public:
 protected:
 	sk_sp<SkFontMgr> fontManager;
 	Vector<MutableCString> userFonts;
-	
+	mutable sk_sp<SkFontStyleSet> systemFonts;
+
+	sk_sp<SkFontStyleSet> getSystemFonts () const;
+
 	// SkFontMgr
 	int onCountFamilies () const override;
 	void onGetFamilyName (int index, SkString* familyName) const override;
@@ -90,16 +129,89 @@ protected:
 using namespace CCL;
 
 //************************************************************************************************
+// SkSystemFontStyleSet
+//************************************************************************************************
+
+SkSystemFontStyleSet::SkSystemFontStyleSet ()
+{
+	constexpr int kDefaultSize = 18;
+
+	FONT_DESCRIPTOR_CLASS* fontDescriptor = [[FONT_CLASS systemFontOfSize:kDefaultSize] fontDescriptor];
+	normal = SkMakeTypefaceFromCTFont ((CTFontRef)[FONT_CLASS fontWithDescriptor:[fontDescriptor fontDescriptorWithSymbolicTraits:NULL] size:kDefaultSize]);
+	bold = SkMakeTypefaceFromCTFont ((CTFontRef)[FONT_CLASS fontWithDescriptor:[fontDescriptor fontDescriptorWithSymbolicTraits:FONT_DESCRIPTOR_TRAIT_BOLD] size:kDefaultSize]);
+	italic = SkMakeTypefaceFromCTFont ((CTFontRef)[FONT_CLASS fontWithDescriptor:[fontDescriptor fontDescriptorWithSymbolicTraits:FONT_DESCRIPTOR_TRAIT_ITALIC] size:kDefaultSize]);
+	boldItalic = SkMakeTypefaceFromCTFont ((CTFontRef)[FONT_CLASS fontWithDescriptor:[fontDescriptor fontDescriptorWithSymbolicTraits:FONT_DESCRIPTOR_TRAIT_BOLD | FONT_DESCRIPTOR_TRAIT_ITALIC] size:kDefaultSize]);
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+int SkSystemFontStyleSet::count ()
+{
+	return 4;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+void SkSystemFontStyleSet::getStyle (int index, SkFontStyle* style, SkString* name)
+{
+	switch(index)
+	{
+	case 0 :
+		*style = SkFontStyle::Normal ();
+		break;
+	case 1 :
+		*style = SkFontStyle::Bold ();
+		break;
+	case 2 :
+		*style = SkFontStyle::Italic ();
+		break;
+	case 3 :
+		*style = SkFontStyle::BoldItalic ();
+		break;
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+sk_sp<SkTypeface> SkSystemFontStyleSet::createTypeface (int index)
+{
+	switch(index)
+	{
+	case 0 :
+		return normal;
+	case 1 :
+		return bold;
+	case 2 :
+		return italic;
+	case 3 :
+		return boldItalic;
+	}
+	return nullptr;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+sk_sp<SkTypeface> SkSystemFontStyleSet::matchStyle (const SkFontStyle& style)
+{
+	int index = 0;
+	if(style == SkFontStyle::Bold ())
+		index = 1;
+	else if(style == SkFontStyle::Italic ())
+		index = 2;
+	else if(style == SkFontStyle::BoldItalic ())
+		index = 3;
+
+	return createTypeface (index);
+}
+
+//************************************************************************************************
 // SkiaFontManagerFactory
 //************************************************************************************************
 
 sk_sp<SkFontMgr> SkiaFontManagerFactory::createFontManager ()
 {
-	#if CCL_PLATFORM_MAC
 	static sk_sp<SkFontMgr> theManager = CocoaFontManager::create ();
-	#else
-	static sk_sp<SkFontMgr> theManager = SkFontMgr_New_CoreText (NULL);
-	#endif
+
 	return theManager;
 }
 
@@ -224,6 +336,15 @@ sk_sp<SkFontMgr> CocoaFontManager::create ()
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
+sk_sp<SkFontStyleSet> CocoaFontManager::getSystemFonts () const
+{
+	if(systemFonts == nullptr)
+		systemFonts = sk_sp<SkFontStyleSet> (NEW SkSystemFontStyleSet);
+	return systemFonts;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
 int CocoaFontManager::onCountFamilies () const
 {
 	return fontManager->countFamilies () + userFonts.count ();
@@ -257,7 +378,11 @@ sk_sp<SkFontStyleSet> CocoaFontManager::onCreateStyleSet (int index) const
 
 sk_sp<SkFontStyleSet> CocoaFontManager::onMatchFamily (const char familyName[]) const
 {
-	return fontManager->matchFamily (familyName);
+	CString name (familyName);
+	if(name == "System Font")
+		return getSystemFonts ();
+	else
+		return fontManager->matchFamily (familyName);
 }
 	
 //////////////////////////////////////////////////////////////////////////////////////////////////

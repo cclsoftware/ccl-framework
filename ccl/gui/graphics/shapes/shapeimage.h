@@ -39,6 +39,8 @@ public:
 	ShapeImage (Shape* shape = nullptr);
 	~ShapeImage ();
 
+	ShapeImage* cloneDeep () const;
+
 	Shape* getShape () const;
 	void setShape (Shape* shape);
 	bool hasReferences (IColorScheme& scheme) const;
@@ -59,13 +61,13 @@ public:
 	tresult tile (GraphicsDevice& graphics, int method, RectRef src, RectRef dest, RectRef clip, RectRef margins) override { return kResultFailed; }
 
 protected:
-	void setFrameCount (int frames);
-	void updateSize ();
-
 	Shape* shape;
 	int frameCount;
 	int currentFrame;
 	bool filmstrip;
+
+	void setFrameCount (int frames);
+	void updateSize ();
 };
 
 } // namespace CCL

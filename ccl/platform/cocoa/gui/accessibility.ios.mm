@@ -142,7 +142,7 @@ using namespace iOS;
 		return NO;
 
 	AccessibilityElementRole role = provider->getEffectiveProvider ().getElementRole ();
-	if(role == AccessibilityElementRole::kRoot || role == AccessibilityElementRole::kGroup || role == AccessibilityElementRole::kList)
+	if(role == AccessibilityElementRole::kRoot || role == AccessibilityElementRole::kGroup || role == AccessibilityElementRole::kList || role == AccessibilityElementRole::kMenu || role == AccessibilityElementRole::kTree)
 		return NO;
 
 	return YES;

@@ -22,6 +22,7 @@
 
 #include "ccl/base/message.h"
 #include "ccl/base/storage/attributes.h"
+#include "ccl/base/collections/stringlist.h"
 
 #include "ccl/public/system/cclanalytics.h"
 
@@ -32,6 +33,7 @@
 #include "ccl/public/gui/framework/iwindowmanager.h"
 #include "ccl/public/gui/framework/isystemshell.h"
 #include "ccl/public/gui/framework/imenu.h"
+#include "ccl/public/gui/framework/controlsignals.h"
 #include "ccl/public/guiservices.h"
 
 using namespace CCL;
@@ -60,7 +62,9 @@ DEFINE_CLASS_HIDDEN (Navigator::CommandLink, Object)
 
 Navigator::CommandLink::CommandLink (StringRef name)
 : name (name),
-  parameter (nullptr)
+  parameter (nullptr),
+  index (-1),
+  flags (0)
 {}
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -69,7 +73,9 @@ Navigator::CommandLink::CommandLink (StringRef name, StringRef title, UrlRef url
 : name (name), 
   title (title), 
   url (url),
-  parameter (nullptr)
+  parameter (nullptr),
+  index (-1),
+  flags (0)
 {
 	if(title.isEmpty ())
 		setTitle (name);
@@ -103,7 +109,7 @@ bool Navigator::CommandLink::toString (String& string, int flags) const
 
 bool Navigator::CommandLink::isVisible () const
 {
-	return !visibilityParam || visibilityParam->getValue ().asBool ();
+	return (!visibilityParam || visibilityParam->getValue ().asBool ()) && !isUnavailable ();
 }
 
 //************************************************************************************************
@@ -146,6 +152,18 @@ Navigator::~Navigator ()
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
+tresult CCL_API Navigator::initialize (IUnknown* context)
+{
+	// store initial order of command links
+	int index = 0;
+	for(auto* link : iterate_as<CommandLink> (commandLinks))
+		link->setIndex (index++);
+
+	return SuperClass::initialize (context);
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
 IObjectNode* CCL_API Navigator::findChild (StringRef id) const
 {
 	if(id == CCLSTR ("defaultComponent"))
@@ -174,6 +192,65 @@ tbool CCL_API Navigator::loadViewState (StringID viewID, StringID viewName, cons
 
 	String urlString (AttributeReadAccessor (attributes).getString (CSTR ("url")));
 	return navigate (Url (urlString)) == kResultOk;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+void Navigator::storeCommandLinkOrder (String& order) const
+{
+	order.empty ();
+
+	for(auto* link : iterate_as<CommandLink> (commandLinks))
+	{
+		if(!link->getName ().isEmpty ())
+		{
+			if(!order.isEmpty ())
+				order << ";";
+			order << link->getName ();
+		}
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+void Navigator::restoreCommandLinkOrder (StringRef order)
+{
+	// first restore original order
+	auto greater = [] (const Object* a, const Object* b) { return static_cast<const CommandLink*> (a)->getIndex () > static_cast<const CommandLink*> (b)->getIndex (); };
+	commandLinks.sort (greater);
+
+	// collect and remove specified links
+	ObjectList orderedLinks;
+	ForEachStringToken (order, ";", name)
+		if(CommandLink* link = findCommandLink (name))
+		{
+			orderedLinks.add (link);
+			commandLinks.remove (link);
+		}
+	EndFor
+
+	// insert in given order
+	int index = 0;
+	for(auto* link : orderedLinks)
+	{
+		// skip immovable links
+		auto* previousLink = static_cast<CommandLink*> (commandLinks.at (index));
+		while(previousLink && !previousLink->canMove ())
+			index++;
+
+		commandLinks.insertAt (index, link);
+		index++;
+	}
+
+	updateCommandLinks ();
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+void Navigator::resetCommandLinkOrder ()
+{
+	restoreCommandLinkOrder (String::kEmpty);
+	onCommandLinksReordered ();
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -363,9 +440,62 @@ void Navigator::notify (ISubject* subject, MessageRef msg)
 	}
 	else if(msg == "updateCommandLinks")
 		updateCommandLinks ();
+	else if(msg == CCL::Signals::kTabViewCanReorder)
+	{
+		if(msg.getArgCount () >= 4 && msg[0] == "commandLinks")
+		{
+			int sourceIndex = msg[1];
+			int targetIndex = msg[2];
+			UnknownPtr<IVariant> canReorder (msg[3]);
+			if(canReorder)
+			{
+				UnknownPtr<IListParameter> linksParam (paramList.byTag (Tag::kCommandLinks));
+				auto* sourceLink = unknown_cast<CommandLink> (linksParam->getValueAt (sourceIndex).asUnknown ());
+				auto* targetLink = unknown_cast<CommandLink> (linksParam->getValueAt (targetIndex).asUnknown ());
+
+				canReorder->assign (sourceLink && sourceLink->canMove () && (!targetLink || targetLink->canMove ()));
+			}
+		}
+	}
+	else if(msg == Signals::kTabViewReorder)
+	{
+		if(msg.getArgCount () >= 3 && msg[0] == "commandLinks")
+		{
+			int sourceIndex = msg[1];
+			int targetIndex = msg[2];
+
+			UnknownPtr<IListParameter> linksParam (paramList.byTag (Tag::kCommandLinks));
+			auto* sourceLink = unknown_cast<CommandLink> (linksParam->getValueAt (sourceIndex).asUnknown ());
+			auto* targetLink = unknown_cast<CommandLink> (linksParam->getValueAt (targetIndex).asUnknown ());
+			moveCommandLinkBefore (sourceLink, targetLink);
+		}
+	}
 	else
 		SuperClass::notify (subject, msg);
 }
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+void Navigator::moveCommandLinkBefore (CommandLink* movingLink, const CommandLink* referenceLink)
+{
+	if(movingLink)
+	{
+		int targetLinkIndex = referenceLink ? commandLinks.index (referenceLink) : -1;
+
+		if(commandLinks.remove (movingLink))
+			commandLinks.insertAt (targetLinkIndex, movingLink);
+		else
+			ASSERT (false)
+
+		updateCommandLinks ();
+		onCommandLinksReordered ();
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+void Navigator::onCommandLinksReordered ()
+{}
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -591,7 +721,7 @@ tbool CCL_API Navigator::interpretCommand (const CommandMsg& msg)
 	if(!commandLinks.isEmpty ())
 	{
 		CommandLink* cLink = (CommandLink*)commandLinks.findEqual (CommandLink (String (msg.name)));
-		if(cLink)
+		if(cLink && !cLink->isUnavailable ())
 		{
 			bool isCurrentlyShown = isOpen () && cLink->getUrl () == currentUrl;
 

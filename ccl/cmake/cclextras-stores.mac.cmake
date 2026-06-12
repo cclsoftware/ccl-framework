@@ -24,4 +24,7 @@ ccl_list_append_once (cclextras_apple_frameworks
 	${FOUNDATION_LIBRARY}
 )
 
-target_link_libraries (cclextras-stores PRIVATE ${cclextras_apple_frameworks})
+ccl_check_imported (cclextras-stores imported)
+if (NOT imported)
+	target_link_libraries (cclextras-stores PRIVATE ${cclextras_apple_frameworks})
+endif ()

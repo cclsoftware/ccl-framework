@@ -79,6 +79,7 @@ interface IFileUtilities: IUnknown
 	{
 		kSuppressByteOrderMark = 1<<0
 	};
+
 	/** Create IStream from string. */
 	virtual IStream* CCL_API createStringStream (StringRef string, TextEncoding encoding, int flags = 0) = 0;
 

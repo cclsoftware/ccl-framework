@@ -159,8 +159,8 @@ public:
 	static CoordF getStringWidthF (StringRef text, FontRef font);
 
 	/** Get extent of Unicode string. */
-	static void measureString (Rect& size, StringRef text, FontRef font, int flags = 0);
-	static void measureString (RectF& size, StringRef text, FontRef font, int flags = 0);
+	static void measureString (Rect& size, StringRef text, FontRef font);
+	static void measureString (RectF& size, StringRef text, FontRef font);
 	
 	/** Get extent of a Unicode string's glyphs without typographical spacing. */
 	static void measureStringImage (RectF& size, StringRef text, FontRef font, bool shiftToBaseline);

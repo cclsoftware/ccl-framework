@@ -346,11 +346,20 @@ ErrorCode CocoaGattCentralCharacteristic::unsubscribeAsync ()
 
 ErrorCode CocoaGattCentralCharacteristic::writeAsync (const uint8 valueBuffer[], int valueSize)
 {
-    if(!([characteristic properties] & CBCharacteristicPropertyWrite))
+	CBCharacteristicProperties writeCapability = [characteristic properties] & (CBCharacteristicPropertyWrite | CBCharacteristicPropertyWriteWithoutResponse);
+    if(writeCapability == 0)
         return kError_Failed;
 
+	CBCharacteristicWriteType writeType = (writeCapability & CBCharacteristicPropertyWrite) ? CBCharacteristicWriteWithResponse : CBCharacteristicWriteWithoutResponse;
+
 	NSObj<NSData> data = [[NSData alloc] initWithBytes:valueBuffer length:valueSize];
-	[[[characteristic service] peripheral] writeValue:data forCharacteristic:characteristic type:CBCharacteristicWriteWithResponse];
+	[[[characteristic service] peripheral] writeValue:data forCharacteristic:characteristic type:writeType];
+
+	if(writeType == CBCharacteristicWriteWithoutResponse)
+		dispatch_async (dispatch_get_main_queue (), ^
+		{
+			onWriteValue (kError_NoError);
+		});
 
 	return kError_NoError;
 }

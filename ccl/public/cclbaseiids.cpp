@@ -47,6 +47,8 @@
 #include "ccl/public/text/iregexp.h"
 #include "ccl/public/text/itranslationtable.h"
 #include "ccl/public/text/ixmlparser.h"
+#include "ccl/public/text/imarkdownparser.h"
+#include "ccl/public/text/imarkdownwriter.h"
 #include "ccl/public/text/ixmlwriter.h"
 #include "ccl/public/text/itextbuilder.h"
 #include "ccl/public/text/itextstreamer.h"

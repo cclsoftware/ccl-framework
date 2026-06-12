@@ -41,9 +41,9 @@ public:
 	// IHtmlWriter
 	tresult CCL_API beginDocument (IStream& stream, TextEncoding encoding = Text::kUnknownEncoding) override;
 	DEFINE_TEXTWRITER_METHODS (SuperClass)
+	ITextBuilder* CCL_API createTextBuilder () override;
 	DEFINE_MARKUPWRITER_METHODS (SuperClass)
 	DEFINE_SGMLWRITER_METHODS (SuperClass)
-	ITextBuilder* CCL_API createHtmlBuilder () override;
 	tresult CCL_API pushMetaElement (StringRef name, StringRef content, tbool isHttpEquiv) override;
 	tresult CCL_API pushStyleElement (StringRef cssContent) override;
 	tresult CCL_API writeHead (StringRef title) override;
@@ -80,7 +80,7 @@ public:
 	HtmlBuilder (TextLineFormat lineFormat, MarkupEncoder* encoder);
 
 	// TextBuilder
-	tresult CCL_API printChunk (String& result, const Text::Chunk& chunk) override;
+	tresult CCL_API printFragment (String& result, const TextFragment& fragment) override;
 };
 
 } // namespace CCL

@@ -28,9 +28,10 @@ using namespace Core;
 
 Core::UIDBytes fromCBUUID (CBUUID* cbuuid)
 {
-	ASSERT (cbuuid.data.length == 16)
-	const uint8* bytes = (const uint8*)cbuuid.data.bytes;
-	
+	uint8 bytes[16] = { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x10, 0x00, 0x80, 0x00, 0x00, 0x80, 0x5F, 0x9B, 0x34, 0xFB }; // Bluetooth Base UUID
+	[cbuuid.data getBytes:(void*)bytes length:16]; // cbuuid can be a 16-, 32-, or 128-bit UUID data container
+												   // bytes copied is the smaller of the length parameter and the length of the data encapsulated in cbuuid
+
 	uint32 data1 = bytes[0];
 	for(int i = 1; i < 4; i++)
 	{

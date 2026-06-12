@@ -154,13 +154,13 @@ public:
 
 	IDWriteTextLayout* getLayout () { return layout; }
 	PROPERTY_VARIABLE (Alignment, alignment, Alignment)
-	PROPERTY_OBJECT (Font, font, Font)
 
 	// ITextLayout
 	tresult CCL_API construct (StringRef text, Coord width, Coord height, FontRef font, LineMode lineMode, TextFormatRef format) override;
 	tresult CCL_API construct (StringRef text, CoordF width, CoordF height, FontRef font, LineMode lineMode, TextFormatRef format) override;
 	tresult CCL_API resize (Coord width, Coord height) override;
 	tresult CCL_API resize (CoordF width, CoordF height) override;
+	tresult CCL_API setFontFace (const Range& range, StringRef faceName) override;
 	tresult CCL_API setFontStyle (const Range& range, int style, tbool state) override;
 	tresult CCL_API setFontSize (const Range& range, float size) override;
 	tresult CCL_API setSpacing (const Range& range, float spacing) override;
@@ -169,8 +169,8 @@ public:
 	tresult CCL_API setBaselineOffset (const Range& range, float offset) override;
 	tresult CCL_API setSuperscript (const Range& range) override;
 	tresult CCL_API setSubscript (const Range& range) override;
-	tresult CCL_API getBounds (Rect& bounds, int flags = 0) const override;
-	tresult CCL_API getBounds (RectF& bounds, int flags = 0) const override;
+	tresult CCL_API getBounds (Rect& bounds) const override;
+	tresult CCL_API getBounds (RectF& bounds) const override;
 	tresult CCL_API getImageBounds (RectF& bounds) const override;
 	tresult CCL_API getBaselineOffset (PointF& offset) const override;
 	tresult CCL_API hitTest (int& textIndex, PointF& position) const override;
@@ -361,33 +361,6 @@ inline void getTextMetrics (RectF& size, IDWriteTextLayout* textLayout)
 	ASSERT (SUCCEEDED (hr))
 
 	size (0, 0, textMetrics.width, textMetrics.height);
-}
-
-static const int kTextLayoutMargin = 1;
-
-template<class Rect>
-inline void adjustTextMetrics (Rect& size)
-{
-	size.right += 2 * kTextLayoutMargin;
-	size.bottom += 2 * kTextLayoutMargin;
-}
-
-template<class Point>
-inline void adjustLayoutPos (Point& p, Alignment align)
-{
-	if(align.getAlignH () == Alignment::kLeft)
-		p.x += kTextLayoutMargin;
-	if(align.getAlignV () == Alignment::kTop)
-		p.y += kTextLayoutMargin;
-}
-
-template<class Rect>
-inline void adjustLayoutPosition (Rect& rect, Alignment align)
-{
-	if(align.getAlignH () == Alignment::kLeft)
-		rect.left += kTextLayoutMargin;
-	if(align.getAlignV () == Alignment::kTop)
-		rect.top += kTextLayoutMargin;
 }
 
 } // namespace DWInterop

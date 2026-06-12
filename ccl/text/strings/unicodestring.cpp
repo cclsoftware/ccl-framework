@@ -404,10 +404,9 @@ void CCL_API UnicodeString::substitute (int flags)
 
 	auto findEntry = [&] (uchar c) -> const SubstituteEntry*
 	{
-		if(c >= 0x0080) // non ASCII character?
-			for(int i = 0; i < ARRAY_COUNT (table); i++)
-				if(c == table[i].original)
-					return &table[i];
+		for(int i = 0; i < ARRAY_COUNT (table); i++)
+			if(c == table[i].original)
+				return &table[i];
 		return nullptr;
 	};
 
@@ -437,7 +436,9 @@ void CCL_API UnicodeString::substitute (int flags)
 	for(int originalIndex = 0; originalIndex < originalLength; originalIndex++)
 	{
 		uchar theChar = original[originalIndex];
-		if(const SubstituteEntry* entry = findEntry (theChar))
+		if(theChar < 0x0080) // ASCII character, keep as-is
+			substituteBuffer[substituteLength++] = theChar;
+		else if(const SubstituteEntry* entry = findEntry (theChar))
 		{
 			stringChanged = true;
 			substituteBuffer[substituteLength++] = entry->replacementOne;
@@ -445,7 +446,7 @@ void CCL_API UnicodeString::substitute (int flags)
 				substituteBuffer[substituteLength++] = entry->replacementTwo;
 		}
 		else
-			substituteBuffer[substituteLength++] = theChar;
+			stringChanged = true; // non-ASCII without substitution, remove
 	}
 
 	releaseChars (chars);

@@ -47,6 +47,8 @@ public:
 protected:
 	int processingOptions;
 	bool skipping;
+
+	virtual bool isDefined (StringRef query) const;
 };
 
 } // namespace CCL

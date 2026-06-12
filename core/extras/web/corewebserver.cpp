@@ -776,8 +776,8 @@ void URLDecoder::decodeFields (KeyValueList& fields, CStringPtr urlEncodedString
 
 			if(!key.isEmpty ())
 			{
-				URLEncoding::decode (key2, key);
-				URLEncoding::decode (value2, value);
+				URLEncoding::decode (key2, key, URLEncoding::kWebForm);
+				URLEncoding::decode (value2, value, URLEncoding::kWebForm);
 				fields.addValue (key2, value2);
 			}
 

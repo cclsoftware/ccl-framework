@@ -19,10 +19,8 @@
 #include "ccl/gui/theme/renderer/compositedrenderer.h"
 
 #include "ccl/gui/windows/window.h"
-#include "ccl/gui/graphics/textlayoutbuilder.h"
 
 #include "ccl/public/gui/framework/iusercontrol.h" // IBackgroundView
-#include "ccl/public/math/mathprimitives.h"
 
 using namespace CCL;
 
@@ -93,68 +91,4 @@ void CompositedRenderer::drawCompositedBackground (IGraphics& graphics, View* vi
 	#if (0 && DEBUG)
 	graphics.fillRect (rect, SolidBrush (Colors::kGreen));
 	#endif
-}
-
-//************************************************************************************************
-// TextScaler
-//************************************************************************************************
-
-TextScaler::TextScaler ()
-: cachedFontSize (0),
-  explicitMaximalFontSize (100),
-  explicitMinimalFontSize (6)
-{}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
-void TextScaler::scaleTextFont (Font& font, RectRef r, StringRef text, int options)
-{
-	if(text == cachedText && r == cachedRect)
-	{
-		font.setSize (cachedFontSize);
-		return;
-	}
-
-	float upperBound = ccl_min (explicitMaximalFontSize, (r.getHeight () * 0.75f));
-	float lowerBound = explicitMinimalFontSize;
-	ASSERT (upperBound >= lowerBound)
-	if(upperBound < lowerBound)
-		ccl_swap (upperBound, lowerBound);
-
-	float fontSize = ccl_bound (font.getSize (), lowerBound, upperBound);
-	font.setSize (fontSize);
-
-	while(true)
-	{
-		Rect size;
-		if(options & kMarkupText)
-			MarkupPainter ().measureMarkupString (size, text, font, ITextLayout::kNoMargin);
-		else
-			Font::measureString (size, text, font);
-
-		if(r.getWidth () == size.getWidth ())
-			break;
-
-		float newFontSize = fontSize;
-		if(r.getWidth () > size.getWidth ())
-		{
-			lowerBound = fontSize;
-			newFontSize = ccl_round<2> ((fontSize + upperBound) / 2.f);
-		}
-		else
-		{
-			upperBound = fontSize;
-			newFontSize = ccl_round<2> ((fontSize + lowerBound) / 2.f);
-		}
-
-		if(ccl_equals (fontSize, newFontSize, .1f))
-			break;
-
-		fontSize = ccl_round<2> (newFontSize);
-		font.setSize (fontSize);
-	}
-
-	cachedRect = r;
-	cachedText = text;
-	cachedFontSize = font.getSize ();
 }

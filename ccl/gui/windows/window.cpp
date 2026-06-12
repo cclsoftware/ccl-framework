@@ -696,14 +696,34 @@ void Window::limitSizeToScreen (Rect& windowRect)
 
 void Window::moveWindowRectInsideScreen (Rect& windowRect)
 {
+	auto getMonitorSize = [&] () -> Rect
+	{
+		int monitor = Desktop.findNearestMonitor (windowRect);
+		Rect monitorSize;
+		Desktop.getMonitorSize (monitorSize, monitor, true);
+		return monitorSize;
+	};
+
 	if(Desktop.isRectVisible (windowRect))
-		return;
-		
-	// move hidden window into center of nearest monitor
-	int monitor = Desktop.findNearestMonitor (windowRect);	
-	Rect monitorSize;
-	Desktop.getMonitorSize (monitorSize, monitor, true);
-	windowRect.center (monitorSize);
+	{
+		// at least some part of the window is visible - also ensure the title bar is inside the monitor, so the user can move the window
+		Rect titleBarRect (windowRect);
+		titleBarRect.setHeight (getTheme ().getThemeMetric (ThemeElements::kTitleBarHeight));
+
+		if(!Desktop.isRectVisible (titleBarRect))
+		{
+			Rect monitorSize (getMonitorSize ());
+			Coord outsideMonitor = monitorSize.top - titleBarRect.top;
+			if(outsideMonitor > 0)
+				windowRect.offset (0, outsideMonitor);
+		}
+	}
+	else
+	{
+		// move hidden window into center of nearest monitor
+		Rect monitorSize (getMonitorSize ());
+		windowRect.center (monitorSize);
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////

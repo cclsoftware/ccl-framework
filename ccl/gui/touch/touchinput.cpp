@@ -1586,7 +1586,7 @@ void TouchInputState::onTouchEnded (TouchItem& touchItem, const TouchEvent& even
 	{
 		// trigger context menu if it's a "long press" (gesture object not required) and has not moved outside a tolerance area
 		double now = event.eventTime;
-		if(now - touchItem.getFirstEvent ().eventTime >= kContextMenuDelay && !EditBox::isAnyEdtiting () && !contextMenuPending)
+		if(now - touchItem.getFirstEvent ().eventTime >= kContextMenuDelay && !EditBox::isAnyEditing () && !contextMenuPending)
 		{
 			Coord distance;
 			if(touchItem.getDistanceFromFirstEvent (event, distance))

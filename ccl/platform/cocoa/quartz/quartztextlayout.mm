@@ -28,12 +28,6 @@
 #include "ccl/platform/cocoa/cclcocoa.h"
 #include "ccl/platform/cocoa/macutils.h"
 
-#if CCL_PLATFORM_IOS
-#define COLORTYPE UIColor
-#else
-#define COLORTYPE NSColor
-#endif
-
 #define ATTRIBUTED_STRING (NSMutableAttributedString*)string
 
 using namespace CCL;
@@ -91,11 +85,6 @@ protected:
 //************************************************************************************************
 // QuartzTextLayout
 //************************************************************************************************
-
-static const CoordF kPaddingLeft = 2.f;
-static const CoordF kPaddingRight = 2.f;
-static const CoordF kPaddingTop = 2.f;
-static const CoordF kPaddingBottom = 2.f;
 
 AutoPtr<QuartzContext> hiddenContext = NEW QuartzContext ();
 
@@ -201,6 +190,7 @@ tresult CCL_API QuartzTextLayout::construct (StringRef text, CoordF width, Coord
 	if(string)
 		[ATTRIBUTED_STRING release];	
 	string = [[NSMutableAttributedString alloc] initWithString:nsString attributes:attributes];
+	[ATTRIBUTED_STRING addAttribute:(id)kCTForegroundColorFromContextAttributeName value:(id)kCFBooleanTrue range:NSMakeRange (0, [ATTRIBUTED_STRING length])];
 	if(font.getStyle () & Font::kUnderline)
 		setFontStyle (fullRange, Font::kUnderline, true);
 	if(font.getStyle () & Font::kStrikeout)
@@ -209,14 +199,9 @@ tresult CCL_API QuartzTextLayout::construct (StringRef text, CoordF width, Coord
 	float spacing = font.getSpacing ();
 	if(spacing != 0)
 		setSpacing (fullRange, spacing);
-		
+
 	resetFrameSetter ();
 	resetLine ();
-
-	if(width == kMaxCoord)
-		width = 0.f;
-	if(height == kMaxCoord)
-		height = 0.f;
 
 	boundingRect = CGSizeMake (width, height);
 
@@ -243,6 +228,27 @@ tresult CCL_API QuartzTextLayout::resize (CoordF width, CoordF height)
 
 	resetFrameSetter ();
 	resetLine ();
+
+	return kResultOk;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+tresult CCL_API QuartzTextLayout::setFontFace (const Range& range, StringRef faceName)
+{
+	ASSERT (string != nullptr)
+	if(!string)
+		return kResultUnexpected;
+
+	NSRange currentRange = NSMakeRange (range.start, range.length);
+	float ascent = 0.f;
+	float descent = 0.f;
+	float leading = 0.f;
+	CTFontRef newFont = FontCache::instance ().createFont (Font (faceName), ascent, descent, leading);
+	if(newFont)
+		[ATTRIBUTED_STRING addAttribute:NSFontAttributeName value:(id)newFont range:currentRange];
+	else
+		CCL_WARN ("CoreText: font %s not available!\n", MutableCString (faceName).str ())
 
 	return kResultOk;
 }
@@ -482,10 +488,10 @@ tresult QuartzTextLayout::setSuperscript (const Range& _range, float sizeFactor,
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-tresult CCL_API QuartzTextLayout::getBounds (Rect& bounds, int flags) const
+tresult CCL_API QuartzTextLayout::getBounds (Rect& bounds) const
 {
 	RectF boundsF;
-	if(getBounds (boundsF, flags) != kResultOk)
+	if(getBounds (boundsF) != kResultOk)
 		return kResultUnexpected;
 
 	bounds.left = 0;
@@ -498,16 +504,16 @@ tresult CCL_API QuartzTextLayout::getBounds (Rect& bounds, int flags) const
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-tresult CCL_API QuartzTextLayout::getBounds (RectF& bounds, int flags) const
+tresult CCL_API QuartzTextLayout::getBounds (RectF& bounds) const
 {
 	ASSERT (string != nullptr)
 	if(!string)
 		return kResultUnexpected;
 
-	CGSize actualSize = getActualSize (!(flags & kNoMargin));
+	CGSize actualSize = getActualSize ();
 	CGPoint textPos = getTextPosition (PointF ());
-	bounds.left = (CoordF)textPos.x - kPaddingLeft;
-	bounds.top = (CoordF)(boundingRect.height + descent - (textPos.y + actualSize.height - kPaddingTop));
+	bounds.left = (CoordF)textPos.x;
+	bounds.top = (CoordF)(boundingRect.height + descent - (textPos.y + actualSize.height));
 	bounds.setWidth ((CoordF)actualSize.width);
 	bounds.setHeight ((CoordF)actualSize.height);
 
@@ -544,7 +550,7 @@ tresult CCL_API QuartzTextLayout::getImageBounds (RectF& bounds) const
 
 tresult CCL_API QuartzTextLayout::getBaselineOffset (PointF& offset) const
 {
-	offset (kPaddingLeft, kPaddingTop + ascent - 0.5f);
+	offset (0, ascent - 0.5f);
 	return kResultOk;
 }
 
@@ -575,8 +581,6 @@ void QuartzTextLayout::initTotalHeight () const
 		totalHeight = ccl_max (totalHeight, lineTop);
 		lineIndex++;
 	}
-
-	totalHeight += kPaddingTop;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -586,8 +590,7 @@ tresult CCL_API QuartzTextLayout::hitTest (int& textIndex, PointF& position) con
 	initTotalHeight ();
 
 	CFObj<CTFrameRef> frame = createFrame (PointF (0, 0));
-	CGPathRef path = CTFrameGetPath (frame);
-	CGRect pathBounds = CGPathGetBoundingBox (path);
+	CGRect pathBounds = CGPathGetBoundingBox (CTFrameGetPath (frame));
 	NSArray* lines = (NSArray*)CTFrameGetLines (frame);
 	CFIndex lineIndex = 0;
 	float distance = 0.f;
@@ -598,13 +601,8 @@ tresult CCL_API QuartzTextLayout::hitTest (int& textIndex, PointF& position) con
 		CGRect bounds = CTLineGetBoundsWithOptions (line, 0);
 		CGPoint lineOrigin = CGPointMake (0, 0);
 		CTFrameGetLineOrigins (frame, CFRangeMake (lineIndex, 1), &lineOrigin);
-		bounds.origin.x = pathBounds.origin.x + lineOrigin.x;
-		bounds.origin.y += lineOrigin.y;
-		bounds.origin.x += kPaddingLeft;
-		if(lineMode == kMultiLine)
-			bounds.origin.y -= kPaddingTop;
-		else
-			bounds.origin.y -= kPaddingTop + kPaddingBottom;
+		bounds.origin.x += pathBounds.origin.x + lineOrigin.x;
+		bounds.origin.y += pathBounds.origin.y + lineOrigin.y;
 
 		bounds.origin.y = totalHeight - bounds.origin.y;
 
@@ -635,8 +633,7 @@ tresult CCL_API QuartzTextLayout::getCharacterBounds (RectF& characterBounds, in
 	initTotalHeight ();
 
 	CFObj<CTFrameRef> frame = createFrame (PointF (0, 0));
-	CGPathRef path = CTFrameGetPath (frame);
-	CGRect pathBounds = CGPathGetBoundingBox (path);
+	CGRect pathBounds = CGPathGetBoundingBox (CTFrameGetPath (frame));
 	NSArray* lines = (NSArray*)CTFrameGetLines (frame);
 	CFIndex lineIndex = 0;
 	for(id lineObj in lines)
@@ -648,13 +645,8 @@ tresult CCL_API QuartzTextLayout::getCharacterBounds (RectF& characterBounds, in
 			CGRect bounds = CTLineGetBoundsWithOptions (line, kCTLineBoundsUseOpticalBounds);
 			CGPoint lineOrigin = CGPointMake (0, 0);
 			CTFrameGetLineOrigins (frame, CFRangeMake (lineIndex, 1), &lineOrigin);
-			bounds.origin.x += lineOrigin.x;
-			bounds.origin.y += lineOrigin.y;
-			bounds.origin.x += kPaddingLeft;
-			if(lineMode == kMultiLine)
-				bounds.origin.y -= kPaddingTop;
-			else
-				bounds.origin.y -= kPaddingTop + kPaddingBottom;
+			bounds.origin.x += pathBounds.origin.x + lineOrigin.x;
+			bounds.origin.y += pathBounds.origin.y + lineOrigin.y;
 
 			bounds.origin.y = totalHeight - bounds.origin.y;
 
@@ -681,6 +673,7 @@ tresult CCL_API QuartzTextLayout::getTextBounds (IMutableRegion& result, const R
 	initTotalHeight ();
 
 	CFObj<CTFrameRef> frame = createFrame (PointF (0, 0));
+	CGRect pathBounds = CGPathGetBoundingBox (CTFrameGetPath (frame));
 	NSArray* lines = (NSArray*)CTFrameGetLines (frame);
 	CFIndex lineIndex = 0;
 	for(id lineObj in lines)
@@ -692,13 +685,8 @@ tresult CCL_API QuartzTextLayout::getTextBounds (IMutableRegion& result, const R
 			CGRect bounds = CTLineGetBoundsWithOptions (line, kCTLineBoundsUseOpticalBounds);
 			CGPoint lineOrigin = CGPointMake (0, 0);
 			CTFrameGetLineOrigins (frame, CFRangeMake (lineIndex, 1), &lineOrigin);
-			bounds.origin.x += lineOrigin.x;
-			bounds.origin.y += lineOrigin.y;
-			bounds.origin.x += kPaddingLeft;
-			if(lineMode == kMultiLine)
-				bounds.origin.y -= kPaddingTop;
-			else
-				bounds.origin.y -= kPaddingTop + kPaddingBottom;
+			bounds.origin.x += pathBounds.origin.x + lineOrigin.x;
+			bounds.origin.y += pathBounds.origin.y + lineOrigin.y;
 
 			bounds.origin.y = totalHeight - bounds.origin.y;
 
@@ -753,8 +741,6 @@ void QuartzTextLayout::draw (CGContextRef context, PointF position, Color textCo
 
 	initTotalHeight ();
 	CGFloat offset = totalHeight;
-	if(lineMode == kMultiLine)
-		offset += kPaddingTop;
 
 	CGContextTranslateCTM (context, 0, offset);
 	CGContextScaleCTM (context, 1.0, -1.0);
@@ -763,33 +749,32 @@ void QuartzTextLayout::draw (CGContextRef context, PointF position, Color textCo
 	
 	if(!colorRegions.isEmpty ())
 	{
-		COLORTYPE* color = [COLORTYPE colorWithRed:textColor.getRedF () green:textColor.getGreenF () blue:textColor.getBlueF () alpha:textColor.getAlphaF ()];
-		[ATTRIBUTED_STRING addAttribute:NSForegroundColorAttributeName value:color range:fullRange];
-		CGContextSetStrokeColorWithColor (context, color.CGColor);
-		CGContextSetFillColorWithColor (context, color.CGColor);
+		CFObj<CGColorRef> color = CGColorCreateGenericRGB (textColor.getRedF (), textColor.getGreenF (), textColor.getBlueF (), textColor.getAlphaF ());
+		[ATTRIBUTED_STRING addAttribute:(id)kCTForegroundColorAttributeName value:(id)(CGColorRef)color range:fullRange];
 		ForEach(colorRegions, ColorFormat, region)
-			COLORTYPE* color = [COLORTYPE colorWithRed:region->color.getRedF () green:region->color.getGreenF () blue:region->color.getBlueF () alpha:region->color.getAlphaF ()];
-			[ATTRIBUTED_STRING addAttribute:NSForegroundColorAttributeName value:color range:NSMakeRange (region->range.start, region->range.length)];
+			CFObj<CGColorRef> color = CGColorCreateGenericRGB (region->color.getRedF (), region->color.getGreenF (), region->color.getBlueF (), region->color.getAlphaF ());
+			[ATTRIBUTED_STRING addAttribute:(id)kCTForegroundColorAttributeName value:(id)(CGColorRef)color range:NSMakeRange (region->range.start, region->range.length)];
 		EndFor
 		[ATTRIBUTED_STRING addAttribute:(id)kCTForegroundColorFromContextAttributeName value:(id)kCFBooleanFalse range:fullRange];
+		resetFrameSetter ();
+		resetLine ();
 	}
 	else
 	{
-		CGColorRef cgColor = [COLORTYPE colorWithRed:textColor.getRedF () green:textColor.getGreenF () blue:textColor.getBlueF () alpha:textColor.getAlphaF ()].CGColor;
-		[ATTRIBUTED_STRING addAttribute:(id)kCTForegroundColorFromContextAttributeName value:(id)kCFBooleanTrue range:fullRange];
-		CGContextSetStrokeColorWithColor (context, cgColor);
-		CGContextSetFillColorWithColor (context, cgColor);
+		CFObj<CGColorRef> color = CGColorCreateGenericRGB (textColor.getRedF (), textColor.getGreenF (), textColor.getBlueF (), textColor.getAlphaF ());
+		CGContextSetStrokeColorWithColor (context, color);
+		CGContextSetFillColorWithColor (context, color);
 	}
 
 	if(lineMode == kSingleLine)
 	{
 		if(!line)
-			line = CTLineCreateWithAttributedString ((CFAttributedStringRef) string);
+			line = CTLineCreateWithAttributedString ((CFAttributedStringRef)string);
 		if(line)
 		{
 			if(boundingRect.height == 0)
 			{
-				CGContextSetTextPosition (context, position.x + kPaddingLeft, -position.y - ascent - kPaddingTop);
+				CGContextSetTextPosition (context, position.x, -position.y - ascent);
 				CTLineDraw (line, context);
 			}
 			else
@@ -821,10 +806,10 @@ void QuartzTextLayout::draw (CGContextRef context, PointF position, Color textCo
 
 CTFrameRef QuartzTextLayout::createFrame (const PointF& position) const
 {
-	CGSize actualSize = getActualSize (true);
+	CGSize actualSize = getActualSize ();
 	CGRect frameRect;
-	frameRect.origin.x = position.x + kPaddingLeft;
-	frameRect.origin.y = -position.y + kPaddingBottom;
+	frameRect.origin.x = position.x;
+	frameRect.origin.y = -position.y;
 	switch(alignment.getAlignV ())
 	{
 		case Alignment::kVCenter :
@@ -838,8 +823,8 @@ CTFrameRef QuartzTextLayout::createFrame (const PointF& position) const
 	}
 
 	ASSERT (boundingRect.width > 0)
-	frameRect.size.width = boundingRect.width - kPaddingLeft - kPaddingRight;
-	frameRect.size.height = boundingRect.height - kPaddingTop - kPaddingBottom;
+	frameRect.size.width = ccl_max (boundingRect.width, actualSize.width);
+	frameRect.size.height = ccl_max (boundingRect.height, actualSize.height);
 
 	CFObj<CGPathRef> cgPath = CGPathCreateWithRect (frameRect, NULL);
 	if(!framesetter)
@@ -853,38 +838,38 @@ CTFrameRef QuartzTextLayout::createFrame (const PointF& position) const
 CGPoint QuartzTextLayout::getTextPosition (const PointF& position) const
 {
 	CGPoint textPos = CGPointMake (0, 0);
-	CGSize actualSize = getActualSize (true);
+	CGSize actualSize = getActualSize ();
 	switch(alignment.getAlignH ())
 	{
 		case Alignment::kHCenter :
-			textPos.x = position.x + (boundingRect.width - actualSize.width + kPaddingLeft + kPaddingRight) / 2;
+			textPos.x = position.x + (boundingRect.width - actualSize.width) / 2;
 			break;
 		case Alignment::kRight :
-			textPos.x = position.x + (boundingRect.width - actualSize.width) + kPaddingRight;
+			textPos.x = position.x + (boundingRect.width - actualSize.width);
 			break;
 		default : // left aligned
-			textPos.x = position.x + kPaddingLeft;
+			textPos.x = position.x;
 	}
 
 	switch(alignment.getAlignV ())
 	{
 		case Alignment::kVCenter :
-			textPos.y = - position.y + (boundingRect.height - ascent) / 2 + ascent * 0.1f; // 10% correction needed to look right
+			textPos.y = - position.y + (boundingRect.height - ascent) / 2 + ascent * 0.15f; // 15% correction needed to look right
 			break;
 		case Alignment::kTop :
-			textPos.y = - position.y + (boundingRect.height - ascent) - kPaddingTop;
+			textPos.y = - position.y + (boundingRect.height - ascent);
 			break;
 		default : // bottom aligned
-			textPos.y = - position.y + descent + kPaddingBottom;
+			textPos.y = - position.y + descent;
 			break;
 	}
-	
+
 	return textPos;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-CGSize QuartzTextLayout::getActualSize (bool applyMargin) const
+CGSize QuartzTextLayout::getActualSize () const
 {
 	if(!string)
 		return CGSizeMake (0, 0);
@@ -894,17 +879,12 @@ CGSize QuartzTextLayout::getActualSize (bool applyMargin) const
 	
 	CGFloat width = 0;
 	if(wordBreak)
-		width = boundingRect.width - kPaddingLeft - kPaddingRight;
+		width = boundingRect.width;
 	else
 		width = CGFLOAT_MAX;
 	
 	CGSize size = CTFramesetterSuggestFrameSizeWithConstraints (framesetter, CFRangeMake (0, 0), NULL, CGSizeMake (width, CGFLOAT_MAX), NULL);
 
-	if(applyMargin)
-	{
-		size.height += kPaddingTop + kPaddingBottom;
-		size.width += kPaddingLeft + kPaddingRight;
-	}
 	return size;
 }
 

@@ -63,3 +63,8 @@ msgctxt "TestWindowClass"
 msgid "TestWindowClass Title"
 msgstr ""
 
+#: ./skinform.xml
+msgctxt "TestForm"
+msgid "Translated Attribute in define tag"
+msgstr ""
+

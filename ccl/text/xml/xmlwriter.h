@@ -48,6 +48,7 @@ public:
 	// IXmlWriter
 	tresult CCL_API beginDocument (IStream& stream, TextEncoding encoding = Text::kUnknownEncoding) override;
 	DEFINE_TEXTWRITER_METHODS (SuperClass)
+	ITextBuilder* CCL_API createTextBuilder () override;
 	DEFINE_MARKUPWRITER_METHODS (SuperClass)
 	DEFINE_SGMLWRITER_METHODS (SuperClass)
 	tresult CCL_API characterData (IStream& charData, TextEncoding encoding = Text::kUnknownEncoding) override;

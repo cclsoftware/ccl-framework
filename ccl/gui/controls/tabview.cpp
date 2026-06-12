@@ -35,6 +35,7 @@
 
 #include "ccl/public/gui/framework/abstractdraghandler.h"
 #include "ccl/public/gui/framework/controlsignals.h"
+#include "ccl/public/gui/framework/itooltip.h"
 #include "ccl/public/gui/iviewstate.h"
 #include "ccl/public/gui/iparameter.h"
 #include "ccl/public/gui/idatatarget.h"
@@ -548,6 +549,7 @@ BEGIN_STYLEDEF (TabView::customStyles)
 	{"nowheel",	Styles::kTabViewBehaviorNoWheel},
 	{"nohoveractivate",	Styles::kTabViewBehaviorNoActivateOnHover}, // style name must not contain "drag" (this also sets kTabViewCanDragTabData)
 	{"fitallviews",	Styles::kTabViewBehaviorFitAllViews},
+	{"tooltip",	Styles::kTabViewBehaviorTooltip},
 	{"centered", Styles::kTabViewAppearanceCentered},
 END_STYLEDEF
 
@@ -566,6 +568,7 @@ TabView::TabView (const Rect& size, IParameter* param, StyleRef style)
   menu (false),
   mouseOverTab (-1),
   mouseDownTab (-1),
+  tooltipIndex (-1),
   preferIcon (false)
 {
 	if(param == nullptr)
@@ -574,6 +577,8 @@ TabView::TabView (const Rect& size, IParameter* param, StyleRef style)
 		enable (true);
 	}
 	setWheelEnabled (style.isCustomStyle (Styles::kTabViewBehaviorNoWheel) == false);
+	if(style.isCustomStyle (Styles::kTabViewBehaviorTooltip))
+		isTooltipTrackingEnabled (true);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -811,9 +816,8 @@ View* TabView::getTabView (int index) const
 StringRef TabView::getTabTitle (String& title, int index) const
 {
 	if(getTabIcon (index) && preferIcon)
-		return String::kEmpty;
-		
-	if(View* view = getTabView (index))
+		title = String::kEmpty;
+	else if(View* view = getTabView (index))
 		title = view->getTitle ();
 	else if(param)
 		param->getString (title, index);
@@ -1345,6 +1349,58 @@ bool TabView::onContextMenu (const ContextMenuEvent& event)
 		event.contextMenu.setContextID (contextID);
 	}
 	return SuperClass::onContextMenu (event);
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+bool TabView::onTrackTooltip (const TooltipEvent& event)
+{
+	if(event.eventType == TooltipEvent::kHide)
+		return true;
+
+	ItemIndex item;
+	int partCode = getRenderer ()->hitTest (this, event.where, nullptr);
+	if(partCode >= TabView::kPartFirstTab && partCode <= TabView::kPartLastTab)
+	{
+		int tabIndex = partCode - TabView::kPartFirstTab;
+
+		switch(event.eventType)
+		{
+		case TooltipEvent::kShow :
+		case TooltipEvent::kMove :
+			{
+				bool moved = (event.eventType == TooltipEvent::kMove && !(tabIndex == tooltipIndex));
+				bool textChanged = false;
+
+				tooltipIndex = tabIndex;
+
+				String tip;
+				{ // suspend preferIcon while retrieving tab title
+					ScopedVar<bool> suspend (preferIcon, false);
+					getTabTitle (tip, tabIndex);
+				}
+
+				if(!tip.isEmpty ())
+				{
+					textChanged = tip != event.tooltip.getText ();
+					if(moved || textChanged)
+					{
+						if(textChanged)
+							event.tooltip.setText (tip);
+						if(moved)
+							event.tooltip.moveToMouse ();
+						event.tooltip.setDuration (ITooltipPopup::kDefaultDuration);
+						event.tooltip.show ();
+					}
+					return true;
+				}
+				break;
+			}
+		default : break;
+		}
+	}
+	event.tooltip.hide ();
+	return false;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////

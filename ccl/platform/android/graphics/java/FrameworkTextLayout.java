@@ -1,7 +1,7 @@
 //************************************************************************************************
 //
 // This file is part of Crystal Class Library (R)
-// Copyright (c) 2025 CCL Software Licensing GmbH.
+// Copyright (c) 2026 CCL Software Licensing GmbH.
 // All Rights Reserved.
 //
 // Licensed for use under either:
@@ -164,6 +164,11 @@ public class FrameworkTextLayout
 			yOffset = height - layout.getHeight ();
 			break;
 		}
+	}
+
+	public void setFontFace (int start, int end, String faceName)
+	{
+		spannable.setSpan (new TypefaceSpan (faceName), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 	}
 
 	public void setFontStyle (int start, int end, int style, boolean state)

@@ -30,7 +30,7 @@ extern const char* ButtonStateNames[]; // buttonrenderer.cpp
 //************************************************************************************************
 // SelectBoxRenderer
 /** If option "transparent" is not set, a SelectBox draws a background image. 
-When no image is specified, it is filled in "backcolor, and a rectangular frame in color "forecolor" can be drawn with option "border".
+When no image is specified, it is filled in "backcolor", and a rectangular frame in color "forecolor" can be drawn with option "border".
 
 An image "states" can be used to show a different frame for (integer) each parameter value.
 

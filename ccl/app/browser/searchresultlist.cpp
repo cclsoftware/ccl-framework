@@ -216,6 +216,7 @@ void SearchResultList::onResultItemsAdded (const IUnknownList& resultItems)
 
 				// prefer results starting with the first search term
 				node->getSortString ().prepend (node->getTitle ().startsWith (searchTerms, false) ? "a" : "b");
+				node->setSortPriority (args.sortPriority);
 
 				if(node->getCategory ().isEmpty ())
 				{
@@ -695,7 +696,8 @@ DEFINE_CLASS_HIDDEN (SearchResultNode, FileNode)
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 SearchResultNode::SearchResultNode (Url* path)
-: FileNode (path)
+: FileNode (path),
+  sortPriority (0)
 {}
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -769,10 +771,14 @@ int SearchResultNode::compare (const Object& obj) const
 
 	if(const SearchResultNode* node = ccl_cast<SearchResultNode> (&obj))
 	{
-		// order by 1.) category, 2.) custom sort string, 3.) url
+		// order by 1.) category, 2.) custom sort priority, 3.) custom sort string, 4.) url
 		int c = category.compare (node->getCategory ());
 		if(c == 0)
-			c = sortString.compare (node->getSortString ());
+		{
+			c = - ccl_compare (getSortPriority (), node->getSortPriority ()); // higher priority first
+			if(c == 0)
+				c = sortString.compare (node->getSortString ());
+		}
 
 		return c != 0 ? c : compareUrl (*path, *node->path);
 	}

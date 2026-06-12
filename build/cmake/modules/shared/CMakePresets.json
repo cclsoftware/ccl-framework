@@ -116,7 +116,7 @@
 			"binaryDir": "${sourceDir}/build",
 			"cacheVariables":
 			{
-				"CMAKE_OSX_SYSROOT": "macosx15.0"
+				"CMAKE_OSX_SYSROOT": "macosx26.0"
 			}
 		},
 
@@ -137,6 +137,7 @@
 				"CMAKE_SYSTEM_NAME": "iOS",
 				"CMAKE_FIND_ROOT_PATH_MODE_INCLUDE": "NEVER",
 				"CMAKE_FIND_ROOT_PATH_MODE_LIBRARY": "BOTH",
+				"CMAKE_FIND_ROOT_PATH_MODE_PACKAGE": "BOTH",
 				"VENDOR_PLATFORM": "ios",
 				"VENDOR_HOST_PLATFORM": "mac",
 				"VENDOR_TARGET_ARCHITECTURE": "aarch64",

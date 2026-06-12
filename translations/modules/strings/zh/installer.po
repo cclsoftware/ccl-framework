@@ -7,4 +7,4 @@ msgstr ""
 #: .\localize.nsh
 msgctxt "Installer"
 msgid "The installer is unable to configure the firewall because a third party firewall ($0) is installed on this system. This may limit the network connectivity of this application."
-msgstr "安装程序无法配置防火墙，因为在这个系统上安装了第三方防火墙($0)。这可能会限制此应用程序的网络连接。"
+msgstr "安装程序无法配置防火墙，因为这个系统上安装了第三方防火墙（$0）。这可能会限制此应用程序的网络连接。"

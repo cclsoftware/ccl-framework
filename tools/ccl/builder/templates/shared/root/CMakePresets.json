@@ -167,10 +167,8 @@
 			{
 				"CMAKE_C_COMPILER": "/usr/bin/clang",
 				"CMAKE_CXX_COMPILER": "/usr/bin/clang++",
-				"CMAKE_EXE_LINKER_FLAGS_INIT": "-fuse-ld=lld",
-				"CMAKE_MODULE_LINKER_FLAGS_INIT": "-fuse-ld=lld",
-				"CMAKE_SHARED_LINKER_FLAGS_INIT": "-fuse-ld=lld",
 				"CMAKE_INSTALL_PREFIX": "/",
+				"CMAKE_INSTALL_LIBDIR": "lib",
 				"CPACK_PACKAGING_INSTALL_PREFIX": "/",
 				"VENDOR_USE_CCACHE": "ON"
 			}

@@ -231,6 +231,12 @@ struct PlugInSortMethods
 {
 	static String getVendor (const IClassDescription& description);
 	static String getType (const IClassDescription& description);
+	static int getSortPriority (const IClassDescription& description);
+
+	static void setImportantSubCategoryPrefix (StringRef prefix); // increases sort priority when subCategory starts with this prefix
+
+private:
+	static String importantSubCategoryPrefix;
 };
 
 //************************************************************************************************

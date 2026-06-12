@@ -8,4 +8,7 @@ find_library (APPKIT_LIBRARY AppKit)
 find_library (SECURITY_LIBRARY Security)
 find_library (AUDIOTOOLBOX_LIBRARY AudioToolbox)
 
-target_link_libraries (cclstatic INTERFACE ${COREFOUNDATION_LIBRARY} ${IOKIT_LIBRARY} ${CARBON_LIBRARY} ${FOUNDATION_LIBRARY} ${APPKIT_LIBRARY} ${SECURITY_LIBRARY} ${AUDIOTOOLBOX_LIBRARY})
+ccl_check_imported (cclstatic imported)
+if (NOT imported)
+	target_link_libraries (cclstatic INTERFACE ${COREFOUNDATION_LIBRARY} ${IOKIT_LIBRARY} ${CARBON_LIBRARY} ${FOUNDATION_LIBRARY} ${APPKIT_LIBRARY} ${SECURITY_LIBRARY} ${AUDIOTOOLBOX_LIBRARY})
+endif ()

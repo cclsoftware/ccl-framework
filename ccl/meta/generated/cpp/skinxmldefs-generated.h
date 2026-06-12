@@ -92,12 +92,15 @@
 #define TAG_COLORSCHEME "ColorScheme"
 #define TAG_COLORSCHEMECOLOR "ColorScheme.Color"
 #define TAG_SHAPECOLORMAPPING "ShapeColorMapping"
+#define TAG_BLOCKCONTENT "BlockContent"
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 // Skin XML Tags / Visual Styles
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
+#define TAG_STYLEDATA "StyleData"
 #define TAG_STYLE "Style"
+#define TAG_STYLECONDITION "StyleCondition"
 #define TAG_STYLEALIAS "StyleAlias"
 #define TAG_THEMESTYLE "ThemeElements"
 #define TAG_FONT "Font"
@@ -178,6 +181,7 @@
 #define TAG_WEBVIEW "WebView"
 #define TAG_COMMANDBARVIEW "CommandBarView"
 #define TAG_SCROLLPICKER "ScrollPicker"
+#define TAG_BLOCKVIEW "BlockView"
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 // Skin XML Tags / Interactive
@@ -204,6 +208,7 @@
 #define TAG_RECTSHAPE "Rectangle"
 #define TAG_TRIANGLE "Triangle"
 #define TAG_ELLIPSE "Ellipse"
+#define TAG_GRAPHIC "Graphic"
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 // Skin XML Tags / 3D
@@ -233,6 +238,7 @@
 #define ATTR_URL "url"
 #define ATTR_TARGET "target"
 #define ATTR_SOURCE "source"
+#define ATTR_DESTINATION "destination"
 #define ATTR_CONTROLLER "controller"
 #define ATTR_PROPERTY "property"
 #define ATTR_PARAMETER "parameter"
@@ -273,6 +279,8 @@
 #define ATTR_STYLES "styles"
 #define ATTR_FACTOR "factor"
 #define ATTR_FACTORS "factors"
+#define ATTR_TRANSLATED "translated"
+#define ATTR_DEFINES "defines"
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 // Skin XML Attributes / Animation
@@ -358,7 +366,6 @@
 #define ATTR_STORABLE "storable"
 #define ATTR_DIALOGBUTTONS "buttons"
 #define ATTR_FIRSTFOCUS "firstfocus"
-#define ATTR_IMAGENAME "image"
 #define ATTR_POPUP "popup"
 #define ATTR_POPUPSTYLE "popupstyle"
 #define ATTR_CMDCATEGORY "command.category"

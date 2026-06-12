@@ -86,6 +86,11 @@ msgstr "Paquete de idioma"
 
 #: fileutilities.cpp
 msgctxt "FileType"
+msgid "Markdown File"
+msgstr "Archivo de marcación"
+
+#: fileutilities.cpp
+msgctxt "FileType"
 msgid "PDF File"
 msgstr "Archivo PDF"
 

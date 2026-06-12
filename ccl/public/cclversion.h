@@ -39,7 +39,7 @@
 	CCL ABI (Application Binary Interface) version, increment when binary compatibility is lost. 
 	Inbetween changes need to be put at end of vtable and marked with @@FROZEN-CCL-ABI-rXX@@
 */
-#define CCL_ABI_VERSION			26
+#define CCL_ABI_VERSION			27
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 // Legal Information

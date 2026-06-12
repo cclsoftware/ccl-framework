@@ -43,13 +43,16 @@ ccl_add_gradle_dependency (cclextras-stores "com.amazon.device:amazon-appstore-s
 ccl_add_java_sourcedir (cclextras-stores "${CCL_DIR}/extras/stores/platform/android/playstore")
 ccl_add_java_sourcedir (cclextras-stores "${CCL_DIR}/extras/stores/platform/android/amazon")
 
-if (SamsungIAPSDK_FOUND)
-	target_compile_definitions (cclextras-stores PRIVATE "CCL_SAMSUNG_STORE_MANAGER_ENABLED=1")
+ccl_check_imported (cclextras-stores imported)
+if (NOT imported)
+	if (SamsungIAPSDK_FOUND)
+		target_compile_definitions (cclextras-stores PRIVATE "CCL_SAMSUNG_STORE_MANAGER_ENABLED=1")
 
-	ccl_add_gradle_dependency (cclextras-stores "${SamsungIAPSDK_AAR}" COMPILE_ONLY)
-	ccl_add_gradle_dependency (cclextras-stores "org.jetbrains:annotations:26.0.2" TRANSITIVE)
+		ccl_add_gradle_dependency (cclextras-stores "${SamsungIAPSDK_AAR}" COMPILE_ONLY)
+		ccl_add_gradle_dependency (cclextras-stores "org.jetbrains:annotations:26.0.2" TRANSITIVE)
 
-	ccl_add_java_sourcedir (cclextras-stores "${CCL_DIR}/extras/stores/platform/android/samsung")
+		ccl_add_java_sourcedir (cclextras-stores "${CCL_DIR}/extras/stores/platform/android/samsung")
+	endif ()
 endif ()
 
 ccl_add_proguard_file (cclextras-stores "${CCL_DIR}/packaging/android/cclstore.proguard")

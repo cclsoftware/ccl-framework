@@ -9,7 +9,7 @@ from typing import Optional, List
 
 from modules.buildenv import BuildEnvironment
 from modules.project import BuildActionConfig
-from modules.tools import ToolHelper, Tools
+from modules.tools import Tools
 
 __copyright__ = "Copyright (c) 2024 CCL Software Licensing GmbH"
 
@@ -25,13 +25,8 @@ class IBuildAction(ABC):
     """Build action interface."""
 
     @abstractmethod
-    def run(self) -> bool:
-        """Run this action, raise BuildActionException
-        on error.
-
-        Returns:
-            True on success, False on failure.
-        """
+    def run(self) -> None:
+        """Run this action, raise BuildActionException on error."""
         pass
 
 
@@ -46,8 +41,8 @@ class BuildAction(IBuildAction):
         self.build_env: BuildEnvironment = build_env
         self.project_path: pathlib.Path = project_path
 
-    def run(self) -> bool:
-        return False
+    def run(self) -> None:
+        pass
 
     def _find_tool(self, name: str, category: str) -> Optional[pathlib.Path]:
         """Find tool, log failure. Final, do not override. Override _find_tool_internal () instead."""
@@ -73,19 +68,28 @@ class BuildAction(IBuildAction):
         return reference_path.joinpath(path).resolve()
 
     @staticmethod
-    def _run_process(invocation: List[str], verbose: bool, working_dir: pathlib.Path) -> bool:
+    def _run_process(invocation: List[str], verbose: bool, working_dir: pathlib.Path) -> None:
         """Call subprocess on 'invocation' with optional output.
 
         Uses project path as working_dir typically as configuration files are specified
         from documentation project perspective (i.e. contained relative paths).
         """
 
-        if verbose:
-            result_code = subprocess.call(invocation, cwd=working_dir)
-        else:
-            result_code = subprocess.call(invocation, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
-                                          cwd=working_dir)
-        return result_code == 0
+        binary_name = "unknown binary"
+        if invocation:
+            binary_name = invocation[0]
+
+        try:
+            if verbose:
+                result_code = subprocess.call(invocation, cwd=working_dir)
+            else:
+                result_code = subprocess.call(invocation, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+                                              cwd=working_dir)
+        except FileNotFoundError:
+            raise BuildActionException(f"failed to run '{binary_name}', file not found")
+
+        if result_code != 0:
+            raise BuildActionException(f"failed to run '{binary_name}'")
 
     @staticmethod
     def _delete_files_in_folder(path: pathlib.Path, file_extension: str) -> None:
@@ -125,7 +129,7 @@ class DoxygenAction(BuildAction):
     ATTR_CONFIG = "config"  # doxy file
     ATTR_OUTPUT_PATH = "output_path"  # doxygen xml output path
 
-    def run(self) -> bool:
+    def run(self) -> None:
         super().run()
 
         # Step 1: Cleanup any potential previous xml output.
@@ -150,7 +154,7 @@ class DoxygenAction(BuildAction):
         # Legacy, must run in folder that contains the config file.
         invocation = [DoxygenAction.TOOL_BINARY, config_filename_only]
         verbose = self.action_config.attrs.get("verbose", False)
-        return self._run_process(invocation=invocation, verbose=verbose, working_dir=config_folder)
+        self._run_process(invocation=invocation, verbose=verbose, working_dir=config_folder)
 
 
 class DoxyrestAction(BuildAction):
@@ -167,7 +171,7 @@ class DoxyrestAction(BuildAction):
     ATTR_CONFIG = "config"  # doxyrest configuration file path
     ATTR_OUTPUT_PATH = "output_path"  # doxyrest rst file output path
 
-    def run(self) -> bool:
+    def run(self) -> None:
         super().run()
 
         # Step 1: cleanup any potential previous rst output.
@@ -190,8 +194,7 @@ class DoxyrestAction(BuildAction):
             raise BuildActionException(f"config '{config_path_abs}' does not exist")
 
         verbose = self.action_config.attrs.get("verbose", False)
-        return self._run_process(invocation=[doxyrest, "-c", config_path_abs],
-                                 verbose=verbose, working_dir=self.project_path)
+        self._run_process(invocation=[doxyrest, "-c", config_path_abs], verbose=verbose, working_dir=self.project_path)
 
     def _find_tool_internal(self, name: str, category: str) -> Optional[pathlib.Path]:
         return self.build_env.tool_helper.find_binary_tool(name=name, category=category)
@@ -215,7 +218,7 @@ class TypeDocAction(BuildAction):
     ATTR_TSCONFIG = "tsconfig"  # typedoc ts configuration file, required
     ATTR_WORKDIR = "workdir"  # working directory
 
-    def run(self) -> bool:
+    def run(self) -> None:
         super().run()
 
         workdir = self.project_path
@@ -250,7 +253,7 @@ class TypeDocAction(BuildAction):
 
         invocation.extend(["--tsconfig", config_path_abs])
         verbose = self.action_config.attrs.get("verbose", False)
-        return self._run_process(invocation=invocation, verbose=verbose, working_dir=workdir)
+        self._run_process(invocation=invocation, verbose=verbose, working_dir=workdir)
 
 
 class ModelScanAction(BuildAction):
@@ -267,7 +270,7 @@ class ModelScanAction(BuildAction):
     ATTR_PATH = "path"
     ATTR_MODEL = "model"
 
-    def run(self) -> bool:
+    def run(self) -> None:
         super().run()
 
         modeller = self._find_tool(name=ModelScanAction.TOOL_BINARY, category=Tools.CATEGORY_CCL)
@@ -291,8 +294,8 @@ class ModelScanAction(BuildAction):
             raise BuildActionException(f"classmodel '{model_path}' does not exist")
 
         verbose = self.action_config.attrs.get("verbose", False)
-        return self._run_process(invocation=[modeller, "-scan", scan_path, model_path],
-                                 verbose=verbose, working_dir=self.project_path)
+        self._run_process(invocation=[modeller, "-scan", scan_path, model_path],
+                          verbose=verbose, working_dir=self.project_path)
 
     def _find_tool_internal(self, name: str, category: str) -> Optional[pathlib.Path]:
         return self.build_env.tool_helper.find_binary_tool(name=name, category=category)
@@ -321,7 +324,7 @@ class PythonScriptAction(BuildAction):
         super().__init__(action_config, build_env, project_path)
         self.script_name: str = script_name
 
-    def run(self) -> bool:
+    def run(self) -> None:
         super().run()
 
         args_attr_value = self.action_config.attrs.get(PythonScriptAction.ATTR_ARGS, [])
@@ -331,7 +334,7 @@ class PythonScriptAction(BuildAction):
         # Intended as 'doctools' script wrapper so use doctools as category.
         script = self._find_tool(name=self.script_name, category=Tools.CATEGORY_DOCTOOLS)
         if not script.is_file():
-            return False
+            raise BuildActionException("script tool not found")
 
         # Needs python3, running platform may use python3 via 'python' alias (typically Windows).
         python_executable = shutil.which('python') or shutil.which('python3')
@@ -344,7 +347,7 @@ class PythonScriptAction(BuildAction):
             invocation.append(arg)
 
         verbose = self.action_config.attrs.get("verbose", False)
-        return self._run_process(invocation=invocation, verbose=verbose, working_dir=self.project_path)
+        self._run_process(invocation=invocation, verbose=verbose, working_dir=self.project_path)
 
     def _find_tool_internal(self, name: str, category: str) -> Optional[pathlib.Path]:
         return self.build_env.tool_helper.find_python_tool(name=self.script_name, category=category)
@@ -364,7 +367,7 @@ class CustomToolAction(BuildAction):
     ATTR_TOOL_CATEGORY = "category"  # tool category, for use with tool lookup, optional
     ATTR_ARGS = "args"  # args required
 
-    def run(self) -> bool:
+    def run(self) -> None:
         super().run()
 
         name_attr_value = self.action_config.attrs.get(CustomToolAction.ATTR_TOOL_NAME, "")
@@ -388,7 +391,7 @@ class CustomToolAction(BuildAction):
             invocation.append(arg)
 
         verbose = self.action_config.attrs.get("verbose", False)
-        return self._run_process(invocation=invocation, verbose=verbose, working_dir=self.project_path)
+        self._run_process(invocation=invocation, verbose=verbose, working_dir=self.project_path)
 
     def _find_tool_internal(self, name: str, category: str) -> Optional[pathlib.Path]:
         return self.build_env.tool_helper.find_binary_tool(name=name, category=category)

@@ -46,32 +46,6 @@ protected:
 	void drawCompositedBackground (IGraphics& graphics, View* view, RectRef rect);
 };
 
-//************************************************************************************************
-// TextScaler
-/** Helper class that caches the latest string for a given rect and provides the appropriate font size. */
-//************************************************************************************************
-
-struct TextScaler
-{
-public:
-	TextScaler ();
-
-	enum Options
-	{
-		kMarkupText = 1<<0
-	};
-
-	void scaleTextFont (Font& font, RectRef r, StringRef text, int options = 0);
-	
-	PROPERTY_VARIABLE (float, explicitMaximalFontSize, ExplicitMaximalFontSize);
-	PROPERTY_VARIABLE (float, explicitMinimalFontSize, ExplicitMinimalFontSize);
-
-private:
-	String cachedText;
-	Rect cachedRect;
-	float cachedFontSize;
-};
-
 } // namespace CCL
 
 #endif // _ccl_compositedrenderer_h

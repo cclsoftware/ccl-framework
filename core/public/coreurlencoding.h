@@ -103,7 +103,7 @@ namespace URLEncoding
 
 	/** URL-decode string, works with C-string clases. */
 	template <typename TString>	
-	void decode (TString& result, CStringPtr string)
+	void decode (TString& result, CStringPtr string, Scheme scheme)
 	{
 		for(int i = 0; string[i]; i++)
 		{
@@ -121,7 +121,7 @@ namespace URLEncoding
 				char value = (char)(fromHexChar (c1) << 4) | fromHexChar (c2);
 				result.append (value);
 			}
-			else if(c == '+')
+			else if(c == '+' && scheme == kWebForm)
 				result.append (' ');
 			else
 				result.append (c);

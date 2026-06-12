@@ -31,6 +31,16 @@ if (NOT TARGET assimp)
 	set_target_properties (assimp PROPERTIES USE_FOLDERS ON FOLDER services/ccl/libs)
 endif ()
 
+if (IOS)
+# disable ccache in Xcode project for iOS
+	set_target_properties (assimp PROPERTIES
+		XCODE_ATTRIBUTE_CC ""
+		XCODE_ATTRIBUTE_CXX ""
+		XCODE_ATTRIBUTE_LD ""
+		XCODE_ATTRIBUTE_LDPLUSPLUS ""
+	)
+endif ()
+
 if (NOT TARGET assimp_library)
 	add_library (assimp_library STATIC IMPORTED)
 	if (assimp_LIBRARY_OUTPUT_DEBUG)

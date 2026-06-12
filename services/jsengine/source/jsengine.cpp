@@ -39,6 +39,11 @@ static bool initialized = false;
 
 CCL_KERNEL_INIT (JSEngine)
 {
+	js::logMalloc = JScript::logMalloc;
+	js::logCalloc = JScript::logCalloc;
+	js::logRealloc = JScript::logRealloc;
+	js::logFree = JScript::logFree;
+
 	if(!initialized)
 		initialized = JS_Init ();
 	return initialized;
@@ -50,6 +55,11 @@ CCL_KERNEL_TERM (JSEngine)
 	if(initialized)
 		JS_ShutDown ();
 	#endif
+
+	js::logMalloc = nullptr;
+	js::logCalloc = nullptr;
+	js::logRealloc = nullptr;
+	js::logFree = nullptr;
 }
 
 //************************************************************************************************

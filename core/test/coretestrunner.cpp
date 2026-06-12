@@ -19,6 +19,7 @@
 #include "coretestbase.h"
 #include "coretestrunner.h"
 #include "core/system/coredebug.h"
+#include "core/public/corestringbuffer.h"
 
 using namespace Core;
 using namespace Test;
@@ -36,15 +37,32 @@ using namespace Test;
 class TestContext: public ITestContext
 {
 public:
-	void addMessage (CStringPtr message, CStringPtr sourceFile, int lineNumber)
+	struct FailureInfo
+	{
+		CString256 message;
+		CString256 sourceFile;
+		int lineNumber = 0;
+	};
+
+	const Vector<FailureInfo>& getFailures () const
+	{
+		return failures;
+	}
+
+	// ITestContext
+	void addMessage (CStringPtr message, CStringPtr sourceFile, int lineNumber) override
 	{
 		TestPrintf ("%s:%d %s\n", sourceFile, lineNumber, message);
 	}
 
-	void addFailure (CStringPtr message, CStringPtr sourceFile, int lineNumber)	
+	void addFailure (CStringPtr message, CStringPtr sourceFile, int lineNumber) override
 	{
-		TestPrintf ("\033[1;31m%s:%d %s\033[0m\n", sourceFile, lineNumber, message);
+		TestPrintf ("%s:%d %s\n", sourceFile, lineNumber, message);
+		failures.add ({message, sourceFile, lineNumber});
 	}
+
+private:
+	Vector<FailureInfo> failures;
 };
 
 //************************************************************************************************
@@ -69,11 +87,23 @@ int Core::coreTest (int argc, char* argv[])
 			Test::TestRegistry::instance ().getTests ()[index - 1]->run (context);
 		else
 			Test::TestRegistry::instance ().runAllTests (context);
+
+		int numFailed = context.getFailures ().count ();
+		if(numFailed > 0)
+		{
+			TestPrintf ("Summary: %i tests failed!\n", numFailed);
+			for(const auto& failure : context.getFailures ())
+				TestPrintf ("%s:%d %s\n", failure.sourceFile.str (), failure.lineNumber, failure.message.str ());
+		}
+		else
+		{
+			TestPrintf ("Summary: All tests passed!\n");
+		}
 	}
 	else
 	{
 		TestPrintf ("Usage: coretest [list|run [<id>]]\n");
-	}	
-	TestPrintf ("done");
+	}
+	TestPrintf ("done\n");
 	return 0;
 }

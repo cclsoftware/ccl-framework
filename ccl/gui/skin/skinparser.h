@@ -45,6 +45,8 @@ public:
 	SkinParser (ISkinContext* context);
 	~SkinParser ();
 
+	static void setCustomDefinitions (StringRef definitions = nullptr);
+
 	SkinModel* parseSkin (UrlRef url);
 	SkinModel* parseSkin (IStream& stream);
 	SkinModel* getModel ();
@@ -55,6 +57,7 @@ public:
 	// XmlContentParser
 	tresult CCL_API startElement (StringRef name, const IStringDictionary& attributes) override;
 	tresult CCL_API endElement (StringRef name) override;
+	tresult CCL_API characterData (const uchar* data, int length, tbool isCDATA) override;
 	tresult CCL_API processingInstruction (StringRef target, StringRef data) override;
 
 protected:
@@ -62,6 +65,11 @@ protected:
 	bool firstTag;
 	SkinElements::Element* current;
 	MutableCString fileName;   // for error reporting
+
+	static String customDefinitions;
+
+	// XmlProcessingInstructionHandler
+	bool isDefined (StringRef query) const override;
 };
 
 } // namespace CCL

@@ -115,7 +115,10 @@ if (NOT TARGET ${cclsecurity})
 		
 		ccl_add_resources (${cclsecurity} ${cclsecurity_resources})
 
-		if (CCL_SYSTEM_INSTALL)
+		if (CCL_EXPORTS_PATH)
+			install (TARGETS ${cclsecurity} EXPORT ccl-targets FILE_SET HEADERS DESTINATION ${CCL_PUBLIC_HEADERS_DESTINATION} COMPONENT public_headers
+																    FRAMEWORK DESTINATION "${VENDOR_APPLICATION_RUNTIME_DIRECTORY}")
+		elseif (CCL_SYSTEM_INSTALL)
 			set_target_properties (${cclsecurity} PROPERTIES SOVERSION ${CCL_VERSION})
 			install (TARGETS ${cclsecurity} EXPORT ccl-targets DESTINATION "${CCL_LIBRARY_DESTINATION}"
 											LIBRARY DESTINATION "${CCL_LIBRARY_DESTINATION}" COMPONENT prebuilt_libraries_${VENDOR_NATIVE_COMPONENT_SUFFIX}
@@ -135,4 +138,11 @@ if (NOT TARGET ${cclsecurity})
 	target_sources (${cclsecurity} INTERFACE ${cclsecurity_public_sources})
 elseif (NOT XCODE)
 	ccl_include_platform_specifics (cclsecurity)
+endif ()
+
+if (VENDOR_APPLICATION_RUNTIME_DIRECTORY AND NOT CCL_SYSTEM_INSTALL)
+	ccl_install_imported (${cclsecurity} LIBRARY DESTINATION "${VENDOR_APPLICATION_RUNTIME_DIRECTORY}"
+										 RUNTIME DESTINATION "${VENDOR_APPLICATION_RUNTIME_DIRECTORY}"
+										 FRAMEWORK DESTINATION "${VENDOR_APPLICATION_RUNTIME_DIRECTORY}"
+	)
 endif ()

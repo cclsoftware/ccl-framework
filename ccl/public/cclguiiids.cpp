@@ -19,6 +19,7 @@
 #define INIT_IID
 
 #include "ccl/public/text/cstring.h"
+#include "ccl/public/cclversion.h"
 
 // GUI
 #include "ccl/public/gui/appanalytics.h"
@@ -41,6 +42,7 @@
 #include "ccl/public/gui/framework/iaccessibility.h"
 #include "ccl/public/gui/framework/ialert.h"
 #include "ccl/public/gui/framework/ianimation.h"
+#include "ccl/public/gui/framework/iblockcontent.h"
 #include "ccl/public/gui/framework/icommandeditor.h"
 #include "ccl/public/gui/framework/icommandtable.h"
 #include "ccl/public/gui/framework/iclipboard.h"
@@ -95,11 +97,13 @@
 #include "ccl/public/gui/framework/ihandwriting.h"
 #include "ccl/public/gui/framework/ilinuxspecifics.h"
 
+const CCL::CString CCL::kCCLMarkup (CCL_MIME_TYPE "-markup");
 const CCL::String CCL::IMenu::strSeparator = CCLSTR ("-");
 const CCL::String CCL::IMenu::strLargeVariant = CCLSTR ("large");
 const CCL::String CCL::IMenu::strFollowIndicator = CCLSTR ("...");
 const CCL::String CCL::IUserOption::strSeparator = CCLSTR ("\n");
 const CCL::String CCL::IThemeManager::kThemeProtocol = CCLSTR ("theme");
+const CCL::String CCL::IHelpManager::kLanguageVariable = CCLSTR ("$language");
 
 // GUI / Graphics
 #include "ccl/public/gui/graphics/font.h"
@@ -112,7 +116,7 @@ const CCL::String CCL::IThemeManager::kThemeProtocol = CCLSTR ("theme");
 #include "ccl/public/gui/graphics/igradient.h"
 #include "ccl/public/gui/graphics/iimage.h"
 #include "ccl/public/gui/graphics/iimagecache.h"
-#include "ccl/public/gui/graphics/imarkuppainter.h"
+#include "ccl/public/gui/graphics/imarkupsupport.h"
 #include "ccl/public/gui/graphics/itextlayout.h"
 #include "ccl/public/gui/graphics/iuivalue.h"
 

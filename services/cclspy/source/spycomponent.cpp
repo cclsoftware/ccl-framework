@@ -592,18 +592,30 @@ void SpyComponent::inspectVisualStyle (ObjectInfo& info, IVisualStyle* visualSty
 {
 	info.getGroupAt (0)->setProperty ("name", String (visualStyle->getName ()));
 
-	UnknownPtr<IObject> vsObject (visualStyle);
+	AutoPtr<PropertyHandler> styleHandler (NEW VisualStyleProperty);
+	Variant inherited = visualStyle->getInherited ();
+	if(inherited.asUnknown ())
+		info.addProperty ("inherited", inherited, styleHandler);
+
+	inspectVisualStyleData (info, CString::kEmpty, visualStyle);
+
+	ForEachUnknown (visualStyle->getStyleConditions (), unk)
+		if(UnknownPtr<IVisualStyleData> styleData = unk)
+			inspectVisualStyleData (info, styleData->getName (), styleData);
+	EndFor
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+void SpyComponent::inspectVisualStyleData (ObjectInfo& info, StringID namePrefix, IVisualStyleData* styleData)
+{
+	CString itemTypes [] = {IVisualStyle::kImages, IVisualStyle::kColors, IVisualStyle::kFonts, IVisualStyle::kMetrics, IVisualStyle::kOptions};
+	static const AutoPtr<PropertyHandler> propertyHandlers[] = {NEW ImagePropertyHandler, NEW ColorPropertyHandler, NEW FontPropertyHandler, nullptr, nullptr};
+	// TODO: IVisualStyle::kStrings, IVisualStyle::kGradients...
+
+	UnknownPtr<IObject> vsObject (styleData);
 	if(vsObject)
 	{
-		AutoPtr<PropertyHandler> styleHandler (NEW VisualStyleProperty);
-		Variant inherited = visualStyle->getInherited ();
-		if(inherited.asUnknown ())
-			info.addProperty ("inherited", inherited, styleHandler);
-
-		CString itemTypes [] = {IVisualStyle::kImages, IVisualStyle::kColors, IVisualStyle::kFonts, IVisualStyle::kMetrics, IVisualStyle::kOptions };
-		static const AutoPtr<PropertyHandler> propertyHandlers[] = { NEW ImagePropertyHandler, NEW ColorPropertyHandler, NEW FontPropertyHandler, nullptr, nullptr };
-		// TODO: IVisualStyle::kStrings, IVisualStyle::kGradients...
-
 		for(int t = 0; t < ARRAY_COUNT (itemTypes); t++)
 		{
 			Variant arrayVar;
@@ -623,7 +635,13 @@ void SpyComponent::inspectVisualStyle (ObjectInfo& info, IVisualStyle* visualSty
 							{
 								item->getItemValue (value);
 								PropertyHandler* propHandler = propertyHandlers[t];
-								info.getGroupAt (0)->setProperty (item->getItemName (), value, propHandler);
+								
+								MutableCString itemName (namePrefix);
+								if(!itemName.isEmpty ())
+									itemName += ".";
+								itemName.append (item->getItemName ());
+
+								info.getGroupAt (0)->setProperty (itemName, value, propHandler);
 							}
 				}
 			}
@@ -829,8 +847,8 @@ void CCL_API SpyComponent::notify (ISubject* subject, MessageRef msg)
 			if(spyView)
 				spyView->signal (Message ("showDocumentationBrowser"));
 
-			// reveal class
-			classBrowser->notify (this, Message ("RevealClass", msg[0], CCLSTR ("Skin Elements")));
+			// reveal class (deferred, since Browser::restoreCurrentState () will first focus another node)
+			(NEW Message ("RevealClass", msg[0], CCLSTR ("Skin Elements")))->post (classBrowser, -1);
 		}
 	}
 	#endif

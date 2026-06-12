@@ -56,8 +56,8 @@ interface IGraphicsHelper: IUnknown
 	//////////////////////////////////////////////////////////////////////////////////////////////
 
 	virtual const Font& CCL_API Font_getDefaultFont () = 0;
-	virtual void CCL_API Font_measureString (Rect& size, StringRef text, const Font& font, int flags) = 0;
-	virtual void CCL_API Font_measureString (RectF& size, StringRef text, const Font& font, int flags) = 0;
+	virtual void CCL_API Font_measureString (Rect& size, StringRef text, const Font& font) = 0;
+	virtual void CCL_API Font_measureString (RectF& size, StringRef text, const Font& font) = 0;
 	virtual void CCL_API Font_measureStringImage (RectF& size, StringRef text, const Font& font, tbool shiftToBaseline) = 0;
 	virtual void CCL_API Font_measureText (Rect& size, Coord lineWidth, StringRef text, const Font& font, TextFormatRef format) = 0;
 	virtual void CCL_API Font_measureText (RectF& size, CoordF lineWidth, StringRef text, const Font& font, TextFormatRef format) = 0;

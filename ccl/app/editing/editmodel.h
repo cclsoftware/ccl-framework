@@ -50,6 +50,8 @@ public:
 	EditModel (EditorComponent* component = nullptr);
 	~EditModel ();
 
+	EditorComponent* getEditorComponent () const;
+
 	 /** Get associated selection. */
 	Selection& getSelection ();
 	const Selection& getSelection () const;

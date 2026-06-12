@@ -38,7 +38,8 @@ enum
 	kMenuTabWidth = 16,
 	kContentMargin = 3,
 	kTabMargin = 0,
-	kTabSpacing = 0
+	kTabSpacing = 0,
+	kTabIconSpacing = 0
 };
 
 //************************************************************************************************
@@ -66,7 +67,7 @@ template<> struct TabViewGeometry<Styles::kHorizontal>
 	static inline Coord& getEndCoord (Rect& rect)						{ return rect.right; }
 
 	static inline void makePath (GraphicsPath& path, RectRef r);
-	static inline void drawLabel (GraphicsDevice& port, RectRef rect, StringRef text, FontRef font, BrushRef brush, IImage* icon, Coord iconSpacing, bool center);
+	static inline void drawLabel (GraphicsDevice& port, RectRef rect, StringRef text, FontRef font, BrushRef brush, IImage* icon, Coord tabMargin, Coord iconSpacing, bool center);
 	static inline void drawButton (GraphicsDevice& port, RectRef rect, IImage* button);
 };
 
@@ -88,7 +89,7 @@ template<> struct TabViewGeometry<Styles::kVertical>
 	static inline Coord& getEndCoord (Rect& rect)						{ return rect.bottom; }
 
 	static inline void makePath (GraphicsPath& path, RectRef r);
-	static inline void drawLabel (GraphicsDevice& port, RectRef rect, StringRef text, FontRef font, BrushRef brush, IImage* icon, Coord iconSpacing, bool center);
+	static inline void drawLabel (GraphicsDevice& port, RectRef rect, StringRef text, FontRef font, BrushRef brush, IImage* icon, Coord tabMargin, Coord iconSpacing, bool center);
 	static inline void drawButton (GraphicsDevice& port, RectRef rect, IImage* button);
 };
 
@@ -112,7 +113,7 @@ inline void TabViewGeometry<Styles::kHorizontal>::makePath (GraphicsPath& path, 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-inline void TabViewGeometry<Styles::kHorizontal>::drawLabel (GraphicsDevice& port, RectRef rect, StringRef text, FontRef font, BrushRef brush, IImage* icon, Coord iconSpacing, bool center)
+inline void TabViewGeometry<Styles::kHorizontal>::drawLabel (GraphicsDevice& port, RectRef rect, StringRef text, FontRef font, BrushRef brush, IImage* icon, Coord tabMargin, Coord iconSpacing, bool center)
 {
 	Rect labelRect (rect);
 	if(icon)
@@ -124,12 +125,12 @@ inline void TabViewGeometry<Styles::kHorizontal>::drawLabel (GraphicsDevice& por
 		else
 		{
 			iconRect.centerV (rect);
-			iconRect.offset (iconSpacing);
+			iconRect.offset (rect.left + (tabMargin / 2) + (kTabControl / 2));
 		}
 
 		port.drawImage (icon, iconSize, iconRect);
 
-		labelRect.left = iconRect.right;
+		labelRect.left = iconRect.right + iconSpacing;
 	}
 
 	if(!text.isEmpty ())
@@ -158,7 +159,7 @@ inline void TabViewGeometry<Styles::kVertical>::makePath (GraphicsPath& path, Re
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-inline void TabViewGeometry<Styles::kVertical>::drawLabel (GraphicsDevice& port, RectRef rect, StringRef text, FontRef font, BrushRef brush, IImage* icon, Coord iconSpacing, bool center)
+inline void TabViewGeometry<Styles::kVertical>::drawLabel (GraphicsDevice& port, RectRef rect, StringRef text, FontRef font, BrushRef brush, IImage* icon, Coord tabMargin, Coord iconSpacing, bool center)
 {
 	ASSERT (icon == nullptr) // not implemented!
 
@@ -203,6 +204,9 @@ BEGIN_VISUALSTYLE_CLASS (TabView, VisualStyle, "TabViewStyle")
 	ADD_VISUALSTYLE_IMAGE  ("menuIcon")			///< icon shown on menu button
 	ADD_VISUALSTYLE_IMAGE  ("menuBackground")	///< background for menu button (shown when not all tabs fit in the view)
 	ADD_VISUALSTYLE_METRIC ("tabHeight")		///< height of tab buttons
+	ADD_VISUALSTYLE_METRIC ("tabMargin")		///< the overall margin (tabMargin = left and right margin combined)
+	ADD_VISUALSTYLE_METRIC ("iconSpacing")		///< spacing between icon and label
+	ADD_VISUALSTYLE_METRIC ("tabSpacing")		///< spacing between tabs
 	ADD_VISUALSTYLE_COLOR  ("borderColor")		///< color of border frame, drawn when no"background" image is available
 	ADD_VISUALSTYLE_COLOR  ("activecolor")		///< used to draw instead of "backcolor" for the active tab (when no button image available)
 	ADD_VISUALSTYLE_COLOR  ("activetextcolor")	///< used instead of "textcolor" for the active tab
@@ -225,6 +229,7 @@ TabViewRenderer::TabViewRenderer (VisualStyle* visualStyle)
 	menuBackground = visualStyle->getImage ("menuBackground");
 	tabMenuIcon = visualStyle->getImage ("tabMenuIcon");
 	tabMargin = visualStyle->getMetric<int> ("tabmargin", kTabMargin);
+	iconSpacing = visualStyle->getMetric<int> ("iconSpacing", kTabIconSpacing);
 	tabSpacing = visualStyle->getMetric<int> ("tabSpacing", kTabSpacing);
 	visualStyle->getPadding (padding);
 	
@@ -234,7 +239,6 @@ TabViewRenderer::TabViewRenderer (VisualStyle* visualStyle)
 	tabSlope = (middleButton == nullptr) ? kTabSlope : 0;
 	tabHeight = visualStyle->getMetric<int> ("tabHeight", kTabSlope);
 	inset = (middleButton == nullptr) ? 2 : 0;
-	iconSpacing = 1;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -254,14 +258,9 @@ Coord TabViewRenderer::calcTabWidth (TabView* tabView, int index, StringRef labe
 	if(!label.isEmpty ())
 		width = Font::getStringWidth (label, font);
 	if(icon)
-	{
-		width += icon->getWidth ();// + 2 * iconSpacing;
-		if(!label.isEmpty ())
-			width += iconSpacing;
-	}
-
+		width += icon->getWidth ();
 	if(tabView->getStyle ().isCustomStyle (Styles::kTabViewBehaviorTabMenu) && tabMenuIcon && index == tabView->getActiveIndex ())
-		width += tabMenuIcon->getWidth () + iconSpacing;
+		width += tabMenuIcon->getWidth ();
 
 	Coord fillWidth = tabView->getFillWidth ();
 	if(fillWidth > 0)
@@ -274,7 +273,7 @@ Coord TabViewRenderer::calcTabWidth (TabView* tabView, int index, StringRef labe
 			width++;
 	}
 	
-	return width + tabMargin;
+	return width + tabMargin + iconSpacing;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -476,7 +475,14 @@ void TabViewRenderer::draw (View* view, const UpdateRgn& updateRgn)
 				Geometry::getStartCoord (tabRect) = 0;
 				width = Geometry::getEndCoord (tabRect) - Geometry::getStartCoord (header);
 				Font::collapseString (label, width, args.font, Font::kTrimModeRight);
-				collapsed = true;		
+				if(icon)
+				{
+					label = String::kEmpty;
+					if(width < icon->getWidth ())
+						icon = nullptr;
+				}
+				else
+					collapsed = true;
 			}
 			else
 			{
@@ -487,7 +493,15 @@ void TabViewRenderer::draw (View* view, const UpdateRgn& updateRgn)
 					width -= overflow;
 					Geometry::setTabWidth (tabRect, width);
 					Font::collapseString (label, width, args.font, Font::kTrimModeRight);
-					collapsed = true;
+					if(icon)
+					{
+						label = String::kEmpty;
+						if(width < icon->getWidth ())
+							icon = nullptr;
+					}
+					else
+						collapsed = true;
+
 				}
 			}
 
@@ -513,8 +527,12 @@ void TabViewRenderer::draw (View* view, const UpdateRgn& updateRgn)
 
 	if(hasMenu)
 	{
+		bool mouseOverTab = (args.tabView->getMouseOverTab () == (TabView::kPartMenuTab - TabView::kPartFirstTab));
 		if(menuBackground)
+		{
+			IImage::Selector (menuBackground, mouseOverTab ? ThemeNames::kMouseOver : ThemeNames::kNormal);
 			port.drawImage (menuBackground, Rect (0, 0, menuBackground->getWidth (), menuBackground->getHeight ()), menuRect);
+		}
 		else
 			drawTab<Geometry> (args, menuRect, kEndTab, TabView::kPartMenuTab - TabView::kPartFirstTab, false, nullptr, nullptr, true);
 
@@ -523,6 +541,7 @@ void TabViewRenderer::draw (View* view, const UpdateRgn& updateRgn)
 			Rect iconSize (0, 0, menuIcon->getWidth (), menuIcon->getHeight ());
 			Rect iconRect (iconSize);
 			iconRect.center (menuRect);
+			IImage::Selector (menuIcon, mouseOverTab ? ThemeNames::kMouseOver : ThemeNames::kNormal);
 			port.drawImage (menuIcon, iconSize, iconRect);
 		}
 	}
@@ -620,11 +639,22 @@ void TabViewRenderer::drawTab (TabDrawArgs& args, const Rect& tabRect, TabKind k
 		iconRect.centerV (labelRect);
 		args.port.drawImage (tabMenuIcon, iconSize, iconRect);
 
-		labelRect.right = iconRect.left - iconSpacing;
+		labelRect.right = iconRect.left;
 	}
 
-	IImage::Selector (icon, active || args.tabView->getMouseDownTab () == index ? ThemeNames::kPressed : ThemeNames::kNormal);
-	Geometry::drawLabel (args.port, labelRect, label, args.font, active ? args.activeTextBrush : args.textBrush, icon, iconSpacing, center);
+	auto getIconThemeName = [&] ()
+	{
+		if(active)
+			return ThemeNames::kNormalOn;
+		if(args.tabView->getMouseDownTab () == index)
+			return ThemeNames::kPressed;
+		if(args.tabView->getMouseOverTab () == index)
+			return ThemeNames::kMouseOver;
+		return ThemeNames::kNormal;
+	};
+
+	IImage::Selector (icon, getIconThemeName ());
+	Geometry::drawLabel (args.port, labelRect, label, args.font, active ? args.activeTextBrush : args.textBrush, icon, tabMargin, iconSpacing, icon ? false : center);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////

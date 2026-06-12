@@ -175,3 +175,9 @@ endif ()
 include ("${CMAKE_CURRENT_LIST_DIR}/githubmacros.cmake")
 
 include (${CCL_REPOSITORY_ROOT}/ccl/cmake/repomacros.cmake)
+
+if (NOT COMMAND ccl_enable_fast_math)
+	macro (ccl_enable_fast_math target)
+		# do nothing
+	endmacro ()
+endif ()

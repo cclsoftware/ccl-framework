@@ -24,6 +24,7 @@
 #include "ccl/gui/skin/form.h"
 #include "ccl/gui/theme/theme.h"
 #include "ccl/gui/windows/desktop.h"
+#include "ccl/gui/popup/popupselector.h"
 #include "ccl/gui/system/webbrowserview.h"
 
 using namespace CCL;
@@ -99,6 +100,11 @@ tbool CCL_API HtmlDocumentViewer::canOpenDocument (UrlRef document) const
 
 tbool CCL_API HtmlDocumentViewer::openDocument (UrlRef document, StringRef nameDest)
 {
+	// don't open help window when a modal dialog is open; the dialog would block the help window from receiving mouse or keyboard input
+	auto* topModal = ccl_cast<Dialog> (Desktop.getTopWindow (kDialogLayer));
+	if(topModal && !ccl_cast<PopupSelectorWindow> (topModal))
+		return false;
+
 	openWindow ();
 	if(navigator == nullptr)
 		return false;

@@ -322,9 +322,12 @@ void DataDeviceHelper::Listener::onDrop (void* data, wl_data_device* dataDevice)
 			View* view = This->currentSurface->getView ();
 			if(view && This->finalAction != WL_DATA_DEVICE_MANAGER_DND_ACTION_NONE)
 			{
-				DragEvent dragEvent (*This->dragSession, DragEvent::kDrop, This->dragPosition);
-				InputHandler::instance ().getActiveModifierKeys (dragEvent.keys);
-				view->onDrop (dragEvent);
+				if(This->dragSession->getResult () != IDragSession::kDropNone)
+				{
+					DragEvent dragEvent (*This->dragSession, DragEvent::kDrop, This->dragPosition);
+					InputHandler::instance ().getActiveModifierKeys (dragEvent.keys);
+					view->onDrop (dragEvent);
+				}
 				wl_data_offer_finish (This->offer);
 			}
 		}

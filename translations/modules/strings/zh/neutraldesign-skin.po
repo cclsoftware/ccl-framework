@@ -72,7 +72,7 @@ msgstr "存储预设"
 #: tutorialviewer.xml
 msgctxt "TutorialViewer"
 msgid "Tutorial"
-msgstr "使用说明"
+msgstr "教程"
 
 #: tutorialviewer.xml
 msgctxt "TutorialViewer.Navigation"

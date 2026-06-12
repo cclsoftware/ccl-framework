@@ -79,7 +79,8 @@ void MetalIOSWindowRenderTarget::initialize ()
 	metalLayer.framebufferOnly = NO;
 	[metalLayer retain];
 	
-	MetalWindowRenderTarget::initialize ();
+	displayTimer = [[CCL_ISOLATED (DisplayTimer) alloc] initWithView:nil];
+	[displayTimer setTarget:this];
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////

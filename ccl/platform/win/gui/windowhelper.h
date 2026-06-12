@@ -36,6 +36,8 @@ Window* GetWindowFromNativeHandle (HWND hwnd);
 HWND FindTopLevelWindow (HWND hwnd, bool onlyCCL = false);
 HWND CreateMessageWindow (SystemEventHandler* handler);
 void SetAlwaysOnTop (HWND hwnd, bool state);
+void SetRoundedWindowCornerPreference (HWND hwnd, bool rounded);
+void SetCaptionColor (HWND hwnd, COLORREF captionColor);
 bool ActivateApplication (IApplication* application, bool startupMode, ArgsRef args);
 BOOL HandleCopyData (IApplication* application, COPYDATASTRUCT* data);
 void EnforceWindowOrder ();

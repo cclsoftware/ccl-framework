@@ -363,6 +363,14 @@ bool EditorComponent::activateTool (EditTool* tool)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
+void EditorComponent::popupToolPalette (EditView& editView, PointRef where)
+{
+	if(ToolBar* toolBar = getTools ().getToolBar ())
+		toolBar->popup (where, editView);
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
 bool EditorComponent::hasEditView (EditView* editView) const
 {
 	return editViews.contains (editView);

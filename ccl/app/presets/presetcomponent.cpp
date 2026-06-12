@@ -474,7 +474,7 @@ void PresetManagementComponent::enable (bool state)
 		enabled = state;
 
 		paramList.byTag (Tag::kPresetMenu)->enable (state);
-		paramList.byTag (Tag::kPresetName)->enable (state);
+		paramList.byTag (Tag::kPresetName)->enable (state ? !isFactoryPreset (currentPresetUrl) : state);
 		paramList.byTag (Tag::kStorePreset)->enable (state);
 		paramList.byTag (Tag::kUpdatePreset)->enable (state);
 	}
@@ -1191,7 +1191,8 @@ void PresetComponent::onPresetRestored (const IPreset& preset)
 		name = XSTR (DefaultPresetName);
 	setDirty (preset.isModified () != 0);
 	setCurrentPresetName (name);
-	paramList.byTag (Tag::kPresetName)->enable (!isFactoryPreset (presetUrl));
+	if(isEnabled ())
+		paramList.byTag (Tag::kPresetName)->enable (!isFactoryPreset (presetUrl));
 
 	if(enableDirtyTimeout ())
 		restoreDeadTimeTicks = System::GetSystemTicks () + kRestoreDeadTime;

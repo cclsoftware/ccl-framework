@@ -96,7 +96,7 @@ public:
 	tresult CCL_API advise (ISubject* subject, IObserver* observer) override;
 	tresult CCL_API unadvise (ISubject* subject, IObserver* observer) override;
 	tresult CCL_API performSignal (ISubject* subject, MessageRef msg) override;
-	tresult CCL_API queueSignal (ISubject* subject, IMessage* msg) override;
+	tresult CCL_API queueSignal (ISubject* subject, IMessage* msg, SignalQueuePolicy policy) override;
 	tresult CCL_API queueChanged (ISubject* subject) override;
 	tresult CCL_API cancelSignals (ISubject* subject) override;
 	tresult CCL_API postMessage (IObserver* observer, IMessage* msg, int delay) override;
@@ -155,7 +155,7 @@ protected:
 	ObserverList* lookup (ISubject* subject) const;
 	void queueCallback (CallbackFunction callback, CallbackID id, IMessage* msg, int64 time = 0, Waitable* waitable = nullptr);
 	void cancelCallback (CallbackID id);
-	tbool CCL_API messagesPending (IObserver* observer) override;
+	tbool CCL_API isMessagePending (IObserver* observer) override;
 
 	static void signalCallback (CallbackID id, IMessage* msg);
 	static void changedCallback (CallbackID id, IMessage* msg);

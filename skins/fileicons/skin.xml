@@ -32,6 +32,7 @@
 		<IconSet name="FileIcon:txt" url="icons/text.iconset" adaptive="false"/>
 		<Image name="FileIcon:rtf" image="FileIcon:txt"/>
 		<Image name="FileIcon:pdf" image="FileIcon:txt"/>
+		<Image name="FileIcon:md" image="FileIcon:txt"/>
 		
 		<IconSet name="FileIcon:xml" url="icons/xml.iconset" adaptive="false"/>
 

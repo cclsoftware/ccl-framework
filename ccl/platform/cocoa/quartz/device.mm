@@ -324,6 +324,51 @@ tresult CCL_API QuartzDevice::fillRect (RectFRef rect, BrushRef brush)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
+tresult CCL_API QuartzDevice::fillRoundRect (RectRef rect, Coord rx, Coord ry, BrushRef brush)
+{
+	return fillRoundRect (rectIntToF (rect), (CoordF)rx, (CoordF)ry, brush);
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+tresult CCL_API QuartzDevice::fillRoundRect (RectFRef rect, CoordF rx, CoordF ry, BrushRef brush)
+{
+	QuartzPath clipPath;
+	clipPath.addRoundRect (rect, rx, ry);
+	saveState ();
+	addClip (&clipPath);
+	fillRect (rect, brush);
+	restoreState ();
+
+	return kResultOk;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+tresult CCL_API QuartzDevice::fillTriangle (const Core::Point points[3], BrushRef brush)
+{
+	PointF floatPoints[3] = {pointIntToF (points[0]), pointIntToF (points[1]), pointIntToF (points[2])};
+	return fillTriangle (floatPoints, brush);
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+tresult CCL_API QuartzDevice::fillTriangle (const PointF points[3], BrushRef brush)
+{
+	QuartzPath clipPath;
+	clipPath.addTriangle (points[0], points[1], points[2]);
+	saveState ();
+	addClip (&clipPath);
+	RectF bounds;
+	clipPath.getBounds (bounds);
+	fillRect (bounds, brush);
+	restoreState ();
+
+	return kResultOk;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
 tresult CCL_API QuartzDevice::drawRect (RectRef rect, PenRef pen)
 {
 	state.setPen (pen);

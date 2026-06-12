@@ -51,16 +51,16 @@ CoordF Font::getStringWidthF (StringRef text, FontRef font)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void Font::measureString (Rect& size, StringRef text, FontRef font, int flags)
+void Font::measureString (Rect& size, StringRef text, FontRef font)
 {
-	System::GetGraphicsHelper ().Font_measureString (size, text, font, flags);
+	System::GetGraphicsHelper ().Font_measureString (size, text, font);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void Font::measureString (RectF& size, StringRef text, FontRef font, int flags)
+void Font::measureString (RectF& size, StringRef text, FontRef font)
 {
-	System::GetGraphicsHelper ().Font_measureString (size, text, font, flags);
+	System::GetGraphicsHelper ().Font_measureString (size, text, font);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////

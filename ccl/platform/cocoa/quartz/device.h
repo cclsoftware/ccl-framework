@@ -109,6 +109,10 @@ public:
 	tresult CCL_API clearRect (RectFRef rect) override;
 	tresult CCL_API fillRect (RectRef rect, BrushRef brush) override;
 	tresult CCL_API fillRect (RectFRef rect, BrushRef brush) override;
+	tresult CCL_API fillRoundRect (RectRef rect, Coord rx, Coord ry, BrushRef brush) override;
+	tresult CCL_API fillRoundRect (RectFRef rect, CoordF rx, CoordF ry, BrushRef brush) override;
+	tresult CCL_API fillTriangle (const Point points[3], BrushRef brush) override;
+	tresult CCL_API fillTriangle (const PointF points[3], BrushRef brush) override;
 	tresult CCL_API drawRect (RectRef rect, PenRef pen) override;
 	tresult CCL_API drawRect (RectFRef rect, PenRef pen) override;
 	tresult CCL_API drawLine (PointRef p1, PointRef p2, PenRef pen) override;

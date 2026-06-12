@@ -16,6 +16,8 @@
 						<Link command.category="File" command.name="New" tooltip="@cmd.title[]">
 							<Link title="New..." command.category="File" command.name="New"/>
 						</Link>
+						<define translated="Translated Attribute in define tag" test="$translated">
+						</define>
 					</Horizontal>
 				</HelpAnchor>
 			</Horizontal>

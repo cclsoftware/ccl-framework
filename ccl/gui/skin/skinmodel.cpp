@@ -193,6 +193,7 @@ namespace SkinElements
 	extern void linkSkinShapes ();
 	extern void linkSkinInteractive ();
 	extern void linkSkinElements3D ();
+	extern void linkSkinBlocks ();
 }
 
 namespace SVG 
@@ -267,13 +268,10 @@ BEGIN_SKIN_ELEMENT_ATTRIBUTES (StylesElement)
 	ADD_SKIN_CHILDGROUP_ATTRIBUTE (TAG_STYLE)
 END_SKIN_ELEMENT_ATTRIBUTES (StylesElement)
 
-BEGIN_SKIN_ELEMENT_WITH_MEMBERS (IncludeElement, Element, TAG_INCLUDE, DOC_GROUP_GENERAL, 0)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_URL, TYPE_STRING)
-END_SKIN_ELEMENT_WITH_MEMBERS (IncludeElement)
-
-BEGIN_SKIN_ELEMENT_WITH_MEMBERS (ImportElement, Element, TAG_IMPORT, DOC_GROUP_GENERAL, 0)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_URL, TYPE_STRING)
-END_SKIN_ELEMENT_WITH_MEMBERS (ImportElement)
+DEFINE_SKIN_ELEMENT (IncludeElement, ResourceElement, TAG_INCLUDE, DOC_GROUP_GENERAL, 0)
+BEGIN_SKIN_ELEMENT_ATTRIBUTES (IncludeElement)
+	ADD_SKIN_SCHEMAGROUP_ATTRIBUTE ("") // remove inherited schema groups
+END_SKIN_ELEMENT_ATTRIBUTES (IncludeElement)
 
 DEFINE_SKIN_ELEMENT (ExternalElement, Element, TAG_EXTERNAL, DOC_GROUP_GENERAL, 0)
 
@@ -290,9 +288,37 @@ BEGIN_SKIN_ELEMENT_ATTRIBUTES (WorkspacesElement)
 END_SKIN_ELEMENT_ATTRIBUTES (WorkspacesElement)
 
 //************************************************************************************************
+// ImportElement
+//************************************************************************************************
+
+BEGIN_SKIN_ELEMENT_WITH_MEMBERS (ImportElement, ResourceElement, TAG_IMPORT, DOC_GROUP_GENERAL, 0)
+	ADD_SKIN_ELEMENT_MEMBER (ATTR_DEFINES, TYPE_STRING) ///< optional defines to be evaluated by the package
+END_SKIN_ELEMENT_WITH_MEMBERS (ImportElement)
+BEGIN_SKIN_ELEMENT_ATTRIBUTES (ImportElement)
+	ADD_SKIN_SCHEMAGROUP_ATTRIBUTE ("") // remove inherited schema groups
+END_SKIN_ELEMENT_ATTRIBUTES (ImportElement)
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+bool ImportElement::setAttributes (const SkinAttributes& a)
+{
+	definitions = a.getString (ATTR_DEFINES);
+	return SuperClass::setAttributes (a);
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+bool ImportElement::getAttributes (SkinAttributes& a) const
+{
+	a.setString (ATTR_DEFINES, definitions);
+	return SuperClass::getAttributes (a);
+}
+
+//************************************************************************************************
 // SkinModel
 //************************************************************************************************
 
+SkinModel* SkinModel::loadingModel = nullptr;
 SkinModel* SkinModel::getModel (const Element* _e)
 {
 	for(Element* e = ccl_const_cast (_e); e != nullptr; e = e->getParent ())
@@ -333,6 +359,7 @@ SkinModel::SkinModel (ISkinContext* context)
 	linkSkinShapes ();
 	linkSkinInteractive ();
 	linkSkinElements3D ();
+	linkSkinBlocks ();
 	SVG::linkSvgHandler ();
 }
 
@@ -1327,7 +1354,7 @@ IImage* CCL_API ImageElement::getImage () const
 {
 	if(!image) // public interface expects image to be loaded
 	{
-		if(auto model = SkinModel::getModel (this))
+		if(auto* model = SkinModel::getModel (this))
 			const_cast<ImageElement*> (this)->loadImage (*model);
 	}
 	return image;
@@ -1903,7 +1930,7 @@ bool DefineStatement::setAttributes (const SkinAttributes& a)
 		String value (a.getStringAt (i));
 
 		// implicitly translate known attributes in <define> statement
-		if(localize && (SkinAttributes::isEqual (name, ATTR_TITLE) || SkinAttributes::isEqual (name, ATTR_TOOLTIP)))
+		if(localize && (SkinAttributes::isEqual (name, ATTR_TITLE) || SkinAttributes::isEqual (name, ATTR_TOOLTIP) || SkinAttributes::isEqual (name, ATTR_TRANSLATED)))
 		{
 			#if 0 // disabled, too hard to maintain in translation files!
 			if(value.startsWith ("@select:"))
@@ -2490,7 +2517,7 @@ void ElementSizeParser::parseWidth (StringRef resolvedWidth)
 {
 	SkinAttributes::scanDesignCoord (designSize.width, resolvedWidth);
 	if(designSize.width.isCoord ())
-		size.setWidth (designSize.width.value);
+		size.setWidth (designSize.width.getIntValue ());
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -2499,7 +2526,7 @@ void ElementSizeParser::parseHeight (StringRef resolvedHeight)
 {
 	SkinAttributes::scanDesignCoord (designSize.height, resolvedHeight);
 	if(designSize.height.isCoord ())
-		size.setHeight (designSize.height.value);
+		size.setHeight (designSize.height.getIntValue ());
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -2584,9 +2611,9 @@ DEFINE_SKIN_ENUMERATION (TAG_VIEW, ATTR_ATTACH, View::resizeStyles)
 DEFINE_SKIN_ENUMERATION (TAG_VIEW, ATTR_TRANSITION, ViewAnimator::transitionTypes)
 DEFINE_SKIN_ENUMERATION (TAG_VIEW, ATTR_LAYERBACKING, ViewElement::layerBackingTypes)
 DEFINE_SKIN_ENUMERATION (TAG_VIEW, ATTR_ACCESSIBILITY, ViewElement::accessibilityTypes)
-DEFINE_SKIN_ENUMERATION (TAG_VIEW, ATTR_FLEXALIGNSELF, FlexItem::flexAlignSelf)
-DEFINE_SKIN_ENUMERATION (TAG_VIEW, ATTR_FLEXPOSITIONTYPE, FlexItem::flexPositionType)
-DEFINE_SKIN_ENUMERATION (TAG_VIEW, ATTR_FLEXSIZEMODE, FlexItem::flexSizeMode)
+DEFINE_SKIN_ENUMERATION (TAG_VIEW, ATTR_FLEXALIGNSELF, FlexShared::flexAlignSelf)
+DEFINE_SKIN_ENUMERATION (TAG_VIEW, ATTR_FLEXPOSITIONTYPE, FlexShared::flexPositionType)
+DEFINE_SKIN_ENUMERATION (TAG_VIEW, ATTR_FLEXSIZEMODE, FlexShared::flexSizeMode)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -3058,7 +3085,7 @@ void ViewElement::applyZoomFactor (Rect& r, View* view, const CreateArgs& args) 
 //************************************************************************************************
 
 BEGIN_SKIN_ELEMENT_WITH_MEMBERS (ImageViewElement, ViewElement, TAG_IMAGEVIEW, DOC_GROUP_GENERAL, ImageView)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_IMAGENAME, TYPE_STRING)	///< name of an image resource
+	ADD_SKIN_ELEMENT_MEMBER (ATTR_IMAGE, TYPE_STRING)		///< name of an image resource
 	ADD_SKIN_ELEMENT_MEMBER (ATTR_SELECTNAME, TYPE_STRING)	///< name of a parameter that selects the image frame ("normal" or "pressed")
 	ADD_SKIN_ELEMENT_MEMBER (ATTR_PROVIDER, TYPE_STRING)	///< name of an application object that can provide an image
 	ADD_SKIN_ELEMENT_MEMBER (ATTR_DATATARGET, TYPE_STRING)	///< name of an application object that manages dragging data onto the image
@@ -3076,7 +3103,7 @@ ImageViewElement::ImageViewElement ()
 
 bool ImageViewElement::setAttributes (const SkinAttributes& a)
 {
-	imageName = a.getString (ATTR_IMAGENAME);
+	imageName = a.getString (ATTR_IMAGE);
 	selectName = a.getString (ATTR_SELECTNAME);
 	providerName = a.getString (ATTR_PROVIDER);
 	dataTargetName = a.getString (ATTR_DATATARGET);
@@ -3090,7 +3117,7 @@ bool ImageViewElement::setAttributes (const SkinAttributes& a)
 
 bool ImageViewElement::getAttributes (SkinAttributes& a) const
 {
-	a.setString (ATTR_IMAGENAME, imageName);
+	a.setString (ATTR_IMAGE, imageName);
 	a.setString (ATTR_SELECTNAME, selectName);
 	a.setString (ATTR_PROVIDER, providerName);
 	a.setString (ATTR_DATATARGET, dataTargetName);
@@ -4172,19 +4199,10 @@ View* NullSpaceElement::createView (const CreateArgs& args, View* view)
 }
 
 //************************************************************************************************
-// StyleElement
+// StyleDataElement
 //************************************************************************************************
 
-BEGIN_STYLEDEF (StyleElement::textOptions)
-	{"wordbreak",	TextFormat::kWordBreak},
-END_STYLEDEF
-
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
-BEGIN_SKIN_ELEMENT_WITH_MEMBERS (StyleElement, Element, TAG_STYLE, DOC_GROUP_STYLES, 0)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_APPSTYLE, TYPE_BOOL)		///< make style accessible from all skin scopes
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_OVERRIDE, TYPE_BOOL)		///< silence warning for styles that are replaced on purpose
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_INHERIT, TYPE_STRING)		///< inherit elements from this style
+BEGIN_SKIN_ELEMENT_ABSTRACT_WITH_MEMBERS (StyleDataElement, Element, TAG_STYLEDATA, DOC_GROUP_STYLES, 0)
 	ADD_SKIN_ELEMENT_MEMBER (ATTR_FORECOLOR, TYPE_COLOR)	///< color of foreground
 	ADD_SKIN_ELEMENT_MEMBER (ATTR_BACKCOLOR, TYPE_COLOR)	///< color of background
 	ADD_SKIN_ELEMENT_MEMBER (ATTR_HILITECOLOR, TYPE_COLOR)	///< color used for a hilite or seleciton state
@@ -4198,6 +4216,216 @@ BEGIN_SKIN_ELEMENT_WITH_MEMBERS (StyleElement, Element, TAG_STYLE, DOC_GROUP_STY
 	ADD_SKIN_ELEMENT_MEMBER (ATTR_TEXTSIZE, TYPE_METRIC)	///< size of text
 	ADD_SKIN_ELEMENT_MEMBER (ATTR_TEXTSTYLE, TYPE_ENUM)		///< style of font
 	ADD_SKIN_ELEMENT_MEMBER (ATTR_TEXTSMOOTHING, TYPE_ENUM)	///< smoothing of font
+END_SKIN_ELEMENT_WITH_MEMBERS (StyleDataElement)
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+StyleDataElement::StyleDataElement ()
+{}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+StyleDataElement::~StyleDataElement ()
+{}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+VisualStyleData* StyleDataElement::newStyleData ()
+{
+	return NEW VisualStyleData;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+VisualStyleData& StyleDataElement::getStyleData ()
+{
+	if(!styleData)
+	{
+		styleData = newStyleData ();
+		styleData->release ();
+	}
+	return *styleData;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+bool StyleDataElement::setAttributes (const SkinAttributes& a)
+{
+	Element::setAttributes (a);
+
+	VisualStyleData& styleData = getStyleData ();
+	
+	// inline Colors
+	String foreColor = a.getString (ATTR_FORECOLOR);
+	if(foreColor.isEmpty () == false)
+		colors.append (Pair (ATTR_FORECOLOR, foreColor));
+	
+	String backColor = a.getString (ATTR_BACKCOLOR);
+	if(backColor.isEmpty () == false)
+		colors.append (Pair (ATTR_BACKCOLOR, backColor));
+	
+	String hiliteColor = a.getString (ATTR_HILITECOLOR);
+	if(hiliteColor.isEmpty () == false)
+		colors.append (Pair (ATTR_HILITECOLOR, hiliteColor));
+
+	String textColor = a.getString (ATTR_TEXTCOLOR);
+	if(textColor.isEmpty () == false)
+		colors.append (Pair (ATTR_TEXTCOLOR, textColor));
+
+	// inline Metrics
+	if(a.exists (ATTR_STROKEWIDTH))
+		styleData.setMetric (ATTR_STROKEWIDTH, a.getFloat (ATTR_STROKEWIDTH, 1.f));
+
+	if(a.exists (ATTR_BORDER))
+		styleData.setMetric (ATTR_BORDER, a.getFloat (ATTR_BORDER, 0.f));
+
+	// inline Options
+	if(a.exists (ATTR_TEXTALIGN))
+	{
+		int textAlign = a.getOptions (ATTR_TEXTALIGN, AlignElement::alignStyles, false, Alignment::kCenter);
+		styleData.setOptions (ATTR_TEXTALIGN, textAlign);
+	}
+
+	if(a.exists (ATTR_TEXTOPTIONS))
+	{
+		int textOptions = a.getOptions (ATTR_TEXTOPTIONS, StyleElement::textOptions);
+		styleData.setOptions (ATTR_TEXTOPTIONS, textOptions);
+	}
+
+	// inline Font
+	if(a.exists (ATTR_TEXTFACE) || a.exists (ATTR_TEXTTHEMEID) || a.exists (ATTR_TEXTSIZE) || a.exists (ATTR_TEXTSTYLE))
+	{
+		Font font (Font::getDefaultFont ());
+
+		MutableCString themeId = a.getString (ATTR_TEXTTHEMEID);
+		if(!themeId.isEmpty ())
+			FontElement::applyThemeFont (this, font, themeId);
+		else
+		{
+			String textFace = a.getString (ATTR_TEXTFACE);
+			if(!textFace.isEmpty ())
+				font.setFace (textFace);
+		}
+
+		FontElement::applyFontSize (font, a.getString (ATTR_TEXTSIZE));
+		font.setStyle (a.getOptions (ATTR_TEXTSTYLE, FontElement::fontStyles));
+		font.setMode (a.getOptions (ATTR_TEXTSMOOTHING, FontElement::smoothingModes, true));
+
+		styleData.setFont (StyleID::kTextFont, font);
+	}	
+	return true;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+bool StyleDataElement::getAttributes (SkinAttributes& a) const
+{
+	VisualStyleData& styleData = const_cast<StyleDataElement*> (this)->getStyleData ();
+
+	a.setColor (ATTR_FORECOLOR, StyleDataReader (styleData).getForeColor ());
+	a.setColor (ATTR_BACKCOLOR, StyleDataReader (styleData).getBackColor ());
+	a.setColor (ATTR_HILITECOLOR, StyleDataReader (styleData).getHiliteColor ());
+	a.setColor (ATTR_TEXTCOLOR, StyleDataReader (styleData).getTextColor ());
+	a.setFloat (ATTR_STROKEWIDTH, StyleDataReader (styleData).getStrokeWidth ());
+	a.setOptions (ATTR_TEXTALIGN, StyleDataReader (styleData).getTextAlignment ().align, AlignElement::alignStyles);
+	a.setOptions (ATTR_TEXTOPTIONS, StyleDataReader (styleData).getTextOptions (), StyleElement::textOptions);
+	
+	if(styleData.getMetric (ATTR_BORDER) != 0)
+		a.setFloat (ATTR_BORDER, styleData.getMetric (ATTR_BORDER));
+	
+	Font font = StyleDataReader (styleData).getTextFont ();
+	a.setString (ATTR_TEXTFACE, font.getFace ());
+	a.setFloat (ATTR_TEXTSIZE, font.getSize ());
+	a.setOptions (ATTR_TEXTSTYLE, font.getStyle (), FontElement::fontStyles);
+	a.setOptions (ATTR_TEXTSMOOTHING, font.getMode (), FontElement::smoothingModes, true);
+
+	return Element::getAttributes (a);
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+void StyleDataElement::loadFinished ()
+{
+	VisualStyleData& styleData = getStyleData ();
+	ASSERT (!getName ().isEmpty ())
+	styleData.setName (getName ());
+
+	ArrayForEach (*this, Element, element)		
+		MutableCString elementName (element->getName ());
+		
+		if(element->canCast (ccl_typeid<ColorElement> ()))
+			colors.append (Pair (elementName, ((ColorElement*)element)->getColor ()));
+
+		else if(element->canCast (ccl_typeid<GradientElement> ()))
+			styleData.setGradient (elementName, ((GradientElement*)element)->getGradient ());
+		
+		else if(element->canCast (ccl_typeid<MetricElement> ()))
+			styleData.setDesignMetric (elementName, ((MetricElement*)element)->getValue ());
+ 
+ 		else if(element->canCast (ccl_typeid<StringElement> ()))
+			styleData.setString (elementName, ((StringElement*)element)->getValue ());
+		
+		else if(element->canCast (ccl_typeid<FontElement> ()))
+			styleData.setFont (elementName, ((FontElement*)element)->getFont ());
+		
+		else if(element->canCast (ccl_typeid<OptionsElement> ()))
+			styleData.setOptions (elementName, ((OptionsElement*)element)->getOptions ());
+		
+		else if(element->canCast (ccl_typeid<ImageElement> ()))
+			images.append (Pair (elementName, ((ImageElement*)element)->getAlias ()));
+	EndFor
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+void StyleDataElement::loadResources (SkinModel& model)
+{
+	VisualStyleData& styleData = getStyleData ();
+	while(!images.isEmpty ())
+	{
+		Pair pair = images.removeFirst ();
+		if(pair.ref.isEmpty ())
+			continue;
+
+		if(Image* image = model.getImage (pair.ref, this))
+			styleData.setImage (pair.name, image);
+	}
+
+	while(!colors.isEmpty ())
+	{
+		Pair pair = colors.removeFirst ();
+		if(pair.ref.isEmpty ())
+			continue;
+
+		ColorValueReference reference;
+		model.getColorReference (reference, pair.ref, this);
+		if(reference.scheme != nullptr)
+			styleData.addColorSchemeReference (pair.name, *reference.scheme, reference.nameInScheme);
+		else
+			styleData.setColor (pair.name, reference.colorValue);
+	}
+}
+
+//************************************************************************************************
+// StyleConditionElement
+//************************************************************************************************
+
+DEFINE_SKIN_ELEMENT (StyleConditionElement, StyleDataElement, TAG_STYLECONDITION, DOC_GROUP_STYLES, 0)
+
+//************************************************************************************************
+// StyleElement
+//************************************************************************************************
+
+BEGIN_STYLEDEF (StyleElement::textOptions)
+	{"wordbreak", TextFormat::kWordBreak},
+END_STYLEDEF
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+BEGIN_SKIN_ELEMENT_WITH_MEMBERS (StyleElement, StyleDataElement, TAG_STYLE, DOC_GROUP_STYLES, 0)
+	ADD_SKIN_ELEMENT_MEMBER (ATTR_APPSTYLE, TYPE_BOOL)		///< make style accessible from all skin scopes
+	ADD_SKIN_ELEMENT_MEMBER (ATTR_OVERRIDE, TYPE_BOOL)		///< silence warning for styles that are replaced on purpose
+	ADD_SKIN_ELEMENT_MEMBER (ATTR_INHERIT, TYPE_STRING)		///< inherit elements from this style
 END_SKIN_ELEMENT_WITH_MEMBERS (StyleElement)
 BEGIN_SKIN_ELEMENT_ATTRIBUTES (StyleElement)
 	ADD_SKIN_CHILDGROUP_ATTRIBUTE (SCHEMA_GROUP_STYLECHILDREN)
@@ -4221,7 +4449,7 @@ StyleElement::~StyleElement ()
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-VisualStyle* StyleElement::newStyle ()
+VisualStyleData* StyleElement::newStyleData ()
 {
 	return NEW VisualStyle;
 }
@@ -4230,84 +4458,19 @@ VisualStyle* StyleElement::newStyle ()
 
 VisualStyle& StyleElement::getStyle ()
 {
-	if(!style)
-	{
-		style = newStyle ();
-		style->release ();
-	}
-	return *style;
+	return static_cast<VisualStyle&> (getStyleData ());
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 bool StyleElement::setAttributes (const SkinAttributes& a)
 {
-	Element::setAttributes (a);
-
-	VisualStyle& style = getStyle ();
+	StyleDataElement::setAttributes (a);
 
 	setAppStyle (a.getBool (ATTR_APPSTYLE, false));
 	setOverride (a.getBool (ATTR_OVERRIDE, false));
 	inherit = a.getString (ATTR_INHERIT);
-	
-	// inline Colors
-	String foreColor = a.getString (ATTR_FORECOLOR);
-	if(foreColor.isEmpty () == false)
-		colors.append (Pair (ATTR_FORECOLOR, foreColor));
-	
-	String backColor = a.getString (ATTR_BACKCOLOR);
-	if(backColor.isEmpty () == false)
-		colors.append (Pair (ATTR_BACKCOLOR, backColor));
-	
-	String hiliteColor = a.getString (ATTR_HILITECOLOR);
-	if(hiliteColor.isEmpty () == false)
-		colors.append (Pair (ATTR_HILITECOLOR, hiliteColor));
 
-	String textColor = a.getString (ATTR_TEXTCOLOR);
-	if(textColor.isEmpty () == false)
-		colors.append (Pair (ATTR_TEXTCOLOR, textColor));
-
-	// inline Metrics
-	if(a.exists (ATTR_STROKEWIDTH))
-		style.setMetric (ATTR_STROKEWIDTH, a.getFloat (ATTR_STROKEWIDTH, 1.f));
-
-	if(a.exists (ATTR_BORDER))
-		style.setMetric (ATTR_BORDER, a.getFloat (ATTR_BORDER, 0.f));
-
-	// inline Options
-	if(a.exists (ATTR_TEXTALIGN))
-	{
-		int textAlign = a.getOptions (ATTR_TEXTALIGN, AlignElement::alignStyles, false, Alignment::kCenter);
-		style.setOptions (ATTR_TEXTALIGN, textAlign);
-	}
-
-	if(a.exists (ATTR_TEXTOPTIONS))
-	{
-		int textOptions = a.getOptions (ATTR_TEXTOPTIONS, StyleElement::textOptions);
-		style.setOptions (ATTR_TEXTOPTIONS, textOptions);
-	}
-
-	// inline Font
-	if(a.exists (ATTR_TEXTFACE) || a.exists (ATTR_TEXTTHEMEID) || a.exists (ATTR_TEXTSIZE) || a.exists (ATTR_TEXTSTYLE))
-	{
-		Font font (Font::getDefaultFont ());
-
-		MutableCString themeId = a.getString (ATTR_TEXTTHEMEID);
-		if(!themeId.isEmpty ())
-			FontElement::applyThemeFont (this, font, themeId);
-		else
-		{
-			String textFace = a.getString (ATTR_TEXTFACE);
-			if(!textFace.isEmpty ())
-				font.setFace (textFace);
-		}
-
-		FontElement::applyFontSize (font, a.getString (ATTR_TEXTSIZE));
-		font.setStyle (a.getOptions (ATTR_TEXTSTYLE, FontElement::fontStyles));
-		font.setMode (a.getOptions (ATTR_TEXTSMOOTHING, FontElement::smoothingModes, true));
-
-		style.setFont (StyleID::kTextFont, font);
-	}	
 	return true;
 }
 
@@ -4315,64 +4478,23 @@ bool StyleElement::setAttributes (const SkinAttributes& a)
 
 bool StyleElement::getAttributes (SkinAttributes& a) const
 {
-	VisualStyle& style = const_cast<StyleElement*> (this)->getStyle ();
-
-	a.setBool (ATTR_APPSTYLE, isAppStyle ());
-	a.setBool (ATTR_OVERRIDE, isOverride ());
-	if(!inherit.isEmpty ())
-		a.setString (ATTR_INHERIT, inherit);
-
-	a.setColor (ATTR_FORECOLOR, style.getForeColor ());
-	a.setColor (ATTR_BACKCOLOR, style.getBackColor ());
-	a.setColor (ATTR_HILITECOLOR, style.getHiliteColor ());
-	a.setColor (ATTR_TEXTCOLOR, style.getTextColor ());
-	a.setFloat (ATTR_STROKEWIDTH, style.getStrokeWidth ());
-	a.setOptions (ATTR_TEXTALIGN, style.getTextAlignment ().align, AlignElement::alignStyles);
-	a.setOptions (ATTR_TEXTOPTIONS, style.getTextOptions (), StyleElement::textOptions);
-	
-	if(style.getMetric (ATTR_BORDER) != 0)
-		a.setFloat (ATTR_BORDER, style.getMetric (ATTR_BORDER));
-	
-	Font font = style.getTextFont ();
-	a.setString (ATTR_TEXTFACE, font.getFace ());
-	a.setFloat (ATTR_TEXTSIZE, font.getSize ());
-	a.setOptions (ATTR_TEXTSTYLE, font.getStyle (), FontElement::fontStyles);
-	a.setOptions (ATTR_TEXTSMOOTHING, font.getMode (), FontElement::smoothingModes, true);
-
-	return Element::getAttributes (a);
+	return StyleDataElement::getAttributes (a);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 void StyleElement::loadFinished ()
 {
+	StyleDataElement::loadFinished ();
+
 	VisualStyle& style = getStyle ();
-	ASSERT (!getName ().isEmpty ())
-	style.setName (getName ());
 
-	ArrayForEach (*this, Element, element)		
-		MutableCString elementName (element->getName ());
-		
-		if(element->canCast (ccl_typeid<ColorElement> ()))
-			colors.append (Pair (elementName, ((ColorElement*)element)->getColor ()));
-
-		else if(element->canCast (ccl_typeid<GradientElement> ()))
-			style.setGradient (elementName, ((GradientElement*)element)->getGradient ());
-		
-		else if(element->canCast (ccl_typeid<MetricElement> ()))
-			style.setMetric (elementName, ((MetricElement*)element)->getValue ());
- 
- 		else if(element->canCast (ccl_typeid<StringElement> ()))
-			style.setString (elementName, ((StringElement*)element)->getValue ());
-		
-		else if(element->canCast (ccl_typeid<FontElement> ()))
-			style.setFont (elementName, ((FontElement*)element)->getFont ());
-		
-		else if(element->canCast (ccl_typeid<OptionsElement> ()))
-			style.setOptions (elementName, ((OptionsElement*)element)->getOptions ());
-		
-		else if(element->canCast (ccl_typeid<ImageElement> ()))
-			images.append (Pair (elementName, ((ImageElement*)element)->getAlias ()));
+	ArrayForEach (*this, Element, element)
+		if(element->canCast (ccl_typeid<StyleConditionElement> ()))
+		{
+			VisualStyleData& styleData = ((StyleConditionElement*)element)->getStyleData ();
+			style.addCondition (return_shared (&styleData));
+		}
 
 		else if(element->canCast (ccl_typeid<TriggerListElement> ()))
 			style.setTrigger ((TriggerListElement*)element);
@@ -4388,32 +4510,23 @@ bool StyleElement::isOverrideEnabled () const
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
+void StyleElement::loadConditionResources (SkinModel& model)
+{
+	ArrayForEach (*this, Element, element)
+		if(auto* conditionElement = ccl_cast<StyleConditionElement> (element))
+			conditionElement->loadResources (model);
+	EndFor
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
 void StyleElement::loadResources (SkinModel& model)
 {
+	StyleDataElement::loadResources (model);
+	
+	loadConditionResources (model);
+
 	VisualStyle& style = getStyle ();
-	while(!images.isEmpty ())
-	{
-		Pair pair = images.removeFirst ();
-		if(pair.ref.isEmpty ())
-			continue;
-
-		if(Image* image = model.getImage (pair.ref, this))
-			style.setImage (pair.name, image);
-	}
-
-	while(!colors.isEmpty ())
-	{
-		Pair pair = colors.removeFirst ();
-		if(pair.ref.isEmpty ())
-			continue;
-
-		ColorValueReference reference;
-		model.getColorReference (reference, pair.ref, this);
-		if(reference.scheme != nullptr)
-			style.addColorSchemeReference (pair.name, *reference.scheme, reference.nameInScheme);
-		else
-			style.setColor (pair.name, reference.colorValue);
-	}
 
 	// register in theme...
 	if(isAppStyle ())
@@ -4465,7 +4578,9 @@ void ThemeStyleElement::loadFinished ()
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 void ThemeStyleElement::loadResources (SkinModel& model)
-{}
+{
+	loadConditionResources (model);
+}
 
 //************************************************************************************************
 // StyleAliasElement
@@ -4480,8 +4595,8 @@ END_SKIN_ELEMENT_WITH_MEMBERS (StyleAliasElement)
 
 StyleAliasElement::StyleAliasElement ()
 {
-	style = NEW VisualStyleAlias (getName ());
-	style->release ();
+	styleData = NEW VisualStyleAlias (getName ());
+	styleData->release ();
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -4593,7 +4708,7 @@ bool ColorElement::getAttributes (SkinAttributes& a) const
 //************************************************************************************************
 
 BEGIN_SKIN_ELEMENT_WITH_MEMBERS (MetricElement, Element, TAG_METRIC, DOC_GROUP_STYLES, 0)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_VALUE, TYPE_FLOAT)
+	ADD_SKIN_ELEMENT_MEMBER (ATTR_VALUE, TYPE_METRIC)
 END_SKIN_ELEMENT_WITH_MEMBERS (MetricElement)
 BEGIN_SKIN_ELEMENT_ATTRIBUTES (MetricElement)
 	ADD_SKIN_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_STYLECHILDREN)
@@ -4603,14 +4718,14 @@ END_SKIN_ELEMENT_ATTRIBUTES (MetricElement)
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 MetricElement::MetricElement ()
-: value (0)
+: value ({DesignCoord::kCoord, 0})
 {}
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 bool MetricElement::setAttributes (const SkinAttributes& a)
 {
-	value = a.getFloat (ATTR_VALUE);
+	a.getDesignCoord (value, ATTR_VALUE);
 	return Element::setAttributes (a);
 }
 
@@ -4619,7 +4734,7 @@ bool MetricElement::setAttributes (const SkinAttributes& a)
 bool MetricElement::getAttributes (SkinAttributes& a) const
 {
 	Element::getAttributes (a);
-	a.setFloat (ATTR_VALUE, value);
+	a.setDesignCoord (ATTR_VALUE, value);
 	return true;
 }
 
@@ -4657,8 +4772,7 @@ bool StringElement::getAttributes (SkinAttributes& a) const
 
 BEGIN_SKIN_ELEMENT_WITH_MEMBERS (OptionsElement, Element, TAG_OPTIONS, DOC_GROUP_STYLES, 0)
 	ADD_SKIN_ELEMENT_MEMBER (ATTR_TYPE, TYPE_STRING)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_OPTIONS, TYPE_ENUM)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_VALUE, TYPE_INT)
+	ADD_SKIN_ELEMENT_MEMBER (ATTR_VALUE, TYPE_ENUM) ///< enum or integer
 END_SKIN_ELEMENT_WITH_MEMBERS (OptionsElement)
 BEGIN_SKIN_ELEMENT_ATTRIBUTES (OptionsElement)
 	ADD_SKIN_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_STYLECHILDREN)
@@ -4672,22 +4786,35 @@ OptionsElement::OptionsElement ()
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
+const StyleDef* OptionsElement::findStyleDef () const
+{
+	const StyleDef* styleDef = nullptr;	
+	if(!typeName.isEmpty ())
+		styleDef = Enumeration::getStyleDef (typeName);
+	else if(!name.isEmpty ())
+		styleDef = Enumeration::getStyleDef (name, true); // allow partial matching with attribute name
+	return styleDef;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
 bool OptionsElement::setAttributes (const SkinAttributes& a)
 {
 	SuperClass::setAttributes (a);
 
 	typeName = a.getCString (ATTR_TYPE);
-	if(!typeName.isEmpty ())
+	
+	if(const StyleDef* styleDef = findStyleDef ())
 	{
-		if(auto styleDef = Enumeration::getStyleDef (typeName))
-			options = a.getOptions (ATTR_OPTIONS, styleDef, false, 0);
-		else
-			SKIN_WARNING (this, "Options type '%s' not found", typeName.str ())		
+		options = a.getOptions (ATTR_VALUE, styleDef, false, 0);
 	}
 	else
 	{
+		if(!typeName.isEmpty ())
+			SKIN_WARNING (this, "Options type '%s' not found", typeName.str ())	
+
 		options = a.getInt (ATTR_VALUE);
-	}	
+	}
 	return true;
 }
 
@@ -4698,19 +4825,15 @@ bool OptionsElement::getAttributes (SkinAttributes& a) const
 	if(!typeName.isEmpty () || a.isVerbose ())
 		a.setString (ATTR_TYPE, typeName);
 	
-	if(!typeName.isEmpty ())
+	if(const StyleDef* styleDef = findStyleDef ())
 	{
-		if(auto styleDef = Enumeration::getStyleDef (typeName))
-			a.setOptions (ATTR_OPTIONS, options, styleDef, false);
-		else if(a.isVerbose ())
-			a.setString (ATTR_OPTIONS, String::kEmpty);
+		a.setOptions (ATTR_VALUE, options, styleDef, false);
 	}
 	else
 	{
 		a.setInt (ATTR_VALUE, options);
-		if(a.isVerbose ())
-			a.setString (ATTR_OPTIONS, String::kEmpty);
 	}
+
 	return SuperClass::getAttributes (a);
 }
 

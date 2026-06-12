@@ -54,6 +54,20 @@
 				</Model.Member>
 			</List>
 		</Model.Class>
+		<Model.Class name="BlockViewStyle" parent="BasicStyle">
+			<Model.Documentation x:id="doc">
+				<List x:id="links">
+					<String text="BlockView"/>
+				</List>
+			</Model.Documentation>
+			<List x:id="members">
+				<Model.Member name="selectioncolor" type="string" typeName="color">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="background color for selected ranges"/>
+					</Model.Documentation>
+				</Model.Member>
+			</List>
+		</Model.Class>
 		<Model.Class name="ButtonStyle" parent="BasicStyle">
 			<Model.Documentation x:id="doc">
 				<String x:id="brief" text="A button draws a background and some content"/>
@@ -383,7 +397,7 @@
 		<Model.Class name="ComboBoxStyle" parent="BasicStyle">
 			<Model.Documentation x:id="doc">
 				<String x:id="brief" text="If option &quot;transparent&quot; is not set, a ComboBox draws a background image"/>
-				<String x:id="detailed" text="When no image is specified, it is filled in &quot;backcolor, and a rectangular frame in color &quot;forecolor&quot; can be drawn with option &quot;border&quot;.&#10;&#10;The &quot;button&quot; image is drawn at the right. The remaining space shows the text field to edit the parameter value with an optional padding."/>
+				<String x:id="detailed" text="When no image is specified, it is filled in &quot;backcolor&quot;, and a rectangular frame in color &quot;forecolor&quot; can be drawn with option &quot;border&quot;.&#10;&#10;The &quot;button&quot; image is drawn at the right. The remaining space shows the text field to edit the parameter value with an optional padding."/>
 				<List x:id="links">
 					<String text="ComboBox"/>
 				</List>
@@ -805,6 +819,11 @@
 						<String x:id="brief" text="enable snapping to itemSize after scrolling"/>
 					</Model.Documentation>
 				</Model.Member>
+				<Model.Member name="headerViewStyle" type="string" typeName="string">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="name of a visualStyle for the header view"/>
+					</Model.Documentation>
+				</Model.Member>
 			</List>
 		</Model.Class>
 		<Model.Class name="KnobStyle" parent="BasicStyle">
@@ -1001,132 +1020,132 @@
 			<List x:id="members">
 				<Model.Member name="icons.width" type="float" typeName="metric">
 					<Model.Documentation x:id="doc">
-						<String x:id="brief" text="for &quot;viewtype=&quot;icons&quot;: total width of one item"/>
+						<String x:id="brief" text="for &quot;viewtype=icons&quot;: total width of one item"/>
 					</Model.Documentation>
 				</Model.Member>
 				<Model.Member name="icons.height" type="float" typeName="metric">
 					<Model.Documentation x:id="doc">
-						<String x:id="brief" text="for &quot;viewtype=&quot;icons&quot;: total height of one item"/>
+						<String x:id="brief" text="for &quot;viewtype=icons&quot;: total height of one item"/>
 					</Model.Documentation>
 				</Model.Member>
 				<Model.Member name="icons.dataleft" type="float" typeName="metric">
 					<Model.Documentation x:id="doc">
-						<String x:id="brief" text="for &quot;viewtype=&quot;icons&quot;: left of icon inside item rectangle"/>
+						<String x:id="brief" text="for &quot;viewtype=icons&quot;: left of icon inside item rectangle"/>
 					</Model.Documentation>
 				</Model.Member>
 				<Model.Member name="icons.datatop" type="float" typeName="metric">
 					<Model.Documentation x:id="doc">
-						<String x:id="brief" text="for &quot;viewtype=&quot;icons&quot;: top of icon inside item rectangle"/>
+						<String x:id="brief" text="for &quot;viewtype=icons&quot;: top of icon inside item rectangle"/>
 					</Model.Documentation>
 				</Model.Member>
 				<Model.Member name="icons.datawidth" type="float" typeName="metric">
 					<Model.Documentation x:id="doc">
-						<String x:id="brief" text="for &quot;viewtype=&quot;icons&quot;: width of icon"/>
+						<String x:id="brief" text="for &quot;viewtype=icons&quot;: width of icon"/>
 					</Model.Documentation>
 				</Model.Member>
 				<Model.Member name="icons.dataheight" type="float" typeName="metric">
 					<Model.Documentation x:id="doc">
-						<String x:id="brief" text="for &quot;viewtype=&quot;icons&quot;: height of icon"/>
+						<String x:id="brief" text="for &quot;viewtype=icons&quot;: height of icon"/>
 					</Model.Documentation>
 				</Model.Member>
 				<Model.Member name="icons.textleft" type="float" typeName="metric">
 					<Model.Documentation x:id="doc">
-						<String x:id="brief" text="for &quot;viewtype=&quot;icons&quot;: left of title inside item rectangle"/>
+						<String x:id="brief" text="for &quot;viewtype=icons&quot;: left of title inside item rectangle"/>
 					</Model.Documentation>
 				</Model.Member>
 				<Model.Member name="icons.texttop" type="float" typeName="metric">
 					<Model.Documentation x:id="doc">
-						<String x:id="brief" text="for &quot;viewtype=&quot;icons&quot;: top of title inside item rectangle"/>
+						<String x:id="brief" text="for &quot;viewtype=icons&quot;: top of title inside item rectangle"/>
 					</Model.Documentation>
 				</Model.Member>
 				<Model.Member name="icons.textwidth" type="float" typeName="metric">
 					<Model.Documentation x:id="doc">
-						<String x:id="brief" text="for &quot;viewtype=&quot;icons&quot;: width of title"/>
+						<String x:id="brief" text="for &quot;viewtype=icons&quot;: width of title"/>
 					</Model.Documentation>
 				</Model.Member>
 				<Model.Member name="icons.textheight" type="float" typeName="metric">
 					<Model.Documentation x:id="doc">
-						<String x:id="brief" text="for &quot;viewtype=&quot;icons&quot;: height of title"/>
+						<String x:id="brief" text="for &quot;viewtype=icons&quot;: height of title"/>
 					</Model.Documentation>
 				</Model.Member>
 				<Model.Member name="icons.multiLineTitle" type="float" typeName="metric">
 					<Model.Documentation x:id="doc">
-						<String x:id="brief" text="for &quot;viewtype=&quot;icons&quot;: draw title as multiline text"/>
+						<String x:id="brief" text="for &quot;viewtype=icons&quot;: draw title as multiline text"/>
 					</Model.Documentation>
 				</Model.Member>
 				<Model.Member name="icons.mirrored" type="float" typeName="metric">
 					<Model.Documentation x:id="doc">
-						<String x:id="brief" text="for &quot;viewtype=&quot;icons&quot;: draw icon columns in reverse order"/>
+						<String x:id="brief" text="for &quot;viewtype=icons&quot;: draw icon columns in reverse order"/>
 					</Model.Documentation>
 				</Model.Member>
 				<Model.Member name="icons.showthumbnails" type="float" typeName="metric">
 					<Model.Documentation x:id="doc">
-						<String x:id="brief" text="for &quot;viewtype=&quot;icons&quot;: draw thumbnails (if available) instead of icons,"/>
+						<String x:id="brief" text="for &quot;viewtype=icons&quot;: draw thumbnails (if available) instead of icons,"/>
 					</Model.Documentation>
 				</Model.Member>
 				<Model.Member name="icons.background" type="string" typeName="image">
 					<Model.Documentation x:id="doc">
-						<String x:id="brief" text="for &quot;viewtype=&quot;icons&quot;: draw background for each cell (use second frame for selection)"/>
+						<String x:id="brief" text="for &quot;viewtype=icons&quot;: draw background for each cell (use second frame for selection)"/>
 					</Model.Documentation>
 				</Model.Member>
 				<Model.Member name="icons.textfont" type="string" typeName="string">
 					<Model.Documentation x:id="doc">
-						<String x:id="brief" text="for &quot;viewtype=&quot;icons&quot;: optional alternative font in icons mode (falls back to &quot;textfont&quot; if not specified)"/>
+						<String x:id="brief" text="for &quot;viewtype=icons&quot;: optional alternative font in icons mode (falls back to &quot;textfont&quot; if not specified)"/>
 					</Model.Documentation>
 				</Model.Member>
 				<Model.Member name="icons.iconsethalfsize" type="float" typeName="metric">
 					<Model.Documentation x:id="doc">
-						<String x:id="brief" text="for &quot;viewtype=&quot;icons&quot;: alternative way of displaying iconset images in half-size"/>
+						<String x:id="brief" text="for &quot;viewtype=icons&quot;: alternative way of displaying iconset images in half-size"/>
 					</Model.Documentation>
 				</Model.Member>
 				<Model.Member name="icons.fixedColumns" type="float" typeName="metric">
 					<Model.Documentation x:id="doc">
-						<String x:id="brief" text="for &quot;viewtype=&quot;icons&quot;: use a fixed number of columns"/>
+						<String x:id="brief" text="for &quot;viewtype=icons&quot;: use a fixed number of columns"/>
 					</Model.Documentation>
 				</Model.Member>
 				<Model.Member name="list.dataleft" type="float" typeName="metric">
 					<Model.Documentation x:id="doc">
-						<String x:id="brief" text="for &quot;viewtype=&quot;list&quot;: left of list inside item rectangle"/>
+						<String x:id="brief" text="for &quot;viewtype=list&quot;: left of list inside item rectangle"/>
 					</Model.Documentation>
 				</Model.Member>
 				<Model.Member name="list.datatop" type="float" typeName="metric">
 					<Model.Documentation x:id="doc">
-						<String x:id="brief" text="for &quot;viewtype=&quot;list&quot;: top of list inside item rectangle"/>
+						<String x:id="brief" text="for &quot;viewtype=list&quot;: top of list inside item rectangle"/>
 					</Model.Documentation>
 				</Model.Member>
 				<Model.Member name="list.datawidth" type="float" typeName="metric">
 					<Model.Documentation x:id="doc">
-						<String x:id="brief" text="for &quot;viewtype=&quot;list&quot;: width of list"/>
+						<String x:id="brief" text="for &quot;viewtype=list&quot;: width of list"/>
 					</Model.Documentation>
 				</Model.Member>
 				<Model.Member name="list.dataheight" type="float" typeName="metric">
 					<Model.Documentation x:id="doc">
-						<String x:id="brief" text="for &quot;viewtype=&quot;list&quot;: height of list"/>
+						<String x:id="brief" text="for &quot;viewtype=list&quot;: height of list"/>
 					</Model.Documentation>
 				</Model.Member>
 				<Model.Member name="list.padding.bottom" type="float" typeName="metric">
 					<Model.Documentation x:id="doc">
-						<String x:id="brief" text="for &quot;viewtype=&quot;list&quot;: bottom padding of list"/>
+						<String x:id="brief" text="for &quot;viewtype=list&quot;: bottom padding of list"/>
 					</Model.Documentation>
 				</Model.Member>
 				<Model.Member name="list.textmargin" type="float" typeName="metric">
 					<Model.Documentation x:id="doc">
-						<String x:id="brief" text="for &quot;viewtype=&quot;list&quot;: left text margin in cell"/>
+						<String x:id="brief" text="for &quot;viewtype=list&quot;: left text margin in cell"/>
 					</Model.Documentation>
 				</Model.Member>
 				<Model.Member name="list.selectionbackground" type="string" typeName="image">
 					<Model.Documentation x:id="doc">
-						<String x:id="brief" text="for &quot;viewtype=&quot;list&quot;: draw background for a selected item as an image"/>
+						<String x:id="brief" text="for &quot;viewtype=list&quot;: draw background for a selected item as an image"/>
 					</Model.Documentation>
 				</Model.Member>
 				<Model.Member name="list.itembackground" type="string" typeName="image">
 					<Model.Documentation x:id="doc">
-						<String x:id="brief" text="for &quot;viewtype=&quot;list&quot;: draw background for every unselected item in the list as an image"/>
+						<String x:id="brief" text="for &quot;viewtype=list&quot;: draw background for every unselected item in the list as an image"/>
 					</Model.Documentation>
 				</Model.Member>
 				<Model.Member name="list.textalign" type="int" typeName="enum">
 					<Model.Documentation x:id="doc">
-						<String x:id="brief" text="for &quot;viewtype=&quot;list&quot;: set text alignment for cells (default: kLeftCenter)"/>
+						<String x:id="brief" text="for &quot;viewtype=list&quot;: set text alignment for cells (default: kLeftCenter)"/>
 					</Model.Documentation>
 				</Model.Member>
 			</List>
@@ -1367,6 +1386,11 @@
 			</List>
 		</Model.Class>
 		<Model.Class name="SceneView3DStyle" parent="BasicStyle">
+			<Model.Documentation x:id="doc">
+				<List x:id="links">
+					<String text="SceneView3D"/>
+				</List>
+			</Model.Documentation>
 			<List x:id="members">
 				<Model.Member name="camera" type="string" typeName="string"/>
 				<Model.Member name="multisamplingfactor" type="float" typeName="metric"/>
@@ -1624,7 +1648,7 @@
 		<Model.Class name="SelectBoxStyle" parent="BasicStyle">
 			<Model.Documentation x:id="doc">
 				<String x:id="brief" text="If option &quot;transparent&quot; is not set, a SelectBox draws a background image"/>
-				<String x:id="detailed" text="When no image is specified, it is filled in &quot;backcolor, and a rectangular frame in color &quot;forecolor&quot; can be drawn with option &quot;border&quot;.&#10;&#10;An image &quot;states&quot; can be used to show a different frame for (integer) each parameter value.&#10;&#10;The &quot;button&quot; image is drawn at the right (can be changed with option &quot;leadingbutton&quot;).&#10;The remaining space shows the text representation of the parameter, with an optional &quot;padding&quot;."/>
+				<String x:id="detailed" text="When no image is specified, it is filled in &quot;backcolor&quot;, and a rectangular frame in color &quot;forecolor&quot; can be drawn with option &quot;border&quot;.&#10;&#10;An image &quot;states&quot; can be used to show a different frame for (integer) each parameter value.&#10;&#10;The &quot;button&quot; image is drawn at the right (can be changed with option &quot;leadingbutton&quot;).&#10;The remaining space shows the text representation of the parameter, with an optional &quot;padding&quot;."/>
 				<List x:id="links">
 					<String text="SelectBox"/>
 				</List>
@@ -1869,6 +1893,21 @@
 						<String x:id="brief" text="height of tab buttons"/>
 					</Model.Documentation>
 				</Model.Member>
+				<Model.Member name="tabMargin" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="the overall margin (tabMargin = left and right margin combined)"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="iconSpacing" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="spacing between icon and label"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="tabSpacing" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="spacing between tabs"/>
+					</Model.Documentation>
+				</Model.Member>
 				<Model.Member name="borderColor" type="string" typeName="color">
 					<Model.Documentation x:id="doc">
 						<String x:id="brief" text="color of border frame, drawn when no&quot;background&quot; image is available"/>
@@ -1894,7 +1933,7 @@
 		<Model.Class name="TextBoxStyle" parent="BasicStyle">
 			<Model.Documentation x:id="doc">
 				<String x:id="brief" text="If option &quot;transparent&quot; is not set, a TextBox draws a background image"/>
-				<String x:id="detailed" text="When no image is specified, it is filled in &quot;backcolor, and a rectangular frame in color &quot;forecolor&quot; can be drawn with option &quot;border&quot;.&#10;&#10;The text is drawn with an optional &quot;padding&quot;."/>
+				<String x:id="detailed" text="When no image is specified, it is filled in &quot;backcolor&quot;, and a rectangular frame in color &quot;forecolor&quot; can be drawn with option &quot;border&quot;.&#10;&#10;The text is drawn with an optional &quot;padding&quot;."/>
 				<List x:id="links">
 					<String text="TextBox"/>
 				</List>
@@ -1975,13 +2014,47 @@
 			</List>
 		</Model.Class>
 		<Model.Class name="ToolButtonStyle" parent="BasicStyle">
+			<Model.Documentation x:id="doc">
+				<List x:id="links">
+					<String text="ToolButton"/>
+				</List>
+			</Model.Documentation>
 			<List x:id="members">
-				<Model.Member name="popup.offset.x" type="float" typeName="metric"/>
-				<Model.Member name="popup.offset.y" type="float" typeName="metric"/>
-				<Model.Member name="popupstyle" type="float" typeName="metric"/>
-				<Model.Member name="decorform" type="string" typeName="string"/>
-				<Model.Member name="popup.palette.right" type="float" typeName="metric"/>
-				<Model.Member name="popup.palette.bottom" type="float" typeName="metric"/>
+				<Model.Member name="popup.offset.x" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="an additional horizontal offset to the popup position"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="popup.offset.y" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="an additional vertical offset to the popup position"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="popupstyle" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="when &quot;popupstyle&quot; is true - the toolButton visualStyle is also used for the popup"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="decorform" type="string" typeName="string">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="an optional &quot;decorform&quot; name identifying the form that decorates the popup"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="popup.palette.right" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="popup the palette on the right side (mode parameter must be a IPaletteProvider)"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="popup.palette.bottom" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="popup the palette on the bottom (mode parameter must be a IPaletteProvider)"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="popup.extended" type="float" typeName="metric">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="displays the popup as an extended menu instead of the default tree menu"/>
+					</Model.Documentation>
+				</Model.Member>
 			</List>
 		</Model.Class>
 		<Model.Class name="TreeViewStyle" parent="ItemViewStyle">
@@ -2438,12 +2511,13 @@
 				<Model.Enumerator name="ContextMenu" value="33"/>
 				<Model.Enumerator name="PerspectiveSwitcher" value="34"/>
 				<Model.Enumerator name="SegmentBox" value="35"/>
-				<Model.Enumerator name="H1" value="36"/>
-				<Model.Enumerator name="H2" value="37"/>
-				<Model.Enumerator name="H3" value="38"/>
-				<Model.Enumerator name="H4" value="39"/>
-				<Model.Enumerator name="H5" value="40"/>
-				<Model.Enumerator name="H6" value="41"/>
+				<Model.Enumerator name="BlockView" value="36"/>
+				<Model.Enumerator name="H1" value="37"/>
+				<Model.Enumerator name="H2" value="38"/>
+				<Model.Enumerator name="H3" value="39"/>
+				<Model.Enumerator name="H4" value="40"/>
+				<Model.Enumerator name="H5" value="41"/>
+				<Model.Enumerator name="H6" value="42"/>
 			</List>
 		</Model.Enumeration>
 		<Model.Enumeration name="ThemeColors">

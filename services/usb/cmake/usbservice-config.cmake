@@ -18,10 +18,18 @@
 #
 #************************************************************************************************
 
-include_guard (DIRECTORY)
-
 if (IOS OR ANDROID)
     return ()
+endif ()
+
+if (TARGET usbservice)
+	if (VENDOR_PLUGINS_RUNTIME_DIRECTORY)
+		ccl_install_imported (usbservice LIBRARY DESTINATION ${VENDOR_PLUGINS_RUNTIME_DIRECTORY} FRAMEWORK DESTINATION ${VENDOR_PLUGINS_RUNTIME_DIRECTORY})
+	endif ()
+	if (UNIX AND NOT APPLE)
+		ccl_include_platform_specifics (usbservice)
+	endif ()
+	return ()
 endif ()
 
 find_package (ccl REQUIRED COMPONENTS cclapp cclbase ccltext cclsystem cclgui)
@@ -33,14 +41,12 @@ endif ()
 
 ccl_find_path (usb_DIR NAMES "source/plugversion.h" HINTS "${CMAKE_CURRENT_LIST_DIR}/.." DOC "USB service directory")
 
-if (NOT TARGET usbservice)
-    ccl_add_plugin_library (usbservice
-        VENDOR ccl
-        VERSION_FILE "${CMAKE_CURRENT_LIST_DIR}/../source/plugversion.h"
-        VERSION_PREFIX PLUG
-    )
-    set_target_properties (usbservice PROPERTIES USE_FOLDERS ON FOLDER "services/ccl")
-endif ()
+ccl_add_plugin_library (usbservice
+	VENDOR ccl
+	VERSION_FILE "${CMAKE_CURRENT_LIST_DIR}/../source/plugversion.h"
+	VERSION_PREFIX PLUG
+)
+set_target_properties (usbservice PROPERTIES USE_FOLDERS ON FOLDER "services/ccl")
 
 list (APPEND usbservice_source_files
     ${usb_DIR}/source/plugmain.cpp
@@ -73,6 +79,7 @@ target_sources (usbservice PRIVATE ${usbservice_sources})
 target_link_libraries (usbservice PRIVATE cclapp cclbase ccltext cclsystem cclgui ${hidapi_LIBRARIES})
 target_include_directories (usbservice PUBLIC  ${hidapi_INCLUDE_DIRS})
 
+ccl_export_target (usbservice)
 if (CCL_SYSTEM_INSTALL)
 	install (TARGETS usbservice
 		EXPORT ccl-targets DESTINATION "${CCL_LIBRARY_DESTINATION}"
@@ -83,6 +90,6 @@ if (CCL_SYSTEM_INSTALL)
         install (FILES $<TARGET_FILE_DIR:usbservice>/usbservice.pdb DESTINATION "${CCL_PLUGINS_DESTINATION}" OPTIONAL COMPONENT services_${VENDOR_NATIVE_COMPONENT_SUFFIX})
     endif ()
 elseif (VENDOR_PLUGINS_RUNTIME_DIRECTORY)
-	install (TARGETS usbservice LIBRARY DESTINATION ${VENDOR_PLUGINS_RUNTIME_DIRECTORY}
-                                FRAMEWORK DESTINATION ${VENDOR_PLUGINS_RUNTIME_DIRECTORY})
+	install (TARGETS usbservice LIBRARY DESTINATION ${VENDOR_PLUGINS_RUNTIME_DIRECTORY} FRAMEWORK DESTINATION ${VENDOR_PLUGINS_RUNTIME_DIRECTORY}
+								FRAMEWORK DESTINATION ${VENDOR_PLUGINS_RUNTIME_DIRECTORY})
 endif ()

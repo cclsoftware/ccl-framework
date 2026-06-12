@@ -746,9 +746,6 @@ struct PresetSelectFilter: public ObjectFilter
 
 bool PresetBrowser::selectNextPreset (int increment, bool checkOnly)
 {	
-	if(checkOnly)
-		return true; // would be too expensive...
-
 	if(BrowserNode* presetRoot = getPresetRootNode ())
 	{
 		UrlRef currentUrl (presetComponent.getCurrentPresetUrl ());
@@ -761,11 +758,15 @@ bool PresetBrowser::selectNextPreset (int increment, bool checkOnly)
 		PresetSelectFilter filter;
 		if(BrowserNode* nextNode = navigate (*currentNode, increment, &filter))
 		{
-			setFocusNode (nextNode);
-			loadSelectedPreset (false);
+			if(!checkOnly)
+			{
+				setFocusNode (nextNode);
+				loadSelectedPreset (false);
+			}
+			return true;
 		}
 	}
-	return true;
+	return false;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////

@@ -106,7 +106,7 @@ void SkinAttributes::scanDesignCoord (DesignCoord& dc, StringRef string)
 	else
 	{
 		dc.unit = string.endsWith (DesignCoord::kStrPercent) ? DesignCoord::kPercent : DesignCoord::kCoord;
-		string.getIntValue (dc.value);
+		string.getFloatValue (dc.value);
 	}
 }
 
@@ -123,7 +123,7 @@ void SkinAttributes::getDesignCoord (DesignCoord& dc, StringID name) const
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void SkinAttributes::setDesignCoord (StringID name, const DesignCoord& dc)
+void SkinAttributes::setDesignCoord (StringID name, DesignCoordRef dc)
 {
 	if(dc.isAuto ())
 		setString (name, DesignCoord::kStrAuto);
@@ -132,7 +132,7 @@ void SkinAttributes::setDesignCoord (StringID name, const DesignCoord& dc)
 	else
 	{
 		String value;
-		value.appendIntValue (dc.value);
+		value.appendFloatValue (dc.value);
 		if(dc.isPercent ())
 			value.append (DesignCoord::kStrPercent);
 		setString (name, value);

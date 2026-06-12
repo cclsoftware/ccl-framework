@@ -161,11 +161,20 @@ using namespace CCL;
 	if(dialog)
 	{
 		CCL::Rect size = dialog->getSize ();
+
 		if(dialog->getStyle ().isCustomStyle (Styles::kWindowBehaviorCenter))
 		{
 			CGRect screenSize = [[UIScreen mainScreen] bounds];
 			rect->origin.x = screenSize.size.width / 2;
 			rect->origin.y = (screenSize.size.height - size.getHeight ()) / 2;
+		}
+		else
+		{
+			#if DEBUG_LOG
+			CGSize frameSize = self.view.frame.size;
+			if(frameSize.width != size.getWidth () || frameSize.height != size.getHeight ())
+				CCL_PRINTF ("willRepositionPopoverToRect: view size %d x %d will be resized to frame size %d x %d\n", size.getWidth(), size.getHeight(), (int)frameSize.width, (int)frameSize.height)
+			#endif
 		}
 	}
 }
@@ -280,6 +289,7 @@ IAsyncOperation* Dialog::showPlatformDialog (IWindow* parent)
 	dialogController.preferredContentSize = frame.size;
 	UIPopoverPresentationController* presentationController = [dialogController popoverPresentationController];
 	presentationController.delegate = dialogController;
+	presentationController.canOverlapSourceViewRect = YES;
 
 	CGRect anchorRect;
 	auto popup = ccl_cast<PopupSelectorWindow> (this);
@@ -427,7 +437,18 @@ void IOSDialog::updateSize ()
 	Rect rect = getSize ();
 	rect.setWidth (bounds.size.width);
 	rect.setHeight (bounds.size.height);
-	rect.moveTo (Point (bounds.origin.x, bounds.origin.y));
+
+	Point pos (bounds.origin.x, bounds.origin.y);
+
+	if(getStyle ().isCustomStyle (Styles::kWindowBehaviorPopupSelector))
+	{
+		CGRect screenRelativeFrame = [view convertRect:view.bounds toView:nil];
+		pos.x += screenRelativeFrame.origin.x;
+		pos.y += screenRelativeFrame.origin.y;
+	}
+
+	rect.moveTo (pos);
+
 	ScopedFlag<kAttachDisabled> scope (sizeMode); // don't size child(s) automatically, this is done explicitely below
 	View::setSize (rect);
 	

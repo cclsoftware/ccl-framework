@@ -74,7 +74,7 @@ tresult CCL_API HtmlWriter::beginDocument (IStream& stream, TextEncoding encodin
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-ITextBuilder* CCL_API HtmlWriter::createHtmlBuilder ()
+ITextBuilder* CCL_API HtmlWriter::createTextBuilder ()
 {
 	return NEW HtmlBuilder (lineFormat, NEW HtmlEntities);
 }
@@ -137,22 +137,38 @@ HtmlBuilder::HtmlBuilder (TextLineFormat lineFormat, MarkupEncoder* encoder)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-tresult CCL_API HtmlBuilder::printChunk (String& result, const Text::Chunk& chunk)
+tresult CCL_API HtmlBuilder::printFragment (String& result, const TextFragment& fragment)
 {
 	result.empty ();
 	tresult tr = kResultOk;
 
-	switch(chunk.chunkType)
+	switch(fragment.nodeType)
 	{
 	case Text::kHeading :
 		{
-			int level = reinterpret_cast<const Text::Heading&> (chunk).level;
-			result << "<h" << level << ">" << unpack (chunk) << "</h" << level << ">" << getLineEnd ();
+			int level = ccl_bound<int> (fragment.argument.asInt (), Text::kH1, Text::kMaxHeadingLevel);
+			result << "<h" << level << ">" << unpack (fragment) << "</h" << level << ">" << getLineEnd ();
 		}
 		break;
 
+	case Text::kParagraph :
+		result << "<p>" << getLineEnd ();
+		result << unpack (fragment);
+		result << "</p>" << getLineEnd ();
+		break;
+
+	case Text::kBlockQuote :
+		result << "<blockquote>" << getLineEnd ();
+		result << unpack (fragment);
+		result << "</blockquote>" << getLineEnd ();
+		break;
+
 	case Text::kPlainText :
-		result << unpack (chunk);
+		result << unpack (fragment);
+		break;
+
+	case Text::kSoftBreak :
+		result << getLineEnd ();
 		break;
 
 	case Text::kLineBreak :
@@ -163,54 +179,62 @@ tresult CCL_API HtmlBuilder::printChunk (String& result, const Text::Chunk& chun
 		result << "<hr>" << getLineEnd ();
 		break;
 
-	case Text::kDecoration :
-		{
-			int decoration = reinterpret_cast<const Text::Decoration&> (chunk).decoration;
-			
-			if(decoration & Text::kBold)
-				result << "<b>";
-			if(decoration & Text::kItalic)
-				result << "<i>";
-			if(decoration & Text::kUnderline)
-				result << "<u>";
+	case Text::kStrong :
+		result << "<strong>" << unpack (fragment) << "</strong>";
+		break;
 
-			result << unpack (chunk);
+	case Text::kBold :
+		result << "<b>" << unpack (fragment) << "</b>";
+		break;
+	
+	case Text::kEmphasis :
+		result << "<em>" << unpack (fragment) << "</em>";
+		break;
 
-			if(decoration & Text::kUnderline)
-				result << "</u>";
-			if(decoration & Text::kItalic)
-				result << "</i>";
-			if(decoration & Text::kBold)
-				result << "</b>";
-		}
+	case Text::kItalic :
+		result << "<i>" << unpack (fragment) << "</i>";
+		break;
+
+	case Text::kUnderline :
+		result << "<u>" << unpack (fragment) << "</u>";
+		break;
+
+	case Text::kSubscript :
+		result << "<sub>" << unpack (fragment) << "</sub>";
+		break;
+
+	case Text::kSuperscript :
+		result << "<sup>" << unpack (fragment) << "</sup>";
+		break;
+
+	case Text::kFontColor :
+		result << "<font color=\"" << VariantString (fragment.argument) << "\">" << unpack (fragment) << "</font>";
+		break;
+
+	case Text::kFontSize :
+		result << "<font size=\"" << VariantString (fragment.argument) << "\">" << unpack (fragment) << "</font>";
+		break;
+
+	case Text::kStyleSpan :
+		result << "<span style=\"" << fragment.argument.asString () << "\">" << unpack (fragment) << "</span>";
 		break;
 
 	case Text::kAnchor :
-		result << "<a name=\"" << reinterpret_cast<const Text::Anchor&> (chunk).name << "\">" << getLineEnd ();
+		result << "<a name=\"" << fragment.argument.asString () << "\">" << getLineEnd ();
+		break;
+
+	case Text::kFragmentLink :
+		result << "<a href=\"#" << fragment.argument.asString () << "\">";
+		result << unpack (fragment) << "</a>" << getLineEnd ();
 		break;
 
 	case Text::kLink :
-		result << "<a href=\"#" << reinterpret_cast<const Text::Link&> (chunk).anchorName << "\">";
-		result << unpack (chunk) << "</a>" << getLineEnd ();
-		break;
-
-	case Text::kURL :
-		result << "<a href=\"" << reinterpret_cast<const Text::URL&> (chunk).url << "\">";
-		result << unpack (chunk) << "</a>" << getLineEnd ();
-		break;
-
-	case Text::kParagraph :
-		result << "<p>" << getLineEnd ();
-		result << unpack (chunk);
-		result << "</p>" << getLineEnd ();
-		break;
-
-	case Text::kListItem :
-		result << "<li>" << unpack (chunk) << "</li>" << getLineEnd ();
+		result << "<a href=\"" << fragment.argument.asString () << "\">";
+		result << unpack (fragment) << "</a>" << getLineEnd ();
 		break;
 
 	case Text::kListBegin :
-		if(reinterpret_cast<const Text::ListBegin&> (chunk).listType == Text::kOrdered)
+		if(fragment.argument.asInt () == Text::kOrderedList)
 			result << "<ol>";
 		else
 			result << "<ul>";
@@ -218,15 +242,19 @@ tresult CCL_API HtmlBuilder::printChunk (String& result, const Text::Chunk& chun
 		break;
 
 	case Text::kListEnd :
-		if(reinterpret_cast<const Text::ListBegin&> (chunk).listType == Text::kOrdered)
+		if(fragment.argument.asInt () == Text::kOrderedList)
 			result << "</ol>";
 		else
 			result << "</ul>";
 		result << getLineEnd ();
 		break;
 
+	case Text::kListItem :
+		result << "<li>" << unpack (fragment) << "</li>" << getLineEnd ();
+		break;
+
 	case Text::kTable :
-		if(ITextTable* table = reinterpret_cast<const Text::Table&> (chunk).table)
+		if(UnknownPtr<ITextTable> table = fragment.argument.asUnknown ())
 		{
 			int rowCount = 0, columnCount = 0;
 			table->getSize (rowCount, columnCount);
@@ -255,8 +283,20 @@ tresult CCL_API HtmlBuilder::printChunk (String& result, const Text::Chunk& chun
 		}
 		break;
 
+	case Text::kCodeBlock :
+		{
+			result << "<pre><code>" << getLineEnd ();
+			result << unpack (fragment) << getLineEnd ();
+			result << "</code></pre>" << getLineEnd ();
+		}
+		break;
+
+	case Text::kCodeInline :
+		result << "<code>" << unpack (fragment) << "</code>";
+		break;
+
 	default :
-		CCL_DEBUGGER ("Unknown text chunk!")
+		CCL_DEBUGGER ("Unsupported text node type!\n")
 		tr = kResultInvalidArgument;
 		break;
 	}

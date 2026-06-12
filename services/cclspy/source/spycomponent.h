@@ -117,6 +117,7 @@ private:
 	void inspectUnknown (ObjectInfo& info, IUnknown* unknown);
 	void inspectView (ObjectInfo& info, IView* view);
 	void inspectVisualStyle (ObjectInfo& info, IVisualStyle* visualStyle);
+	void inspectVisualStyleData (ObjectInfo& info, StringID namePrefix, IVisualStyleData* styleData);
 	void inspectSceneNode (ObjectInfo& info, ISceneNode3D* sceneNode);
 	void inspectMaterial (ObjectInfo& info, IMaterial3D* material, ISceneNode3D* contextNode);
 

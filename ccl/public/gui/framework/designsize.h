@@ -1,7 +1,7 @@
 //************************************************************************************************
 //
 // This file is part of Crystal Class Library (R)
-// Copyright (c) 2025 CCL Software Licensing GmbH.
+// Copyright (c) 2026 CCL Software Licensing GmbH.
 // All Rights Reserved.
 //
 // Licensed for use under either:
@@ -20,6 +20,7 @@
 #define _ccl_designsize_h
 
 #include "ccl/public/gui/graphics/rect.h"
+
 #include "ccl/public/base/variant.h"
 
 namespace CCL {
@@ -43,13 +44,16 @@ struct DesignCoord
 	static const String kStrPercent;
 	
 	Unit unit;
-	Coord value;
+	float value;
 
-	DesignCoord (Unit unit = kAuto, Coord value = 0)
+	DesignCoord (Unit unit = kAuto, float value = 0)
 	: unit (unit),
 	  value (value)
 	{}
 	
+	int getIntValue () const;
+	DesignCoord& setIntValue (int value);
+
 	Variant toVariant () const;
 	DesignCoord& fromVariant (VariantRef variant);
 	
@@ -66,9 +70,11 @@ struct DesignCoord
 	bool isPercent () const;
 };
 
+typedef const DesignCoord& DesignCoordRef;
+
 //************************************************************************************************
 // DesignSize
-/** A data representation of the design size as it can be specified for a skin element */
+/** A data representation of the design size as it can be specified for a skin element. */
 //************************************************************************************************
 
 struct DesignSize
@@ -78,15 +84,17 @@ struct DesignSize
 	DesignCoord width;
 	DesignCoord height;
 	
-	DesignSize (const DesignCoord& left = DesignCoord::kAuto,
-				const DesignCoord& top = DesignCoord::kAuto,
-				const DesignCoord& width = DesignCoord::kAuto,
-				const DesignCoord& height = DesignCoord::kAuto);
+	DesignSize (DesignCoordRef left = DesignCoord::kAuto,
+				DesignCoordRef top = DesignCoord::kAuto,
+				DesignCoordRef width = DesignCoord::kAuto,
+				DesignCoordRef height = DesignCoord::kAuto);
 	
 	/** All coordinates will be set to DesignCoord::kCoord */
+	DesignSize& fromRect (RectFRef rect);
 	DesignSize& fromRect (RectRef rect);
 	
 	/** Set rect coordinates from plain coordinates (DesignCoord::kCoord). Coordinates with other units are skipped. */
+	void toRect (RectF& rect) const;
 	void toRect (Rect& rect) const;
 };
 

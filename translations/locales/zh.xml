@@ -15,17 +15,17 @@
 	</Attributes>	
 
 	<Attributes x:id="months">
-		<Association key="Jan" value="一月"/>
-		<Association key="Feb" value="二月"/>
-		<Association key="Mar" value="三月"/>
-		<Association key="Apr" value="四月"/>
-		<Association key="May" value="五月"/>
-		<Association key="Jun" value="六月"/>
-		<Association key="Jul" value="七月"/>
-		<Association key="Aug" value="八月"/>
-		<Association key="Sep" value="九月"/>
-		<Association key="Oct" value="十月"/>
-		<Association key="Nov" value="十一月"/>
-		<Association key="Dec" value="十二月"/>
+		<Association key="Jan" value="1月"/>
+		<Association key="Feb" value="2月"/>
+		<Association key="Mar" value="3月"/>
+		<Association key="Apr" value="4月"/>
+		<Association key="May" value="5月"/>
+		<Association key="Jun" value="6月"/>
+		<Association key="Jul" value="7月"/>
+		<Association key="Aug" value="8月"/>
+		<Association key="Sep" value="9月"/>
+		<Association key="Oct" value="10月"/>
+		<Association key="Nov" value="11月"/>
+		<Association key="Dec" value="12月"/>
 	</Attributes>
 </LocaleInfo>

@@ -24,16 +24,17 @@ find_package (ccl REQUIRED COMPONENTS cclapp cclbase ccltext cclsystem cclgui cc
 
 ccl_find_path (bluetooth_DIR NAMES "source/plugversion.h" HINTS "${CMAKE_CURRENT_LIST_DIR}/.." DOC "Bluetooth service directory")
 
-if (NOT TARGET bluetoothservice)
-    ccl_add_plugin_library (bluetoothservice
-        VENDOR ccl
-        VERSION_FILE "${CMAKE_CURRENT_LIST_DIR}/../source/plugversion.h"
-        VERSION_PREFIX PLUG
-    )
-    set_target_properties (bluetoothservice PROPERTIES USE_FOLDERS ON FOLDER "services/ccl")
-elseif (NOT XCODE)
-	ccl_include_platform_specifics (bluetoothservice)
+ccl_check_target_exists (bluetoothservice target_exists)
+if (${target_exists})
+	return ()
 endif ()
+
+ccl_add_plugin_library (bluetoothservice
+	VENDOR ccl
+	VERSION_FILE "${CMAKE_CURRENT_LIST_DIR}/../source/plugversion.h"
+	VERSION_PREFIX PLUG
+)
+set_target_properties (bluetoothservice PROPERTIES USE_FOLDERS ON FOLDER "services/ccl")
 
 list (APPEND bluetoothservice_source_files
     ${bluetooth_DIR}/source/plugmain.cpp
@@ -64,6 +65,7 @@ target_sources (bluetoothservice PRIVATE ${bluetoothservice_sources})
 target_include_directories (bluetoothservice PRIVATE "${bluetooth_DIR}")
 target_link_libraries (bluetoothservice PRIVATE cclapp cclbase ccltext cclsystem cclgui cclsecurity cclnet)
 
+ccl_export_target (bluetoothservice)
 if (CCL_SYSTEM_INSTALL)
 	install (TARGETS bluetoothservice 
 		EXPORT ccl-targets DESTINATION "${CCL_LIBRARY_DESTINATION}"
@@ -74,6 +76,6 @@ if (CCL_SYSTEM_INSTALL)
         install (FILES $<TARGET_FILE_DIR:bluetoothservice>/bluetoothservice.pdb DESTINATION "${CCL_PLUGINS_DESTINATION}" OPTIONAL COMPONENT services_${VENDOR_NATIVE_COMPONENT_SUFFIX})
     endif ()
 elseif (VENDOR_PLUGINS_RUNTIME_DIRECTORY)
-	install (TARGETS bluetoothservice LIBRARY DESTINATION ${VENDOR_PLUGINS_RUNTIME_DIRECTORY}
+	install (TARGETS bluetoothservice LIBRARY DESTINATION ${VENDOR_PLUGINS_RUNTIME_DIRECTORY} FRAMEWORK DESTINATION ${VENDOR_PLUGINS_RUNTIME_DIRECTORY}
 									  FRAMEWORK DESTINATION ${VENDOR_PLUGINS_RUNTIME_DIRECTORY})
 endif ()

@@ -86,6 +86,11 @@ msgstr "Pack de langue"
 
 #: fileutilities.cpp
 msgctxt "FileType"
+msgid "Markdown File"
+msgstr "Fichier Markdown"
+
+#: fileutilities.cpp
+msgctxt "FileType"
 msgid "PDF File"
 msgstr "Fichier PDF"
 
@@ -152,12 +157,12 @@ msgstr "Go"
 #: localization/localeinfo.cpp
 msgctxt "Locales"
 msgid "In %(1) days"
-msgstr "En %(1) jours"
+msgstr "Dans %(1) jours"
 
 #: localization/localeinfo.cpp
 msgctxt "Locales"
 msgid "In %(1) hours"
-msgstr "En %(1) heures"
+msgstr "Dans %(1) heures"
 
 #: localization/localeinfo.cpp
 msgctxt "Locales"

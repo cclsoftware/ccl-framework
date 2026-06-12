@@ -222,6 +222,23 @@ public:
 		}
 		return true;
 	}
+
+	/** Creates a chain from 2 filters. Shares input filters, caller owns returned filter. */
+	static IObjectFilter* create (IObjectFilter* filter1, IObjectFilter* filter2)
+	{
+		if(filter1 && filter2)
+		{
+			ObjectFilterChain* filterChain (NEW ObjectFilterChain);
+			filterChain->addFilter (filter1);
+			filterChain->addFilter (filter2);
+			return filterChain;
+		}
+		else if(filter1)
+			return return_shared (filter1);
+		else
+			return return_shared (filter2);
+	}
+
 protected:
 	Vector <SharedPtr <IObjectFilter> > filters; 
 };

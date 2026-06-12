@@ -25,7 +25,6 @@
 
 #include "ccl/gui/system/clipboard.h"
 #include "ccl/public/text/translation.h"
-#include "ccl/public/gui/graphics/itextlayout.h"
 #include "ccl/public/gui/iparameter.h"
 #include "ccl/public/gui/icontextmenu.h"
 #include "ccl/public/math/mathprimitives.h"
@@ -294,7 +293,6 @@ bool SegmentBox::scaleTextFont (IParamSplitter* splitter)
 
 	while(true)
 	{
-		
 		Coord stringWidth = Font::getStringWidth (zeroString, font);
 		if(fontSize <= kMinimalFontSize)
 			break;
@@ -1012,7 +1010,6 @@ void SegmentBox::toggleSign ()
 void SegmentBox::getDrawRect (Rect& size)
 {
 	getClientRect (size);
-	size.contract (1);
 
 	Rect padding;
 	getVisualStyle ().getPadding (padding);
@@ -1068,9 +1065,9 @@ int SegmentBox::getCharWidth ()
 	if(cachedFontSize > 0)
 		font.setSize (cachedFontSize);
 	
-	Rect charSize;
-	Font::measureString (charSize, zero, font, ITextLayout::kNoMargin);
-	return (int)floor (((float)charSize.right / 10.f) + 0.5f);
+	RectF charSize;
+	Font::measureString (charSize, zero, font);
+	return int(ceil (charSize.getWidth () / 10.f));
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1085,9 +1082,9 @@ int SegmentBox::getDelimiterWidth ()
 	if(cachedFontSize > 0)
 		font.setSize (cachedFontSize);
 
-	Rect charSize;
-	Font::measureString (charSize, zero, font, ITextLayout::kNoMargin);
-	return (int)floor (((float)charSize.right / 10.f) + 0.5f);
+	RectF charSize;
+	Font::measureString (charSize, zero, font);
+	return int(ceil (charSize.getWidth () / 10.f));
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////

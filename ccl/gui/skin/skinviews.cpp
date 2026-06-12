@@ -49,10 +49,7 @@
 namespace CCL {
 namespace SkinElements {
 
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
-void linkSkinViews ()
-{} // force linkage of this file
+void linkSkinViews () {} // force linkage of this file
 
 //************************************************************************************************
 // VariantElement
@@ -181,7 +178,7 @@ View* LabelElement::createView (const CreateArgs& args, View* view)
 //************************************************************************************************
 
 BEGIN_SKIN_ELEMENT_WITH_MEMBERS (HeadingElement, LabelElement, TAG_HEADING, DOC_GROUP_VIEWS, Heading)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_LEVEL, TYPE_INT) ///< heading level (1, 2, or 3)
+	ADD_SKIN_ELEMENT_MEMBER (ATTR_LEVEL, TYPE_INT) ///< heading level (1 to 6)
 END_SKIN_ELEMENT_WITH_MEMBERS (HeadingElement)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -493,8 +490,8 @@ bool ScrollViewElement::setAttributes (const SkinAttributes& a)
 
 	horizontalScrollBarStyle = a.getString (ATTR_HSCROLLSTYLE);
 	verticalScrollBarStyle = a.getString (ATTR_VSCROLLSTYLE);
-	horizontalScrollValue = a.getString (ATTR_HSCROLLNAME);
-	verticalScrollValue = a.getString (ATTR_VSCROLLNAME);
+	horizontalScrollName = a.getString (ATTR_HSCROLLNAME);
+	verticalScrollName = a.getString (ATTR_VSCROLLNAME);
 
 	return SuperClass::setAttributes (a);
 }
@@ -510,10 +507,10 @@ bool ScrollViewElement::getAttributes (SkinAttributes& a) const
 		a.setString (ATTR_HSCROLLSTYLE, horizontalScrollBarStyle);
 	if(!verticalScrollBarStyle.isEmpty ())
 		a.setString (ATTR_VSCROLLSTYLE, verticalScrollBarStyle);
-	if(!horizontalScrollValue.isEmpty ())
-		a.setString (ATTR_HSCROLLNAME, horizontalScrollValue);
-	if(!verticalScrollValue.isEmpty ())
-		a.setString (ATTR_VSCROLLNAME, verticalScrollValue);
+	if(!horizontalScrollName.isEmpty ())
+		a.setString (ATTR_HSCROLLNAME, horizontalScrollName);
+	if(!verticalScrollName.isEmpty ())
+		a.setString (ATTR_VSCROLLNAME, verticalScrollName);
 	return SuperClass::getAttributes (a);
 }
 
@@ -583,15 +580,15 @@ View* ScrollViewElement::createView (const CreateArgs& args, View* view)
 			((ScrollView*)view)->setVScrollBarStyle (visualStyle);
 
 	// scroll parameters
-	if(!horizontalScrollValue.isEmpty ())
+	if(!horizontalScrollName.isEmpty ())
 	{
-		IParameter* scrollParam = ControlElement::getParameter (args, horizontalScrollValue, this);
+		IParameter* scrollParam = ControlElement::getParameter (args, horizontalScrollName, this);
 		if(scrollParam)
 			((ScrollView*)view)->setHScrollParam (scrollParam);
 	}
-	if(!verticalScrollValue.isEmpty ())
+	if(!verticalScrollName.isEmpty ())
 	{
-		IParameter* scrollParam = ControlElement::getParameter (args, verticalScrollValue, this);
+		IParameter* scrollParam = ControlElement::getParameter (args, verticalScrollName, this);
 		if(scrollParam)
 			((ScrollView*)view)->setVScrollParam (scrollParam);
 	}
@@ -792,6 +789,9 @@ ItemControlBase* DropBoxElement::createControl (const CreateArgs& args)
 {
 	auto* dropBoxControl = NEW DropBoxControl (size, options, scrollOptions);
 	args.wizard.getVariables (dropBoxControl->getDropBoxArguments ());
+	if(DropBox* dropBox = ccl_cast<DropBox> (dropBoxControl->getItemView ()))
+		dropBox->setScopeName (args.wizard.getCurrentScope ());
+
 	return dropBoxControl;
 }
 

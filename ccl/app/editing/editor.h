@@ -60,6 +60,7 @@ public:
 	EditTool* getDefaultTool () const;
 	EditTool* getActiveTool () const;
 	bool activateTool (EditTool* tool);
+	void popupToolPalette (EditView& editView, PointRef where);
 
 	// Model
 	EditModel& getModel ();

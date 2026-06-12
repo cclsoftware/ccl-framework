@@ -30,6 +30,8 @@ set (ccltext_exports
 	${CCL_EXPORT_PREFIX}CreateCStringDictionary${CCL_EXPORT_POSTFIX}
 	${CCL_EXPORT_PREFIX}CreateXmlParser${CCL_EXPORT_POSTFIX}
 	${CCL_EXPORT_PREFIX}CreateXmlWriter${CCL_EXPORT_POSTFIX}
+	${CCL_EXPORT_PREFIX}CreateMarkdownParser${CCL_EXPORT_POSTFIX}
+	${CCL_EXPORT_PREFIX}CreateMarkdownWriter${CCL_EXPORT_POSTFIX}
 	${CCL_EXPORT_PREFIX}JsonParse${CCL_EXPORT_POSTFIX}
 	${CCL_EXPORT_PREFIX}JsonStringify${CCL_EXPORT_POSTFIX}
 	${CCL_EXPORT_PREFIX}Json5Parse${CCL_EXPORT_POSTFIX}
@@ -72,6 +74,7 @@ ccl_list_append_once (ccltext_public_headers
 	${CCL_DIR}/public/text/language.h
 	${CCL_DIR}/public/text/stringbuilder.h
 	${CCL_DIR}/public/text/textencoding.h
+	${CCL_DIR}/public/text/textformatting.h
 	${CCL_DIR}/public/text/translation.h
 	${CCL_DIR}/public/text/translationformat.h
 	${CCL_DIR}/public/text/xmlcontentparser.h
@@ -108,6 +111,11 @@ ccl_list_append_once (ccltext_system_source_files
 
 ccl_list_append_once (ccltext_source_files
 	${CCL_DIR}/text/cclmalloc.cpp
+
+	${CCL_DIR}/text/markdown/markdownparser.cpp
+	${CCL_DIR}/text/markdown/markdownparser.h
+	${CCL_DIR}/text/markdown/markdownwriter.cpp
+	${CCL_DIR}/text/markdown/markdownwriter.h
 
 	${CCL_DIR}/text/strings/cstringbuffer.cpp
 	${CCL_DIR}/text/strings/cstringbuffer.h
@@ -187,6 +195,7 @@ ccl_list_append_once (CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}")
 find_package (corelib REQUIRED)
 find_package (pcre REQUIRED)
 find_package (expat REQUIRED)
+find_package (cmark REQUIRED)
 
 # Options
 option (CCL_PRINT_STRING_STATS "Print the string statistics for debug builds." ON)
@@ -229,14 +238,17 @@ if (NOT TARGET ${ccltext})
 		target_sources (${ccltext} PRIVATE ${ccltext_sources} ${CMAKE_CURRENT_LIST_FILE})
 		ccl_target_headers (${ccltext} INSTALL ${CCL_SYSTEM_INSTALL} DESTINATION ${CCL_PUBLIC_HEADERS_DESTINATION} BASE_DIRS ${CCL_DIR} FILES ${ccltext_public_headers})
 
-		target_link_libraries (${ccltext} PRIVATE corelib ${expat_LIBRARY} ${PCRE_LIBRARY})
+		target_link_libraries (${ccltext} PRIVATE corelib ${expat_LIBRARY} ${PCRE_LIBRARY} ${CMARK_LIBRARY})
 		target_include_directories (${ccltext} INTERFACE "$<INSTALL_INTERFACE:${VENDOR_PUBLIC_HEADERS_DESTINATION}>")
 
 		ccl_export_symbols (${ccltext} ${ccltext_exports})
 		
 		ccl_add_resources (${ccltext} ${ccltext_resources})
 
-		if (CCL_SYSTEM_INSTALL)
+		if (CCL_EXPORTS_PATH)
+			install (TARGETS ${ccltext} EXPORT ccl-targets FILE_SET HEADERS DESTINATION ${CCL_PUBLIC_HEADERS_DESTINATION} COMPONENT public_headers
+																FRAMEWORK DESTINATION "${VENDOR_APPLICATION_RUNTIME_DIRECTORY}")
+		elseif (CCL_SYSTEM_INSTALL)
 			set_target_properties (${ccltext} PROPERTIES SOVERSION ${CCL_VERSION})
 			install (TARGETS ${ccltext} EXPORT ccl-targets DESTINATION "${CCL_LIBRARY_DESTINATION}"
 										LIBRARY DESTINATION "${CCL_LIBRARY_DESTINATION}" COMPONENT prebuilt_libraries_${VENDOR_NATIVE_COMPONENT_SUFFIX}
@@ -257,6 +269,13 @@ elseif (NOT XCODE)
 	ccl_include_platform_specifics (ccltext)
 endif ()
 
-ccl_list_append_once (CCL_STATIC_LINK_LIBRARIES ${expat_LIBRARY} ${PCRE_LIBRARY})
+ccl_list_append_once (CCL_STATIC_LINK_LIBRARIES ${expat_LIBRARY} ${PCRE_LIBRARY} ${CMARK_LIBRARY})
 ccl_list_append_once (CCL_STATIC_INCLUDE_DIRS ${expat_INCLUDE_DIR} ${PCRE_INCLUDE_DIR})
 ccl_list_append_once (CCL_STATIC_COMPILE_DEFINITIONS PCRE2_STATIC=1 PCRE2_CODE_UNIT_WIDTH=16)
+
+if (VENDOR_APPLICATION_RUNTIME_DIRECTORY AND NOT CCL_SYSTEM_INSTALL)
+	ccl_install_imported (${ccltext} LIBRARY DESTINATION "${VENDOR_APPLICATION_RUNTIME_DIRECTORY}"
+									 RUNTIME DESTINATION "${VENDOR_APPLICATION_RUNTIME_DIRECTORY}"
+									 FRAMEWORK DESTINATION "${VENDOR_APPLICATION_RUNTIME_DIRECTORY}"
+	)
+endif ()

@@ -254,12 +254,16 @@ void SpotlightFileSearcher::dataRead ()
 	for(NSUInteger i = itemsDelivered; i < currentItems; i++)
 	{
 		NSString* nsPath = [[query resultAtIndex:i] valueForAttribute:NSMetadataItemPathKey];
+		NSString* contentType = [[query resultAtIndex:i] valueForAttribute:NSMetadataItemContentTypeKey];
 		if(nsPath)
 		{
 			String pathString;
 			pathString.appendNativeString (nsPath);
 			AutoPtr<Url> path = NEW Url;
-			path->fromDisplayString (pathString, Url::kFile);
+			if([contentType isEqualToString:@"public.folder"])
+				path->fromDisplayString (pathString, Url::kFolder);
+			else
+				path->fromDisplayString (pathString, Url::kFile);
 			// only accept if fileName without extension matches searchTerms
 			String nameWithout;
 			path->getName (nameWithout, false);

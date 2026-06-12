@@ -156,6 +156,7 @@ DEFINE_CLASS_UID (ExtendedMenuBar, 0x32ac7729, 0x5ee3, 0x4273, 0xaf, 0x9d, 0xaf,
 DEFINE_CLASS_UID (ExtendedVariantMenuBar, 0xd0d769c9, 0xe469, 0x445a, 0xb1, 0x9, 0x66, 0x7f, 0x55, 0xe1, 0xa0, 0xf5) // ClassID::VariantMenuBar
 
 DEFINE_CLASS_PERSISTENT (LinuxPopupMenu, ExtendedPopupMenu, "Menu")
+DEFINE_CLASS_UID (LinuxPopupMenu, 0x1c1ff2c7, 0xeabe, 0x4b0c, 0xab, 0x94, 0xc2, 0x72, 0x8b, 0xfb, 0xc8, 0x12) // ClassID::Menu
 
 //************************************************************************************************
 // LinuxWindow

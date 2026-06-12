@@ -262,11 +262,6 @@ bool SkiaFontCache::isUserFont (StringRef familyName) const
 // SkiaTextLayout
 //************************************************************************************************
 
-static const CoordF kPaddingLeft = 2.f;
-static const CoordF kPaddingRight = 2.f;
-static const CoordF kPaddingTop = 2.f;
-static const CoordF kPaddingBottom = 2.f;
-
 #if 0 && DEBUG
 const char SkiaTextLayout::kTabReplacementCharacter = '_';
 #else
@@ -313,7 +308,9 @@ tresult CCL_API SkiaTextLayout::construct (StringRef _text, CoordF width, CoordF
 	text = MutableCString (_text, Text::kUTF8);
 	originalText = _text;
 
-	paragraphStyle.setHeight (height - kPaddingTop - kPaddingBottom);
+	this->font = font;
+
+	paragraphStyle.setHeight (height);
 	paragraphStyle.setTextHeightBehavior (skia::textlayout::TextHeightBehavior::kAll);
 	if(lineMode == kMultiLine)
 	{
@@ -403,7 +400,7 @@ tresult CCL_API SkiaTextLayout::resize (CoordF width, CoordF height)
 
 	SkScalar textWidth (SK_ScalarInfinity);
 	if(restrictWidth)
-		textWidth = boundingRect.getWidth () - kPaddingLeft - kPaddingRight;
+		textWidth = boundingRect.getWidth ();
 
 	if(paragraph)
 		paragraph->layout (textWidth);
@@ -452,13 +449,14 @@ void SkiaTextLayout::updateParagraph ()
 		skia::textlayout::TextStyle style (textStyle.style);
 		if(style.getColor () == SK_ColorTRANSPARENT)
 			setTextColor (style, defaultColor);
+		paragraphBuilder->pop ();
 		paragraphBuilder->pushStyle (style);
 	}
 	insertText (text.length ());
 
 	SkScalar textWidth (SK_ScalarInfinity);
 	if(restrictWidth)
-		textWidth = boundingRect.getWidth () - kPaddingLeft - kPaddingRight;
+		textWidth = boundingRect.getWidth ();
 
 	paragraph = paragraphBuilder->Build ();
 	paragraph->layout (textWidth);
@@ -789,6 +787,29 @@ void SkiaTextLayout::insertStyle (const Range& range, StyleFunction styleFunctio
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
+void SkiaTextLayout::setFontFace (skia::textlayout::TextStyle& style, StringRef _familyName)
+{
+	SkString familyName (MutableCString (_familyName, Text::kUTF8).str ());
+	style.setFontFamilies ({ familyName });
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+tresult CCL_API SkiaTextLayout::setFontFace (const Range& range, StringRef faceName)
+{
+	insertStyle (range, [this, faceName] (skia::textlayout::TextStyle& style)
+	{
+		setFontFace (style, faceName);
+	});
+	needUpdate = true;
+	imageBoundsChanged = true;
+	textBoundsChanged = true;
+	characterBoundsChanged = true;
+	return kResultOk;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
 void SkiaTextLayout::setFontStyle (skia::textlayout::TextStyle& style, int mask, tbool state)
 {
 	int fontStyle = SkiaFontCache::fromSkFontStyle (style.getFontStyle ());
@@ -1004,17 +1025,17 @@ tresult SkiaTextLayout::setBackgroundColor (const Range& range, Color color)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-tresult CCL_API SkiaTextLayout::getBounds (Rect& _bounds, int flags) const
+tresult CCL_API SkiaTextLayout::getBounds (Rect& _bounds) const
 {
-    RectF bounds;
-    tresult result = getBounds (bounds, flags);
-    _bounds = rectFToInt (bounds);
-    return result;
+	RectF bounds;
+	tresult result = getBounds (bounds);
+	_bounds = rectFToEnclosingInt (bounds);
+	return result;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-tresult CCL_API SkiaTextLayout::getBounds (RectF& bounds, int flags) const
+tresult CCL_API SkiaTextLayout::getBounds (RectF& bounds) const
 {
 	SkiaTextLayout* This = const_cast<SkiaTextLayout*> (this);
 
@@ -1031,15 +1052,7 @@ tresult CCL_API SkiaTextLayout::getBounds (RectF& bounds, int flags) const
 	bounds = textRect;
 	bounds.offset (offset);
 
-	if(!(flags & kNoMargin))
-	{
-		bounds.left -= kPaddingLeft;
-		bounds.right += kPaddingRight;
-		bounds.top -= kPaddingTop;
-		bounds.bottom += kPaddingBottom;
-	}
-
-    return kResultOk;
+	return kResultOk;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1217,7 +1230,7 @@ tresult CCL_API SkiaTextLayout::getTextBounds (IMutableRegion& bounds, const Ran
 	PointF offset;
 	getParagraphOffset (offset);
 
-	Rect rect;
+	RectF rect;
 	float lastBottom = 0;
 	for(int i = ccl_max (0, range.start); i < range.start + range.length && i < characterBounds.count (); i++)
 	{
@@ -1225,14 +1238,15 @@ tresult CCL_API SkiaTextLayout::getTextBounds (IMutableRegion& bounds, const Ran
 		{
 			if(rect.isEmpty ())
 				rect.setWidth (1);
+
 			rect.offset (offset.x, offset.y);
-			bounds.addRect (rect);
+			bounds.addRect (rectFToEnclosingInt (rect));
 			rect.setEmpty ();
 		}
 		if(rect.isEmpty ())
-			rect = rectFToInt (characterBounds[i]);
+			rect = characterBounds[i];
 		else
-			rect.join (rectFToInt (characterBounds[i]));
+			rect.join (characterBounds[i]);
 	}
 	if(rect.isEmpty ())
 		rect.setWidth (1);
@@ -1243,7 +1257,7 @@ tresult CCL_API SkiaTextLayout::getTextBounds (IMutableRegion& bounds, const Ran
 	rect.offset (offset.x, offset.y);
 
 	if(!rect.isEmpty ())
-		bounds.addRect (rect);
+		bounds.addRect (rectFToEnclosingInt (rect));
 
 	return kResultOk;
 }
@@ -1425,7 +1439,7 @@ void SkiaTextLayout::draw (SkCanvas& canvas, PointF position, Color textColor)
 	PointF offset;
 	getParagraphOffset (offset);
 	blobPosition.offset (offset);
-	
+
 	paragraph->paint (&canvas, blobPosition.x, blobPosition.y);
 
 #if DEBUG_TEXT_BOUNDS
@@ -1477,28 +1491,29 @@ void SkiaTextLayout::getParagraphOffset (PointF& offset) const
 	switch(alignment.getAlignH ())
 	{
 		case Alignment::kHCenter :
-			offset.x = kPaddingLeft + (boundingRect.getWidth () - textRect.getWidth () - kPaddingLeft - kPaddingRight) / 2;
+			offset.x = (boundingRect.getWidth () - textRect.getWidth ()) / 2;
 			break;
 		case Alignment::kRight :
-			offset.x = kPaddingLeft + (boundingRect.getWidth () - textRect.getWidth () - kPaddingLeft -  kPaddingRight);
+			offset.x = boundingRect.getWidth () - textRect.getWidth ();
 			break;
 		default : // left aligned
-			offset.x = kPaddingLeft;
+			offset.x = 0.f;
 	}
 
 	switch(alignment.getAlignV ())
 	{
 		case Alignment::kVCenter :
-			offset.y = kPaddingTop + (boundingRect.getHeight () - textRect.getHeight () - kPaddingTop - kPaddingBottom) / 2;
+			offset.y = (boundingRect.getHeight () - textRect.getHeight ()) / 2;
 			break;
 		case Alignment::kTop :
-			offset.y = kPaddingTop;
+			offset.y = 0.f;
 			break;
 		default : // bottom aligned
-			offset.y = kPaddingTop + (boundingRect.getHeight () - textRect.getHeight ()  - kPaddingTop - kPaddingBottom);
+			offset.y = boundingRect.getHeight () - textRect.getHeight ();
 	}
-	
-	offset.offset (-textRect.left, -textRect.top);
+
+	// offset x by whole points to account for quantization happening when drawing to physical pixels
+	offset.offset (-Coord(textRect.left), -textRect.top);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////

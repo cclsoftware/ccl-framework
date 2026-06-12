@@ -5,11 +5,12 @@
 import argparse
 import io
 import logging
+import sys
 
 import polib
 
 __copyright__ = "Copyright (c) 2025 PreSonus Software Ltd."
-__version__ = "1.0.0"
+__version__ = "1.0.1"
 
 
 def main() -> None:
@@ -30,7 +31,12 @@ def main() -> None:
 	def sortPoLibKey(e: polib.POEntry):
 		return e.msgctxt or "", e.msgid, e.comment or ""
 
-	file = polib.pofile(path, wrapwidth=-1)
+	try:
+		file = polib.pofile(path, wrapwidth=-1)
+	except (IOError, OSError) as e:
+		logging.error(f"Failed to read '{path}': {e}")
+		sys.exit(1)
+
 	file.sort(key=sortPoLibKey)
 
 	contents = file.__unicode__()
@@ -39,11 +45,15 @@ def main() -> None:
 	if contents.startswith("#\n"):
 		contents = contents[2:]
 
-	with io.open(path, 'w', encoding=file.encoding, newline='\n') as fhandle:
-		if not isinstance(contents, str):
-			contents = contents.decode(file.encoding)
+	try:
+		with io.open(path, 'w', encoding=file.encoding, newline='\n') as fhandle:
+			if not isinstance(contents, str):
+				contents = contents.decode(file.encoding)
 
-		fhandle.write(contents)
+			fhandle.write(contents)
+	except (IOError, OSError) as e:
+		logging.error(f"Failed to write '{path}': {e}")
+		sys.exit(1)
 
 if __name__ == '__main__':
 	main()

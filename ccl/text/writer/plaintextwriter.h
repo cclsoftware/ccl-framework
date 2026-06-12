@@ -35,8 +35,8 @@ public:
 	PlainTextWriter ();
 
 	// IPlainTextWriter
-	ITextBuilder* CCL_API createPlainTextBuilder () override;
 	void CCL_API setDocumentLineFormat (TextLineFormat lineFormat) override;
+	ITextBuilder* CCL_API createTextBuilder () override;
 	tresult CCL_API beginDocument (IStream& stream, TextEncoding encoding = Text::kUnknownEncoding) override;
 	tresult CCL_API endDocument () override;
 	tresult CCL_API writeLine (StringRef text) override;
@@ -56,7 +56,7 @@ public:
 	PlainTextBuilder (TextLineFormat lineFormat);
 
 	// TextBuilder
-	tresult CCL_API printChunk (String& result, const Text::Chunk& chunk) override;
+	tresult CCL_API printFragment (String& result, const TextFragment& fragment) override;
 
 private:
 	int listLevel;

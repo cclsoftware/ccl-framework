@@ -77,6 +77,16 @@ CString EULAComponent::getAcceptedAttributeID ()
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
+String EULAComponent::getVersionedID (StringRef id, int version)
+{
+	String versionedId (id);
+	if(version > 0)
+		versionedId.appendFormat ("-v%(1)", version);
+	return versionedId;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
 EULAComponent::EULAComponent (StringID _formName)
 : Component (CCLSTR ("EULA")),
   formName (_formName.isEmpty () ? "EULADialog" : _formName)
@@ -86,7 +96,7 @@ EULAComponent::EULAComponent (StringID _formName)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool EULAComponent::startup (const IUrl* defaultPath)
+bool EULAComponent::startup (const IUrl* defaultPath, int version)
 {
 	Url licenseFolder;
 	if(defaultPath && !defaultPath->isEmpty ())
@@ -101,30 +111,31 @@ bool EULAComponent::startup (const IUrl* defaultPath)
 	path.descend ("EULA.txt");
 	LocalizedUrl::localize (path, CCLSTR ("EULA")); // try to find a localized EULA
 
-	return run (CCLSTR ("EULA"), path, RootComponent::instance ().getApplicationTitle ());
+	return run (CCLSTR ("EULA"), path, RootComponent::instance ().getApplicationTitle (), AgreementType::kEULA, version);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool EULAComponent::run (StringRef id, UrlRef path, StringRef title, AgreementType type)
+bool EULAComponent::run (StringRef id, UrlRef path, StringRef title, AgreementType type, int version)
 {
-	if(checkAcceptedAndLoadText (id, path))
+	if(checkAcceptedAndLoadText (id, path, version))
 		return true;
 
 	String dialogTitle = getDialogTitle (title, type);
 	if(runDialog (dialogTitle) != DialogResult::kOkay)
 		return false;
 
+	String versionedId = getVersionedID (id, version);
 	StringID acceptedAttributeId = getAcceptedAttributeID ();
-	Settings::instance ().getAttributes (id).set (acceptedAttributeId, true);
+	Settings::instance ().getAttributes (versionedId).set (acceptedAttributeId, true);
 	return true;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-IAsyncOperation* EULAComponent::runAsync (StringRef id, UrlRef path, StringRef title, AgreementType type)
+IAsyncOperation* EULAComponent::runAsync (StringRef id, UrlRef path, StringRef title, AgreementType type, int version)
 {
-	if(checkAcceptedAndLoadText (id, path))
+	if(checkAcceptedAndLoadText (id, path, version))
 		return AsyncOperation::createCompleted (DialogResult::kOkay);
 
 	AutoPtr<AsyncSequence> asyncs = NEW AsyncSequence ();
@@ -134,13 +145,14 @@ IAsyncOperation* EULAComponent::runAsync (StringRef id, UrlRef path, StringRef t
 		return runDialogAsync (dialogTitle);
 	});
 
-	asyncs->then ([id] (IAsyncOperation& operation)
+	asyncs->then ([id, version] (IAsyncOperation& operation)
 	{
 		int result = operation.getResult ().asInt ();
 		if(result == DialogResult::kOkay || result == DialogResult::kApply)
 		{
+			String versionedId = getVersionedID (id, version);
 			StringID acceptedAttributeId = getAcceptedAttributeID ();
-			Settings::instance ().getAttributes (id).set (acceptedAttributeId, true);
+			Settings::instance ().getAttributes (versionedId).set (acceptedAttributeId, true);
 		}
 	});
 
@@ -171,10 +183,11 @@ IAsyncOperation* EULAComponent::runDialogAsync (StringRef title)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool EULAComponent::checkAcceptedAndLoadText (StringRef id, UrlRef path)
+bool EULAComponent::checkAcceptedAndLoadText (StringRef id, UrlRef path, int version)
 {
+	String versionedId = getVersionedID (id, version);
 	StringID acceptedAttributeId = getAcceptedAttributeID ();
-	Attributes& a = Settings::instance ().getAttributes (id);
+	Attributes& a = Settings::instance ().getAttributes (versionedId);
 	bool firstRun = !a.getBool (acceptedAttributeId);
 	if(!firstRun)
 		return true;

@@ -28,6 +28,17 @@ class Attributes;
 namespace Web {
 
 //************************************************************************************************
+// WebTransaction
+//************************************************************************************************
+
+class WebTransaction
+{
+public:
+	enum MetaDataEvent { kContinue, kEnd };
+	void receiveMetaData (IStream* dstStream, IProgressNotify* progress, int64 length, IWebHeaderCollection& headers, MetaDataEvent e = kContinue);
+};
+
+//************************************************************************************************
 // WebCredentials
 //************************************************************************************************
 

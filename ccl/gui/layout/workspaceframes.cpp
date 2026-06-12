@@ -1439,18 +1439,18 @@ int FrameItem::getViewIndex (FrameItem* searchItem) const
 
 bool FrameItem::applyFillFactor (FrameView* frameView, AnchorLayoutView* parentLayoutView)
 {
-		if(getFillFactor () == 0)
+	if(getFillFactor () == 0)
 		return false;
 
-		AnchorLayoutItem* layoutItem = static_cast<AnchorLayoutItem*> (parentLayoutView->findLayoutItem (frameView));
-		if(!layoutItem)
+	AnchorLayoutItem* layoutItem = static_cast<AnchorLayoutItem*> (parentLayoutView->findLayoutItem (frameView));
+	if(!layoutItem)
 		return false;
 
-		// the preferred size of items with fill factor must not change
-		layoutItem->fillFactor = getFillFactor ();
-		layoutItem->preferredSize = frameView->getOriginalViewSize ();
-		layoutItem->preferredSizeLocked (true);
-		return true;
+	// the preferred size of items with fill factor must not change
+	layoutItem->fillFactor = getFillFactor ();
+	layoutItem->preferredSize = frameView->getOriginalViewSize ();
+	layoutItem->preferredSizeLocked (true);
+	return true;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -3063,6 +3063,10 @@ class EmbeddedFrameItem::ResetViewPointers: public IDockPanelItemVisitor
 	{
 		if(FrameItem* frameItem = ccl_cast<FrameItem> (&item))
 		{
+			// a (detached) PopupFrameItem is not affected by removing the EmbeddedFrameView (it needs the view pointer to close its own window later)
+			if(frameItem->canCast (ccl_typeid <PopupFrameItem> ()))
+				return;
+
 			if(frameItem->isVolatile ())
 			{
 				ASSERT (frameItem->isEmbedded ())

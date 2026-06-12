@@ -25,6 +25,16 @@ namespace CCL {
 
 interface IObserver;
 
+//////////////////////////////////////////////////////////////////////////////////////////////////
+// SignalQueuePolicy
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+DEFINE_ENUM (SignalQueuePolicy)
+{
+	kSignalQueueReplaceSameId = 0,	///< replace existing message with same identifier (default)
+	kSignalQueueAddAlways			///< always add new message regardless of existing ones
+};
+
 //************************************************************************************************
 // ISubject
 /** A subject notifies multiple observer objects on state changes. 
@@ -43,7 +53,7 @@ interface CCL_NOVTABLE ISubject: IUnknown
 	virtual void CCL_API signal (MessageRef msg) = 0;
 	
 	/** Send message to connected observers asynchronously. */
-	virtual void CCL_API deferSignal (IMessage* msg) = 0;
+	virtual void CCL_API deferSignal (IMessage* msg, SignalQueuePolicy policy = kSignalQueueReplaceSameId) = 0;
 
 	DECLARE_IID (ISubject)
 

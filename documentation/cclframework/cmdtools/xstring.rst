@@ -788,6 +788,12 @@ Production example: this is the model definition for the built-in `<Skin>` forma
 Version history
 ===============
 
+Changelog v1.2.1
+----------------
+
+* added support for "translated" attribute in Skin XML
+
+
 Changelog v1.2.0
 ----------------
 

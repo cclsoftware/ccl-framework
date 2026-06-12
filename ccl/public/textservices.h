@@ -33,6 +33,8 @@ interface IStringDictionary;
 interface ICStringDictionary;
 interface IXmlParser;
 interface IXmlWriter;
+interface IMarkdownParser;
+interface IMarkdownWriter;
 interface IStream;
 interface IDataTransformer;
 interface ITextStreamer;
@@ -131,6 +133,18 @@ inline tresult UBJsonParse (IStream& srcStream, IAttributeHandler& handler) { re
 /** Create handler for UBJSON serialization to given destination stream */
 CCL_EXPORT IAttributeHandler* CCL_API CCL_ISOLATED (UBJsonWrite) (IStream& dstStream, int options = 0);
 inline IAttributeHandler* UBJsonWrite (IStream& dstStream, int options = 0) { return CCL_ISOLATED (UBJsonWrite) (dstStream, options); }
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+// Markdown APIs
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+/** Creates a new Markdown parser instance */
+CCL_EXPORT IMarkdownParser* CCL_API CCL_ISOLATED (CreateMarkdownParser) ();
+inline IMarkdownParser* CreateMarkdownParser () { return CCL_ISOLATED (CreateMarkdownParser) (); }
+
+/** Creates a new Markdown writer instance */
+CCL_EXPORT IMarkdownWriter* CCL_API CCL_ISOLATED (CreateMarkdownWriter) ();
+inline IMarkdownWriter* CreateMarkdownWriter () { return CCL_ISOLATED (CreateMarkdownWriter) (); }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 // Transformation APIs

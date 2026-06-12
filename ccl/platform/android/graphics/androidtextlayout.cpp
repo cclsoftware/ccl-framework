@@ -1,7 +1,7 @@
 //************************************************************************************************
 //
 // This file is part of Crystal Class Library (R)
-// Copyright (c) 2025 CCL Software Licensing GmbH.
+// Copyright (c) 2026 CCL Software Licensing GmbH.
 // All Rights Reserved.
 //
 // Licensed for use under either:
@@ -35,6 +35,7 @@ namespace Android {
 
 DECLARE_JNI_CLASS (FrameworkTextLayout, CCLGUI_CLASS_PREFIX "FrameworkTextLayout")
 	DECLARE_JNI_CONSTRUCTOR (construct, jstring, int, int, int, int, int, jobject, int, float, float, float)
+	DECLARE_JNI_METHOD (void, setFontFace, int, int, jstring)
 	DECLARE_JNI_METHOD (void, setFontStyle, int, int, int, bool)
 	DECLARE_JNI_METHOD (void, setFontSize, int, int, int)
 	DECLARE_JNI_METHOD (void, setSpacing, int, int, float)
@@ -61,6 +62,7 @@ END_DECLARE_JNI_CLASS (FrameworkTextLayout)
 
 DEFINE_JNI_CLASS (FrameworkTextLayout)
 	DEFINE_JNI_CONSTRUCTOR (construct, "(Ljava/lang/String;IIIIILandroid/graphics/Typeface;IFFF)V")
+	DEFINE_JNI_METHOD (setFontFace, "(IILjava/lang/String;)V")
 	DEFINE_JNI_METHOD (setFontStyle, "(IIIZ)V")
 	DEFINE_JNI_METHOD (setFontSize, "(III)V")
 	DEFINE_JNI_METHOD (setSpacing, "(IIF)V")
@@ -124,6 +126,7 @@ tresult CCL_API AndroidTextLayout::construct (StringRef text, Coord width, Coord
 	layout.assign (jni, newLayout);
 
 	this->text = text;
+	this->font = font;
 	return kResultOk;
 }
 
@@ -151,6 +154,17 @@ tresult CCL_API AndroidTextLayout::resize (CoordF width, CoordF height)
 {
 	// (there is no float equivalent for the implementation on the java side)
 	return resize (coordFToInt (width), coordFToInt (height));
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+tresult CCL_API AndroidTextLayout::setFontFace (const Range& range, StringRef faceName)
+{
+	if(!layout)
+		return kResultUnexpected;
+
+	FrameworkTextLayout.setFontFace (layout, range.start, range.start + range.length, JniCCLString (faceName).getString ());
+	return kResultOk;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -245,7 +259,7 @@ tresult CCL_API AndroidTextLayout::setTextColor (const Range& range, Color color
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-tresult CCL_API AndroidTextLayout::getBounds (Rect& bounds, int flags) const
+tresult CCL_API AndroidTextLayout::getBounds (Rect& bounds) const
 {
 	if(!layout)
 		return kResultUnexpected;
@@ -262,7 +276,7 @@ tresult CCL_API AndroidTextLayout::getBounds (Rect& bounds, int flags) const
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-tresult CCL_API AndroidTextLayout::getBounds (RectF& bounds, int flags) const
+tresult CCL_API AndroidTextLayout::getBounds (RectF& bounds) const
 {
 	if(!layout)
 		return kResultUnexpected;

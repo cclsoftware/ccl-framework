@@ -23,11 +23,13 @@ ccl_list_append_once (cclextras_web_headers
 	${CCL_DIR}/extras/web/oauth.h
 	${CCL_DIR}/extras/web/oauth2.h
 	${CCL_DIR}/extras/web/cognito.h
+	${CCL_DIR}/extras/web/openai.h
 	${CCL_DIR}/extras/web/webutils.h
 	${CCL_DIR}/extras/web/webelements.h
 	${CCL_DIR}/extras/web/webformdata.h
 	${CCL_DIR}/extras/web/webpreset.h
 	${CCL_DIR}/extras/web/webprotocol.h
+	${CCL_DIR}/extras/web/webresponsestream.h
 	${CCL_DIR}/extras/web/webxhrclient.h
 	${CCL_DIR}/extras/web/webxhroperation.h
 	${CCL_DIR}/extras/web/transfermanagerui.h
@@ -37,11 +39,13 @@ ccl_list_append_once (cclextras_web_sources
 	${CCL_DIR}/extras/web/oauth.cpp
 	${CCL_DIR}/extras/web/oauth2.cpp
 	${CCL_DIR}/extras/web/cognito.cpp
+	${CCL_DIR}/extras/web/openai.cpp
 	${CCL_DIR}/extras/web/webutils.cpp
 	${CCL_DIR}/extras/web/webelements.cpp
 	${CCL_DIR}/extras/web/webformdata.cpp
 	${CCL_DIR}/extras/web/webpreset.cpp
 	${CCL_DIR}/extras/web/webprotocol.cpp
+	${CCL_DIR}/extras/web/webresponsestream.cpp
 	${CCL_DIR}/extras/web/webxhrclient.cpp
 	${CCL_DIR}/extras/web/transfermanagerui.cpp
 )
@@ -61,7 +65,9 @@ if (NOT TARGET ${cclextras-web})
 	target_sources (${cclextras-web} PRIVATE ${cclextras_web_sources} ${CMAKE_CURRENT_LIST_FILE})
 	ccl_target_headers (${cclextras-web} INSTALL ${CCL_SYSTEM_INSTALL} DESTINATION ${CCL_PUBLIC_HEADERS_DESTINATION} BASE_DIRS ${CCL_DIR} FILES ${cclextras_web_headers})
 	
-	if (CCL_SYSTEM_INSTALL)
+	if (CCL_EXPORTS_PATH)
+		install (TARGETS ${cclextras-web} EXPORT ccl-targets FILE_SET HEADERS DESTINATION ${CCL_PUBLIC_HEADERS_DESTINATION} COMPONENT public_headers)
+	elseif (CCL_SYSTEM_INSTALL)
 		install (TARGETS ${cclextras-web} EXPORT ccl-targets DESTINATION "${CCL_STATIC_LIBRARY_DESTINATION}"
 									   ARCHIVE DESTINATION "${CCL_STATIC_LIBRARY_DESTINATION}" COMPONENT prebuilt_libraries_${VENDOR_NATIVE_COMPONENT_SUFFIX}
 									   FRAMEWORK DESTINATION "${CCL_STATIC_LIBRARY_DESTINATION}" COMPONENT prebuilt_libraries_${VENDOR_NATIVE_COMPONENT_SUFFIX}

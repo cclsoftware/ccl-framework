@@ -87,9 +87,25 @@
 			<ColorScheme.Color name="RangeSliderRedColor" 					color="$skin://hostapp/SeverityColorHigh" 				saturation="8:5" luminance="6" slcombined="true" huefixed="true" invertedvalue="55"/>
 			<ColorScheme.Color name="RangeSliderRedPenColor" 				color="$skin://hostapp/SeverityColorHigh" 				saturation="8:5" luminance="6" slcombined="true" huefixed="true" invertedvalue="51"/>
 			
+			<ColorScheme.Color name="ActionButtonColor" 					color="$skin://hostapp/ActionColor30" 					saturation="8:0/10/30" luminance="7:9" huefixed="true" invertedvalue="35"/>
+			<ColorScheme.Color name="ActionButtonMOColor" 					color="$skin://hostapp/ActionColor35" 					saturation="8:5" luminance="6" huefixed="true" invertedvalue="40"/>
+			<ColorScheme.Color name="ActionButtonDisabledColor" 			color="$skin://hostapp/BaseColor30" alphavalue="50"		saturation="8:5" luminance="6" huefixed="true" invertedvalue="55"/>
+			<ColorScheme.Color name="ActionButtonPressedColor" 				color="$skin://hostapp/ActionColor30" 					saturation="8:0/10/30" luminance="7:9" huefixed="true" invertedvalue="35"/>
+			<ColorScheme.Color name="ActionButtonPenColor" 					color="$skin://hostapp/ActionColor30" 					saturation="8:0/10/30" luminance="7:9" huefixed="true" invertedvalue="35"/>
+			
+			<ColorScheme.Color name="ActionButtonSecondaryColor"			color="$skin://hostapp/PrimaryColor30" 					saturation="8:5" luminance="6" huefixed="true" invertedvalue="40"/>
+			<ColorScheme.Color name="ActionButtonSecondaryMOColor"			color="$skin://hostapp/PrimaryColor35" 					saturation="8:5" luminance="6" huefixed="true" invertedvalue="44"/>
+			<ColorScheme.Color name="ActionButtonSecondaryDisabledColor"	color="$skin://hostapp/BaseColor30" alphavalue="50"		saturation="8:5" luminance="6" huefixed="true" invertedvalue="55"/>
+			<ColorScheme.Color name="ActionButtonSecondaryPressedColor"		color="$skin://hostapp/PrimaryColor35" 					saturation="8:5" luminance="6" huefixed="true" invertedvalue="46"/>
+			<ColorScheme.Color name="ActionButtonSecondaryPenColor"			color="$skin://hostapp/PrimaryColor35" 					saturation="8:5" luminance="6" huefixed="true" invertedvalue="36"/>
+
+			<ColorScheme.Color name="ActionButtonTextOnColor" 				color="$skin://hostapp/BaseColor100"					saturation="8:5" luminance="5" huefixed="true" invertedvalue="100"/>
+			<ColorScheme.Color name="ActionButtonTextPressedColor" 			color="$skin://hostapp/BaseColor100"					saturation="8:5" luminance="5" huefixed="true" invertedvalue="100"/>
+
 		</ColorScheme>
 		
-		
+		<ShapeImage name="TransparentImage"			url="TransparentShape"/>
+
 		<ShapeImage name="Button" 					url="ButtonShape" frames="embedded"/>
 		<ShapeImage name="ButtonL" 					url="ButtonLShape" frames="embedded"/>
 		<ShapeImage name="ButtonR" 					url="ButtonRShape" frames="embedded"/>
@@ -178,6 +194,8 @@
 		
 		<ShapeImage name="HeaderBackground"			url="HeaderBackgroundShape"/>
 
+		<ShapeImage name="ActionButton" url="ActionButtonShape" frames="embedded"/>
+		<ShapeImage name="ActionButtonSecondary" url="ActionButtonSecondaryShape" frames="embedded"/>
 		
 		<Image name="AtlasStandard"	url="images/AtlasNeutralStandard.png"/>
 
@@ -460,6 +478,8 @@
 	</Resources>
 
 	<Shapes>
+		<Shape name="TransparentShape" size="0,0,1,1"/>
+
 		<Shape name="WindowHeaderViewShape">
 			<Shape name="normal">
 				<Rectangle size="0,0,20,20" style="fill" Brush.color="@Main.WindowHeaderColor"/>
@@ -1412,6 +1432,37 @@
 				<Ellipse size="2,2,11,11" style="fill" Brush.color="@Main.VectorPadDotActiveColor"/>
 			</Shape>
 		</Shape>
+		
+		<Shape name="ActionButtonShape" style="scale">
+			<Shape name="normal">
+				<Rectangle style="fill stroke tiled" size="0,0,10,10" Pen.color="@Main.ActionButtonPenColor" Brush.color="@Main.ActionButtonColor" radius="3"/>
+			</Shape>
+			<Shape name="mouseover">
+				<Rectangle style="fill stroke tiled" size="0,0,10,10" Pen.color="@Main.ActionButtonPenColor" Brush.color="@Main.ActionButtonMOColor" radius="3"/>
+			</Shape>
+			<Shape name="pressed">
+				<Rectangle style="fill stroke tiled" size="0,0,10,10" Pen.color="@Main.ActionButtonPenColor" Brush.color="@Main.ActionButtonPressedColor" radius="3"/>
+			</Shape>
+			<Shape name="disabled">
+				<Rectangle style="fill tiled" size="0,0,10,10" Brush.color="@Main.ActionButtonDisabledColor" radius="3"/>
+			</Shape>
+		</Shape>
+
+		<Shape name="ActionButtonSecondaryShape" style="scale">
+			<Shape name="normal">
+				<Rectangle style="fill stroke tiled" size="0,0,10,10" Pen.color="@Main.ActionButtonSecondaryPenColor" Brush.color="@Main.ActionButtonSecondaryColor" radius="3"/>
+			</Shape>
+			<Shape name="mouseover">
+				<Rectangle style="fill stroke tiled" size="0,0,10,10" Pen.color="@Main.ActionButtonSecondaryPenColor" Brush.color="@Main.ActionButtonSecondaryMOColor" radius="3"/>
+			</Shape>
+			<Shape name="pressed">
+				<Rectangle style="fill stroke tiled" size="0,0,10,10" Pen.color="@Main.ActionButtonSecondaryPenColor" Brush.color="@Main.ActionButtonSecondaryPressedColor" radius="3"/>
+			</Shape>
+			<Shape name="disabled">
+				<Rectangle style="fill tiled" size="0,0,10,10" Brush.color="@Main.ActionButtonSecondaryDisabledColor" radius="3"/>
+			</Shape>
+		</Shape>
+
 		
 	</Shapes>
 

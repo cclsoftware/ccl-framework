@@ -17,10 +17,11 @@
 //************************************************************************************************
 
 #include "ccl/gui/theme/renderer/trivectorpadrenderer.h"
+
 #include "ccl/gui/controls/trivectorpad.h"
+#include "ccl/gui/graphics/graphicspath.h"
 
 #include "ccl/public/math/mathprimitives.h"
-#include "ccl/public/gui/graphics/graphicsfactory.h"
 
 using namespace CCL;
 
@@ -282,20 +283,18 @@ int TriVectorPadRenderer::hitTest (View* view, const Point& loc, Point* offset)
 
 void TriVectorPadRenderer::drawTriangleShape (View* view)
 {
-	if(AutoPtr<IGraphicsPath> path = GraphicsFactory::createPath ())
-	{
-		GraphicsPort port (view);
+	GraphicsPort port (view);
 	
-		TriVectorPad* pad = static_cast<TriVectorPad*> (view);
+	TriVectorPad* pad = static_cast<TriVectorPad*> (view);
 		
-		path->startFigure (pad->getTrianglePoint (TriVectorPad::kCornerA));
-		path->lineTo (pad->getTrianglePoint (TriVectorPad::kCornerB));
-		path->lineTo (pad->getTrianglePoint (TriVectorPad::kCornerC));
-		path->closeFigure ();
+	AutoPtr<IGraphicsPath> path = NEW GraphicsPath;
+	path->startFigure (pad->getTrianglePoint (TriVectorPad::kCornerA));
+	path->lineTo (pad->getTrianglePoint (TriVectorPad::kCornerB));
+	path->lineTo (pad->getTrianglePoint (TriVectorPad::kCornerC));
+	path->closeFigure ();
 	
-		Rect dst;
-		view->getClientRect (dst);
-		port.fillRect (dst, SolidBrush (Colors::kTransparentBlack));
-		port.fillPath (path, SolidBrush (triangleColor));
-	}
+	Rect dst;
+	view->getClientRect (dst);
+	port.fillRect (dst, SolidBrush (Colors::kTransparentBlack));
+	port.fillPath (path, SolidBrush (triangleColor));
 }

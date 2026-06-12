@@ -28,6 +28,10 @@
 
 #include "ccl/base/storage/configuration.h"
 
+#include <dwmapi.h>
+
+#pragma comment (lib, "Dwmapi.lib")
+
 namespace CCL {
 namespace Win32 {
 
@@ -147,6 +151,21 @@ HWND CreateMessageWindow (SystemEventHandler* handler)
 void SetAlwaysOnTop (HWND hwnd, bool state)
 {
 	::SetWindowPos (hwnd, state ? HWND_TOPMOST : HWND_NOTOPMOST, 0, 0, 0, 0, SWP_NOMOVE|SWP_NOSIZE|SWP_NOACTIVATE|SWP_NOSENDCHANGING);
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+void SetRoundedWindowCornerPreference (HWND hwnd, bool rounded)
+{
+	DWM_WINDOW_CORNER_PREFERENCE preference = rounded ? DWMWCP_ROUND : DWMWCP_DEFAULT;
+	::DwmSetWindowAttribute (hwnd, DWMWA_WINDOW_CORNER_PREFERENCE, &preference, sizeof(preference));
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+void SetCaptionColor (HWND hwnd, COLORREF captionColor)
+{
+	::DwmSetWindowAttribute (hwnd, DWMWA_CAPTION_COLOR, &captionColor, sizeof(captionColor));
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////

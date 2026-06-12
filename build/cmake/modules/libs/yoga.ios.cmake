@@ -1,2 +1,4 @@
 set (yoga_LIBRARY_OUTPUT_DEBUG "${yoga_CONFIG_DIR}/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/libyogacore.a")
 set (yoga_LIBRARY_OUTPUT_RELEASE "${yoga_CONFIG_DIR}/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/libyogacore.a")
+
+set (yoga_cxx_flags "-std\\=c++20 -DYOGA_EXPORT= -fvisibility=hidden")

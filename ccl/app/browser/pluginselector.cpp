@@ -563,7 +563,14 @@ bool PlugInMenuParam::selectClass (UIDRef classID, bool update)
 		if(classID == kNullUID && isDisplayUnselectItem ())
 			index = 0;
 		else
-			return false;
+		{
+			// try alternative classID
+			if(const IClassDescription* altClass = System::GetPlugInManager ().getAlternativeClass (classID))
+				index = getObjectIndex (PlugInClass (altClass->getClassID ()));
+
+			if(index == -1)
+				return false;
+		}
 	}
 
 	setValue (index, update);
@@ -1195,6 +1202,24 @@ PopupSelectorClient::Result CCL_API PlugInSelectorPopup::onKeyDown (const KeyEve
 //************************************************************************************************
 // PlugInSortMethods
 //************************************************************************************************
+
+String PlugInSortMethods::importantSubCategoryPrefix;
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+void PlugInSortMethods::setImportantSubCategoryPrefix (StringRef prefix)
+{
+	importantSubCategoryPrefix = prefix;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+int PlugInSortMethods::getSortPriority (const IClassDescription& description)
+{
+	return description.getSubCategory ().startsWith (importantSubCategoryPrefix) ? 1 : 0;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
 
 String PlugInSortMethods::getVendor (const IClassDescription& description)
 {

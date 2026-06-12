@@ -30,7 +30,7 @@ PlainTextWriter::PlainTextWriter ()
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-ITextBuilder* CCL_API PlainTextWriter::createPlainTextBuilder ()
+ITextBuilder* CCL_API PlainTextWriter::createTextBuilder ()
 {
 	return NEW PlainTextBuilder (lineFormat);
 }
@@ -78,49 +78,42 @@ PlainTextBuilder::PlainTextBuilder (TextLineFormat lineFormat)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-tresult CCL_API PlainTextBuilder::printChunk (String& result, const Text::Chunk& chunk)
+tresult CCL_API PlainTextBuilder::printFragment (String& result, const TextFragment& fragment)
 {
 	result.empty ();
 	tresult tr = kResultOk;
 
-	switch(chunk.chunkType)
+	switch(fragment.nodeType)
 	{
 	case Text::kHeading :
-		result << unpack (chunk) << getLineEnd () << getLineEnd ();
+		result << unpack (fragment) << getLineEnd () << getLineEnd ();
 		break;
 
 	case Text::kPlainText :
-		result << unpack (chunk);
+		result << unpack (fragment);
 		break;
 
 	case Text::kLineBreak :
 		result << getLineEnd ();
 		break;
 
-	case Text::kDecoration :
-		result << unpack (chunk);
-		break;
-
 	case Text::kAnchor :
 		break;
 
+	case Text::kFragmentLink :
 	case Text::kLink :
-		result << unpack (chunk);
-		break;
-
-	case Text::kURL :
-		result << unpack (chunk);
+		result << unpack (fragment);
 		break;
 
 	case Text::kParagraph :
-		result << unpack (chunk) << getLineEnd () << getLineEnd ();
+		result << unpack (fragment) << getLineEnd () << getLineEnd ();
 		break;
 
 	case Text::kListItem :
 		if(listLevel > 0)
 			result.append ("\t", listLevel);
 
-		result << kListBulletString << " " << unpack (chunk) << getLineEnd ();
+		result << kListBulletString << " " << unpack (fragment) << getLineEnd ();
 		break;
 
 	case Text::kListBegin :
@@ -133,7 +126,7 @@ tresult CCL_API PlainTextBuilder::printChunk (String& result, const Text::Chunk&
 		break;
 
 	case Text::kTable :
-		if(ITextTable* table = reinterpret_cast<const Text::Table&> (chunk).table)
+		if(UnknownPtr<ITextTable> table = fragment.argument.asUnknown ())
 		{
 			int rowCount = 0, columnCount = 0;
 			table->getSize (rowCount, columnCount);
@@ -155,7 +148,7 @@ tresult CCL_API PlainTextBuilder::printChunk (String& result, const Text::Chunk&
 		break;
 
 	default :
-		CCL_DEBUGGER ("Unknown text chunk!")
+		CCL_DEBUGGER ("Unsupported text node type!\n")
 		tr = kResultInvalidArgument;
 		break;
 	}

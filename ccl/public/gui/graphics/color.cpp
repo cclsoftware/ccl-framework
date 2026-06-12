@@ -19,6 +19,7 @@
 #include "ccl/public/gui/graphics/color.h"
 #include "ccl/public/gui/graphics/igraphicshelper.h"
 
+#include "ccl/public/base/variant.h"
 #include "ccl/public/text/cclstring.h"
 #include "ccl/public/math/mathprimitives.h"
 
@@ -73,3 +74,27 @@ bool Colors::fromString (Color& color, StringRef string)
 	return fromCString (color, cString);
 }
 
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+bool Colors::fromVariant (Color& color, VariantRef value)
+{
+	// for unspecified value, do not convert from zero below as it yields
+	// transparent black (0,0,0,0) over default constructor opaque black (0,0,0,255)
+	if(!value.isValid ())
+		return false;
+
+	else if(value.isString ())
+		return fromString (color, value.asString ());
+
+	color = Color::fromInt ((uint32)(uint64)value.asLargeInt ());
+	return true;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+void Colors::toVariant (Variant& value, ColorRef color)
+{
+	// Convert to script compatible color code. Script Variant support limited to int32
+	uint32 colorCode = color;
+	value = (int)colorCode;
+}

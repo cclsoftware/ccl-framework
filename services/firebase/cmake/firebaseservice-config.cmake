@@ -25,6 +25,9 @@ find_package (ccl REQUIRED COMPONENTS cclapp cclbase ccltext cclsystem cclgui cc
 ccl_find_path (firebase_DIR NAMES "source/plugversion.h" HINTS "${CMAKE_CURRENT_LIST_DIR}/.." DOC "Firebase service directory")
 
 if (TARGET firebaseservice)
+	if (VENDOR_PLUGINS_RUNTIME_DIRECTORY)
+		ccl_install_imported (firebaseservice LIBRARY DESTINATION ${VENDOR_PLUGINS_RUNTIME_DIRECTORY} FRAMEWORK DESTINATION ${VENDOR_PLUGINS_RUNTIME_DIRECTORY})
+	endif ()
 	return ()
 endif ()
 
@@ -63,3 +66,9 @@ list (APPEND firebaseservice_sources ${firebaseservice_source_files} ${firebases
 ccl_add_resources (firebaseservice ${firebaseservice_resources})
 target_sources (firebaseservice PRIVATE ${firebaseservice_sources})
 target_link_libraries (firebaseservice PRIVATE cclapp cclbase ccltext cclsystem cclgui cclsecurity cclnet cclextras-firebase)
+
+ccl_export_target (firebaseservice)
+
+if (VENDOR_PLUGINS_RUNTIME_DIRECTORY)
+	install (TARGETS firebaseservice LIBRARY DESTINATION ${VENDOR_PLUGINS_RUNTIME_DIRECTORY} FRAMEWORK DESTINATION ${VENDOR_PLUGINS_RUNTIME_DIRECTORY})
+endif ()

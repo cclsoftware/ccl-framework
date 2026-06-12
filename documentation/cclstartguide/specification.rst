@@ -65,17 +65,25 @@ Supported Compilers and IDEs
     :widths: 50 50 50
 	:header-rows: 1
 
-    * - Host Operating System
+    * - Host Systems
+	  - Target Platforms
 	  - Supported IDEs
 	  - Supported Compilers
     * - Windows
+      - Windows
       - Visual Studio or Visual Studio Code
 	  - Microsoft C++ compiler
 	* - macOS
+      - macOS, iOS
 	  - XCode, Visual Studio Code
 	  - Clang
 	* - Linux
+      - Linux
 	  - Various, including Visual Studio Code
 	  - Clang, GCC
+	* - Windows, macOS, Linux
+      - Android
+	  - Android Studio
+	  - Clang
 
 Build scripts are based on CMake (version 3.30 or later).

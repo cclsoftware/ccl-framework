@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 if [ "$JAVA_HOME" == "" ]; then
   echo Error: JAVA_HOME not set!
@@ -23,20 +23,28 @@ case "$( uname )" in                         #(
   Darwin* )                  macos=true   ;;
 esac
 
-# --- Set tool paths ---
-SDKPATH=$HOME/Android/Sdk
+# --- Set SDK path ---
+if [ ! -z "$ANDROID_HOME" ]; then
+  SDKPATH=$ANDROID_HOME
+else
+  SDKPATH=$HOME/Android/Sdk
 
+  if [ $windows == true ]; then
+    SDKPATH=$LOCALAPPDATA/Android/Sdk
+  elif [ $macos == true ]; then
+    SDKPATH=$HOME/Library/Android/sdk
+  fi
+fi
+
+# --- Set tool paths ---
 SEVENZIP=7za
 ZIPTOOL=zip
 
 if [ $windows == true ]; then
   TOOLPATH=$SCRIPT_HOME/../../../tools/bin/win
-  SDKPATH=$LOCALAPPDATA/Android/Sdk
 
   SEVENZIP=$TOOLPATH/7za
   ZIPTOOL=$TOOLPATH/zip
-elif [ $macos == true ]; then
-  SDKPATH=$HOME/Library/Android/sdk
 fi
 
 JAVA="$JAVA_HOME/bin/java"

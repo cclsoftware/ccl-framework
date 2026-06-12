@@ -214,7 +214,19 @@ tresult CCL_API XMLHttpRequest::setRequestHeader (StringID header, StringID valu
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-IStream* XMLHttpRequest::createStream (MutableCString& contentType, VariantRef data) const
+tresult CCL_API XMLHttpRequest::setResponseStream (IStream* stream)
+{
+	ASSERT (readyState <= kOpened)
+	if(readyState > kOpened)
+		return kResultUnexpected;
+
+	responseStream.share (stream);
+	return kResultOk;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+IStream* XMLHttpRequest::createLocalStream (MutableCString& contentType, VariantRef data) const
 {
 	IStream* stream = nullptr;
 	if(requestHeaders) // content type can be set via setRequestHeader()
@@ -256,20 +268,22 @@ tresult CCL_API XMLHttpRequest::send (VariantRef data, IProgressNotify* progress
 
 tresult XMLHttpRequest::sendAsync (VariantRef data)
 {
+	if(!responseStream) // can be customized
+		responseStream = NEW MemoryStream;
+
 	if(method == HTTP::kPOST || method == HTTP::kPUT || method == HTTP::kPATCH || method == HTTP::kDELETE)
 	{
 		MutableCString contentType;
-		AutoPtr<IStream> localData = createStream (contentType, data);		
+		AutoPtr<IStream> localData = createLocalStream (contentType, data);
 		IWebHeaderCollection& headers = getRequestHeaders ();
 		headers.getEntries ().setEntry (Meta::kContentType, contentType);
 
-		System::GetWebService ().uploadInBackground (this, url, *localData, &headers, method, credentials); 
+		System::GetWebService ().uploadInBackground (this, url, *localData, &headers, method, credentials, responseStream); 
 	}
 	else
 	{
 		ASSERT (method == HTTP::kGET)		
 		ASSERT (data.isNil ())
-		responseStream = NEW MemoryStream;
 
 		System::GetWebService ().downloadInBackground (this, url, *responseStream, credentials);
 	}
@@ -284,13 +298,15 @@ tresult XMLHttpRequest::sendAsync (VariantRef data)
 tresult XMLHttpRequest::sendBlocking (VariantRef data, IProgressNotify* progress)
 {
 	isSending (true);
-	responseStream = NEW MemoryStream;
-	bool success = false;
 
+	if(!responseStream) // can be customized
+		responseStream = NEW MemoryStream;
+
+	bool success = false;
 	if(method == HTTP::kPOST || method == HTTP::kPUT)
 	{
 		MutableCString contentType;
-		AutoPtr<IStream> localData = createStream (contentType, data);
+		AutoPtr<IStream> localData = createLocalStream (contentType, data);
 		IWebHeaderCollection& headers = getRequestHeaders ();
 		headers.getEntries ().setEntry (Meta::kContentType, contentType);
 
@@ -369,11 +385,6 @@ void CCL_API XMLHttpRequest::notify (ISubject* subject, MessageRef msg)
 	{
 		bool success = msg[0].asResult () == kResultOk; // error check at network level
 		this->status = msg[1].asInt (); // status at application level, can be an HTTP error code
-		if(msg == Meta::kUploadComplete)
-		{
-			responseStream.share (UnknownPtr<IStream> (msg[2].asUnknown ()));
-			//ASSERT (responseStream.isValid ()) can be null when request failed
-		}
 
 		isSending (false);
 		isError (!success);

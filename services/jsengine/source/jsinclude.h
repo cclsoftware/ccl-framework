@@ -37,12 +37,15 @@
 
 #if CCL_PLATFORM_MAC
 	#define XP_MACOSX 1
+	#define XP_UNIX 1
 #elif CCL_PLATFORM_WINDOWS
 	#define XP_WIN 1
 #elif CCL_PLATFORM_LINUX || CCL_PLATFORM_ANDROID
 	#define XP_LINUX 1
+	#define XP_UNIX 1
 #elif CCL_PLATFORM_IOS
 	#define XP_IOS 1
+	#define XP_UNIX 1
 #else
 	#error unknown platform
 #endif

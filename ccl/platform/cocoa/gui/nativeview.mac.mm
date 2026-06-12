@@ -99,6 +99,7 @@ NSWindow* CCL::MacOS::toNSWindow (const IWindow* window)
 - (void)drawRect:(NSRect)dirtyRect;
 - (BOOL)isFlipped;
 - (BOOL)keyEvent:(NSEvent*)nsEvent;
+- (MouseEvent)makeMouseEvent:(NSEvent*)nsEvent type:(int)eventType;
 - (DragEvent)makeDragEvent:(id <NSDraggingInfo>)sender type:(int)type;
 - (void)magnifyWithEvent:(NSEvent*)event;
 - (void)gestureEvent:(NSEvent*)event withType:(int)type;
@@ -294,6 +295,36 @@ bool CustomView::embedInto (NSView* parent)
 //	Mouse events
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
+- (MouseEvent)makeMouseEvent:(NSEvent*)nsEvent type:(int)eventType
+{
+	NSPoint mouseLoc = [self convertPoint:[nsEvent locationInWindow] fromView:nil];
+	CCL::Point p ((int)mouseLoc.x, (int)mouseLoc.y);
+	MouseEvent event (eventType, p);
+	event.eventTime = [nsEvent timestamp];
+
+	int mouseButton = (int)[nsEvent buttonNumber];
+	int modifiers = (int)[nsEvent modifierFlags];
+
+	if(modifiers & NSEventModifierFlagControl)
+	{
+		mouseButton = 1;
+		modifiers &= ~NSEventModifierFlagControl;
+	}
+
+	VKey::fromSystemModifiers (event.keys, modifiers);
+
+	if(mouseButton == 0)
+		event.keys.keys |= KeyState::kLButton;
+	else if(mouseButton == 1)
+		event.keys.keys |= KeyState::kRButton;
+	else if(mouseButton == 2)
+		event.keys.keys |= KeyState::kMButton;
+
+	return event;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
 - (void)mouseDown:(NSEvent*)nsEvent
 {
 	[self onMouseDown: nsEvent];
@@ -305,14 +336,8 @@ bool CustomView::embedInto (NSView* parent)
 {
 	if(window == nullptr)
 		return;
-		
-	int modifiers = (int)[nsEvent modifierFlags];
-	NSPoint mouseLoc = [self convertPoint:[nsEvent locationInWindow] fromView:nil];
 	
-	CCL::Point p ((int)mouseLoc.x, (int)mouseLoc.y);
-	MouseEvent event (MouseEvent::kMouseMove, p);
-	event.eventTime = [nsEvent timestamp];
-	VKey::fromSystemModifiers (event.keys, modifiers);
+	MouseEvent event ([self makeMouseEvent:nsEvent type:MouseEvent::kMouseMove]);
 	
 	//CCL_PRINTF ("Mouse mv %4d %4d\n", p.x, p.y)
 	window->onMouseMove (event);
@@ -392,7 +417,7 @@ bool CustomView::embedInto (NSView* parent)
 
 - (void)otherMouseDragged:(NSEvent*)nsEvent
 {
-	[self onMouseMoved:nsEvent];
+	[self mouseDragged:nsEvent];
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -401,30 +426,8 @@ bool CustomView::embedInto (NSView* parent)
 {
 	if(window == nullptr)
 		return;
-	
-	int mouseButton = (int)[nsEvent buttonNumber];
-	int modifiers = (int)[nsEvent modifierFlags];
-	NSPoint mouseLoc = [self convertPoint:[nsEvent locationInWindow] fromView:nil];
-		
-	if(modifiers & NSEventModifierFlagControl)
-	{
-		mouseButton = 1;
-		modifiers &= ~NSEventModifierFlagControl;
-	}
-	
-	CCL::Point where ((int)mouseLoc.x, (int)mouseLoc.y);
-	MouseEvent event (MouseEvent::kMouseDown, where);
-	event.eventTime = [nsEvent timestamp];
-	VKey::fromSystemModifiers (event.keys, modifiers);
-	
-	int myButton = 0;
-	if(mouseButton == 0)
-		myButton = KeyState::kLButton;
-	else if(mouseButton == 1)
-		myButton = KeyState::kRButton;
-	else if(mouseButton == 2)
-		myButton = KeyState::kMButton;
-	event.keys.keys |= myButton;
+
+	MouseEvent event ([self makeMouseEvent:nsEvent type:MouseEvent::kMouseDown]);
 
 	View* activeView = ccl_cast<View> (Desktop.getActiveWindow ());
 	Window* activeWindow = activeView ? activeView->getWindow () : nullptr;
@@ -438,7 +441,7 @@ bool CustomView::embedInto (NSView* parent)
 		window->onActivate (true);
 	}
 
-	CCL_PRINTF ("Mouse dn %4d %4d %d %x\n", (int)mouseLoc.x, (int)mouseLoc.y, mouseButton, [nsEvent window])
+	CCL_PRINTF ("Mouse dn %4d %4d %d %x\n", (int)mouseLoc.x, (int)mouseLoc.y, event.keys.keys & KeyState::kMouseMask, [nsEvent window])
 	if(window)
 	{
 		[self retain];
@@ -446,8 +449,8 @@ bool CustomView::embedInto (NSView* parent)
 		window->onMouseDown (event); // this can close the window (release "self" and set "window" to nullptr)
 		if(window)
 		{
-			if((mouseButton == 1 || event.keys.isSet (KeyState::kControl)) && !window->isSuppressContextMenu ())
-				window->popupContextMenu (where, false);
+			if((event.keys.isSet (KeyState::kRButton) || event.keys.isSet (KeyState::kControl)) && !window->isSuppressContextMenu ())
+				window->popupContextMenu (event.where, false);
 			window->setSuppressContextMenu (false);
 		}
 		[self release];
@@ -460,18 +463,10 @@ bool CustomView::embedInto (NSView* parent)
 {
 	if(window == nullptr)
 		return;
-#if DEBUG_LOG
-	int mouseButton = (int)[nsEvent buttonNumber];
-#endif
-	int modifiers = (int)[nsEvent modifierFlags];
-	NSPoint mouseLoc = [self convertPoint:[nsEvent locationInWindow] fromView:nil];
 
-	CCL::Point p ((int)mouseLoc.x, (int)mouseLoc.y);
-	MouseEvent event (MouseEvent::kMouseUp, p);
-	event.eventTime = [nsEvent timestamp];
-	VKey::fromSystemModifiers (event.keys, modifiers);
-	
-	CCL_PRINTF ("Mouse up %4d %4d %d %x\n", p.x, p.y, mouseButton, [nsEvent window])
+	MouseEvent event ([self makeMouseEvent:nsEvent type:MouseEvent::kMouseUp]);
+
+	CCL_PRINTF ("Mouse up %4d %4d %d %x\n", p.x, p.y, event.keys.keys & KeyState::kMouseMask, [nsEvent window])
 	window->onMouseUp (event);
 }
 
@@ -502,7 +497,9 @@ bool CustomView::embedInto (NSView* parent)
 	
 	SharedPtr<Object> protector (window); // This avoids windows unintentionally deleting themselves during mouse events
 	// CCL_PRINTF ("NSView: Mouse moved %4d %4d\n", mousePosition.x, mousePosition.y)
-	GUI.onMouseMove (window, MouseEvent (MouseEvent::kMouseMove, mousePosition, GUI.getLastKeyState ()));
+	KeyState keys;
+	GUI.getKeyState (keys);
+	GUI.onMouseMove (window, MouseEvent (MouseEvent::kMouseMove, mousePosition, keys));
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////

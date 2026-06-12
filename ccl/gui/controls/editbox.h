@@ -28,6 +28,7 @@
 
 #include "ccl/base/storage/configuration.h"
 
+#include "ccl/public/gui/graphics/itextlayout.h"
 #include "ccl/public/gui/framework/idleclient.h"
 #include "ccl/public/gui/framework/ieditbox.h"
 
@@ -53,7 +54,7 @@ public:
 			 StyleRef style = 0, StringRef title = nullptr);
 	~EditBox ();
 
-	static bool isAnyEdtiting ();
+	static bool isAnyEditing ();
 
 	enum EditBoxParts
 	{

@@ -26,6 +26,8 @@
 namespace CCL {
 namespace SkinElements {
 
+class EmbeddedImageShapeElement;
+
 //************************************************************************************************
 // ShapeElement
 /** A Shape is a vector graphics object, a combination of geometric figures that can be scaled without quality loss.
@@ -73,6 +75,8 @@ public:
 protected:
 	Shape* newShape () const override;
 	bool resolveShapeReference () override;
+
+	void resolveEmbeddedImage (ImageShape& imageShape, EmbeddedImageShapeElement& imageElement) const;
 };
 
 //************************************************************************************************
@@ -136,6 +140,26 @@ class TriangleShapeElement: public ShapeElement
 {
 public:
 	DECLARE_SKIN_ELEMENT (TriangleShapeElement, ShapeElement)
+
+	// Element
+	bool setAttributes (const SkinAttributes& a) override;
+	bool getAttributes (SkinAttributes& a) const override;
+
+protected:
+	Shape* newShape () const override;
+};
+
+//************************************************************************************************
+// EmbeddedImageShapeElement
+/** An embedded image in a shape. */
+//************************************************************************************************
+
+class EmbeddedImageShapeElement: public ShapeElement
+{
+public:
+	DECLARE_SKIN_ELEMENT (EmbeddedImageShapeElement, ShapeElement)
+
+	PROPERTY_MUTABLE_CSTRING (imageName, ImageName)
 
 	// Element
 	bool setAttributes (const SkinAttributes& a) override;

@@ -18,6 +18,8 @@
 
 #include "ccl/platform/cocoa/skia/skiarendertarget.cocoa.h"
 
+@class CCL_ISOLATED (DisplayTimer);
+
 namespace CCL {
 
 //************************************************************************************************
@@ -36,7 +38,8 @@ public:
 	
 protected:
 	UIView* hostView;
-    
+	NSObj<CCL_ISOLATED (DisplayTimer)> displayTimer;
+
     // MetalWindowRenderTarget
 	void initialize () override;
 };

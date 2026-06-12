@@ -358,7 +358,7 @@
 			</Horizontal>
 		</Form>
 		
-		<Form name="Standard.DialogFrame" style="Standard.PopupMenuDecorStyle" attach="all fitsize" options="windowmovable" windowstyle="customframe transparent translucent sheetstyle">
+		<Form name="Standard.DialogFrame" style="Standard.PopupMenuDecorStyle" attach="all fitsize" options="windowmovable" windowstyle="customframe roundedcorners transparent translucent sheetstyle">
 			<Vertical margin="3" spacing="0" attach="all fitsize" options="unifysizes">
 				<View name="DialogFrameHeader" attach="left right" data.buttonOrder="affirmative-button-right"/>
 				<if property="$hasTitleBarImage" value="0">
@@ -372,7 +372,7 @@
 		<!-- PopupMenuDecor -->
 		<!-- ******************************************************************************************** -->
 
-		<Form name="Standard.PopupMenuDecor" style="Standard.PopupMenuDecorStyle" windowstyle="sizable customframe" options="translucent transparent" attach="all fitsize">
+		<Form name="Standard.PopupMenuDecor" style="Standard.PopupMenuDecorStyle" windowstyle="sizable customframe roundedcorners" options="translucent transparent" attach="all fitsize">
 			<?defined mobileapp?>
 				<Vertical margin="3" spacing="0" attach="all fitsize">
 					<using controller="$PopupSelector">

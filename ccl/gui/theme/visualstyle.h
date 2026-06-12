@@ -1,7 +1,7 @@
 //************************************************************************************************
 //
 // This file is part of Crystal Class Library (R)
-// Copyright (c) 2025 CCL Software Licensing GmbH.
+// Copyright (c) 2026 CCL Software Licensing GmbH.
 // All Rights Reserved.
 //
 // Licensed for use under either:
@@ -19,7 +19,7 @@
 #ifndef _ccl_visualstyle_h
 #define _ccl_visualstyle_h
 
-#include "ccl/base/object.h"
+#include "ccl/base/collections/objectarray.h"
 
 #include "ccl/gui/theme/colorreference.h"
 
@@ -28,7 +28,6 @@
 #include "ccl/public/base/variant.h"
 #include "ccl/public/gui/framework/ivisualstyle.h"
 #include "ccl/public/gui/graphics/iimage.h"
-#include "ccl/public/collections/vector.h"
 
 namespace CCL {
 
@@ -63,6 +62,8 @@ namespace CCL {
 		   />
 */
 
+interface IVisualStyleClient;
+
 namespace Boxed {
 
 //************************************************************************************************
@@ -89,75 +90,76 @@ protected:
 
 } // namespace Boxed
 
-interface IVisualStyleClient;
-
 //************************************************************************************************
-// VisualStyle
+// StyleConditionContext
 //************************************************************************************************
 
-class VisualStyle: public Object,
-				   public IVisualStyle
+class StyleConditionContext: public Object,
+                             public IStyleConditionContext
 {
 public:
-	DECLARE_CLASS (VisualStyle, Object)
+	DECLARE_CLASS (StyleConditionContext, Object)
 
-	VisualStyle (StringID name = nullptr);
-	VisualStyle (const VisualStyle& other);
-	~VisualStyle ();
+	void setCondition (CStringRef condition, bool state);
 
-	static const VisualStyle emptyStyle;
+	// IStyleConditionContext
+	tbool CCL_API matches (StringID conditions) const override;
+
+	CLASS_INTERFACE (IStyleConditionContext, Object)
+
+protected:
+	FixedSizeVector<CString, 16> conditions;
+};
+
+//************************************************************************************************
+// VisualStyleData
+//************************************************************************************************
+
+class VisualStyleData: public Object,
+					   public IVisualStyleData
+{
+public:
+	DECLARE_CLASS (VisualStyleData, Object)
+
+	VisualStyleData (StringID name = nullptr);
+	VisualStyleData (const VisualStyleData& other);
+	~VisualStyleData ();
+
 	static constexpr bool kStyleCaseSensitive = false; ///< case-sensitivity of visual style items
-
-	StringID CCL_API getName () const override; // IVisualStyle
-	void setName (StringID name);
-
-	void merge (const VisualStyle& other);
-	void removeAll ();
-	void setInherited (VisualStyle* inherited);
-
-	void setTrigger (ITriggerPrototype* trigger);
-	ITriggerPrototype* getTrigger (bool inherited = true) const;
 
 	void addColorSchemeReference (StringID nameInStyle, ColorScheme& scheme, StringID nameInScheme);
 
-	// add / remove clients that will be notified when style changes; does not take ownership of client
-	virtual void use (IVisualStyleClient* client);
-	virtual void unuse (IVisualStyleClient* client);
-
-	// IVisualStyle
+	// IVisualStyleData
+	StringID CCL_API getName () const override;
+	void CCL_API setName (StringID name) override;
 	ColorRef CCL_API getColor (StringID name, ColorRef defaultColor = Colors::kBlack) const override;
+	tbool CCL_API getColor (Color& color, StringID name) const override;
 	void CCL_API setColor (StringID name, ColorRef color) override;
-
 	FontRef CCL_API getFont (StringID name, FontRef defaultFont = Font::getDefaultFont ()) const override;
+	tbool CCL_API getFont (Font& font, StringID name) const override;
 	void CCL_API setFont (StringID name, FontRef font) override;
-
 	Metric CCL_API getMetric (StringID name, Metric defaultValue = 0) const override;
+	tbool CCL_API getMetric (Metric& value, StringID name) const override;
 	void CCL_API setMetric (StringID name, Metric value) override;
-	
+	DesignCoord CCL_API getDesignMetric (StringID name, DesignCoordRef defaultValue = DesignCoord::kUndefined) const override;
+	tbool CCL_API getDesignMetric (DesignCoord& value, StringID name) const override;
+	void CCL_API setDesignMetric (StringID name, DesignCoordRef value) override;
 	CString CCL_API getString (StringID name, StringID defaultValue = CString::kEmpty) const override;
+	tbool CCL_API getString (MutableCString& string, StringID name) const override;
 	void CCL_API setString (StringID name, StringID value) override;
-
 	Options CCL_API getOptions (StringID name, Options defaultOptions = 0) const override;
+	tbool CCL_API getOptions (Options& options, StringID name) const override;
 	void CCL_API setOptions (StringID name, Options options) override;
-
 	IImage* CCL_API getImage (StringID name) const override;
 	void CCL_API setImage (StringID name, IImage* image) override;
-
 	IGradient* CCL_API getGradient (StringID name) const override;
 	void CCL_API setGradient (StringID name, IGradient* gradient) override;
-
 	tbool CCL_API hasReferences (IColorScheme& scheme) const override;
-	tbool CCL_API copyFrom (const IVisualStyle& other) override;
-
-	const IVisualStyle* CCL_API getInherited () const override;
-	const IVisualStyle* CCL_API getOriginal () const override;
-
-	using IVisualStyle::getMetric;
 
 	// Object
 	void CCL_API notify (ISubject* subject, MessageRef msg) override;
 
-	CLASS_INTERFACE (IVisualStyle, Object)
+	CLASS_INTERFACE (IVisualStyleData, Object)
 
 protected:
 
@@ -183,7 +185,7 @@ protected:
 	public:
 		ColorItem (StringID name, Color color): Item (name), color (color) {}
 		ColorItem () {}
-		ColorItem (const ColorItem& other): Item (other.name), color (other.color) {}		
+		ColorItem (const ColorItem& other): Item (other.name), color (other.color) {}
 		void operator = (const ColorItem& other) { name = other.name; color = other.color;}
 		bool operator == (const ColorItem& other) const { return name == other.name; }
 
@@ -196,7 +198,7 @@ protected:
 	public:
 		FontItem (StringID name, const Font& font): Item (name), font (font) {}
 		FontItem () {}
-		FontItem (const FontItem& other): Item (other.name), font (other.font)  {}
+		FontItem (const FontItem& other): Item (other.name), font (other.font) {}
 		void operator = (const FontItem& other) { name = other.name; font = other.font;}
 		bool operator == (const FontItem& other) const { return name == other.name; }
 
@@ -207,14 +209,15 @@ protected:
 	class MetricItem: public Item
 	{
 	public:
-		MetricItem (StringID name, Metric value): Item (name), value (value) {}
-		MetricItem (): value (0) {}
-		MetricItem (const MetricItem& other): Item (other.name), value (other.value)  {}
+		MetricItem (StringID name, Metric value): Item (name), value ({DesignCoord::kCoord, value}) {}
+		MetricItem (StringID name, DesignCoordRef value): Item (name), value (value) {}
+		MetricItem () {}
+		MetricItem (const MetricItem& other): Item (other.name), value (other.value) {}
 		void operator = (const MetricItem& other) { name = other.name; value = other.value;}
 		bool operator == (const MetricItem& other) const { return name == other.name; }
 
-		PROPERTY_VARIABLE (Metric, value, Value)
-		operator Variant () const override { return value; }
+		PROPERTY_OBJECT (DesignCoord, value, Value)
+		operator Variant () const override { return value.toVariant (); }
 	};
 
 	class StringItem: public Item
@@ -313,8 +316,6 @@ protected:
 	ItemVector<OptionsItem> options;
 	ItemVector<ImageItem> images;
 	ItemVector<GradientItem> gradients;
-	SharedPtr<ITriggerPrototype> trigger;
-	SharedPtr<VisualStyle> inherited;
 
 	struct ColorStyleReference: ColorSchemeReference
 	{
@@ -324,6 +325,8 @@ protected:
 	Vector<ColorScheme*> colorSchemeObserverList;
 	Vector<ColorStyleReference*> colorSchemeReferences;
 
+	void mergeData (const VisualStyleData& other);
+	void removeData ();
 	void removeColorSchemeReferences ();
 
 	template<typename T>
@@ -337,7 +340,89 @@ protected:
 };
 
 //************************************************************************************************
-// IVisualStyleClient interface
+// VisualStyle
+//************************************************************************************************
+
+class VisualStyle: public VisualStyleData,
+				   public IVisualStyle
+{
+public:
+	DECLARE_CLASS (VisualStyle, VisualStyleData)
+
+	VisualStyle (StringID name = nullptr);
+	VisualStyle (const VisualStyle& other);
+
+	static const VisualStyle emptyStyle;
+
+	VisualStyleData& asData () { return *this; }
+	const VisualStyleData& asData () const { return *this; }
+
+	void merge (const VisualStyle& other);
+	void removeAll ();
+
+	void setInherited (VisualStyle* inherited);
+
+	void addCondition (VisualStyleData* styleData); // takes ownership!
+
+	void setTrigger (ITriggerPrototype* trigger);
+	ITriggerPrototype* getTrigger (bool inherited = true) const;
+
+	// add / remove clients that will be notified when style changes; does not take ownership of client
+	virtual void use (IVisualStyleClient* client);
+	virtual void unuse (IVisualStyleClient* client);
+
+	// IVisualStyle / VisualStyleData
+	StringID CCL_API getName () const override;
+	void CCL_API setName (StringID name) override;
+	ColorRef CCL_API getColor (StringID name, ColorRef defaultColor = Colors::kBlack) const override;
+	tbool CCL_API getColor (Color& color, StringID name) const override;
+	void CCL_API setColor (StringID name, ColorRef color) override;
+	FontRef CCL_API getFont (StringID name, FontRef defaultFont = Font::getDefaultFont ()) const override;
+	void CCL_API setFont (StringID name, FontRef font) override;
+	tbool CCL_API getFont (Font& font, StringID name) const override;
+	Metric CCL_API getMetric (StringID name, Metric defaultValue = 0) const override;
+	void CCL_API setMetric (StringID name, Metric value) override;	
+	tbool CCL_API getMetric (Metric& value, StringID name) const override;
+	DesignCoord CCL_API getDesignMetric (StringID name, DesignCoordRef defaultValue = DesignCoord::kUndefined) const override;
+	tbool CCL_API getDesignMetric (DesignCoord& value, StringID name) const override;
+	void CCL_API setDesignMetric (StringID name, DesignCoordRef value) override;
+	CString CCL_API getString (StringID name, StringID defaultValue = CString::kEmpty) const override;
+	tbool CCL_API getString (MutableCString& string, StringID name) const override;
+	void CCL_API setString (StringID name, StringID value) override;
+	Options CCL_API getOptions (StringID name, Options defaultOptions = 0) const override;
+	tbool CCL_API getOptions (Options& options, StringID name) const override;
+	void CCL_API setOptions (StringID name, Options options) override;
+	IImage* CCL_API getImage (StringID name) const override;
+	void CCL_API setImage (StringID name, IImage* image) override;
+	IGradient* CCL_API getGradient (StringID name) const override;
+	void CCL_API setGradient (StringID name, IGradient* gradient) override;
+	tbool CCL_API hasReferences (IColorScheme& scheme) const override;
+	tbool CCL_API copyFrom (const IVisualStyle& other) override;
+	const IVisualStyle* CCL_API getInherited () const override;
+	const IVisualStyle* CCL_API getOriginal () const override;
+	const IContainer& CCL_API getStyleConditions () const override;
+	const IVisualStyleData* CCL_API getStyleCondition (StringID name) const override;
+	tbool CCL_API getColor (Color& color, StringID name, IStyleConditionContext* context) const override;
+	tbool CCL_API getFont (Font& font, StringID name, IStyleConditionContext* context) const override;
+	tbool CCL_API getMetric (Metric& value, StringID name, IStyleConditionContext* context) const override;
+	tbool CCL_API getDesignMetric (DesignCoord& value, StringID name, IStyleConditionContext* context) const override;
+	tbool CCL_API getString (MutableCString& string, StringID name, IStyleConditionContext* context) const override;
+	tbool CCL_API getOptions (Options& options, StringID name, IStyleConditionContext* context) const override;
+	IImage* CCL_API getImage (StringID name, IStyleConditionContext* context) const override;
+	IGradient* CCL_API getGradient (StringID name, IStyleConditionContext* context) const override;
+	
+	using IVisualStyle::getMetric;
+
+	CLASS_INTERFACE (IVisualStyle, VisualStyleData)
+
+protected:
+	SharedPtr<ITriggerPrototype> trigger;
+	SharedPtr<VisualStyle> inherited;
+	ObjectArray conditions;
+};
+
+//************************************************************************************************
+// IVisualStyleClient
 //************************************************************************************************
 
 interface IVisualStyleClient: IUnknown
@@ -346,11 +431,11 @@ interface IVisualStyleClient: IUnknown
 };
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
-// VisualStyle inline
+// VisualStyleData inline
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 template<typename T>
-T* VisualStyle::lookup (const Vector<T>& items, StringID name)
+T* VisualStyleData::lookup (const Vector<T>& items, StringID name)
 {
 	T* ptr = items.getItems ();
 	for(int i = 0; i < items.count (); i++)
@@ -364,7 +449,7 @@ T* VisualStyle::lookup (const Vector<T>& items, StringID name)
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 template<typename T>
-void VisualStyle::merge (Vector<T>& destination, const Vector<T>& source) const
+void VisualStyleData::merge (Vector<T>& destination, const Vector<T>& source) const
 {
 	VectorForEach (source, T, sourceItem)
 		T* existingItem = lookup (destination, sourceItem.getName ());

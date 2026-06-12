@@ -7,12 +7,12 @@ msgstr ""
 #: plugmain.cpp
 msgctxt "TUIO"
 msgid "Support for multi-touch via TUIO protocol"
-msgstr "使用TUIO协议的多点触控支持"
+msgstr "对使用 TUIO 协议的多点触控的支持"
 
 #: plugversion.h
 msgctxt "TUIO"
 msgid "TUIO Support"
-msgstr "TUIO支持"
+msgstr "TUIO 支持"
 
 #: tuiouseroption.cpp
 msgctxt "TUIO"

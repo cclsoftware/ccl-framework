@@ -165,6 +165,10 @@ static const AccessibilityScrollDirection kVerticalOrientation = AccessibilitySc
 		return @"Tree";
 	case AccessibilityElementRole::kDataItem :
 		return @"DataItem";
+	case AccessibilityElementRole::kMenu :
+		return @"Menu";
+	case AccessibilityElementRole::kMenuItem :
+		return @"MenuItem";
 	default :
 		CCL_PRINTF ("getRoleString: Unknown role %d\n", role)
 		break;
@@ -449,6 +453,10 @@ static const AccessibilityScrollDirection kVerticalOrientation = AccessibilitySc
 		return NSAccessibilityListRole;
 	case AccessibilityElementRole::kDataItem :
 		return NSAccessibilityUnknownRole;
+	case AccessibilityElementRole::kMenu :
+		return NSAccessibilityUnknownRole;
+	case AccessibilityElementRole::kMenuItem :
+		return NSAccessibilityUnknownRole;
 	default :
 		CCL_PRINTF ("Accessibility: Unknown AccessibilityElementRole %d !\n", role)
 		break;
@@ -598,12 +606,14 @@ static const AccessibilityScrollDirection kVerticalOrientation = AccessibilitySc
 		return NO;
 
 	AccessibilityElementRole role = provider->getEffectiveProvider ().getElementRole ();
-	if(role == AccessibilityElementRole::kButton || role == AccessibilityElementRole::kComboBox)
+	if(role == AccessibilityElementRole::kButton || role == AccessibilityElementRole::kComboBox || role == AccessibilityElementRole::kMenuItem || role == AccessibilityElementRole::kMenu || role == AccessibilityElementRole::kDataItem)
 	{
 		if(UnknownPtr<CCL::IAccessibilityActionProvider> actionProvider = provider->getEffectiveProvider ().asUnknown ())
 			return actionProvider->performAction () == kResultOk ? YES : NO;
+		else if(UnknownPtr<CCL::IAccessibilityToggleProvider> toggleProvider = provider->getEffectiveProvider ().asUnknown ())
+			return toggleProvider->toggle () == kResultOk ? YES : NO;
 		#if DEBUG_LOG
-		NSLog (@"accessibilityPerformPress: Element %@ has no ActionProvider. Press ignored.", [self getRoleString]);
+		NSLog (@"accessibilityPerformPress: Element %@ has no ActionProvider or ToggleProvider. Press ignored.", [self getRoleString]);
 		#endif
 	}
 

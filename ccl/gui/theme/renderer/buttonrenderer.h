@@ -21,6 +21,7 @@
 
 #include "ccl/gui/theme/theme.h"
 #include "ccl/gui/theme/renderer/compositedrenderer.h"
+#include "ccl/gui/theme/textscaler.h"
 
 #include "ccl/public/gui/framework/styleflags.h"
 

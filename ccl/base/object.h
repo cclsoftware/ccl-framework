@@ -80,7 +80,7 @@ public:
 	void CCL_API addObserver (IObserver* observer) override;
 	void CCL_API removeObserver (IObserver* observer) override;
 	void CCL_API signal (MessageRef msg) override;
-	void CCL_API deferSignal (IMessage* msg) override;
+	void CCL_API deferSignal (IMessage* msg, SignalQueuePolicy policy = kSignalQueueReplaceSameId) override;
 
 	/** Defer kChanged message for this object. */
 	virtual void deferChanged ();

@@ -358,10 +358,10 @@ BEGIN_SKIN_ELEMENT_WITH_MEMBERS (FlexboxElement, LayoutElement, TAG_FLEXBOX, DOC
 	ADD_SKIN_ELEMENT_MEMBER (ATTR_FLEXGAPCOLUMN, TYPE_METRIC)		///< Space added between elements vertically
 END_SKIN_ELEMENT_WITH_MEMBERS (FlexboxElement)
 
-DEFINE_SKIN_ENUMERATION (TAG_FLEXBOX, ATTR_FLEXDIRECTION, FlexboxLayout::flexDirection)
-DEFINE_SKIN_ENUMERATION (TAG_FLEXBOX, ATTR_FLEXWRAP, FlexboxLayout::flexWrap)
-DEFINE_SKIN_ENUMERATION (TAG_FLEXBOX, ATTR_FLEXJUSTIFY, FlexboxLayout::flexJustify)
-DEFINE_SKIN_ENUMERATION (TAG_FLEXBOX, ATTR_FLEXALIGN, FlexboxLayout::flexAlign)
+DEFINE_SKIN_ENUMERATION (TAG_FLEXBOX, ATTR_FLEXDIRECTION, FlexShared::flexDirection)
+DEFINE_SKIN_ENUMERATION (TAG_FLEXBOX, ATTR_FLEXWRAP, FlexShared::flexWrap)
+DEFINE_SKIN_ENUMERATION (TAG_FLEXBOX, ATTR_FLEXJUSTIFY, FlexShared::flexJustify)
+DEFINE_SKIN_ENUMERATION (TAG_FLEXBOX, ATTR_FLEXALIGN, FlexShared::flexAlign)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -371,7 +371,7 @@ void FlexboxElement::viewAdded (View* parent, View* child, ViewElement* childEle
 	if(layoutView == nullptr)
 		return;
 
-	FlexItem* item = ccl_cast<FlexItem> (layoutView->findLayoutItem (child));
+	FlexLayoutItem* item = ccl_cast<FlexLayoutItem> (layoutView->findLayoutItem (child));
 	ASSERT (item != nullptr)
 	if(item == nullptr)
 		return;

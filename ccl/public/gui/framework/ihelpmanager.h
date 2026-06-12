@@ -69,6 +69,9 @@ interface IHelpManager: IUnknown
 	/** Override default help location (local folder or web URL). */
 	virtual tresult CCL_API setHelpLocation (UrlRef path) = 0;
 
+	/** Variable to be used in a web URL passed to setHelpLocation (). It will be replaced by the current application language code (e.g. "en"). */
+	static const String kLanguageVariable;
+
 	/** Add folder with additional help catalog. */
 	virtual tresult CCL_API addHelpCatalog (UrlRef path, StringID category) = 0;
 

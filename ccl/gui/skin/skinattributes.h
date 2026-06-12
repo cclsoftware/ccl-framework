@@ -65,7 +65,7 @@ public:
 	static void scanDesignCoord (DesignCoord& dc, StringRef string);
 
 	void getDesignCoord (DesignCoord& dc, StringID name) const;
-	void setDesignCoord (StringID name, const DesignCoord& dc);
+	void setDesignCoord (StringID name, DesignCoordRef dc);
 
 	virtual String getString (StringID name) const = 0;
 	virtual bool setString (StringID name, StringRef value) = 0;

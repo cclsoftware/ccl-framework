@@ -101,6 +101,7 @@ list (APPEND cclspy_sources ${cclspy_source_files} ${cclspy_ccl_sources} ${CMAKE
 ccl_add_resources (${cclspy_target} ${cclspy_resources})
 target_sources (${cclspy_target} PRIVATE ${cclspy_sources})
 
+ccl_export_target (${cclspy_target})
 if (CCL_SYSTEM_INSTALL)
 	install (TARGETS ${cclspy_target} 
 		EXPORT ccl-targets DESTINATION "${CCL_LIBRARY_DESTINATION}"

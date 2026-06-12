@@ -145,6 +145,11 @@ interface IThemeStatics: IUnknown
 	{
 		return getGlobalStyle ().getFont (ThemeNames::kStandardFont);
 	}	
+
+	inline FontRef getMonospacedStandardFont ()
+	{
+		return getGlobalStyle ().getFont (ThemeNames::kStandardFontMonospaced);
+	}	
 };
 
 DEFINE_IID (IThemeStatics, 0xebbe866f, 0xf06a, 0x4445, 0xaa, 0x56, 0x3c, 0x85, 0x8b, 0x30, 0x84, 0x63)

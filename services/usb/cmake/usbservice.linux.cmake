@@ -1,10 +1,12 @@
 include_guard (DIRECTORY) 
 
-set_target_properties (usbservice PROPERTIES INSTALL_RPATH "$ORIGIN/..")
-
 find_package (libusb REQUIRED)
-target_include_directories (usbservice PUBLIC ${libusb_INCLUDE_DIRS})
-target_link_libraries (usbservice PRIVATE ${libusb_LIBRARIES})
+
+ccl_check_imported (usbservice imported)
+if (NOT imported)
+	target_include_directories (usbservice PUBLIC ${libusb_INCLUDE_DIRS})
+	target_link_libraries (usbservice PRIVATE ${libusb_LIBRARIES})
+endif ()
 
 list (APPEND usbservice_source_files
     ${usb_DIR}/source/libusb/libusbmanager.cpp

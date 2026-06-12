@@ -16,6 +16,7 @@
 		<External name="PrimaryColor*"/> <!-- 25, 30, 35, ... 75 -->
 		<External name="BaseColor*"/> <!-- 00, 05, 10, ... 100 -->
 		<External name="SeverityColor*"/> <!-- Normal, High -->
+		<External name="ActionColor*"/> <!-- 30, 35 -->
 	</Externals>
 
 	<Overlays>

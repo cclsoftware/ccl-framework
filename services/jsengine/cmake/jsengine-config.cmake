@@ -31,6 +31,9 @@ endif ()
 ccl_find_path (jsengine_DIR NAMES "source/jsengine.h" HINTS "${CMAKE_CURRENT_LIST_DIR}/.." DOC "JavaScript service directory")
 
 if (TARGET jsengine)
+	if (VENDOR_PLUGINS_RUNTIME_DIRECTORY)
+		ccl_install_imported (jsengine LIBRARY DESTINATION ${VENDOR_PLUGINS_RUNTIME_DIRECTORY} FRAMEWORK DESTINATION ${VENDOR_PLUGINS_RUNTIME_DIRECTORY})
+	endif ()
 	return ()
 endif ()
 
@@ -87,6 +90,7 @@ target_sources (jsengine PRIVATE ${jsengine_sources})
 target_compile_definitions (jsengine PRIVATE "STATIC_JS_API" "NIGHTLY_BUILD")
 target_link_libraries (jsengine PRIVATE cclbase ccltext cclsystem ${spidermonkey_LIBRARIES})
 
+ccl_export_target (jsengine)
 if (CCL_SYSTEM_INSTALL)
 	install (TARGETS jsengine 
 		EXPORT ccl-targets DESTINATION "${CCL_LIBRARY_DESTINATION}"
@@ -97,7 +101,7 @@ if (CCL_SYSTEM_INSTALL)
 		install (FILES $<TARGET_FILE_DIR:jsengine>/jsengine.pdb DESTINATION "${CCL_PLUGINS_DESTINATION}" OPTIONAL COMPONENT services_${VENDOR_NATIVE_COMPONENT_SUFFIX})
 	endif ()
 elseif (VENDOR_PLUGINS_RUNTIME_DIRECTORY)
-	install (TARGETS jsengine LIBRARY DESTINATION ${VENDOR_PLUGINS_RUNTIME_DIRECTORY}
+	install (TARGETS jsengine LIBRARY DESTINATION ${VENDOR_PLUGINS_RUNTIME_DIRECTORY} FRAMEWORK DESTINATION ${VENDOR_PLUGINS_RUNTIME_DIRECTORY}
 							  FRAMEWORK DESTINATION ${VENDOR_PLUGINS_RUNTIME_DIRECTORY})
 endif ()
 

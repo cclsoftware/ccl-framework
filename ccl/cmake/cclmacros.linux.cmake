@@ -7,6 +7,14 @@ find_program (glslc_executable NAMES glslc HINTS Vulkan::glslc "${REPOSITORY_TOO
 find_program (spirv_cross_executable NAMES spirv-cross HINTS Vulkan::SPIRV-Tools "${REPOSITORY_TOOLS_DIR}/bin/linux")
 find_program (sed NAMES sed)
 
+
+# Configure a plug-in library target
+# @group linux
+# @param {STRING} target  Name of the target to configure.
+macro (ccl_configure_plugin target)
+	set_target_properties (${target} PROPERTIES INSTALL_RPATH "$ORIGIN;$ORIGIN/..")
+endmacro ()
+
 # Add a 3D shader resource.
 # @group linux
 # @param {STRING} target  Name of the target to add a shader resource to.

@@ -8,4 +8,4 @@ else ()
 	set (yoga_BUILD_BYPRODUCTS "${yoga_LIBRARY_OUTPUT}")
 endif ()
 
-set (yoga_cxx_flags "-std\\=c++1z -DYOGA_EXPORT= -fvisibility=hidden -Wno-macro-redefined")
+set (yoga_cxx_flags "-DYOGA_EXPORT= -fvisibility=hidden -Wno-macro-redefined")

@@ -40,6 +40,7 @@ install (FILES
 	${CCL_SKINS_DIR}/cmake/skins-config.cmake
 	${CCL_TRANSLATIONS_DIR}/cmake/translations-config.cmake
 	${CCL_TOOLS_DIR}/ccl/cmake/ccltools-config.cmake
+	${CCL_REPOSITORY_ROOT}/build/cmake/modules/shared/entitlements.cmake
 	${CCL_REPOSITORY_ROOT}/build/cmake/modules/shared/targetarch.cmake
 	${CCL_REPOSITORY_ROOT}/build/cmake/modules/shared/githubmacros.cmake
 	DESTINATION "${CCL_CMAKE_EXPORT_DESTINATION}"
@@ -94,11 +95,6 @@ foreach (service bluetoothservice cclspy dapservice jsengine modelimporter3d sql
 	endif ()
 endforeach ()
 
-file (WRITE ${CMAKE_CURRENT_BINARY_DIR}/uninstaller-config.cmake "
-	find_package (ccl ${CCL_VERSION} REQUIRED COMPONENTS uninstaller)
-	ccl_copy_imported_target (uninstaller)
-	"
-)
 file (WRITE ${CMAKE_CURRENT_BINARY_DIR}/corelib-config.cmake "
 	find_package (ccl ${CCL_VERSION} REQUIRED COMPONENTS corelib \${corelib_FIND_COMPONENTS})
 	set (corelib_malloc_sources
@@ -107,7 +103,6 @@ file (WRITE ${CMAKE_CURRENT_BINARY_DIR}/corelib-config.cmake "
 	"
 )
 install (FILES 
-	${CMAKE_CURRENT_BINARY_DIR}/uninstaller-config.cmake
 	${CMAKE_CURRENT_BINARY_DIR}/corelib-config.cmake
 	DESTINATION "${CCL_CMAKE_EXPORT_DESTINATION}"
 	COMPONENT public_headers
@@ -124,6 +119,16 @@ install (DIRECTORY ${CCL_SKINS_DIR}/neutralbase
 )
 
 install (DIRECTORY ${CCL_SKINS_DIR}/neutraldesign
+	DESTINATION "${ccl_support_dest_path}skins/"
+	COMPONENT public_headers
+)
+
+install (DIRECTORY ${CCL_SKINS_DIR}/devtools
+	DESTINATION "${ccl_support_dest_path}skins/"
+	COMPONENT public_headers
+)
+
+install (DIRECTORY ${CCL_SKINS_DIR}/fileicons
 	DESTINATION "${ccl_support_dest_path}skins/"
 	COMPONENT public_headers
 )

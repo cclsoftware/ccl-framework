@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Skin>
+	<Resources>
+		<ShapeImage name="ApplicationOutline" url="icons/mdi/application-outline.svg" template="true"/>
+		<ShapeImage name="ArrowSplitVertical" url="icons/mdi/arrow-split-vertical.svg" template="true"/>
+		<ShapeImage name="ButtonCursor" url="icons/mdi/button-cursor.svg" template="true"/>
+		<ShapeImage name="CheckboxBlankOutline" url="icons/mdi/checkbox-blank-outline.svg" template="true"/>
+		<ShapeImage name="CheckboxIntermediate" url="icons/mdi/checkbox-intermediate.svg" template="true"/>
+		<ShapeImage name="CheckboxIntermediateVariant" url="icons/mdi/checkbox-intermediate-variant.svg" template="true"/>
+		<ShapeImage name="ImageOutline" url="icons/mdi/image-outline.svg" template="true"/>
+		<ShapeImage name="Resize" url="icons/mdi/resize.svg" template="true"/>
+		<ShapeImage name="PageLayoutBody" url="icons/mdi/page-layout-body.svg" template="true"/>
+		<ShapeImage name="PageLayoutSidebarRight" url="icons/mdi/page-layout-sidebar-right.svg" template="true"/>
+		<ShapeImage name="LandRowsHorizontal" url="icons/mdi/land-rows-horizontal.svg" template="true"/>
+		<ShapeImage name="LandRowsVertical" url="icons/mdi/land-rows-vertical.svg" template="true"/>
+		<ShapeImage name="FormatListBulleted" url="icons/mdi/format-list-bulleted.svg" template="true"/>
+		<ShapeImage name="FormatTextVariant" url="icons/mdi/format-text-variant.svg" template="true"/>
+		<ShapeImage name="FormatHeader1" url="icons/mdi/format-header-1.svg" template="true"/>
+		<ShapeImage name="FormatFont" url="icons/mdi/format-font.svg" template="true"/>
+		<ShapeImage name="FileTreeOutline" url="icons/mdi/file-tree-outline.svg" template="true"/>
+		<ShapeImage name="FileImageOutline" url="icons/mdi/file-image-outline.svg" template="true"/>
+		<ShapeImage name="GradientHorizontal" url="icons/mdi/gradient-horizontal.svg" template="true"/>
+		<ShapeImage name="CardAccountDetailsOutline" url="icons/mdi/card-account-details-outline.svg" template="true"/>
+		<ShapeImage name="ToggleSwitchOutline" url="icons/mdi/toggle-switch-outline.svg" template="true"/>
+		<ShapeImage name="TableLarge" url="icons/mdi/table-large.svg" template="true"/>
+		<ShapeImage name="RadioboxMarked" url="icons/mdi/radiobox-marked.svg" template="true"/>
+		<ShapeImage name="ProgressHelper" url="icons/mdi/progress-helper.svg" template="true"/>
+		<ShapeImage name="PaletteOutline" url="icons/mdi/palette-outline.svg" template="true"/>
+		<ShapeImage name="Tune" url="icons/mdi/tune.svg" template="true"/>
+		<ShapeImage name="FormTextbox" url="icons/mdi/form-textbox.svg" template="true"/>
+		<ShapeImage name="FormDropdown" url="icons/mdi/form-dropdown.svg" template="true"/>
+		<ShapeImage name="LinkBoxVariantOutline" url="icons/mdi/link-box-variant-outline.svg" template="true"/>
+		<ShapeImage name="EyeOutline" url="icons/mdi/eye-outline.svg" template="true"/>
+		<ShapeImage name="PencilOutline" url="icons/mdi/pencil-outline.svg" template="true"/>
+		<ShapeImage name="Plus" url="icons/mdi/plus.svg" template="true"/>
+		<ShapeImage name="Minus" url="icons/mdi/minus.svg" template="true"/>
+		<ShapeImage name="Refresh" url="icons/mdi/refresh.svg" template="true"/>
+		<ShapeImage name="ArrowLeftThin" url="icons/mdi/arrow-left-thin.svg" template="true"/>
+		<ShapeImage name="ArrowRightThin" url="icons/mdi/arrow-right-thin.svg" template="true"/>
+		<ShapeImage name="Menu" url="icons/mdi/menu.svg" template="true"/>
+		<ShapeImage name="ChevronLeft" url="icons/mdi/chevron-left.svg" template="true"/>
+		<ShapeImage name="ChevronRight" url="icons/mdi/chevron-right.svg" template="true"/>
+		<ShapeImage name="HomeOutline" url="icons/mdi/home-outline.svg" template="true"/>
+	</Resources>
+</Skin>
+

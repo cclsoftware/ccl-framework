@@ -218,6 +218,7 @@ public:
 	DECLARE_CLASS (AttributeQueue, AttributeContainer)
 
 	AttributeQueue ();
+	AttributeQueue (const AttributeQueue& other);
 	~AttributeQueue ();
 
 	Attribute* unqueueNext ();

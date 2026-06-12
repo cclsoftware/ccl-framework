@@ -26,8 +26,11 @@ if (NOT TARGET coreextras-extensions)
 	ccl_target_headers (coreextras-extensions INSTALL ${CCL_SYSTEM_INSTALL} DESTINATION ${corelib_PUBLIC_HEADERS_DESTINATION} BASE_DIRS ${corelib_DIR} FILES ${coreextras_extensions_api_headers})
 	target_include_directories (coreextras-extensions PRIVATE "$<BUILD_INTERFACE:${CCL_SUBMODULES_DIR}/mbedtls/include>")
 	target_link_libraries (coreextras-extensions INTERFACE corelib)
-	
-	if (CCL_SYSTEM_INSTALL)
+
+	if (CCL_EXPORTS_PATH)
+		install (TARGETS coreextras-extensions EXPORT ccl-targets FILE_SET HEADERS DESTINATION ${corelib_PUBLIC_HEADERS_DESTINATION} COMPONENT
+		public_headers)
+	elseif (CCL_SYSTEM_INSTALL)
 		install (TARGETS coreextras-extensions EXPORT ccl-targets DESTINATION "${corelib_STATIC_LIBRARY_DESTINATION}"
 											   ARCHIVE DESTINATION "${corelib_STATIC_LIBRARY_DESTINATION}" COMPONENT prebuilt_libraries_${VENDOR_NATIVE_COMPONENT_SUFFIX}
 											   FRAMEWORK DESTINATION "${corelib_STATIC_LIBRARY_DESTINATION}" COMPONENT prebuilt_libraries_${VENDOR_NATIVE_COMPONENT_SUFFIX}

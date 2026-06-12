@@ -102,7 +102,8 @@ class UploadWork: public WebWorkItem
 {
 public:
 	UploadWork (IObserver* observer, UrlRef remotePath, IStream& localStream, 
-				IWebHeaderCollection* headers, StringID method, IWebCredentials* credentials);
+				IWebHeaderCollection* headers, StringID method, IWebCredentials* credentials,
+				IStream* responseStream);
 
 	// WebWorkItem
 	void CCL_API work () override;
@@ -110,7 +111,7 @@ public:
 protected:
 	SharedPtr<IWebHeaderCollection> headers;
 	MutableCString method;
-	AutoPtr<MemoryStream> responseStream;
+	AutoPtr<IStream> responseStream;
 };
 
 } // namespace Web
@@ -274,13 +275,13 @@ tresult CCL_API WebService::uploadData (UrlRef remotePath, IStream& localStream,
 
 tresult CCL_API WebService::uploadInBackground (IObserver* observer, UrlRef remotePath, IStream& localStream, 
 												IWebHeaderCollection* headers,
-												StringID method, IWebCredentials* credentials)
+												StringID method, IWebCredentials* credentials, IStream* response)
 {
 	ASSERT (observer != nullptr)
 	if(!observer)
 		return kResultInvalidArgument;
 
-	System::GetThreadPool ().scheduleWork (NEW UploadWork (observer, remotePath, localStream, headers, method, credentials));
+	System::GetThreadPool ().scheduleWork (NEW UploadWork (observer, remotePath, localStream, headers, method, credentials, response));
 	return kResultOk;
 }
 
@@ -495,12 +496,16 @@ void CCL_API DownloadWork::work ()
 
 UploadWork::UploadWork (IObserver* observer, UrlRef remotePath, IStream& localStream, 
 						IWebHeaderCollection* headers, 
-						StringID method, IWebCredentials* credentials)
+						StringID method, IWebCredentials* credentials,
+						IStream* _responseStream)
 : WebWorkItem (observer, remotePath, localStream, credentials),
   headers (headers),
-  method (method),
-  responseStream (NEW MemoryStream)
-{}
+  method (method)
+{
+	responseStream.share (_responseStream);
+	if(!responseStream)
+		responseStream = NEW MemoryStream;
+}
   
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -516,7 +521,8 @@ void CCL_API UploadWork::work ()
 		localStream.release (); // ensure local stream is closed before notification!
 
 		IStream* response = nullptr;
-		if(responseStream->getBytesWritten () > 0)
+		UnknownPtr<IMemoryStream> responseMemStream (responseStream);
+		if(!responseMemStream || responseMemStream->getBytesWritten () > 0)
 			response = responseStream;
 
 		Message* m = NEW Message (Meta::kUploadComplete, result, status, response);

@@ -27,6 +27,9 @@ mark_as_advanced (sqlite_sourcedir)
 
 ccl_check_target_exists (sqlite target_exists)
 if (target_exists)
+	if (VENDOR_PLUGINS_RUNTIME_DIRECTORY)
+		ccl_install_imported (${sqlite_target} LIBRARY DESTINATION ${VENDOR_PLUGINS_RUNTIME_DIRECTORY} FRAMEWORK DESTINATION ${VENDOR_PLUGINS_RUNTIME_DIRECTORY})
+	endif ()
 	return ()
 endif ()
 
@@ -80,6 +83,7 @@ ccl_add_resources (${sqlite_target} ${sqlite_resources})
 target_sources (${sqlite_target} PRIVATE ${sqlite_sources})
 target_link_libraries (${sqlite_target} PRIVATE ${SQLITE_LIBRARY})
 
+ccl_export_target (${sqlite_target})
 if (CCL_SYSTEM_INSTALL)
 	install (TARGETS ${sqlite_target} 
 		EXPORT ccl-targets DESTINATION "${CCL_LIBRARY_DESTINATION}"
@@ -90,6 +94,6 @@ if (CCL_SYSTEM_INSTALL)
         install (FILES $<TARGET_FILE_DIR:${sqlite_target}>/${sqlite_target}.pdb DESTINATION "${CCL_PLUGINS_DESTINATION}" OPTIONAL COMPONENT services_${VENDOR_NATIVE_COMPONENT_SUFFIX})
     endif ()
 elseif (VENDOR_PLUGINS_RUNTIME_DIRECTORY)
-	install (TARGETS ${sqlite_target} LIBRARY DESTINATION ${VENDOR_PLUGINS_RUNTIME_DIRECTORY}
+	install (TARGETS ${sqlite_target} LIBRARY DESTINATION ${VENDOR_PLUGINS_RUNTIME_DIRECTORY} FRAMEWORK DESTINATION ${VENDOR_PLUGINS_RUNTIME_DIRECTORY}
                                       FRAMEWORK DESTINATION ${VENDOR_PLUGINS_RUNTIME_DIRECTORY})
 endif ()

@@ -34,6 +34,7 @@
 #include <QuartzCore/CAMetalLayer.h>
 #include <QuartzCore/CATransaction.h>
 #include <QuartzCore/CAAnimation.h>
+#include <QuartzCore/CADisplayLink.h>
 
 using namespace CCL;
 
@@ -52,11 +53,71 @@ using namespace CCL;
 @end
 
 //************************************************************************************************
+// DisplayTimer
+//************************************************************************************************
+
+@implementation CCL_ISOLATED (DisplayTimer)
+
+- (instancetype)initWithView:(id)view;
+{
+	if((self = [super init]))
+	{
+		#if CCL_PLATFORM_MAC
+		ASSERT (view)
+		self.caDisplayLink = [view displayLinkWithTarget:self selector:@selector (refresh:)];
+		#else
+		self.caDisplayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector (refresh:)];
+		#endif
+		[self.caDisplayLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
+		target = nullptr;
+		surface = nullptr;
+	}
+	return self;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+- (void)setTarget:(MetalWindowRenderTarget*)_target
+{
+	target = _target;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+- (void)setSurface:(Metal3DSurface*)_surface
+{
+	surface = _surface;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+- (void)dealloc
+{
+	if(self.caDisplayLink)
+		[self.caDisplayLink invalidate];
+
+	[super dealloc];
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+- (void)refresh:(CADisplayLink*)sender
+{
+	if(target)
+		target->onPresent ();
+	if(surface)
+		surface->draw ();
+}
+
+@end
+
+//************************************************************************************************
 // MetalUpdater
 //************************************************************************************************
 
 MetalUpdater::MetalUpdater ()
-: suspended (false)
+: suspended (false),
+  lastRefreshTime (0)
 {
 	ISubject::addObserver (&System::GetGUI (), this);
 }
@@ -151,6 +212,11 @@ void CCL_API MetalUpdater::onTimer (ITimer* timer)
 {
 	if(!suspended)
 	{
+		int64 now = System::GetSystemTicks ();
+		if(now - lastRefreshTime < kRefreshInterval)
+			return;
+		lastRefreshTime = now;
+
 		VectorForEachFast (targets, MetalWindowRenderTarget*, target)
 			target->onPresent ();
 		EndFor

@@ -43,7 +43,7 @@ public:
 	PROPERTY_VARIABLE (TextLineFormat, lineFormat, LineFormat)
 	String getLineEnd () const;
 
-	String unpack (const Text::Chunk& chunk) const;
+	String unpack (const TextFragment& fragment) const;
 
 	// ITextBuilder
 	ITextTable* CCL_API createTable () override;
@@ -72,7 +72,7 @@ public:
 	public:
 		Cell (TextTable* table);
 		PROPERTY_POINTER (TextTable, table, Table)
-		void CCL_API setContent (const Text::Chunk& chunk) override; ///< [ITextTable::ICell]
+		void CCL_API setContent (const TextFragment& fragment) override; ///< [ITextTable::ICell]
 		StringRef CCL_API getContent () const override;
 		CLASS_INTERFACE (ICell, Unknown)
 	protected:
@@ -97,7 +97,7 @@ public:
 	// ITextTable
 	tresult CCL_API construct (int rowCount, int columnCount) override;
 	void CCL_API getSize (int& rowCount, int& columnCount) const override;
-	void CCL_API setTitle (const Text::Chunk& chunk) override;
+	void CCL_API setTitle (const TextFragment& fragment) override;
 	StringRef CCL_API getTitle () const override;
 	IRow& CCL_API getRow (int row) override;
 

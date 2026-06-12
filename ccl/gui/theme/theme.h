@@ -205,6 +205,7 @@ public:
 		kContextMenuStyle,
 		kPerspectiveSwitcherStyle,
 		kSegmentBoxStyle,
+		kBlockViewStyle,
 
 		kHeading1Style,
 		kHeading2Style,

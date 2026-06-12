@@ -29,8 +29,8 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 #define CORE_VERSION_MAJOR		5
-#define CORE_VERSION_MINOR		0
-#define CORE_VERSION_REVISION	2
+#define CORE_VERSION_MINOR		1
+#define CORE_VERSION_REVISION	0
 #define CORE_VERSION_BUILD		BUILD_REVISION_NUMBER
 
 #define CORE_VERSION_STRING		STRINGIFY(CORE_VERSION_MAJOR) "." STRINGIFY(CORE_VERSION_MINOR) "." STRINGIFY(CORE_VERSION_REVISION)

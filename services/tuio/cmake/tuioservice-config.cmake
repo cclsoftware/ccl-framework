@@ -18,8 +18,6 @@
 #
 #************************************************************************************************
 
-include_guard (DIRECTORY)
-
 if (TARGET tuioservice)
 	return ()
 endif ()
@@ -64,3 +62,5 @@ list (APPEND tuioservice_sources ${tuioservice_source_files} ${tuioservice_ccl_s
 ccl_add_resources (tuioservice ${tuioservice_resources})
 target_sources (tuioservice PRIVATE ${tuioservice_sources})
 target_link_libraries (tuioservice PRIVATE cclapp cclbase ccltext cclsystem cclgui ${TUIO_LIBRARIES})
+
+ccl_export_target (tuioservice)

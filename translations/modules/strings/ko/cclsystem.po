@@ -86,6 +86,11 @@ msgstr "언어팩"
 
 #: fileutilities.cpp
 msgctxt "FileType"
+msgid "Markdown File"
+msgstr "마크다운 파일"
+
+#: fileutilities.cpp
+msgctxt "FileType"
 msgid "PDF File"
 msgstr "PDF 파일"
 

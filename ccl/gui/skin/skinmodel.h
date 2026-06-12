@@ -28,7 +28,6 @@
 
 #include "ccl/public/text/cstring.h"
 #include "ccl/public/gui/graphics/types.h"
-#include "ccl/public/gui/framework/designsize.h"
 #include "ccl/public/gui/framework/styleflags.h"
 #include "ccl/public/gui/framework/iuserinterface.h"
 #include "ccl/public/collections/linkedlist.h"
@@ -69,6 +68,7 @@ public:
 	SkinModel (ISkinContext* context = nullptr);
 
 	static SkinModel* getModel (const Element* e);
+	static SkinModel* loadingModel;
 
 	// Skin Sections
 	Element& getIncludes ();
@@ -229,7 +229,17 @@ DECLARE_SKIN_ELEMENT_CLASS (IncludeElement, ResourceElement)
 The content of the imported skin is merged into the containing model. */
 //************************************************************************************************
 
-DECLARE_SKIN_ELEMENT_CLASS (ImportElement, ResourceElement)
+class ImportElement: public ResourceElement
+{
+public:
+	DECLARE_SKIN_ELEMENT (ImportElement, ResourceElement)
+
+	PROPERTY_STRING (definitions, Definitions)
+
+	// Element
+	bool setAttributes (const SkinAttributes& a) override;
+	bool getAttributes (SkinAttributes& a) const override;
+};
 
 //************************************************************************************************
 // ExternalElement
@@ -1472,6 +1482,61 @@ public:
 };
 
 //************************************************************************************************
+// StyleDataElement
+//************************************************************************************************
+
+class StyleDataElement: public Element
+{
+public:
+	DECLARE_SKIN_ELEMENT (StyleDataElement, Element)
+
+	StyleDataElement ();
+	~StyleDataElement ();
+
+	VisualStyleData& getStyleData ();
+
+	virtual void loadResources (SkinModel& model);
+
+	// Element
+	bool setAttributes (const SkinAttributes& a) override;
+	bool getAttributes (SkinAttributes& a) const override;
+	void loadFinished () override;
+
+protected:
+	SharedPtr<VisualStyleData> styleData;
+
+	struct Pair
+	{
+		Pair (CStringRef _name, CStringRef _ref)
+		: name (_name), ref (_ref) {}
+		Pair (CStringRef _name = nullptr, StringRef _ref = nullptr)
+		: name (_name), ref (_ref) {}
+		Pair (const Pair& other)
+		: name (other.name), ref (other.ref) {}
+
+		MutableCString name;
+		MutableCString ref;
+	};
+
+	LinkedList<Pair> images;
+ 	LinkedList<Pair> colors;
+
+	virtual VisualStyleData* newStyleData ();
+};
+
+//************************************************************************************************
+// StyleConditionElement
+/** Style condition.
+Subelement in a visual style to define attributes specific to a certain named condition or state. */
+//************************************************************************************************
+
+class StyleConditionElement: public StyleDataElement
+{
+public:
+	DECLARE_SKIN_ELEMENT (StyleConditionElement, StyleDataElement)
+};
+
+//************************************************************************************************
 // StyleElement
 /** Visual Style definition.
 A Style defines the visual appearance of a view. It is collection of definitions for images, colors, metrics and fonts.
@@ -1492,10 +1557,10 @@ Styles with the attribute "appstyle" can also be accessed directly by the applic
 */
 //************************************************************************************************
 
-class StyleElement: public Element
+class StyleElement: public StyleDataElement
 {
 public:
-	DECLARE_SKIN_ELEMENT (StyleElement, Element)
+	DECLARE_SKIN_ELEMENT (StyleElement, StyleDataElement)
 
 	StyleElement ();
 	~StyleElement ();
@@ -1503,38 +1568,24 @@ public:
 	DECLARE_STYLEDEF (textOptions)
 
 	VisualStyle& getStyle ();
+
 	PROPERTY_BOOL (appStyle, AppStyle)
 	PROPERTY_BOOL (overrideStyle, Override)
 
-	virtual void loadResources (SkinModel& model);
-
-	// Element
+	// StyleDataElement
 	bool setAttributes (const SkinAttributes& a) override;
 	bool getAttributes (SkinAttributes& a) const override;
 	void loadFinished () override;
 	bool isOverrideEnabled () const override;
+	void loadResources (SkinModel& model) override;
 
 protected:
-	SharedPtr<VisualStyle> style;
 	MutableCString inherit;
 
-	struct Pair
-	{
-		Pair (CStringRef _name, CStringRef _ref)
-		: name (_name), ref (_ref) {}
-		Pair (CStringRef _name = nullptr, StringRef _ref = nullptr)
-		: name (_name), ref (_ref) {}
-		Pair (const Pair& other)
-		: name (other.name), ref (other.ref) {}
+	void loadConditionResources (SkinModel& model);
 
-		MutableCString name;
-		MutableCString ref;
-	};
-
-	LinkedList<Pair> images;
- 	LinkedList<Pair> colors;
-
-	virtual VisualStyle* newStyle ();
+	// StyleDataElement
+	VisualStyleData* newStyleData () override;
 };
 
 //************************************************************************************************
@@ -1615,7 +1666,7 @@ public:
 
 	MetricElement ();
 
-	PROPERTY_VARIABLE (float, value, Value)
+	PROPERTY_OBJECT (DesignCoord, value, Value)
 
 	// Element
 	bool setAttributes (const SkinAttributes& a) override;
@@ -1685,6 +1736,9 @@ public:
 	// Element
 	bool setAttributes (const SkinAttributes& a) override;
 	bool getAttributes (SkinAttributes& a) const override;
+
+protected:
+	const StyleDef* findStyleDef () const;
 };
 
 //************************************************************************************************

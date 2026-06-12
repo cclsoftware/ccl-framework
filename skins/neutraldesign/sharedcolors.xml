@@ -8,14 +8,14 @@
 				<ColorScheme.Color name="WindowBackgroundColor" 			color="$skin://hostapp/BaseColor10"  			saturation="8:5"	luminance="6" invertedvalue="94" comment="Window backcolor for desktop apps"/>
 				<ColorScheme.Color name="DialogBackgroundColor" 			color="$skin://hostapp/BaseColor10"  			saturation="8:5"	luminance="6" invertedvalue="94" comment="Dialog backcolor for desktop apps"/>
 				<ColorScheme.Color name="TransparentDialogBackgroundColor" 	color="$skin://hostapp/BaseColor10" alphavalue="0" saturation="8:5"	luminance="6" invertedvalue="94" comment="Transparent dialog backcolor for gradients"/>
-				<ColorScheme.Color name="SelectionBackColor" 				color="$skin://hostapp/PrimaryColor40"			saturation="8:5"	luminance="6" invertedvalue="75" huefixed="true" comment="Selection backcolor for desktop apps"/>
+				<ColorScheme.Color name="SelectionBackColor" 				color="$skin://hostapp/PrimaryColor40"			saturation="8:5"	luminance="6" invertedvalue="55" huefixed="true" comment="Selection backcolor for desktop apps"/>
 				<ColorScheme.Color name="DarkWindowBackgroundColor" 		color="$skin://hostapp/BaseColor05"  			saturation="8:5"	luminance="6" invertedvalue="98" comment="Window backcolor (high contrast)"/>
 				<ColorScheme.Color name="MenuBarControlBackColor" 			color="$skin://hostapp/BaseColor10"  			saturation="8:5"	luminance="6" invertedvalue="94" comment="Custom menubar background color"/>
 			<?defined desktopapp?>
 				<ColorScheme.Color name="WindowBackgroundColor" 			color="$skin://hostapp/BaseColor10" 			saturation="8:5"	luminance="6" invertedvalue="84" comment="Window backcolor for mobile apps"/>
 				<ColorScheme.Color name="DialogBackgroundColor" 			color="$skin://hostapp/BaseColor10" 			saturation="8:5"	luminance="6" invertedvalue="84" comment="Dialog backcolor for mobile apps"/>
 				<ColorScheme.Color name="TransparentDialogBackgroundColor" 	color="$skin://hostapp/BaseColor10" alphavalue="0" saturation="8:5"	luminance="6" invertedvalue="84" comment="Transparent dialog backcolor for gradients"/>
-				<ColorScheme.Color name="SelectionBackColor" 				color="$skin://hostapp/PrimaryColor40"			saturation="8:30" 	luminance="5:8" invertedvalue="75" huefixed="true" comment="Selection backcolor for mobile apps"/>
+				<ColorScheme.Color name="SelectionBackColor" 				color="$skin://hostapp/PrimaryColor40"			saturation="8:30" 	luminance="5:8" invertedvalue="55" huefixed="true" comment="Selection backcolor for mobile apps"/>
 				<ColorScheme.Color name="DarkWindowBackgroundColor" 		color="$skin://hostapp/BaseColor05"  			saturation="8:5"	luminance="6" invertedvalue="90" comment="Window backcolor (high contrast)"/>
 				<ColorScheme.Color name="MenuBarControlBackColor" 			color="$skin://hostapp/BaseColor10" 			saturation="8:5"	luminance="6" invertedvalue="84" comment="Custom menubar background color"/>
 			<?defined?>

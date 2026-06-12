@@ -21,6 +21,7 @@
 #include "ccl/gui/itemviews/treeview.h"
 #include "ccl/gui/itemviews/treeitem.h"
 #include "ccl/gui/itemviews/headerview.h"
+#include "ccl/gui/popup/popupselector.h"
 
 namespace CCL {
 
@@ -202,7 +203,18 @@ tresult CCL_API ItemAccessibilityProvider::makeVisible (tbool relaxed)
 tresult CCL_API ItemAccessibilityProvider::performAction ()
 {
 	if(parent.getItemView ().selectItem (index, true))
+	{
+		if(Window* window = parent.getItemView ().getWindow ())
+		{
+			UnknownPtr<IPopupSelectorWindow> popupSelector (window->asUnknown ());
+			if(popupSelector)
+			{
+				popupSelector->setPopupResult (IPopupSelectorClient::kOkay);
+				window->deferClose ();
+			}
+		}
 		return kResultOk;
+	}
 	return kResultFailed;
 }
 

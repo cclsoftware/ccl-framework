@@ -103,6 +103,7 @@ ccl_list_append_once (cclgui_public_headers
 	${CCL_DIR}/public/gui/framework/iaccessibility.h
 	${CCL_DIR}/public/gui/framework/ialert.h
 	${CCL_DIR}/public/gui/framework/ianimation.h
+	${CCL_DIR}/public/gui/framework/iblockcontent.h
 	${CCL_DIR}/public/gui/framework/iclipboard.h
 	${CCL_DIR}/public/gui/framework/icolorscheme.h
 	${CCL_DIR}/public/gui/framework/icommandeditor.h
@@ -185,10 +186,9 @@ ccl_list_append_once (cclgui_public_headers
 	${CCL_DIR}/public/gui/graphics/igraphicspath.h
 	${CCL_DIR}/public/gui/graphics/iimage.h
 	${CCL_DIR}/public/gui/graphics/iimagecache.h
-	${CCL_DIR}/public/gui/graphics/imarkuppainter.h
+	${CCL_DIR}/public/gui/graphics/imarkupsupport.h
 	${CCL_DIR}/public/gui/graphics/itextlayout.h
 	${CCL_DIR}/public/gui/graphics/iuivalue.h
-	${CCL_DIR}/public/gui/graphics/markuptags.h
 	${CCL_DIR}/public/gui/graphics/pen.h
 	${CCL_DIR}/public/gui/graphics/point.h
 	${CCL_DIR}/public/gui/graphics/rect.h
@@ -262,6 +262,14 @@ ccl_list_append_once (cclgui_source_files
 	${CCL_DIR}/gui/commands.cpp
 	${CCL_DIR}/gui/commands.h
 
+	${CCL_DIR}/gui/blocks/blockcontent.cpp
+	${CCL_DIR}/gui/blocks/blockcontent.h
+	${CCL_DIR}/gui/blocks/blocklayout.cpp
+	${CCL_DIR}/gui/blocks/blocklayout.h
+	${CCL_DIR}/gui/blocks/blockview.cpp
+	${CCL_DIR}/gui/blocks/blockview.h
+	${CCL_DIR}/gui/blocks/markdownblockbuilder.cpp
+	${CCL_DIR}/gui/blocks/markdownblockbuilder.h
 	${CCL_DIR}/gui/controls/autoscroller.cpp
 	${CCL_DIR}/gui/controls/autoscroller.h
 	${CCL_DIR}/gui/controls/button.cpp
@@ -358,6 +366,8 @@ ccl_list_append_once (cclgui_source_files
 
 	${CCL_DIR}/gui/graphics/colorgradient.cpp
 	${CCL_DIR}/gui/graphics/colorgradient.h
+	${CCL_DIR}/gui/graphics/formattedtext.cpp
+	${CCL_DIR}/gui/graphics/formattedtext.h
 	${CCL_DIR}/gui/graphics/graphicsdevice.cpp
 	${CCL_DIR}/gui/graphics/graphicsdevice.h
 	${CCL_DIR}/gui/graphics/graphicshelper.cpp
@@ -367,6 +377,8 @@ ccl_list_append_once (cclgui_source_files
 	${CCL_DIR}/gui/graphics/graphicspath.cpp
 	${CCL_DIR}/gui/graphics/graphicspath.h
 	${CCL_DIR}/gui/graphics/igraphicscleanup.h
+	${CCL_DIR}/gui/graphics/markupsupport.cpp
+	${CCL_DIR}/gui/graphics/markupsupport.h
 	${CCL_DIR}/gui/graphics/imaging/codecs/webpcodec.cpp
 	${CCL_DIR}/gui/graphics/imaging/codecs/webpcodec.h
 	${CCL_DIR}/gui/graphics/imaging/bitmap.cpp
@@ -401,6 +413,8 @@ ccl_list_append_once (cclgui_source_files
 	${CCL_DIR}/gui/graphics/nativegraphics.h
 	${CCL_DIR}/gui/graphics/printservice.cpp
 	${CCL_DIR}/gui/graphics/printservice.h
+	${CCL_DIR}/gui/graphics/textlayoutbuilder.cpp
+	${CCL_DIR}/gui/graphics/textlayoutbuilder.h
 	${CCL_DIR}/gui/graphics/shapes/shapebuilder.cpp
 	${CCL_DIR}/gui/graphics/shapes/shapebuilder.h
 	${CCL_DIR}/gui/graphics/shapes/shapeimage.cpp
@@ -411,8 +425,6 @@ ccl_list_append_once (cclgui_source_files
 	${CCL_DIR}/gui/graphics/shapes/svg/svgparser.h
 	${CCL_DIR}/gui/graphics/shapes/svg/svgpath.cpp
 	${CCL_DIR}/gui/graphics/shapes/svg/svgpath.h
-	${CCL_DIR}/gui/graphics/textlayoutbuilder.cpp
-	${CCL_DIR}/gui/graphics/textlayoutbuilder.h
 
 	${CCL_DIR}/gui/gui.cpp
 	${CCL_DIR}/gui/gui.h
@@ -480,6 +492,8 @@ ccl_list_append_once (cclgui_source_files
 	${CCL_DIR}/gui/layout/dockpanel.h
 	${CCL_DIR}/gui/layout/flexboxlayout.cpp
 	${CCL_DIR}/gui/layout/flexboxlayout.h
+	${CCL_DIR}/gui/layout/flexboxshared.cpp
+	${CCL_DIR}/gui/layout/flexboxshared.h
 	${CCL_DIR}/gui/layout/idockpanel.h
 	${CCL_DIR}/gui/layout/layoutprimitives.cpp
 	${CCL_DIR}/gui/layout/layoutprimitives.h
@@ -496,6 +510,8 @@ ccl_list_append_once (cclgui_source_files
 	${CCL_DIR}/gui/layout/workspaceframes.cpp
 	${CCL_DIR}/gui/layout/workspaceframes.h
 	${CCL_DIR}/gui/layout/yogalayout.cpp
+	${CCL_DIR}/gui/layout/yogashared.cpp
+	${CCL_DIR}/gui/layout/yogashared.h
 
 	${CCL_DIR}/gui/popup/contextmenu.cpp
 	${CCL_DIR}/gui/popup/contextmenu.h
@@ -529,6 +545,8 @@ ccl_list_append_once (cclgui_source_files
 	${CCL_DIR}/gui/skin/form.h
 	${CCL_DIR}/gui/skin/skinattributes.cpp
 	${CCL_DIR}/gui/skin/skinattributes.h
+	${CCL_DIR}/gui/skin/skinblocks.cpp
+	${CCL_DIR}/gui/skin/skinblocks.h
 	${CCL_DIR}/gui/skin/skincontrols.cpp
 	${CCL_DIR}/gui/skin/skincontrols.h
 	${CCL_DIR}/gui/skin/skinelement.cpp
@@ -590,6 +608,11 @@ ccl_list_append_once (cclgui_source_files
 	${CCL_DIR}/gui/theme/colorscheme.h
 	${CCL_DIR}/gui/theme/palette.cpp
 	${CCL_DIR}/gui/theme/palette.h
+	${CCL_DIR}/gui/theme/renderatom.cpp
+	${CCL_DIR}/gui/theme/renderatom.h
+	${CCL_DIR}/gui/theme/textscaler.cpp
+	${CCL_DIR}/gui/theme/textscaler.h
+	${CCL_DIR}/gui/theme/themerenderer.h
 	${CCL_DIR}/gui/theme/renderer/backgroundrenderer.cpp
 	${CCL_DIR}/gui/theme/renderer/backgroundrenderer.h
 	${CCL_DIR}/gui/theme/renderer/buttonrenderer.cpp
@@ -761,8 +784,11 @@ if (NOT TARGET ${cclgui})
 		ccl_export_symbols (${cclgui} ${cclgui_exports})
 		
 		ccl_add_resources (${cclgui} ${cclgui_resources})
-
-		if (CCL_SYSTEM_INSTALL)
+	
+		if (CCL_EXPORTS_PATH)
+			install (TARGETS ${cclgui} EXPORT ccl-targets  FILE_SET HEADERS DESTINATION ${CCL_PUBLIC_HEADERS_DESTINATION} COMPONENT public_headers
+																FRAMEWORK DESTINATION "${VENDOR_APPLICATION_RUNTIME_DIRECTORY}")
+		elseif (CCL_SYSTEM_INSTALL)
 			set_target_properties (${cclgui} PROPERTIES SOVERSION ${CCL_VERSION})
 			install (TARGETS ${cclgui} EXPORT ccl-targets DESTINATION "${CCL_LIBRARY_DESTINATION}"
 									   LIBRARY DESTINATION "${CCL_LIBRARY_DESTINATION}" COMPONENT prebuilt_libraries_${VENDOR_NATIVE_COMPONENT_SUFFIX}
@@ -787,3 +813,10 @@ elseif (NOT XCODE)
 endif ()
 
 ccl_list_append_once (CCL_STATIC_COMPILE_DEFINITIONS CCL_STATIC_ENABLE_GUI=1)
+
+if (VENDOR_APPLICATION_RUNTIME_DIRECTORY AND NOT CCL_SYSTEM_INSTALL)
+	ccl_install_imported (${cclgui} LIBRARY DESTINATION "${VENDOR_APPLICATION_RUNTIME_DIRECTORY}"
+									RUNTIME DESTINATION "${VENDOR_APPLICATION_RUNTIME_DIRECTORY}"
+									FRAMEWORK DESTINATION "${VENDOR_APPLICATION_RUNTIME_DIRECTORY}"
+	)
+endif ()

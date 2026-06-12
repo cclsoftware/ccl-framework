@@ -142,6 +142,7 @@ CStringPtr ThemePainter::standardStyleNames[ThemePainter::kNumStandardStyles] =
 	"ContextMenu",
 	"PerspectiveSwitcher",
 	"SegmentBox",
+	"BlockView",
 	"H1",
 	"H2",
 	"H3",

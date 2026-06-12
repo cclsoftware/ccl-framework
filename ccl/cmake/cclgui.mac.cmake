@@ -108,55 +108,58 @@ ccl_list_append_once (cclgui_metal_headers
 	${CCL_DIR}/gui/graphics/3d/shader/metal/lighting.h
 )
 
-target_sources (${cclgui} PRIVATE  ${cclgui_metal_headers})
-
 source_group (TREE ${CCL_DIR}/platform/cocoa PREFIX "source" FILES ${cclgui_cocoa_sources})
 source_group (TREE ${CCL_DIR}/platform/shared PREFIX "source" FILES ${cclgui_platform_sources})
 source_group ("resource/shaders" FILES ${cclgui_metal_headers})
 
-find_library (METAL_LIBRARY Metal REQUIRED)
-find_library (METALKIT_LIBRARY MetalKit REQUIRED)
-find_library (COREFOUNDATION_LIBRARY CoreFoundation REQUIRED)
-find_library (IOKIT_LIBRARY IOKit REQUIRED)
-find_library (APPLICATIONSERVICES_LIBRARY ApplicationServices REQUIRED)
-find_library (WEBKIT_LIBRARY WebKit REQUIRED)
-find_library (FOUNDATION_LIBRARY Foundation REQUIRED)
-find_library (QUARTZ_LIBRARY QuartzCore REQUIRED)
-find_library (CORESERVICES_LIBRARY CoreServices REQUIRED)
-find_library (COCOA_LIBRARY Cocoa REQUIRED)
-find_library (CARBON_LIBRARY Carbon REQUIRED)
-find_library (AUTHENTICATIONSERVICES_LIBRARY AuthenticationServices REQUIRED)
-find_package (skia REQUIRED)
+ccl_check_imported (${cclgui} imported)
+if (NOT imported)
+	target_sources (${cclgui} PRIVATE  ${cclgui_metal_headers})
 
-ccl_list_append_once (cclgui_apple_frameworks
-	${METAL_LIBRARY}
-	${METALKIT_LIBRARY}
-	${COREFOUNDATION_LIBRARY}
-	${IOKIT_LIBRARY}
-	${APPLICATIONSERVICES_LIBRARY}
-	${WEBKIT_LIBRARY}
-	${FOUNDATION_LIBRARY}
-	${QUARTZ_LIBRARY}
-	${CORESERVICES_LIBRARY}
-	${COCOA_LIBRARY}
-	${CARBON_LIBRARY}
-	${AUTHENTICATIONSERVICES_LIBRARY}
-)
+	find_library (METAL_LIBRARY Metal REQUIRED)
+	find_library (METALKIT_LIBRARY MetalKit REQUIRED)
+	find_library (COREFOUNDATION_LIBRARY CoreFoundation REQUIRED)
+	find_library (IOKIT_LIBRARY IOKit REQUIRED)
+	find_library (APPLICATIONSERVICES_LIBRARY ApplicationServices REQUIRED)
+	find_library (WEBKIT_LIBRARY WebKit REQUIRED)
+	find_library (FOUNDATION_LIBRARY Foundation REQUIRED)
+	find_library (QUARTZ_LIBRARY QuartzCore REQUIRED)
+	find_library (CORESERVICES_LIBRARY CoreServices REQUIRED)
+	find_library (COCOA_LIBRARY Cocoa REQUIRED)
+	find_library (CARBON_LIBRARY Carbon REQUIRED)
+	find_library (AUTHENTICATIONSERVICES_LIBRARY AuthenticationServices REQUIRED)
+	find_package (skia REQUIRED)
 
-set_target_properties (${cclgui} PROPERTIES
-	FRAMEWORK TRUE
-)
+	ccl_list_append_once (cclgui_apple_frameworks
+		${METAL_LIBRARY}
+		${METALKIT_LIBRARY}
+		${COREFOUNDATION_LIBRARY}
+		${IOKIT_LIBRARY}
+		${APPLICATIONSERVICES_LIBRARY}
+		${WEBKIT_LIBRARY}
+		${FOUNDATION_LIBRARY}
+		${QUARTZ_LIBRARY}
+		${CORESERVICES_LIBRARY}
+		${COCOA_LIBRARY}
+		${CARBON_LIBRARY}
+		${AUTHENTICATIONSERVICES_LIBRARY}
+	)
 
-target_compile_definitions (${cclgui} PRIVATE SK_GANESH=1 SK_METAL=1 SK_SHAPER_CORETEXT_AVAILABLE=1)
+	set_target_properties (${cclgui} PROPERTIES
+		FRAMEWORK TRUE
+	)
 
-if (NOT ${CCL_STATIC_ONLY})
-	target_link_libraries (${cclgui} PRIVATE ${SKIA_LIBRARIES} PUBLIC ${cclgui_apple_frameworks})
+	target_compile_definitions (${cclgui} PRIVATE SK_GANESH=1 SK_METAL=1 SK_SHAPER_CORETEXT_AVAILABLE=1)
+
+	if (NOT ${CCL_STATIC_ONLY})
+		target_link_libraries (${cclgui} PRIVATE ${SKIA_LIBRARIES} PUBLIC ${cclgui_apple_frameworks})
+	endif ()
+	ccl_list_append_once (CCL_STATIC_LINK_LIBRARIES ${SKIA_LIBRARIES} ${cclgui_apple_frameworks})
+
+	ccl_add_shader_resource (${cclgui} ${CCL_DIR}/gui/graphics/3d/shader/metal/vertexshaderPN.metal PATH Resources/shaders)
+	ccl_add_shader_resource (${cclgui} ${CCL_DIR}/gui/graphics/3d/shader/metal/vertexshaderPNT.metal PATH Resources/shaders)
+	ccl_add_shader_resource (${cclgui} ${CCL_DIR}/gui/graphics/3d/shader/metal/vertexshaderPNT2PN.metal PATH Resources/shaders)
+	ccl_add_shader_resource (${cclgui} ${CCL_DIR}/gui/graphics/3d/shader/metal/billboardvertexshader.metal PATH Resources/shaders)
+	ccl_add_shader_resource (${cclgui} ${CCL_DIR}/gui/graphics/3d/shader/metal/solidcolormaterial.metal PATH Resources/shaders)
+	ccl_add_shader_resource (${cclgui} ${CCL_DIR}/gui/graphics/3d/shader/metal/texturematerial.metal PATH Resources/shaders)
 endif ()
-ccl_list_append_once (CCL_STATIC_LINK_LIBRARIES ${SKIA_LIBRARIES} ${cclgui_apple_frameworks})
-
-ccl_add_shader_resource (${cclgui} ${CCL_DIR}/gui/graphics/3d/shader/metal/vertexshaderPN.metal PATH shaders)
-ccl_add_shader_resource (${cclgui} ${CCL_DIR}/gui/graphics/3d/shader/metal/vertexshaderPNT.metal PATH shaders)
-ccl_add_shader_resource (${cclgui} ${CCL_DIR}/gui/graphics/3d/shader/metal/vertexshaderPNT2PN.metal PATH shaders)
-ccl_add_shader_resource (${cclgui} ${CCL_DIR}/gui/graphics/3d/shader/metal/billboardvertexshader.metal PATH shaders)
-ccl_add_shader_resource (${cclgui} ${CCL_DIR}/gui/graphics/3d/shader/metal/solidcolormaterial.metal PATH shaders)
-ccl_add_shader_resource (${cclgui} ${CCL_DIR}/gui/graphics/3d/shader/metal/texturematerial.metal PATH shaders)

@@ -1,0 +1,2 @@
+set (cmark_LIBRARY_OUTPUT "${cmark_DEPLOYMENT_DIR}/${CMAKE_INSTALL_LIBDIR}/libcmark.a")
+set (cmark_BUILD_BYPRODUCTS "${cmark_LIBRARY_OUTPUT}")

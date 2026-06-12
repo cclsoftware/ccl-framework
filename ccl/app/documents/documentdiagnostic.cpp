@@ -416,8 +416,7 @@ bool DocumentDiagnosticDialog::writeOverview (UrlRef path) const
 		if(writer == nullptr)
 			return false;
 
-		AutoPtr<ITextBuilder> htmlBuilder = writer->createHtmlBuilder ();
-		TextBlock block (htmlBuilder);
+		TextBlock block (writer->createTextBuilder ());
 	
 		writeOverviewContent (block);
 		writer->writeMarkup (block);
@@ -433,8 +432,7 @@ bool DocumentDiagnosticDialog::writeOverview (UrlRef path) const
 			if(writer->beginDocument (*stream, Text::kUTF16) != kResultOk)
 				return false;
 
-			AutoPtr<ITextBuilder> builder (writer->createPlainTextBuilder ());
-			TextBlock block (builder);
+			TextBlock block (writer->createTextBuilder ());
 	
 			writeOverviewContent (block);
 			writer->writeLine (block);
@@ -464,10 +462,10 @@ void DocumentDiagnosticDialog::writeCriticalItems (TextBlock& block, StringRef d
 
 	block << Text::Paragraph (description);
 
-	block << Text::ListBegin (Text::kUnordered);
+	block << Text::ListBegin (Text::kUnorderedList);
 	for(StringRef item : criticalItems)
-		block << Text::ListItem (Text::kUnordered, item);
-	block << Text::ListEnd (Text::kUnordered);
+		block << Text::ListItem (Text::kUnorderedList, item);
+	block << Text::ListEnd (Text::kUnorderedList);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -479,10 +477,10 @@ void DocumentDiagnosticDialog::writeTopItems (TextBlock& block) const
 
 	block << Text::Paragraph (XSTR (TopItems));
 
-	block << Text::ListBegin (Text::kUnordered);
+	block << Text::ListBegin (Text::kUnorderedList);
 	for(StringRef item : topItems)
-		block << Text::ListItem (Text::kUnordered, item);
-	block << Text::ListEnd (Text::kUnordered);
+		block << Text::ListItem (Text::kUnorderedList, item);
+	block << Text::ListEnd (Text::kUnorderedList);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -525,8 +523,7 @@ bool DocumentDiagnosticDialog::exportHtml (UrlRef filePath)
 	if(writer == nullptr)
 		return false;
 
-	AutoPtr<ITextBuilder> htmlBuilder = writer->createHtmlBuilder ();
-	TextBlock block (htmlBuilder);
+	TextBlock block (writer->createTextBuilder ());
 
 	block << Text::Heading (Text::kH1, XSTR (DocumentDiagnostics));
 	
@@ -683,10 +680,10 @@ void DocumentDiagnosticDialog::DiagnosticList::writeHtml (TextBlock& block)
 
 	table->construct (rowCount + 1, columnCount);
 
-	(*table)[0][0].setContent (Text::Decoration (Text::kBold, XSTR (Name)));
-	(*table)[0][1].setContent (Text::Decoration (Text::kBold, XSTR (Average)));
-	(*table)[0][2].setContent (Text::Decoration (Text::kBold, XSTR (Count)));
-	(*table)[0][3].setContent (Text::Decoration (Text::kBold, XSTR (Total)));
+	(*table)[0][0].setContent (Text::Bold (XSTR (Name)));
+	(*table)[0][1].setContent (Text::Bold (XSTR (Average)));
+	(*table)[0][2].setContent (Text::Bold (XSTR (Count)));
+	(*table)[0][3].setContent (Text::Bold (XSTR (Total)));
 
 	for(int row = 0; row < rowCount; row++)
 	{

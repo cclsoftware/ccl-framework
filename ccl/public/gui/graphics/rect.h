@@ -46,6 +46,12 @@ inline Rect rectFToInt (RectFRef r)
 	return Rect (coordFToInt (r.left), coordFToInt (r.top), coordFToInt (r.right), coordFToInt (r.bottom));
 }
 
+/** Convert float to integer rectangle ensuring that the integer rectangle fully contains the float rectangle. */
+inline Rect rectFToEnclosingInt (RectFRef r)
+{
+	return Rect (Coord(coordFToInt (r.left - .4999f)), Coord(coordFToInt (r.top - .4999f)), Coord(coordFToInt (r.right + .5f)), Coord(coordFToInt (r.bottom + .5f)));
+}
+
 /** Convert integer to float rectangle. */
 inline RectF rectIntToF (RectRef r)
 {
@@ -107,13 +113,13 @@ inline bool SizeLimit::isValid () const
 inline SizeLimit& SizeLimit::setUnlimited ()
 { minWidth = minHeight = 0;  maxWidth = maxHeight = kMaxCoord; return *this; }
 
-inline SizeLimit&  SizeLimit::setFixed (PointRef size)
+inline SizeLimit& SizeLimit::setFixed (PointRef size)
 { minWidth = maxWidth = size.x;  minHeight = maxHeight = size.y; return *this; }
 
-inline SizeLimit&  SizeLimit::setFixedWidth (Coord w)
+inline SizeLimit& SizeLimit::setFixedWidth (Coord w)
 { minWidth = maxWidth = w; return *this; }
 
-inline SizeLimit&  SizeLimit::setFixedHeight (Coord h)
+inline SizeLimit& SizeLimit::setFixedHeight (Coord h)
 { minHeight = maxHeight = h; return *this; }
 
 inline bool SizeLimit::isAllowed (const Point& s) const

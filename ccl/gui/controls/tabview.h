@@ -41,7 +41,8 @@ namespace Styles
 		kTabViewBehaviorNoWheel = 1<<13,			///< no mousewheel
 		kTabViewBehaviorNoActivateOnHover = 1<<14,	///< do not activate tab when any drag enters view
 		kTabViewBehaviorFitAllViews = 1<<15,		///< when autosizing, use largest size of all content views
-		kTabViewAppearanceCentered = 1<<16			///< center tabs if possible (no "extendtabs" and combined tab width smaller than view width)
+		kTabViewBehaviorTooltip	= 1<<16,			///< show tab tooltips
+		kTabViewAppearanceCentered = 1<<17			///< center tabs if possible (no "extendtabs" and combined tab width smaller than view width)
 	};
 };
 
@@ -120,6 +121,7 @@ public:
 	tbool CCL_API setProperty (MemberID propertyId, const Variant& var) override;
 	void CCL_API notify (ISubject* subject, MessageRef msg) override;
 	bool onContextMenu (const ContextMenuEvent& event) override;
+	bool onTrackTooltip (const TooltipEvent& event) override;
 	AccessibilityProvider* getAccessibilityProvider () override;
 	ThemeRenderer* getRenderer () override;
 
@@ -134,6 +136,7 @@ private:
 	ThemeRenderer* renderer;
 	int mouseOverTab;
 	int mouseDownTab;
+	int tooltipIndex;
 	bool preferIcon;
 	LinkedList<View*> views;
 

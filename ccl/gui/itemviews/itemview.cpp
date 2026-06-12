@@ -485,6 +485,7 @@ BEGIN_VISUALSTYLE_CLASS (ItemStyle, VisualStyle, "ItemViewStyle")
 	ADD_VISUALSTYLE_METRIC ("separatorBeneath")			///< draw one pixel separator beneath items (on the bottom border - not below)
 	ADD_VISUALSTYLE_METRIC ("highQualityMode")			///< set highQualityMode for image interpolations
 	ADD_VISUALSTYLE_METRIC ("vSnapEnabled")				///< enable snapping to itemSize after scrolling
+	ADD_VISUALSTYLE_STRING ("headerViewStyle")			///< name of a visualStyle for the header view
 END_VISUALSTYLE_CLASS (ItemStyle)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -897,6 +898,13 @@ void ItemView::updateItemStyle ()
 	hasCustomBackgrounds (false);
 	if(visualStyle)
 	{
+		MutableCString headerStyleName = visualStyle->getString ("headerViewStyle");
+	   	if(!headerStyleName.isEmpty ())
+		{
+			const IVisualStyle& headerStyle = theme->getStyle (headerStyleName);
+			setHeaderViewStyle (unknown_cast<VisualStyle> (&headerStyle));
+		}
+
 		if(itemStyle)
 		{
 			itemStyle->discardCustomBackgrounds ();
@@ -924,9 +932,11 @@ void ItemView::onVisualStyleChanged ()
 	SuperClass::onVisualStyleChanged ();
 
 	updateItemStyle ();
-
 	if(isAttached ())
+	{
+		updateColumns ();
 		updateSize ();
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////

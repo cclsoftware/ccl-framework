@@ -204,6 +204,7 @@ bool CustomizationPreset::load (const Storage& storage)
 	storage.getAttributes ().get (id, "id");
 	storage.getAttributes ().get (name, "name");
 	storage.getAttributes ().get (getAttributes (), "data");
+	storage.getAttributes ().get (getAuxiliaryAttributes (), "auxiliaryData");
 	return true;
 }
 
@@ -215,6 +216,8 @@ bool CustomizationPreset::save (const Storage& storage) const
 		storage.getAttributes ().set ("id", getID ());
 	storage.getAttributes ().set ("name", getName ());
 	storage.getAttributes ().set ("data", getAttributes ());
+	if(!getAuxiliaryAttributes ().isEmpty ())
+		storage.getAttributes ().set ("auxiliaryData", getAuxiliaryAttributes ());
 	return true;
 }
 
@@ -619,6 +622,8 @@ void CCL_API CustomizationComponent::Manager::onDocumentEvent (IDocument& docume
 //************************************************************************************************
 // CustomizationComponent
 //************************************************************************************************
+
+DEFINE_STRINGID_MEMBER_ (CustomizationComponent, kPresetRestored, "PresetRestored")
 
 StringRef CustomizationComponent::Customization () { return XSTR (Customization); }
 StringRef CustomizationComponent::EditCustomization () { return XSTR (EditCustomization); }
@@ -1078,6 +1083,8 @@ void CustomizationComponent::restorePreset (const CustomizationPreset& preset)
 				p->setValue (p->getDefaultValue ()); // init with default state ("visible" if not explicitly specified)
 		}
 
+	signal (Message (kPresetRestored, ccl_as_unknown (preset)));
+
 	storePreset (stateBeforeEdit);
 	manager->enableRevert (false);
 }
@@ -1099,6 +1106,37 @@ void CustomizationComponent::createParameters (const CustomizationPreset& preset
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
+CustomizationPreset* CustomizationComponent::getWritablePreset ()
+{
+	CustomizationPreset* preset = getSelectedPreset ();
+	if(preset)
+	{
+		if(preset->isReadOnly ())
+		{
+			// store edited state as another preset
+			String presetName (XSTR (UserPresetName));
+			makeUniquePresetName (presetName);
+
+			auto newPreset = NEW CustomizationPreset;
+			newPreset->setName (presetName);
+			storePreset (*newPreset);
+			addPreset (newPreset);
+			selectPreset (presetName);
+
+			// factory state as "restore point" (not the just edited state)
+			stateBeforeEdit.getAttributes ().copyFrom (preset->getAttributes ());
+			manager->enableRevert (true);
+
+			return newPreset;
+		}
+		else
+			manager->enableRevert (true);
+	}
+	return preset;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
 tbool CCL_API CustomizationComponent::paramChanged (IParameter* param)
 {
 	switch(param->getTag ())
@@ -1116,19 +1154,7 @@ tbool CCL_API CustomizationComponent::paramChanged (IParameter* param)
 		{
 			if(preset->isReadOnly ())
 			{
-				// store edited state as another preset
-				String presetName (XSTR (UserPresetName));
-				makeUniquePresetName (presetName);
-
-				auto newPreset = NEW CustomizationPreset;
-				newPreset->setName (presetName);
-				storePreset (*newPreset);
-				addPreset (newPreset);
-				selectPreset (presetName);
-
-				// factory state as "restore point" (not the just edited state)
-				stateBeforeEdit.getAttributes ().copyFrom (preset->getAttributes ());
-				manager->enableRevert (true);
+				getWritablePreset ();
 			}
 			else
 			{
@@ -1188,10 +1214,12 @@ void CCL_API CustomizationComponent::notify (ISubject* subject, MessageRef msg)
 tresult CCL_API CustomizationComponent::appendContextMenu (IContextMenu& contextMenu)
 {
 	SuperClass::appendContextMenu (contextMenu);
-
-	String context (contextMenu.getContextID ());
-	contextMenu.addSeparatorItem ();
-	contextMenu.addCommandItem (String (XSTR (Customize)) << IMenu::strFollowIndicator, "View", "Customization", makeCommandDelegate (this, &CustomizationComponent::onShowConfigurationEditor, context));
+	if(enabled)
+	{
+		String context (contextMenu.getContextID ());
+		contextMenu.addSeparatorItem ();
+		contextMenu.addCommandItem (String (XSTR (Customize)) << IMenu::strFollowIndicator, "View", "Customization", makeCommandDelegate (this, &CustomizationComponent::onShowConfigurationEditor, context));
+	}
 	return kResultTrue;
 }
 

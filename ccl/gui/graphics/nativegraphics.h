@@ -438,10 +438,13 @@ public:
 	tresult CCL_API getWordRange (Range& range, int textIndex) const override;
 	tresult CCL_API getLineRange (Range& range, int textIndex) const override;
 	tresult CCL_API getExplicitLineRange (Range& range, int textIndex) const override;
+	FontRef CCL_API getFont () const override;
 
 	CLASS_INTERFACE (ITextLayout, Object)
 
 protected:
+	Font font;
+
 	static constexpr float kSubscriptSizeFactor = .62;
 	static constexpr float kSubscriptBaselineFactor = .16;
 	static constexpr float kSuperscriptSizeFactor = .75;
@@ -468,14 +471,13 @@ public:
 
 	SimpleTextLayout ();
 
-	PROPERTY_OBJECT (Font, font, Font)
 	PROPERTY_VARIABLE (CoordF, width, Width)
 	PROPERTY_VARIABLE (CoordF, height, Height)
 	PROPERTY_OBJECT (TextFormat, format, Format)
 	PROPERTY_VARIABLE (LineMode, lineMode, LineMode)
 
-	Coord getWidthInt () const { return coordFToInt (getWidth ()); }
-	Coord getHeightInt () const { return coordFToInt (getHeight ()); }
+	Coord getIntWidth () const { return coordFToInt (getWidth ()); }
+	Coord getIntHeight () const { return coordFToInt (getHeight ()); }
 
 	// ITextLayout
 	tresult CCL_API construct (StringRef text, Coord width, Coord height, FontRef font, LineMode lineMode, TextFormatRef format = TextFormat ()) override;
@@ -483,6 +485,7 @@ public:
 	StringRef CCL_API getText () const override;
 	tresult CCL_API resize (Coord width, Coord height) override;
 	tresult CCL_API resize (CoordF width, CoordF height) override;
+	tresult CCL_API setFontFace (const Range& range, StringRef faceName) override;
 	tresult CCL_API setFontStyle (const Range& range, int style, tbool state) override;
 	tresult CCL_API setFontSize (const Range& range, float size) override;
 	tresult CCL_API setSpacing (const Range& range, float spacing) override;
@@ -491,8 +494,8 @@ public:
 	tresult CCL_API setSuperscript (const Range& range) override;
 	tresult CCL_API setSubscript (const Range& range) override;
 	tresult CCL_API setTextColor (const Range& range, Color color) override;
-	tresult CCL_API getBounds (Rect& bounds, int flags = 0) const override;
-	tresult CCL_API getBounds (RectF& bounds, int flags = 0) const override;
+	tresult CCL_API getBounds (Rect& bounds) const override;
+	tresult CCL_API getBounds (RectF& bounds) const override;
 	tresult CCL_API getImageBounds (RectF& bounds) const override;
 	tresult CCL_API getBaselineOffset (PointF& offset) const override;
 	tresult CCL_API hitTest (int& textIndex, PointF& position) const override;

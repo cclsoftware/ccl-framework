@@ -134,6 +134,7 @@ public:
 	SearchResultNode (Url* path = nullptr);
 
 	PROPERTY_SHARED_AUTO (IUnknown, dragObject, DragObject)
+	PROPERTY_VARIABLE (int, sortPriority, SortPriority)
 
 	StringRef getCategory () const;
 	String& getCategory ();

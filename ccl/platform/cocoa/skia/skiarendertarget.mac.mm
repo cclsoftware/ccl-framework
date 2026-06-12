@@ -56,7 +56,8 @@ MetalMacWindowRenderTarget::MetalMacWindowRenderTarget (Window& window)
   hostView (nullptr),
   sizeObserver (nil),
   scaleObserver (nil),
-  siblingViewCount (0)
+  siblingViewCount (0),
+  displayTimer (nil)
 {}
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -114,7 +115,13 @@ void MetalMacWindowRenderTarget::initialize ()
 			
 		}];
 
-	MetalWindowRenderTarget::initialize ();
+	if(@available (macOS 14.0, *))
+	{
+		displayTimer = [[CCL_ISOLATED (DisplayTimer) alloc] initWithView:view->getView ()];
+		[displayTimer setTarget:this];
+	}
+	else
+		MetalUpdater::instance ().addTarget (this);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////

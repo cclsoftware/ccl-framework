@@ -191,7 +191,7 @@ class Enumeration: public EnumTypeInfo
 public:
 	Enumeration (CStringPtr name, CStringPtr parentName, const StyleDef* def);
 
-	static const StyleDef* getStyleDef (CStringRef name);
+	static const StyleDef* getStyleDef (CStringRef name, bool partialMatching = false);
 
 	// EnumTypeInfo
 	int CCL_API getEnumeratorCount () const override;
@@ -251,7 +251,9 @@ public:
 	virtual bool setAttributes (const SkinAttributes& a);
 	virtual bool getAttributes (SkinAttributes& a) const;
 	virtual void loadFinished (); ///< when element tag closes (after all childs are loaded)
-	virtual bool isOverrideEnabled () const; ///< silence warnings for intentional overrides 
+	virtual bool isOverrideEnabled () const; ///< silence warnings for intentional overrides
+
+	virtual void appendCharacterData (const uchar* data, int length);
 	
 	// Context information
 	virtual ISkinContext* getSkinContext () const;

@@ -54,10 +54,12 @@ public:
 
 		kShared	= 1<<7,	// shared string (no copy)
 
-		kUserFlag1 = 1<<8,
-		kUserFlag2 = 1<<9,
+		kBoolFormat = 1<<8,
 
-		kLastUserFlag = 9,
+		kUserFlag1 = 1<<9,
+		kUserFlag2 = 1<<10,
+
+		kLastUserFlag = 10,
 		kUserFlagMask = kUserFlag1|kUserFlag2
 	};
 
@@ -70,9 +72,11 @@ public:
 	short getType () const;
 	PROPERTY_FLAG (type, kUserFlag1, isUserFlag1)
 	PROPERTY_FLAG (type, kUserFlag2, isUserFlag2)
+	PROPERTY_FLAG (type, kBoolFormat, isBoolFormat)
 
 	void clear ();
 	void set (int64 value);
+	void set (bool value);
 	void set (double value);
 	void set (CStringPtr value, bool shared = false);
 	void set (const AttributeQueue& queue, AttributeAllocator& allocator);
@@ -177,6 +181,7 @@ public:
 	// Write Attributes
 	void set (AttrID id, int64 value);
 	void set (AttrID id, int value);
+	void set (AttrID id, bool value);
 	void set (AttrID id, double value);
 	void set (AttrID id, CStringPtr value, bool shared = false);
 	void set (AttrID id, const Attributes& attributes);
@@ -185,6 +190,7 @@ public:
 
 	void add (AttrID id, int64 value, int flags = 0);
 	void add (AttrID id, int value, int flags = 0);
+	void add (AttrID id, bool value, int flags = 0);
 	void add (AttrID id, double value, int flags = 0);
 	void add (AttrID id, CStringPtr value, int flags = 0);
 	void add (AttrID id, const Attributes& attributes, int flags = 0);
@@ -352,6 +358,7 @@ inline const Attribute* Attributes::getAttribute (int i) const { return (Attribu
 
 inline void Attributes::set (AttrID id, int64 value) { lookupOrAdd (id).set (value); }
 inline void Attributes::set (AttrID id, int value) { lookupOrAdd (id).set ((int64)value); }
+inline void Attributes::set (AttrID id, bool value) { lookupOrAdd (id).set (value); }
 inline void Attributes::set (AttrID id, double value) { lookupOrAdd (id).set (value); }
 inline void Attributes::set (AttrID id, CStringPtr value, bool shared) { lookupOrAdd (id).set (value, shared); }
 inline void Attributes::set (AttrID id, const Attributes& attributes) { lookupOrAdd (id).set (attributes, allocator); }
@@ -360,6 +367,7 @@ inline Attributes* Attributes::makeAttributes (AttrID id) { return lookupOrAdd (
 
 inline void Attributes::add (AttrID id, int64 value, int flags) { addNew (id, flags).set (value); }
 inline void Attributes::add (AttrID id, int value, int flags) { addNew (id, flags).set ((int64)value); }
+inline void Attributes::add (AttrID id, bool value, int flags) { addNew (id, flags).set (value); }
 inline void Attributes::add (AttrID id, double value, int flags) { addNew (id, flags).set (value); }
 inline void Attributes::add (AttrID id, CStringPtr value, int flags) { addNew (id, flags).set (value, (flags & Attribute::kShareValue) != 0); }
 inline void Attributes::add (AttrID id, const Attributes& attributes, int flags) { addNew (id, flags).set (attributes, allocator); }

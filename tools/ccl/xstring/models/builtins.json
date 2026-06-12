@@ -64,6 +64,10 @@
 				},
 				{
 					"kind": "attribute",
+					"name": "translated"
+				},
+				{
+					"kind": "attribute",
 					"name": "placeholder"
 				},
 				{

@@ -41,7 +41,7 @@ LabelRenderer::LabelRenderer (VisualStyle* visualStyle)
 	{
 		if(visualStyle->getTextAlignment ().getAlignH () == Alignment::kRight)
 			offset.x = -visualStyle->getMetric<Coord> (StyleID::kPaddingRight, 0);
-		else
+		else if(visualStyle->getTextAlignment ().getAlignH () == Alignment::kLeft)
 			offset.x = visualStyle->getMetric<Coord> (StyleID::kPaddingLeft, 0);
 	}
 }
@@ -54,14 +54,16 @@ void LabelRenderer::draw (View* view, const UpdateRgn& updateRgn)
 	StyleRef style = view->getStyle ();
 	
 	if(style.isOpaque ())
+	{
 		if(style.isCustomStyle (Styles::kLabelColorize))
 			port.fillRect (updateRgn.bounds, visualStyle->getBackBrush ());
-	
+	}
+
 	if(ITextLayout* textLayout = ((Label*)view)->getTextLayout ())
 	{
 		Rect rect;
 		view->getClientRect (rect);
-		
+
 		if(style.isVertical ())
 		{
 			port.saveState ();

@@ -17,6 +17,7 @@
 //************************************************************************************************
 
 #include "ccl/gui/controls/popupbox.h"
+#include "ccl/gui/controls/controlaccessibility.h"
 #include "ccl/gui/touch/touchhandler.h"
 #include "ccl/gui/touch/touchinput.h"
 #include "ccl/gui/touch/touchcollection.h"
@@ -45,6 +46,34 @@ void setMouseStateDeep (View* parent, int state)
 }
 
 } // namespace
+
+
+
+//************************************************************************************************
+// PopupBoxAccessibilityProvider
+//************************************************************************************************
+
+class PopupBoxAccessibilityProvider: public ValueControlAccessibilityProvider,
+									 public IAccessibilityExpandCollapseProvider
+{
+public:
+	DECLARE_CLASS_ABSTRACT (PopupBoxAccessibilityProvider, ValueControlAccessibilityProvider)
+
+	PopupBoxAccessibilityProvider (PopupBox& owner);
+
+	// ValueControlAccessibilityProvider
+	AccessibilityElementRole CCL_API getElementRole () const override;
+
+	// IAccessibilityExpandCollapseProvider
+	tresult CCL_API expand (tbool state) override;
+	tbool CCL_API isExpanded () override;
+
+	CLASS_INTERFACE (IAccessibilityExpandCollapseProvider, ValueControlAccessibilityProvider)
+
+protected:
+	PopupBox& getPopupBox () const;
+};
+
 
 //************************************************************************************************
 // PopupBox::ClientTouchHandler
@@ -418,7 +447,17 @@ void CCL_API PopupBox::notify (ISubject* subject, MessageRef msg)
 	else
 		SuperClass::notify (subject, msg);
 }
-	
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+AccessibilityProvider* PopupBox::getAccessibilityProvider ()
+{
+	if(!accessibilityProvider)
+		accessibilityProvider = NEW PopupBoxAccessibilityProvider (*this);
+	return accessibilityProvider;
+}
+
+
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 BEGIN_METHOD_NAMES (PopupBox)
@@ -442,4 +481,60 @@ tbool CCL_API PopupBox::invokeMethod (Variant& returnValue, MessageRef msg)
 	}
 	else
 		return SuperClass::invokeMethod (returnValue, msg);
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+bool PopupBox::isOpen ()
+{
+	if(popupSelector)
+		return popupSelector->isOpen ();
+	return false;
+}
+
+
+//************************************************************************************************
+// PopupBoxAccessibilityProvider
+//************************************************************************************************
+
+DEFINE_CLASS_ABSTRACT_HIDDEN (PopupBoxAccessibilityProvider, ValueControlAccessibilityProvider)
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+PopupBoxAccessibilityProvider::PopupBoxAccessibilityProvider (PopupBox& owner)
+: ValueControlAccessibilityProvider (owner)
+{}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+AccessibilityElementRole CCL_API PopupBoxAccessibilityProvider::getElementRole () const
+{
+	return AccessibilityElementRole::kComboBox;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+PopupBox& PopupBoxAccessibilityProvider::getPopupBox () const
+{
+	return static_cast<PopupBox&> (view);
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+tresult CCL_API PopupBoxAccessibilityProvider::expand (tbool state)
+{
+	if(state && !isExpanded ())
+	{
+		getPopupBox ().showPopup ();
+		return kResultOk;
+	}
+	return kResultFailed;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+tbool CCL_API PopupBoxAccessibilityProvider::isExpanded ()
+{
+	PopupBox& popupBox = getPopupBox ();
+	return popupBox.isOpen ();
 }

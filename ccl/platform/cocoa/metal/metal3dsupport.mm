@@ -219,7 +219,13 @@ Metal3DSurface::Metal3DSurface ()
 		// sync to the explicitly timed drawing of MetalUpdater used with Skia
 		[view setEnableSetNeedsDisplay:NO];
 		[view setPaused:YES];
-		MetalUpdater::instance ().addSurface (this);
+		if(@available (macOS 14.0, *))
+		{
+			displayTimer = [[CCL_ISOLATED (DisplayTimer) alloc] initWithView:view];
+			[displayTimer setSurface:this];
+		}
+		else
+			MetalUpdater::instance ().addSurface (this);
 	}
 
 	[view setClearColor:MTLClearColorMake (0., 0., 0., 0.)];

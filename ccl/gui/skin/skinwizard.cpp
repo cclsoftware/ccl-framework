@@ -347,6 +347,7 @@ bool SkinWizard::loadSkin (UrlRef url, bool keepImages, bool loadAllImages)
 	AutoPtr<IStream> xmlStream = fileSys->openStream (xmlUrl);
 	
 	SkinParser p (this);
+	ScopedVar<SkinModel*> loadingScope (SkinModel::loadingModel, p.getModel ());
 	p.setFileName (MutableCString (xmlUrl.getPath ()));
 
 	if(xmlStream)
@@ -614,6 +615,7 @@ bool SkinWizard::loadImports (SkinModel* model, const Url& currentDir, Container
 			}
 
 			SkinRegistry::ImportContext importContext (getSkinID ());
+			SkinParser::setCustomDefinitions (imp->getDefinitions ());
 			SkinWizard helper (kImportID, getTheme (), getStringTable ());
 			if(!helper.loadSkin (impUrl, false, true)) // force all images to be loaded now, because the original file URL is lost
 			{
@@ -630,6 +632,7 @@ bool SkinWizard::loadImports (SkinModel* model, const Url& currentDir, Container
 				model->takeSubModels (importedModel);
 		}
 	EndFor
+	SkinParser::setCustomDefinitions ();
 	return true;
 }
 
@@ -1324,9 +1327,8 @@ bool SkinWizard::resolveDefine (Variant& resolvedValue, StringRef valueString, I
 	else if(valueString.contains (SkinVariable::prefix))
 	{
 		// resolve variable with current values
-		MutableCString valueCString (valueString);
-		ResolvedName resolvedValueString (*this, valueCString);
-		resolvedValue = resolvedValueString.string ();
+		String resolvedValueString (resolveTitle (valueString));
+		resolvedValue = Variant (resolvedValueString, true);
 		return true;
 	}
 	return false;

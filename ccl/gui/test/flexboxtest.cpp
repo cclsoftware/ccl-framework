@@ -58,7 +58,7 @@ protected:
 	{
 		LayoutContext* createContext (LayoutView* parent) override { return nullptr; }
 		LayoutAlgorithm* createAlgorithm (LayoutContext* context) override { return nullptr; };
-		FlexData& getFlexData () { return flexData;	};
+		FlexContainerData& getFlexData () { return flexData; };
 	};
 
 	AutoPtr<TestableFlexboxLayout> flexLayout;
@@ -95,10 +95,10 @@ CCL_TEST_F (FlexLayoutTest, SkinAttributesReflectDefaults)
 
 	flexLayout->getAttributes (attributes);
 
-	CCL_TEST_ASSERT_EQUAL ((FlexDirection)attributes.getOptions (ATTR_FLEXDIRECTION, FlexboxLayout::flexDirection), FlexDirection::kRow);
-	CCL_TEST_ASSERT_EQUAL ((FlexWrap)attributes.getOptions (ATTR_FLEXWRAP, FlexboxLayout::flexWrap), FlexWrap::kNoWrap);
-	CCL_TEST_ASSERT_EQUAL ((FlexJustify)attributes.getOptions (ATTR_FLEXJUSTIFY, FlexboxLayout::flexJustify), FlexJustify::kFlexStart);
-	CCL_TEST_ASSERT_EQUAL ((FlexAlign)attributes.getOptions (ATTR_FLEXALIGN, FlexboxLayout::flexAlign), FlexAlign::kStretch);
+	CCL_TEST_ASSERT_EQUAL ((FlexDirection)attributes.getOptions (ATTR_FLEXDIRECTION, FlexShared::flexDirection), FlexDirection::kRow);
+	CCL_TEST_ASSERT_EQUAL ((FlexWrap)attributes.getOptions (ATTR_FLEXWRAP, FlexShared::flexWrap), FlexWrap::kNoWrap);
+	CCL_TEST_ASSERT_EQUAL ((FlexJustify)attributes.getOptions (ATTR_FLEXJUSTIFY, FlexShared::flexJustify), FlexJustify::kFlexStart);
+	CCL_TEST_ASSERT_EQUAL ((FlexAlign)attributes.getOptions (ATTR_FLEXALIGN, FlexShared::flexAlign), FlexAlign::kStretch);
 	
 	CCL_TEST_ASSERT_EQUAL (attributes.getString (ATTR_FLEXGAPROW), DesignCoord::kStrUndefined);
 	CCL_TEST_ASSERT_EQUAL (attributes.getString (ATTR_FLEXGAPCOLUMN), DesignCoord::kStrUndefined);
@@ -111,10 +111,10 @@ CCL_TEST_F (FlexLayoutTest, SkinOptionAttributeUpdatesAreReflected)
 	{
 		MutableSkinAttributes attributes;
 		
-		attributes.setOptions (ATTR_FLEXDIRECTION, int(FlexDirection::kColumn), FlexboxLayout::flexDirection, true);
-		attributes.setOptions (ATTR_FLEXWRAP, int(FlexWrap::kWrap), FlexboxLayout::flexWrap, true);
-		attributes.setOptions (ATTR_FLEXJUSTIFY, int(FlexJustify::kFlexEnd), FlexboxLayout::flexJustify, true);
-		attributes.setOptions (ATTR_FLEXALIGN, int(FlexAlign::kCenter), FlexboxLayout::flexAlign, true);
+		attributes.setOptions (ATTR_FLEXDIRECTION, int(FlexDirection::kColumn), FlexShared::flexDirection, true);
+		attributes.setOptions (ATTR_FLEXWRAP, int(FlexWrap::kWrap), FlexShared::flexWrap, true);
+		attributes.setOptions (ATTR_FLEXJUSTIFY, int(FlexJustify::kFlexEnd), FlexShared::flexJustify, true);
+		attributes.setOptions (ATTR_FLEXALIGN, int(FlexAlign::kCenter), FlexShared::flexAlign, true);
 		
 		flexLayout->setAttributes (attributes);
 	}
@@ -123,10 +123,10 @@ CCL_TEST_F (FlexLayoutTest, SkinOptionAttributeUpdatesAreReflected)
 		MutableSkinAttributes attributes;
 		flexLayout->getAttributes (attributes);
 		
-		CCL_TEST_ASSERT_EQUAL ((FlexDirection)attributes.getOptions (ATTR_FLEXDIRECTION, FlexboxLayout::flexDirection), FlexDirection::kColumn);
-		CCL_TEST_ASSERT_EQUAL ((FlexWrap)attributes.getOptions (ATTR_FLEXWRAP, FlexboxLayout::flexWrap), FlexWrap::kWrap);
-		CCL_TEST_ASSERT_EQUAL ((FlexJustify)attributes.getOptions (ATTR_FLEXJUSTIFY, FlexboxLayout::flexJustify), FlexJustify::kFlexEnd);
-		CCL_TEST_ASSERT_EQUAL ((FlexAlign)attributes.getOptions (ATTR_FLEXALIGN, FlexboxLayout::flexAlign), FlexAlign::kCenter);
+		CCL_TEST_ASSERT_EQUAL ((FlexDirection)attributes.getOptions (ATTR_FLEXDIRECTION, FlexShared::flexDirection), FlexDirection::kColumn);
+		CCL_TEST_ASSERT_EQUAL ((FlexWrap)attributes.getOptions (ATTR_FLEXWRAP, FlexShared::flexWrap), FlexWrap::kWrap);
+		CCL_TEST_ASSERT_EQUAL ((FlexJustify)attributes.getOptions (ATTR_FLEXJUSTIFY, FlexShared::flexJustify), FlexJustify::kFlexEnd);
+		CCL_TEST_ASSERT_EQUAL ((FlexAlign)attributes.getOptions (ATTR_FLEXALIGN, FlexShared::flexAlign), FlexAlign::kCenter);
 	}
 }
 
@@ -217,7 +217,7 @@ CCL_TEST_F (FlexLayoutTest, PropertyChangeDoesNotify)
 
 CCL_TEST_F (FlexLayoutTest, PaddingShortHandsFromPropertiesAreParsedCorrectly)
 {
-	FlexData& flexData = flexLayout->getFlexData ();
+	FlexContainerData& flexData = flexLayout->getFlexData ();
 
 	flexLayout->setProperty (ATTR_FLEXPADDING, "10");
 	CCL_TEST_ASSERT (flexData.padding.left == flexData.padding.top && flexData.padding.left == flexData.padding.right && flexData.padding.left == flexData.padding.bottom);
@@ -246,7 +246,7 @@ CCL_TEST_F (FlexLayoutTest, PaddingShortHandsFromPropertiesAreParsedCorrectly)
 CCL_TEST_F (FlexLayoutTest, PaddingShortHandsFromAttributesAreParsedCorrectly)
 {
 	MutableSkinAttributes attributes;
-	FlexData& flexData = flexLayout->getFlexData ();
+	FlexContainerData& flexData = flexLayout->getFlexData ();
 	
 	attributes.setString (ATTR_FLEXPADDING, "10");
 	flexLayout->setAttributes (attributes);
@@ -306,7 +306,7 @@ public:
 	}
 
 protected:
-	FlexItem flexItem;
+	FlexLayoutItem flexItem;
 	bool notified;
 };
 
@@ -349,9 +349,9 @@ CCL_TEST_F (FlexItemTest, SkinAttributesReflectDefaults)
 	CCL_TEST_ASSERT_EQUAL (attributes.getFloat (ATTR_FLEXSHRINK), 1.f);
 	CCL_TEST_ASSERT_EQUAL (attributes.getString (ATTR_FLEXBASIS), DesignCoord::kStrAuto);
 	
-	CCL_TEST_ASSERT_EQUAL (attributes.getOptions (ATTR_FLEXALIGNSELF, flexItem.flexAlignSelf), (int)FlexAlignSelf::kAuto);
-	CCL_TEST_ASSERT_EQUAL (attributes.getOptions (ATTR_FLEXPOSITIONTYPE, flexItem.flexPositionType), (int)FlexPositionType::kRelative);
-	CCL_TEST_ASSERT_EQUAL (attributes.getOptions (ATTR_FLEXSIZEMODE, flexItem.flexSizeMode), (int)FlexSizeMode::kFill);
+	CCL_TEST_ASSERT_EQUAL (attributes.getOptions (ATTR_FLEXALIGNSELF, FlexShared::flexAlignSelf), (int)FlexAlignSelf::kAuto);
+	CCL_TEST_ASSERT_EQUAL (attributes.getOptions (ATTR_FLEXPOSITIONTYPE, FlexShared::flexPositionType), (int)FlexPositionType::kRelative);
+	CCL_TEST_ASSERT_EQUAL (attributes.getOptions (ATTR_FLEXSIZEMODE, FlexShared::flexSizeMode), (int)FlexSizeMode::kFill);
 	
 	CCL_TEST_ASSERT_EQUAL (attributes.getString (ATTR_FLEXMARGINTOP), DesignCoord::kStrUndefined);
 	CCL_TEST_ASSERT_EQUAL (attributes.getString (ATTR_FLEXMARGINRIGHT), DesignCoord::kStrUndefined);
@@ -372,9 +372,9 @@ CCL_TEST_F (FlexItemTest, AttributesUpdateItemData)
 	attributes.setFloat (ATTR_FLEXGROW, .5f);
 	attributes.setFloat (ATTR_FLEXSHRINK, .5f);
 	
-	attributes.setOptions (ATTR_FLEXALIGNSELF, int(FlexAlignSelf::kFlexEnd), FlexItem::flexAlignSelf, true);
-	attributes.setOptions (ATTR_FLEXPOSITIONTYPE, int(FlexPositionType::kAbsolute), FlexItem::flexPositionType, true);
-	attributes.setOptions (ATTR_FLEXSIZEMODE, int(FlexSizeMode::kHugVertical), FlexItem::flexSizeMode, true);
+	attributes.setOptions (ATTR_FLEXALIGNSELF, int(FlexAlignSelf::kFlexEnd), FlexShared::flexAlignSelf, true);
+	attributes.setOptions (ATTR_FLEXPOSITIONTYPE, int(FlexPositionType::kAbsolute), FlexShared::flexPositionType, true);
+	attributes.setOptions (ATTR_FLEXSIZEMODE, int(FlexSizeMode::kHugVertical), FlexShared::flexSizeMode, true);
 	
 	attributes.setInt (ATTR_FLEXBASIS, 10);
 	
@@ -984,7 +984,7 @@ CCL_TEST_F (FlexAlgorithmTest, RelativelySizedChildrenWithFullSizeFillParentAcco
 	flexAlgorithm->onSize ({200, 200});
 	
 	View view;
-	AutoPtr<FlexItem> item = ccl_cast<FlexItem> (flexLayout->createItem (&view));
+	AutoPtr<FlexLayoutItem> item = ccl_cast<FlexLayoutItem> (flexLayout->createItem (&view));
 	
 	DesignCoord zeroPercent (DesignCoord::kPercent, 0);
 	DesignCoord hundredPercent (DesignCoord::kPercent, 100);
@@ -1007,7 +1007,7 @@ CCL_TEST_F (FlexAlgorithmTest, RelativelySizedChildrenWithPartialSizeFillParentA
 	flexAlgorithm->onSize ({200, 200});
 	
 	View view;
-	AutoPtr<FlexItem> item = ccl_cast<FlexItem> (flexLayout->createItem (&view));
+	AutoPtr<FlexLayoutItem> item = ccl_cast<FlexLayoutItem> (flexLayout->createItem (&view));
 	
 	DesignCoord zeroPercent (DesignCoord::kPercent, 0);
 	DesignCoord sixtyPercent (DesignCoord::kPercent, 60);
@@ -1030,7 +1030,7 @@ CCL_TEST_F (FlexAlgorithmTest, MixedSizedChildrenWithPartialSizeFillParentAccord
 	flexAlgorithm->onSize ({200, 200});
 	
 	View view;
-	AutoPtr<FlexItem> item = ccl_cast<FlexItem> (flexLayout->createItem (&view));
+	AutoPtr<FlexLayoutItem> item = ccl_cast<FlexLayoutItem> (flexLayout->createItem (&view));
 	
 	DesignCoord zeroPercent (DesignCoord::kPercent, 0);
 	DesignCoord sixtyPercent (DesignCoord::kPercent, 60);
@@ -1053,7 +1053,7 @@ CCL_TEST_F (FlexAlgorithmTest, RelativeFlexBasisIsConsideredAccordingly)
 	flexAlgorithm->onSize ({200, 200});
 	
 	View view;
-	AutoPtr<FlexItem> item = ccl_cast<FlexItem> (flexLayout->createItem (&view));
+	AutoPtr<FlexLayoutItem> item = ccl_cast<FlexLayoutItem> (flexLayout->createItem (&view));
 	item->setProperty (ATTR_FLEXBASIS, DesignCoord (DesignCoord::kPercent, 80).toVariant ());
 	
 	flexAlgorithm->onItemAdded (item);
@@ -1196,7 +1196,7 @@ CCL_TEST_F (FlexCascadesTest, LayoutChildWithZeroInsetFillsContainerIfAbsolutePo
 	childLayoutViewPtr->setLayout (flexLayout);
 	
 	layoutView->addView (childLayoutViewPtr);
-	FlexItem* item = ccl_cast<FlexItem> (layoutView->findLayoutItem (childLayoutViewPtr));
+	FlexLayoutItem* item = ccl_cast<FlexLayoutItem> (layoutView->findLayoutItem (childLayoutViewPtr));
 	item->setProperty (ATTR_FLEXPOSITIONTYPE, int(FlexPositionType::kAbsolute));
 	item->setProperty (ATTR_FLEXINSET, "0");
 	
@@ -1222,7 +1222,7 @@ CCL_TEST_F (FlexCascadesTest, CascadedLayoutChildWithZeroInsetFillsContainerIfAb
 	
 	layoutView->addView (childLayoutViewPtr);
 	
-	FlexItem* item = ccl_cast<FlexItem> (layoutView->findLayoutItem (childLayoutViewPtr));
+	FlexLayoutItem* item = ccl_cast<FlexLayoutItem> (layoutView->findLayoutItem (childLayoutViewPtr));
 	item->setProperty (ATTR_FLEXPOSITIONTYPE, int(FlexPositionType::kAbsolute));
 	item->setProperty (ATTR_FLEXINSET, DesignCoord (DesignCoord::kCoord, 0).toVariant ());
 	
@@ -1248,7 +1248,7 @@ CCL_TEST_F (FlexCascadesTest, ChildContainerWithZeroInsetIsResizedWithParent)
 	
 	layoutView->addView (childLayoutViewPtr);
 	
-	FlexItem* item = ccl_cast<FlexItem> (layoutView->findLayoutItem (childLayoutViewPtr));
+	FlexLayoutItem* item = ccl_cast<FlexLayoutItem> (layoutView->findLayoutItem (childLayoutViewPtr));
 	item->setProperty (ATTR_FLEXPOSITIONTYPE, int(FlexPositionType::kAbsolute));
 	item->setProperty (ATTR_FLEXINSET, "0");
 	

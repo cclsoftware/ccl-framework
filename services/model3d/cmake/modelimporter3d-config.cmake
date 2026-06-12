@@ -18,12 +18,18 @@
 #
 #************************************************************************************************
 
-include_guard (DIRECTORY)
-
 find_package (ccl REQUIRED COMPONENTS cclapp cclbase ccltext cclsystem cclgui)
-find_package (assimp)
 
 ccl_find_path (model3d_DIR NAMES "source/plugversion.h" HINTS "${CMAKE_CURRENT_LIST_DIR}/.." DOC "Model3D directory")
+
+if (TARGET modelimporter3d)
+	if (VENDOR_PLUGINS_RUNTIME_DIRECTORY)
+		ccl_install_imported (modelimporter3d LIBRARY DESTINATION ${VENDOR_PLUGINS_RUNTIME_DIRECTORY} FRAMEWORK DESTINATION ${VENDOR_PLUGINS_RUNTIME_DIRECTORY})
+	endif ()
+	return ()
+endif ()
+
+find_package (assimp)
 
 ccl_add_plugin_library (modelimporter3d
 	VENDOR ccl
@@ -60,6 +66,7 @@ ccl_add_resources (modelimporter3d ${modelimporter3d_resources})
 target_sources (modelimporter3d PRIVATE ${modelimporter3d_sources})
 target_link_libraries (modelimporter3d PRIVATE cclapp cclbase ccltext cclsystem cclgui ${assimp_LIBRARIES})
 
+ccl_export_target (modelimporter3d)
 if (CCL_SYSTEM_INSTALL)
 	install (TARGETS modelimporter3d 
 		EXPORT ccl-targets DESTINATION "${CCL_LIBRARY_DESTINATION}"
@@ -70,6 +77,6 @@ if (CCL_SYSTEM_INSTALL)
         install (FILES $<TARGET_FILE_DIR:modelimporter3d>/modelimporter3d.pdb DESTINATION "${CCL_PLUGINS_DESTINATION}" OPTIONAL COMPONENT services_${VENDOR_NATIVE_COMPONENT_SUFFIX})
     endif ()
 elseif (VENDOR_PLUGINS_RUNTIME_DIRECTORY)
-	install (TARGETS modelimporter3d LIBRARY DESTINATION ${VENDOR_PLUGINS_RUNTIME_DIRECTORY}
+	install (TARGETS modelimporter3d LIBRARY DESTINATION ${VENDOR_PLUGINS_RUNTIME_DIRECTORY} FRAMEWORK DESTINATION ${VENDOR_PLUGINS_RUNTIME_DIRECTORY}
                                      FRAMEWORK DESTINATION ${VENDOR_PLUGINS_RUNTIME_DIRECTORY})
 endif ()

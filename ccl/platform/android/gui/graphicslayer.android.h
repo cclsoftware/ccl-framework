@@ -12,7 +12,7 @@
 // For more information, please visit ccl.dev.
 //
 // Filename    : ccl/platform/android/gui/graphicslayer.android.h
-// Description : Android Graphixs Layer implementation
+// Description : Android Graphics Layer implementation
 //
 //************************************************************************************************
 

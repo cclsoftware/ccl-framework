@@ -327,7 +327,7 @@ IString* CCL_API UnicodeStringBuffer::createSubString (int index, int count) con
 	int thisLength = getLength ();
 	if(index < 0 || index >= thisLength)
 		return nullptr;
-	if(count < 0)
+	if(count < 0 || count > thisLength - index)
 		count = thisLength - index;
 	if(count <= 0)
 		return nullptr;

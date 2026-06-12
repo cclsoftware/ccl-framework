@@ -115,7 +115,7 @@ MutableCString UrlEncoder::decode (CStringRef string)
 {
 	MutableCString result;
 	CStringWriter<kBufferSize> writer (result);
-	Core::URLEncoding::decode (writer, string);
+	Core::URLEncoding::decode (writer, string, static_cast<Core::URLEncoding::Scheme> (scheme));
 	writer.flush ();
 	return result;
 }

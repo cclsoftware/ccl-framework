@@ -23,12 +23,16 @@ ccl_list_append_once (cclsecurity_apple_frameworks
 	${SECURITY_LIBRARY}
 )
 
-if (NOT ${CCL_STATIC_ONLY})
-	target_link_libraries (${cclsecurity} PRIVATE ${cclsecurity_apple_frameworks})
-endif ()
-ccl_list_append_once (CCL_STATIC_LINK_LIBRARIES ${cclsecurity_apple_frameworks})
+ccl_check_imported (${cclsecurity} imported)
+if (NOT imported)
+	if (NOT ${CCL_STATIC_ONLY})
+		target_link_libraries (${cclsecurity} PRIVATE ${cclsecurity_apple_frameworks})
+	endif ()
+	ccl_list_append_once (CCL_STATIC_LINK_LIBRARIES ${cclsecurity_apple_frameworks})
 
-if (NOT ${CCL_STATIC_ONLY})
-	target_link_libraries (${cclsecurity} PUBLIC ${cclsecurity_apple_frameworks})
+	if (NOT ${CCL_STATIC_ONLY})
+		target_link_libraries (${cclsecurity} PUBLIC ${cclsecurity_apple_frameworks})
+	endif ()
 endif ()
+
 ccl_list_append_once (CCL_STATIC_LINK_LIBRARIES ${cclsecurity_apple_frameworks})

@@ -92,7 +92,7 @@ Components are reusable building blocks of an application.
 They can be nested: a component has access to child and parent components.
 Each module of an application has a global component tree that starts with the :cref:`RootComponent<CCL::RootComponent>`.
 
-A component (including child components) an also exist outside this global tree, e.g.
+A component (including child components) can also exist outside this global tree, e.g.
 
 * A component for a modal dialog might be created only for the lifetime of the dialog.
 * In document-based applications, each document has its own document tree starting with the document controller.

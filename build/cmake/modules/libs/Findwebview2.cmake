@@ -13,4 +13,8 @@ if (NOT TARGET webview2)
 	else ()
 		target_link_libraries (webview2 INTERFACE "${webview2_DIR}/build/native/${VENDOR_PLATFORM_SUBDIR}/WebView2LoaderStatic.lib")
 	endif ()
+	
+	if (CCL_EXPORTS_PATH)
+		install (TARGETS webview2 EXPORT ccl-targets)
+	endif ()
 endif ()

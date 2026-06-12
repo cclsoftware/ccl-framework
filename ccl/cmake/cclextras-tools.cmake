@@ -56,7 +56,9 @@ if (NOT TARGET cclextras-tools)
 	target_sources (cclextras-tools PRIVATE ${cclextras_tools_sources} ${cclextras_public_sources} ${CMAKE_CURRENT_LIST_FILE})
 	ccl_target_headers (cclextras-tools INSTALL ${CCL_SYSTEM_INSTALL} DESTINATION ${CCL_PUBLIC_HEADERS_DESTINATION} BASE_DIRS ${CCL_DIR} FILES ${cclextras_tools_headers})
 	
-	if (CCL_SYSTEM_INSTALL)
+	if (CCL_EXPORTS_PATH)
+		install (TARGETS cclextras-tools EXPORT ccl-targets FILE_SET HEADERS DESTINATION ${CCL_PUBLIC_HEADERS_DESTINATION} COMPONENT public_headers)
+	elseif (CCL_SYSTEM_INSTALL)
 		install (TARGETS cclextras-tools EXPORT ccl-targets DESTINATION "${CCL_STATIC_LIBRARY_DESTINATION}"
 										 ARCHIVE DESTINATION "${CCL_STATIC_LIBRARY_DESTINATION}" COMPONENT prebuilt_libraries_${VENDOR_NATIVE_COMPONENT_SUFFIX}
 										 FRAMEWORK DESTINATION "${CCL_STATIC_LIBRARY_DESTINATION}" COMPONENT prebuilt_libraries_${VENDOR_NATIVE_COMPONENT_SUFFIX}

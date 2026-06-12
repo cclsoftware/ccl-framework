@@ -1038,6 +1038,9 @@ bool MenuControl::ItemButton::onNavigate (const KeyEvent& event)
 
 AccessibilityProvider* MenuControl::ItemButton::getAccessibilityProvider () 
 {
+	if(item && item->isSeparator ())
+		return nullptr;
+	
 	if(!accessibilityProvider)
 		accessibilityProvider = NEW MenuItemButtonAccessibilityProvider (*this);
 	return accessibilityProvider;
@@ -1066,6 +1069,10 @@ MenuControl::ItemButton& MenuItemButtonAccessibilityProvider::getItemButton () c
 
 AccessibilityElementRole CCL_API MenuItemButtonAccessibilityProvider::getElementRole () const
 {
+	MenuControl::ItemButton& button = getItemButton ();
+	if(ccl_cast<CompactMenuControl::HeaderButton> (&button))
+		return AccessibilityElementRole::kButton;
+	
 	return AccessibilityElementRole::kMenuItem;
 }
 
@@ -1080,6 +1087,12 @@ void CCL_API MenuItemButtonAccessibilityProvider::getElementName (String& name) 
 		name = item->getTitle ();
 		if(name.isEmpty ())
 			name = item->getTooltip ();
+		if(name.isEmpty () && item->isSubMenu ())
+		{
+			Menu* subMenu = item->getSubMenu ();
+			if(subMenu)
+				name = subMenu->getTitle ();
+		}
 	}
 	if(name.isEmpty ())
 		SuperClass::getElementName (name);
@@ -1091,9 +1104,34 @@ tresult CCL_API MenuItemButtonAccessibilityProvider::performAction ()
 {
 	MenuControl::ItemButton& button = getItemButton ();
 	SharedPtr<Unknown> lifeGuard (&button);
-	if(!button.isClickable ())
+	MenuItem* item = button.getItem ();
+	
+	if(!item || !item->isEnabled ())
 		return kResultFailed;
-	button.select ();
+	else if(button.isSubMenuOpen ())
+	{
+		button.closeSubMenu ();
+		return kResultOk;
+	}
+	else if(button.canOpenSubMenu ())
+	{
+		button.popupSubMenu ();
+		return kResultOk;
+	}
+	else if(CompactMenuControl* compactControl = button.getParent<CompactMenuControl> ())
+	{
+		if(ccl_cast<CompactMenuControl::BackButton> (&button) || ccl_cast<CompactMenuControl::CloseButton> (&button))
+		{
+			compactControl->getCompactClient ()->closeDeepestMenu ();
+			return kResultOk;
+		}
+	}
+	
+	item->select ();
+	MenuControl* control = view.getParent<MenuControl> ();
+	if(control)
+		control->closeAll ();
+		
 	return kResultOk;
 }
 

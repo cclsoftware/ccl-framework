@@ -208,14 +208,7 @@ void XmlProcessingInstructionHandler::handleInstruction (StringRef _target, Stri
 		if(data.isEmpty ())
 			skipping = false;
 		else
-		{
-			skipping = true;
-
-			String definitions;
-			Configuration::Registry::instance ().getValue (definitions, "XML.Parsers", "definitions");
-			if(definitions.contains (_data))
-				skipping = false;
-		}
+			skipping = isDefined (_data) ? false : true;
 	}
 
 	if(invert)
@@ -223,4 +216,18 @@ void XmlProcessingInstructionHandler::handleInstruction (StringRef _target, Stri
 
 	if(nested && oldState) // keep skipping if nested and was skipping before
 		skipping = true;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+bool XmlProcessingInstructionHandler::isDefined (StringRef query) const
+{
+	ASSERT (query.index (" ") == -1) // only single tokens allowed
+
+	String definitions;
+	Configuration::Registry::instance ().getValue (definitions, "XML.Parsers", "definitions");
+	if(definitions.contains (query))
+		return true;
+
+	return false;
 }

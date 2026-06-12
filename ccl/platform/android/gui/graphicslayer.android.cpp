@@ -12,7 +12,7 @@
 // For more information, please visit ccl.dev.
 //
 // Filename    : ccl/platform/android/gui/graphicslayer.android.cpp
-// Description : Android Graphixs Layer implementation
+// Description : Android Graphics Layer implementation
 //
 //************************************************************************************************
 
@@ -486,7 +486,7 @@ tresult AndroidGraphicsLayer::moveLayerView (IGraphicsLayer* layer, IGraphicsLay
         if(above)
             insertIndex++;
         if(currentIndex < siblingIndex)
-            insertIndex += 1;
+            insertIndex--;
 
         if(currentIndex != insertIndex)
         {
