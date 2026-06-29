@@ -263,8 +263,12 @@ macro (ccl_get_sign_args result vendor)
 	endif ()
 	if (${vendor}_SIGNING_CERTIFICATE_THUMBPRINT)
 		list (APPEND ${result} "/thumbprint" "${${vendor}_SIGNING_CERTIFICATE_THUMBPRINT}")		
-	else ()
+	elseif (${vendor}_SIGNING_CERTIFICATE)
 		list (APPEND ${result} "/cert" "${${vendor}_SIGNING_CERTIFICATE}")
+	elseif (${vendor}_SIGNING_PLUGIN AND ${vendor}_SIGNING_METADATA_FILE)
+		cmake_path (NATIVE_PATH ${vendor}_SIGNING_METADATA_FILE NORMALIZE metadata_file_native)
+		list (APPEND ${result} "/dmdf" "${metadata_file_native}")
+		list (APPEND ${result} "/dlib" "${${vendor}_SIGNING_PLUGIN}")
 	endif ()
 	if (${vendor}_SIGNING_TIMESTAMP_SERVER)
 		list (APPEND ${result} "/timestampserver" "${${vendor}_SIGNING_TIMESTAMP_SERVER}")
@@ -288,6 +292,10 @@ macro (ccl_reset_project_vendor_variables)
 	set (SIGNING_AZURE_KEYVAULT_WIN "")
 	set (SIGNING_PRE_COMMAND_WIN "")
 	set (SIGNING_POST_COMMAND_WIN "")
+	set (SIGNING_ENDPOINT_WIN "")
+	set (SIGNING_ACCOUNTNAME_WIN "")
+	set (SIGNING_CERTIFICATE_PROFILE_WIN "")
+	set (SIGNING_PLUGIN_WIN "")
 endmacro ()
 
 # Configure the project vendor.
@@ -310,6 +318,10 @@ macro (ccl_configure_project_vendor vendor)
 	set (${vendor}_SIGNING_AZURE_KEYVAULT "${SIGNING_AZURE_KEYVAULT_WIN}" CACHE STRING "" FORCE)
 	set (${vendor}_SIGNING_PRE_COMMAND "${SIGNING_PRE_COMMAND_WIN}" CACHE STRING "" FORCE)
 	set (${vendor}_SIGNING_POST_COMMAND "${SIGNING_POST_COMMAND_WIN}" CACHE STRING "" FORCE)
+	set (${vendor}_SIGNING_ENDPOINT "${SIGNING_ENDPOINT_WIN}" CACHE STRING "" FORCE)
+	set (${vendor}_SIGNING_ACCOUNTNAME "${SIGNING_ACCOUNTNAME_WIN}" CACHE STRING "" FORCE)
+	set (${vendor}_SIGNING_CERTIFICATE_PROFILE "${SIGNING_CERTIFICATE_PROFILE_WIN}" CACHE STRING "" FORCE)
+	set (${vendor}_SIGNING_PLUGIN "${SIGNING_PLUGIN_WIN}" CACHE STRING "" FORCE)
 	
 	set (sign_target_name "sign_${vendor}_binaries")
 	if (CCL_ISOLATION_POSTFIX)
@@ -317,6 +329,16 @@ macro (ccl_configure_project_vendor vendor)
 	endif ()
 	
 	if (VENDOR_ENABLE_CODESIGNING)
+	
+		if (${vendor}_SIGNING_ENDPOINT AND ${vendor}_SIGNING_ACCOUNTNAME AND ${vendor}_SIGNING_CERTIFICATE_PROFILE)
+			set (${vendor}_SIGNING_METADATA_FILE "${CMAKE_BINARY_DIR}/vendor/${vendor}/signing_metadata.json" CACHE STRING "" FORCE)
+			file (WRITE "${${vendor}_SIGNING_METADATA_FILE}" "{
+			  \"Endpoint\": \"${${vendor}_SIGNING_ENDPOINT}\",
+			  \"CodeSigningAccountName\": \"${${vendor}_SIGNING_ACCOUNTNAME}\",
+			  \"CertificateProfileName\": \"${${vendor}_SIGNING_CERTIFICATE_PROFILE}\"
+			}")
+		endif ()
+	
 		ccl_get_sign_args (sign_args "${vendor}")
 		
 		find_program (CMD REQUIRED NAMES cmd)

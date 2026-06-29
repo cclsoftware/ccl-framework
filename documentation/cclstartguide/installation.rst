@@ -22,23 +22,22 @@ Install the latest version of CMake from https://cmake.org/download/.
 Installation on macOS
 =====================
 
-A development system runnning macOS can build targets for macOS and iOS/iPadOS.
-
 Install Xcode from the App Store or Apple's developer website. Install CMake, e.g. using the Homebrew package manager (https://brew.sh).
 
-Install the CCL SDK to an arbritrary folder, like the "Documents" folder:
+Install the CCL SDK to an arbritrary folder, like the user folder. The installer is a tarball that can be extracted using the following commands:
 
 .. code-block:: bash
 
-	cd $HOME/Documents
+	cd $HOME
 	tar -xzf $HOME/Downloads/CCL\ SDK-<version>-macOS.tar.gz
 
-Before running CMake from the command line, the following environment variables need to be set:
+To make the CCL SDK available in the CMake user module registry, create the following directory and file:
 
 .. code-block:: bash
 
-	CCLSDKROOT=$HOME/Documents/CCL\ SDK-<version>-macOS
-	export CMAKE_PREFIX_PATH=$CCLSDKROOT/Frameworks/cmake/ccl
+	mkdir -p ~/.cmake/packages/ccl
+	CCLSDKROOT=$HOME/CCL\ SDK-<version>-macOS
+	echo "$CCLSDKROOT/Frameworks/cmake/ccl" > ~/.cmake/packages/ccl/<version>
 
 =====================
 Installation on Linux
@@ -135,3 +134,5 @@ In Android Studio, install the following components using the SDK manager:
 * CMake 4.1.2 (must match the CMake version defined in vendor.android.cmake)
 
 IDE heap size must be configured to at least 4096 MB in Android Studio's memory settings.
+
+To build on the command line, you will need to install the Gradle build tool on the host system. The recommended version as of this writing is Gradle 9.2.0.

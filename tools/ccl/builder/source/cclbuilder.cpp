@@ -1155,7 +1155,7 @@ bool Builder::copyFiles ()
 		}
 
 		// If files are copied to a location outside of destFolder, ask before overwriting existing files
-		if(System::GetFileSystem ().fileExists (destinationUrl) && !destinationUrl.getPath ().startsWith (destFolder.getPath ()))
+		if(System::GetFileSystem ().fileExists (destinationUrl) && !destinationUrl.getPath ().startsWith (destFolder.getPath (), System::GetFileSystem ().isCaseSensitive ()))
 		{
 			bool overwrite = false;
 
@@ -1233,7 +1233,7 @@ bool Builder::replaceStrings (UrlRef path)
 			Url filePath (path);
 			filePath.ascend ();
 			int folderLevels = 0;
-			if(filePath.getPath ().startsWith (root.getPath ()))
+			if(filePath.getPath ().startsWith (root.getPath (), System::GetFileSystem ().isCaseSensitive ()))
 			{
 				while(filePath != root)
 				{

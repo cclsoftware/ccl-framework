@@ -1,5 +1,19 @@
 # Changelog
 
+**CCL 5.1.1 (2026-06-29)**
+
+*New features and improvements:*
+
+- Improved "Getting Started" documentation
+- Skin XML | Simplified usage of new `<Graphic>` tag
+
+*The following issues have been fixed:*
+
+- Fixes for CCL SDK and CCL Builder on Windows, macOS, and Linux
+- Neutral Design | Fixes for Light Mode
+- Fix use-after-free in MenuControl::popup()
+- Cocoa/Skia | Layer animation fixes
+
 **CCL 5.1.0 (2026-06-12)**
 
 *New features and improvements:*

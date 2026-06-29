@@ -472,8 +472,6 @@ const IVisualStyle& CCL_API BlockView::getVisualStyle () const
 
 void BlockView::onVisualStyleChanged ()
 {
-	selectionColor = getVisualStyle ().getColor ("selectioncolor", getTheme ().getThemeColor (ThemeElements::kSelectionColor));
-
 	updateLayout (kVisualStyleChanged);
 	SuperClass::onVisualStyleChanged ();
 }
@@ -495,6 +493,9 @@ void BlockView::updateLayout (int updateFlags)
 	{
 		VisualStyle* newStyle = unknown_cast<VisualStyle> (&getVisualStyle ());
 		layout->setStyle (newStyle);
+	
+		selectionColor = getVisualStyle ().getColor ("selectioncolor", getTheme ().getThemeColor (ThemeElements::kSelectionColor));
+		
 		visualStyleApplied = true;
 		styleChanged = true;
 	}	

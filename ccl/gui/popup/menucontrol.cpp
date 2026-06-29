@@ -1730,14 +1730,14 @@ bool MenuControl::popup (const Point& where, View* view)
 
 	updateSize (); // menu dimension might have changed
 
-	PopupSelector selector;
-	selector.setTheme (getTheme ());
-	selector.setVisualStyle (getTheme ().getStandardStyle (ThemePainter::kMenuControlStyle));
-	selector.setMenuMode (true);
+	AutoPtr<PopupSelector> selector = NEW PopupSelector;
+	selector->setTheme (getTheme ());
+	selector->setVisualStyle (getTheme ().getStandardStyle (ThemePainter::kMenuControlStyle));
+	selector->setMenuMode (true);
 
 	PopupSizeInfo sizeInfo (where, view);
 	sizeInfo.canFlipParentEdge (true);
-	return selector.popup (return_shared (this), popupClient, sizeInfo) != 0;
+	return selector->popup (return_shared (this), popupClient, sizeInfo) != 0;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////

@@ -81,7 +81,7 @@ static Model::AttributeDescription __skinAttributes##Class[] = {
 Model::AttributeDescription (Name, Value),
 
 #define END_SKIN_ELEMENT_ATTRIBUTES(Class) Model::AttributeDescription () }; \
-SkinElements::MetaElement::AttributeModifier UNIQUE_IDENT (__skinattr) (Class::__skinClass, __skinAttributes##Class);
+static SkinElements::MetaElement::AttributeModifier UNIQUE_IDENT (__skinattr) (Class::__skinClass, __skinAttributes##Class);
 
 // Elements can be members of one or more schemagroups and can have a childgroup.
 // All members of an element's childgroup are allowed as children of the element.

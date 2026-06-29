@@ -87,7 +87,7 @@ msgstr "Pakiet językowy"
 #: fileutilities.cpp
 msgctxt "FileType"
 msgid "Markdown File"
-msgstr ""
+msgstr "Plik Markdown"
 
 #: fileutilities.cpp
 msgctxt "FileType"

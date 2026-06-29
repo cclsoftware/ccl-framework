@@ -59,7 +59,7 @@ if (NOT imported)
 
 	ccl_find_path (dnssd_INCLUDE_DIR NAMES dns_sd.h HINTS /usr/include PATH_SUFFIXES avahi-compat-libdns_sd)
 	if (dnssd_INCLUDE_DIR)
-		target_include_directories (corelib PUBLIC ${dnssd_INCLUDE_DIR})
+		target_include_directories (corelib PUBLIC $<BUILD_INTERFACE:${dnssd_INCLUDE_DIR}>)
 	else ()
 		message (WARNING "Building without dns_sd")
 	endif ()

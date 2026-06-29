@@ -116,7 +116,7 @@ Url& Development::makeAbsolutePath (Url& url, CStringPtr rootProject, CStringPtr
 	
 	if(rootFolder.isAbsolute () && System::GetFileSystem ().fileExists (rootFolder))
 		url.makeAbsolute (rootFolder);
-	else
+	else if(!rootFolder.isAbsolute ())
 	{
 		getTopLevelFolder (rootFolder, rootProject);
 		url.makeAbsolute (rootFolder);

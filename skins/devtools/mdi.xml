@@ -41,6 +41,7 @@
 		<ShapeImage name="ChevronLeft" url="icons/mdi/chevron-left.svg" template="true"/>
 		<ShapeImage name="ChevronRight" url="icons/mdi/chevron-right.svg" template="true"/>
 		<ShapeImage name="HomeOutline" url="icons/mdi/home-outline.svg" template="true"/>
+		<ShapeImage name="InformationOutline" url="icons/mdi/information-outline.svg" template="true"/>
 	</Resources>
 </Skin>
 

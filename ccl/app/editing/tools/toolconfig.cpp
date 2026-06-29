@@ -736,6 +736,18 @@ public:
 		invokeMethod (returnValue, Message ("performActions", editView.asUnknown ()));
 	}
 
+	void onBegin (EditView& editView) override
+	{
+		Variant returnValue;
+		invokeMethod (returnValue, Message ("onBegin", editView.asUnknown ()));
+	}
+
+	void onMove (EditView& editView) override
+	{
+		Variant returnValue;
+		invokeMethod (returnValue, Message ("onMove", editView.asUnknown ()));
+	}
+
 	void onRelease (EditView& editView, bool canceled) override
 	{
 		Variant returnValue;

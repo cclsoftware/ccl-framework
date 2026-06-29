@@ -67,6 +67,14 @@ In order to use a custom upload signing key for your Android application, you wi
 
 Please place the ``signing.properties`` file in the same directory as the top level ``CMakeLists.txt`` or provide the path to it in the ``CCL_SIGNING_PROPERTIES`` CMake variable. The ``CCL_SIGNING_PROPERTIES`` variable takes precedence if set.
 
+After generating the project, open the project folder in Android Studio to build and test your application.
+
+Alternatively, you can use Gradle to build on the command line. Run the following command in the generated project folder (build/android by default):
+
+.. code-block:: bash
+
+    gradle assembleArm8Release
+
 ==========================
 Cross-compilation on Linux
 ==========================

@@ -15,8 +15,8 @@ set retries=6
 set delay=5
 
 set useazure=false
-
 set usehsm=false
+set usedlib=false
 
 :args
 if '%1' == '/force' (
@@ -55,6 +55,16 @@ if '%1' == '/force' (
 	set	usethumbprint=true
 	shift
 	shift
+) else if '%1' == '/dlib' (
+	set	dlib=%2
+	set	usedlib=true
+	shift
+	shift
+) else if '%1' == '/dmdf' (
+	set	dmdf=%2
+	set	usedlib=true
+	shift
+	shift
 ) else if '%1' == '/signtool' (
 	set signtool=%2
 	shift
@@ -67,7 +77,7 @@ goto args
 
 :files
 
-if '%useazure%' == 'false' (
+if '%useazure%' == 'false' if '%usedlib%' == 'false' (
 	echo *** ATTENTION: %cert%%thumbprint% certificate must be installed on this machine! ***
 	echo *** Alternatively, for EV Code Signing you need the SafeNet client installed and the USB Token connected to the local machine! ***
 	echo.
@@ -114,7 +124,9 @@ if '%force%' == 'true' (
 )
 
 :try
-	if '%useazure%' == 'true' (
+	if '%usedlib%' == 'true' (
+		call %signtool% sign /v /fd %digest% /tr %timestampserver% /td %digest% /dlib %dlib% /dmdf %dmdf% !files!
+	) else if '%useazure%' == 'true' (
 		call AzureSignTool sign -v -kvu %keyvault% -kvi %client% -kvt %tenant% -kvs %secret% -kvc %cert% -tr %timestampserver% -mdop 1 !files!
 	) else if '%usethumbprint%' == 'true' (
 		call %signtool% sign /v /sha1 %thumbprint% /fd %digest% /tr %timestampserver% /td %digest% /sm !files!

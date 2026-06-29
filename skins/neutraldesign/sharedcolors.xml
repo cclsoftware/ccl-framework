@@ -37,7 +37,8 @@
 			<ColorScheme.Color name="IconColor.NoInvert"					color="$skin://hostapp/BaseColor75" 			saturation="3:5" 	luminance="10:12" contrast="8:16" invertible="false"/>
 			<ColorScheme.Color name="IconColor.Disabled"					color="$skin://hostapp/BaseColor65" alphavalue="25"	saturation="3:5"	luminance="20:15" contrast="20" invertedvalue="30"/>
 			<ColorScheme.Color name="IconColor.Disabled.NoInvert"			color="$skin://hostapp/BaseColor65" alphavalue="25"	saturation="3:5"	luminance="20:15" contrast="20" invertible="false"/>
-			
+			<ColorScheme.Color name="IconColor.Disabled.Opaque"				color="$skin://hostapp/BaseColor45" 			saturation="3:5"	luminance="20:15" contrast="20" invertedvalue="60"/>
+
 			<ColorScheme.Color name="ContextTemplateColor"					color="$skin://hostapp/BaseColor100" 			saturation="0"		luminance="0" 		huefixed="true" invertedvalue="0" comment="Used to adjust the luminance of images to the colorscheme context"/>
 			<ColorScheme.Color name="WeakContextTemplateColor"				color="$skin://hostapp/BaseColor90" 			saturation="0"		luminance="5:15" 	huefixed="true" invertedvalue="16" comment="Used to adjust the luminance of images to the colorscheme context"/>
 			<ColorScheme.Color name="InverseTemplateColor"					color="$skin://hostapp/BaseColor00" 			saturation="0"		luminance="0" 		huefixed="true" invertedvalue="100" comment="Used to adjust the luminance of images to the colorscheme context"/>
@@ -107,6 +108,7 @@
 			<ColorScheme.Color name="ColorPaletteBackcolor"					color="$skin://hostapp/BaseColor20" 				saturation="0" luminance="5" invertedvalue="32"/>
 
 			<ColorScheme.Color name="ActiveColor"							color="$skin://hostapp/PrimaryColor40" 				saturation="8:5" luminance="6" huefixed="true" invertedvalue="55"/>
+			<ColorScheme.Color name="TextSelectionBackColor"				color="$skin://hostapp/PrimaryColor40" 				saturation="0"   luminance="6" huefixed="true" invertedvalue="75"/>
 			<ColorScheme.Color name="HighlightColor" 						color="$skin://hostapp/PrimaryColor60" 				saturation="5" 	 luminance="8" huefixed="true" invertedvalue="65"/>
 			<ColorScheme.Color name="HighlightColor.NoInvert"				color="$skin://hostapp/PrimaryColor60" 				saturation="0" 	 luminance="0" huefixed="true" invertible="false"/>
 		</ColorScheme>

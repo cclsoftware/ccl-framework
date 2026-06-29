@@ -261,13 +261,13 @@ bool ComplexShapeElement::resolveShapeReference ()
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 void ComplexShapeElement::resolveEmbeddedImage (ImageShape& imageShape, EmbeddedImageShapeElement& imageElement) const
-{					
+{
 	SharedPtr<Image> image;
 	
 	SkinModel* model = SkinModel::getModel (this);
 	if(model)
 		image = model->getImage (imageElement.getImageName (), &imageElement);
-					
+
 	if(!image && SkinModel::loadingModel && SkinModel::loadingModel != model) // access outer loading skin model (not current include)
 		image = SkinModel::loadingModel->getImage (imageElement.getImageName (), &imageElement);
 
@@ -276,6 +276,19 @@ void ComplexShapeElement::resolveEmbeddedImage (ImageShape& imageShape, Embedded
 	{
 		AutoPtr<ShapeImage> imageCopy = shapeImage->cloneDeep ();
 		image = imageCopy;
+	}
+
+	if(image)
+	{
+		if(imageShape.getSrcRect ().isEmpty ())
+			imageShape.setSrcRect (Rect (0, 0, image->getWidth (), image->getHeight ()));
+
+		if(imageShape.getDstRect ().isEmpty ())
+		{
+			Coord width = imageShape.getWidth ();
+			Coord height = imageShape.getHeight ();
+			imageShape.setDstRect (Rect ((width - image->getWidth ()) / 2, (height - image->getHeight ()) / 2, width, height));
+		}
 	}
 
 	imageShape.setImage (image);
@@ -448,7 +461,6 @@ bool TriangleShapeElement::getAttributes (SkinAttributes& a) const
 BEGIN_SKIN_ELEMENT_WITH_MEMBERS (EmbeddedImageShapeElement, ShapeElement, TAG_GRAPHIC, DOC_GROUP_SHAPES, ImageShape)
 	ADD_SKIN_ELEMENT_MEMBER (ATTR_IMAGE, TYPE_STRING) ///< name of image to embed (from resources section)
 	ADD_SKIN_ELEMENT_MEMBER (ATTR_SOURCE, TYPE_RECT) ///< image source rectangle
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_DESTINATION, TYPE_RECT) ///< image destination rectangle
 END_SKIN_ELEMENT_WITH_MEMBERS (EmbeddedImageShapeElement)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -471,7 +483,7 @@ bool EmbeddedImageShapeElement::setAttributes (const SkinAttributes& a)
 	imageShape.setSrcRect (srcRect);
 
 	Rect dstRect;
-	a.getRect (dstRect, ATTR_DESTINATION);
+	a.getRect (dstRect, ATTR_SIZE);
 	imageShape.setDstRect (dstRect);
 
 	return ShapeElement::setAttributes (a);
@@ -485,7 +497,7 @@ bool EmbeddedImageShapeElement::getAttributes (SkinAttributes& a) const
 
 	a.setString (ATTR_IMAGE, imageName);
 	a.setRect (ATTR_SOURCE, imageShape.getSrcRect ());
-	a.setRect (ATTR_DESTINATION, imageShape.getDstRect ());
+	a.setRect (ATTR_SIZE, imageShape.getDstRect ());
 
 	return ShapeElement::getAttributes (a);
 }

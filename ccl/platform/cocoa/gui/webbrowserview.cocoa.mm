@@ -239,9 +239,7 @@ WebKitControl::~WebKitControl ()
 
 void WebKitControl::attachView ()
 {
-	CGRect frame = {0};
-	MacOS::toCGRect (frame, getSizeInWindow ());
-	[webView setFrame:frame];
+	updateSize ();
 	#if CCL_PLATFORM_MAC
 	if(OSXWindow* window = OSXWindow::cast (owner.getWindow ()))
 		if(NSView* parentView = [[window->getNativeView ()->getView () window] contentView])
@@ -265,8 +263,7 @@ void WebKitControl::detachView ()
 void WebKitControl::updateSize ()
 {
 	CGRect frame = {0};
-	frame.size.width = owner.getWidth ();
-	frame.size.height = owner.getHeight ();
+	MacOS::toCGRect (frame, getSizeInWindow ());
 	[webView setFrame:frame];
 }
 
@@ -313,8 +310,8 @@ tresult CCL_API WebKitControl::navigate (UrlRef url)
 	StringRef path = url.getPath ();
 	#if DEBUG_LOG
 	MutableCString cString (path);
+	CCL_PRINTF ("Request URL: %s\n", cString.str ())
 	#endif
-	CCL_PRINTF("Request URL: %s\n", cString.str ())
 	NSURL* nsUrl = [NSURL alloc];
 	
 	const String separator = CCLSTR ("#");

@@ -20,6 +20,7 @@
 get_filename_component (user_documents_dir "~/Documents" ABSOLUTE)
 list (APPEND VENDOR_IDENTITY_DIRS "${user_documents_dir}/CCL/identities")
 
+list (APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}")
 include (entitlements)
 
 # Add assets to a bundle

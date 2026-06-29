@@ -853,11 +853,6 @@
 						<String x:id="brief" text="image source rectangle"/>
 					</Model.Documentation>
 				</Model.Member>
-				<Model.Member name="destination" type="string" typeName="rect">
-					<Model.Documentation x:id="doc">
-						<String x:id="brief" text="image destination rectangle"/>
-					</Model.Documentation>
-				</Model.Member>
 			</List>
 			<Attributes x:id="attributes">
 				<Attribute id="Class:DocGroup" value="Shapes"/>

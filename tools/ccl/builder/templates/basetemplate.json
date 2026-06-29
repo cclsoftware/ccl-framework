@@ -76,6 +76,10 @@
 		{
 			"source": "shared/root/vendor.android.cmake",
 			"destination": "@RepositoryRoot/build/cmake/modules/shared/vendor.android.cmake"
+		},
+		{
+			"source": "shared/root/vendor.linux.cmake",
+			"destination": "@RepositoryRoot/build/cmake/modules/shared/vendor.linux.cmake"
 		}
 	]
 }

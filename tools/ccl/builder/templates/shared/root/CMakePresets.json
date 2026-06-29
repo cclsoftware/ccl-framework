@@ -35,6 +35,10 @@
 				"type": "equals",
 				"lhs": "${hostSystemName}",
 				"rhs": "Windows"
+			},
+			"cacheVariables":
+			{
+				"VENDOR_PLATFORM": "win"
 			}
 		},
 		{
@@ -102,7 +106,8 @@
 			{
 				"CMAKE_OSX_DEPLOYMENT_TARGET": "12.4",
 				"CMAKE_OSX_ARCHITECTURES": "x86_64;arm64",
-				"VENDOR_USE_CCACHE": "ON"
+				"VENDOR_USE_CCACHE": "ON",
+				"VENDOR_PLATFORM": "mac"
 			}
 		},
 		{
@@ -170,7 +175,8 @@
 				"CMAKE_INSTALL_PREFIX": "/",
 				"CMAKE_INSTALL_LIBDIR": "lib",
 				"CPACK_PACKAGING_INSTALL_PREFIX": "/",
-				"VENDOR_USE_CCACHE": "ON"
+				"VENDOR_USE_CCACHE": "ON",
+				"VENDOR_PLATFORM": "linux"
 			}
 		},
 		{

@@ -226,12 +226,17 @@ tresult CCL_API CocoaSkiaLayer::setContent (IUnknown* _content)
 		
 	content = _content;
 	UnknownPtr<IGraphicsLayerContent> layerContent (content);
-	setUpdateNeeded ();
-	drawContent ();
 
 	contentNeedsFlush = layerContent != nullptr;
 	if(contentNeedsFlush)
+	{
+		setUpdateNeeded ();
 		MetalUpdater::instance ().addLayer (this);
+	}
+	else
+		dirtyRect = contentRect;
+
+	drawContent ();
 
 	return kResultOk;
 }

@@ -590,6 +590,20 @@ macro (ccl_get_jnilibs_directory output)
 	endif ()
 endmacro ()
 
+# Copy shared libraries to jnilibs directory.
+# @group android
+# @param {STRING} target  Name of target to copy the libraries from.
+macro (ccl_process_plugins target)
+	get_target_property (target_type ${target} TYPE)
+	if (${target_type} STREQUAL "SHARED_LIBRARY" OR ${target_type} STREQUAL "MODULE_LIBRARY")
+		ccl_get_jnilibs_directory (jnilibs_dir)
+
+		add_custom_command ( TARGET ${target} POST_BUILD
+			COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:${target}> ${jnilibs_dir}/$<TARGET_FILE_NAME:${target}>
+		)
+	endif ()
+endmacro ()
+
 # Copy imported libs of target to jnilibs directory
 # @group android
 # @param {STRING} target  Name of target to copy imported lib from.
@@ -859,7 +873,12 @@ macro (ccl_add_deployment_project project appid)
 		"\t\texternalNativeBuild {\n"
 		"\t\t\tcmake {\n"
 		"\t\t\t\targuments '--preset=android', '-DENABLE_ASAN=${ENABLE_ASAN}', '-DENABLE_HWASAN=${ENABLE_HWASAN}'")
-
+	
+	if (CMAKE_MODULE_PATH)
+		file (APPEND "${gradle_native_build_file}"
+			", \"-DCMAKE_MODULE_PATH='${CMAKE_MODULE_PATH}'\"")
+	endif ()
+	
 	if (CCL_PREFER_PREBUILT_EXPORTS)
 		file (APPEND "${gradle_native_build_file}"
 			", \"-DCCL_PREFER_PREBUILT_EXPORTS=ON\"")

@@ -238,7 +238,6 @@
 #define ATTR_URL "url"
 #define ATTR_TARGET "target"
 #define ATTR_SOURCE "source"
-#define ATTR_DESTINATION "destination"
 #define ATTR_CONTROLLER "controller"
 #define ATTR_PROPERTY "property"
 #define ATTR_PARAMETER "parameter"

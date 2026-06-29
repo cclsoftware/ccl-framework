@@ -62,6 +62,7 @@
 				<Color name="textcolor.pressed"		color="@Main.MobileButtonTextColor"/>
 				<Color name="textcolor.disabled"	color="@Main.LabelColor.Disabled"/>
 				<Color name="iconcolor.on"			color="@Main.MobileButtonTextColor"/>
+				<Color name="iconcolor.disabled"	color="@Main.IconColor.Disabled.Opaque"/>
 				<Color name="iconcolor.pressed"		color="@Main.MobileButtonTextColor"/>
 				<Image name="background"			image="MobileButton"/>
 				<Image name="left"       			image="MobileButtonL"/>
@@ -77,6 +78,7 @@
 				<Color name="textcolor.pressed"		color="@Main.LabelColor.Primary.NoInvert"/>
 				<Color name="textcolor.disabled"	color="@Main.LabelColor.Disabled"/>
 				<Color name="iconcolor.on"			color="@Main.LabelColor.Primary.NoInvert"/>
+				<Color name="iconcolor.disabled"	color="@Main.IconColor.Disabled.Opaque"/>
 				<Image name="background"       		image="Button"/>
 				<Image name="left"       			image="ButtonL"/>
 				<Image name="right"       			image="ButtonR"/>
@@ -602,7 +604,9 @@
 			<StyleCondition name="Link">
 				<Color name="textcolor"	color="@Main.HyperlinkColor"/>
 			</StyleCondition>
+			<Color name="selectioncolor"   	color="@Main.TextSelectionBackColor"/>
 			<Image name="background" image="TransparentImage"/>
+			<Options name="flex.alignself" value="stretch"/>
 			<Metric name="text.margin" value="4"/>
 		</Style>
 

@@ -43,6 +43,10 @@ interface IEditHandlerHook: IUnknown
 	
 	virtual void performActions (EditView& editView) = 0;
 
+	virtual void onBegin (EditView& editView) = 0;
+
+	virtual void onMove (EditView& editView) = 0;
+
 	virtual void onRelease (EditView& editView, bool canceled) = 0;
 
 	DECLARE_IID (IEditHandlerHook)
@@ -74,6 +78,8 @@ public:
 	void setHookFromArgument (MessageRef msg, int argumentIndex);
 
 	// MouseHandler
+	void onBegin () override;
+	bool onMove (int moveFlags) override;
 	void onRelease (bool canceled) override; ///< needs to be called from derived classes
 	bool getHelp (IHelpInfoBuilder& helpInfo) override;
 
@@ -174,6 +180,8 @@ public:
 	bool updateCrossCursor (bool& wantsCrossCursor, EditView& editView, const MouseEvent& mouseEvent) override { return false; }
 	bool getHelp (IHelpInfoBuilder& helpInfo) override { return false; }
 	void performActions (EditView& editView) override {}
+	void onBegin (EditView& editView) override {}
+	void onMove (EditView& editView) override {}
 	void onRelease (EditView& editView, bool canceled) override {}
 
 	CLASS_INTERFACE (IEditHandlerHook, Object)

@@ -235,7 +235,6 @@ export const ATTR_COMMENT = "comment";
 export const ATTR_URL = "url";
 export const ATTR_TARGET = "target";
 export const ATTR_SOURCE = "source";
-export const ATTR_DESTINATION = "destination";
 export const ATTR_CONTROLLER = "controller";
 export const ATTR_PROPERTY = "property";
 export const ATTR_PARAMETER = "parameter";
@@ -509,4 +508,3 @@ export const LAYOUTCLASS_TABLE = "table";
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 export const LAYOUTPRIORITY_GROUPDECOR = "groupdecor";
-

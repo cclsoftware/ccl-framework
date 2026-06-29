@@ -157,7 +157,7 @@ Building Projects
 
 Once the project files are generated, you can open the project in your IDE and build/debug/run from there.
 
-If you just want to build the project without opening your IDE, you can do this with CMake too:
+If you just want to build Windows, macOS or Linux projects without opening your IDE, you can do this with CMake:
 
 .. code:: bash
 	
@@ -167,6 +167,12 @@ If you just want to build the project without opening your IDE, you can do this 
 
 	Not all "generators" (e.g. Makefile generators) support multi-config projects. This means, not all generators support the ``--config Release`` options. For those generators, add ``-DCMAKE_BUILD_TYPE=Release`` when generating the project.
 	
+To build Android projects from the command line, you need to use Gradle instead:
+
+.. code:: bash
+	
+	gradle assembleArm8Release
+
 -------------------
 Adding Source Files
 -------------------

@@ -881,11 +881,6 @@
                     "type": "string"
                 },
                 {
-                    "name": "ATTR_DESTINATION",
-                    "value": "destination",
-                    "type": "string"
-                },
-                {
                     "name": "ATTR_CONTROLLER",
                     "value": "controller",
                     "type": "string"

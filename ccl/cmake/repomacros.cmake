@@ -36,36 +36,39 @@ endmacro ()
 # Generate a json file containing information about the repository layout
 # @param {FILEPATH} file  Path to the generated file.
 macro (ccl_generate_repo_info file)
-	if (NOT REPOSITORY_ROOT)
-		set (repo_file_path "${file}")
-		cmake_path (GET repo_file_path PARENT_PATH REPOSITORY_ROOT)
-	endif ()
+	get_property (repo_info_generated GLOBAL PROPERTY repo_info_generated)
+	if (NOT repo_info_generated)
 
-	ccl_generate_path_list (VENDOR_SUBMODULE_DIRS submodule_dirs)
-	ccl_generate_path_list (VENDOR_SKIN_DIRS skin_dirs)
-	ccl_generate_path_list (VENDOR_IDENTITY_DIRS identity_dirs)
-	ccl_generate_path_list (VENDOR_SIGNING_DIRS signing_dirs)
-	ccl_generate_path_list (VENDOR_TEMPLATE_DIRS template_dirs)
-	ccl_generate_path_list (VENDOR_DOCUMENTATION_DIRS documentation_dirs)
-	ccl_generate_path_list (VENDOR_CLASSMODEL_DIRS classmodel_dirs)
-	ccl_generate_path_list (VENDOR_TOOL_DIRS tool_dirs)
-	ccl_generate_path_list (VENDOR_TRANSLATIONS_DIRS translations_dirs)
+		if (NOT REPOSITORY_ROOT)
+			set (repo_file_path "${file}")
+			cmake_path (GET repo_file_path PARENT_PATH REPOSITORY_ROOT)
+		endif ()
 
-	cmake_path (IS_PREFIX REPOSITORY_ROOT "${REPOSITORY_MACROS_FILE}" NORMALIZE is_prefix)
-	if (is_prefix)
-		cmake_path (RELATIVE_PATH REPOSITORY_MACROS_FILE BASE_DIRECTORY "${REPOSITORY_ROOT}" OUTPUT_VARIABLE repo_macros_file)
-	else ()
-		set (repo_macros_file "${REPOSITORY_MACROS_FILE}")
-	endif ()
-	
-	cmake_path (IS_PREFIX REPOSITORY_ROOT "${CMAKE_CURRENT_LIST_FILE}" NORMALIZE is_prefix)
-	if (is_prefix)
-		cmake_path (RELATIVE_PATH CMAKE_CURRENT_LIST_FILE BASE_DIRECTORY "${REPOSITORY_ROOT}" OUTPUT_VARIABLE callsite)
-	else ()
-		set (callsite "${CMAKE_CURRENT_LIST_FILE}")
-	endif ()
+		ccl_generate_path_list (VENDOR_SUBMODULE_DIRS submodule_dirs)
+		ccl_generate_path_list (VENDOR_SKIN_DIRS skin_dirs)
+		ccl_generate_path_list (VENDOR_IDENTITY_DIRS identity_dirs)
+		ccl_generate_path_list (VENDOR_SIGNING_DIRS signing_dirs)
+		ccl_generate_path_list (VENDOR_TEMPLATE_DIRS template_dirs)
+		ccl_generate_path_list (VENDOR_DOCUMENTATION_DIRS documentation_dirs)
+		ccl_generate_path_list (VENDOR_CLASSMODEL_DIRS classmodel_dirs)
+		ccl_generate_path_list (VENDOR_TOOL_DIRS tool_dirs)
+		ccl_generate_path_list (VENDOR_TRANSLATIONS_DIRS translations_dirs)
+
+		cmake_path (IS_PREFIX REPOSITORY_ROOT "${REPOSITORY_MACROS_FILE}" NORMALIZE is_prefix)
+		if (is_prefix)
+			cmake_path (RELATIVE_PATH REPOSITORY_MACROS_FILE BASE_DIRECTORY "${REPOSITORY_ROOT}" OUTPUT_VARIABLE repo_macros_file)
+		else ()
+			set (repo_macros_file "${REPOSITORY_MACROS_FILE}")
+		endif ()
 		
-	file (GENERATE OUTPUT "${file}" CONTENT
+		cmake_path (IS_PREFIX REPOSITORY_ROOT "${CMAKE_CURRENT_LIST_FILE}" NORMALIZE is_prefix)
+		if (is_prefix)
+			cmake_path (RELATIVE_PATH CMAKE_CURRENT_LIST_FILE BASE_DIRECTORY "${REPOSITORY_ROOT}" OUTPUT_VARIABLE callsite)
+		else ()
+			set (callsite "${CMAKE_CURRENT_LIST_FILE}")
+		endif ()
+			
+		file (GENERATE OUTPUT "${file}" CONTENT
 "{
 	\"comment\": 
 	[
@@ -84,5 +87,9 @@ macro (ccl_generate_repo_info file)
 	\"translations\": ${translations_dirs}
 }
 "
-		NEWLINE_STYLE UNIX)
+			NEWLINE_STYLE UNIX)
+		
+		
+		set_property (GLOBAL PROPERTY repo_info_generated ON)
+	endif ()
 endmacro ()
