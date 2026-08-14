@@ -198,7 +198,11 @@ tresult CCL_API StorePurchaseHandler::initialize (IUnknown* context)
 	configuration.loadBuiltInConfiguration ();
 
 	for(auto c : iterate_as<ProductConfiguration> (configuration.getProductConfigurations ()))
-		productCollection->addComponent (NEW StoreProductComponent (c->getID ()));
+	{
+		auto* component = NEW StoreProductComponent (c->getID ());
+		component->updateDetails (*c); // initialize with local config, in case store does not provide info
+		productCollection->addComponent (component);
+	}
 	
 	signalSlots.advise (&PlatformStoreManager::instance (), PlatformStoreManager::kTransactionsChanged, 
 						this, &StorePurchaseHandler::onTransactionsChanged);

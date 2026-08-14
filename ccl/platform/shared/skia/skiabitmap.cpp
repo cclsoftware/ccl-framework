@@ -90,6 +90,8 @@ SkiaBitmap::SkiaBitmap (IBitmapDecoder* customDecoder, bool alphaChannelUsed)
 	ASSERT (result == kResultOk)
 	if(result == kResultOk)
 		imageInfo = SkImageInfo::Make (sizeInPixel.x, sizeInPixel.y, colorType, alphaChannelUsed ? kPremul_SkAlphaType : kOpaque_SkAlphaType);
+	else
+		decoder.release ();
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -103,6 +105,15 @@ SkiaBitmap::SkiaBitmap (IMemoryStream* stream, bool alphaChannelUsed)
 	ASSERT (result == kResultOk)
 	if(result == kResultOk)
 		imageInfo = SkImageInfo::Make (sizeInPixel.x, sizeInPixel.y, colorType, alphaChannelUsed ? kPremul_SkAlphaType : kOpaque_SkAlphaType);
+	else
+		decoder.release ();
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+bool SkiaBitmap::isValid () const
+{
+	return mustDecode == false || decoder.isValid ();
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////

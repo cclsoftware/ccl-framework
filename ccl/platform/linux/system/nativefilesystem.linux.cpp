@@ -157,7 +157,10 @@ LinuxVolumesIterator::LinuxVolumesIterator ()
 
 	for(const MountInfo::Entry& entry : mountInfo.getEntries ())
 	{
-		if(entry.mountSource.startsWith ("/") && entry.mountPoint.startsWith ("/") 
+		if(entry.root != "/")
+			continue; // skip bind mounts / btrfs subvolumes, e.g. flatpak's /run/host/*
+
+		if(entry.mountSource.startsWith ("/") && entry.mountPoint.startsWith ("/")
 			&& !entry.mountPoint.startsWith ("/boot/")
 			&& !entry.mountPoint.startsWith ("/proc/")
 			&& !entry.mountPoint.startsWith ("/snap/")

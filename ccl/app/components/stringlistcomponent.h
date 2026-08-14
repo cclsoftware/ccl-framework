@@ -62,6 +62,8 @@ public:
 protected:
 	bool autoCompleteSuspended;
 
+	void updateEditCursor ();
+
 	virtual void onTextEdited (StringRef editString);
 	virtual void onCompletionSelected (StringRef string);
 	virtual void onClear ();

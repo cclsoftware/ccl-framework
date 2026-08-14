@@ -185,6 +185,7 @@ namespace TranslationVariables
 	extern const CString kCopyrightYear;
 	extern const CString kFrameworkName;
 	extern const CString kFrameworkAuthor;
+	extern const CString kFrameworkVersion;
 
 	void setBuiltinVariables (Attributes& variables);
 }

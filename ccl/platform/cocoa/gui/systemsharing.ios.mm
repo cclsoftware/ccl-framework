@@ -25,8 +25,6 @@
 #include "ccl/gui/windows/desktop.h"
 #include "ccl/platform/cocoa/macutils.h"
 #include "ccl/platform/cocoa/gui/window.ios.h"
-#include "ccl/platform/cocoa/gui/popoverbackgroundview.ios.h"
-#include "ccl/platform/cocoa/quartz/cghelper.h"
 
 #include "ccl/public/base/ccldefpush.h"
 
@@ -124,14 +122,12 @@ IAsyncOperation* IOSSystemSharingHandler::shareInternal (UIActivityViewControlle
         
         if([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad)
         {
-            CGRect sourceRect = parentController.view.bounds;
-            CGRect anchorRect = CGRectMake (CGRectGetMidX(sourceRect), CGRectGetMaxY (sourceRect) - 16, 1.0, 1.0);
-            
-            activityViewController.popoverPresentationController.popoverBackgroundViewClass = [CCL_ISOLATED (TransparentPopoverBackgroundView) class];
-            activityViewController.popoverPresentationController.sourceView = parentController.view;
-            activityViewController.popoverPresentationController.sourceRect = anchorRect;
+            UIPopoverPresentationController* popoverPresentationController = activityViewController.popoverPresentationController;
+            popoverPresentationController.sourceView = parentController.view;
+            popoverPresentationController.sourceRect = parentController.view.bounds;
+            popoverPresentationController.permittedArrowDirections = 0;
         }
-            
+
         [parentController presentViewController:activityViewController animated:YES completion:nil];
         
         return return_shared<IAsyncOperation> (asyncOperation);

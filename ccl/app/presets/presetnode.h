@@ -230,6 +230,8 @@ public:
 	bool onMoveToFolder (CmdArgs args, VariantRef data);
 	bool onMoveToNewFolder (CmdArgs args, VariantRef data);
 
+	static PresetNode* findPresetNodeDeep (UrlRef presetUrl, FolderNode& parentFolder);
+
 	// Object
 	void CCL_API notify (ISubject* subject, MessageRef msg) override;
 
@@ -252,7 +254,6 @@ private:
 	String createNewPresetFolder (IPresetContainerNode& containerNode, BrowserNode* focusNode);
 
 	static void getPresetsHiddenBy (IUnknownList& hiddenPresets, IPreset& preset);
-	static PresetNode* findPresetNodeDeep (UrlRef presetUrl, FolderNode& parentFolder);
 };
 
 //************************************************************************************************

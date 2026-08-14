@@ -112,7 +112,8 @@ DEFINE_CLASS_HIDDEN (D3DSurface, Native3DSurface)
 
 D3DSurface::D3DSurface ()
 : multisamplingDesc {1, 0},
-  scaleFactor (1.f)
+  scaleFactor (1.f),
+  compositionPending (false)
 {}
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -239,8 +240,14 @@ void D3DSurface::setSize (const Rect& _size)
 {
 	if(_size == size)
 		return;
+	if(_size.getSize () != size.getSize ())
+	{
+		destroy (); // D3D objects need to be recreated. The render target will call create in the next render call
+		setDirty ();
+	}
+	else
+		setCompositionPending (); // D3D objects and rendered bitmap are still intact, but rendered bitmap needs to be blended to the backbuffer at the new position
 	SuperClass::setSize (_size);
-	destroy (); // D3D objects need to be recreated. The render target will call create in the next render call.
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////

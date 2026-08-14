@@ -154,9 +154,20 @@ void TextCompletionComponent::focusEdit (bool cursorToEnd)
 	if(subject)
 	{
 		subject->signal (Message (IParameter::kRequestFocus));
-	
+		if(cursorToEnd)
+			updateEditCursor ();
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+void TextCompletionComponent::updateEditCursor ()
+{
+	UnknownPtr<ISubject> subject (paramList.byTag (Tag::kEditString));
+	if(subject)
+	{
 		int endPos = getEditString ().length ();
-		if(endPos > 0 && cursorToEnd)
+		if(endPos > 0)
 			subject->signal (Message (IParameter::kSetSelection, endPos, endPos));
 	}
 }
@@ -182,6 +193,8 @@ void TextCompletionComponent::appendCharacter (uchar c)
 	String string (editParam->getValue ().asString ());
 	string << character;
 	editParam->setValue (string, true);
+
+	updateEditCursor ();
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////

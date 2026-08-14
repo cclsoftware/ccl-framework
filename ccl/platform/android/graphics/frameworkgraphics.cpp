@@ -463,7 +463,7 @@ AndroidFont* FrameworkGraphicsFactory::getFont (FontRef referenceFont)
 	AndroidFont* androidFont = nullptr;
 	ArrayForEachFast (fonts, AndroidFont, font)
 		// font family must match
-		if(font->getFamilyName () != fontFace)
+		if(!font->matches (fontFace))
 			continue;
 
 		// skip bold/italic fonts if that style is not requested

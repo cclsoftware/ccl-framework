@@ -688,16 +688,19 @@ bool WindowsUserInterface::detectDrag (View* view, const Point& where)
 	if(!hwnd)
 		return false;
 
+	// If the button was already released (e.g. during detectDoubleClick), no drag is possible.
+	if((::GetAsyncKeyState (Win32::getLogical_LBUTTON ()) & 0x8000) == 0)
+		return false;
+
 	Point where2 (where);
 	view->clientToScreen (where2);
 	Win32::gScreens->toPixelPoint (where2);
 
 	POINT p = {where2.x, where2.y};
-	bool wasMousePressed = (::GetAsyncKeyState (Win32::getLogical_LBUTTON ()) & 0x8000) != 0;
 	bool dragDetected = (::DragDetect (hwnd, p) == TRUE);
 	bool isMousePressed = (::GetAsyncKeyState (Win32::getLogical_LBUTTON ()) & 0x8000) != 0;
 
-	if(dragDetected == false && wasMousePressed && isMousePressed == false)
+	if(dragDetected == false && isMousePressed == false)
 	{
 		// DragDetect swallows mouse up messages (which is not the case on MacOS).
 		// When a mouse handler is created after detectDrag has returned false, this handler is not ended and runs without mouse being pressed.

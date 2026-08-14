@@ -416,39 +416,61 @@ bool AppleStoreReceipt::getPurchases (ObjectArray& licenses)
 bool AppleStoreReceipt::readFromFile ()
 {
 	inAppPurchases.removeAll ();
-	NSMutableData* receiptData = [[[NSMutableData alloc] initWithData:[NSData dataWithContentsOfURL:receiptUrl]] autorelease];
-	
+	NSData* rawReceiptData = [NSData dataWithContentsOfURL:receiptUrl];
+	NSMutableData* receiptData = [[[NSMutableData alloc] initWithData:rawReceiptData] autorelease];
+
+	if(rawReceiptData == nil || rawReceiptData.length == 0)
+	{
+		NSLog (@"[StoreKit] AppleStoreReceipt::readFromFile failed: no data at %@", receiptUrl);
+		return false;
+	}
+
 	#if COPY_RECEIPT_FILE
 	NSArray* paths = NSSearchPathForDirectoriesInDomains (NSDocumentDirectory, NSUserDomainMask, YES);
 	[receiptData writeToURL:[NSURL fileURLWithPath:@"receipt" relativeToURL:[NSURL fileURLWithPath:paths.firstObject]] options:NSDataWritingAtomic error:nil];
 	#endif
-	
+
 	MemoryStream pkcs7 (receiptData.mutableBytes, static_cast <unsigned int> (receiptData.length));
 
 	MemoryStream certificates;
 	if(PKCS7::getCertificates (certificates, pkcs7) == false)
+	{
+		NSLog (@"[StoreKit] AppleStoreReceipt::readFromFile failed: PKCS7::getCertificates");
 		return false;
-		
+	}
+
 	if(verifyCertificate (certificates) == false)
+	{
+		NSLog (@"[StoreKit] AppleStoreReceipt::readFromFile failed: verifyCertificate");
 		return false;
+	}
 
 	ReceiptReader receiver (*this);
 	if(PKCS7::decodeData (receiver, pkcs7) == false)
+	{
+		NSLog (@"[StoreKit] AppleStoreReceipt::readFromFile failed: PKCS7::decodeData");
 		return false;
+	}
 
 	Material deviceHash (SHA1::kDigestSize);
 	calculateDeviceHash (deviceHash);
 	if(receiptHash.equals (deviceHash) == false)
+	{
+		NSLog (@"[StoreKit] AppleStoreReceipt::readFromFile failed: device hash mismatch (receipt bound to a different device or Apple ID)");
 		return false;
+	}
 
 	if(NSString* infoEntry = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleIdentifier"])
 	{
 		String origBundleID;
 		origBundleID.appendNativeString (infoEntry);
 		if(bundleID.compare (origBundleID) != Text::kEqual)
+		{
+			NSLog (@"[StoreKit] AppleStoreReceipt::readFromFile failed: bundle ID mismatch (expected %@)", infoEntry);
 			return false;
+		}
 	}
-	
+
 	NSString* infoEntry = nil;
 	#if CCL_PLATFORM_MAC
 	infoEntry = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
@@ -460,11 +482,17 @@ bool AppleStoreReceipt::readFromFile ()
 		String origAppVersion;
 		origAppVersion.appendNativeString (infoEntry);
 		if(appVersion.compare (origAppVersion) != Text::kEqual)
+		{
+			NSLog (@"[StoreKit] AppleStoreReceipt::readFromFile failed: app version mismatch (expected %@)", infoEntry);
 			return false;
+		}
 	}
 	else
+	{
+		NSLog (@"[StoreKit] AppleStoreReceipt::readFromFile failed: no version key in Info.plist");
 		return false;
-	
+	}
+
 	return true;
 }
 

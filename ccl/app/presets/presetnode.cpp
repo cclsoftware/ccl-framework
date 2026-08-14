@@ -662,6 +662,10 @@ PresetNode* PresetNodeSorter::findPresetNode (BrowserNode& baseNode, UrlRef pres
 							}
 						}
 				EndFor
+
+				// recursive search as fallback (helps when presets are not in expected folder structure)
+				if(!presetNode)
+					presetNode = PresetNodesBuilder::findPresetNodeDeep (presetUrl, *parentFolderNode);
 			}
 			else
 			{

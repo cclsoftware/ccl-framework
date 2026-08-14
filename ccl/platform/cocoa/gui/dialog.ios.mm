@@ -28,6 +28,8 @@
 #include "ccl/base/asyncoperation.h"
 #include "ccl/base/signalsource.h"
 
+#include "ccl/gui/gui.h"
+
 #include "ccl/platform/cocoa/iosapp/contentview.h"
 #include "ccl/platform/cocoa/iosapp/appdelegate.h"
 #include "ccl/platform/cocoa/quartz/cghelper.h"
@@ -93,7 +95,7 @@ using namespace CCL;
 
 	void (^completionInternal)(void) = ^{
 		if(dialogOperation)
-			dialogOperation->setState (AsyncOperation::kCompleted);
+			dialogOperation->setState (GUI.isQuitting () ? AsyncOperation::kFailed : AsyncOperation::kCompleted);
 
 		[self closeDialog];
 
@@ -147,7 +149,7 @@ using namespace CCL;
 	if(dialogOperation && dialog)
 	{
 		dialogOperation->setResult (dialog->getDialogResult ());
-		dialogOperation->setState (AsyncOperation::kCompleted);
+		dialogOperation->setState (GUI.isQuitting () ? AsyncOperation::kFailed : AsyncOperation::kCompleted);
 	}
 
 	[self closeDialog];

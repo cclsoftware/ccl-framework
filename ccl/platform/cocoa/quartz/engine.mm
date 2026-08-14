@@ -300,16 +300,11 @@ IFontTable* QuartzEngine::collectFonts (int flags)
 {
 	AutoPtr<SimpleFontTable> result = NEW SimpleFontTable;
 
-	auto addFamily = [&] (NSString* fontFamily)
+	auto addFamily = [&] (StringRef familyName)
 	{
-		String familyName;
-		familyName.appendNativeString (fontFamily);
-		
-		if(!(flags & Font::kCollectAppFonts) && FontCache::instance ().isUserFont (familyName))
-			return;
-		
 		AutoPtr<SimpleFontTable::FontFamily> resultFamily = NEW SimpleFontTable::FontFamily;
 		resultFamily->name = familyName;
+		NSObj<NSString> fontFamily = familyName.createNativeString<NSString*> ();
 		NSDictionary* familyAttributes = @{ (id)kCTFontFamilyNameAttribute : fontFamily };
 		CTFontDescriptorRef familyDescriptor = CTFontDescriptorCreateWithAttributes ((CFDictionaryRef)familyAttributes);
 		NSArray* fontDescriptors = @[ (id)familyDescriptor ];
@@ -350,9 +345,17 @@ IFontTable* QuartzEngine::collectFonts (int flags)
 	{
 		if([fontFamily hasPrefix:@"."]) // these are usually hidden for UI
 			continue;
-		addFamily (fontFamily);
+		String familyName;
+		familyName.appendNativeString (fontFamily);
+		addFamily (familyName);
 	}
-		
+
+	if((flags & Font::kCollectAppFonts))
+	{
+		for(auto& userFont : FontCache::instance ().getUserFonts ())
+			addFamily (userFont);
+	}
+
 	return result.detach ();
 }
 

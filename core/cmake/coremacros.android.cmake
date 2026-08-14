@@ -873,12 +873,12 @@ macro (ccl_add_deployment_project project appid)
 		"\t\texternalNativeBuild {\n"
 		"\t\t\tcmake {\n"
 		"\t\t\t\targuments '--preset=android', '-DENABLE_ASAN=${ENABLE_ASAN}', '-DENABLE_HWASAN=${ENABLE_HWASAN}'")
-	
+
 	if (CMAKE_MODULE_PATH)
 		file (APPEND "${gradle_native_build_file}"
 			", \"-DCMAKE_MODULE_PATH='${CMAKE_MODULE_PATH}'\"")
 	endif ()
-	
+
 	if (CCL_PREFER_PREBUILT_EXPORTS)
 		file (APPEND "${gradle_native_build_file}"
 			", \"-DCCL_PREFER_PREBUILT_EXPORTS=ON\"")

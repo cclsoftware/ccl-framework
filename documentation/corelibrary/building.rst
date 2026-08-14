@@ -15,7 +15,7 @@ Using the Core Library in a CMake project
 
 If you have installed the CCL SDK locally, simply import the Core Library (``find_package (corelib REQUIRED)``) and link the Core Library to your application (``target_link_libraries (MyApplication PRIVATE corelib)``).
 
-To build from source, add the CCL framework repository to your project (e.g. using git submodule). Add ``<framework>/build/cmake/modules/shared`` to your ``CMAKE_MODULES_PATH`` and call ``include (vendor)`` in your ``CMakeLists.txt``. Then use `find_package` and `target_link_libraries` as shown above.
+To build from source, add the CCL framework repository to your project (e.g. using git submodule). Add ``<framework>/build/cmake/modules/shared`` to your ``CMAKE_MODULE_PATH`` and call ``include (vendor)`` in your ``CMakeLists.txt``. Then use `find_package` and `target_link_libraries` as shown above.
 
 ==================================================
 Using the Core Library in other build environments

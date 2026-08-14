@@ -37,6 +37,10 @@
 #define SOCKET int
 #endif
 
+#ifndef MSG_NOSIGNAL
+#define MSG_NOSIGNAL 0
+#endif
+
 namespace Core {
 namespace Platform {
 
@@ -92,6 +96,10 @@ using namespace Platform;
 //************************************************************************************************
 // PosixSocket
 //************************************************************************************************
+
+const int PosixSocket::kDefaultSendFlags = MSG_NOSIGNAL;
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
 
 PosixSocket::PosixSocket (SocketID socket)
 : socket (socket),
@@ -417,7 +425,7 @@ bool PosixSocket::isAnyError (int timeout) const
 
 int PosixSocket::send (const void* buffer, int size, int flags)
 {
-	int result = (int)::send (static_cast<SOCKET> (socket), (const char*)buffer, size, flags);
+	int result = (int)::send (static_cast<SOCKET> (socket), (const char*)buffer, size, flags | kDefaultSendFlags);
 	if(result == SOCKET_ERROR)
 	{
 		// reset connection flag to give higher level a chance to handle the situation gracefully
@@ -435,7 +443,7 @@ int PosixSocket::sendAll (const void* buffer, int size, int flags)
 	const char* charBuffer = (const char*)buffer;
 	while(bytesToSend > 0)
 	{
-		int result = send (charBuffer, bytesToSend, flags);
+		int result = send (charBuffer, bytesToSend, flags | kDefaultSendFlags);
 
 		if(result == SOCKET_ERROR)
 		{		
@@ -481,7 +489,7 @@ int PosixSocket::sendTo (const void* buffer, int size, const SocketAddress& addr
 	if(!temp.valid)
 		return SOCKET_ERROR;
 
-	int result = (int)::sendto (static_cast<SOCKET> (socket), (const char*)buffer, size, flags, temp.as<NativeSocketAddress> (), temp.size);
+	int result = (int)::sendto (static_cast<SOCKET> (socket), (const char*)buffer, size, flags | kDefaultSendFlags, temp.as<NativeSocketAddress> (), temp.size);
 	if(result == SOCKET_ERROR)
 	{
 		// reset connection flag to give higher level a chance to handle the situation gracefully

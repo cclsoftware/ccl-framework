@@ -391,8 +391,11 @@ void D2DWindowRenderTarget::render (GdiClipRegion& renderRegion)
 		if(surface->getContent () == nullptr || surface->getContent ()->getContentHint () != kGraphicsContentTranslucent)
 			continue;
 		RectRef surfaceRect = surface->getViewPortRect ();
-		if(renderRegion.rectVisible (surfaceRect))
+		if(renderRegion.rectVisible (surfaceRect) || surface->isCompositionPending ())
+		{
 			renderRegion.addRect (surfaceRect);
+			surface->setCompositionPending (false);
+		}
 	}
 
 	GdiClipRegion::RectList rectList (renderRegion);

@@ -725,6 +725,7 @@ DEFINE_STRINGID_ (TranslationVariables::kAppVersion, "APPVERSION")
 DEFINE_STRINGID_ (TranslationVariables::kCopyrightYear, "COPYYEAR")
 DEFINE_STRINGID_ (TranslationVariables::kFrameworkName, "CCLNAME")
 DEFINE_STRINGID_ (TranslationVariables::kFrameworkAuthor, "CCLAUTHOR")
+DEFINE_STRINGID_ (TranslationVariables::kFrameworkVersion, "CCLVERSION")
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -740,6 +741,7 @@ void TranslationVariables::setBuiltinVariables (Attributes& variables)
 	variables.set (TranslationVariables::kCopyrightYear, CCL_COPYRIGHT_YEAR);
 	variables.set (TranslationVariables::kFrameworkName, CCL_PRODUCT_NAME);
 	variables.set (TranslationVariables::kFrameworkAuthor, CCL_AUTHOR_NAME);
+	variables.set (TranslationVariables::kFrameworkVersion, CCL_VERSION_STRING);
 }
 
 //************************************************************************************************

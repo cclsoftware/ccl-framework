@@ -1,5 +1,31 @@
 # Changelog
 
+**CCL 5.1.2 (2026-08-14)**
+
+*New features and improvements:*
+
+- Added new "CCLVERSION" translation variable
+- Skia | Improved error handling for bitmap decoding
+- iOS | Allow asynchronous dialog operations to fail when app terminates
+- macOS/iOS StoreKitManager | Improved logging and purchase restoration
+- Linux | Exclude bind mounts from volume list
+- Linux | Fall back to file copy and delete when rename fails
+- Windows | Swallow WM_CHAR for Tab, Enter, and Return on single-line EditBox
+
+*The following issues have been fixed:*
+
+- Linux | Wrong initial DPI scale factor when using OpenGL ES
+- Linux | WindowEvent kFullscreenEnter/kFullscreenLeave not triggered
+- Linux | Graphics layers flushed before window becomes visible
+- Linux | Integer overflow in signal wait time
+- Linux | SIGPIPE in socket send calls
+- Android | Wrong font selected in certain situations
+- Windows | Fractional DPI scaling may cause redraw issues
+- Windows | Unintentional scrolling on mouse move in some situations
+- Windows | Foreground window claimed even if application is inactive
+- iOS | System sharing sheet missing background
+- macOS/iOS Quartz | Application fonts not registered correctly
+
 **CCL 5.1.1 (2026-06-29)**
 
 *New features and improvements:*

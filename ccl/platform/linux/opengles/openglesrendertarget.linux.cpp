@@ -100,14 +100,10 @@ void OpenGLESWindowRenderTarget::onSize ()
 		onContentScaleFactorChanged (window.getContentScaleFactor ());
 
 	size = PixelPoint (Point (window.getWidth (), window.getHeight ()), window.getContentScaleFactor ());
-	
+
 	if(eglSurface == nullptr)
-	{
-		applyContentScaleFactor ();
-		applySize ();
 		initialize ();
-	}
-	
+
 	if(!linuxWindow->isConfigured ())
 	{
 		if(listener)
@@ -118,6 +114,8 @@ void OpenGLESWindowRenderTarget::onSize ()
 
 	if(listener == nullptr && linuxWindow->wantsFrameCallback ())
 	{
+		applyContentScaleFactor ();
+		applySize ();
 		listener = NEW Listener (this);
 		onPresent ();
 	}

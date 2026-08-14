@@ -39,10 +39,28 @@ class TransactionAsyncOperation;
 @interface StoreObserver : NSObject<SKPaymentTransactionObserver>
 {
 	TransactionAsyncOperation* asyncOperation;
+	NSUInteger restoredTransactionCount;
 }
 
 + (StoreObserver*)sharedInstance;
 - (instancetype)initWithOperation:(TransactionAsyncOperation*)operation;
+
+@end
+
+//************************************************************************************************
+// ReceiptRefresher
+//
+// Wraps SKReceiptRefreshRequest with a hard timeout.
+//************************************************************************************************
+
+@interface ReceiptRefresher : NSObject<SKRequestDelegate>
+{
+	SKReceiptRefreshRequest* request;
+	void(^completion)(BOOL ok);
+	BOOL completed;
+}
+
+- (void)refreshWithTimeout:(NSTimeInterval)timeout completion:(void(^)(BOOL ok))cb;
 
 @end
 
@@ -176,7 +194,10 @@ protected:
 	self = [super init];
 
 	if(self != nil)
+	{
 		asyncOperation = operation;
+		restoredTransactionCount = 0;
+	}
 
 	return self;
 }
@@ -204,7 +225,9 @@ protected:
 				break;
 			case SKPaymentTransactionStateFailed: [self handleFailedTransaction:transaction];
 				break;
-			case SKPaymentTransactionStateRestored: [self handleRestoredTransaction:transaction];
+			case SKPaymentTransactionStateRestored:
+				++restoredTransactionCount;
+				[self handleRestoredTransaction:transaction];
 				break;
 			default:
 				break;
@@ -231,6 +254,8 @@ protected:
 
 - (void)paymentQueue:(SKPaymentQueue*)queue restoreCompletedTransactionsFailedWithError:(NSError*)error
 {
+	NSLog (@"[StoreKit] restoreCompletedTransactionsFailedWithError: %@ (code %ld, domain %@)",
+		error.localizedDescription, (long)error.code, error.domain);
 	if(asyncOperation && asyncOperation->getTransactionID () == "")
 	{
 		void(^work) (void) = ^
@@ -255,23 +280,38 @@ protected:
 
 - (void)paymentQueueRestoreCompletedTransactionsFinished:(SKPaymentQueue*)queue
 {
+	NSURL* receiptURL = [[NSBundle mainBundle] appStoreReceiptURL];
+	NSData* receiptData = receiptURL ? [NSData dataWithContentsOfURL:receiptURL] : nil;
+	NSLog (@"[StoreKit] restoreCompletedTransactionsFinished: %lu restored transactions, on-disk receipt size=%lu bytes",
+		(unsigned long)restoredTransactionCount, (unsigned long)receiptData.length);
+
 	if(asyncOperation && asyncOperation->getTransactionID () == "")
 	{
-		void(^work) (void) = ^
+		// Refresh the on-disk receipt. The refresh itself can be on any thread
+		void(^complete) (void) = ^
 		{
-			// keep alive during completion handling
 			SharedPtr<AsyncOperation> saver (asyncOperation);
 			asyncOperation->setResult (true);
 			StoreKitManager::instance ().deferSignal (NEW Message (PlatformStoreManager::kLocalLicensesChanged));
 			asyncOperation->setState (AsyncOperation::kCompleted);
 		};
 
-		// call on main thread for signal handler
-		if([NSThread isMainThread] == YES)
-			work ();
-		else
-			dispatch_sync (dispatch_get_main_queue (), work);
+		ReceiptRefresher* refresher = [[ReceiptRefresher alloc] init];
+		[refresher refreshWithTimeout:25.0 completion:^(BOOL ok) {
+			NSURL* afterURL = [[NSBundle mainBundle] appStoreReceiptURL];
+			NSData* afterData = afterURL ? [NSData dataWithContentsOfURL:afterURL] : nil;
+			NSLog (@"[StoreKit] post-refresh receipt size=%lu bytes (refresh ok=%d)", (unsigned long)afterData.length, ok);
+
+			if([NSThread isMainThread] == YES)
+				complete ();
+			else
+				dispatch_sync (dispatch_get_main_queue (), complete);
+
+			[refresher release];
+		}];
 	}
+
+	restoredTransactionCount = 0;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -346,6 +386,76 @@ protected:
 @end
 
 //************************************************************************************************
+// ReceiptRefresher
+//************************************************************************************************
+
+@implementation ReceiptRefresher;
+
+- (void)refreshWithTimeout:(NSTimeInterval)timeout completion:(void(^)(BOOL ok))cb
+{
+	completion = [cb copy];
+	completed = NO;
+	request = [[SKReceiptRefreshRequest alloc] init];
+	request.delegate = self;
+	[request start];
+
+	// Strong-capture self in the timeout block.
+	dispatch_after (dispatch_time (DISPATCH_TIME_NOW, (int64_t)(timeout * NSEC_PER_SEC)), dispatch_get_main_queue (), ^{
+		if(completed == NO)
+		{
+			NSLog (@"[StoreKit] SKReceiptRefreshRequest timed out after %.0fs", timeout);
+			[request cancel];
+			[self finishWithSuccess:NO];
+		}
+	});
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+- (void)finishWithSuccess:(BOOL)ok
+{
+	// Route to main queue to avoid race condition with completed flag
+	if([NSThread isMainThread] == NO)
+	{
+		dispatch_async (dispatch_get_main_queue (), ^{ [self finishWithSuccess:ok]; });
+		return;
+	}
+
+	if(completed)
+		return;
+	completed = YES;
+
+	void(^cb)(BOOL) = completion;
+	completion = nil;
+	[request release];
+	request = nil;
+
+	if(cb)
+	{
+		cb (ok);
+		[cb release]; // paired with [cb copy] in refreshWithTimeout:completion:
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+- (void)requestDidFinish:(SKRequest*)r
+{
+	NSLog (@"[StoreKit] SKReceiptRefreshRequest finished");
+	[self finishWithSuccess:YES];
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+- (void)request:(SKRequest*)r didFailWithError:(NSError*)error
+{
+	NSLog (@"[StoreKit] SKReceiptRefreshRequest failed: %@ (code %ld)", error.localizedDescription, (long)error.code);
+	[self finishWithSuccess:NO];
+}
+
+@end
+
+//************************************************************************************************
 // StoreDelegate
 //************************************************************************************************
 
@@ -378,6 +488,10 @@ protected:
 - (void)productsRequest:(SKProductsRequest*)request didReceiveResponse:(SKProductsResponse*)response
 {
 	NSArray<SKProduct*>* responseProducts = [NSArray arrayWithArray:response.products];
+	NSLog (@"[StoreKit] productsRequest response: %lu products, %lu invalid identifiers: %@",
+		(unsigned long)responseProducts.count,
+		(unsigned long)response.invalidProductIdentifiers.count,
+		response.invalidProductIdentifiers);
 	StoreKitManager* manager = ccl_cast<StoreKitManager> (&StoreKitManager::instance ());
 	if(manager)
 		manager->setAvailableProducts (responseProducts);
@@ -411,6 +525,8 @@ protected:
 
 - (void)request:(SKRequest*)request didFailWithError:(NSError*)error
 {
+	NSLog (@"[StoreKit] SKProductsRequest failed: %@ (code %ld, domain %@)",
+		error.localizedDescription, (long)error.code, error.domain);
 	if(asyncOperation)
 	{
 		void(^work) (void) = ^

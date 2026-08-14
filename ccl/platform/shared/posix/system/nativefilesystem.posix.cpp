@@ -214,11 +214,19 @@ tbool CCL_API PosixNativeFileSystem::moveFile (UrlRef dstPath, UrlRef srcPath, i
 	POSIXPath oldPath (srcPath);
 	POSIXPath newPath (dstPath);
 	bool success = (::rename (oldPath, newPath) == 0);
-	if(!success && errno == EXDEV && !(mode & kDoNotMoveAcrossVolumes))
+	if(!success)
 	{
-		if(copyFile (dstPath, srcPath, mode, progress))
-			if(removeFile (srcPath))
-				success = true;
+		int renameError = errno;
+
+		// rename() can fail for reasons other than EXDEV (e.g. on FUSE-based or
+		// sandboxed mounts), so fall back to copy+delete regardless of the exact error
+		if(!(mode & kDoNotMoveAcrossVolumes))
+			if(copyFile (dstPath, srcPath, mode, progress))
+				if(removeFile (srcPath))
+					success = true;
+
+		if(!success)
+			onNativeError (renameError, &srcPath);
 	}
 	return success;
 }

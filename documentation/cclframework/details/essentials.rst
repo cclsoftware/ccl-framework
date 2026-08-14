@@ -521,18 +521,17 @@ Miscellaneous
       - :cref:`ccl_abs`
       - :cref:`ccl_bound`
 
-  * - :cref:`CCL_KERNEL_INIT`, :cref:`CCL_KERNEL_TERM`
+  * - :cref:`CCL_KERNEL_INIT`, :cref:`CCL_KERNEL_INIT_LEVEL`, :cref:`CCL_KERNEL_INIT`, :cref:`CCL_KERNEL_TERM_LEVEL`
     - Initializers are called on application/module startup. The main purpose is to register something somewhere.
 
       Example:
 
       .. code-block::
 
-        CCL_KERNEL_INIT (AudioEffect)
+        CCL_KERNEL_INIT_LEVEL (AutoSaver, kSetupLevel)
         {
-          // register native .fxpreset handler
-          (NEW AudioFXPresetHandler)->registerSelf ();
-          return true;
+            AutoSaver::instance ();
+            return true;
         }
 
   * - :cref:`IProgressNotify<CCL::IProgressNotify>`

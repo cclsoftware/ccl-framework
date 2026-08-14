@@ -404,6 +404,17 @@ EventResult WindowsTextControl::handleEvent (SystemEvent& e)
 		}
 		break;
 
+	case WM_CHAR:
+		{
+			KeyEvent keyEvent;
+			VKey::fromSystemEvent (keyEvent, e);
+
+			if(!owner.getStyle ().isCustomStyle (Styles::kTextBoxAppearanceMultiLine)
+				&& (keyEvent.vKey == VKey::kTab || keyEvent.vKey == VKey::kEnter || keyEvent.vKey == VKey::kReturn))
+				return (EventResult)nullptr;
+		}
+		break;
+
 	case WM_SETFOCUS :
 		if(Window* w = owner.getWindow ())
 			w->setFocusView (&owner, false);

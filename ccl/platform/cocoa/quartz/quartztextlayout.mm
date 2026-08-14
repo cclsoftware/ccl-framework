@@ -203,6 +203,12 @@ tresult CCL_API QuartzTextLayout::construct (StringRef text, CoordF width, Coord
 	resetFrameSetter ();
 	resetLine ();
 
+	// make sure getTextPosition is correct for all alignment options
+	if(width == kMaxCoord)
+		width = 0;
+	if(height == kMaxCoord)
+		height = 0;
+
 	boundingRect = CGSizeMake (width, height);
 
 	return kResultOk;

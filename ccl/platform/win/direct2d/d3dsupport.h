@@ -240,6 +240,8 @@ public:
 
 	D3DSurface ();
 
+	PROPERTY_BOOL (compositionPending, CompositionPending)
+
 	bool create (float scaleFactor);
 	void destroy ();
 	bool isValid () const;

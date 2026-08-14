@@ -321,7 +321,8 @@ void LinuxWindow::onDpiChanged (float dpiFactor)
 	{
 		if(dpiFactor != savedDpiFactor)
 		{
-			onDisplayPropertiesChanged (DisplayChangedEvent (dpiFactor, DisplayChangedEvent::kResolutionChanged));
+			if(isConfigured ())
+				onDisplayPropertiesChanged (DisplayChangedEvent (dpiFactor, DisplayChangedEvent::kResolutionChanged));
 			
 			Rect r;
 			getClientRect (r);
@@ -1048,6 +1049,15 @@ void LinuxWindow::onMaximize (bool state)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
+void LinuxWindow::onFullscreen (bool state)
+{
+	fullscreen (state);
+	WindowEvent fullscreenEvent (*this, state ? WindowEvent::kFullscreenEnter : WindowEvent::kFullscreenLeave);
+	signalWindowEvent (fullscreenEvent);
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
 void CCL_API LinuxWindow::activate ()
 {}
 
@@ -1690,10 +1700,15 @@ void LinuxWindow::WindowListener::onTopLevelConfigure (void* data, xdg_toplevel*
 			}
 		}
 	}
-	if(This->window.isMaximized () != maximized)
+
+	bool wasFullscreen = This->window.isFullscreen ();
+	bool wasMaximized = This->window.isMaximized ();
+	bool wasActive = This->window.isActive ();
+	if(wasMaximized != maximized)
 		This->window.onMaximize (maximized);
-	This->window.fullscreen (fullscreen);
-	if(This->window.isActive () != active)
+	if(wasFullscreen != fullscreen)
+		This->window.onFullscreen (fullscreen);
+	if(wasActive != active)
 		This->window.onActivate (active);
 
 	// width and height provided here include all subsurfaces, subtract frame offset to get the size of the client area
@@ -1704,7 +1719,7 @@ void LinuxWindow::WindowListener::onTopLevelConfigure (void* data, xdg_toplevel*
 		Rect clientSize = This->window.getSize ();
 		Rect size (0, 0, width - totalFrameSize.getWidth () + clientSize.getWidth (), height - totalFrameSize.getHeight () + clientSize.getHeight ());
 		size.moveTo (clientSize.getLeftTop ());
-		
+
 		if(clientSize != size)
 			This->window.applySize (size);
 	}

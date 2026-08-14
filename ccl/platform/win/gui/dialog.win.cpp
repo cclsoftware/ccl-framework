@@ -96,7 +96,6 @@ IAsyncOperation* Dialog::showPlatformDialog (IWindow* parent)
 	Win32Dialog::beginModalMode (this, true);
 	HWND hwndParent = parent ? (HWND)parent->getSystemWindow () : nullptr;
 	
-
 	DialogBoxIndirectParam (g_hMainInstance, (DLGTEMPLATE*)&t, hwndParent, CCLDialogProc, (LPARAM)this);
 	
 	Win32Dialog::beginModalMode (this, false); // already done on WM_CLOSE, kept here to be safe
@@ -104,7 +103,7 @@ IAsyncOperation* Dialog::showPlatformDialog (IWindow* parent)
 	// set focus back to parent window as closing the dialog while the parent was still disabled may have enabled
 	// another window, see https://docs.microsoft.com/windows/win32/api/winuser/nf-winuser-enablewindow#remarks
 	// (should not be necessary anymore, as we re-enable our windows on WM_CLOSE)
-	if(hwndParent)
+	if(hwndParent && GUI.isApplicationActive ())
 	{
 		::SetForegroundWindow (hwndParent);
 		::SetFocus (hwndParent);

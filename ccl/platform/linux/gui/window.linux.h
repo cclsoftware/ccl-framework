@@ -179,7 +179,7 @@ protected:
 	int stateFlags;
 	float savedDpiFactor;
 	bool dismissPopup;
-	
+
 	LinkedList<MouseEvent*> suspendedEvents;
 	LinkedList<KeyEvent*> suspendedKeyEvents;
 	
@@ -200,6 +200,7 @@ protected:
 	void enableClientSideDecoration (bool state = true);
 	void requestActivationToken ();
 	void onMaximize (bool state);
+	void onFullscreen (bool state);
 	void updateSizeLimits ();
 
 	// Window

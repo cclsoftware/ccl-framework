@@ -973,10 +973,12 @@ void PackageManager::addPackage (UnifiedPackage* package)
 
 void PackageManager::requestUpdate (IUnifiedPackageSource& source, int updateFlags)
 {
-	if((updateFlags & (kPackageRemoved|kPackageChanged)) != 0)
-		updateAll (true);
-	else if((updateFlags & kPackageAdded) != 0)
-		source.retrievePackages (UnifiedPackageUrl (), true);
+	/* A package added by one source (e.g. a newly installed local file) may need other
+	 sources (e.g. manifest-based sources tracking install/ownership state) to reconcile
+	 their data for the same package id, so refresh all sources rather than just the one
+	 that raised the update. */
+
+	updateAll (true);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1427,7 +1429,6 @@ void PackageManager::performSelectedAction (int index, bool confirmed)
 							if(child->getActions ().contains (*action))
 								break;
 
-					SharedPtr<UnifiedPackageAction> guard (action);
 					component->performAction (*action, true);
 					break;
 				}
@@ -2691,6 +2692,8 @@ void PackageComponent::performAction (UnifiedPackageAction& action, bool confirm
 	ASSERT (action.getPackage ())
 	if(action.getPackage () == nullptr)
 		return;
+
+	SharedPtr<UnifiedPackageAction> actionGuard (&action);
 
 	if(ownsPackage (action.getPackage ()) == false && canMergeWithChild ())
 	{

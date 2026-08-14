@@ -133,6 +133,7 @@ private:
 	static bool showProgressDialog;
 	SignalSink fileSystemSink;
 	SignalSource presetsSignal;
+	int presetRevision;
 	bool folderSignalSuspended;
 
 	static const String kSettingsName;

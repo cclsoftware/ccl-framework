@@ -138,11 +138,19 @@ NativeBitmap* SkiaEngine::loadBitmap (IStream& stream, const FileType& format)
 	{
 		IBitmapDecoder* customDecoder = customCodec->createBitmapDecoder (*memStream);
 		if(customDecoder)
-			return NEW SkiaBitmap (customDecoder);
+		{
+			AutoPtr<SkiaBitmap> bitmap = NEW SkiaBitmap (customDecoder);
+			if(bitmap->isValid ())
+				return bitmap.detach ();
+			return nullptr;
+		}
 	}
 	else // use built-in codecs otherwise
 	{
-		return NEW SkiaBitmap (memStream);
+		AutoPtr<SkiaBitmap> bitmap = NEW SkiaBitmap (memStream);
+		if(bitmap->isValid ())
+			return bitmap.detach ();
+		return nullptr;
 	}
 	return nullptr;
 }

@@ -44,10 +44,11 @@ public:
 	SkiaBitmap (IBitmapDecoder* customDecoder, bool alphaChannelUsed = true);
 	SkiaBitmap (IMemoryStream* stream, bool alphaChannelUsed = true);
 
+	bool isValid () const;
 	SkCanvas* getCanvas ();
 	bool saveTo (IStream& stream, const FileType& format);
 	void flush ();
-	
+
 	static constexpr SkColorType colorType = kBGRA_8888_SkColorType;
 	
 	sk_sp<SkImage> getSkiaImage () const;

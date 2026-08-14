@@ -8,7 +8,7 @@ CCL Generator
 Introduction
 ============
 
-The *CCL Generator Tool* is a command line based utility tool that can generate source code files for different programming languages from different input files, utilizing a meda model input format. A meta model can be passed in directly or be partially generated from classmodel or source files.
+The *CCL Generator Tool* is a command line based utility tool that can generate source code files for different programming languages from different input files, utilizing a meta model input format. A meta model can be passed in directly or be partially generated from classmodel or source files.
 
 =====
 Usage

@@ -55,7 +55,7 @@ The vendor module also adds all directories and subdirectories in ``build/cmake/
 CCL Demo depends on CCL and needs Skin XML packages. We also want to include CCL Spy in the CCL Demo project. 
 
 CMake provides a mechanism for finding dependencies with the :cmakelink:`find_package` command. 
-When calling ``find_package (xy)``, CMake searches the ``CMAKE_MODULES_PATH`` for a file called ``Findxy.cmake``. 
+When calling ``find_package (xy)``, CMake searches the ``CMAKE_MODULE_PATH`` for a file called ``Findxy.cmake``. 
 See https://cmake.org/cmake/help/latest/guide/using-dependencies/ for details.
 
 There are several ``Find*.cmake`` modules in ``build/shared/cmake`` to find and include targets for frameworks, libraries, and third-party dependencies. 

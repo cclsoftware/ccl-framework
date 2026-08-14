@@ -439,6 +439,7 @@ PresetManager::PresetManager ()
   fileSystemSink (Signals::kFileSystem),
   presetsSignal (Signals::kPresetManager),
   presetStore (nullptr),
+  presetRevision (-1),
   folderSignalSuspended (false)
 {
 	infoCache.objectCleanup (true);
@@ -1372,17 +1373,7 @@ void CCL_API PresetManager::scanPresets (tbool onlyChangedLocations)
 
 void PresetManager::setPresetRevision (int revision)
 {
-	if(!presetStore)
-		return;
-
-	Variant storeRevision (-1);
-	presetStore->getDataStore ().getMetaInfo (storeRevision, "presetRevision");
-
-	if(storeRevision.asInt () < revision)
-	{
-		presetStore->getDataStore ().setMetaInfo ("presetRevision", revision);
-		needFullRescan = true;
-	}
+	presetRevision = revision;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1391,6 +1382,15 @@ void PresetManager::startup ()
 {
 	ASSERT (!presetStore)
 	presetStore = NEW PresetStore;
+
+	Variant storeRevision (-1);
+	presetStore->getDataStore ().getMetaInfo (storeRevision, "presetRevision");
+
+	if(storeRevision.asInt () < presetRevision)
+	{
+		presetStore->getDataStore ().setMetaInfo ("presetRevision", presetRevision);
+		needFullRescan = true;
+	}
 
 	#if 1
 	bool onlyChangedLocations = !needFullRescan; // only added/removed root locations (e.g. soundsets), except if a full scan is reqested

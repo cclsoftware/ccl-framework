@@ -89,21 +89,19 @@ macro (ccl_process_resources target config path)
 		endif ()
 	endforeach ()
 
+	get_property (is_multi_config GLOBAL PROPERTY GENERATOR_IS_MULTI_CONFIG)
+
 	set (rc_file_created OFF)
 	ccl_check_file_created ("${rc_script}" rc_file_created)
-	if (new_resources AND NOT rc_file_created AND ("${config}" STREQUAL "" OR "${lowerconfig}" STREQUAL "${buildtype}"))
+	if (new_resources AND NOT rc_file_created AND ("${config}" STREQUAL "" OR "${lowerconfig}" STREQUAL "${buildtype}" OR is_multi_config))
 		ccl_create_file_once ("${rc_script}" CONTENT "")
 	endif ()
 
-	if ("${config}" STREQUAL "" OR "${lowerconfig}" STREQUAL "${buildtype}")
-		foreach (resource_entry IN ITEMS ${new_resources})
-			file (APPEND "${rc_script}" "file (COPY \"${resource_entry}\" DESTINATION \"${rc_dir}/${path}\")\n")
-		endforeach ()
-	else ()
-		message (VERBOSE "Skipping resources for configuration ${config}: ${new_resources}")
-	endif ()	
+	foreach (resource_entry IN ITEMS ${new_resources})
+		file (APPEND "${rc_script}" "if (\"\${RESOURCE_CONFIG}\" STREQUAL \"${lowerconfig}\" OR \"\" STREQUAL \"${lowerconfig}\")\n\tfile (COPY \"${resource_entry}\" DESTINATION \"${rc_dir}/${path}\")\nendif ()\n")
+	endforeach ()	
 
-	if (new_resources AND ("${config}" STREQUAL "" OR "${lowerconfig}" STREQUAL "${buildtype}"))
+	if (new_resources AND ("${config}" STREQUAL "" OR "${lowerconfig}" STREQUAL "${buildtype}" OR is_multi_config))
 		if (NOT rc_file_created)
 			find_program (zip NAMES zip)
 
@@ -111,7 +109,7 @@ macro (ccl_process_resources target config path)
 				OUTPUT "${rc_zip}"
 				COMMAND ${CMAKE_COMMAND} -E rm -Rf "${rc_dir}"
 				COMMAND ${CMAKE_COMMAND} -E make_directory "${rc_dir}"
-				COMMAND ${CMAKE_COMMAND} -P "${rc_script}"
+				COMMAND ${CMAKE_COMMAND} -DRESOURCE_CONFIG=$<LOWER_CASE:$<CONFIG>> -P "${rc_script}"
 				COMMAND ${CMAKE_COMMAND} -E rm -f "${rc_zip}"
 				COMMAND cd ${rc_dir} && ${zip} -rq0 "${rc_zip}" "./*" && cd ..
 				DEPENDS ${new_resources}

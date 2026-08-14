@@ -482,6 +482,11 @@ bool PosixSignal::wait (uint32 milliseconds)
 			clock_gettime (CLOCK_REALTIME, &timeOutPeriod);
 			timeOutPeriod.tv_sec += seconds;
 			timeOutPeriod.tv_nsec += nanoseconds;
+			if(timeOutPeriod.tv_nsec >= 1000000000)
+			{
+				timeOutPeriod.tv_nsec -= 1000000000;
+				timeOutPeriod.tv_sec += 1;
+			}
 			osResult = pthread_cond_timedwait (&conditionId, &mutexId, &timeOutPeriod);
 			if(osResult == ETIMEDOUT)
 				timedOut = true;

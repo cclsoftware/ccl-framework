@@ -81,6 +81,8 @@ public:
 	bool wouldBlockOperation (bool writeDirection) const override;
 
 protected:
+	static const int kDefaultSendFlags;
+
 	SocketID socket;
 	bool connected;
 
