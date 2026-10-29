@@ -69,7 +69,7 @@ protected:
 	virtual void loadParams () {};
 	virtual void saveParams () {};
 	virtual void onUpdateFile (IFileInfoComponent* infoComponent, bool isNewFile) {}
-	virtual void releaseFile (CCL::UrlRef path); ///< release the given file, if it's currently open
+	virtual void releaseFile (UrlRef path); ///< release the given file, if it's currently open
 
 	Url currentPath;
 	SharedPtr<IImage> currentIcon;

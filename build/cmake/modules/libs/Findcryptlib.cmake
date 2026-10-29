@@ -49,3 +49,16 @@ target_sources (cryptopp-static PRIVATE "${cryptlib_DIR}/CMakeLists.txt")
 add_library (cryptlib ALIAS cryptopp-static)
 
 ccl_include_platform_specifics (cryptlib)
+
+set (cryptlib_LIBRARY cryptlib)
+
+if (cryptlib_DIR AND EXISTS "${cryptlib_DIR}/CMakeLists.txt")
+    file (STRINGS "${cryptlib_DIR}/CMakeLists.txt" line REGEX ".*cryptopp VERSION [0-9\.]+.*")
+	string (REGEX REPLACE ".*cryptopp VERSION ([0-9\.]+).*" "\\1" cryptlib_VERSION "${line}")
+endif ()
+
+include (FindPackageHandleStandardArgs)
+find_package_handle_standard_args (cryptlib
+	REQUIRED_VARS cryptlib_LIBRARY
+	VERSION_VAR cryptlib_VERSION
+)

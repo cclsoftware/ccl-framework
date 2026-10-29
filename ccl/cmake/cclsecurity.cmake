@@ -108,7 +108,8 @@ if (NOT TARGET ${cclsecurity})
 		target_sources (${cclsecurity} PRIVATE ${cclsecurity_sources} ${CMAKE_CURRENT_LIST_FILE})
 		ccl_target_headers (${cclsecurity} INSTALL ${CCL_SYSTEM_INSTALL} DESTINATION ${CCL_PUBLIC_HEADERS_DESTINATION} BASE_DIRS ${CCL_DIR} FILES ${cclsecurity_public_headers})
 
-		target_link_libraries (${cclsecurity} PUBLIC ${cclbase} ${cclsystem} ${ccltext} PRIVATE cryptlib)
+		target_link_libraries (${cclsecurity} PUBLIC ${cclbase} ${cclsystem} ${ccltext})
+		target_link_libraries (${cclsecurity} PRIVATE cryptlib)
 		target_include_directories (${cclsecurity} INTERFACE "$<INSTALL_INTERFACE:${VENDOR_PUBLIC_HEADERS_DESTINATION}>")
 		
 		ccl_export_symbols (${cclsecurity} ${cclsecurity_exports})

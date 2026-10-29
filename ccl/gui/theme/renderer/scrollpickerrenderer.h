@@ -12,7 +12,7 @@
 // For more information, please visit ccl.dev.
 //
 // Filename    : ccl/gui/theme/renderer/scrollpickerrenderer.h
-// Description : Scroll Picker Renderer
+// Description : ScrollPicker Renderer
 //
 //************************************************************************************************
 
@@ -23,12 +23,12 @@
 
 #include "ccl/gui/graphics/imaging/bitmap.h"
 #include "ccl/public/gui/framework/ipalette.h"
-#include "ccl/gui/views/graphicsport.h"
 
 namespace CCL {
 
 class ScrollPicker;
 class GraphicsDevice;
+class GraphicsPort;
 interface IParameter;
 
 //************************************************************************************************
@@ -38,14 +38,14 @@ interface IParameter;
 class ScrollPickerRenderer: public ThemeRenderer
 {
 public:
-	ScrollPickerRenderer (VisualStyle* visualStyle);
+	ScrollPickerRenderer (VisualStyle* visualStyle, View* owner);
 
 	void init (ScrollPicker* scrollPicker);
 
 	// ThemeRenderer
-	int hitTest (View* view, const Point& loc, Point* clickOffset) override;
-	bool getPartRect (const View* view, int partCode, CCL::Rect& rect) override;
-	void draw (View* view, const UpdateRgn& updateRgn) override;
+	int hitTest (PointRef where, Point* clickOffset = nullptr) override;
+	bool getPartRect (Rect& rect, int partCode) override;
+	void draw (const UpdateRgn& updateRgn) override;
 	
 protected:
 	bool wrapAround;

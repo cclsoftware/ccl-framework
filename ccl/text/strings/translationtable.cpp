@@ -438,7 +438,7 @@ bool MachineObjectParser::parse ()
 		if(!readString (buffer, length))
 			return false;
 
-		const char* charBuffer = buffer.as<char> ();
+		CStringPtr charBuffer = buffer.as<char> ();
 
 		MutableCString key;
 		key.append (charBuffer, length);
@@ -456,7 +456,7 @@ bool MachineObjectParser::parse ()
 		if(!readString (buffer, length))
 			return false;
 
-		const char* charBuffer = buffer.as<char> ();
+		CStringPtr charBuffer = buffer.as<char> ();
 
 		String text;
 		text.appendCString (Text::kUTF8, charBuffer, length);		
@@ -473,7 +473,7 @@ bool MachineObjectParser::parse ()
 			continue;
 
 		MutableCString scope;
-		const char* start = original.str ();
+		CStringPtr start = original.str ();
 
 		// ASCII char 4 [EOT, End Of Transmission]
 		#define GETTEXT_EOT '\004'
@@ -489,7 +489,7 @@ bool MachineObjectParser::parse ()
 		{
 			// Legacy format: msgid contains scope as
 			// leading, [] enclosed substring.
-			const char* ptr = start;
+			CStringPtr ptr = start;
 			if(*ptr == '[')
 			{
 				while(*ptr && *ptr != ']')

@@ -59,7 +59,7 @@ public:
 	};
 
 	// TextBox
-	StringRef getText () override;
+	void modifyDisplayString (String& displayString) const override;
 	ThemeRenderer* getRenderer () override;
 	void onSize (const Point& delta) override;
 	bool onMouseWheel (const MouseWheelEvent& event) override;
@@ -76,12 +76,12 @@ public:
 	
 	Coord getDisplayWidth () const override;
 	Coord getDisplayHeight () const override;
+	const ITextLayout* getTextLayout () const override;
 	void calcAutoSize (Rect& r) override;
 
-private:
+protected:
 	AutoPtr<PopupSelector> popupSelector;
 
-protected:
 	PopupSelector* getPopupSelector ();
 	void initPopupSelector ();
 	class PopupTouchHandler;
@@ -97,7 +97,8 @@ A ComboBox allows to enter free text like an EditBox, and additionally
 offers a popupmenu with values to choose from, like a SelectBox. */
 //************************************************************************************************
 
-class ComboBox: public SelectBox
+class ComboBox: public SelectBox,
+				public IEditControlHost
 {
 public:
 	DECLARE_CLASS (ComboBox, SelectBox)
@@ -128,6 +129,12 @@ public:
 	void paramChanged () override;
 	ThemeRenderer* getRenderer () override;
 	void CCL_API notify (ISubject* subject, MessageRef msg) override;
+
+	// IEditControlHost
+	tbool CCL_API onEditNavigation (const KeyEvent& event, IView* control) override;
+	void CCL_API onEditControlLostFocus (IView* control) override {}
+
+	CLASS_INTERFACE (IEditControlHost, SelectBox)
 
 protected:
 	bool canEdit () const;

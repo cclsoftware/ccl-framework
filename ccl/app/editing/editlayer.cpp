@@ -25,6 +25,12 @@ using namespace CCL;
 // EditLayer
 //************************************************************************************************
 
+Object EditLayer::nullItem;
+bool EditLayer::isNullItem (const Object* item) { return item == &nullItem; }
+Object* EditLayer::createNullItem () { return return_shared (&nullItem); }
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
 DEFINE_CLASS_ABSTRACT_HIDDEN (EditLayer, Object)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////

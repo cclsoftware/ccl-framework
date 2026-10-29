@@ -410,7 +410,7 @@ IView* CCL_API HelpInfoBuilder::createView (const Rect& size, const IVisualStyle
 	#else // IMAGE
 	AutoPtr<IImage> image = createImage (Point (size.getWidth (), size.getHeight ()), style);
 	rect (0, 0, image->getWidth (), image->getHeight ());
-	return NEW ImageView (image, rect, StyleFlags (0, Styles::kImageViewAppearanceFitImage));
+	return NEW ImageView (image, rect, StyleFlags (0, Styles::kImageViewAppearanceContentFit));
 	#endif
 }
 

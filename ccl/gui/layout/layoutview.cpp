@@ -743,7 +743,7 @@ Layout* LayoutFactory::createLayout (StringID layoutName)
 
 StringID LayoutFactory::getLayoutName (Layout* layout)
 {
-	const CCL::MetaClass& metaClass = layout->myClass ();
+	const MetaClass& metaClass = layout->myClass ();
 	ForEach (layoutClasses, LayoutClassEntry, entry)
 		if(entry->metaClass == metaClass)
 			return entry->layoutName;

@@ -12,7 +12,7 @@
 // For more information, please visit ccl.dev.
 //
 // Filename    : ccl/gui/theme/renderer/dialoggrouprenderer.cpp
-// Description : Control Renderer
+// Description : DialogGroup Renderer
 //
 //************************************************************************************************
 
@@ -30,20 +30,22 @@ namespace CCL {
 class DialogGroupRenderer: public ThemeRenderer
 {
 public:
-	DialogGroupRenderer (VisualStyle* visualStyle);
+	DialogGroupRenderer (VisualStyle* visualStyle, View* owner);
 
-	void draw (View* view, const UpdateRgn& updateRgn) override;
-	int hitTest (View* view, const Point& loc, Point* clickOffset) override;
-	bool getPartRect (const View* view, int partCode, CCL::Rect& rect) override;
+	PROPERTY_VARIABLE (int, headerGap, HeaderGap)
+	PROPERTY_VARIABLE (Color, headerlinecolor, HeaderLineColor)
+
+	// ThemeRenderer
+	void draw (const UpdateRgn& updateRgn) override;
+	int hitTest (PointRef where, Point* clickOffset = nullptr) override;
+	bool getPartRect (Rect& rect, int partCode) override;
 
 protected:
 	SharedPtr<IImage> image;
 	SharedPtr<IImage> secondaryImage;
-	PROPERTY_VARIABLE (int, headerGap, HeaderGap)
-	PROPERTY_VARIABLE (Color, headerlinecolor, HeaderLineColor)
 };
 
-DECLARE_VISUALSTYLE_CLASS (DialogGroup)
+DECLARE_TYPELIB_ENTRY (DialogGroup)
 
 } // namespace CCL
 

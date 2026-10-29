@@ -124,11 +124,11 @@ tresult Win32CredentialStore::add (Credential& src)
 	credential.Persist = CRED_PERSIST_LOCAL_MACHINE;
 
 	StringChars targetName (src.getTargetName ());
-	credential.TargetName = const_cast<uchar*> (static_cast<const uchar*> (targetName));
+	credential.TargetName = const_cast<uchar*> (static_cast<UStringPtr> (targetName));
 	ASSERT (src.getTargetName ().length () <= CRED_MAX_GENERIC_TARGET_NAME_LENGTH)
 
 	StringChars userName (src.getUserName ());
-	credential.UserName = const_cast<uchar*> (static_cast<const uchar*> (userName));
+	credential.UserName = const_cast<uchar*> (static_cast<UStringPtr> (userName));
 	ASSERT (src.getUserName ().length () <= CRED_MAX_USERNAME_LENGTH)
 
 	// ATTENTION: Credential blob size is limited to 2.5KB (see CRED_MAX_CREDENTIAL_BLOB_SIZE).

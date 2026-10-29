@@ -45,6 +45,7 @@ DECLARE_JNI_CLASS (FrameworkViewClass, CCLGUI_CLASS_PREFIX "FrameworkView")
 	DECLARE_JNI_METHOD (int64, getNativeViewPtr)
 	DECLARE_JNI_METHOD (jobject, getRectOnScreen)
 	DECLARE_JNI_METHOD (void, setSize, int, int, int, int)
+	DECLARE_JNI_METHOD (void, setActiveInputMethod, jobject)
 	DECLARE_JNI_METHOD (void, accessibilityContentChanged, int)
 END_DECLARE_JNI_CLASS (FrameworkViewClass)
 
@@ -69,7 +70,7 @@ public:
 	void createApplicationView ();
 	void initWithWindow (AndroidWindow* window);
 
-	CCL::Rect& getSize (CCL::Rect& size) const;
+	Rect& getSize (Rect& size) const;
 	void invalidate (RectRef rect, bool addToDirtyRegion = true);
 	float getContentScaleFactor () const;
 	AndroidWindow* getWindow () const;

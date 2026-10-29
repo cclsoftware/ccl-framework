@@ -62,7 +62,7 @@ tbool PresetCategoryFilter::check (IAttributeList& metaData) const
 {
 	if(excludedClasses.isEmpty () == false)
 	{
-		CCL::UID cid;
+		UID cid;
 		if(PresetMetaAttributes (metaData).getClassID (cid))
 		{
 			ListForEach (excludedClasses, UID, excludedCID)
@@ -207,8 +207,7 @@ DEFINE_CLASS_ABSTRACT_HIDDEN (PresetDragHandler, DragHandler)
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 PresetDragHandler::PresetDragHandler (IView* view)
-: DragHandler (view),
-  presetFilter (nullptr)
+: DragHandler (view)
 {
 	categoryHeaders.objectCleanup (true);
 }
@@ -216,8 +215,7 @@ PresetDragHandler::PresetDragHandler (IView* view)
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 PresetDragHandler::PresetDragHandler (UserControl& control)
-: DragHandler (control),
-  presetFilter (nullptr)
+: DragHandler (control)
 {
 	categoryHeaders.objectCleanup (true);
 }
@@ -319,12 +317,12 @@ IUnknown* PresetDragHandler::prepareDataItem (IUnknown& item, IUnknown* context)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool PresetDragHandler::prepare (const IUnknownList& items, const IObjectFilter* filter, StringRef title)
+bool PresetDragHandler::prepare (const IUnknownList& items, IObjectFilter* filter, StringRef title)
 {
 	if(!title.isEmpty ())
 		spriteBuilder.addHeader (title);
 
-	presetFilter = filter;
+	setPresetFilter (filter);
 	spriteBuilder.setCreateSpriteSuspended (true);
 
 	bool result = SuperClass::prepare (items);
@@ -333,7 +331,6 @@ bool PresetDragHandler::prepare (const IUnknownList& items, const IObjectFilter*
 		if(spriteBuilder.hasGroup (g * 2 + 1))
 			spriteBuilder.addHeader (((Boxed::VariantWithName*)categoryHeaders.at (g))->getName (), 2 * g);
 
-	presetFilter = nullptr;
 	spriteBuilder.setCreateSpriteSuspended (false);
 
 	buildSprite ();

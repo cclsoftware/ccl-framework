@@ -92,6 +92,7 @@ protected:
 	bool findInsertContext (CommandBar::InsertContext& context, CommandBar::Item* newItem, CommandBar::Item* mouseItem, PointRef where) const;
 	int getContainerLayoutDirection (CommandBar::Item& item) const; ///< kHorizontal, kVertical or both for table
 	String getDefaultTitle (CommandBar::ButtonItem& item);
+	void getItemCommand (MutableCString& category, MutableCString& name, const CommandBar::ButtonItem& item) const;
 	bool runCommandSelector (CommandBar::ButtonItem& item);
 	void appendAssignMenu (IContextMenu& contextMenu, CommandBar::Item* item);
 	void appendIconMenu (IContextMenu& contextMenu, CommandBar::Item* item);

@@ -129,7 +129,7 @@ public:
 	LanguageConfig* findConfig (StringID languageId) const;
 	void loadBuiltIns ();
 	int countLanguages () const;
-	CCL::Iterator* newIterator () const;
+	Iterator* newIterator () const;
 	void add (LanguageConfig* config);
 
 protected:

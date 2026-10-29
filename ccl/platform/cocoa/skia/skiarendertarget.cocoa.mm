@@ -104,7 +104,11 @@ using namespace CCL;
 - (void)refresh:(CADisplayLink*)sender
 {
 	if(target)
+	{
+		if(sender.duration > 0)
+			target->setFramePeriod (sender.duration);
 		target->onPresent ();
+	}
 	if(surface)
 		surface->draw ();
 }
@@ -449,7 +453,9 @@ void MetalLayerRenderTarget::onSize ()
 
 MetalWindowRenderTarget::MetalWindowRenderTarget (Window& window)
 : SkiaWindowRenderTarget (window),
-  lastTexture (nil)
+  framePeriod (1. / 60.),
+  lastTexture (nil),
+  lastPresentTime (0.)
 {
 	SkiaEngine* engine = SkiaEngine::getInstance ();
 	context = engine->getGPUContext ();
@@ -636,6 +642,13 @@ void MetalWindowRenderTarget::onRender ()
 void MetalWindowRenderTarget::onPresent ()
 {
 	onRender ();
+	presentFrame ();
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+void MetalWindowRenderTarget::presentFrame ()
+{
 	if(surface)
 	{
 		if(auto directContext = GrAsDirectContext (surface->getCanvas ()->recordingContext ()))
@@ -644,7 +657,17 @@ void MetalWindowRenderTarget::onPresent ()
 		[lastTexture retain];
 		presentDrawable ();
 		surface = nullptr;
+		lastPresentTime = CACurrentMediaTime ();
 	}
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+void MetalWindowRenderTarget::presentIfOverdue ()
+{
+	// the display timer can't present while the main thread is busy, e.g. when drawing many scroll events
+	if(surface && CACurrentMediaTime () - lastPresentTime > framePeriod * 1.5)
+		presentFrame ();
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////

@@ -24,7 +24,7 @@ layout (location = 0) in vec4 positionSS;
 layout (location = 1) in vec4 normalWS;
 layout (location = 2) in vec4 positionWS;
 layout (location = 3) in vec4 cameraPositionWS;
-layout (location = 4) in vec2 texCoord;
+layout (location = 4) in vec2 fragTexCoord;
 
 #if VULKAN_SHADER
 layout (binding = CCL_3D_SHADER_MATERIAL_PARAMETERS) uniform ConstantBuffer
@@ -51,10 +51,10 @@ void main()
 {
 	vec3 lightColor = getLightColor (positionWS, normalWS, cameraPositionWS, cBuffer.shininess, cBuffer.lightMask);
 
-	vec4 textureColor = texture (textureSampler, texCoord);
+	vec4 textureColor = texture (textureSampler, fragTexCoord);
 	vec4 combinedColor = cBuffer.materialColor * (1.f - textureColor.a) + textureColor * textureColor.a;
 	
 	outColor = vec4 (lightColor * combinedColor.rgb, cBuffer.opacity * min (textureColor.a + cBuffer.materialColor.a, 1.0));
 	//outColor = textureColor;
-	//outColor = vec4 (texCoord, 0.0, 1.0);
+	//outColor = vec4 (fragTexCoord, 0.0, 1.0);
 }

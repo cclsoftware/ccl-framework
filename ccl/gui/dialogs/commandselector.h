@@ -106,7 +106,7 @@ protected:
 		kArguments
 	};
 
-	CCL::Vector<ColumnID> enabledColumns;
+	Vector<ColumnID> enabledColumns;
 
 	CommandItem* resolve (ItemIndexRef index) const;
 };

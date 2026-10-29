@@ -39,18 +39,18 @@ ccl_add_plugin_library (modelimporter3d
 set_target_properties (modelimporter3d PROPERTIES USE_FOLDERS ON FOLDER "services/ccl")
 
 list (APPEND modelimporter3d_source_files
-    ${model3d_DIR}/source/assimpiosystem.h
-    ${model3d_DIR}/source/assimpiosystem.cpp
-    ${model3d_DIR}/source/modelimporter.h
-    ${model3d_DIR}/source/modelimporter.cpp
-    ${model3d_DIR}/source/plugmain.cpp
+	${model3d_DIR}/source/assimpiosystem.h
+	${model3d_DIR}/source/assimpiosystem.cpp
+	${model3d_DIR}/source/modelimporter.h
+	${model3d_DIR}/source/modelimporter.cpp
+	${model3d_DIR}/source/plugmain.cpp
 	${model3d_DIR}/source/plugversion.h
 )
 
 list (APPEND modelimporter3d_ccl_sources
-    ${CCL_DIR}/main/cclmodmain.cpp
-    ${CCL_DIR}/main/cclmodmain.h
-    ${CCL_DIR}/public/plugins/classfactory.cpp
+	${CCL_DIR}/main/cclmodmain.cpp
+	${CCL_DIR}/main/cclmodmain.h
+	${CCL_DIR}/public/plugins/classfactory.cpp
 )
 
 source_group (TREE ${model3d_DIR}/source PREFIX "source" FILES ${modelimporter3d_source_files})
@@ -58,13 +58,14 @@ source_group ("source/ccl" FILES ${modelimporter3d_ccl_sources})
 source_group ("cmake" FILES ${CMAKE_CURRENT_LIST_FILE})
 
 list (APPEND modelimporter3d_sources
-    ${modelimporter3d_source_files}
-    ${modelimporter3d_ccl_sources}
-    ${CMAKE_CURRENT_LIST_FILE})
+	${modelimporter3d_source_files}
+	${modelimporter3d_ccl_sources}
+	${CMAKE_CURRENT_LIST_FILE})
 
 ccl_add_resources (modelimporter3d ${modelimporter3d_resources})
 target_sources (modelimporter3d PRIVATE ${modelimporter3d_sources})
-target_link_libraries (modelimporter3d PRIVATE cclapp cclbase ccltext cclsystem cclgui ${assimp_LIBRARIES})
+target_link_libraries (modelimporter3d PRIVATE cclapp cclbase ccltext cclsystem cclgui)
+target_link_libraries (modelimporter3d PRIVATE ${assimp_LIBRARIES})
 
 ccl_export_target (modelimporter3d)
 if (CCL_SYSTEM_INSTALL)
@@ -73,10 +74,10 @@ if (CCL_SYSTEM_INSTALL)
 		LIBRARY DESTINATION "${CCL_PLUGINS_DESTINATION}"
 		COMPONENT services_${VENDOR_NATIVE_COMPONENT_SUFFIX}
 	)
-    if (WIN32)
-        install (FILES $<TARGET_FILE_DIR:modelimporter3d>/modelimporter3d.pdb DESTINATION "${CCL_PLUGINS_DESTINATION}" OPTIONAL COMPONENT services_${VENDOR_NATIVE_COMPONENT_SUFFIX})
-    endif ()
+	if (WIN32)
+		install (FILES $<TARGET_FILE_DIR:modelimporter3d>/modelimporter3d.pdb DESTINATION "${CCL_PLUGINS_DESTINATION}" OPTIONAL COMPONENT services_${VENDOR_NATIVE_COMPONENT_SUFFIX})
+	endif ()
 elseif (VENDOR_PLUGINS_RUNTIME_DIRECTORY)
 	install (TARGETS modelimporter3d LIBRARY DESTINATION ${VENDOR_PLUGINS_RUNTIME_DIRECTORY} FRAMEWORK DESTINATION ${VENDOR_PLUGINS_RUNTIME_DIRECTORY}
-                                     FRAMEWORK DESTINATION ${VENDOR_PLUGINS_RUNTIME_DIRECTORY})
+									FRAMEWORK DESTINATION ${VENDOR_PLUGINS_RUNTIME_DIRECTORY})
 endif ()

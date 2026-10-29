@@ -34,6 +34,7 @@ Non-standard modules in use
 """
 
 import argparse
+import importlib
 import logging
 import os
 import pathlib
@@ -45,12 +46,22 @@ from typing import List
 from junit_xml import TestCase, TestSuite, to_xml_report_string
 
 __copyright__ = "Copyright (c) 2024 CCL Software Licensing GmbH"
-__version__ = "1.0.0"
+__version__ = "1.0.1"
 
-sys.path.append(os.path.abspath(os.path.dirname(os.path.abspath(__file__)) + "../../../../ccl/extras/python"))
+# Ensure 'ccl_extras' is importable. If not installed in the active environment,
+# add the repository extras path to 'sys.path'. Needs to be done before importing any
+# module that depends on 'ccl_extras'.
 
-from tools.gitmodules import GitModulesReader, GitModuleInfo
-from tools.repoinfo import RepositoryInfo
+if importlib.util.find_spec("ccl_extras") is None:
+    extras_path = (
+        pathlib.Path(__file__).resolve().parents[4] / "ccl" / "extras" / "python"
+    )
+    extras_path_str = str(extras_path)
+    if extras_path.is_dir() and extras_path_str not in sys.path:
+        sys.path.insert(0, extras_path_str)
+
+from ccl_extras.repoinfo import RepositoryInfo, RepositoryContext
+from ccl_extras.gitmodules import parse_gitmodules, GitModuleInfo
 
 tsbuilder_file = pathlib.Path(__file__).resolve()
 tsbuilder_path = tsbuilder_file.parent
@@ -74,9 +85,10 @@ class Builder:
         # Attempt to load submodules configuration. Requires existence of
         # repo.json file, i.e. may only work in meta repository context.
         git_modules: List[GitModuleInfo] = list()
-        if self.repo_info.load(tsbuilder_path):
-            git_modules = GitModulesReader.load(path=self.repo_info.get_file_path())
-            logging.info(f"using meta repo .gitmodules config in '{self.repo_info.get_file_path()}'")
+        self.repo_info = RepositoryInfo.load_from(tsbuilder_path)
+        if self.repo_info.get_context() == RepositoryContext.META:
+            git_modules = parse_gitmodules(self.repo_info.get_meta_root_path())
+            logging.info(f"using meta repo .gitmodules config in '{self.repo_info.get_meta_root_path()}'")
 
             # Provide user hint at which submodule placeholder paths can be used in file
             # tsconfig.json.in so user does not have to inspect .gitmodules file manually.

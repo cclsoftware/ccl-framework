@@ -212,7 +212,7 @@ void D2DWindowRenderTarget::handleError (CStringPtr message, HRESULT hr)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void D2DWindowRenderTarget::present (const DXGI_PRESENT_PARAMETERS* params)
+bool D2DWindowRenderTarget::present (const DXGI_PRESENT_PARAMETERS* params)
 {
 	#define SYNC_INTERVAL 0 // SyncInterval=0 offloads CPU usage to DWM. Why???
 
@@ -223,8 +223,13 @@ void D2DWindowRenderTarget::present (const DXGI_PRESENT_PARAMETERS* params)
 					swapChain->Present (SYNC_INTERVAL, 0);
 
 		if(FAILED (hr))
+		{
 			handleError ("Swap chain present failed", hr);
+			return false;
+		}
+		return true;
 	}
+	return false;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -264,7 +269,8 @@ void D2DWindowRenderTarget::flush ()
 			}
 
 			//CCL_PROFILE_START (presentInFlush)
-			present (&params);
+			if(present (&params) == false)
+				present ();
 			//CCL_PROFILE_STOP (presentInFlush)
 
 			scrollRect.setEmpty ();
@@ -327,6 +333,7 @@ void D2DWindowRenderTarget::onRender ()
 	HWND hwnd = (HWND)window.getSystemWindow ();
 	ASSERT (hwnd != NULL)
 
+	bool needFullRender = false;
 	if(!swapChain.isValid ()) // create swap chain on first call
 	{
 		swapChain = engine.createSwapChainForWindow (hwnd);
@@ -335,6 +342,7 @@ void D2DWindowRenderTarget::onRender ()
 
 		if(!makeSwapChainBitmap (getPixelSize ()))
 			return;
+		needFullRender = true;
 	}
 
 	// render 3D content to offscreen bitmaps
@@ -342,6 +350,19 @@ void D2DWindowRenderTarget::onRender ()
 
 	// render 2D content - copy update region before BeginPaint()!
 	Win32::GdiClipRegion renderRegion (hwnd);
+	if(needFullRender)
+	{				
+		// make sure that the entire window is drawn if this is needed 
+		Rect clientRect, regionBounds;
+		window.getClientRect (clientRect);
+		DpiScale::toPixelRect (clientRect, getContentScaleFactor (), DpiScale::kScaleRectFrame);
+		renderRegion.getBounds (regionBounds);
+		if(clientRect != regionBounds)
+		{
+			renderRegion.removeAll ();
+			renderRegion.addRect (clientRect);
+		}
+	}
 
 	PAINTSTRUCT ps;
 	::BeginPaint (hwnd, &ps);
@@ -350,7 +371,7 @@ void D2DWindowRenderTarget::onRender ()
 	render (renderRegion);
 	CCL_PROFILE_STOP (drawWindow)
 
-	::EndPaint (hwnd, &ps);
+	::EndPaint (hwnd, &ps);	
 
 	flush ();
 }

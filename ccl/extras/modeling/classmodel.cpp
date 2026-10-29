@@ -182,6 +182,8 @@ int TypeDescription::fromString (CStringRef string)
 			resultString += " | ";
 
 		resultString += type.getTypeName ();
+		if(type.getType () == ITypeInfo::kContainer)
+			resultString += "[]";
 	}
 
 	setType (numTypes > 1 ? ITypeInfo::kComposite : type.getType ());
@@ -194,6 +196,7 @@ int TypeDescription::fromString (CStringRef string)
 //************************************************************************************************
 
 DEFINE_CLASS_PERSISTENT (Documentation, Object, "Model.Documentation")
+DEFINE_CLASS_NAMESPACE (Documentation, NAMESPACE_CCL)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -348,6 +351,7 @@ MutableCString Element::toCanonicalName (CStringRef className)
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 DEFINE_CLASS_PERSISTENT (Element, Object, "Model.Element")
+DEFINE_CLASS_NAMESPACE (Element, NAMESPACE_CCL)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -448,6 +452,7 @@ bool Element::save (const Storage& storage) const
 //************************************************************************************************
 
 DEFINE_CLASS_HIDDEN (MainElement, Element)
+DEFINE_CLASS_NAMESPACE (MainElement, NAMESPACE_CCL)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1245,8 +1250,11 @@ bool Enumerator::save (const Storage& storage) const
 	if(!SuperClass::save (storage))
 		return false;
 
-	Attributes& a = storage.getAttributes ();
-	a.setAttribute ("value", value, Attributes::kShare);
+	if(value.isValid ())
+	{
+		Attributes& a = storage.getAttributes ();
+		a.setAttribute ("value", value, Attributes::kShare);
+	}
 	return true;
 }
 

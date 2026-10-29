@@ -42,6 +42,7 @@ DECLARE_JNI_CLASS (AndroidView, "android/view/View")
 	DECLARE_JNI_METHOD (void, invalidate)
 	DECLARE_JNI_METHOD (void, setVisibility, int)
 	DECLARE_JNI_METHOD (int, getVisibility)
+	DECLARE_JNI_METHOD (jobject, getWindowToken)
 END_DECLARE_JNI_CLASS (AndroidView)
 
 //************************************************************************************************
@@ -50,11 +51,20 @@ END_DECLARE_JNI_CLASS (AndroidView)
 
 DECLARE_JNI_CLASS (ViewGroup, "android/view/ViewGroup")
 	DECLARE_JNI_METHOD (void, addView, jobject)
-    DECLARE_JNI_METHOD (void, addViewAt, jobject, int)
+	DECLARE_JNI_METHOD (void, addViewAt, jobject, int)
 	DECLARE_JNI_METHOD (void, removeView, jobject)
-    DECLARE_JNI_METHOD (int, indexOfChild, jobject)
+	DECLARE_JNI_METHOD (int, indexOfChild, jobject)
 	DECLARE_JNI_METHOD (void, setClipChildren, bool)
 END_DECLARE_JNI_CLASS (ViewGroup)
+
+//************************************************************************************************
+// android.view.inputmethod.InputMethodManager
+//************************************************************************************************
+
+DECLARE_JNI_CLASS (InputMethodManager, "android/view/inputmethod/InputMethodManager")
+	DECLARE_JNI_METHOD (bool, showSoftInput, jobject, jint)
+	DECLARE_JNI_METHOD (bool, hideSoftInputFromWindow, jobject, jint)
+END_DECLARE_JNI_CLASS (InputMethodManager)
 
 } // namespace Android
 } // namespace CCL

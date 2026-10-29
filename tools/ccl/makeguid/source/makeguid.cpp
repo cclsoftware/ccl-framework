@@ -22,6 +22,8 @@
 
 #include "ccl/main/cclargs.h"
 
+#include "ccl/extras/tools/argumentparser.h"
+
 #include "ccl/public/base/uid.h"
 #include "ccl/public/base/debug.h"
 #include "ccl/public/text/cstring.h"
@@ -38,6 +40,12 @@ using namespace CCL;
 
 static CStringPtr uidFormat = "UID (0x%08lx, 0x%04x, 0x%04x, 0x%02x, 0x%02x, 0x%02x, 0x%02x, 0x%02x, 0x%02x, 0x%02x, 0x%02x)\n";
 
+static CStringPtr kFormatArgument = "format";
+static CStringPtr kInlineOption = "-inline";		///< C++ UID initializer
+static CStringPtr kBracesOption = "-braces";		///< GUID string with braces and separators
+static CStringPtr kNoBracesOption = "-nobraces";	///< GUID string with separators only
+static CStringPtr kCompactOption = "-compact";		///< GUID string without braces or separators
+
 //////////////////////////////////////////////////////////////////////////////////////////////////
 // ccl_main
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -48,15 +56,35 @@ int ccl_main (ArgsRef args)
 	console.writeLine (APP_FULL_NAME ", " APP_COPYRIGHT);
 	console.writeLine ("");
 	
+	ArgumentParser argParser;
+	argParser.add (kFormatArgument, {kInlineOption, kBracesOption, kNoBracesOption, kCompactOption},
+		"output format", Argument::kOptional | Argument::kShiftable, kInlineOption);
+
+	if(argParser.parse (args) != kResultOk)
+	{
+		console.writeLine ("Usage:");
+		argParser.printUsage (console, APP_ID);
+		return -1;
+	}
+
 	System::GetAlertService ().setTitle (APP_NAME);
 
 	UID uid;
 	uid.generate ();
-	
+
+	String format = argParser.get (kFormatArgument);
+
 	MutableCString string;
-	string.appendFormat (uidFormat, uid.data1, uid.data2, uid.data3, 
-		uid.data4[0], uid.data4[1], uid.data4[2], uid.data4[3], 
-		uid.data4[4], uid.data4[5], uid.data4[6], uid.data4[7]);
+	if(format == kBracesOption)
+		uid.toCString (string, UID::kStandard);
+	else if(format == kNoBracesOption)
+		uid.toCString (string, UID::kStandardNoBraces);
+	else if(format == kCompactOption)
+		uid.toCString (string, UID::kCompact);
+	else
+		string.appendFormat (uidFormat, uid.data1, uid.data2, uid.data3,
+			uid.data4[0], uid.data4[1], uid.data4[2], uid.data4[3],
+			uid.data4[4], uid.data4[5], uid.data4[6], uid.data4[7]);
 
 	console.writeLine (string);
 

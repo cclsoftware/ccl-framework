@@ -60,7 +60,7 @@ void PersistentStore::forceLinkage ()
 
 DEFINE_CLASS (PersistentStore, Object)
 DEFINE_CLASS_NAMESPACE (PersistentStore, NAMESPACE_CCL)
-DEFINE_CLASS_CATEGORY (PersistentStore, "System")
+DEFINE_CLASS_CATEGORY (PersistentStore, PLUG_CATEGORY_SYSTEM_)
 DEFINE_CLASS_UID (PersistentStore, 0x0FEE2CD6, 0xB229, 0x47A5, 0xA5, 0x45, 0xBB, 0x07, 0xC8, 0xA6, 0x5A, 0x60)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -144,7 +144,7 @@ tresult CCL_API PersistentStore::registerClass (const ITypeInfo* typeInfo, Table
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-tresult CCL_API PersistentStore::setMemberFlags (const ITypeInfo* typeInfo, const char* memberName, int flags)
+tresult CCL_API PersistentStore::setMemberFlags (const ITypeInfo* typeInfo, CStringPtr memberName, int flags)
 {
 	if(!typeInfo)
 		return kResultInvalidArgument;
@@ -276,7 +276,7 @@ void PersistentStore::mapClasses ()
 			while(resultSet->nextRow ())
 			{
 				PClassID classID = resultSet->getIntValue (0);
-				const char* className = resultSet->getStringValue (1);
+				CStringPtr className = resultSet->getStringValue (1);
 				ClassInfo* classInfo = getClassInfo (className);
 				if(classInfo)
 					classInfo->setClassID (classID);
@@ -381,7 +381,7 @@ IConnection* PersistentStore::getConnection ()
 	if(!connection)
 	{
 		if(!databaseEngine)
-			databaseEngine = ccl_new<IDatabaseEngine> (CCL::ClassID::SQLite);
+			databaseEngine = ccl_new<IDatabaseEngine> (ClassID::SQLite);
 
 		if(databaseEngine)
 		{
@@ -474,7 +474,7 @@ IUnknownIterator* CCL_API PersistentStore::query (const ITypeInfo& typeInfo, IEx
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-tresult CCL_API PersistentStore::collectValues (IMutableArray& values, const ITypeInfo& typeInfo, const char* memberName, IExpression* condition)
+tresult CCL_API PersistentStore::collectValues (IMutableArray& values, const ITypeInfo& typeInfo, CStringPtr memberName, IExpression* condition)
 {
 	IConnection* connection = getConnection ();
 	ClassInfo* classInfo = getClassInfo (typeInfo);

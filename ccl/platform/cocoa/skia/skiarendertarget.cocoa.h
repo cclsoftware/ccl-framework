@@ -111,7 +111,9 @@ class MetalWindowRenderTarget: public MetalRenderTarget,
 public:
 	MetalWindowRenderTarget (Window& window);
 	~MetalWindowRenderTarget ();
-	
+
+	PROPERTY_VARIABLE (double, framePeriod, FramePeriod)
+
 	void reset ();
     void onPresent ();
     
@@ -133,9 +135,12 @@ protected:
 	id<MTLTexture> lastTexture;
 	MutableRegion updateRegion;
 	MutableRegion invalidateRegion;
+	double lastPresentTime;
 
 	virtual void initialize ();
     bool isTranslucent () const;
+	void presentFrame ();
+	void presentIfOverdue ();
 };
 
 //************************************************************************************************

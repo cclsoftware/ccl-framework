@@ -51,6 +51,7 @@ ccl_list_append_once (cclgui_android_sources
 	${CCL_DIR}/platform/android/gui/graphicslayer.android.cpp
 	${CCL_DIR}/platform/android/gui/graphicslayer.android.h
 	${CCL_DIR}/platform/android/gui/gui.android.cpp
+	${CCL_DIR}/platform/android/gui/inputmethod.android.cpp
 	${CCL_DIR}/platform/android/gui/keyevent.android.cpp
 	${CCL_DIR}/platform/android/gui/keyevent.android.h
 	${CCL_DIR}/platform/android/gui/menu.android.cpp
@@ -87,6 +88,7 @@ ccl_list_append_once (cclgui_android_java_sources
 
 	${CCL_DIR}/platform/android/gui/java/Alert.java
 	${CCL_DIR}/platform/android/gui/java/FrameworkActivity.java
+	${CCL_DIR}/platform/android/gui/java/InputMethod.java
 	${CCL_DIR}/platform/android/gui/java/FrameworkDialog.java
 	${CCL_DIR}/platform/android/gui/java/FrameworkView.java
 	${CCL_DIR}/platform/android/gui/java/GraphicsLayerView.java

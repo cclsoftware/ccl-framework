@@ -1,6 +1,6 @@
 """Classmodel XML definitions."""
 
-__copyright__ = "Copyright (c) 2023 CCL Software Licensing GmbH"
+__copyright__ = "Copyright (c) 2026 CCL Software Licensing GmbH"
 
 
 class XML:
@@ -63,3 +63,12 @@ class XML:
     VALUE_CHILD_GROUP = "Class:ChildGroup"
     VALUE_DOC_GROUP = "Class:DocGroup"
     VALUE_LINKS = "links"
+    VALUE_TYPE_ENUM = "enum"
+    VALUE_TYPE_OBJECT = "object"
+    VALUE_TYPE_BOOL = "bool"
+    VALUE_TYPE_FLOAT = "float"
+    VALUE_TYPE_DOUBLE = "double"
+    VALUE_TYPE_INT = "int"
+    VALUE_TYPE_VARIANT = "variant"
+    VALUE_TYPE_VOID = "void"
+    VALUE_TYPE_CONTAINER = "container"

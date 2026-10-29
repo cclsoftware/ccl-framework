@@ -29,30 +29,30 @@ using namespace CCL;
 // TriVectorPadRenderer
 //************************************************************************************************
 
-BEGIN_VISUALSTYLE_CLASS (TriVectorPad, VisualStyle, "TriVectorPadStyle")
-	ADD_VISUALSTYLE_IMAGE  ("peakpadding.left")		///< left padding for triangle peak
-	ADD_VISUALSTYLE_IMAGE  ("background")			///< background image
-	ADD_VISUALSTYLE_IMAGE  ("triangle")				///< triangle image
-	ADD_VISUALSTYLE_IMAGE  ("handle")				///< handle image
-	ADD_VISUALSTYLE_COLOR  ("backcolor")			///< backcolor when no image is provided
-	ADD_VISUALSTYLE_COLOR  ("triangleColor")		///< color of the triangle when no image is provided 
-	ADD_VISUALSTYLE_COLOR  ("handleColor")			///< color for the handle when no image is provided
-	ADD_VISUALSTYLE_COLOR  ("snapPointColor")		///< color for the snap point highlights
-	ADD_VISUALSTYLE_METRIC ("padding.left")			///< left padding for triangle base
-	ADD_VISUALSTYLE_METRIC ("padding.top")			///< top padding triangle peak (or base if upside down) 
-	ADD_VISUALSTYLE_METRIC ("padding.right")		///< right padding for triangle base
-	ADD_VISUALSTYLE_METRIC ("padding.bottom")		///< bottom padding triangle base (or peak if upside down)
-	ADD_VISUALSTYLE_METRIC ("padding")				///< padding fallback
-	ADD_VISUALSTYLE_METRIC ("handlesize")			///< size where handle can be clicked (in pixels) when handle is drawn as a circle (no "handle" image)
-	ADD_VISUALSTYLE_METRIC ("snapsize")				///< size of the snappoint at corner (or at the edge-center when "invert" option is set) 
-	ADD_VISUALSTYLE_METRIC ("handlethickness")		///< width of pen in pixels when handle is drawn as a circle (no "handle" image)
-END_VISUALSTYLE_CLASS (TriVectorPad)
-
+DEFINE_TYPELIB_ENTRY_WITH_PARENT (TriVectorPad, VisualStyle, "TriVectorPadStyle", VISUALSTYLES_TYPELIB)
+BEGIN_TYPELIB_MEMBERS (TriVectorPad)
+	ADD_TYPELIB_MEMBER_IMAGE ("peakpadding.left")	///< left padding for triangle peak
+	ADD_TYPELIB_MEMBER_IMAGE ("background")			///< background image
+	ADD_TYPELIB_MEMBER_IMAGE ("triangle")			///< triangle image
+	ADD_TYPELIB_MEMBER_IMAGE ("handle")				///< handle image
+	ADD_TYPELIB_MEMBER_COLOR ("backcolor")			///< backcolor when no image is provided
+	ADD_TYPELIB_MEMBER_COLOR ("triangleColor")		///< color of the triangle when no image is provided 
+	ADD_TYPELIB_MEMBER_COLOR ("handleColor")		///< color for the handle when no image is provided
+	ADD_TYPELIB_MEMBER_COLOR ("snapPointColor")		///< color for the snap point highlights
+	ADD_TYPELIB_MEMBER_METRIC ("padding.left")		///< left padding for triangle base
+	ADD_TYPELIB_MEMBER_METRIC ("padding.top")		///< top padding triangle peak (or base if upside down) 
+	ADD_TYPELIB_MEMBER_METRIC ("padding.right")		///< right padding for triangle base
+	ADD_TYPELIB_MEMBER_METRIC ("padding.bottom")	///< bottom padding triangle base (or peak if upside down)
+	ADD_TYPELIB_MEMBER_METRIC ("padding")			///< padding fallback
+	ADD_TYPELIB_MEMBER_METRIC ("handlesize")		///< size where handle can be clicked (in pixels) when handle is drawn as a circle (no "handle" image)
+	ADD_TYPELIB_MEMBER_METRIC ("snapsize")			///< size of the snappoint at corner (or at the edge-center when "invert" option is set) 
+	ADD_TYPELIB_MEMBER_METRIC ("handlethickness")	///< width of pen in pixels when handle is drawn as a circle (no "handle" image)
+END_TYPELIB_MEMBERS (TriVectorPad)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-TriVectorPadRenderer::TriVectorPadRenderer (VisualStyle* visualStyle)
-: ThemeRenderer (visualStyle),
+TriVectorPadRenderer::TriVectorPadRenderer (VisualStyle* visualStyle, View* owner)
+: ThemeRenderer (visualStyle, owner),
   handleSize (6),
   snapPointSize (6),
   handleThickness (2)
@@ -88,29 +88,29 @@ TriVectorPadRenderer::TriVectorPadRenderer (VisualStyle* visualStyle)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool TriVectorPadRenderer::getPartRect (const View* view, int partCode, Rect& rect)
+bool TriVectorPadRenderer::getPartRect (Rect& rect, int partCode)
 {
 	switch(partCode)
 	{
-	case TriVectorPad::kPartHandle:
-		return getHandleRect (view, rect);
-	case TriVectorPad::kPartTriangle:
-		return getTriangleRect (view, rect);
-	case TriVectorPad::kPartHoverTriangle:
-		return getHoverTriangleRect (view, rect);
+	case TriVectorPad::kPartHandle :
+		return getHandleRect (rect);
+	case TriVectorPad::kPartTriangle :
+		return getTriangleRect (rect);
+	case TriVectorPad::kPartHoverTriangle :
+		return getHoverTriangleRect (rect);
 	default:
-		return getSnapPointRect (view, partCode, rect);
+		return getSnapPointRect (partCode, rect);
 	}
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool TriVectorPadRenderer::getHandleRect (const View* view, Rect& rect) const
+bool TriVectorPadRenderer::getHandleRect (Rect& rect) const
 {
-	if(view->isEnabled () == false)
+	if(owner->isEnabled () == false)
 		return false;
 	
-	const TriVectorPad* pad = static_cast<const TriVectorPad*> (view);
+	const TriVectorPad* pad = static_cast<const TriVectorPad*> (owner);
 	
 	Point center (pad->getHandlePosition ());
 	
@@ -133,10 +133,10 @@ bool TriVectorPadRenderer::getHandleRect (const View* view, Rect& rect) const
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool TriVectorPadRenderer::getTriangleRect (const View* view, Rect& rect) const
+bool TriVectorPadRenderer::getTriangleRect (Rect& rect) const
 {
 	Rect triangleRect;
-	view->getClientRect (triangleRect);
+	owner->getClientRect (triangleRect);
 
 	triangleRect.left += padding.left;
 	triangleRect.top += padding.top;
@@ -149,10 +149,10 @@ bool TriVectorPadRenderer::getTriangleRect (const View* view, Rect& rect) const
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool TriVectorPadRenderer::getHoverTriangleRect (const View* view, Rect& rect) const
+bool TriVectorPadRenderer::getHoverTriangleRect (Rect& rect) const
 {
 	Rect triangleRect;
-	view->getClientRect (triangleRect);
+	owner->getClientRect (triangleRect);
 	
 	triangleRect.left += hoverPadding.left;
 	triangleRect.top += hoverPadding.top;
@@ -165,9 +165,9 @@ bool TriVectorPadRenderer::getHoverTriangleRect (const View* view, Rect& rect) c
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool TriVectorPadRenderer::getSnapPointRect (const View* view, int partCode, Rect& rect) const
+bool TriVectorPadRenderer::getSnapPointRect (int partCode, Rect& rect) const
 {
-	const TriVectorPad* pad = static_cast<const TriVectorPad*> (view);
+	const TriVectorPad* pad = static_cast<const TriVectorPad*> (owner);
 
 	Point center (pad->getSnapPoint (partCode));
 	
@@ -181,16 +181,16 @@ bool TriVectorPadRenderer::getSnapPointRect (const View* view, int partCode, Rec
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void TriVectorPadRenderer::draw (View* view, const UpdateRgn& updateRgn)
+void TriVectorPadRenderer::draw (const UpdateRgn& updateRgn)
 {
 	Rect triangleRect;
-	getTriangleRect (view, triangleRect);
+	getTriangleRect (triangleRect);
 
-	GraphicsPort port (view);
+	GraphicsPort port (owner);
 	
 	Rect dst;
-	view->getClientRect (dst);
-	
+	owner->getClientRect (dst);
+
 	if(background)
 	{
 		Rect src (0, 0, background->getWidth (), background->getHeight ());
@@ -209,16 +209,16 @@ void TriVectorPadRenderer::draw (View* view, const UpdateRgn& updateRgn)
 	}
 	else
 	{
-		drawTriangleShape (view);
+		drawTriangleShape ();
 	}
 	
 	// draw handle
 	Rect handleRect;
-	if(getHandleRect (view, handleRect))
+	if(getHandleRect (handleRect))
 	{
 		if(handleImage)
 		{
-			StringID frame = view->isMouseDown () ? ThemeNames::kPressed : ThemeNames::kNormal;
+			StringID frame = owner->isMouseDown () ? ThemeNames::kPressed : ThemeNames::kNormal;
 			handleImage->setCurrentFrame (handleImage->getFrameIndex (frame));
 
 			Rect src (0, 0, handleImage->getWidth (), handleImage->getHeight ());
@@ -228,13 +228,13 @@ void TriVectorPadRenderer::draw (View* view, const UpdateRgn& updateRgn)
 			port.drawEllipse (handleRect, Pen (handleColor, handleThickness));
 	}
 	
-	TriVectorPad* pad = static_cast<TriVectorPad*> (view);
+	TriVectorPad* pad = static_cast<TriVectorPad*> (owner);
 	int snapPointCode = pad->getHighlightSnapPointCode ();
 	
 	if(snapPointCode != -1)
 	{
 		Rect rect;
-		getSnapPointRect (view, snapPointCode, rect);
+		getSnapPointRect (snapPointCode, rect);
 		
 		if(snapPointImage)
 		{
@@ -255,25 +255,25 @@ int TriVectorPadRenderer::getFrameForSnapPointCode (int code) const
 {
 	switch(code)
 	{
-	case TriVectorPad::kPartSnapPointA: return 0;
-	case TriVectorPad::kPartSnapPointB: return 1;
-	case TriVectorPad::kPartSnapPointC: return 2;
-	case TriVectorPad::kPartSnapPointAB: return 3;
-	case TriVectorPad::kPartSnapPointBC: return 4;
-	case TriVectorPad::kPartSnapPointCA: return 5;
-	default: return 0;
+	case TriVectorPad::kPartSnapPointA  : return 0;
+	case TriVectorPad::kPartSnapPointB  : return 1;
+	case TriVectorPad::kPartSnapPointC  : return 2;
+	case TriVectorPad::kPartSnapPointAB : return 3;
+	case TriVectorPad::kPartSnapPointBC : return 4;
+	case TriVectorPad::kPartSnapPointCA : return 5;
+	default : return 0;
 	}
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-int TriVectorPadRenderer::hitTest (View* view, const Point& loc, Point* offset)
+int TriVectorPadRenderer::hitTest (PointRef where, Point* offset)
 {	
 	// check part codes: from handle to triangleRect
 	Rect rect;
 	for(int i = 0; i < TriVectorPad::kNumPartCodes; i++)
-		if(getPartRect (view, i, rect))
-			if(rect.pointInside (loc))
+		if(getPartRect (rect, i))
+			if(rect.pointInside (where))
 				return i; 
 				
 	return -1;
@@ -281,20 +281,20 @@ int TriVectorPadRenderer::hitTest (View* view, const Point& loc, Point* offset)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void TriVectorPadRenderer::drawTriangleShape (View* view)
+void TriVectorPadRenderer::drawTriangleShape ()
 {
-	GraphicsPort port (view);
+	GraphicsPort port (owner);
 	
-	TriVectorPad* pad = static_cast<TriVectorPad*> (view);
+	TriVectorPad* pad = static_cast<TriVectorPad*> (owner);
 		
 	AutoPtr<IGraphicsPath> path = NEW GraphicsPath;
 	path->startFigure (pad->getTrianglePoint (TriVectorPad::kCornerA));
 	path->lineTo (pad->getTrianglePoint (TriVectorPad::kCornerB));
 	path->lineTo (pad->getTrianglePoint (TriVectorPad::kCornerC));
 	path->closeFigure ();
-	
+
 	Rect dst;
-	view->getClientRect (dst);
+	owner->getClientRect (dst);
 	port.fillRect (dst, SolidBrush (Colors::kTransparentBlack));
 	port.fillPath (path, SolidBrush (triangleColor));
 }

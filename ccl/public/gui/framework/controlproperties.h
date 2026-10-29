@@ -28,6 +28,8 @@ namespace CCL {
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 DEFINE_STRINGID (kImageViewBackground, "background") ///< ImageView background [IImage]
+DEFINE_STRINGID (kImageViewDataTarget, "dataTarget") ///< ImageView drop target [IDataTarget]
+DEFINE_STRINGID (kImageViewFrame, "frame") ///< ImageView frame of the background image [int]
 
 DEFINE_STRINGID (kVariantViewTransitionType, "transitionType") ///< VariantView transition type [TransitionType]
 

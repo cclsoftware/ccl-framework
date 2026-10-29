@@ -34,7 +34,7 @@ using namespace CCL;
 #if DEBUG_LOG
 namespace {
 
-void printView (const char* text1, View* view, const char* text2 = 0)
+void printView (CStringPtr text1, View* view, CStringPtr text2 = nullptr)
 {
 	if(text1)
 		CCL_PRINT (text1);

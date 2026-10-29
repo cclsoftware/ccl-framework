@@ -107,13 +107,16 @@ IBlockContentRoot* CCL_API BlockContentResource::createContent ()
 // BlockContentElement
 //************************************************************************************************
 
-BEGIN_SKIN_ELEMENT_WITH_MEMBERS (BlockContentElement, ResourceObjectElement, TAG_BLOCKCONTENT, DOC_GROUP_RESOURCES, 0)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_TYPE, TYPE_STRING) ///< markup type, defaults to CCL Markup when empty
-END_SKIN_ELEMENT_WITH_MEMBERS (BlockContentElement)
+DEFINE_CLASS_HIDDEN (BlockContentElement, ResourceObjectElement)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (BlockContentElement, ResourceObjectElement, TAG_BLOCKCONTENT, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (BlockContentElement, DOC_GROUP_RESOURCES)
+BEGIN_TYPELIB_MEMBERS (BlockContentElement)
+	ADD_TYPELIB_MEMBER_STRING (ATTR_TYPE) ///< markup type, defaults to CCL Markup when empty
+END_TYPELIB_MEMBERS (BlockContentElement)
 
-BEGIN_SKIN_ELEMENT_ATTRIBUTES (BlockContentElement)
-	ADD_SKIN_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_RESOURCES)
-END_SKIN_ELEMENT_ATTRIBUTES (BlockContentElement)
+BEGIN_TYPELIB_ATTRIBUTES (BlockContentElement)
+	ADD_TYPELIB_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_RESOURCES)
+END_TYPELIB_ATTRIBUTES (BlockContentElement)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -125,7 +128,7 @@ bool BlockContentElement::setAttributes (const SkinAttributes& a)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void BlockContentElement::appendCharacterData (const uchar* data, int length)
+void BlockContentElement::appendCharacterData (UStringPtr data, int length)
 {
 	markupData.append (data, length);
 }
@@ -142,9 +145,13 @@ bool BlockContentElement::loadObject (SkinModel& model)
 // BlockViewElement
 //************************************************************************************************
 
-BEGIN_SKIN_ELEMENT_WITH_MEMBERS (BlockViewElement, ViewElement, TAG_BLOCKVIEW, DOC_GROUP_CONTROLS, BlockView)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_VSCROLLNAME, TYPE_STRING)	   ///< name of the vertical scroll parameter
-END_SKIN_ELEMENT_WITH_MEMBERS (BlockViewElement)
+DEFINE_CLASS_HIDDEN (BlockViewElement, ViewElement)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (BlockViewElement, ViewElement, TAG_BLOCKVIEW, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (BlockViewElement, DOC_GROUP_CONTROLS)
+DEFINE_TYPELIB_RELATED_CLASS (BlockViewElement, BlockView)
+BEGIN_TYPELIB_MEMBERS (BlockViewElement)
+	ADD_TYPELIB_MEMBER_STRING (ATTR_VSCROLLNAME)	   ///< name of the vertical scroll parameter
+END_TYPELIB_MEMBERS (BlockViewElement)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 

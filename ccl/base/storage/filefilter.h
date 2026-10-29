@@ -43,7 +43,7 @@ class StringDictionary;
 // FileFilter
 //************************************************************************************************
 
-class FileFilter: public CCL::StorableObject,
+class FileFilter: public StorableObject,
 				  public IUrlFilter
 {
 public:

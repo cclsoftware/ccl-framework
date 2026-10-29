@@ -48,7 +48,7 @@ public:
 	void unregisterHandler ();
 
 	// WebClientProtocol
-	CCL::StringID CCL_API getProtocol () const override;
+	StringID CCL_API getProtocol () const override;
 
 	CLASS_INTERFACE (IWebClientProtocol, Object)
 
@@ -71,7 +71,7 @@ public:
 
 	// IWebClient
 	void CCL_API setCredentials (IWebCredentials* credentials) override;
-	tresult CCL_API connect (StringRef hostname) override;
+	tresult CCL_API connect (StringRef hostname, IProgressNotify* progress = nullptr) override;
 	tresult CCL_API disconnect () override;
 	tbool CCL_API isConnected () override;
 	int CCL_API getLastStatus () override;

@@ -109,7 +109,7 @@ protected:
 	\ingroup core_format */
 //************************************************************************************************
 
-class IntFormatter: public Core::Formatter
+class IntFormatter: public Formatter
 {
 public:
 	IntFormatter (CStringPtr name = "int", CStringPtr label = nullptr);
@@ -130,12 +130,22 @@ protected:
 	\ingroup core_format */
 //************************************************************************************************
 
-class FloatFormatter: public Core::Formatter
+class FloatFormatter: public Formatter
 {
 public:
-	FloatFormatter (CStringPtr name = "float", CStringPtr label = nullptr);
+	static constexpr int kDefaultDigits = 2;
+
+	FloatFormatter (CStringPtr name = "float", 
+					int numDecimalDigits = kDefaultDigits,
+					CStringPtr label = nullptr);
 
 	static const Formatter& instance ();
+
+	static constexpr int kFormatSize = 16;
+	typedef char FormatString[kFormatSize];
+	static void makeFormatString (FormatString formatString,
+								  int numDecimalDigits, 
+								  CStringPtr label = nullptr);
 
 	/** Helper to scan float value with different decimal marks. */
 	static bool getFloatValue (float& value, CStringPtr string); 
@@ -145,7 +155,7 @@ public:
 	bool scan (Data& d) const override;
 
 protected:
-	CStringPtr label;
+	FormatString formatString = {};
 };
 
 //************************************************************************************************
@@ -154,7 +164,7 @@ protected:
 	\ingroup core_format */
 //************************************************************************************************
 
-class PercentFormatter: public Core::Formatter
+class PercentFormatter: public Formatter
 {
 public:
 	PercentFormatter (CStringPtr name = "percent", int numDecimalDigits = 0);
@@ -166,7 +176,9 @@ public:
 	bool scan (Data& d) const override;
 
 protected:
-	char formatString[16];
+	using FormatString = FloatFormatter::FormatString;
+
+	FormatString formatString = {};
 };
 
 //************************************************************************************************
@@ -175,7 +187,7 @@ protected:
 	\ingroup core_format */
 //************************************************************************************************
 
-class PercentRangeFormatter: public Core::Formatter
+class PercentRangeFormatter: public Formatter
 {
 public:
 	PercentRangeFormatter (CStringPtr name = "percentrange");
@@ -193,7 +205,7 @@ public:
 	\ingroup core_format */
 //************************************************************************************************
 
-class LeadingZeroFormatter: public Core::Formatter
+class LeadingZeroFormatter: public Formatter
 {
 public:
 	LeadingZeroFormatter (CStringPtr name="leadingzero");

@@ -511,7 +511,7 @@ void PlugIn::getAlternativeCIDs (Vector<UID>& altIDs, UIDRef classID)
 	if(const IClassDescription* description = System::GetPlugInManager ().getClassDescription (classID))
 	{
 		Variant classAttr;
-		if(description->getClassAttribute (classAttr, CCL::Meta::kAlternativeClassID))
+		if(description->getClassAttribute (classAttr, Meta::kAlternativeClassID))
 			compatibilityString = classAttr.asString ();
 	}
 	
@@ -588,6 +588,19 @@ PlugInClass::PlugInClass (const IClassDescription& description)
 {
 	assign (description);
 }
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+PlugInClass::PlugInClass (const PlugInClass& other)
+: Object (other),
+  classID (other.classID),
+  name (other.name),
+  category (other.category),
+  subCategory (other.subCategory),
+  title (other.title),
+  menuPriority (other.menuPriority),
+  additionalAttributes (other.additionalAttributes ? NEW Attributes (*other.additionalAttributes) : nullptr)
+{}
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1506,7 +1519,7 @@ bool PlugInSnapshots::makeSnapshotFiles (IUrl& packageFolder, String& defaultFil
 		Rect srcRect (0, 0, srcImage->getWidth (), srcImage->getHeight ());
 		Rect dstRect (0, 0, dstSize.x, dstSize.y);
 		AutoPtr<IGraphics> g = GraphicsFactory::createBitmapGraphics (dstImage);
-		ImageMode mode (1.f, ImageMode::kInterpolationHighQuality);
+		ImageMode mode (1.f, kImageInterpolationHighQuality);
 		g->drawImage (srcImage, srcRect, dstRect, &mode);
 		return dstImage;
 	};
@@ -1682,7 +1695,7 @@ DEFINE_CLASS_PERSISTENT  (PluginPresentation::PlugInfo, Object, "PlugInInfo")
 // PluginPresentation::PlugSortFolderList
 //************************************************************************************************
 
-class PluginPresentation::PlugSortFolderList: public CCL::SortFolderList
+class PluginPresentation::PlugSortFolderList: public SortFolderList
 {
 public:
 	DECLARE_CLASS (PlugSortFolderList, SortFolderList)

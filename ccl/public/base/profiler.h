@@ -74,16 +74,16 @@ public:
 
 	struct Primitive
 	{
-		const char* name;
+		CStringPtr name;
 
-		Primitive (const char* name = nullptr)
+		Primitive (CStringPtr name = nullptr)
 		: name (name)
 		{}
 
 		~Primitive ()
 		{}
 
-		const char* getName () const { return name ? name : ""; }
+		CStringPtr getName () const { return name ? name : ""; }
 	};
 
 	//********************************************************************************************
@@ -98,7 +98,7 @@ public:
 		int iterations;
 		bool verbose;
 
-		TimeAccumulator (const char* name = nullptr, bool verbose = true)
+		TimeAccumulator (CStringPtr name = nullptr, bool verbose = true)
 		: Primitive (name),
 		  elapsed (0),
 		  start (0),

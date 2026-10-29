@@ -67,7 +67,7 @@ public:
 	~SqlStatement ();
 
 	bool create (SqlConnection& c, StringRef sql);
-	bool create (SqlConnection& c, const char* sql);
+	bool create (SqlConnection& c, CStringPtr sql);
 
 	bool bind (Variant variables[], int count);
 	bool bind (VariantRef var1);

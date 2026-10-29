@@ -28,11 +28,13 @@
 
 namespace CCL {
 
+class View;
 class MouseCursor;
 class ThemePainter;
 class ThemeRenderer;
 class NativeGraphicsDevice;
-class VisualStyleClass;
+
+namespace VisualStyleClass { class Library; }
 
 //************************************************************************************************
 // ThemeStatics
@@ -84,7 +86,7 @@ public:
 	VisualStyle* lookupStyle (StringID styleName) const;
 
 	VisualStyle* getStandardStyle (int which); ///< delegated to painter
-	virtual ThemeRenderer* createRenderer (int which, VisualStyle* visualStyle) const; ///< create renderer via painter
+	ThemeRenderer* createRenderer (int which, VisualStyle* visualStyle, View* owner) const; ///< create renderer via painter
 
 	virtual void getVariables (IAttributeList& list) const;
 
@@ -112,7 +114,7 @@ public:
 protected:
 	friend class ThemeStatics;
 	friend class ThemePainter;
-	friend class VisualStyleClass;
+	friend class VisualStyleClass::Library;
 
 	ThemePainter* painter; ///< painting methods
 	ObjectList styles; ///< list of named styles
@@ -221,8 +223,6 @@ public:
 	static CStringPtr kStandardPrefix;
 	static const int kStandardPrefixLength;
 
-	ThemeRenderer* createRenderer (int which, VisualStyle* visualStyle) const;
-
 	// IThemePainter
 	tresult CCL_API drawElement (IGraphics& graphics, RectRef rect, ThemeElementID id, ThemeElementState state) override;
 	tresult CCL_API drawBestMatchingFrame (IGraphics& graphics, IImage* image, RectRef rect, const ImageMode* mode = nullptr, ColorRef contextColor = 0, tbool scaleAlways = false) const override;
@@ -236,9 +236,7 @@ public:
 
 protected:
 	friend class Theme;
-	friend class VisualStyleClass;
-
-	Theme* theme;
+	friend class VisualStyleClass::Library;
 
 	static CStringPtr themeImageNames[ThemeElements::kNumThemeElements];
 	static CStringPtr uniqueImageNames[];
@@ -252,6 +250,10 @@ protected:
 	static CStringPtr stateNamesOn[ThemeElements::kNumElementStates];
 
 	static void setStandardElementImage (ThemeElementID id, Theme* theme);
+
+	Theme* theme;
+
+	ThemeRenderer* createRenderer (int which, VisualStyle* visualStyle, View* owner) const;
 };
 
 //************************************************************************************************

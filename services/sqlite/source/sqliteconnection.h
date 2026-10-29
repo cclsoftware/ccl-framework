@@ -43,16 +43,16 @@ public:
 
 	// IConnection
 	IStatement* CCL_API createStatement (StringRef sql) override;
-	IStatement* CCL_API createStatement (const char* sqlUTF8) override;
+	IStatement* CCL_API createStatement (CStringPtr sqlUTF8) override;
 	tbool CCL_API execute (StringRef sql) override;
-	tbool CCL_API execute (const char* sqlUTF8) override;
+	tbool CCL_API execute (CStringPtr sqlUTF8) override;
 	tbool CCL_API execute (StringRef sql, Variant& result) override;
-	tbool CCL_API execute (const char* sqlUTF8, Variant& result) override;
+	tbool CCL_API execute (CStringPtr sqlUTF8, Variant& result) override;
 	tbool CCL_API beginTransaction () override;
 	tbool CCL_API commitTransaction () override;
-	tbool CCL_API hasTable (const char* name) override;
-	tbool CCL_API hasColumn (const char* table, const char* column) override;
-	tbool CCL_API hasView (const char* name) override;
+	tbool CCL_API hasTable (CStringPtr name) override;
+	tbool CCL_API hasColumn (CStringPtr table, CStringPtr column) override;
+	tbool CCL_API hasView (CStringPtr name) override;
 	tbool CCL_API getLastError (String& message) override;
 
 	CLASS_INTERFACE (IConnection, Object)

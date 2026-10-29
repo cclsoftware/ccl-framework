@@ -57,9 +57,10 @@ protected:
 	Net::ISocket* receiveSocket;
 	Net::ISocket* sendSocket;
 	Net::IPAddress address;
-	CCL::Threading::IThread* receiveThread;
+	Threading::IThread* receiveThread;
 	int sequenceNumber;
 	bool connected;
+	bool terminating;
 
 	bool sendMessage (StringRef message) const;
 	void disconnect ();

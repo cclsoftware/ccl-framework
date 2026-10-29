@@ -173,13 +173,19 @@ namespace ThemeNames
 	DEFINE_STRINGID (kMouseOver, "mouseover")
 	DEFINE_STRINGID (kDisabled, "disabled")
 	DEFINE_STRINGID (kFocused, "focus")
-	
+	DEFINE_STRINGID (kOn, "on")
+
 	DEFINE_STRINGID (kNormalOn, "normalOn")
 	DEFINE_STRINGID (kPressedOn, "pressedOn")
 	DEFINE_STRINGID (kMouseOverOn, "mouseoverOn")
 	DEFINE_STRINGID (kDisabledOn, "disabledOn")
 	DEFINE_STRINGID (kFocusedOn, "focus") // same as kFocused
-	
+
+	DEFINE_STRINGID (kLeft, "left")
+	DEFINE_STRINGID (kMiddle, "middle")
+	DEFINE_STRINGID (kRight, "right")
+	DEFINE_STRINGID (kMenu, "menu")
+
 	DEFINE_STRINGID (kStandard, "Standard")
 	DEFINE_STRINGID (kStandardFont, "StandardUI")
 	DEFINE_STRINGID (kStandardFontMonospaced, "StandardUI Mono")

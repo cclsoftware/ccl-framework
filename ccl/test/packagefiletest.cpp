@@ -82,7 +82,7 @@ CCL_TEST (PackageFileTest, TestXTEAEncryption)
 	Url dataUrl ("/data.txt");
 
 	String key ("0123456789abcdef0123456789abcdef");
-	const char* dataString = "0123456789abcdefghijklmnopqrstuvwxyz";
+	CStringPtr dataString = "0123456789abcdefghijklmnopqrstuvwxyz";
 
 	// 1) as C String
 

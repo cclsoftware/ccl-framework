@@ -5,10 +5,10 @@
 		<Color name="HyperlinkColor"        color="@Main.HyperLinkColor"/>
 		<Color name="TooltipBackColor"      color="hsl(0,0,85)"/>
 		<Color name="TooltipTextColor"      color="black"/>
-		<Color name="SelectionColor"        color="@Main.SelectionBackColor"/>
+		<Color name="SelectionColor"        color="@Main.SelectionBackgroundColor"/>
 		<Color name="SelectionTextColor"    color="@Main.LabelColor"/>
 		<Color name="AlphaSelectionColor"   color="@Main.AlphaSelectionColor"/>
-		<Color name="AlphaCursorColor"      color="@Main.AlphaCursorColor"/>
+		<Color name="AlphaCursorColor"      color="@Main.InternalAlphaCursorColor"/>
 		<Color name="ListViewBackColor"     color="@Main.ListBackgroundColor"/>
 		<Color name="PushButtonTextColor"   color="@Main.LabelColor"/>
 		
@@ -57,116 +57,200 @@
 		<Style name="Neutral.Button">
 			<?defined mobileapp?>
 				<Font  name="textfont"    			themeid="StandardUI" size="+2"/>
+				<?nested:not:defined legacy-styles-enabled?>
+				<Color name="value.color"			color="@Main.MobileControlTextColor"/>
+				<Color name="icon.color"			color="@Main.MobileControlTextColor"/>
+				<StyleCondition name="on">
+					<Color name="value.color"		color="@Main.MobileButtonTextColor"/>
+					<Color name="icon.color"		color="@Main.MobileButtonTextColor"/>
+				</StyleCondition>
+				<StyleCondition name="pressed">
+					<Color name="value.color"		color="@Main.MobileButtonTextColor"/>
+					<Color name="icon.color"		color="@Main.MobileButtonTextColor"/>
+				</StyleCondition>
+				<StyleCondition name="disabled">
+					<Color name="value.color"		color="@Main.LabelColorDisabled"/>
+					<Color name="icon.color"		color="@Main.IconColorDisabledOpaque"/>
+				</StyleCondition>
+				<Image name="background.image"		image="MobileButton"/>
+				<StyleCondition name="left">
+					<Image name="background.image"	image="MobileButtonL"/>
+				</StyleCondition>
+				<StyleCondition name="middle">
+					<Image name="background.image"	image="MobileButtonM"/>
+				</StyleCondition>
+				<StyleCondition name="right">
+					<Image name="background.image"	image="MobileButtonR"/>
+				</StyleCondition>
+				<StyleCondition name="left right">
+					<Image name="background.image"	image="MobileButton"/>
+				</StyleCondition>
+				<?nested:defined?>
+				<?nested:defined legacy-styles-enabled?>
 				<Color name="textcolor"				color="@Main.MobileControlTextColor"/>
 				<Color name="textcolor.on"			color="@Main.MobileButtonTextColor"/>
 				<Color name="textcolor.pressed"		color="@Main.MobileButtonTextColor"/>
-				<Color name="textcolor.disabled"	color="@Main.LabelColor.Disabled"/>
+				<Color name="textcolor.disabled"	color="@Main.LabelColorDisabled"/>
 				<Color name="iconcolor.on"			color="@Main.MobileButtonTextColor"/>
-				<Color name="iconcolor.disabled"	color="@Main.IconColor.Disabled.Opaque"/>
+				<Color name="iconcolor.disabled"	color="@Main.IconColorDisabledOpaque"/>
 				<Color name="iconcolor.pressed"		color="@Main.MobileButtonTextColor"/>
 				<Image name="background"			image="MobileButton"/>
-				<Image name="left"       			image="MobileButtonL"/>
-				<Image name="right"       			image="MobileButtonR"/>
-				<Image name="middle"       			image="MobileButtonM"/>
+				<Image name="left"					image="MobileButtonL"/>
+				<Image name="right"					image="MobileButtonR"/>
+				<Image name="middle"				image="MobileButtonM"/>
+				<?nested:defined?>
 				<Metric name="padding.left"			value="12"/>
 				<Metric name="padding.right"		value="12"/>
-				<Metric name="padding.top"			value="3"/>
 			<?defined desktopapp?>
 				<Font  name="textfont"         		themeid="StandardUI"/>
-				<Color name="textcolor"        		color="@Main.LabelColor.Secondary"/>
-				<Color name="textcolor.on"        	color="@Main.LabelColor.Primary.NoInvert"/>
-				<Color name="textcolor.pressed"		color="@Main.LabelColor.Primary.NoInvert"/>
-				<Color name="textcolor.disabled"	color="@Main.LabelColor.Disabled"/>
-				<Color name="iconcolor.on"			color="@Main.LabelColor.Primary.NoInvert"/>
-				<Color name="iconcolor.disabled"	color="@Main.IconColor.Disabled.Opaque"/>
-				<Image name="background"       		image="Button"/>
-				<Image name="left"       			image="ButtonL"/>
-				<Image name="right"       			image="ButtonR"/>
-				<Image name="middle"       			image="ButtonM"/>
+				<?nested:not:defined legacy-styles-enabled?>
+				<Color name="value.color"        	color="@Main.LabelColorSecondary"/>
+				<Color name="icon.color"        	color="@Main.LabelColorSecondary"/>
+				<StyleCondition name="on">
+					<Color name="value.color"		color="@Main.LabelColorPrimaryNoInvert"/>
+					<Color name="icon.color"		color="@Main.LabelColorPrimaryNoInvert"/>
+				</StyleCondition>
+				<StyleCondition name="pressed">
+					<Color name="value.color"		color="@Main.LabelColorPrimaryNoInvert"/>
+					<Color name="icon.color"		color="@Main.LabelColorPrimaryNoInvert"/>
+				</StyleCondition>
+				<StyleCondition name="disabled">
+					<Color name="value.color"		color="@Main.LabelColorDisabled"/>
+					<Color name="icon.color"		color="@Main.IconColorDisabledOpaque"/>
+				</StyleCondition>
+				<Image name="background.image"		image="Button"/>
+				<StyleCondition name="left">
+					<Image name="background.image"	image="ButtonL"/>
+				</StyleCondition>
+				<StyleCondition name="middle">
+					<Image name="background.image"	image="ButtonM"/>
+				</StyleCondition>
+				<StyleCondition name="right">
+					<Image name="background.image"	image="ButtonR"/>
+				</StyleCondition>
+				<StyleCondition name="left right">
+					<Image name="background.image"	image="Button"/>
+				</StyleCondition>
+				<?nested:defined?>
+				<?nested:defined legacy-styles-enabled?>
+				<Color name="textcolor"				color="@Main.LabelColorSecondary"/>
+				<Color name="textcolor.on"			color="@Main.LabelColorPrimaryNoInvert"/>
+				<Color name="textcolor.pressed"		color="@Main.LabelColorPrimaryNoInvert"/>
+				<Color name="textcolor.disabled"	color="@Main.LabelColorDisabled"/>
+				<Color name="iconcolor.on"			color="@Main.LabelColorPrimaryNoInvert"/>
+				<Color name="iconcolor.disabled"	color="@Main.IconColorDisabledOpaque"/>
+				<Image name="background"			image="Button"/>
+				<Image name="left"					image="ButtonL"/>
+				<Image name="right"					image="ButtonR"/>
+				<Image name="middle"				image="ButtonM"/>
+				<?nested:defined?>
 				<Metric name="padding.left"			value="8"/>
 				<Metric name="padding.right"		value="8"/>
 			<?defined?>
-			<Metric name="useButtonMinSize"		value="1"/>
 			<Metric name="buttonstyle"    		value="1"/>
-			<Metric name="fill.icon"    		value="1"/>
+			<Metric name="iconvaluespacing"		value="6"/>
 		</Style>
 
-		<Style name="Neutral.ActionButton" inherit="Neutral.Button">
-			<?defined mobileapp?>
-				<Font  name="textfont"    themeid="StandardUI" size="+2"/>
-			<?defined desktopapp?>
-				<Font  name="textfont"    themeid="StandardUI"/>
-			<?defined?>
-			<Color name="textcolor"		color="@Main.ActionButtonTextOnColor"/>
-			<Image name="background"	image="ActionButton"/>
-			<Color name="textcolor.mouseover"	color="@Main.ActionButtonTextOnColor"/>
-			<Color name="textcolor.pressed"		color="@Main.ActionButtonTextPressedColor"/>
-			<Color name="textcolor.on"			color="@Main.ActionButtonTextOnColor"/>
-			<Color name="textcolor.disabled"	color="@Main.LabelColor.Disabled"/>
-			<Metric name="useButtonMinSize"	value="1"/>
-			<Metric name="padding.left"		value="10"/>
-			<Metric name="padding.right"	value="10"/>
-			<Metric name="padding.top"		value="1"/>
-			<Metric name="fill.icon"		value="0"/>
-			<Metric name="colorize.icon"		value="1"/>
-			<Color name="iconcolor.mouseover"	color="@Main.ActionButtonTextOnColor"/>
-			<Color name="iconcolor.pressed"		color="@Main.ActionButtonTextPressedColor"/>
-			<Color name="iconcolor.on"			color="@Main.ActionButtonTextOnColor"/>
-			<Color name="iconcolor.disabled"	color="@Main.LabelColor.Disabled"/>			
-		</Style>
-		
-		<Style name="Neutral.ActionButtonSecondary" inherit="Neutral.ActionButton">
-			<Image name="background"	image="ActionButtonSecondary"/>
-		</Style>
-				
 		<Style name="Neutral.TabButton" inherit="Neutral.Button">
-			<Image name="left"            	image="TabButtonL"/>
-			<Image name="middle"           	image="TabButtonM"/>
-			<Image name="right"            	image="TabButtonR"/>
-			<Image name="background"       	image="TabButton"/>
+			<?not:defined legacy-styles-enabled?>
+			<Image name="background.image"	image="TabButton"/>
+			<StyleCondition name="left">
+				<Image name="background.image"	image="TabButtonL"/>
+			</StyleCondition>
+			<StyleCondition name="middle">
+				<Image name="background.image"	image="TabButtonM"/>
+			</StyleCondition>
+			<StyleCondition name="right">
+				<Image name="background.image"	image="TabButtonR"/>
+			</StyleCondition>
+			<StyleCondition name="left right">
+				<Image name="background.image"	image="TabButton"/>
+			</StyleCondition>
+			<?defined legacy-styles-enabled?>
+			<Image name="left"			image="TabButtonL"/>
+			<Image name="middle"			image="TabButtonM"/>
+			<Image name="right"			image="TabButtonR"/>
+			<Image name="background"	image="TabButton"/>
+			<?defined?>
 		</Style>
 		
 		<Style name="Neutral.CheckBox">
 			<?defined mobileapp?>
 				<Font  name="textfont"         		themeid="StandardUI" size="+2"/>
-				<Color name="textcolor"        		color="@Main.MobileControlTextColor"/>
-				<Color name="textcolor.disabled"	color="@Main.LabelColor.Disabled"/>
-				<Image name="background"			image="MobileCheckSlider"/>
-<!--				<Image name="icon"					image="MobileCheckBoxIcon"/>   no icon (the slider is in background image) -->
+				<?nested:not:defined legacy-styles-enabled?>
+				<Color name="value.color"        	color="@Main.MobileControlTextColor"/>
+				<Image name="icon.image"			image="MobileCheckSlider"/>
+				<Color name="icon.color"			color="@Main.MobileControlTextOnColor"/>
+				<?nested:defined?>
+				<?nested:defined legacy-styles-enabled?>
+				<Color name="textcolor"				color="@Main.MobileControlTextColor"/>
+				<Color name="textcolor.disabled"	color="@Main.LabelColorDisabled"/>
+				<Image name="icon"					image="MobileCheckSlider"/>
 				<Color name="iconcolor"				color="@Main.MobileControlTextOnColor"/>
-				<Align name="textalign"				align="left vcenter"/>
-				<Color name="iconcolor.disabled"	color="@Main.CheckMark.DisabledColor"/>
+				<?nested:defined?>
 			<?defined desktopapp?>
 				<Font  name="textfont"         		themeid="StandardUI"/>
-				<Color name="textcolor"        		color="@Main.LabelColor"/>
-				<Color name="textcolor.disabled"	color="@Main.LabelColor.Disabled"/>
-				<Image name="background"			image="CheckBoxBackground"/>
-				<Image name="icon"					image="CheckBoxIcon"/>
+				<?nested:not:defined legacy-styles-enabled?>
+				<Color name="value.color"        	color="@Main.LabelColor"/>
+				<Color name="icon.color"        	color="@Main.LabelColor"/>
+				<Image name="icon.image"			image="CheckBoxImage"/>
+				<?nested:defined?>
+				<?nested:defined legacy-styles-enabled?>
+				<Color name="textcolor"				color="@Main.LabelColor"/>
+				<Color name="textcolor.disabled"	color="@Main.LabelColorDisabled"/>
+				<Image name="icon"					image="CheckBoxImage"/>
 				<Image name="iconmixed"				image="CheckBoxIconMixed"/>
-				<Align name="textalign"				align="left vcenter"/>
-				<Color name="iconcolor.disabled"	color="@Main.CheckMark.DisabledColor"/>
+				<?nested:defined?>
 			<?defined?>
+			<Align name="textalign"				align="left vcenter"/>
+			<?not:defined legacy-styles-enabled?>
+			<StyleCondition name="disabled">
+				<Color name="value.color"		color="@Main.LabelColorDisabled"/>
+				<Color name="icon.color"		color="@Main.InternalCheckMarkDisabledColor"/>
+			</StyleCondition>
+			<?defined legacy-styles-enabled?>
+			<Color name="iconcolor.disabled"	color="@Main.InternalCheckMarkDisabledColor"/>
+			<?defined?>
+			<Metric name="iconvaluespacing"		value="6"/>
 		</Style>
 			
 		<Style name="Neutral.RadioButton">
 			<?defined mobileapp?>
 				<Font  name="textfont"         		themeid="StandardUI" size="+2"/>
-				<Color name="textcolor"        		color="@Main.MobileControlTextColor"/>
-				<Color name="textcolor.disabled"	color="@Main.LabelColor.Disabled"/>
-				<Image name="background"       		image="MobileRadioButtonBackground"/>
+				<?nested:not:defined legacy-styles-enabled?>
+				<Color name="value.color"        	color="@Main.MobileControlTextColor"/>
+				<Image name="icon.image"			image="MobileRadioButtonDotIcon"/>
+				<Color name="icon.color"			color="@Main.MobileControlTextOnColor"/>
+				<?nested:defined?>
+				<?nested:defined legacy-styles-enabled?>
+				<Color name="textcolor"				color="@Main.MobileControlTextColor"/>
+				<Color name="textcolor.disabled"	color="@Main.LabelColorDisabled"/>
 				<Image name="icon"					image="MobileRadioButtonDotIcon"/>
 				<Color name="iconcolor"				color="@Main.MobileControlTextOnColor"/>
-				<Align name="textalign"				align="left vcenter"/>
-				<Color name="iconcolor.disabled"	color="@Main.CheckMark.DisabledColor"/>
+				<?nested:defined?>
 			<?defined desktopapp?>
 				<Font  name="textfont"         		themeid="StandardUI"/>
-				<Color name="textcolor"        		color="@Main.LabelColor"/>
-				<Color name="textcolor.disabled"	color="@Main.LabelColor.Disabled"/>
-				<Image name="background"       		image="RadioButtonBackground"/>
-				<Image name="icon"					image="RadioButtonDotIcon"/>
-				<Align name="textalign"				align="left vcenter"/>
-				<Color name="iconcolor.disabled"	color="@Main.CheckMark.DisabledColor"/>
+				<?nested:not:defined legacy-styles-enabled?>
+				<Color name="value.color"        	color="@Main.LabelColor"/>
+				<Color name="icon.color"        	color="@Main.LabelColor"/>
+				<Image name="icon.image"			image="RadioButtonImage"/>
+				<?nested:defined?>
+				<?nested:defined legacy-styles-enabled?>
+				<Color name="textcolor"				color="@Main.LabelColor"/>
+				<Color name="textcolor.disabled"	color="@Main.LabelColorDisabled"/>
+				<Image name="icon"					image="RadioButtonImage"/>
+				<?nested:defined?>
 			<?defined?>
+			<Align name="textalign"				align="left vcenter"/>
+			<?not:defined legacy-styles-enabled?>
+			<StyleCondition name="disabled">
+				<Color name="value.color"		color="@Main.LabelColorDisabled"/>
+				<Color name="icon.color"		color="@Main.InternalCheckMarkDisabledColor"/>
+			</StyleCondition>
+			<?defined legacy-styles-enabled?>
+			<Color name="iconcolor.disabled"	color="@Main.InternalCheckMarkDisabledColor"/>
+			<?defined?>
+			<Metric name="iconvaluespacing"		value="6"/>
 		</Style>
 
 		<Style name="Neutral.Slider">
@@ -222,7 +306,7 @@
 			<Metric name="indicator" value="1"/>
 			<Metric name="range" value="270"/>
 			<Metric name="indicatorwidth" value="2"/>
-			<Color name="indicatorcolor" 	color="@Main.LabelColor.NoInvert"/>
+			<Color name="indicatorcolor" 	color="@Main.LabelColorNoInvert"/>
 			<Color name="hilitecolor" 		color="@Main.KnobHighlightColor"/>
 			<Color name="forecolor" 		color="hsl(0,0,0,30)"/>
 			<Color name="backcolor" color="hsla(0,0,0,0)"/>
@@ -296,46 +380,77 @@
 		<Style name="Neutral.TextBox"     	 textoptions="wordbreak"> <!-- default for multiline -->
 			<?defined mobileapp?>
 				<Font  name="textfont"         		themeid="StandardUI" size="+2"/>
-				<Color name="textcolor"        		color="@Main.MobileControlTextColor"/>
+				<?nested:not:defined legacy-styles-enabled?>
+				<Color name="text.color"        	color="@Main.MobileControlTextColor"/>
+				<?nested:defined?>
+				<?nested:defined legacy-styles-enabled?>
+				<Color name="textcolor"				color="@Main.MobileControlTextColor"/>
+				<Color name="textcolor.disabled"	color="@Main.LabelColorDisabled"/>
+				<?nested:defined?>
 				<Image name="background"        	image="MobileTextBox"/>
-				<Color name="forecolor"				color="hsl(0,0,0,25)"/>
-				<Color name="textcolor.disabled"	color="@Main.LabelColor.Disabled"/>
 				<Metric name="padding.left"    		value="12"/>
 				<Metric name="padding.right"   		value="12"/>
-
 				<Metric name="native.padding.left"  value="4"/>
 				<Metric name="native.padding.right" value="4"/>
 			<?defined desktopapp?>
 				<Font  name="textfont"         		themeid="StandardUI"/>
-				<Color name="textcolor"        		color="@Main.LabelColor"/>
+				<?nested:not:defined legacy-styles-enabled?>
+				<Color name="text.color"        	color="@Main.LabelColor"/>
+				<?nested:defined?>
+				<?nested:defined legacy-styles-enabled?>
+				<Color name="textcolor"				color="@Main.LabelColor"/>
+				<Color name="textcolor.disabled"	color="@Main.LabelColorDisabled"/>
+				<?nested:defined?>
 				<Image name="background"        	image="TextBoxBackground"/>
-				<Color name="forecolor"				color="hsl(0,0,0,25)"/>
-				<Color name="textcolor.disabled"	color="@Main.LabelColor.Disabled"/>
 				<Metric name="padding.left"    		value="7"/>
 				<Metric name="padding.right"   		value="7"/>
-
 				<?platform win?>
 					<Metric name="native.padding.left"  value="2"/>
 					<Metric name="native.padding.right" value="2"/>
 				<?platform?>
 			<?defined?>
+			<Color name="forecolor"				color="hsl(0,0,0,25)"/>
+			<?not:defined legacy-styles-enabled?>
+			<Color name="background.bordercolor"	color="hsl(0,0,0,0)"/>
+			<StyleCondition name="disabled">
+				<Color name="text.color"		color="@Main.LabelColorDisabled"/>
+			</StyleCondition>
+			<?defined legacy-styles-enabled?>
+			<Color name="bordercolor"			color="hsl(0,0,0,0)"/>
+			<?defined?>
 		</Style>
-				
+
 		<Style name="Neutral.EditBox"     	 inherit="Neutral.TextBox">
 			<?defined mobileapp?>
 				<Image name="background"        	image="MobileControl"/>
-				<Color name="backcolor"        		color="@Main.MobileControlColor"/>
+				<?nested:not:defined legacy-styles-enabled?>
+				<Image name="background.image"      image="MobileControl"/>
+				<Color name="background.color"      color="@Main.MobileControlColor"/>
+				<?nested:defined?>
+				<?nested:defined legacy-styles-enabled?>
+				<Color name="backcolor"				color="@Main.MobileControlColor"/>
+				<?nested:defined?>
 				<Align name="textalign"        		align="center"/>
 			<?defined desktopapp?>
 				<Image name="background"        	image="EditFocusBoxBackground"/>
-				<Color name="backcolor"        		color="@Main.EditBoxBackColor"/>
+				<?nested:not:defined legacy-styles-enabled?>
+				<Image name="background.image"      image="EditFocusBoxBackground"/>
+				<Color name="background.color"      color="@Main.EditBoxFocusBackgroundColor"/>
+				<?nested:defined?>
+				<?nested:defined legacy-styles-enabled?>
+				<Color name="backcolor"				color="@Main.EditBoxFocusBackgroundColor"/>
+				<?nested:defined?>
 				<Align name="textalign"        		align="center"/>
+			<?not:defined legacy-styles-enabled?>
+			<Color name="selection.color"	color="@Main.AlphaSelectionColor"/>
+			<Color name="placeholder.color"	color="@Main.LabelColorDimmed"/>
+			<?defined legacy-styles-enabled?>
+			<Color name="selectioncolor"	color="@Main.AlphaSelectionColor"/>
+			<Color name="textcolor.placeholder"	color="@Main.LabelColorDimmed"/>
 			<?defined?>
-			<Color name="textcolor.placeholder"	color="@Main.LabelColor.Dimmed"/>
 		</Style>
 		
 		<Style name="Neutral.ValueBox"      inherit="Neutral.EditBox">
-			<?defined mobileapp?>
 			<?defined desktopapp?>
 				<Image name="background"			image="EditBoxBackground"/><!-- valuebox has system focus -->
 			<?defined?>
@@ -351,16 +466,45 @@
 
 		<Style name="Neutral.SelectBox"     inherit="Neutral.EditBox">
 			<?defined mobileapp?>
-				<Image name="button"           		image="MobileSelectBoxButton"/>
+				<?nested:not:defined legacy-styles-enabled?>
+				<Color name="value.color"       	color="@Main.MobileControlTextColor"/>
+				<Color name="icon.color"       		color="@Main.MobileControlTextColor"/>
+				<Image name="background.image"  	image="MobileControl"/>
+				<Image name="icon.image"       		image="MobileSelectBoxButton"/>
+				<?nested:defined?>
+				<?nested:defined legacy-styles-enabled?>
+				<Image name="button"					image="MobileSelectBoxButton"/>
+				<?nested:defined?>
 				<Metric name="padding.right"   		value="7"/>
 			<?defined desktopapp?>
-				<Image name="button"           		image="SelectBoxButton"/>
+				<?nested:not:defined legacy-styles-enabled?>
+				<Color name="value.color"       	color="@Main.LabelColor"/>
+				<Color name="icon.color"       		color="@Main.LabelColor"/>
+				<Image name="background.image"  	image="EditFocusBoxBackground"/>
+				<Image name="icon.image"       		image="SelectBoxButton"/>
+				<?nested:defined?>
+				<?nested:defined legacy-styles-enabled?>
+				<Image name="button"					image="SelectBoxButton"/>
+				<?nested:defined?>
+				<Metric name="padding.right"   		value="2"/>
+			<?not:defined legacy-styles-enabled?>
+			<Color name="background.color"		color="hsl(0,0,0,0)"/> <!-- the color of the EditBox does not fill behind the image of a SelectBox -->
+			<StyleCondition name="disabled">
+				<Color name="value.color"		color="@Main.LabelColorDisabled"/>
+				<Color name="icon.color"		color="@Main.LabelColorDisabled"/>
+			</StyleCondition>
 			<?defined?>
+			<Metric name="iconvaluespacing"		value="7"/>
 		</Style>
-		
+
 		<Style name="Neutral.ComboBox" 	 inherit="Neutral.SelectBox">
 			<?defined mobileapp?>
-				<Image name="button"           		image="MobileComboBoxButton"/>
+				<?nested:not:defined legacy-styles-enabled?>
+				<Image name="icon.image"       		image="MobileComboBoxButton"/>
+				<?nested:defined?>
+				<?nested:defined legacy-styles-enabled?>
+				<Image name="button"					image="MobileComboBoxButton"/>
+				<?nested:defined?>
 			<?defined?>
 		</Style>
 
@@ -368,33 +512,78 @@
 			<?defined mobileapp?>
 				<Font name="textfont"         	themeid="StandardUI" size="+2"/>
 				<Metric name="tabHeight"       	value="40"/>
-				<Image name="background"       	image="TabBackground"/>
-				<Image name="first"            	image="MobileRadioTabControlLeft"/>
-				<Image name="middle"           	image="MobileRadioTabControl"/>
-				<Image name="last"             	image="MobileRadioTabControlRight"/>
-				<Image name="single"           	image="MobileRadioTabControl"/>
-				<Image name="menuIcon"		   	image="SelectBoxButton"/>
+				<?nested:not:defined legacy-styles-enabled?>
+				<Image name="background.image"	image="TabBackground"/>
+				<Image name="tab.background.image"	image="MobileRadioTabControl"/>
+				<StyleCondition name="left">
+					<Image name="tab.background.image"	image="MobileRadioTabControlLeft"/>
+				</StyleCondition>
+				<StyleCondition name="middle">
+					<Image name="tab.background.image"	image="MobileRadioTabControl"/>
+				</StyleCondition>
+				<StyleCondition name="right">
+					<Image name="tab.background.image"	image="MobileRadioTabControlRight"/>
+				</StyleCondition>
+				<StyleCondition name="menu">
+					<Image name="tab.background.image"	image="MobileRadioTabControlRight"/>
+					<Image name="tab.icon.image"		image="SelectBoxButton"/>
+				</StyleCondition>
+				<?nested:defined?>
+				<?nested:defined legacy-styles-enabled?>
+				<Image name="background"			image="TabBackground"/>
+				<Image name="first"				image="MobileRadioTabControlLeft"/>
+				<Image name="middle"				image="MobileRadioTabControl"/>
+				<Image name="last"					image="MobileRadioTabControlRight"/>
+				<Image name="single"				image="MobileRadioTabControl"/>
+				<Image name="menuIcon"			image="SelectBoxButton"/>
+				<?nested:defined?>
 				<Metric name="tabSpacing"		value="0"/>
 			<?defined desktopapp?>
 				<Font name="textfont"         	themeid="StandardUI"/>
 				<Metric name="tabHeight"       	value="26"/>
-				<Image name="background"       	image="TabBackground"/>
-				<Image name="first"            	image="TabButtonL"/>
-				<Image name="middle"           	image="TabButtonM"/>
-				<Image name="last"             	image="TabButtonR"/>
-				<Image name="single"           	image="TabButton"/>
-				<Image name="menuIcon"		   	image="SelectBoxButton"/>
+				<?nested:not:defined legacy-styles-enabled?>
+				<Image name="background.image"	image="TabBackground"/>
+				<Image name="tab.background.image"	image="TabButton"/>
+				<StyleCondition name="left">
+					<Image name="tab.background.image"	image="TabButtonL"/>
+				</StyleCondition>
+				<StyleCondition name="middle">
+					<Image name="tab.background.image"	image="TabButtonM"/>
+				</StyleCondition>
+				<StyleCondition name="right">
+					<Image name="tab.background.image"	image="TabButtonR"/>
+				</StyleCondition>
+				<StyleCondition name="menu">
+					<Image name="tab.background.image"	image="TabButtonR"/>
+					<Image name="tab.icon.image"		image="SelectBoxButton"/>
+				</StyleCondition>
+				<?nested:defined?>
+				<?nested:defined legacy-styles-enabled?>
+				<Image name="background"			image="TabBackground"/>
+				<Image name="first"				image="TabButtonL"/>
+				<Image name="middle"				image="TabButtonM"/>
+				<Image name="last"					image="TabButtonR"/>
+				<Image name="single"				image="TabButton"/>
+				<Image name="menuIcon"			image="SelectBoxButton"/>
+				<?nested:defined?>
 				<Metric name="tabSpacing"	value="1"/>
 			<?defined?>
 			
-			<Color name="textcolor"        	color="@Main.TabView.Inactive"/>
-			<Color name="activetextcolor"  	color="@Main.TabView.Active.NoInvert"/>
+			<?not:defined legacy-styles-enabled?>
+			<Color name="tab.value.color"  	color="@Main.TabViewInactive"/>
+			<StyleCondition name="on">
+				<Color name="tab.value.color"	color="@Main.TabViewActiveNoInvert"/>
+			</StyleCondition>
+			<?defined legacy-styles-enabled?>
+			<Color name="textcolor"			color="@Main.TabViewInactive"/>
+			<Color name="activetextcolor"	color="@Main.TabViewActiveNoInvert"/>
+			<?defined?>
 			<Color name="forecolor"        	color="hsl(210,2,21)"/>
-			<Color name="backcolor"        	color="@Main.TabViewBackColor"/>
-			<Color name="activecolor"      	color="hsl(201,75,61)"/>
+			<Color name="backcolor"        	color="@Main.InternalTabViewBackColor"/>
 			
-			<Metric name="contentmargin"	value="0"/>
-			<Metric name="tabmargin"		value="9"/>
+			<Metric name="margin"			value="0"/>
+			<Metric name="padding.left"	value="4"/>
+			<Metric name="padding.right"	value="5"/>
 		</Style>
 		
 		<Style name="Neutral.MenuBarControl">
@@ -410,8 +599,8 @@
             <Image name="menuButton"       	image="MenuButton"/>
             <Metric name="menuSpacing"		value="0"/>
         
-			<Color name="textcolor"        	color="@Main.LabelColor.Secondary"/>
-			<Color name="activetextcolor"  	color="@Main.LabelColor.Primary.NoInvert"/>
+			<Color name="textcolor"        	color="@Main.LabelColorSecondary"/>
+			<Color name="activetextcolor"  	color="@Main.LabelColorPrimaryNoInvert"/>
 
 			<Metric name="menuMargin"		value="8"/>
 		</Style>
@@ -442,6 +631,9 @@
 			<Image name="DialogBack"       	image="DialogBackground"/>
 			<Image name="WindowBack"      	image="WindowBackground"/>
 			<Color name="backcolor" 		color="@Main.WindowBackgroundColor"/>
+			<?not:defined legacy-styles-enabled?>
+			<Color name="background.color" 	color="@Main.WindowBackgroundColor"/>
+			<?defined?>
 		</Style>
 	
 		<Style name="Neutral.DialogGroup">
@@ -455,7 +647,7 @@
 				<Image name="SecondaryImage"   	image="SecondaryDialogGroup"/>
 			<?defined?>
 			<Color name="textcolor"        	color="@Main.LabelColor"/>
-			<Color name="headerlinecolor"	color="@Main.DialogHeaderLineColor"/>
+			<Color name="headerlinecolor"	color="@Main.InternalDialogHeaderLineColor"/>
 		</Style>
 
 		<Style name="Neutral.Label"       	textoptions="wordbreak"> <!-- default for multiline -->
@@ -465,7 +657,7 @@
 				<Font  name="textfont"         	themeid="StandardUI"/>
 			<?defined?>
 			<Color name="textcolor"        	color="@Main.LabelColor"/>
-			<Color name="backcolor"        	color="@Main.TextBoxBackColor"/>
+			<Color name="backcolor"        	color="@Main.TextBoxBackgroundColor"/>
 			<Align name="textalign"        	align="left vcenter"/>
 			<Metric name="padding.left"     value="2"/>
 			<Metric name="padding.right"    value="2"/>
@@ -477,8 +669,8 @@
 			<?defined desktopapp?>
 				<Font  name="textfont"         	themeid="StandardUI" size="+4" style="bold"/>
 			<?defined?>
-			<Color name="textcolor"        	color="@Main.LabelColor.Primary"/>
-			<Color name="backcolor"        	color="@Main.TextBoxBackColor"/>
+			<Color name="textcolor"        	color="@Main.LabelColorPrimary"/>
+			<Color name="backcolor"        	color="@Main.TextBoxBackgroundColor"/>
 			<Align name="textalign"        	align="center"/>
 		</Style>
 
@@ -518,15 +710,15 @@
 				<Metric name="iconSize" 	value="16"/>
 			<?defined?>
 			
-			<Color name="backcolor"	       	color="@Main.MenuControlBackColor"/>
+			<Color name="backcolor"	       	color="@Main.MenuControlBackgroundColor"/>
 			<!--Color name="backcolor2"	   	color="@Main.ListBackgroundColor"/-->
-			<Color name="textcolor"	   		color="@Main.LabelColor.Secondary"/>
-			<Color name="selectedtextcolor"	color="@Main.LabelColor.Primary.NoInvert"/>
-			<Color name="selectionColor"   	color="@Main.SelectionBackColor"/>
+			<Color name="textcolor"	   		color="@Main.LabelColorSecondary"/>
+			<Color name="selectedtextcolor"	color="@Main.LabelColorPrimaryNoInvert"/>
+			<Color name="selectionColor"   	color="@Main.SelectionBackgroundColor"/>
 			<Color name="focusColor"       	color="@Main.ListFocusColor"/>
 
 			<Color name="iconcolor"			color="@Main.WeakContextTemplateColor"/>
-			<Color name="selectediconcolor"	color="@Main.LabelColor.Primary.NoInvert"/>
+			<Color name="selectediconcolor"	color="@Main.LabelColorPrimaryNoInvert"/>
 			
 			<Color name="thumbnailFrameColor" 	color="hsl(0,0,0,0)"/>
 
@@ -566,7 +758,6 @@
 			
 			<?platform win?>
 			<Metric name="icons.textheight"	value="31"/>
-			<?platform?>
 			<?not:platform win?>
 			<Metric name="icons.textheight"	value="33"/>
 			<?platform?>
@@ -591,30 +782,30 @@
 				<Font name="textfont" themeid="StandardUI" size="14"/>
 			</StyleCondition>
 			<StyleCondition name="BlockQuote">
-				<Color name="textcolor"	color="@Main.LabelColor.Secondary"/>
+				<Color name="textcolor"	color="@Main.LabelColorSecondary"/>
 			</StyleCondition>
 			<StyleCondition name="CodeBlock">
 				<Font name="textfont" themeid="StandardUI Mono"/>
-				<Color name="textcolor"	color="@Main.LabelColor.Secondary"/>
+				<Color name="textcolor"	color="@Main.LabelColorSecondary"/>
 			</StyleCondition>
 			<StyleCondition name="Code">
 				<Font name="textfont" themeid="StandardUI Mono"/>
-				<Color name="textcolor"	color="@Main.LabelColor.Secondary"/>
+				<Color name="textcolor"	color="@Main.LabelColorSecondary"/>
 			</StyleCondition>
 			<StyleCondition name="Link">
 				<Color name="textcolor"	color="@Main.HyperlinkColor"/>
 			</StyleCondition>
-			<Color name="selectioncolor"   	color="@Main.TextSelectionBackColor"/>
+			<Color name="selectioncolor"   	color="@Main.TextSelectionBackgroundColor"/>
 			<Image name="background" image="TransparentImage"/>
 			<Options name="flex.alignself" value="stretch"/>
-			<Metric name="text.margin" value="4"/>
+			<Metric name="padding" value="4"/>
 		</Style>
 
 		<Style name="Neutral.PopupMenu"   	inherit="Neutral.ListView">
 			<Color name="menu.separatorcolor" color="@Main.MenuControlSeparatorColor"/>
 			<?defined mobileapp?>
 				<Image name="background"       	image="MenuControlBackground"/>
-				<Color name="backcolor"	       	color="@Main.MenuControlBackColor"/>
+				<Color name="backcolor"	       	color="@Main.MenuControlBackgroundColor"/>
 				<Image name="checkmarkicon" 	image="MobileCheckBoxIcon"/>
 				<Image name="selectionbarimage"	image="MobileSelectionBar"/>
 			<?defined desktopapp?>
@@ -647,15 +838,15 @@
 		<Style name="Neutral.MenuControl" 		inherit="Neutral.PopupMenu">
 			<Image name="background"       		image="MenuControlBackground"/>
 			<Color name="separatorcolor"   		color="@Main.MenuControlSeparatorColor"/>
-			<Color name="headercolor" 			color="@Main.MenuControlHeaderColor"/>
+			<Color name="headercolor" 			color="@Main.InternalMenuControlHeaderColor"/>
 			<Color name="textcolor" 			color="@Main.LabelColor"/>
 			<Color name="headertextcolor" 		color="@Main.LabelColor"/>
-			<Color name="selectedtextcolor" 	color="@Main.LabelColor.Primary.NoInvert"/>
-			<Color name="disabledtextcolor" 	color="@Main.LabelColor.Disabled"/>
+			<Color name="selectedtextcolor" 	color="@Main.LabelColorPrimaryNoInvert"/>
+			<Color name="disabledtextcolor" 	color="@Main.LabelColorDisabled"/>
 
-			<Color name="backcolor"        		color="@Main.MenuControlBackColor"/>
-			<Color name="clip.backcolor"        color="@Main.MenuControlBackColor"/>
-			<Color name="secondarybackcolor"	color="@Main.MenuControlBackColor"/>
+			<Color name="backcolor"        		color="@Main.MenuControlBackgroundColor"/>
+			<Color name="clip.backcolor"        color="@Main.MenuControlBackgroundColor"/>
+			<Color name="secondarybackcolor"	color="@Main.MenuControlBackgroundColor"/>
 			<Color name="selectionbackcolor" 	color="hsl(0,0,0,0)"/>
 			<Color name="selectionframecolor" 	color="hsl(0,0,0,0)"/>
 			<Color name="bordercolor" 			color="hsl(0,0,0,0)"/>
@@ -682,7 +873,7 @@
 			<?defined?>
 			
 			<Color name="iconcolor"				color="@Main.ContextTemplateColor"/>
-			<Color name="selectediconcolor"		color="@Main.LabelColor.Primary.NoInvert"/>
+			<Color name="selectediconcolor"		color="@Main.LabelColorPrimaryNoInvert"/>
 		</Style>
 		
 		<Style name="Neutral.ContextMenu"	inherit="Neutral.MenuControl">
@@ -706,8 +897,8 @@
 				<Image name="background" image="MobileValueBarBack"/>
 <!--				<Metric name="hMargin" value="3"/>-->
 			<?defined desktopapp?>
-				<Color name="forecolor"			color="@Main.ValueBarForecolor"/>
-				<Color name="backcolor"			color="@Main.ValueBarBackcolor"/>
+				<Color name="forecolor"			color="@Main.InternalValueBarForecolor"/>
+				<Color name="backcolor"			color="@Main.InternalValueBarBackcolor"/>
 			<?defined?>
 		</Style>
 				
@@ -718,9 +909,9 @@
 					
 		<Style name="Neutral.ScrollPicker">
 			<Color name="textcolor" color="@Main.LabelColor"/>
-			<Color name="barrelTextColor" color="@Main.LabelColor.Tertiary"/>
-			<Color name="backcolor" color="@Main.ScrollPickerBackcolor"/>
-			<Color name="centerBackcolor" color="@Main.ScrollPickerCenterColor"/>
+			<Color name="barrelTextColor" color="@Main.LabelColorTertiary"/>
+			<Color name="backcolor" color="@Main.InternalScrollPickerBackcolor"/>
+			<Color name="centerBackcolor" color="@Main.InternalScrollPickerCenterColor"/>
 			<Image name="centerOverlayImage" image="ScrollPickerOverlay"/>
 			<Metric name="padding.left"			value="12"/>
 			<Metric name="padding.right"		value="12"/>
@@ -752,7 +943,7 @@
 		<Style name="Neutral.TriVectorPad">
 			<Color name="backcolor" color="@Main.WindowBackgroundColor"/>
 			<Image name="handle"	image="VectorPadHandle"/>
-			<Color name="triangleColor" color="@Main.VectorPadBackcolor"/>
+			<Color name="triangleColor" color="@Main.InternalVectorPadBackcolor"/>
 			<Metric name="padding" value="12"/>
 			<Metric name="snapsize" value="11"/>
 		</Style>
@@ -786,49 +977,109 @@
 		
 		<Style name="Neutral.CommandButton">
 			<?defined mobileapp?>
-				<Image name="background" image="MobileCommandButton"/>
 				<Font name="textfont" themeid="StandardUI" size="+3" style="bold"/>
+				<?nested:not:defined legacy-styles-enabled?>
+				<Image name="background.image" image="MobileCommandButton"/>
+				<Color name="value.color"	color="@Main.ButtonBlueTextColor"/>
+				<Color name="icon.color"	color="@Main.ButtonBlueTextColor"/>
+				<?nested:defined?>
+				<?nested:defined legacy-styles-enabled?>
+				<Image name="background" image="MobileCommandButton"/>
 				<Color name="textcolor"	color="@Main.ButtonBlueTextColor"/>
+				<?nested:defined?>
 				<Metric name="padding.left"			value="12"/>
 				<Metric name="padding.right"		value="12"/>
 				<Metric name="padding.top"			value="3"/>
 			<?defined desktopapp?>
 <!--				<Image name="background" image="Button"/>-->
-				<Image name="background"	image="ButtonSpecialBlue"/>
 				<Font name="textfont" themeid="StandardUI" size="+1"/>
-				<Color name="textcolor"	color="@Main.LabelColor.Primary.NoInvert"/>
+				<?nested:not:defined legacy-styles-enabled?>
+				<Image name="background.image"	image="ButtonSpecialBlue"/>
+				<Color name="value.color"	color="@Main.LabelColorPrimaryNoInvert"/>
+				<Color name="icon.color"	color="@Main.LabelColorPrimaryNoInvert"/>
+				<?nested:defined?>
+				<?nested:defined legacy-styles-enabled?>
+				<Image name="background"	image="ButtonSpecialBlue"/>
+				<Color name="textcolor"	color="@Main.LabelColorPrimaryNoInvert"/>
+				<?nested:defined?>
 				<Metric name="padding.left"			value="8"/>
 				<Metric name="padding.right"		value="8"/>
+			<?not:defined legacy-styles-enabled?>
+			<StyleCondition name="disabled">
+				<Color name="value.color" color="@Main.LabelColorDisabled"/>
+				<Color name="icon.color" color="@Main.LabelColorDisabled"/>
+			</StyleCondition>
+			<?defined legacy-styles-enabled?>
+			<Color name="textcolor.disabled" color="@Main.LabelColorDisabled"/>
 			<?defined?>
-			<Color name="textcolor.disabled" color="@Main.LabelColor.Disabled"/>
-			<Metric name="buttonMinWidth" value="60"/>
+			<Metric name="minwidth" value="60"/>
 		</Style>
 		
 		<Style name="Neutral.WindowCloseButton">
 			<?defined mobileapp?>
+				<?nested:not:defined legacy-styles-enabled?>
+				<Image name="icon.image" image="MobileWindowCloseIcon"/>
+				<Color name="icon.color" color="@Main.ButtonBlueTextColor"/>
+				<StyleCondition name="on">
+					<Color name="icon.color" color="@Main.LabelColorPrimary"/>
+				</StyleCondition>
+				<StyleCondition name="mouseover">
+					<Color name="icon.color" color="@Main.MobileButtonBlueMOColor"/>
+				</StyleCondition>
+				<StyleCondition name="pressed">
+					<Color name="icon.color" color="@Main.MobileButtonBluePressedColor"/>
+				</StyleCondition>
+				<?nested:defined?>
+				<?nested:defined legacy-styles-enabled?>
 				<Image name="icon" image="MobileWindowCloseIcon"/>
-				<Metric name="colorize.icon" value="1"/>
 				<Color name="iconcolor" color="@Main.ButtonBlueTextColor"/>
 				<Color name="iconcolor.mouseover" color="@Main.MobileButtonBlueMOColor"/>
 				<Color name="iconcolor.pressed" color="@Main.MobileButtonBluePressedColor"/>
-				<Color name="iconcolor.on" color="@Main.LabelColor.Primary"/>
+				<Color name="iconcolor.on" color="@Main.LabelColorPrimary"/>
+				<?nested:defined?>
 			<?defined desktopapp?>
+				<?nested:not:defined legacy-styles-enabled?>
+				<Image name="icon.image" image="WindowCloseIcon"/>
+				<Color name="icon.color" color="@Main.LabelColorSecondary"/>
+				<StyleCondition name="on">
+					<Color name="icon.color" color="@Main.LabelColorPrimary"/>
+				</StyleCondition>
+				<StyleCondition name="mouseover">
+					<Color name="icon.color" color="@Main.LabelColor"/>
+				</StyleCondition>
+				<StyleCondition name="pressed">
+					<Color name="icon.color" color="@Main.LabelColorPrimary"/>
+				</StyleCondition>
+				<?nested:defined?>
+				<?nested:defined legacy-styles-enabled?>
 				<Image name="icon" image="WindowCloseIcon"/>
-				<Metric name="colorize.icon" value="1"/>
-				<Color name="iconcolor" color="@Main.LabelColor.Secondary"/>
+				<Color name="iconcolor" color="@Main.LabelColorSecondary"/>
 				<Color name="iconcolor.mouseover" color="@Main.LabelColor"/>
-				<Color name="iconcolor.pressed" color="@Main.LabelColor.Primary"/>
-				<Color name="iconcolor.on" color="@Main.LabelColor.Primary"/>
+				<Color name="iconcolor.pressed" color="@Main.LabelColorPrimary"/>
+				<Color name="iconcolor.on" color="@Main.LabelColorPrimary"/>
+				<?nested:defined?>
 			<?defined?>
 		</Style>
 		<Style name="Neutral.WindowMaximizeButton" inherit="Neutral.WindowCloseButton">
+			<?not:defined legacy-styles-enabled?>
+			<Image name="icon.image" image="WindowMaximizeIcon"/>
+			<?defined legacy-styles-enabled?>
 			<Image name="icon" image="WindowMaximizeIcon"/>
+			<?defined?>
 		</Style>
 		<Style name="Neutral.WindowMinimizeButton" inherit="Neutral.WindowCloseButton">
+			<?not:defined legacy-styles-enabled?>
+			<Image name="icon.image" image="WindowMinimizeIcon"/>
+			<?defined legacy-styles-enabled?>
 			<Image name="icon" image="WindowMinimizeIcon"/>
+			<?defined?>
 		</Style>
 		<Style name="Neutral.WindowHeaderView">
+			<?not:defined legacy-styles-enabled?>
+			<Image name="background.image" image="WindowHeaderView"/>
+			<?defined legacy-styles-enabled?>
 			<Image name="background" image="WindowHeaderView"/>
+			<?defined?>
 		</Style>
 		
 		<Style name="Neutral.ColorPickerMetrics">
@@ -848,15 +1099,32 @@
 		</Style>
 		
 		<Style name="Neutral.ButtonTabView" inherit="Neutral.TabView">
-			<Image name="background"       		image="Button"/>
-			<Image name="first"       			image="ButtonL"/>
-			<Image name="middle"       			image="ButtonM"/>
-			<Image name="last"       			image="ButtonR"/>
-			<Image name="single"           		image="Button"/>
+			<?not:defined legacy-styles-enabled?>
+			<Image name="background.image"		image="Button"/>
+			<Image name="tab.background.image"	image="Button"/>
+			<StyleCondition name="left">
+				<Image name="tab.background.image"	image="ButtonL"/>
+			</StyleCondition>
+			<StyleCondition name="middle">
+				<Image name="tab.background.image"	image="ButtonM"/>
+			</StyleCondition>
+			<StyleCondition name="right">
+				<Image name="tab.background.image"	image="ButtonR"/>
+			</StyleCondition>
+			<StyleCondition name="menu">
+				<Image name="tab.background.image"	image="ButtonR"/>
+			</StyleCondition>
+			<?defined legacy-styles-enabled?>
+			<Image name="background"			image="Button"/>
+			<Image name="first"				image="ButtonL"/>
+			<Image name="middle"				image="ButtonM"/>
+			<Image name="last"					image="ButtonR"/>
+			<Image name="single"				image="Button"/>
+			<?defined?>
 		</Style>
 		
 		<Style name="Neutral.LabelDimmed" inherit="Neutral.Label">
-			<Color name="textcolor" color="@Main.LabelColor.Dimmed"/>
+			<Color name="textcolor" color="@Main.LabelColorDimmed"/>
 		</Style>
 		
 		<Style name="Neutral.SearchBox" inherit="Neutral.EditBox">
@@ -866,21 +1134,28 @@
 		</Style>
 
 		<Style name="Neutral.ColorPopupBox">
-			<Color name="backcolor"	color="@Main.ColorPaletteBackcolor"/>
+			<Color name="backcolor"	color="@Main.ColorPaletteBackgroundColor"/>
 			<Metric name="border"	value="2"/>
 			<Color name="selectionColor"	color="white"/>
 		</Style>
 
 		<Style name="Neutral.PopupMenuDecorStyle">
+			<?not:defined legacy-styles-enabled?>
+			<Image name="background.image" image="PopupMenuDecor"/>
+			<?defined legacy-styles-enabled?>
 			<Image name="background" image="PopupMenuDecor"/>
+			<?defined?>
 		</Style>
 		
 		<Style name="Neutral.MenuBackcolorStyle">
-			<Color name="backcolor" color="@Main.MenuControlBackColor"/>
+			<Color name="backcolor" color="@Main.MenuControlBackgroundColor"/>
+			<?not:defined legacy-styles-enabled?>
+			<Color name="background.color" color="@Main.MenuControlBackgroundColor"/>
+			<?defined?>
 		</Style>
 
 		<Style name="Neutral.ViewHighlights">
-			<Color name="frameColor" color="@Main.SelectionBackColor"/>
+			<Color name="frameColor" color="@Main.SelectionBackgroundColor"/>
 <!--			<Color name="dimColor" color="hsl(0,0,0,50)"/>-->
 <!--			<Metric name="circleExpand" value="10"/>-->
 <!--			<Metric name="rectRadius" value="10"/>-->

@@ -41,7 +41,9 @@ public:
 	void terminate ();
 	
 	static CStringRef getClipboardMimeType (bool utf8Encoded = false);
-	
+	static bool isClipboardMimeType (CStringRef mimeType);
+	static void readText (String& text, int fd, TextEncoding encoding);
+
 	wl_data_device* getDataDevice () const;
 	
 	void registerSurface (Linux::Surface& surface);

@@ -128,8 +128,8 @@ protected:
 
 	ObjectList namedClasses;
 	ObjectList unnamedClasses;
-	CCL::LinkedList<IComponentExtender*> extenders;
-	CCL::LinkedList<IComponentExtender*> ownedExtenders;
+	LinkedList<IComponentExtender*> extenders;
+	LinkedList<IComponentExtender*> ownedExtenders;
 
 	ComponentClass* findNamedClass (StringID name) const;
 };

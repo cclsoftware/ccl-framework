@@ -87,6 +87,8 @@ public:
 	// EditHandler
 	void onBegin () override
 	{
+		EditHandler::onBegin ();
+
 		updateProperties ();
 		return handler->onBegin ();
 	}

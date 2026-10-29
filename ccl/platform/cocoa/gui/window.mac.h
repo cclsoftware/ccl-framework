@@ -51,6 +51,7 @@ public:
 	void setNativeView (NativeView* nativeView);
 	void forceActivate (Window* oldActiveWindow);
 	QuartzBitmap* createScreenshotFromWindow () const;
+	bool isChildWindow () const;
 
 	// Window
 	tbool CCL_API getProperty (Variant& var, MemberID propertyId) const override;
@@ -86,22 +87,23 @@ public:
 	tbool CCL_API isFullscreen () const override;
 	void onSize (const Point& delta) override;
 	void* CCL_API getSystemWindow () const override;
+	
+	PROPERTY_BOOL (suppressContextMenu, SuppressContextMenu)
+	PROPERTY_BOOL (suppressKeyEquivalents, SuppressKeyEquivalents)
 
 protected:
 	NativeView* nativeView;
 	void* delegate;
 	bool fullscreen;
 	bool activating;
-	PROPERTY_BOOL (suppressContextMenu, SuppressContextMenu)
 	float savedOpacity;
 
-	bool isChildWindow () const;
 	void suppressTitleBar ();
 
 	// Window
 	void updateMenuBar () override;
 	void setWindowSize (Rect& newSize) override;
-	void showWindow (bool state) override;
+	void showWindow (bool state = true, bool activate = true) override;
 	void makeNativePopupWindow (IWindow* parent) override;
 	void makeNativeChildWindow (void* nativeParent) override;
 };

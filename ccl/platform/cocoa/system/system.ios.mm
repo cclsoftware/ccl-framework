@@ -101,18 +101,12 @@ bool IOSSystemInformation::getNativeLocation (IUrl& path, System::FolderType typ
 		break;
 
 	case System::kUserDocumentFolder :
+	case System::kUserDownloadsFolder : // no such folder in the iOS sandbox, fallback to "Documents"
+	case System::kUserMusicFolder : // no such folder in the iOS sandbox, fallback to "Documents"
 		{
 			NSArray *paths = NSSearchPathForDirectoriesInDomains (NSDocumentDirectory, NSUserDomainMask, YES);
 			nsFileName = ([paths count] > 0) ? [paths objectAtIndex:0] : nil;
 		}
-		break;
-
-	case System::kUserDownloadsFolder :
-		nsDirId = NSDownloadsDirectory;
-		break;
-
-	case System::kUserMusicFolder :
-		nsDirId = NSMusicDirectory;
 		break;
 
 	case System::kUserSettingsFolder :

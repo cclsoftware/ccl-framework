@@ -10,15 +10,21 @@ find_program (glslc_executable NAMES glslc HINTS "${shader_tools_path}")
 find_program (spirv_opt_executable NAMES spirv-opt HINTS "${shader_tools_path}")
 find_program (spirv_cross_executable NAMES spirv-cross HINTS "${CCL_TOOLS_DIR}/bin/${VENDOR_HOST_PLATFORM}/vulkan" "${CCL_SPIRV_CROSS_DIR}")
 
+if (CCL_SPIRV_CROSS_DIR)
+	cmake_path (NORMAL_PATH CCL_SPIRV_CROSS_DIR)
+
+	ccl_add_nested_cmake_args (CMAKE_ARGS "-DCCL_SPIRV_CROSS_DIR='${CCL_SPIRV_CROSS_DIR}'")
+endif ()
+
 # Add a 3D shader resource.
 # @group android
 # @param {STRING} target  Name of the target to add a shader resource to.
 # @param {STRING} source  Shader source file.
 macro (ccl_add_shader_resource target source)
 	if (spirv_cross_executable)
-		set (shaders_dir "${VENDOR_OUTPUT_DIRECTORY}/${VENDOR_PLATFORM}/shaders/${target}")
+		set (shaders_dir "${VENDOR_OUTPUT_DIRECTORY}/${VENDOR_PLATFORM}/${VENDOR_PLATFORM_SUBDIR}/shaders/${target}")
 		if ("${VENDOR_OUTPUT_DIRECTORY}" MATCHES ".*/\.cxx/.*")
-			set (shaders_dir "${VENDOR_OUTPUT_DIRECTORY}/../../../../../${VENDOR_PLATFORM}/shaders/${target}")
+			set (shaders_dir "${VENDOR_OUTPUT_DIRECTORY}/../../../../../${VENDOR_PLATFORM}/${VENDOR_PLATFORM_SUBDIR}/shaders/${target}")
 		endif ()
 
 		get_filename_component (source_name "${source}" NAME_WE)

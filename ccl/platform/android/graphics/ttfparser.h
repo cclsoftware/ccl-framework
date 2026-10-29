@@ -233,7 +233,7 @@ public:
 						int64 pos = stream.tell ();
 						stream.seek (tblDir.uOffset + ttRecord.uStringOffset + ttNTHeader.uStorageOffset, IStream::kSeekSet);
 
-						static const uint16 kMaxStringLength = STRING_STACK_SPACE_MAX;
+						static const uint16 kMaxStringLength = CORE_STRING_STACK_MAX;
 						char buffer[kMaxStringLength];
 						int bytesRead = s.read (buffer, ccl_min (ttRecord.uStringLength, kMaxStringLength));
 

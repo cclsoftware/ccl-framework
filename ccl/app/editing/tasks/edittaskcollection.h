@@ -78,10 +78,10 @@ public:
 	tbool CCL_API interpretCommand (const CommandMsg& msg) override;
 
 protected:
-	static CCL::Configuration::BoolValue taskMenuIconsEnabled;
-	static CCL::Configuration::BoolValue taskMenuRecentEnabled;
-	static CCL::Configuration::BoolValue taskMenuInplaceMode;
-	static CCL::Configuration::BoolValue taskMenuFlat;
+	static Configuration::BoolValue taskMenuIconsEnabled;
+	static Configuration::BoolValue taskMenuRecentEnabled;
+	static Configuration::BoolValue taskMenuInplaceMode;
+	static Configuration::BoolValue taskMenuFlat;
 
 	ObjectArray tasks;
 	StringList commandCategories;

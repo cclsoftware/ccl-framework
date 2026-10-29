@@ -38,7 +38,7 @@ int CCL_API UserThread::threadFunc (void* arg)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-UserThread::UserThread (const char* threadName)
+UserThread::UserThread (CStringPtr threadName)
 : threadName (threadName),
   thread (nullptr),
   threadAlive (false),

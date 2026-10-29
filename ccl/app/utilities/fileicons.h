@@ -97,7 +97,7 @@ protected:
 	FileIconsPrivate ();
 	~FileIconsPrivate ();
 
-	static const char* kIconNamePrefix;
+	static CStringPtr kIconNamePrefix;
 
 	class UserIcon: public Object
 	{

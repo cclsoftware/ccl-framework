@@ -30,18 +30,18 @@ namespace CCL {
 class LabelRenderer: public ThemeRenderer
 {
 public:
-	LabelRenderer (VisualStyle* visualStyle);
+	LabelRenderer (VisualStyle* visualStyle, View* owner);
 	
-	void draw (View* view, const UpdateRgn& updateRgn) override;
-	int hitTest (View* view, const Point& loc, Point* clickOffset) override;
-	bool getPartRect (const View* view, int partCode, CCL::Rect& rect) override;
+	// ThemeRenderer
+	void draw (const UpdateRgn& updateRgn) override;
+	int hitTest (PointRef where, Point* clickOffset = nullptr) override;
+	bool getPartRect (Rect& rect, int partCode) override;
 
 protected:
-	
 	Point offset;
 };
 
-DECLARE_VISUALSTYLE_CLASS (Label)
+DECLARE_TYPELIB_ENTRY (Label)
 
 } // namespace CCL
 

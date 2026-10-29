@@ -34,6 +34,7 @@ ccl_list_append_once (corelib_platform_sources
 	${corelib_DIR}/platform/shared/posix/corenetwork.posix.cpp
 	${corelib_DIR}/platform/shared/posix/coresocket.posix.cpp
 	${corelib_DIR}/platform/shared/posix/corethread.posix.cpp
+	${corelib_DIR}/platform/shared/coreplatformthread.cpp
 )
 
 source_group (TREE ${corelib_DIR}/platform PREFIX "source\\platform" FILES ${corelib_platform_sources})

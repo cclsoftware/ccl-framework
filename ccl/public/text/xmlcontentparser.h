@@ -46,7 +46,7 @@ public:
 	// IXmlContentHandler
 	tresult CCL_API startElement (StringRef name, const IStringDictionary& attributes) override;
 	tresult CCL_API endElement (StringRef name) override;
-	tresult CCL_API characterData (const uchar* data, int length, tbool isCDATA) override;
+	tresult CCL_API characterData (UStringPtr data, int length, tbool isCDATA) override;
 	tresult CCL_API processingInstruction (StringRef target, StringRef data) override;
 	tresult CCL_API startNamespace (StringRef prefix, StringRef uri) override;
 	tresult CCL_API endNamespace (StringRef prefix) override;

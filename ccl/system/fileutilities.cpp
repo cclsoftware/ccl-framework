@@ -274,7 +274,7 @@ void CCL_API FileUtilities::makeUniqueFileName (IFileSystem& fileSystem, IUrl& p
 
 void CCL_API FileUtilities::makeValidFileName (String& fileName)
 {
-	static const char* kInvalidFileNameChars = "?*/\\<>|:\"\t\r\n";
+	static CStringPtr kInvalidFileNameChars = "?*/\\<>|:\"\t\r\n";
 
 	String newFileName;
 	// hmm... we are creating a copy even if the filename is valid :-(
@@ -293,7 +293,7 @@ void CCL_API FileUtilities::makeValidFileName (String& fileName)
 	#if CCL_PLATFORM_WINDOWS
 	// these string are not allowed as file names.
 	// https://docs.microsoft.com/en-us/windows/win32/fileio/naming-a-file
-	static const char* kInvalidFileNames [] = { "CON", "PRN", "AUX", "NUL",
+	static CStringPtr kInvalidFileNames [] = { "CON", "PRN", "AUX", "NUL",
 		"COM1", "COM2", "COM3", "COM4", "COM5", "COM6", "COM7", "COM8", "COM9",
 		"LPT1", "LPT2", "LPT3", "LPT4", "LPT5", "LPT6", "LPT7", "LPT8", "LPT9" };
 
@@ -341,7 +341,7 @@ tbool CCL_API FileUtilities::scanDateTime (DateTime& time, StringRef fileName, S
 {
 	MutableCString string (fileName);
 
-	if(const char* str = string)
+	if(CStringPtr str = string)
 	{
 		int year = 0, month = 0, day = 0, hour = 0, minute = 0, second = 0;
 		int dateTimeStart = 0;
@@ -695,7 +695,7 @@ IUrl* CCL_API FileUtilities::translatePathInMountedFolder (UrlRef path)
 // FileTypeRegistry::FileTypeItem
 //************************************************************************************************
 
-class FileTypeRegistry::FileTypeItem: public CCL::Object
+class FileTypeRegistry::FileTypeItem: public Object
 {
 public:
 	FileTypeItem (const FileType& fileType)

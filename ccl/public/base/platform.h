@@ -1,7 +1,7 @@
 //************************************************************************************************
 //
 // This file is part of Crystal Class Library (R)
-// Copyright (c) 2025 CCL Software Licensing GmbH.
+// Copyright (c) 2026 CCL Software Licensing GmbH.
 // All Rights Reserved.
 //
 // Licensed for use under either:
@@ -104,6 +104,7 @@ enum ByteOrder
 #define CCL_PLATFORM_ID_IOS				"ios"
 #define CCL_PLATFORM_ID_ANDROID			"android"
 #define CCL_PLATFORM_ID_LINUX			"linux"
+#define CCL_PLATFORM_ID_WASM			"wasm"
 
 #if CCL_PLATFORM_ARM
 	#if CCL_PLATFORM_64BIT
@@ -119,6 +120,8 @@ enum ByteOrder
 	#else
 		#define CCL_PLATFORM_ARCH "x86"
 	#endif
+#else
+	#define CCL_PLATFORM_ARCH ""
 #endif
 
 #if CORE_PLATFORM_WINDOWS
@@ -150,6 +153,13 @@ enum ByteOrder
 	#define CCL_PLATFORM_ID_CURRENT		CCL_PLATFORM_ID_LINUX
 	#define CCL_OS_NAME					"Linux"
 	#define CCL_PLATFORM_STRING			"Linux " CCL_PLATFORM_ARCH
+
+#elif CORE_PLATFORM_WASM
+	#define CCL_PLATFORM_WASM			1
+	#define CCL_PLATFORM_ID_CURRENT		CCL_PLATFORM_ID_WASM
+	#define CCL_OS_NAME					"WebAssembly"
+	#define CCL_PLATFORM_STRING			"Wasm"
+
 #endif
 
 //////////////////////////////////////////////////////////////////////////////////////////////////

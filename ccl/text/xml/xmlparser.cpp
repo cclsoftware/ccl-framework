@@ -41,7 +41,7 @@ static const String xmlErrorStringFormat = CCLSTR ("An XML reading error occurre
 static void XmlStartElementHandler (void* userData, const XML_Char* name, const XML_Char** atts)
 {
 	#if DEBUG_LOG
-	CCL_PRINTLN ((const uchar*)name)
+	CCL_PRINTLN ((UStringPtr)name)
 	#endif
 
 	XmlParser* parser = (XmlParser*)userData;
@@ -52,8 +52,8 @@ static void XmlStartElementHandler (void* userData, const XML_Char* name, const 
 	XmlStringDictionary attributes;
 	if(atts) for(int i = 0; atts[i] != nullptr; i += 2)
 	{
-		String key ((const uchar*)atts[i]);
-		String value ((const uchar*)atts[i+1]);
+		String key ((UStringPtr)atts[i]);
+		String value ((UStringPtr)atts[i+1]);
 
 		#if DEBUG_LOG
 		String output;
@@ -67,7 +67,7 @@ static void XmlStartElementHandler (void* userData, const XML_Char* name, const 
 	// Keep track of opened elements to avoid creating an additional
 	// String from XML_Char* data in XmlEndElementHandler()
 	Vector<String>& openElements = parser->getOpenElements ();
-	openElements.add ((const uchar*) name);
+	openElements.add ((UStringPtr) name);
 
 	if(handler->startElement (openElements.last (), attributes) != kResultOk)
 		parser->abort ();
@@ -88,7 +88,7 @@ static void XmlEndElementHandler (void* userData, const XML_Char* name)
 
 	// Retrieve the last opened element as stored in XmlStartElementHandler()
 	Vector<String>& openElements = parser->getOpenElements ();
-	ASSERT (openElements.last () == (const uchar*) name)
+	ASSERT (openElements.last () == (UStringPtr) name)
 
 	if(handler->endElement (openElements.last ()) != kResultOk)
 		parser->abort ();
@@ -106,7 +106,7 @@ static void XmlCharacterDataHandler (void* userData, const XML_Char* data, int l
 		return;
 
 	// data is not null terminated!
-	if(handler->characterData ((const uchar*)data, len, parser->isReceivingCDATA ()) != kResultOk)
+	if(handler->characterData ((UStringPtr)data, len, parser->isReceivingCDATA ()) != kResultOk)
 		parser->abort ();
 }
 
@@ -135,8 +135,8 @@ static void XmlProcessingInstructionHandler (void* userData, const XML_Char* tar
 	if(parser->isAborted () || !handler)
 		return;
 
-	String targetString ((const uchar*)target);
-	String dataString ((const uchar*)data);
+	String targetString ((UStringPtr)target);
+	String dataString ((UStringPtr)data);
 
 	if(handler->processingInstruction (targetString, dataString) != kResultOk)
 		parser->abort ();

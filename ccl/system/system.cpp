@@ -355,7 +355,7 @@ tbool CCL_API SystemInformation::resolveLocation (IUrl& resolved, UrlRef url) co
 	static const String dollarSign ("$");
 	if(symbol.startsWith (dollarSign))
 	{
-		static struct { const char* name; System::FolderType type; } folderSymbols[] =
+		static struct { CStringPtr name; System::FolderType type; } folderSymbols[] =
 		{
 			{"SYSTEM",			System::kSystemFolder},
 			{"PROGRAMS",		System::kProgramsFolder},

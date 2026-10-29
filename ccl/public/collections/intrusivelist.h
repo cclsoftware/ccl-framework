@@ -19,6 +19,8 @@
 #ifndef _ccl_intrusivelist_h
 #define _ccl_intrusivelist_h
 
+#include "ccl/public/base/platform.h"
+
 #include "core/public/coreintrusivelist.h"
 
 namespace CCL {

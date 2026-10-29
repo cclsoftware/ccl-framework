@@ -17,16 +17,21 @@
 //************************************************************************************************
 
 #include "ccl/gui/theme/renderer/buttonrenderer.h"
+
 #include "ccl/gui/graphics/imaging/imagecache.h"
 #include "ccl/gui/graphics/imaging/multiimage.h"
+
 #include "ccl/gui/controls/button.h"
+#include "ccl/gui/controls/textmodel.h"
+
 #include "ccl/public/gui/iparameter.h"
 #include "ccl/public/math/mathprimitives.h"
 
-
 using namespace CCL;
 
-const char* ButtonStateNames[] = // reused in selectboxrenderer.cpp
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+CStringPtr ButtonStateNames[] = // reused in selectboxrenderer.cpp
 {
 	"normal",    "pressed",    "mouseover",    "disabled",    "focus",
 	"normalOn",  "pressedOn",  "mouseoverOn",  "disabledOn",  "focusOn"
@@ -40,104 +45,233 @@ The background can be an image "background" (or "left" or "right" when the corre
 A frame of the image is chosen depending on the mouse state and parameter value.
 Supported frame names are "normal[On]", "pressed[On]", "mouseover[On]", "disabled[On]", "focus[On]".
 
-When an image is used, an additonal background color "backcolor.on" or "backcolor.off" can be drawn underneath the button image.
+Unlike other atoms, the "background" atom fills its "color" behind the image, but only if the image has neither
+the "template" nor the "adaptive" attribute. Otherwise the color colorizes the image.
 When no image is specified, a rectangular frame in color "forecolor" can be drawn with option "border".
 For the content, a padding can be specified. The content can be an "icon", "title" or both.*/
 //************************************************************************************************
 
-BEGIN_VISUALSTYLE_CLASS (Button, VisualStyle, "ButtonStyle")
-	ADD_VISUALSTYLE_IMAGE  ("left")						///< used instead of "background" image when button has option "left"
-	ADD_VISUALSTYLE_IMAGE  ("right")					///< used instead of "background" image when button has option "right"
-	ADD_VISUALSTYLE_IMAGE  ("single")					///< used instead of "background" image when button has option "left" and "right"
-	ADD_VISUALSTYLE_IMAGE  ("middle")					///< used instead of "background" image when button has option "middle"
-	ADD_VISUALSTYLE_IMAGE  ("icon")						///< fallback when no icon at the button is defined
-	ADD_VISUALSTYLE_COLOR  ("textcolor")				///< textcolor for the button title
-	ADD_VISUALSTYLE_COLOR  ("textcolor.on")				///< used instead of "textcolor" when button is switched on
-	ADD_VISUALSTYLE_COLOR  ("textcolor.pressed")		///< used instead of "textcolor.on" when button is pressed and off
-	ADD_VISUALSTYLE_COLOR  ("textcolor.pressedOn")		///< used instead of "textcolor.pressed" when button is pressed and on
-	ADD_VISUALSTYLE_COLOR  ("textcolor.mouseover")		///< used instead of "textcolor" when mouse is over button
-	ADD_VISUALSTYLE_COLOR  ("textcolor.mouseoverOn")	///< used instead of "textcolor.on" when mouse is over button
-	ADD_VISUALSTYLE_COLOR  ("textcolor.disabled")		///< used instead of "textcolor" when button is disabled
-	ADD_VISUALSTYLE_COLOR  ("textcolor.disabledOn")		///< used instead of "textcolor.disabled" when button is disabled and on
-	ADD_VISUALSTYLE_COLOR  ("textcolor.transparent")	///< used when the current color from colorparam is transparent
-	ADD_VISUALSTYLE_COLOR  ("textcolor.transparentOn")	///< used when the parameter is on and the current color from colorparam is transparent
-	ADD_VISUALSTYLE_COLOR  ("textcolor.bright")			///< used when the current luminance of the "colorname" color is below the "textcolor.threshold"
-	ADD_VISUALSTYLE_COLOR  ("textcolor.brightOn")		///< used when the parameter is on and the current colorparam luminance is below the "textcolor.threshold"
-	ADD_VISUALSTYLE_COLOR  ("textcolor.dark")			///< used when the current luminance of the "colorname" color is above the "textcolor.threshold" (using "textcolor" as fallback, needs definition of textcolor.bright)
-	ADD_VISUALSTYLE_COLOR  ("textcolor.darkOn")			///< used when the current luminance of the "colorname" color is above the "textcolor.threshold" (using "textcolor" as fallback, needs definition of textcolor.bright)
-	ADD_VISUALSTYLE_COLOR  ("textcolor.alphablend")		///< the non-transparent "colorname" color will be alphablended with this color (using "color.alphablend" as fallback) and used as textcolor
-	ADD_VISUALSTYLE_COLOR  ("textcolor.phaseOn")		///< used instead of "textcolor" when phase is on and button is disabled
-	ADD_VISUALSTYLE_METRIC ("textcolor.threshold")		///< used instead of "textcolor" if the luminance threshold for the current "colorname" color is below this value - default is 0.35
-	ADD_VISUALSTYLE_METRIC ("text.width")				///< truncate title to fit into this width
-	ADD_VISUALSTYLE_COLOR  ("backcolor.on")				///< background color drawn underneath button image when button is switched on (overwritten by opaque colorParam color)
-	ADD_VISUALSTYLE_COLOR  ("backcolor.off")			///< background color drawn underneath button image when button is switched off (even when a colorParam is used)
-	ADD_VISUALSTYLE_COLOR  ("backcolor.transparent")	///< background color drawn underneath button image when button is switched off (when colorParam color is transparent)
-	ADD_VISUALSTYLE_METRIC ("padding.left")				///< left padding for title and/or icon
-	ADD_VISUALSTYLE_METRIC ("padding.top")				///< top padding for title and/or icon
-	ADD_VISUALSTYLE_METRIC ("padding.right")			///< right padding for title and/or icon
-	ADD_VISUALSTYLE_METRIC ("padding.bottom")			///< bottom padding for title and/or icon
-	ADD_VISUALSTYLE_METRIC ("padding")					///< padding for icon & title, used if one of the paddings for left, top, right, bottom is not specified
-	ADD_VISUALSTYLE_METRIC ("spacing.icon")				///< customizable space between icon and the text (default is 3 points)
-	ADD_VISUALSTYLE_METRIC ("fill.icon")				///< scalable icons (shapes/svgs) are resized to fill out the button size (aspect ratio is kept) value: ]0-1]
-	ADD_VISUALSTYLE_METRIC ("colorize.icon")			///< set to use "iconcolor" / "iconcolor.on" to colorize the icon (checkmark of CheckBox is always colorized!)
-	ADD_VISUALSTYLE_METRIC ("lightadapt.icon")			///< set to use "iconcolor" / "iconcolor.on" to modify the icon and adapt the luminance of dark/light pixels to the iconcolor
-	ADD_VISUALSTYLE_COLOR  ("iconcolor")				///< used when "colorize.icon" is set ("iconcolor" is CheckBox's "checkmark" color)
-	ADD_VISUALSTYLE_COLOR  ("iconcolor.pressed")		///< used when "colorize.icon" is set
-	ADD_VISUALSTYLE_COLOR  ("iconcolor.pressedOn")		///< used when "colorize.icon" is set
-	ADD_VISUALSTYLE_COLOR  ("iconcolor.mouseover")		///< used when "colorize.icon" is set
-	ADD_VISUALSTYLE_COLOR  ("iconcolor.mouseoverOn")	///< used when "colorize.icon" is set
-	ADD_VISUALSTYLE_COLOR  ("iconcolor.on")				///< used when "colorize.icon" is set and button is switched on
-	ADD_VISUALSTYLE_COLOR  ("iconcolor.disabled")		///< used when button is disabled
-	ADD_VISUALSTYLE_COLOR  ("iconcolor.transparent")	///< used when "colorize.icon" is set and the current color from colorparam is transparent
-	ADD_VISUALSTYLE_COLOR  ("iconcolor.transparentOn")	///< used when "colorize.icon" is set, the parameter is on and the current color from colorparam is transparent
-	ADD_VISUALSTYLE_COLOR  ("iconcolor.bright")			///< used when "colorize.icon" is set and the current colorparam luminance is below the "textcolor.threshold"
-	ADD_VISUALSTYLE_COLOR  ("iconcolor.brightOn")		///< used when "colorize.icon" is set, the parameter is on and the current colorparam luminance is below the "textcolor.threshold"
-	ADD_VISUALSTYLE_COLOR  ("iconcolor.dark")			///< used when "colorize.icon" is set and the current colorparam luminance is above the "textcolor.threshold" (using "textcolor" as fallback, needs definition of textcolor.bright)
-	ADD_VISUALSTYLE_COLOR  ("iconcolor.darkOn")			///< used when "colorize.icon" is set, the parameter is on and the current colorparam luminance is above the "textcolor.threshold" (using "textcolor" as fallback, needs definition of textcolor.bright)
-	ADD_VISUALSTYLE_COLOR  ("iconcolor.alphablend")		///< the non-transparent "colorname" color will be alphablended with this color (using "color.alphablend" as fallback) and used as iconcolor
-	ADD_VISUALSTYLE_METRIC ("useButtonMinSize")			///< use minimal button size (uses theme size as default)
-	ADD_VISUALSTYLE_METRIC ("buttonMinWidth")			///< use minimal button width
-	ADD_VISUALSTYLE_METRIC ("buttonMinHeight")			///< use minimal button height
-	ADD_VISUALSTYLE_METRIC ("backcolor.radius")			///< radius for backcolor / forcolor
-	ADD_VISUALSTYLE_IMAGE  ("animation.filmstrip")		///< an animation filmstrip could be used to show intermediate button states - the visualstyle is responisble to define the appropriate animiation triggers for the phase property
-	ADD_VISUALSTYLE_METRIC ("scaletext.maxfont")		///< explicit maximal fontsize when scaletext option is set
-	ADD_VISUALSTYLE_METRIC ("scaletext.minfont")		///< explicit minimal fontsize when scaletext option is set
-	ADD_VISUALSTYLE_METRIC ("textshiftdown")			///< the text baseline will be offsetted by one point if the button is on
-END_VISUALSTYLE_CLASS (Button)
+DEFINE_TYPELIB_ENTRY_WITH_PARENT (Button, BIV, "ButtonStyle", VISUALSTYLES_TYPELIB)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-ButtonRenderer::ButtonRenderer (VisualStyle* visualStyle)
-: CompositedRenderer (visualStyle),
-  frameIndex (10),
-  iconFrameIndex (10),
-  phaseFrameIndex (-1),
-  phaseIconFrameIndex (-1),
-  backcolorRadius (0),
-  iconSpacing (3),
-  iconFillSize (0.f),
-  leadingIcon (false),
-  trailingIcon (false),
-  useModifiedIcon (false),
-  drawAsTemplate (true),
-  animationState (kAnimationStopped),
-  phaseForPendingAnimation (0),
+DEFINE_CLASS_ABSTRACT (ButtonRenderer, BIVRenderer)
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+ButtonRenderer::ButtonRenderer (VisualStyle* visualStyle, View* owner)
+: BIVRenderer (visualStyle, owner),
+  initialized (false),
+  backgroundImage (nullptr)
+  #if LEGACY_STYLES_SUPPORTED
+  , animationFilmstrip (nullptr),
   lastButtonValue (-1),
-  textShiftDownMode (false),
-  brightColorThreshold (0.35f),
-  initialized (false)
+  phaseIconFrameIndex (-1),
+  phaseForPendingAnimation (0),
+  animationState (kAnimationStopped)
+  #endif
 {}
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void ButtonRenderer::setImage (IImage* _image)
+void ButtonRenderer::applyVisualStyle (RenderAtomTransaction& transaction)
 {
-	image = _image;
+	if(!initialized)
+		initialize ();
 
-	if(image)
-		initFrames (frameIndex, *image);
+	SharedPtr<IImage> oldIcon = iconAtom.getImage ();
 
-	phaseFrameIndex = image ? image->getFrameIndex ("phaseOn") : -1;
+	// This applies the general condition based style removing
+	// any properties that are set in this renderer. We have to
+	// set them again below.
+	SuperClass::applyVisualStyle (transaction);
+
+	Button* button = static_cast<Button*> (owner);
+	StyleRef style = owner->getStyle ();
+	if(style.isCustomStyle (Styles::kButtonAppearanceLeadingIcon))
+		order = kLeadingIcon;
+	else if(style.isCustomStyle (Styles::kButtonAppearanceTrailingIcon))
+		order = kTrailingIcon;
+
+	#if LEGACY_STYLES_SUPPORTED
+	BEGIN_LEGACY_STYLES_ENABLED_BLOCK
+	animationFilmstrip = unknown_cast<Image> (visualStyle->getImage (LegacyStyleID::kAnimationFilmstrip));
+	END_LEGACY_STYLES_ENABLED_BLOCK
+	#endif
+
+	backgroundImage = backgroundAtom.getImage ();
+	backgroundAtom.isBrushBackdrop (!backgroundAtom.canRecolorImage ());
+
+	int frame = button->getCurrentFrame ();
+	if(backgroundImage)
+	{
+		initFrames (frameIndex, *backgroundImage);
+		if(frameIndex.count () > frame)
+			backgroundAtom.setImageFrame (frameIndex.at (frame));
+	}
+
+	if(Image* buttonIcon = unknown_cast<Image> (button->getIcon ()))
+		iconAtom.setImage (buttonIcon);
+
+	Image* icon = iconAtom.getImage ();
+	if(icon && icon->getFrameCount () > 0)
+	{
+		// the icon can change with the style conditions - keep the frame index in sync
+		if(oldIcon != icon)
+			updateIconFrames (*icon);
+
+		#if LEGACY_STYLES_SUPPORTED
+		BEGIN_LEGACY_STYLES_ENABLED_BLOCK
+		if(visualStyle->getMetric<bool> (LegacyStyleID::kColorizeIcon, false))
+			icon->setIsTemplate (true);
+
+		if(iconAtom.canRecolorImage ())
+			iconAtom.setBrush (getIconBrush ());
+		END_LEGACY_STYLES_ENABLED_BLOCK
+		#endif
+
+		// icon size can depend on current frame...
+		// ...select frame beforehand
+		if(iconFrameIndex.count () > frame)
+			iconAtom.setImageFrame (iconFrameIndex.at (frame));
+
+		#if LEGACY_STYLES_SUPPORTED
+		BEGIN_LEGACY_STYLES_ENABLED_BLOCK
+		if(!button->isEnabled ())
+		{
+			if(iconFrameIndex[ThemeElements::kDisabled] == iconFrameIndex[ThemeElements::kNormal]) // when the icon has no own 'disabled' frame
+			{
+				Color iconColorDisabled;
+				if(owner->getVisualStyle ().getColor (iconColorDisabled, LegacyStyleID::kIconColorDisabled)) // when the iconColorDisabled is set
+					iconAtom.setBrush (SolidBrush (iconColorDisabled));
+			}
+		}
+		END_LEGACY_STYLES_ENABLED_BLOCK
+		#endif
+	}
+
+	valueAtom.isTextMultiline (style.isCustomStyle (Styles::kButtonAppearanceMultiLine));
+	if(valueAtom.isTextMultiline ())
+		valueAtom.setWordBreak (true);
+
+	valueAtom.isContentFill (style.isCustomStyle (Styles::kButtonAppearanceScaleText));
+
+	applyColorParam ();
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+void ButtonRenderer::draw (const UpdateRgn& updateRgn)
+{
+	SuperClass::draw (updateRgn);
+
+	StyleRef style = owner->getStyle ();
+	if(owner->isFocused () && !style.isCustomStyle (Styles::kButtonAppearanceHideFocus))
+	{
+		auto drawFocus = [&] (Image* image, RectRef rect, int frame)
+		{
+			if(image && image->getFrameIndex (ThemeNames::kFocused) >= 0) // draw focus overlay if available
+			{
+				image->setCurrentFrame (frame);
+
+				GraphicsPort port (owner);
+				Rect src (0, 0, image->getWidth (), image->getHeight ());
+				port.drawImage (image, src, rect);
+			}
+		};
+
+		if(!backgroundAtom.isHidden () && frameIndex.count () > ThemeElements::kFocused)
+			drawFocus (backgroundAtom.getImage (), rectFToInt (backgroundAtom.getSize ()), frameIndex [ThemeElements::kFocused]);
+
+		if(!iconAtom.isHidden () && iconFrameIndex.count () > ThemeElements::kFocused)
+			drawFocus (iconAtom.getImage (), rectFToInt (iconAtom.getSize ()), iconFrameIndex [ThemeElements::kFocused]);
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+void ButtonRenderer::updateAtoms ()
+{
+	if(!initialized)
+		initialize ();
+
+	Button* button = static_cast<Button*> (owner);
+	updateTextModel (button->getTextModel ());
+
+	SuperClass::updateAtoms ();
+
+	#if LEGACY_STYLES_SUPPORTED
+	BEGIN_LEGACY_STYLES_ENABLED_BLOCK
+	// draw animated phase overlay
+	if(animationFilmstrip)
+	{
+		updateAnimationState ();
+		if(isAnimationPending () || isAnimationRunning ())
+		{
+			float phase = isAnimationPending () ? phaseForPendingAnimation : button->getPhase ();
+			int phaseFrame = ccl_to_int (animationFilmstrip->getFrameCount () * phase);
+			backgroundAtom.setImage (animationFilmstrip);
+			backgroundAtom.setImageFrame (phaseFrame);
+		}
+		else if(backgroundImage) // animation stopped - draw button image
+		{
+			backgroundAtom.setImage (backgroundImage);
+			backgroundAtom.setImageFrame (frameIndex [button->getCurrentFrame ()]);
+		}
+	}
+
+	if(phaseIconFrameIndex != -1 && button->getPhase () > 0.f)
+	{
+		iconAtom.setImageFrame (phaseIconFrameIndex);
+		iconAtom.setOpacity (button->getPhase ());
+	}
+	END_LEGACY_STYLES_ENABLED_BLOCK
+	#endif
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+void ButtonRenderer::initialize ()
+{
+	Button* button = static_cast<Button*> (owner);
+
+	int numFrames = ccl_max (10, button->getNumFrames ());
+	frameIndex.resize (numFrames);
+	frameIndex.setCount (numFrames);
+
+	#if LEGACY_STYLES_SUPPORTED
+	BEGIN_LEGACY_STYLES_ENABLED_BLOCK
+	Image* icon = unknown_cast<Image> (button->getIcon ());
+	if(icon == nullptr)
+	{
+		if(icon = unknown_cast<Image> (visualStyle->getImage (LegacyStyleID::kIcon)))
+		{
+			button->setIcon (icon);
+			button->hasIconFromVisualStyle (true);
+		}
+	}
+	END_LEGACY_STYLES_ENABLED_BLOCK
+	#endif
+
+	initialized = true;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+void ButtonRenderer::updateIconFrames (Image& icon)
+{
+	Button* button = static_cast<Button*> (owner);
+
+	int numFrames = ccl_max (10, button->getNumFrames ());
+	iconFrameIndex.resize (numFrames);
+	iconFrameIndex.setCount (numFrames);
+	initFrames (iconFrameIndex, icon);
+
+	#if LEGACY_STYLES_SUPPORTED
+	BEGIN_LEGACY_STYLES_ENABLED_BLOCK
+	phaseIconFrameIndex = icon.getFrameIndex (LegacyStyleID::kPhaseOn);
+	END_LEGACY_STYLES_ENABLED_BLOCK
+	#endif
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -154,8 +288,10 @@ void ButtonRenderer::initFrames (IntVector& index, IImage& image)
 
 	// element states -> "normal"
 	for(int i = 1; i < 5; i++)
+	{
 		if(index[i] == -1)
 			index[i] = index[0];
+	}
 
 	// "normalOn" -> "pressed"
 	if(index[5] == -1)
@@ -163,389 +299,19 @@ void ButtonRenderer::initFrames (IntVector& index, IImage& image)
 
 	// "..On" element states -> "normalOn"
 	for(int i = 6; i < 10; i++)
+	{
 		if(index[i] == -1)
 			index[i] = index[5];
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
+#if LEGACY_STYLES_SUPPORTED
+//////////////////////////////////////////////////////////////////////////////////////////////////
 
-void ButtonRenderer::initialize (StyleRef style, View* view)
+void ButtonRenderer::updateAnimationState ()
 {
-	if(visualStyle == nullptr)
-		return;
-	
-	Button* button = static_cast<Button*> (view);
-	int numFrames = ccl_max (10, button->getNumFrames ());
-	frameIndex.resize (numFrames);
-	frameIndex.setCount (numFrames);
-	
-	IImage* image = nullptr;
-	if(style.isCommonStyle (Styles::kMiddle))
-		image = visualStyle->getImage ("middle");
-	if(style.isCommonStyle (Styles::kLeft) && style.isCommonStyle (Styles::kRight))
-		image = visualStyle->getImage ("single");
-	else if(style.isCommonStyle (Styles::kLeft))
-		image = visualStyle->getImage ("left");
-	else if(style.isCommonStyle (Styles::kRight))
-		image = visualStyle->getImage ("right");
-	if(image == nullptr)
-		image = visualStyle->getBackgroundImage ();
-	setImage (image);
-
-	IImage* icon = button->getIcon ();
-	if(icon == nullptr)
-	{
-		if(icon = visualStyle->getImage ("icon"))
-		{
-			button->setIcon (icon);
-			button->hasIconFromVisualStyle (true);
-		}
-	}
-	if(icon)
-	{
-		ASSERT (icon->getFrameCount ()) // resources are missing!
-		iconFrameIndex.resize (numFrames);
-		iconFrameIndex.setCount (numFrames);
-		initFrames (iconFrameIndex, *icon);
-		phaseIconFrameIndex = icon->getFrameIndex ("phaseOn");
-	}
-	
-	leadingIcon = style.isCustomStyle (Styles::kButtonAppearanceLeadingIcon);
-	trailingIcon = style.isCustomStyle (Styles::kButtonAppearanceTrailingIcon);
-	
-	textColor = visualStyle->getTextColor ();
-	textColorOn = visualStyle->getColor ("textcolor.on", textColor);
-	textColorPressed = visualStyle->getColor ("textcolor.pressed", textColor);
-	textColorMouseOver = visualStyle->getColor ("textcolor.mouseover", textColor);
-	textColorMouseOverOn = visualStyle->getColor ("textcolor.mouseoverOn", textColorOn);
-	textColorPressedOn = visualStyle->getColor ("textcolor.pressedOn", textColorOn);
-	textColorDisabled = visualStyle->getColor ("textcolor.disabled", textColor);
-	textColorDisabledOn = visualStyle->getColor ("textcolor.disabledOn", textColorDisabled);
-	textColorPhaseOn = visualStyle->getColor ("textcolor.phaseOn", textColor);
-	iconColor = visualStyle->getColor ("iconcolor", textColor);
-	iconColorOn = visualStyle->getColor ("iconcolor.on", textColorOn);
-	iconColorDisabled = visualStyle->getColor ("iconcolor.disabled", Colors::kTransparentBlack);
-	iconMouseoverColor = visualStyle->getColor ("iconcolor.mouseover", iconColor);
-	iconMouseoverColorOn = visualStyle->getColor ("iconcolor.mouseoverOn", iconColorOn);
-	iconPressedColor = visualStyle->getColor ("iconcolor.pressed", iconColor);
-	iconPressedColorOn = visualStyle->getColor ("iconcolor.pressedOn", iconColorOn);
-	bool colorizeIcon = visualStyle->getMetric<bool> ("colorize.icon", false);
-	bool lightAdaptIcon = visualStyle->getMetric<bool> ("lightadapt.icon", false);
-	useModifiedIcon = lightAdaptIcon || colorizeIcon; 
-	drawAsTemplate = !lightAdaptIcon;
-
-	textContrastBrightColor = visualStyle->getColor ("textcolor.bright", Colors::kTransparentBlack);
-	textContrastBrightColorOn = visualStyle->getColor ("textcolor.brightOn", textContrastBrightColor);
-	textContrastDarkColor = visualStyle->getColor ("textcolor.dark", textColor);
-	textContrastDarkColorOn = visualStyle->getColor ("textcolor.darkOn", textContrastDarkColor);
-	textContrastTransparentColor = visualStyle->getColor ("textcolor.transparent", textColor);
-	textContrastTransparentColorOn = visualStyle->getColor ("textcolor.transparentOn", textColorOn);
-	textColorAlphaBlend = visualStyle->getColor ("textcolor.alphablend", visualStyle->getColor ("color.alphablend", Colors::kTransparentBlack));
-	
-	iconContrastBrightColor = visualStyle->getColor ("iconcolor.bright", Colors::kTransparentBlack);
-	iconContrastBrightColorOn = visualStyle->getColor ("iconcolor.brightOn", iconContrastBrightColor);
-	iconContrastDarkColor = visualStyle->getColor ("iconcolor.dark", iconColor);
-	iconContrastDarkColorOn = visualStyle->getColor ("iconcolor.darkOn", iconContrastDarkColor);
-	iconContrastTransparentColor = visualStyle->getColor ("iconcolor.transparent", iconColor);
-	iconContrastTransparentColorOn = visualStyle->getColor ("iconcolor.transparentOn", iconColorOn);
-	iconColorAlphaBlend = visualStyle->getColor ("iconcolor.alphablend", textColorAlphaBlend);
-	
-	colorParamColor = Colors::kTransparentBlack;
-	
-	visualStyle->getPadding (padding);
-	
-	backcolorRadius = visualStyle->getMetric<Coord> ("backcolor.radius", 0);
-	iconSpacing = visualStyle->getMetric<Coord> ("spacing.icon", iconSpacing);
-	iconFillSize = visualStyle->getMetric<float> ("fill.icon", 0.f);
-	brightColorThreshold = visualStyle->getMetric<float> ("textcolor.threshold", brightColorThreshold);
-	
-	animationFilmstrip = visualStyle->getImage ("animation.filmstrip");	
-	
-	textScaler.setExplicitMaximalFontSize (visualStyle->getMetric<float> ("scaletext.maxfont", 100));
-	textScaler.setExplicitMinimalFontSize (visualStyle->getMetric<float> ("scaletext.minfont", 6));
-	textShiftDownMode = visualStyle->getMetric<bool> ("textshiftdown", false);
-	
-	initialized = true;
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
-void ButtonRenderer::draw (View* view, const UpdateRgn& updateRgn)
-{	
-	StyleRef style = view->getStyle ();
-	if(initialized == false)
-		initialize (style, view);
-
-	Button* button = static_cast<Button*> (view);
-	GraphicsPort port (button);
-	Rect rect;
-	button->getClientRect (rect);
-
-	UnknownPtr<IColorParam> colorParam = button->getColorParam ();
-	
-	if(style.isOpaque ())
-	{
-		Color backColor (Colors::kTransparentBlack);
-		
-		if(colorParam)
-			colorParam->getColor (backColor);
-
-		if(button->isOn () == false)
-			backColor = visualStyle->getColor ("backcolor.off", backColor); // backcolor.off can be used to hide the colorParam color
-		
-		if(backColor.getAlphaF () == 0)
-			backColor = visualStyle->getColor (button->isOn () ? (image ? "backcolor.on" : StyleID::kForeColor.str ()) : 
-											  (image ? "backcolor.transparent" : StyleID::kBackColor.str ()),
-											  Colors::kTransparentBlack);
-		
-		// draw backcolor
-		if((backColor != Colors::kTransparentBlack) && button->isEnabled ())
-			port.fillRoundRect (rect, backcolorRadius, backcolorRadius, SolidBrush (backColor));
-		
-		
-		// *** Draw Button Image ***
-		if(animationFilmstrip)
-		{
-			updateAnimationState (button);
-			
-			if(isAnimationPending () || isAnimationRunning ())
-			{
-				float phase = isAnimationPending () ? phaseForPendingAnimation : button->getPhase ();
-				int phaseFrame = ccl_to_int (animationFilmstrip->getFrameCount () * phase);
-				animationFilmstrip->setCurrentFrame (phaseFrame);
-				port.drawImage (animationFilmstrip, Rect (0,0, animationFilmstrip->getWidth (), animationFilmstrip->getHeight ()), rect);
-			}
-			else if(image) // animation stopped - draw button image
-			{
-				image->setCurrentFrame (frameIndex [button->getCurrentFrame ()]);
-				port.drawImage (image, Rect (0, 0, image->getWidth (), image->getHeight ()), rect);
-			}
-		}
-		else if(image)
-		{
-			image->setCurrentFrame (frameIndex [button->getCurrentFrame ()]);
-			Rect src (0, 0, image->getWidth (), image->getHeight ());
-			port.drawImage (image, src, rect);
-
-			// draw animated phase overlay
-			if(phaseFrameIndex != -1 && button->getPhase () > 0.f)
-			{
-				image->setCurrentFrame (phaseFrameIndex);
-				ImageMode mode (button->getPhase ());
-				port.drawImage (image, src, rect, &mode);
-			}
-		}
-		else if(style.isBorder ())
-			port.drawRect (rect, Pen (visualStyle->getForeColor ()));
-		
-		// *** Draw Focus ***
-		if(button->isFocused () && !style.isCustomStyle (Styles::kButtonAppearanceHideFocus))
-		{
-			if(image && image->getFrameIndex (ThemeNames::kFocused) >= 0) // draw focus overlay if available
-			{
-				image->setCurrentFrame (frameIndex [ThemeElements::kFocused]);
-			
-				Rect src (0, 0, image->getWidth (), image->getHeight ());
-				port.drawImage (image, src, rect);
-			}
-		}
-	}
-	
-	IImage* icon = button->getIcon ();
-	if(button->getTitle ().isEmpty () == false || icon != nullptr)
-	{
-		if(style.isVertical ())
-		{
-			port.saveState ();
-
-			Transform t;
-			t.translate ((float)rect.left, (float)rect.bottom);
-			t.rotate (Math::degreesToRad (-90.f));
-			port.addTransform (t);
-
-			rect (0, 0, rect.getHeight (), rect.getWidth ());
-		}
-
-		rect.left	+= padding.left;
-		rect.right	-= padding.right;
-		rect.top	+= padding.top;
-		rect.bottom	-= padding.bottom;
-
-		bool buttonIsPressed = ThemeElements::kPressed == button->getThemeElementState ();
-		bool buttonMouseOver = ThemeElements::kMouseOver == button->getThemeElementState ();
-		
-		if(textShiftDownMode)
-			if(button->isOn () || buttonIsPressed)
-				rect.offset (0,1);
-
-		Point iconSize;
-		Point iconPos;
-		Rect iconSrc;
-		
-		if(icon)
-		{
-			if(icon->getFrameCount ())
-			{
-				// icon size can depend on current frame...
-				// ...select frame beforehand
-				int frame = button->getCurrentFrame ();
-				if(iconFrameIndex.count () > frame)
-					icon->setCurrentFrame (iconFrameIndex.at (frame));
-					
-				if(MultiImage* multiImageIcon = unknown_cast<MultiImage> (icon)) 	
-					icon = multiImageIcon->getFrame (multiImageIcon->getCurrentFrame ()); // current frame as icon
-			}
-			
-			iconSize (icon->getWidth (), icon->getHeight ());
-			iconSrc.setSize (iconSize);
-						
-			if(icon->getType () == IImage::kScalable)
-			{
-				float iconResize = iconFillSize * ccl_min (button->getHeight (), button->getWidth ());
-				float resizeRatio = (iconResize > 0.f) ? (iconResize / ccl_max (iconSize.x, iconSize.y)) : 1;
-				iconSize *= resizeRatio;
-			}
-			
-			iconPos = rect.getLeftTop () + ((rect.getSize () - iconSize) * .5f);
-		}
-		
-		if(button->getTitle ().isEmpty ())
-		{
-			if(leadingIcon)
-				iconPos.x = rect.left;
-			else if(trailingIcon)
-				iconPos.x = rect.right - iconSize.x - iconSpacing;
-		}
-		else
-		{
-			int alignH = visualStyle->getTextAlignment ().getAlignH ();
-			Font font (visualStyle->getTextFont ().zoom (button->getZoomFactor ()));
-
-			if(icon)
-			{
-				if(leadingIcon)
-				{
-					iconPos.x = rect.left;
-					rect.left += iconSize.x + iconSpacing;
-				}
-				else if(trailingIcon)
-				{
-					iconPos.x = rect.right - iconSize.x - iconSpacing;
-					rect.right = iconPos.x;
-				}
-				else
-				{
-					if(alignH == Alignment::kLeft)
-					{
-						iconPos.x = rect.left;
-						rect.left += iconSize.x + iconSpacing;
-					}
-					else
-					{
-						Rect stringSize;
-						port.measureString (stringSize, button->getTitle (), font);
-						if(alignH == Alignment::kHCenter)
-						{
-							Coord margin = (rect.getWidth () - stringSize.getWidth () - iconSpacing - iconSize.x) / 2;
-							
-							iconPos.x = rect.left + margin;
-							
-							rect.right -= margin;
-							rect.left = rect.right - stringSize.getWidth ();
-						}
-						else // kRight
-							iconPos.x = rect.right - stringSize.getWidth () - iconSize.x - iconSpacing;
-					}
-				}
-			}
-			
-			// setup text color
-			Color textBrushColor;
-			if(button->isEnabled ())
-				textBrushColor = getTextColor (colorParam, button->isOn (), buttonIsPressed, buttonMouseOver);
-			else if(button->getPhase () != 0.)
-				textBrushColor = textColorPhaseOn;
-			else
-				textBrushColor = button->isOn () ? textColorDisabledOn : textColorDisabled;
-
-			SolidBrush textBrush (textBrushColor);
-			String title = button->getTitle ();
-
-			if(style.isCustomStyle (Styles::kButtonAppearanceMultiLine))
-			{
-				AlignmentRef alignment (visualStyle->getTextAlignment ()); // Alignment::kCenter
-				port.drawText (rect, title, font, textBrush, TextFormat (alignment, TextFormat::kWordBreak));
-			}
-			else
-			{
-				Coord maxTitleWidth = visualStyle->getMetric<Coord> ("text.width", 0);
-				if(maxTitleWidth > 0)
-				{
-					// LATER TODO: replace by Font::kTrimModeTruncate!
-					Rect stringSize;
-					port.measureString (stringSize, title, font);
-					
-					const int minCharacters = 2; // display at least 2 characters
-					while(title.length () > minCharacters && stringSize.getWidth () > maxTitleWidth)
-					{
-						title = title.subString(0, title.length () - 1 );
-						port.measureString (stringSize, title, font);
-					}
-				}
-				
-				if(style.isCustomStyle (Styles::kButtonAppearanceScaleText))
-				{
-					Font scaledFont = visualStyle->getTextFont ();
-					textScaler.scaleTextFont (scaledFont, rect, title);
-		
-					port.drawString (rect, title, scaledFont, textBrush, alignH);
-				}
-				else
-					port.drawString (rect, title, font, textBrush, alignH);
-			}
-		}
-		
-		if(icon)
-		{
-			auto getModifiedIcon = [&](IImage* icon)
-			{
-				if(button->isEnabled () == false)
-				{
-					if(iconFrameIndex[ThemeElements::kDisabled] == iconFrameIndex[ThemeElements::kNormal]) // when the icon has no own 'disabled' frame
-						if(iconColorDisabled != Colors::kTransparentBlack)  // when the iconColorDisabled is set
-							return ModifiedImageCache::instance ().lookup (icon, iconColorDisabled);   // create a modified icon using the disabled icon color
-				}
-				else if(useModifiedIcon)
-				{
-					ColorRef iconColor = getIconColor (colorParam, button->isOn (), buttonIsPressed, buttonMouseOver);
-					return ModifiedImageCache::instance ().lookup (icon, iconColor, drawAsTemplate);   // create a modified icon using iconcolor
-				}
-				return icon;
-			};
-			
-			Rect iconDst (iconPos.x, iconPos.y, iconSize);
-			port.drawImage (getModifiedIcon (icon), iconSrc, iconDst);
-			
-			// draw animated phase overlay
-			if(phaseIconFrameIndex != -1 && button->getPhase () > 0.f)
-			{
-				icon->setCurrentFrame (phaseIconFrameIndex);
-				ImageMode mode (button->getPhase ());
-				port.drawImage (getModifiedIcon (icon), iconSrc, iconDst, &mode);
-			}
-		}
-		
-		if(style.isVertical ())
-			port.restoreState ();
-	}
-
-	view->View::draw (updateRgn);
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
-void ButtonRenderer::updateAnimationState (const Button* button)
-{
+	Button* button = static_cast<Button*> (owner);
 	if(lastButtonValue == -1)
 	{
 		lastButtonValue = (button->isOn () ? 1 : 0);
@@ -571,87 +337,102 @@ void ButtonRenderer::updateAnimationState (const Button* button)
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
+#endif // LEGACY_STYLES_SUPPORTED
+//////////////////////////////////////////////////////////////////////////////////////////////////
 
-ColorRef ButtonRenderer::getTextColor (IColorParam* colorParam, bool isOn, bool pressed, bool mouseover) const
+bool ButtonRenderer::getColorParamColor (Color& color) const
 {
-	// textColor is dependent on colorParam when this parameter is used
-	if(colorParam != nullptr)
+	Button* button = static_cast<Button*> (owner);
+	if(!button->isEnabled ())
+		return false;
+
+	UnknownPtr<IColorParam> colorParam (button->getColorParam ());
+	if(!colorParam.isValid ())
+		return false;
+
+	colorParam->getColor (color);
+	return true;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+void ButtonRenderer::applyColorParam ()
+{
+	Color colorParamColor (Colors::kTransparentBlack);
+	if(!getColorParamColor (colorParamColor))
+		return;
+
+	#if LEGACY_STYLES_SUPPORTED
+	BEGIN_LEGACY_STYLES_ENABLED_BLOCK
+	// an opaque color from the color parameter replaces the background color from the style
+	bool colorizeBackground = colorParamColor.isVisible ();
+
+	// "backcolor.off" hides the color of the color parameter while the button is off
+	Color backcolorOff (Colors::kTransparentBlack);
+	if(!conditionContext.matches (ThemeNames::kOn) && visualStyle->getColor (backcolorOff, LegacyStyleID::kBackcolorOff))
+		colorizeBackground = false;
+
+	if(colorizeBackground)
+		backgroundAtom.setBrush (SolidBrush (colorParamColor));
+	END_LEGACY_STYLES_ENABLED_BLOCK
+	#endif
+
+	BEGIN_LEGACY_STYLES_DISABLED_BLOCK
+	// a background color from the style wins over the color parameter
+	if(!backgroundAtom.getBrush ().isVisible ())
 	{
-		colorParamColor = Colors::kTransparentBlack;
-		colorParam->getColor (colorParamColor);
-		
-		if(colorParamColor.getAlphaF () == 0.f)
+		if(colorParamColor.isVisible ())
+			backgroundAtom.setBrush (SolidBrush (colorParamColor));
+		else
+			backgroundAtom.applyContrastColor (colorParamColor); // "contrastcolortransparent" is used when the color parameter has no color
+	}
+	END_LEGACY_STYLES_DISABLED_BLOCK
+
+	// value and icon follow the color parameter only when the style defines contrast colors for them
+	valueAtom.applyContrastColor (colorParamColor);
+
+	// a visible icon brush means that the icon is colorized, so it follows the color parameter as well
+	if(iconAtom.getBrush ().isVisible ())
+		iconAtom.applyContrastColor (colorParamColor);
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+RectF ButtonRenderer::getSize () const
+{
+	RectF r (SuperClass::getSize ());
+	Button* button = static_cast<Button*> (owner);
+	Theme& theme = button->getTheme ();
+
+	if(IVisualStyle* vs = owner->getVisualStyleDirect ())
+	{
+		// A style that defines no minimum size falls back to the size of the background image.
+		float styleMinWidth = 0.f;
+		float styleMinHeight = 0.f;
+		bool hasMinWidth = visualStyle->getMetric (styleMinWidth, StyleID::kMinWidth);
+		bool hasMinHeight = visualStyle->getMetric (styleMinHeight, StyleID::kMinHeight);
+
+		ccl_lower_limit (r.right,  styleMinWidth);
+		ccl_lower_limit (r.bottom, styleMinHeight);
+
+		IImage* image = (hasMinWidth || hasMinHeight) ? nullptr : vs->getBackgroundImage ();
+		if(image && !owner->getStyle ().isCustomStyle (Styles::kButtonLayoutIgnoreImageSize))
 		{
-			colorParamColor = isOn ? textContrastTransparentColorOn : textContrastTransparentColor;
+			r.setWidth (ccl_max<float> (r.getWidth (), image->getWidth ()));
+			r.setHeight (ccl_max<float> (r.getHeight (), image->getHeight ()));
 		}
-		else if(textContrastBrightColor != Colors::kTransparentBlack)
+	}	
+	else if(ccl_strict_cast<CheckBox> (owner) == nullptr)
+	{
+		if(ccl_strict_cast<RadioButton> (owner) == nullptr)
 		{
-			if(colorParamColor.getLuminance () < brightColorThreshold)
-				colorParamColor = isOn ? textContrastBrightColorOn : textContrastBrightColor;
-			else
-				colorParamColor = isOn ? textContrastDarkColorOn : textContrastDarkColor;
+			// default size for Buttons and ToolButtons without a given style
+			ccl_lower_limit<float> (r.right,  theme.getThemeMetric (ThemeElements::kButtonWidth));
+			ccl_lower_limit<float> (r.bottom, theme.getThemeMetric (ThemeElements::kButtonHeight));
 		}
-		else if(textColorAlphaBlend.getAlphaF () != 0)
-		{
-			colorParamColor.alphaBlend (textColorAlphaBlend, textColorAlphaBlend.getAlphaF ());
-		}
-		
-		return colorParamColor;
 	}
 
-	if(isOn)
-		return pressed ? textColorPressedOn : mouseover ? textColorMouseOverOn : textColorOn;
-	else
-		return pressed ? textColorPressed : mouseover ? textColorMouseOver : textColor;
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
-ColorRef ButtonRenderer::getIconColor (IColorParam* colorParam, bool isOn, bool pressed, bool mouseover) const
-{
-	// iconColor is dependent on colorParam when this parameter is used
-	if(colorParam != nullptr)
-	{
-		colorParamColor = Colors::kTransparentBlack;
-		colorParam->getColor (colorParamColor);
-		
-		if(colorParamColor.getAlphaF () == 0.f)
-		{
-			colorParamColor = isOn ? iconContrastTransparentColorOn : iconContrastTransparentColor;
-		}
-		else if(iconContrastBrightColor != Colors::kTransparentBlack)
-		{
-			if(colorParamColor.getLuminance () < brightColorThreshold)
-				colorParamColor = isOn ? iconContrastBrightColorOn : iconContrastBrightColor;
-			else
-				colorParamColor = isOn ? iconContrastDarkColorOn : iconContrastDarkColor;
-		}
-		else if(iconColorAlphaBlend.getAlphaF () != 0)
-		{
-			colorParamColor.alphaBlend (iconColorAlphaBlend, iconColorAlphaBlend.getAlphaF ());
-		}
-		
-		return colorParamColor;
-	}
-	
-	if(isOn)
-		return pressed ? iconPressedColorOn : mouseover ? iconMouseoverColorOn : iconColorOn;
-	else
-		return pressed ? iconPressedColor : mouseover ? iconMouseoverColor : iconColor;
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
-int ButtonRenderer::hitTest (View* view, const Point& loc, Point* clickOffset)
-{
-	return 0;
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
-bool ButtonRenderer::getPartRect (const View* view, int partCode, CCL::Rect& rect)
-{
-	return false;
+	return r;
 }
 
 //************************************************************************************************
@@ -667,8 +448,12 @@ For each value of the button's (integer) parameter, the 5 frame names
 Frame names that are not available, are replaced with reasonable fallbacks. */
 //************************************************************************************************
 
-MultiToggleRenderer::MultiToggleRenderer (VisualStyle* visualStyle)
-: ButtonRenderer (visualStyle)
+DEFINE_CLASS_ABSTRACT (MultiToggleRenderer, ButtonRenderer)
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+MultiToggleRenderer::MultiToggleRenderer (VisualStyle* visualStyle, View* owner)
+: ButtonRenderer (visualStyle, owner)
 {}
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -722,151 +507,39 @@ void MultiToggleRenderer::initFrames (IntVector& index, IImage& image)
 /** Draws an image that shows the parameter state (typically a checkmark) and an additional title besides the image. */
 //************************************************************************************************
 
-BEGIN_VISUALSTYLE_CLASS (CheckBox, Button, "CheckBoxStyle")
-	ADD_VISUALSTYLE_METRIC ("buttonstyle")			///< if this is set ("1"), the control is drawn like a button
-	ADD_VISUALSTYLE_METRIC ("checkboxrightside")	///< if this is set ("1"), the checkbox is drawn algined to the right side of the view rect.
-	ADD_VISUALSTYLE_IMAGE ("mixedicon")				///< fallback when no mixedicon at the checkbox is defined
-END_VISUALSTYLE_CLASS (CheckBox)
+DEFINE_TYPELIB_ENTRY_WITH_PARENT (CheckBox, Button, "CheckBoxStyle", VISUALSTYLES_TYPELIB)
+BEGIN_TYPELIB_MEMBERS (CheckBox)
+	ADD_TYPELIB_MEMBER_METRIC ("checkboxrightside") ///< if this is set ("1"), the checkbox is drawn algined to the right side of the view rect.
+	ADD_TYPELIB_MEMBER_IMAGE ("mixedicon") ///< fallback when no mixedicon at the checkbox is defined
+END_TYPELIB_MEMBERS (CheckBox)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-CheckBoxRenderer::CheckBoxRenderer (VisualStyle* visualStyle)
-: ButtonRenderer (visualStyle),
-  useButtonStyle (false),
-  checkBoxRightSide (false)
+DEFINE_CLASS_ABSTRACT (CheckBoxRenderer, ButtonRenderer)
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+CheckBoxRenderer::CheckBoxRenderer (VisualStyle* visualStyle, View* owner)
+: ButtonRenderer (visualStyle, owner),
+  mixedIcon (nullptr)
 {}
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void CheckBoxRenderer::draw (View* view, const UpdateRgn& updateRgn)
-{	
-	StyleRef style = view->getStyle ();
-	if(initialized == false)
-		initialize (style, view);
-
-	if(useButtonStyle)
-	{
-		ButtonRenderer::draw (view, updateRgn);
-		return;
-	}
-	
-	CheckBox* checkBox = static_cast<CheckBox*> (view);
-
-	GraphicsPort port (checkBox);
-	Rect rect;
-	checkBox->getClientRect (rect);
-
-	Theme& theme = checkBox->getTheme ();
-	IThemePainter& painter = theme.getPainter ();
-
-	// *** draw checkmark ***
-	int titleOffset = 0;
-	
-	if(image)
-	{
-		Rect checkSrc (0, 0, image->getWidth (), image->getHeight ());
-		Rect checkDst (checkSrc);
-		checkDst.centerV (rect);
-		
-		if(checkBoxRightSide)
-			checkDst.offset (rect.getWidth () - image->getWidth (), 0);
-
-		int frame = checkBox->getCurrentFrame ();
-		image->setCurrentFrame (frameIndex [frame]);
-
-		port.drawImage (image, checkSrc, checkDst);
-		
-		IImage* icon = checkBox->getIcon ();
-		IImage* mixedIcon = checkBox->getMixedIcon ();
-		if(icon && checkBox->isOn ())
-		{
-			if(icon->getFrameCount ())
-				icon->setCurrentFrame (iconFrameIndex.at (frame));
-			
-			Point iconSize (icon->getWidth (), icon->getHeight ());
-			Point iconPos (checkDst.getLeftTop () + (checkDst.getSize () - iconSize) * .5f);
-
-			if(IImage* modifiedIcon = ModifiedImageCache::instance ().lookup (icon, checkBox->isEnabled () ? iconColor : iconColorDisabled))
-				port.drawImage (modifiedIcon, iconPos);
-		}
-		else if(mixedIcon && checkBox->isMixed ())
-		{
-			if(mixedIcon->getFrameCount ())
-				mixedIcon->setCurrentFrame (mixedIconFrameIndex.at (frame));
-
-			Point iconSize (mixedIcon->getWidth (), mixedIcon->getHeight ());
-			Point iconPos (checkDst.getLeftTop () + (checkDst.getSize () - iconSize) * .5f);
-
-			if(IImage* modifiedIcon = ModifiedImageCache::instance ().lookup (mixedIcon, checkBox->isEnabled () ? iconColor : iconColorDisabled))
-				port.drawImage (modifiedIcon, iconPos);
-		}
-		
-		titleOffset = image->getWidth () + 2 + padding.left;
-	}
-	else
-	{
-		int checkH = theme.getThemeMetric (ThemeElements::kCheckBoxSize);
-		if(checkBox->getHeight () < checkH)
-			checkH = checkBox->getHeight ();
-
-		int state = checkBox->getThemeElementState ();
-
-		Rect checkRect (0, 0, checkH, checkH);
-		
-		if(checkBoxRightSide)
-			checkRect.offset (rect.getWidth () - checkH, 0);
-		
-		checkRect.centerV (rect);
-		painter.drawElement (port, checkRect, getThemeId (checkBox), state);	
-
-		titleOffset = checkH + 2 + padding.left;
-	}
-	
-	
-	if(checkBox->isFocused () && !style.isCustomStyle (Styles::kButtonAppearanceHideFocus))
-	{
-		if(image && image->getFrameIndex (ThemeNames::kFocused) >= 0) // draw focus overlay if available
-		{
-			image->setCurrentFrame (frameIndex [ThemeElements::kFocused]);
-			
-			Rect checkSrc (0, 0, image->getWidth (), image->getHeight ());
-			Rect checkDst (checkSrc);
-			checkDst.centerV (rect);
-			
-			port.drawImage (image, checkSrc, checkDst);
-		}
-	}
-	
-	// *** draw title ***
-	String title = view->getTitle ();
-	if(!title.isEmpty ())
-	{
-		Font font (visualStyle->getTextFont ().zoom (checkBox->getZoomFactor ()));
-		AlignmentRef alignment (visualStyle->getTextAlignment ());
-		
-		Rect titleRect (rect);
-		if(checkBoxRightSide)
-			titleRect.right -= titleOffset;
-		else
-			titleRect.left += titleOffset;
-		
-		port.drawString (titleRect, title, font, SolidBrush (checkBox->isEnabled () ? textColor : textColorDisabled), alignment);
-	}
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
-void CheckBoxRenderer::initialize (StyleRef style, View* view)
+void CheckBoxRenderer::initialize ()
 {
-	useButtonStyle = visualStyle->getMetric<bool> ("buttonstyle", false);
-	checkBoxRightSide = visualStyle->getMetric<bool> ("checkboxrightside", false);
+	CheckBox* checkBox = static_cast<CheckBox*> (owner);
+	mixedIcon = unknown_cast<Image> (checkBox->getMixedIcon ());
 
-	CheckBox* checkBox = static_cast<CheckBox*> (view);
-	IImage* mixedIcon = checkBox->getMixedIcon ();
-
+	#if LEGACY_STYLES_SUPPORTED
+	BEGIN_LEGACY_STYLES_ENABLED_BLOCK
 	if(mixedIcon == nullptr)
-		if(mixedIcon = visualStyle->getImage ("iconmixed"))
+	{
+		if(mixedIcon = unknown_cast<Image> (visualStyle->getImage (LegacyStyleID::kIconMixed)))
 			checkBox->setMixedIcon (mixedIcon);
+	}
+	END_LEGACY_STYLES_ENABLED_BLOCK
+	#endif
 
 	if(mixedIcon)
 	{
@@ -879,13 +552,41 @@ void CheckBoxRenderer::initialize (StyleRef style, View* view)
 		initFrames (mixedIconFrameIndex, *mixedIcon);
 	}
 
-	ButtonRenderer::initialize (style, view);
+	SuperClass::initialize ();
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-ThemeElementID CheckBoxRenderer::getThemeId (CheckBox* checkBox) const
+void CheckBoxRenderer::applyVisualStyle (RenderAtomTransaction& transaction)
 {
+	SuperClass::applyVisualStyle (transaction);
+
+	#if LEGACY_STYLES_SUPPORTED
+	BEGIN_LEGACY_STYLES_ENABLED_BLOCK
+	float rightSide = 0.f;
+	if(visualStyle->getMetric (rightSide, LegacyStyleID::kCheckBoxRightSide))
+	{
+		if(rightSide != 0.f)
+			order = kTrailingIcon;
+		else
+			order = kLeadingIcon;
+	}
+	END_LEGACY_STYLES_ENABLED_BLOCK
+	#endif
+
+	CheckBox* checkBox = static_cast<CheckBox*> (owner);
+	if(mixedIcon && checkBox->isMixed ())
+	{
+		iconAtom.setImage (mixedIcon);
+		iconAtom.setImageFrame (mixedIconFrameIndex.at (checkBox->getCurrentFrame ()));
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+ThemeElementID CheckBoxRenderer::getThemeId () const
+{
+	CheckBox* checkBox = static_cast<CheckBox*> (owner);
 	bool checked = checkBox->getParameter ()->getValue () == checkBox->getParameter ()->getMax ();
 	return checked ? ThemeElements::kCheckBoxChecked : ThemeElements::kCheckBoxNormal;
 }
@@ -895,6 +596,4 @@ ThemeElementID CheckBoxRenderer::getThemeId (CheckBox* checkBox) const
 /** A Radio button is drawn like a CheckBox. */
 //************************************************************************************************
 
-RadioButtonRenderer::RadioButtonRenderer (VisualStyle* visualStyle)
-: CheckBoxRenderer (visualStyle)
-{}
+DEFINE_CLASS_ABSTRACT (RadioButtonRenderer, CheckBoxRenderer)

@@ -20,8 +20,19 @@
 #define _glslshaderreflection_h
 
 #include "ccl/base/collections/objectarray.h"
+#include "ccl/public/text/cstring.h"
 
 namespace CCL {
+
+//************************************************************************************************
+// GLSLShaderInput
+//************************************************************************************************
+
+struct GLSLShaderInput
+{
+	MutableCString name;
+	uint32 location = 0;
+};
 
 //************************************************************************************************
 // GLSLShaderReflection
@@ -41,8 +52,12 @@ public:
 	DECLARE_STRINGID_MEMBER (kAttrOffset)
 	DECLARE_STRINGID_MEMBER (kAttrArray)
 	DECLARE_STRINGID_MEMBER (kAttrArrayStride)
+
+	DECLARE_STRINGID_MEMBER (kAttrInputs)
+	DECLARE_STRINGID_MEMBER (kAttrLocation)
 	
 	static void getBufferTypeInfos (ObjectArray& bufferTypeInfos, UrlRef shaderPath);
+	static void getInputs (Vector<GLSLShaderInput>& inputs, UrlRef shaderPath);
 };
 
 } // namespace CCL

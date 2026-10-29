@@ -293,7 +293,7 @@ void CCL_API WindowsTooltip::setText (StringRef text)
 		toolInfo.hwnd = ::GetParent (nativeWindow);
 		toolInfo.uId = kToolID;
 		StringChars chars (text);
-		toolInfo.lpszText = (LPWSTR)(const uchar*)chars;
+		toolInfo.lpszText = (LPWSTR)chars.str ();
 
 		::SendMessage (nativeWindow, TTM_UPDATETIPTEXT, 0, (LPARAM)&toolInfo);
 	}

@@ -16,11 +16,9 @@
 //
 //************************************************************************************************
 
-#define DEBUG_LOG 1
+#define DEBUG_LOG 0
 
 #include "ccl/platform/shared/opengles/opengles3dsupport.h"
-#include "ccl/platform/shared/opengles/openglesclient.h"
-#include "ccl/platform/shared/opengles/glslshaderreflection.h"
 
 #include "ccl/base/storage/file.h"
 
@@ -48,63 +46,75 @@ namespace CCL {
 
 struct OpenGLESFormatMap
 {
-	DataFormat3D format;
+	DataFormat3D dataFormat;
+	GLenum format;
 	GLenum type;
 	GLint count;
 	GLint size;
 };
 static constexpr OpenGLESFormatMap kOpenGLESFormatMap[] =
 {
-	{ kR8_Int,             GL_BYTE              , 1 , 1 },
-	{ kR8_UInt,            GL_UNSIGNED_BYTE     , 1 , 1 },
-	{ kR16_Int,            GL_SHORT             , 1 , 2 },
-	{ kR16_UInt,           GL_UNSIGNED_SHORT    , 1 , 2 },
-	{ kR32_Int,            GL_INT               , 1 , 4 },
-	{ kR32_UInt,           GL_UNSIGNED_INT      , 1 , 4 },
-	{ kR32_Float,          GL_FLOAT             , 1 , 4 },
-	{ kR8G8_Int,           GL_BYTE              , 2 , 2 },
-	{ kR8G8_UInt,          GL_UNSIGNED_BYTE     , 2 , 2 },
-	{ kR16G16_Int,         GL_SHORT             , 2 , 4 },
-	{ kR16G16_UInt,        GL_UNSIGNED_SHORT    , 2 , 4 },
-	{ kR32G32_Int,         GL_INT               , 2 , 8 },
-	{ kR32G32_UInt,        GL_UNSIGNED_INT      , 2 , 8 },
-	{ kR32G32_Float,       GL_FLOAT             , 2 , 8 },
-	{ kR32G32B32_Int,      GL_INT               , 3 ,12 },
-	{ kR32G32B32_UInt,     GL_UNSIGNED_INT      , 3 ,12 },
-	{ kR32G32B32_Float,    GL_FLOAT             , 3 ,12 },
-	{ kR32G32B32A32_Int,   GL_INT               , 4 ,16 },
-	{ kR32G32B32A32_UInt,  GL_UNSIGNED_INT      , 4 ,16 },
-	{ kR8G8B8A8_UNORM,     GL_RGBA              , 4 , 4 },
-	{ kB8G8R8A8_UNORM,     GL_BGRA_EXT          , 4 , 4 }
+    { kR8_Int,            GL_LUMINANCE, GL_BYTE              , 1 , 1 },
+    { kR8_UInt,           GL_LUMINANCE, GL_UNSIGNED_BYTE     , 1 , 1 },
+    { kR16_Int,           GL_LUMINANCE, GL_SHORT             , 1 , 2 },
+    { kR16_UInt,          GL_LUMINANCE, GL_UNSIGNED_SHORT    , 1 , 2 },
+    { kR32_Int,           GL_LUMINANCE, GL_INT               , 1 , 4 },
+    { kR32_UInt,          GL_LUMINANCE, GL_UNSIGNED_INT      , 1 , 4 },
+    { kR32_Float,         GL_LUMINANCE, GL_FLOAT             , 1 , 4 },
+    { kR8G8_Int,          GL_LUMINANCE, GL_BYTE              , 2 , 2 },
+    { kR8G8_UInt,         GL_LUMINANCE, GL_UNSIGNED_BYTE     , 2 , 2 },
+    { kR16G16_Int,        GL_LUMINANCE, GL_SHORT             , 2 , 4 },
+    { kR16G16_UInt,       GL_LUMINANCE, GL_UNSIGNED_SHORT    , 2 , 4 },
+    { kR32G32_Int,        GL_LUMINANCE, GL_INT               , 2 , 8 },
+    { kR32G32_UInt,       GL_LUMINANCE, GL_UNSIGNED_INT      , 2 , 8 },
+    { kR32G32_Float,      GL_LUMINANCE, GL_FLOAT             , 2 , 8 },
+    { kR32G32B32_Int,     GL_RGB,       GL_INT               , 3 ,12 },
+    { kR32G32B32_UInt,    GL_RGB,       GL_UNSIGNED_INT      , 3 ,12 },
+    { kR32G32B32_Float,   GL_RGB,       GL_FLOAT             , 3 ,12 },
+    { kR32G32B32A32_Int,  GL_RGBA,      GL_INT               , 4 ,16 },
+    { kR32G32B32A32_UInt, GL_RGBA,      GL_UNSIGNED_INT      , 4 ,16 },
+    { kR8G8B8A8_UNORM,    GL_RGBA,      GL_RGBA              , 4 , 4 },
+    { kB8G8R8A8_UNORM,    GL_RGBA,      GL_BGRA_EXT          , 4 , 4 }
 };
 
-static constexpr GLenum getOpenGLESFormatType (DataFormat3D format)
+static constexpr GLenum getOpenGLESFormat (DataFormat3D dataFormat)
 {
 	for(const auto& entry : kOpenGLESFormatMap)
 	{
-		if(entry.format == format)
+		if(entry.dataFormat == dataFormat)
+			return entry.format;
+	}
+
+	return 0;
+}
+
+static constexpr GLenum getOpenGLESFormatType (DataFormat3D dataFormat)
+{
+	for(const auto& entry : kOpenGLESFormatMap)
+	{
+		if(entry.dataFormat == dataFormat)
 			return entry.type;
 	}
 
 	return 0;
 }
 
-static constexpr GLint getOpenGLESFormatCount (DataFormat3D format)
+static constexpr GLint getOpenGLESFormatCount (DataFormat3D dataFormat)
 {
 	for(const auto& entry : kOpenGLESFormatMap)
 	{
-		if(entry.format == format)
+		if(entry.dataFormat == dataFormat)
 			return entry.count;
 	}
 
 	return 0;
 }
 
-static constexpr GLint getOpenGLESFormatSize (DataFormat3D format)
+static constexpr GLint getOpenGLESFormatSize (DataFormat3D dataFormat)
 {
 	for(const auto& entry : kOpenGLESFormatMap)
 	{
-		if(entry.format == format)
+		if(entry.dataFormat == dataFormat)
 			return entry.size;
 	}
 
@@ -326,7 +336,7 @@ bool OpenGLES3DTexture2D::create (uint32 width, uint32 height, uint32 bytesPerRo
 	if(get_flag<TextureFlags3D> (flags, kTextureClampToBorder))
 	{
 		wrapMode = GL_CLAMP_TO_EDGE; // clamp to border is not supported by core OpenGL ES 2
-		if(OpenGLESClient::instance ().isGLExtensionSupported ("GL_OES_texture_border_clamp"))
+		if(OpenGLES3DSupport::instance ().isGLExtensionSupported ("GL_OES_texture_border_clamp"))
 			wrapMode = GL_CLAMP_TO_BORDER_OES;
 	}
 	else if(get_flag<TextureFlags3D> (flags, kTextureRepeat))
@@ -335,7 +345,7 @@ bool OpenGLES3DTexture2D::create (uint32 width, uint32 height, uint32 bytesPerRo
 		wrapMode = GL_MIRRORED_REPEAT;
 
 	image.setWrapMode (wrapMode);
-	image.setFormat (getOpenGLESFormatType (format));
+	image.setFormat (getOpenGLESFormat (format));
 	image.setSize (Point (width, height));
 	image.setMipLevels (mipLevels);
 	if(!image.create (initialData))
@@ -445,8 +455,8 @@ bool OpenGLES3DShader::load ()
 	#if DEBUG && DEBUG_LOG
 	if(success != GL_TRUE)
 	{
-		int bufferSize = STRING_STACK_SPACE_MAX;
-		char buffer[STRING_STACK_SPACE_MAX] = "";
+		int bufferSize = CORE_STRING_STACK_MAX;
+		char buffer[CORE_STRING_STACK_MAX] = "";
 		glGetShaderInfoLog (shaderId, bufferSize, &bufferSize, buffer);
 		CCL_PRINTF ("Failed to compile GLSL shader %s: %s", MutableCString (UrlDisplayString (path)).str (), buffer)
 	}
@@ -457,11 +467,25 @@ bool OpenGLES3DShader::load ()
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-CCL::ITypeInfo* CCL_API OpenGLES3DShader::getBufferTypeInfo (int bufferIndex)
+ITypeInfo* CCL_API OpenGLES3DShader::getBufferTypeInfo (int bufferIndex)
 {
 	if(bufferTypeInfos.isEmpty ())
 		GLSLShaderReflection::getBufferTypeInfos (bufferTypeInfos, path);
 	return SuperClass::getBufferTypeInfo (bufferIndex);
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+void OpenGLES3DShader::bindLocations (uint32 programId)
+{
+	if(type != kVertexShader)
+		return;
+
+	if(inputs.isEmpty ())
+		GLSLShaderReflection::getInputs (inputs, path);
+	
+	for(const GLSLShaderInput& input : inputs)
+		glBindAttribLocation (programId, input.location, input.name);
 }
 
 //************************************************************************************************
@@ -602,6 +626,9 @@ void OpenGLES3DPipeline::updateProgram ()
 
 	glAttachShader (programId, vertexShader->getShaderID ());
 	glAttachShader (programId, pixelShader->getShaderID ());
+
+	vertexShader->bindLocations (programId);
+
 	glLinkProgram (programId);
 
 	GLint success = 0;
@@ -610,8 +637,8 @@ void OpenGLES3DPipeline::updateProgram ()
 	#if DEBUG && DEBUG_LOG
 	if(success != GL_TRUE)
 	{
-		int bufferSize = STRING_STACK_SPACE_MAX;
-		char buffer[STRING_STACK_SPACE_MAX] = "";
+		int bufferSize = CORE_STRING_STACK_MAX;
+		char buffer[CORE_STRING_STACK_MAX] = "";
 		glGetProgramInfoLog (programId, bufferSize, &bufferSize, buffer);
 		CCL_PRINTF ("Failed to link a GLSL program: %s", buffer)
 	}
@@ -710,7 +737,7 @@ void OpenGLES3DGraphicsContext::bindDescriptorSet ()
 	glGetProgramiv (programId, GL_ACTIVE_UNIFORMS, &uniformCount);
 	for(int i = 0; i < uniformCount; i++)
 	{
-		GLchar name[STRING_STACK_SPACE_MAX] = "";
+		GLchar name[CORE_STRING_STACK_MAX] = "";
 		GLsizei length = 0;
 		GLint size = 0;
 		GLenum type = 0;
@@ -796,7 +823,7 @@ void OpenGLES3DGraphicsContext::bindDescriptorSet ()
 
 			for(const ShaderVariable3D* variable : iterate_as<ShaderVariable3D> (info->getVariables ()))
 			{
-				GLchar name[STRING_STACK_SPACE_MAX] = "";
+				GLchar name[CORE_STRING_STACK_MAX] = "";
 				GLsizei length = 0;
 				GLint size = 0;
 				GLenum type = 0;
@@ -893,7 +920,8 @@ DEFINE_CLASS_HIDDEN (OpenGLES3DSurface, Native3DSurface)
 OpenGLES3DSurface::OpenGLES3DSurface ()
 : sampleCount (1),
   scaleFactor (1.f),
-  depthBufferId (0)
+  depthBufferId (0),
+  context (nullptr)
 {}
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -933,8 +961,9 @@ void OpenGLES3DSurface::applyMultisampling (int samples)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool OpenGLES3DSurface::create (GrRecordingContext* context, float _scaleFactor)
+bool OpenGLES3DSurface::create (GrRecordingContext* _context, float _scaleFactor)
 {
+	context = _context;
 	scaleFactor = _scaleFactor;
 
 	// emulate multisampling by rendering at a larger viewport size
@@ -949,7 +978,7 @@ bool OpenGLES3DSurface::create (GrRecordingContext* context, float _scaleFactor)
 	}
 	if(!texture.generateFramebuffer ())
 	{
-		CCL_WARN ("%s\n", "Failed to generat a 3D surface framebuffer.")
+		CCL_WARN ("%s\n", "Failed to generate a 3D surface framebuffer.")
 		destroy ();
 		return false;
 	}
@@ -983,7 +1012,6 @@ bool OpenGLES3DSurface::create (GrRecordingContext* context, float _scaleFactor)
 
 void OpenGLES3DSurface::updateSkiaImage ()
 {
-	GrDirectContext* context = OpenGLESClient::instance ().getGPUContext ();
 	if(context == nullptr)
 		return;
 
@@ -1182,6 +1210,17 @@ IShaderParameterSet3D* CCL_API OpenGLES3DGraphicsFactory::createShaderParameterS
 //************************************************************************************************
 // OpenGLES3DSupport
 //************************************************************************************************
+
+bool OpenGLES3DSupport::isGLExtensionSupported (CStringPtr extensionName) const
+{
+	ForEachCStringToken (glExtensions, " ", extension)
+		if(CString (extension) == extensionName)
+			return true;
+	EndFor
+	return false;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
 
 void OpenGLES3DSupport::shutdown3D ()
 {

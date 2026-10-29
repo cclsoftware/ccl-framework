@@ -20,7 +20,9 @@
 #define _ccl_typelib_h
 
 #include "ccl/base/object.h"
+#include "ccl/base/typelibmacros.h"
 
+#include "ccl/public/base/enumdef.h"
 #include "ccl/public/base/itypelib.h"
 #include "ccl/public/base/variant.h"
 
@@ -64,42 +66,12 @@ public:
 	// ITypeInfo
 	const ITypeInfo* CCL_API getParentType () const override;
 	CStringPtr CCL_API getClassName () const override;
-	CStringPtr CCL_API getClassNamespace () const override;
 
 	CLASS_INTERFACE (ITypeInfo, Object)
 
 protected:
 	CStringPtr name;
 	const TypeInfo* parentType;
-};
-
-//************************************************************************************************
-// TypeInfoWithMembers
-//************************************************************************************************
-
-class TypeInfoWithMembers: public TypeInfo
-{
-public:
-	DECLARE_CLASS_ABSTRACT (TypeInfoWithMembers, TypeInfo)
-
-	TypeInfoWithMembers (CStringPtr name, const TypeInfo* parentType);
-
-	struct MemberDescriptionModifier
-	{
-		MemberDescriptionModifier (TypeInfoWithMembers& This, Model::MemberDescription members[]);
-	};
-
-	struct AttributeModifier
-	{
-		AttributeModifier (TypeInfoWithMembers& This, Model::AttributeDescription attributes[]);
-	};
-
-	// TypeInfo
-	bool getDetails (ITypeInfoDetails& details) const override;
-
-protected:
-	Model::MemberDescription* members;
-	Model::AttributeDescription* attributes;
 };
 
 //************************************************************************************************
@@ -122,7 +94,7 @@ public:
 
 protected:
 	CStringPtr name;
-	CString parentName;
+	CStringPtr parentName;
 };
 
 //************************************************************************************************
@@ -171,8 +143,8 @@ template <class EnumDef>
 class TEnumTypeInfo: public EnumTypeInfo
 {
 public:
-	TEnumTypeInfo (CStringPtr name, const EnumDef enumerators[], int count)
-	: EnumTypeInfo (name),
+	TEnumTypeInfo (CStringPtr name, const EnumDef enumerators[], int count, CStringPtr parentName = nullptr)
+	: EnumTypeInfo (name, parentName),
 	  enumerators (enumerators),
 	  count (count)
 	{}
@@ -230,6 +202,95 @@ protected:
 	// ITypeLibrary
 	const ITypeInfo* findTypeInfo (CStringPtr name) const override { return findType (name); }
 	const IEnumTypeInfo* findEnumTypeInfo (CStringPtr name) const override { return findEnum (name); }
+};
+
+//************************************************************************************************
+// TypeLibEntry
+/** Entry self-registering with a type library. */
+//************************************************************************************************
+
+class TypeLibEntry: public TypeInfo
+{
+public:
+	DECLARE_CLASS_ABSTRACT (TypeLibEntry, TypeInfo)
+
+	TypeLibEntry (TypeLibrary& library, CStringPtr entryName, const TypeLibEntry* parentType = nullptr);
+
+	struct MemberDescriptionModifier
+	{
+		MemberDescriptionModifier (TypeLibEntry& This, Model::MemberDescription members[]);
+	};
+
+	struct AttributeModifier
+	{
+		AttributeModifier (TypeLibEntry& This, Model::AttributeDescription attributes[]);
+	};
+
+	struct DocGroupModifier
+	{
+		DocGroupModifier (TypeLibEntry& This, CStringPtr docGroup);
+	};
+
+	struct RelatedClassModifier
+	{
+		RelatedClassModifier (TypeLibEntry& This, CStringPtr relatedClass);
+	};
+
+	struct AbstractModifier
+	{
+		AbstractModifier (TypeLibEntry& This);
+	};
+
+	// TypeInfo
+	int CCL_API getClassFlags () const override;
+	bool getDetails (ITypeInfoDetails& details) const override;
+
+protected:
+	CStringPtr docGroup;
+	CStringPtr relatedClass;
+	Model::MemberDescription* members;
+	Model::AttributeDescription* attributes;
+	bool abstract;
+};
+
+//************************************************************************************************
+// TypeLibClass
+/**	Generic type library class info: registers itself with a type library and creates instances
+	of the MetaClass it was declared for. */
+//************************************************************************************************
+
+class TypeLibClass: public TypeLibEntry
+{
+public:
+	DECLARE_CLASS_ABSTRACT (TypeLibClass, TypeLibEntry)
+
+	TypeLibClass (TypeLibrary& library, CStringPtr entryName, MetaClassRef metaClass, 
+				  const TypeLibEntry* parentType = nullptr);
+
+	MetaClassRef getMetaClass () const;
+	Object* createObject () const;
+
+	// TypeLibEntry
+	int CCL_API getClassFlags () const override;
+	IUnknown* CCL_API createInstance () const override;
+
+protected:
+	MetaClassRef metaClass;
+};
+
+//************************************************************************************************
+// TypeLibEnumeration
+/** Enum type info registered with a type library under a "entryName.attrName" key. Can chain to a
+	parent enum via parentName. */
+//************************************************************************************************
+
+class TypeLibEnumeration: public TEnumTypeInfo<EnumInfo>
+{
+public:
+	TypeLibEnumeration (TypeLibrary& library, CStringPtr canonicalName, const EnumInfo info[], 
+						CStringPtr parentName = nullptr);
+	
+	const EnumInfo* getEnumInfo () const { return enumerators; }
 };
 
 } // namespace CCL

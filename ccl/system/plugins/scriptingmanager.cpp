@@ -528,7 +528,7 @@ void CCL_API ScriptingManager::startup (StringID moduleID, ModuleRef module, con
 				context->attachModule (entry.module);
 			EndFor
 
-			context->registerObject (CSTR ("Host"), &ScriptingHost::instance ());
+			context->registerObject (kHost, &ScriptingHost::instance ());
 			System::GetFileTypeRegistry ().registerFileType (engine->getFileType ());
 		EndFor
 

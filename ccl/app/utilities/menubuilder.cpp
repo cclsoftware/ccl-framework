@@ -20,10 +20,36 @@
 
 #include "ccl/app/component.h"
 
+#include "ccl/base/message.h"
+
 #include "ccl/public/gui/framework/iview.h"
 #include "ccl/public/gui/framework/itheme.h"
+#include "ccl/public/gui/iparameter.h"
 
 using namespace CCL;
+
+//************************************************************************************************
+// MenuBuilder::ParamMenuItemObserver
+//************************************************************************************************
+
+class MenuBuilder::ParamMenuItemObserver: public Object
+{
+public:
+	DECLARE_CLASS_ABSTRACT (ParamMenuItemObserver, Object)
+
+	ParamMenuItemObserver (IMenuItem* item, IParameter* param, bool closeOnChange);
+	~ParamMenuItemObserver ();
+	
+	void updateMenuValue ();
+	
+	// Object
+	void CCL_API notify (ISubject* subject, MessageRef msg) override;
+
+protected:
+	IMenuItem* item;
+	IParameter* param;
+	bool closeOnChange;
+};
 
 //************************************************************************************************
 // MenuBuilder
@@ -43,39 +69,53 @@ ITheme* MenuBuilder::getTheme () const
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
+void MenuBuilder::addSubMenuInternal (IMenu*& subMenu, IMenuItem*& subMenuItem, StringRef title)
+{
+	subMenu = menu.createMenu ();
+	subMenu->setMenuAttribute (IMenu::kMenuTitle, title);
+	subMenuItem = menu.addMenu (subMenu);
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
 IMenu* MenuBuilder::addSubMenu (StringRef title)
 {
-	IMenu* subMenu = menu.createMenu ();
-	subMenu->setMenuAttribute (IMenu::kMenuTitle, title);
-	menu.addMenu (subMenu);
+	IMenu* subMenu = nullptr;
+	IMenuItem* subMenuItem = nullptr;
+	addSubMenuInternal (subMenu, subMenuItem, title);
 	return subMenu;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void MenuBuilder::addSubMenuWithView (StringRef title, StringID formName)
+IMenuItem* MenuBuilder::addSubMenuWithView (StringRef title, StringID formName, IAttributeList* arguments)
 {
-	IMenu* subMenu = addSubMenu (title);
+	IMenu* subMenu = nullptr;
+	IMenuItem* subMenuItem = nullptr;
+	addSubMenuInternal (subMenu, subMenuItem, title);
+
 	UnknownPtr<IExtendedMenu> extendedMenu (subMenu);
 	if(extendedMenu)
 	{
-		AutoPtr<IView> view = getTheme ()->createView (formName, controller);
+		AutoPtr<IView> view = getTheme ()->createView (formName, controller, arguments);
 		if(view)
 			extendedMenu->addViewItem (view);
 	}
+	return subMenuItem;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void MenuBuilder::addViewItem (StringID formName)
+IMenuItem* MenuBuilder::addViewItem (StringID formName, IAttributeList* arguments)
 {
 	UnknownPtr<IExtendedMenu> extendedMenu (&menu);
 	if(extendedMenu)
 	{
-		AutoPtr<IView> view = getTheme ()->createView (formName, controller);
+		AutoPtr<IView> view = getTheme ()->createView (formName, controller, arguments);
 		if(view)
-			extendedMenu->addViewItem (view);
+			return extendedMenu->addViewItem (view);
 	}			
+	return nullptr;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -85,3 +125,76 @@ void MenuBuilder::setItemIcon (IMenuItem* menuItem, StringID iconName)
 	IImage* icon = getTheme ()->getImage (iconName);
 	menuItem->setItemAttribute (IMenuItem::kItemIcon, icon);
 }
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+void MenuBuilder::setItemValueFromParam (IMenuItem* item, IParameter* param, bool closeOnChange)
+{
+	if(item && param)
+	{
+		AutoPtr<ParamMenuItemObserver> paramObserver = NEW ParamMenuItemObserver (item, param, closeOnChange);
+		item->setItemAttribute (IMenuItem::kItemData, Variant (paramObserver->asUnknown (), true));
+	}
+}
+
+//************************************************************************************************
+// MenuBuilder::ParamMenuItemObserver
+//************************************************************************************************
+
+DEFINE_CLASS_ABSTRACT_HIDDEN (MenuBuilder::ParamMenuItemObserver, Object)
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+MenuBuilder::ParamMenuItemObserver::ParamMenuItemObserver (IMenuItem* item, IParameter* param, bool closeOnChange)
+: item (item), 
+  param (param),
+  closeOnChange (closeOnChange)
+{
+	ISubject::addObserver (param, this);
+	updateMenuValue ();
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+MenuBuilder::ParamMenuItemObserver::~ParamMenuItemObserver ()
+{
+	ISubject::removeObserver (param, this);
+	cancelSignals ();
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+void MenuBuilder::ParamMenuItemObserver::updateMenuValue ()
+{
+	if(item)
+	{
+		String valueString;
+		param->toString (valueString);
+		item->setItemAttribute (IMenuItem::kItemValue, valueString);
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+void CCL_API MenuBuilder::ParamMenuItemObserver::notify (ISubject* subject, MessageRef msg)
+{
+	if(msg == "closeSubmenu")
+	{
+		if(IMenu* menu = item->getParentMenu ())
+		{
+			Variant control;
+			menu->getMenuAttribute (control, IMenu::kMenuControl);
+			UnknownPtr<ICompactMenuControl> compactControl (control.asUnknown ());
+			ASSERT (compactControl.isValid ());
+			if(compactControl)
+				compactControl->closeDeepestMenu ();
+		}
+	}
+	else if(msg == kChanged && isEqualUnknown (subject, param))
+	{
+		updateMenuValue ();
+		if(closeOnChange)
+			(NEW Message ("closeSubmenu"))->post (this, 300);
+	}
+}
+

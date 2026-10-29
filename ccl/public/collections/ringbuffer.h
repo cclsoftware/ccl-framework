@@ -19,7 +19,6 @@
 #ifndef _ccl_ringbuffer_h
 #define _ccl_ringbuffer_h
 
-#include "ccl/public/base/platform.h"
 #include "ccl/public/base/primitives.h"
 
 namespace CCL {

@@ -1,7 +1,7 @@
 //************************************************************************************************
 //
 // This file is part of Crystal Class Library (R)
-// Copyright (c) 2025 CCL Software Licensing GmbH.
+// Copyright (c) 2026 CCL Software Licensing GmbH.
 // All Rights Reserved.
 //
 // Licensed for use under either:
@@ -19,9 +19,12 @@
 #ifndef _ccl_iparameter_h
 #define _ccl_iparameter_h
 
+#include "ccl/public/gui/paramtypes.h"
+#include "ccl/public/gui/iparamcurve.h"
+#include "ccl/public/gui/graphics/color.h"
+
 #include "ccl/public/base/variant.h"
 #include "ccl/public/base/primitives.h"
-#include "ccl/public/gui/graphics/color.h"
 
 namespace CCL {
 
@@ -54,12 +57,12 @@ namespace ClassID
 
 //************************************************************************************************
 // IParameter
-/**	A parameter object is the link between application logic (controller) and GUI widgets.
-	If a GUI widget causes the parameter to change its value by user input, the controller
-	is notified to update its data model. If the underlying data model changes, 
-	changing the parameter value forces the GUI widget to be updated on screen. 
-	A single parameter can be associated to any number of widgets simultaneously. 
-	No additional coding is required to keep multiple graphical representations in sync. 
+/**	A parameter encapsulates state and synchronizes it between the application logic (controller)
+	and one or more GUI controls. Changes originating from an associated control are propagated
+	to the controller, which typically updates the underlying data model. Conversely, changes to
+	the data model are reflected by updating the parameter, causing all associated controls to
+	refresh their displayed state. A parameter may be associated with any number of controls,
+	ensuring that all representations remain synchronized automatically. 
 	\ingroup gui_param */
 //************************************************************************************************
 
@@ -68,44 +71,49 @@ interface IParameter: IUnknown
 	/** Parameter types. */
 	enum Type
 	{
-		kToggle,		///< toggle between on/off
-		kInteger,		///< numerical value integer
-		kFloat,			///< numerical value floating point
-		kString,		///< string value
-		kList,			///< list of values
-		kCommand,		///< command
-		kColor,			///< color value
-		kImage,			///< image provider
-		kSegments,		///< segments using IParamSplitter
-		kScroll,		///< scroll parameter
-		kTextModel,		///< text model provider
-		kNumTypes
+		kToggle = kParamTypeToggle,
+		kInteger = kParamTypeInteger,
+		kFloat = kParamTypeFloat,
+		kString = kParamTypeString,
+		kList = kParamTypeList,
+		kCommand = kParamTypeCommand,
+		kColor = kParamTypeColor,
+		kImage = kParamTypeImage,
+		kSegments = kParamTypeSegments,
+		kScroll = kParamTypeScroll,
+		kTextModel = kParamTypeTextModel,
+		kNumTypes = kNumParamTypes
 	};
 
 	/** Parameter flags. */
 	enum Flags
 	{
 		// behavioral flags
-		kSignalFirst	= 1<<1,		///< signal with old and with new value
-		kSignalAlways	= 1<<2,		///< signal when setValue is called with current value
-		kBipolar		= 1<<3,		///< parameter is bipolar, the center is defined by (max-min)/2
-		kReverse		= 1<<4,		///< parameter is reverse, display should be upside down
-		kOutOfRange		= 1<<5,		///< parameter value is out of range
-		kWrapAround		= 1<<6,		///< parameter increment/decrement does not stop at min/max
+		kSignalFirst = kParamBehaviorSignalFirst,
+		kSignalAlways = kParamBehaviorSignalAlways,
+		kBipolar = kParamBehaviorBipolar,
+		kReverse = kParamBehaviorReverse,
+		kOutOfRange = kParamBehaviorOutOfRange,
+		kWrapAround = kParamBehaviorWrapAround,
 		
 		// semantic flags
-		kStorable		= 1<<7,		///< parameter is storable
-		kStoreListValue	= 1<<8,		///< store selected list value instead of list index
-		kGroupable		= 1<<9,		///< parameter can be grouped
-		kPublic			= 1<<10,	///< parameter is public
-		kMutable		= 1<<11,	///< parameter is mutable (min/max, list entries can change)
-		kReadOnly		= 1<<12,	///< parameter is used for display purposes only, no editing
+		kStorable = kParamSemanticStorable,
+		kStoreListValue = kParamSemanticListValue,
+		kGroupable = kParamSemanticGroupable,
+		kPublic = kParamSemanticPublic,
+		kMutable = kParamSemanticMutable,
+		kReadOnly = kParamSemanticReadOnly,
+
+		// usage-specific flags
+		kUser1 = kParamUserFlag1,
+		kUser2 = kParamUserFlag2,
+		kUser3 = kParamUserFlag3,
 
 		// controller flags
-		kIsEditing		= 1<<13,	///< reserved for controller to store edit state
-		kFeedback		= 1<<14,	///< controller wants notify() calls as well
-		kPriorityChange	= 1<<15,	///< priority change pending
-		kCanUndo        = 1<<16		///< parameter changes can be undone
+		kIsEditing		= 1<<(kLastParameterFlag+1), ///< reserved for controller to store edit state
+		kFeedback		= 1<<(kLastParameterFlag+2), ///< controller wants notify() calls as well
+		kPriorityChange	= 1<<(kLastParameterFlag+3), ///< priority change pending
+		kCanUndo		= 1<<(kLastParameterFlag+4)	 ///< parameter changes can be undone
 	};
 
 	//////////////////////////////////////////////////////////////////////////////////////////////
@@ -134,6 +142,13 @@ interface IParameter: IUnknown
 
 	/** Set parameter name. */
 	virtual void CCL_API setName (StringID name) = 0;
+
+	enum TitleFlags { kFallbackToName = 1<<0 };
+	/** Get parameter title. */
+	virtual tbool CCL_API getTitle (String& title, int flags = 0) const = 0;
+
+	/** Set parameter title (optional). */
+	virtual void CCL_API setTitle (StringRef title) = 0;
 
 	/** Check if parameter is enabled. */
 	virtual tbool CCL_API isEnabled () const = 0;
@@ -274,6 +289,9 @@ interface IParameter: IUnknown
 
 	/** Set current value by string and (optionally) force controller update. */
 	virtual void CCL_API fromString (StringRef string, tbool update = false) = 0;
+
+	/** Convert current value to string for screen reader. */
+	virtual void CCL_API toAccessibleString (String& string) const = 0;
 	///@}
 
 	DECLARE_IID (IParameter)
@@ -309,6 +327,9 @@ interface IParameter: IUnknown
 	inline bool isReadOnly () const					{ return getState (kReadOnly) != 0; }
 	inline void setReadOnly (bool state = true)		{ setState (kReadOnly, state); }
 
+	inline bool isEditing () const					{ return getState (kIsEditing) != 0; }
+	inline void setEditing (bool state = true)		{ setState (kIsEditing, state); }
+
 	inline void setFeedbackNeeded (bool state)		{ setState (kFeedback, state); }
 	inline void setPriorityChange ()				{ setState (kPriorityChange, true); }
 	inline bool isPriorityChange () const			{ return getState (kPriorityChange) != 0; }
@@ -329,31 +350,6 @@ DEFINE_STRINGID_MEMBER (IParameter, kRequestFocus, "requestFocus")
 DEFINE_STRINGID_MEMBER (IParameter, kReleaseFocus, "releaseFocus")
 DEFINE_STRINGID_MEMBER (IParameter, kSetSelection, "setSelection")
 DEFINE_STRINGID_MEMBER (IParameter, kRangeChanged, "rangeChanged")
-
-//************************************************************************************************
-// IParamCurve
-/** Non-linear parameter curve. 
-	\ingroup gui_param */
-//************************************************************************************************
-
-interface IParamCurve: IUnknown
-{
-	/** Get value modified by parameter curve (non-linear), i.e. from display domain to internal. */
-	virtual double CCL_API displayToNormalized (double displayValue) const = 0;
-	
-	/** Get inverse value from parameter curve (linear), i.e. to display domain. */
-	virtual double CCL_API normalizedToDisplay (double normalized) const = 0;
-
-	/** Calculate value for relative parameter editing (in/out values are linear). */
-	virtual double CCL_API getRelativeValue (double startValue, double endValue, double linearValue) const = 0;
-
-	/** Get name of factory which created this instance. */
-	virtual CStringPtr CCL_API getFactoryName () const = 0;
-
-	DECLARE_IID (IParamCurve)
-};
-
-DEFINE_IID (IParamCurve, 0xfcd72f78, 0x6aa7, 0x402f, 0x95, 0x45, 0xf, 0xad, 0x30, 0x4, 0xd9, 0x2c)
 
 //************************************************************************************************
 // ITickScale 
@@ -687,7 +683,7 @@ interface IParamSplitter: IUnknown
 	/** Sets the parameter from the parts */
 	virtual int CCL_API setParts (const int parts[], int sign, int sizeOfArray) = 0;
 
-	/** Write the delimiterss into the array */
+	/** Write the delimiters into the array */
 	virtual int CCL_API getDelimiter (int delimiter[], int sizeOfArray) const = 0;
 
 	/** Write the number of digits for each part into the array */

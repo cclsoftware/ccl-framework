@@ -23,7 +23,7 @@
 
 #if CORE_NETWORK_IMPLEMENTATION == CORE_FEATURE_IMPLEMENTATION_POSIX
 #include <ifaddrs.h>
-#include <sys/fcntl.h>
+#include <fcntl.h>
 #include <net/if.h> // For IFF_LOOPBACK, etc
 
 #define CORE_IFADDRS_HAVE_DATA_MEMBER 1

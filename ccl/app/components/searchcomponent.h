@@ -48,13 +48,16 @@ class SearchComponent: public Component,
 public:
 	DECLARE_CLASS (SearchComponent, Component)
 	DECLARE_METHOD_NAMES (SearchComponent)
-	
+
 	SearchComponent ();
 	~SearchComponent ();
 
 	ISearchResultViewer* getResultViewer ();
 	void setResultViewer (ISearchResultViewer* resultViewer);
 	void setSearchProvider (ISearchProvider* searchProvider);
+
+	static constexpr CStringPtr kSearchTermsName = "searchTerms";
+	static bool isAcceptableEditView (IView* view);
 
 	void reset ();
 	void clearSearchTerms ();
@@ -81,7 +84,7 @@ public:
 	IView* CCL_API createView (StringID name, VariantRef data, const Rect& bounds) override;
 	tbool CCL_API paramChanged (IParameter* param) override;
 	void CCL_API notify (ISubject* subject, MessageRef msg) override;
-	CCL::tbool CCL_API getProperty (CCL::Variant& var, MemberID propertyId) const override;
+	tbool CCL_API getProperty (Variant& var, MemberID propertyId) const override;
 	tresult CCL_API terminate () override;
 	
 	// Command Methods

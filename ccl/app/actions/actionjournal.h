@@ -126,7 +126,7 @@ protected:
 	Transaction* activeTransaction;
 
 	void signalAction (StringID messageId, Action* action);
-	void logAction (const char* prefix, const Action* action);
+	void logAction (CStringPtr prefix, const Action* action);
 
 	// IActionJournal
 	tbool CCL_API canUndoLastEdit () const override { return canUndo (); }

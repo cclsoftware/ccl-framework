@@ -489,6 +489,7 @@ tbool CCL_API CommandBarModel::invokeMethod (Variant& returnValue, MessageRef ms
 //************************************************************************************************
 
 DEFINE_CLASS_PERSISTENT (Item, Object, "CommandBar.Item")
+DEFINE_CLASS_NAMESPACE (Item, NAMESPACE_CCL)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 

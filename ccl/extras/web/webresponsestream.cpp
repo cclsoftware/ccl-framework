@@ -87,7 +87,7 @@ int CCL_API WebSseStream::write (const void* buffer, int size)
 		return size;
 	
 	// Append incoming chunk to internal buffer
-	inBuffer.appendCString (Text::kUTF8, (const char*)buffer, size);
+	inBuffer.appendCString (Text::kUTF8, (CStringPtr)buffer, size);
 
 	StringRef nl = String::getLineEnd (Text::kLFLineFormat);
 	StringRef cr = String::getLineEnd (Text::kCRLineFormat);

@@ -11,59 +11,51 @@
 // You must choose and comply with one of the above licensing options.
 // For more information, please visit ccl.dev.
 //
-// Filename    : ccl/gui/theme/renderer/textboxrenderer.cpp
-// Description : Control Renderer
+// Filename    : ccl/gui/theme/renderer/textboxrenderer.h
+// Description : Text Box Renderer
 //
 //************************************************************************************************
 
 #ifndef _ccl_textboxrenderer_h
 #define _ccl_textboxrenderer_h
 
-#include "ccl/gui/theme/renderer/compositedrenderer.h"
-#include "ccl/public/gui/framework/styleflags.h"
+#include "ccl/gui/theme/atomrenderer.h"
 
 namespace CCL {
-
-class GraphicsPort;
-interface IColorParam;
 
 //************************************************************************************************
 // TextBoxRenderer
 //************************************************************************************************
 
-class TextBoxRenderer: public CompositedRenderer
+class TextBoxRenderer: public ControlRenderer
 {
 public:
-	TextBoxRenderer (VisualStyle* visualStyle);
-		
-	// CompositedRenderer
-	void draw (View* view, const UpdateRgn& updateRgn) override;
-	int hitTest (View* view, const Point& loc, Point* clickOffset) override;
-	bool getPartRect (const View* view, int partCode, Rect& rect) override;
+	DECLARE_CLASS_ABSTRACT (TextBoxRenderer, ControlRenderer)
+
+	TextBoxRenderer (VisualStyle* visualStyle, View* owner);
+	~TextBoxRenderer ();
+
+	bool onTextInteraction (const IMutableTextModel::InteractionInfo& info);
+	const ITextLayout* getTextLayout () const;
+	void setSize (RectFRef size);
+
+	// AtomRenderer
+	void updateAtoms () override;
+	void applyVisualStyle (RenderAtomTransaction& transaction) override;
+	bool getPartRect (Rect& rect, int partCode) override;
+	void CCL_API notify (ISubject* subject, MessageRef msg) override;
 
 protected:
-	SharedPtr<IImage> background;
-	SolidBrush textBrush;
+	RenderAtom textAtom;
+	RenderAtom backgroundAtom;
 	Rect padding;
-	Color textColorOpaque;
-	Color textContrastTransparentColor;
-	Color textContrastBrightColor;
-	Color textContrastDarkColor;
-	Color alphaBlendColor;
-	Color disabledTextColor;
-	Color borderPenColor;
 	mutable Color colorParamColor;
+	ITextModel* observedTextModel = nullptr;
 
-	float brightColorThreshold;
-	bool initialized;
-	
-	virtual void initialize (StyleRef style);
-	ColorRef getTextColor (IColorParam* colorParam) const;
-	virtual bool drawLayout (View* view, GraphicsPort& port, ITextLayout* layout, BrushRef textBrush);
-	virtual bool isOpaque (const View* view) const;
+	virtual bool isOpaque () const;
 };
 
-DECLARE_VISUALSTYLE_CLASS (TextBox)
+DECLARE_TYPELIB_ENTRY (TextBox)
 
 } // namespace CCL
 

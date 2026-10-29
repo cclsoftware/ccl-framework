@@ -76,9 +76,10 @@
 		<Model.Class name="Animation" parent="Element">
 			<Model.Documentation x:id="doc">
 				<String x:id="brief" text="Describes an animation of a property"/>
-				<String x:id="detailed" text="Must be placed inside a &lt;StartAnimation&gt;. &#10;&#10;The &quot;property&quot; path is relative to the triggering view.&#10;An Animation specifies that the property value should transition &quot;from&quot; a start value &quot;to&quot; an end value for some &quot;duration&quot;.&#10;&#10;Additionally, a &quot;repeat&quot; mode and a timing &quot;function&quot; can be specified.&#10;&#10;Multiple animations can be in the same &quot;group&quot; to ensure synchronized execution."/>
+				<String x:id="detailed" text="Can be placed inside a &lt;StartAnimation&gt;.  or be used as transition between &lt;StyleCondition&gt; scopes. &#10;&#10;The &quot;property&quot; path is relative to the triggering view.&#10;An Animation specifies that the property value should transition &quot;from&quot; a start value &quot;to&quot; an end value for some &quot;duration&quot;.&#10;&#10;Additionally, a &quot;repeat&quot; mode and a timing &quot;function&quot; can be specified.&#10;&#10;Multiple animations can be in the same &quot;group&quot; to ensure synchronized execution."/>
 				<List x:id="links">
 					<String text="StartAnimation"/>
+					<String text="StyleCondition"/>
 				</List>
 			</Model.Documentation>
 			<List x:id="members">
@@ -132,6 +133,7 @@
 				</Model.Member>
 			</List>
 			<Attributes x:id="attributes">
+				<Attribute id="Class:SchemaGroups" value="Style.Children"/>
 				<Attribute id="Class:DocGroup" value="Animation"/>
 			</Attributes>
 		</Model.Class>
@@ -359,7 +361,7 @@
 		<Model.Class name="Control" parent="View">
 			<Model.Documentation x:id="doc">
 				<String x:id="brief" text="Base class for all controls"/>
-				<String x:id="detailed" text="A control is a user interface element, that operates on a parameter in a defined way. &#10;The name attribute of a control refers to the name of the parameter, that the controller must supply, &#10;when the user interfaces is constructed from the skin description. Instead of a parameter, a control can also trigger a command."/>
+				<String x:id="detailed" text="A control is a user interface element that operates on a parameter in a defined way.&#10;The name attribute of a control refers to the name of the parameter that the controller must supply&#10;when the user interface is constructed from the skin description. Instead of a parameter, a control can also trigger a command."/>
 			</Model.Documentation>
 			<List x:id="members">
 				<Model.Member name="command.category" type="string" typeName="string">
@@ -380,7 +382,7 @@
 		<Model.Class name="Cursor" parent="Element">
 			<Model.Documentation x:id="doc">
 				<String x:id="brief" text="Defines a Cursor resource"/>
-				<String x:id="detailed" text="A cursor is defined with an image resource and an hotspot, which is the active point in the image."/>
+				<String x:id="detailed" text="A cursor is defined with an image resource and a hotspot, which is the active point in the image."/>
 			</Model.Documentation>
 			<List x:id="members">
 				<Model.Member name="image" type="string" typeName="string">
@@ -399,7 +401,7 @@
 				<Attribute id="Class:DocGroup" value="Resources"/>
 			</Attributes>
 		</Model.Class>
-		<Model.Class name="CursorView" parent="ImageView">
+		<Model.Class name="CursorView" parent="View">
 			<Model.Documentation x:id="doc">
 				<String x:id="brief" text="Changes the mouse cursor"/>
 				<String x:id="detailed" text="While the mouse is over the CursorView, the mouse cursor changes to the specified cursor."/>
@@ -421,7 +423,7 @@
 		<Model.Class name="Delegate" parent="View">
 			<Model.Documentation x:id="doc">
 				<String x:id="brief" text="Dynamically creates a content view"/>
-				<String x:id="detailed" text="Every time the Delegate gets attached, it creates a new child view using the given form name and controller.&#10;When the delegagte gets removed, the child view is destroyed.&#10;&#10;The controller attribute is optional, default is the current controller.&#10;&#10;A popular usage scenario is a &lt;Delegate&gt; inside a &lt;Variant&gt; controlled by a property.&#10;Everytime the property change is triggered by the application, the content gets recreated (see code example)."/>
+				<String x:id="detailed" text="Every time the Delegate gets attached, it creates a new child view using the given form name and controller.&#10;When the Delegate gets removed, the child view is destroyed.&#10;&#10;The controller attribute is optional, default is the current controller.&#10;&#10;A popular usage scenario is a &lt;Delegate&gt; inside a &lt;Variant&gt; controlled by a property.&#10;Every time the property change is triggered by the application, the content gets recreated (see code example)."/>
 				<String x:id="code" text="&lt;!-- the option &quot;selectalways&quot; here ensures that the view&#10;is recreated although the property value did not really change --&gt;&#10;&lt;Variant property=&quot;hasContent&quot; options=&quot;selectalways&quot;&gt;&#10;   &lt;Delegate form.name=&quot;MyContent&quot; controller=&quot;IMyController&quot;/&gt;&#10;&lt;/Variant&gt;"/>
 				<String x:id="language" text="xml"/>
 			</Model.Documentation>
@@ -560,7 +562,7 @@
 		<Model.Class name="EmbeddedFrame" parent="View">
 			<Model.Documentation x:id="doc">
 				<String x:id="brief" text="An EmbeddedFrame defines a sub tree of frames that can appear in the form of a parent class"/>
-				<String x:id="detailed" text="The EmbeddedFrame element must appear in two places: placed inside the form of a &quot;parent&quot; window class&#10;and placed in the root frame of a perspective with the same name and a parent class. It defines a separate subtree of frames.&#10;&#10;When a window class is about to be opened, the workspace system ensures that the parent class, whose view contains the EmbeddeFrame view gets opened first."/>
+				<String x:id="detailed" text="The EmbeddedFrame element must appear in two places: placed inside the form of a &quot;parent&quot; window class&#10;and placed in the root frame of a perspective with the same name and a parent class. It defines a separate subtree of frames.&#10;&#10;When a window class is about to be opened, the workspace system ensures that the parent class, whose view contains the EmbeddedFrame view, gets opened first."/>
 				<String x:id="code" text="&lt;!-- inside form of parent window --&gt;&#10;&lt;Form name=&quot;MyParentForm&quot;&gt;&#10;&#9;&lt;!-- ... --&gt;&#10;&#9;&lt;EmbeddedFrame name=&quot;Embedded&quot;/&gt;&#10;&lt;/Form&gt;&#10;&#10;&lt;!-- in root frame of perspective --&gt;&#10;&lt;EmbeddedFrame name=&quot;Embedded&quot; parent.class=&quot;MyParentClass&quot;&gt;&#10;&#9;&lt;Frame options=&quot;vertical&quot;&gt;&#10;&#9;&#9;&lt;Frame name=&quot;A&quot; groups=&quot;a&quot;/&gt;&#10;&#9;&#9;&lt;Frame name=&quot;B&quot; groups=&quot;b&quot;/&gt;&#10;&#9;&lt;/Frame&gt;&#10;&lt;/EmbeddedFrame&gt;"/>
 				<String x:id="language" text="xml"/>
 			</Model.Documentation>
@@ -599,7 +601,7 @@
 		</Model.Class>
 		<Model.Class name="Externals" parent="Element">
 			<Model.Documentation x:id="doc">
-				<String x:id="brief" text="Enclosing tag for all Externals in a skin xml file"/>
+				<String x:id="brief" text="Enclosing tag for all Externals in a Skin XML file"/>
 				<List x:id="links">
 					<String text="External"/>
 				</List>
@@ -717,7 +719,7 @@
 		<Model.Class name="Form" parent="ImageView">
 			<Model.Documentation x:id="doc">
 				<String x:id="brief" text="A Form is the top level view building block in a skin, accessible by name"/>
-				<String x:id="detailed" text="There are two main use cases for forms:&#10;1. A form is the entry point in the skin when the application wants to create a specific view.&#10;2. A form can by instantiated from another form using the &lt;View&gt; tag.&#10;This allows structuring large view hierarchies into smaller forms, and reusing the same form in different places.&#10;&#10;As an ImageView, a Form can also have a backgoround image or color."/>
+				<String x:id="detailed" text="There are two main use cases for forms:&#10;1. A form is the entry point in the skin when the application wants to create a specific view.&#10;2. A form can by instantiated from another form using the &lt;View&gt; tag.&#10;This allows structuring large view hierarchies into smaller forms, and reusing the same form in different places.&#10;&#10;As an ImageView, a Form can also have a background image or color."/>
 			</Model.Documentation>
 			<List x:id="members">
 				<Model.Member name="windowstyle" type="string" typeName="enum">
@@ -745,7 +747,7 @@
 		</Model.Class>
 		<Model.Class name="Forms" parent="Element">
 			<Model.Documentation x:id="doc">
-				<String x:id="brief" text="Enclosing tag for all Forms in a skin xml file"/>
+				<String x:id="brief" text="Enclosing tag for all Forms in a Skin XML file"/>
 				<List x:id="links">
 					<String text="Form"/>
 				</List>
@@ -821,7 +823,7 @@
 				<Model.Member name="endcolor" type="string" typeName="color"/>
 			</List>
 			<Attributes x:id="attributes">
-				<Attribute id="Class:SchemaGroups" value="Resources.Children Style.Children"/>
+				<Attribute id="Class:SchemaGroups" value="Resources.Children"/>
 				<Attribute id="Class:ChildGroup" value="GradientStop"/>
 				<Attribute id="Class:DocGroup" value="Resources"/>
 			</Attributes>
@@ -855,6 +857,7 @@
 				</Model.Member>
 			</List>
 			<Attributes x:id="attributes">
+				<Attribute id="Class:SchemaGroups" value="Shapes.Children"/>
 				<Attribute id="Class:DocGroup" value="Shapes"/>
 			</Attributes>
 		</Model.Class>
@@ -891,7 +894,7 @@
 		<Model.Class name="Horizontal" parent="Layout">
 			<Model.Documentation x:id="doc">
 				<String x:id="brief" text="Arranges child views horizontally, trying to fill the width of the Horizontal element"/>
-				<String x:id="detailed" text="The intitial widths of the child views are considered their preferred widths. For a given container width,&#10;the total preferred with of all child views can result in either some remaining or missing width.&#10;&#10;The horizontal layout tries to distribute this remaining or missing width equally among the child views, by&#10;either enlarging or shrinking the childs. But this is limited by their attachments and their size limits:&#10;Like in the basic layout of the View class, a view only get&apos;s sized horizontally, if it&apos;s attached left and right to it&apos;s parent (attach=&quot;left right&quot;)."/>
+				<String x:id="detailed" text="The initial widths of the child views are considered their preferred widths. For a given container width,&#10;the total preferred width of all child views can result in either some remaining or missing width.&#10;&#10;The horizontal layout tries to distribute this remaining or missing width equally among the child views, by&#10;either enlarging or shrinking the children. But this is limited by their attachments and their size limits:&#10;Like in the basic layout of the View class, a view only gets sized horizontally if it&apos;s attached left and right to its parent (attach=&quot;left right&quot;)."/>
 			</Model.Documentation>
 			<Attributes x:id="attributes">
 				<Attribute id="Class:DocGroup" value="Layout"/>
@@ -900,7 +903,7 @@
 		<Model.Class name="IconSet" parent="Image">
 			<Model.Documentation x:id="doc">
 				<String x:id="brief" text="Combines image files from a folder to an image resource with multiple frames"/>
-				<String x:id="detailed" text="The url specifies a folder. The image files in that folder must have the format &quot;icon_SxS.png&quot; with S being the size (same width and height) of the image.&#10;&#10;Depending on the &quot;frames&quot; attribute, different sets of image file names are searched for in that folder:&#10;If frames has the value &quot;all&quot;, the sizes 16, 32, 48, 64, 128, 256, 512. Otherwise only 16 and 32 used."/>
+				<String x:id="detailed" text="The url specifies a folder. The image files in that folder must have the format &quot;icon_SxS.png&quot; with S being the size (same width and height) of the image.&#10;&#10;Depending on the &quot;frames&quot; attribute, different sets of image file names are searched for in that folder:&#10;If frames has the value &quot;all&quot;, the sizes 16, 32, 48, 64, 128, 256, 512 are used. Otherwise only 16 and 32 are used."/>
 				<String x:id="code" text="&lt;IconSet name=&quot;FileIcon:song&quot; url=&quot;icons/song_doc.iconset&quot;/&gt;"/>
 				<String x:id="language" text="xml"/>
 			</Model.Documentation>
@@ -983,7 +986,7 @@
 		</Model.Class>
 		<Model.Class name="ImagePart" parent="Image">
 			<Model.Documentation x:id="doc">
-				<String x:id="brief" text="An ImagePart defines a excerpt of an image as a new image resource"/>
+				<String x:id="brief" text="An ImagePart defines an excerpt of an image as a new image resource"/>
 				<String x:id="code" text="&lt;ImagePart name=&quot;MyPart&quot; image=&quot;MyImage&quot; size=&quot;0,3,7,1&quot; /&gt;"/>
 				<String x:id="language" text="xml"/>
 			</Model.Documentation>
@@ -1003,7 +1006,7 @@
 		<Model.Class name="ImageView" parent="View">
 			<Model.Documentation x:id="doc">
 				<String x:id="brief" text="Shows an Image or color"/>
-				<String x:id="detailed" text="An ImageView can draw&#10;- a static image (attribute &quot;image&quot;)&#10;- an image provided by an image parameter (attribute &quot;provider&quot;)&#10;- a color (&quot;backcolor&quot; from visual style, option &quot;colorize&quot;)&#10;&#10;The image will be resized to the view area.&#10;&#10;An optional parameter &quot;selectname&quot; can be used to chose the image frame to be displayed:&#10;By default, the frame &quot;nornal&quot; is used when the parameter value is zero, otherwise &quot;pressed&quot;.&#10;With option &quot;framesbyname&quot;, the parameter value is interpreted as a frame name."/>
+				<String x:id="detailed" text="An ImageView can draw&#10;- a static image (attribute &quot;image&quot;)&#10;- an image provided by an image parameter (attribute &quot;provider&quot;)&#10;- a color (&quot;backcolor&quot; from visual style, option &quot;colorize&quot;)&#10;&#10;The image will be resized to the view area.&#10;&#10;An optional parameter &quot;selectname&quot; can be used to choose the image frame to be displayed:&#10;By default, the frame &quot;normal&quot; is used when the parameter value is zero, otherwise &quot;pressed&quot;.&#10;With option &quot;framesbyname&quot;, the parameter value is interpreted as a frame name."/>
 				<List x:id="links">
 					<String text="ImageViewStyle"/>
 				</List>
@@ -1058,7 +1061,7 @@
 		</Model.Class>
 		<Model.Class name="Imports" parent="Element">
 			<Model.Documentation x:id="doc">
-				<String x:id="brief" text="Enclosing tag for all Imports in a skin xml file"/>
+				<String x:id="brief" text="Enclosing tag for all Imports in a Skin XML file"/>
 				<List x:id="links">
 					<String text="Import"/>
 				</List>
@@ -1071,7 +1074,7 @@
 		</Model.Class>
 		<Model.Class name="Include" parent="Resource">
 			<Model.Documentation x:id="doc">
-				<String x:id="brief" text="Includes the content of another Skin xml file"/>
+				<String x:id="brief" text="Includes the content of another Skin XML file"/>
 				<String x:id="detailed" text="The content of the included file is merged into the containing model."/>
 			</Model.Documentation>
 			<Attributes x:id="attributes">
@@ -1081,7 +1084,7 @@
 		</Model.Class>
 		<Model.Class name="Includes" parent="Element">
 			<Model.Documentation x:id="doc">
-				<String x:id="brief" text="Enclosing tag for all Includes in a skin xml file"/>
+				<String x:id="brief" text="Enclosing tag for all Includes in a Skin XML file"/>
 				<List x:id="links">
 					<String text="Include"/>
 				</List>
@@ -1247,6 +1250,7 @@
 				<Model.Member name="end" type="string" typeName="point"/>
 			</List>
 			<Attributes x:id="attributes">
+				<Attribute id="Class:SchemaGroups" value="Style.Children Resources.Children"/>
 				<Attribute id="Class:DocGroup" value="Resources"/>
 			</Attributes>
 		</Model.Class>
@@ -1254,7 +1258,7 @@
 			<Model.Documentation x:id="doc">
 				<String x:id="brief" text="Displays a text link"/>
 				<String x:id="detailed" text="Displays a text link similar as in a web browser. It can be used with an url or a parameter.&#10;&#10;An url for the link must be specified in a parent &lt;Anchor&gt; element. When a parameter (&quot;name&quot;) is used, no Anchor is required. The Link then behaves like a button.&#10;The title can be omitted, and child views can be used instead e.g. an ImageView."/>
-				<String x:id="code" text="&lt;!-- Example: link url specified in parent anchor element --&gt;&#10;&lt;Anchor url = &quot;https:://ccl.dev&quot;&gt;&#10;&#9;&lt;Link title = &quot;...&quot;&gt;&#10;&lt;/Anchor&gt;"/>
+				<String x:id="code" text="&lt;!-- Example: link url specified in parent anchor element --&gt;&#10;&lt;Anchor url = &quot;https://ccl.dev&quot;&gt;&#10;&#9;&lt;Link title = &quot;...&quot;&gt;&#10;&lt;/Anchor&gt;"/>
 				<String x:id="language" text="xml"/>
 				<List x:id="links">
 					<String text="Anchor"/>
@@ -1386,7 +1390,7 @@
 		</Model.Class>
 		<Model.Class name="Overlays" parent="Element">
 			<Model.Documentation x:id="doc">
-				<String x:id="brief" text="Enclosing tag for all Overlays in a skin xml file"/>
+				<String x:id="brief" text="Enclosing tag for all Overlays in a Skin XML file"/>
 				<List x:id="links">
 					<String text="Overlay"/>
 				</List>
@@ -1437,9 +1441,9 @@
 		</Model.Class>
 		<Model.Class name="Perspective" parent="Element">
 			<Model.Documentation x:id="doc">
-				<String x:id="brief" text="A perspective defines an arrangement of nested frames, that can each house a window class"/>
+				<String x:id="brief" text="A perspective defines an arrangement of nested frames that can each house a window class"/>
 				<List x:id="links">
-					<String text="Perspective"/>
+					<String text="Frame"/>
 				</List>
 			</Model.Documentation>
 			<List x:id="members">
@@ -1544,7 +1548,7 @@
 		</Model.Class>
 		<Model.Class name="PopupBox" parent="View">
 			<Model.Documentation x:id="doc">
-				<String x:id="brief" text="Shows a temporary pop-up view when clicked"/>
+				<String x:id="brief" text="Shows a temporary popup view when clicked"/>
 				<String x:id="detailed" text="On a mouse click, a PopupBox opens a view in a temporary modal popup window.&#10;The view is created from the skin using the specified &quot;form.name&quot;. The &quot;popup&quot; attribute &#10;specifies the alignment of the popup menu relative to the PopupBox. The popup will close when &#10;clicked outside of it.&#10;&#10;Child views inside the &lt;PopupBox&gt; are displayed as usual, they also get the mouse states &quot;mouse over&quot; &#10;and &quot;mouse down&quot; when the PopupBox is either hovered or pressed."/>
 				<String x:id="code" text="&lt;!-- Inside the popup form description, the special controller name &quot;source&quot; can be used to &#10;address the original controller that contains the &lt;PopupBox&gt; --&gt;&#10;&lt;Form name=&quot;MyPopup&quot;&gt;&#10;  &lt;using controller=&quot;source&quot;&gt;&#10;  &lt;/using&gt;&#10;&lt;/Form&gt;"/>
 				<String x:id="language" text="xml"/>
@@ -1591,6 +1595,7 @@
 				<Model.Member name="radius" type="string" typeName="float"/>
 			</List>
 			<Attributes x:id="attributes">
+				<Attribute id="Class:SchemaGroups" value="Style.Children Resources.Children"/>
 				<Attribute id="Class:DocGroup" value="Resources"/>
 			</Attributes>
 		</Model.Class>
@@ -1668,7 +1673,7 @@
 		</Model.Class>
 		<Model.Class name="Resources" parent="Element">
 			<Model.Documentation x:id="doc">
-				<String x:id="brief" text="Enclosing tag for all Resources in a skin xml file"/>
+				<String x:id="brief" text="Enclosing tag for all Resources in a Skin XML file"/>
 				<String x:id="detailed" text="Resources are Cursor, FontResource, IconSet, Image, ImagesPart, Color"/>
 				<List x:id="links">
 					<String text="Cursor"/>
@@ -1760,7 +1765,7 @@
 		<Model.Class name="ScrollHeader" parent="Target">
 			<Model.Documentation x:id="doc">
 				<String x:id="brief" text="Specifies the header view of a scroll view"/>
-				<String x:id="detailed" text="The &lt;ScrollHeader&gt; tag can only appear as child of a &lt;ScrollView&gt; tag.&#10;The name attribute specifies the name of a form that is used to create the target view."/>
+				<String x:id="detailed" text="The &lt;ScrollHeader&gt; tag can only appear as child of a &lt;ScrollView&gt; tag.&#10;The name attribute specifies the name of a form that is used to create the header view."/>
 			</Model.Documentation>
 			<Attributes x:id="attributes">
 				<Attribute id="Class:DocGroup" value="Views"/>
@@ -1768,9 +1773,9 @@
 		</Model.Class>
 		<Model.Class name="ScrollPicker" parent="Control">
 			<Model.Documentation x:id="doc">
-				<String x:id="brief" text="A ScrollPicker is value is a control displaying its current value in the center of an underlying scrollview"/>
-				<String x:id="detailed" text="Like ValueBox or Knob it allows changing the value by dragging the mouse.&#10;&#9;Can be used in vertical (default) or horizontal orientation, w/o warparound option (endless dial)."/>
-				<String x:id="code" text="# standard scrollpicker usage&#10; &lt;ScrollPicker name=&quot;foo&quot; size=&quot;0,0,110,110&quot;/&gt;&#10;&#10; # Second horizontal example using the wraparound option&#10; &lt;Style name=&quot;HorizontalScrollPickerStyle&quot; inherit=&quot;Standard.ScrollPicker&quot;&gt;&#10;&#9; &lt;Metric name=&quot;itemSize&quot; value=&quot;30&quot;/&gt;&#10;&#9; &lt;Metric name=&quot;centerSize&quot; value=&quot;35&quot;/&gt;&#10; &lt;/Style&gt;&#10; &lt;ScrollPicker name=&quot;bar&quot; options=&quot;wraparound horizontal&quot; style=&quot;HorizontalScrollPickerStyle&quot; size=&quot;0,0,110,20&quot;/&gt;"/>
+				<String x:id="brief" text="A ScrollPicker is a control displaying its current value in the center of an underlying scroll view"/>
+				<String x:id="detailed" text="Like ValueBox or Knob, it allows changing the value by dragging the mouse.&#10;&#9;Can be used in vertical (default) or horizontal orientation, with or without the wraparound option (endless dial)."/>
+				<String x:id="code" text="&lt;!-- standard scrollpicker usage --&gt;&#10; &lt;ScrollPicker name=&quot;foo&quot; size=&quot;0,0,110,110&quot;/&gt;&#10;&#10; &lt;!-- Second horizontal example using the wraparound option --&gt;&#10; &lt;Style name=&quot;HorizontalScrollPickerStyle&quot; inherit=&quot;Standard.ScrollPicker&quot;&gt;&#10;&#9; &lt;Metric name=&quot;itemSize&quot; value=&quot;30&quot;/&gt;&#10;&#9; &lt;Metric name=&quot;centerSize&quot; value=&quot;35&quot;/&gt;&#10; &lt;/Style&gt;&#10; &lt;ScrollPicker name=&quot;bar&quot; options=&quot;wraparound horizontal&quot; style=&quot;HorizontalScrollPickerStyle&quot; size=&quot;0,0,110,20&quot;/&gt;"/>
 				<String x:id="language" text="xml"/>
 			</Model.Documentation>
 			<List x:id="members">
@@ -1825,7 +1830,7 @@
 			<Model.Documentation x:id="doc">
 				<String x:id="brief" text="Displays a numeric value in distinct segments that can be incremented / decremented separately"/>
 				<List x:id="links">
-					<String text="SegmentBox"/>
+					<String text="SegmentBoxStyle"/>
 				</List>
 			</Model.Documentation>
 			<Attributes x:id="attributes">
@@ -1922,7 +1927,7 @@
 		</Model.Class>
 		<Model.Class name="Shapes" parent="Element">
 			<Model.Documentation x:id="doc">
-				<String x:id="brief" text="Enclosing tag for all Shapes in a skin xml file"/>
+				<String x:id="brief" text="Enclosing tag for all Shapes in a Skin XML file"/>
 				<List x:id="links">
 					<String text="BasicShape"/>
 				</List>
@@ -1935,7 +1940,7 @@
 		</Model.Class>
 		<Model.Class name="SizeVariant" parent="Layout">
 			<Model.Documentation x:id="doc">
-				<String x:id="brief" text="Dynamically selects one of it&apos;s child elements, depending on the container width or height"/>
+				<String x:id="brief" text="Dynamically selects one of its child elements, depending on the container width or height"/>
 				<String x:id="detailed" text="Child elements must specify their minimum width or height in the &quot;data.minsize&quot; attribute.&#10;The best matching child view gets selected every time the container size changes."/>
 				<String x:id="code" text="&lt;SizeVariant options=&quot;vertical&quot; height=&quot;100&quot; attach=&quot;all&quot;&gt;&#10;&#9;&lt;Label title=&quot;tiny&quot;/&gt; &lt;!-- used when parent height &lt; 10 --&gt;&#10;&#9;&lt;Label title=&quot;small&quot; data.minsize=&quot;10&quot;/&gt; &lt;!-- used when parent height &gt;= 10 and &lt; 20 --&gt;&#10;&#9;&lt;Label title=&quot;large&quot; data.minsize=&quot;20&quot;/&gt; &lt;!-- used when parent height &gt;= 20 --&gt;&#10;&lt;/SizeVariant&gt;"/>
 				<String x:id="language" text="xml"/>
@@ -1993,8 +1998,8 @@
 		</Model.Class>
 		<Model.Class name="Space" parent="View">
 			<Model.Documentation x:id="doc">
-				<String x:id="brief" text="An view with the initial predefined size &quot;Spacing&quot;"/>
-				<String x:id="detailed" text="A Space view  gets the width and height &quot;Spacing&quot; from the theme, if it has no or an empty specified size.&#10;Apart from that it behaves the same as a view."/>
+				<String x:id="brief" text="A view with the initial predefined size &quot;Spacing&quot;"/>
+				<String x:id="detailed" text="A Space view gets the width and height &quot;Spacing&quot; from the theme if it has no size, or an empty size, specified.&#10;Apart from that it behaves the same as a view."/>
 			</Model.Documentation>
 			<Attributes x:id="attributes">
 				<Attribute id="Class:DocGroup" value="General"/>
@@ -2057,7 +2062,7 @@
 		<Model.Class name="Style" parent="StyleData">
 			<Model.Documentation x:id="doc">
 				<String x:id="brief" text="Visual Style definition"/>
-				<String x:id="detailed" text="A Style defines the visual appearance of a view. It is collection of definitions for images, colors, metrics and fonts.&#10;It can be assigned to a view element via it&apos;s &quot;style&quot; attribute.&#10;Styles with the attribute &quot;appstyle&quot; can also be accessed directly by the application for specific purposes."/>
+				<String x:id="detailed" text="A Style defines the visual appearance of a view. It is a collection of definitions for images, colors, metrics and fonts.&#10;It can be assigned to a view element via its &quot;style&quot; attribute.&#10;Styles with the attribute &quot;appstyle&quot; can also be accessed directly by the application for specific purposes."/>
 				<String x:id="code" text="&lt;Style name=&quot;MyStyle&quot;&gt;&#10;&#9;&lt;Font name=&quot;textfont&quot; face=&quot;Arial&quot; size=&quot;10&quot; style=&quot;bold&quot;/&gt;&#10;&#9;&lt;Color name=&quot;textcolor&quot; color=&quot;#666666&quot; /&gt;&#10;&#9;&lt;Image name=&quot;background&quot; image=&quot;SomeImage&quot;/&gt;&#10;&#9;&lt;Metric name=&quot;padding.left&quot; value=&quot;7&quot;/&gt;&#10;&#9;&lt;Align name=&quot;textalign&quot; align=&quot;left&quot;/&gt;&#10;&#9;&lt;Options name=&quot;someOption&quot; value=&quot;23&quot;/&gt;&#10;&#9;&lt;Options name=&quot;someOption&quot; type=&quot;Align.align&quot; options=&quot;left top&quot;/&gt;&#10;&lt;/Style&gt;"/>
 				<String x:id="language" text="xml"/>
 			</Model.Documentation>
@@ -2079,14 +2084,13 @@
 				</Model.Member>
 			</List>
 			<Attributes x:id="attributes">
-				<Attribute id="Class:ChildGroup" value="Style.Children"/>
 				<Attribute id="Class:DocGroup" value="Styles"/>
 			</Attributes>
 		</Model.Class>
 		<Model.Class name="StyleAlias" parent="Style">
 			<Model.Documentation x:id="doc">
 				<String x:id="brief" text="Visual Style Alias definition"/>
-				<String x:id="detailed" text="A visual style that dynamically delegates to one of the listed styles based on a paramter value.&#10;The parameter must be globally accessible. The value of the parameter is interpreted as an index in the list of available styles."/>
+				<String x:id="detailed" text="A visual style that dynamically delegates to one of the listed styles based on a parameter value.&#10;The parameter must be globally accessible. The value of the parameter is interpreted as an index in the list of available styles."/>
 				<String x:id="code" text="&lt;StyleAlias name=&quot;MyStyle&quot;&#10;&#9;&#9;parameter=&quot;://hostapp/Configuration/styleIndex&quot;&#10;&#9;&#9;styles=&quot;MyFirstStyle MySecondStyle MyThirdStyle&quot;&gt;&#10;&lt;/StyleAlias&gt;"/>
 				<String x:id="language" text="xml"/>
 			</Model.Documentation>
@@ -2112,6 +2116,7 @@
 				<String x:id="detailed" text="Subelement in a visual style to define attributes specific to a certain named condition or state."/>
 			</Model.Documentation>
 			<Attributes x:id="attributes">
+				<Attribute id="Class:SchemaGroups" value="Style.Children"/>
 				<Attribute id="Class:DocGroup" value="Styles"/>
 			</Attributes>
 		</Model.Class>
@@ -2184,12 +2189,13 @@
 				</Model.Member>
 			</List>
 			<Attributes x:id="attributes">
+				<Attribute id="Class:ChildGroup" value="Style.Children"/>
 				<Attribute id="Class:DocGroup" value="Styles"/>
 			</Attributes>
 		</Model.Class>
 		<Model.Class name="Styles" parent="Element">
 			<Model.Documentation x:id="doc">
-				<String x:id="brief" text="Enclosing tag for all Styles in a skin xml file"/>
+				<String x:id="brief" text="Enclosing tag for all Styles in a Skin XML file"/>
 				<List x:id="links">
 					<String text="Style"/>
 				</List>
@@ -2239,7 +2245,7 @@
 		<Model.Class name="Table" parent="Layout">
 			<Model.Documentation x:id="doc">
 				<String x:id="brief" text="Arranges child views in a table grid"/>
-				<String x:id="detailed" text="To define the number of row and columns, either the &quot;rows&quot; or &quot;columns&quot; attribute must be specified.&#10;(Then other one is calculated from the specified one and the number of views).&#10;&#10;The rows as a whole are arranged vertically by the same algorithm used by &lt;Vertical&gt;,&#10;while columns are arranged horizontally as in &lt;Horizontal&gt;.&#10;&#10;The optional attribute &quot;cellratio&quot; sizes childs with the given aspect ratio (width/height, e.g. 1 for square views)."/>
+				<String x:id="detailed" text="To define the number of row and columns, either the &quot;rows&quot; or &quot;columns&quot; attribute must be specified.&#10;(Then other one is calculated from the specified one and the number of views).&#10;&#10;The rows as a whole are arranged vertically by the same algorithm used by &lt;Vertical&gt;,&#10;while columns are arranged horizontally as in &lt;Horizontal&gt;.&#10;&#10;The optional attribute &quot;cellratio&quot; sizes children with the given aspect ratio (width/height, e.g. 1 for square views)."/>
 			</Model.Documentation>
 			<List x:id="members">
 				<Model.Member name="rows" type="string" typeName="int">
@@ -2351,6 +2357,9 @@
 				<String x:id="brief" text="A Button with two states"/>
 				<String x:id="detailed" text="A Toggle is a Button with two stable states. &#10;On each click it toggles the parameter value between it&apos;s minimum and maximum."/>
 			</Model.Documentation>
+			<List x:id="members">
+				<Model.Member name="accessibility.button" type="string" typeName="bool"/>
+			</List>
 			<Attributes x:id="attributes">
 				<Attribute id="Class:DocGroup" value="Controls"/>
 			</Attributes>
@@ -2422,8 +2431,8 @@
 		</Model.Class>
 		<Model.Class name="Trigger" parent="Element">
 			<Model.Documentation x:id="doc">
-				<String x:id="brief" text="A trigger reacts on an event, signaled by a view"/>
-				<String x:id="detailed" text="The event can be any messsage signaled by a view (attribute &quot;event&quot;). &#10;&#10;As a special case, a &quot;propertyChanged&quot; message can be handled, that only triggers when the property takes a given value. (attributes &quot;property&quot;, &quot;value&quot;).&#10;When the &quot;trigger&quot; option of a view is set, it sends &quot;propertyChanged&quot; messages for it&apos;s &quot;mousestate&quot;, &quot;value&quot; and &quot;visualState&quot; (the latter two only for controls).&#10;&#10;When a trigger receives the specified event or property change, it executes all of it&apos;s actions, which are placed as child elemnts in the &lt;Trigger&gt;.&#10;Actions are executed in order of their appearance.&#10;&#10;Available actions are:&#10;&#10;&lt;Setter&gt;: sets a property of a target object, or a parameter value &#10;&lt;Invoker&gt;: invokes a method of a target object &#10;&lt;StartAnimation&gt;: starts an animation &#10;&lt;StopAnimation&gt;: stops an animation &#10;&#10;A Trigger can only appear in the &lt;Triggers&gt; list of a Visual Style."/>
+				<String x:id="brief" text="A trigger reacts to an event, signaled by a view"/>
+				<String x:id="detailed" text="The event can be any message signaled by a view (attribute &quot;event&quot;). &#10;&#10;As a special case, a &quot;propertyChanged&quot; message can be handled, that only triggers when the property takes a given value. (attributes &quot;property&quot;, &quot;value&quot;).&#10;When the &quot;trigger&quot; option of a view is set, it sends &quot;propertyChanged&quot; messages for its &quot;mousestate&quot;, &quot;value&quot; and &quot;visualState&quot; (the latter two only for controls).&#10;&#10;When a trigger receives the specified event or property change, it executes all of its actions, which are placed as child elements in the &lt;Trigger&gt;.&#10;Actions are executed in order of their appearance.&#10;&#10;Available actions are:&#10;&#10;&lt;Setter&gt;: sets a property of a target object, or a parameter value &#10;&lt;Invoker&gt;: invokes a method of a target object &#10;&lt;StartAnimation&gt;: starts an animation &#10;&lt;StopAnimation&gt;: stops an animation &#10;&#10;A Trigger can only appear in the &lt;Triggers&gt; list of a Visual Style."/>
 				<String x:id="code" text="&lt;Style name=&quot;MyStyle&quot;&gt;&#10;&#9;&lt;Triggers&gt;&#10;&#9;&#9;&lt;Trigger event=&quot;onDoubleClick&quot;&gt;&#10;&#9;&#9;&#9;&lt;StartAnimation&gt;&#10;&#9;&#9;&#9;&#9;&lt;Animation property=&quot;children[scrollView].vpos&quot; from=&quot;0&quot; to=&quot;1&quot; duration=&quot;98&quot;/&gt;&#10;&#9;&#9;&#9;&lt;/StartAnimation&gt;&#10;&#9;&#9;&lt;/Trigger&gt;&#10;&#10;&#9;&#9;&lt;Trigger property=&quot;value&quot; value=&quot;1&quot;&gt; &#10;&#9;&#9;&#9;&lt;Setter property=&quot;phase&quot; value=&quot;0&quot;/&gt;&#10;&#9;&#9;&#9;&lt;Invoker target=&quot;window&quot; name=&quot;popupContextMenu&quot;/&gt;&#10;&#9;&#9;&lt;/Trigger&gt;&#10;&#9;&lt;/Triggers&gt;&#10;&lt;/Style&gt;"/>
 				<String x:id="language" text="xml"/>
 				<List x:id="links">
@@ -2460,7 +2469,7 @@
 		<Model.Class name="TriggerView" parent="View">
 			<Model.Documentation x:id="doc">
 				<String x:id="brief" text="A view that sends messages on certain gui events"/>
-				<String x:id="detailed" text="These messages can be refered to in the &quot;event&quot; attribute of a &lt;Trigger&gt;. &#10;&#10;Available events are &quot;onAttached&quot;, &quot;onRemoved&quot;, &quot;onMouseDown&quot;, &quot;onSingleClick&quot; &quot;onDoubleClick&quot;, &quot;onSingleTap&quot;,&#10;&quot;onLongPress&quot;, &quot;onSwipe&quot;, &quot;onSwipeH&quot;, &quot;onSwipeV&quot;."/>
+				<String x:id="detailed" text="These messages can be referred to in the &quot;event&quot; attribute of a &lt;Trigger&gt;. &#10;&#10;Available events are &quot;onAttached&quot;, &quot;onRemoved&quot;, &quot;onMouseDown&quot;, &quot;onSingleClick&quot; &quot;onDoubleClick&quot;, &quot;onSingleTap&quot;,&#10;&quot;onLongPress&quot;, &quot;onSwipe&quot;, &quot;onSwipeH&quot;, &quot;onSwipeV&quot;."/>
 				<List x:id="links">
 					<String text="Trigger"/>
 				</List>
@@ -2565,9 +2574,9 @@
 		</Model.Class>
 		<Model.Class name="Variant" parent="View">
 			<Model.Documentation x:id="doc">
-				<String x:id="brief" text="Dynamically selects one of it&apos;s child elements"/>
+				<String x:id="brief" text="Dynamically selects one of its child elements"/>
 				<String x:id="detailed" text="A Variant has always only one (or none) of its child elements attached as a child view.&#10;The active child can selected via a numeric parameter or a property of the controller."/>
-				<String x:id="code" text="&lt;!-- Example 1: A numeric parameter selects a view by index --&gt;&#10;&lt;Variant name=&quot;indexValue&quot; attach=&quot;fitsize&quot;&gt;&#10;&#9;&lt;Label title=&quot;Variant 0&quot;/&gt;    &lt;!-- shown when indexValue is 0 --&gt;&#10;&#9;&lt;Label title=&quot;Variant 1&quot;/&gt;    &lt;!-- shown when indexValue is 1 --&gt;&#10;&lt;/Variant&gt;&#10;&#10;&lt;!-- Example 2: A property of the controller selects a view by property value. --&gt;&#10;&lt;Variant property=&quot;indexValue&quot; attach=&quot;fitsize&quot;&gt;&#10;&#9;&lt;Label title=&quot;Variant 0&quot;/&gt;    &lt;!-- shown when indexValue is 0 --&gt;&#10;&#9;&lt;Label title=&quot;Variant 1&quot;/&gt;    &lt;!-- shown when indexValue is 1 --&gt;&#10;&lt;/Variant&gt;&#10;&#10;&lt;!-- Example 3: A boolean parameter switches a view/on/off --&gt;&#10;&lt;Variant name=&quot;boolValue&quot; attach=&quot;fitsize&quot;&gt;&#10;&#9;&lt;Label title=&quot;Variant&quot;/&gt;    &lt;!-- shown when boolValue is true --&gt;&#10;&lt;/Variant&gt;"/>
+				<String x:id="code" text="&lt;!-- Example 1: A numeric parameter selects a view by index --&gt;&#10;&lt;Variant name=&quot;indexValue&quot; attach=&quot;fitsize&quot;&gt;&#10;&#9;&lt;Label title=&quot;Variant 0&quot;/&gt;    &lt;!-- shown when indexValue is 0 --&gt;&#10;&#9;&lt;Label title=&quot;Variant 1&quot;/&gt;    &lt;!-- shown when indexValue is 1 --&gt;&#10;&lt;/Variant&gt;&#10;&#10;&lt;!-- Example 2: A property of the controller selects a view by property value. --&gt;&#10;&lt;Variant property=&quot;indexValue&quot; attach=&quot;fitsize&quot;&gt;&#10;&#9;&lt;Label title=&quot;Variant 0&quot;/&gt;    &lt;!-- shown when indexValue is 0 --&gt;&#10;&#9;&lt;Label title=&quot;Variant 1&quot;/&gt;    &lt;!-- shown when indexValue is 1 --&gt;&#10;&lt;/Variant&gt;&#10;&#10;&lt;!-- Example 3: A boolean parameter switches a view on/off --&gt;&#10;&lt;Variant name=&quot;boolValue&quot; attach=&quot;fitsize&quot;&gt;&#10;&#9;&lt;Label title=&quot;Variant&quot;/&gt;    &lt;!-- shown when boolValue is true --&gt;&#10;&lt;/Variant&gt;"/>
 				<String x:id="language" text="xml"/>
 			</Model.Documentation>
 			<List x:id="members">
@@ -2624,8 +2633,8 @@
 		</Model.Class>
 		<Model.Class name="View" parent="Element">
 			<Model.Documentation x:id="doc">
-				<String x:id="brief" text="The basic view class"/>
-				<String x:id="detailed" text="The View class is the general view class that all other view classes inherit from.&#10;It has a size and some more general properties. Not all of these properties have a meaning in all derived view classes.&#10;When views are nested, the &quot;attach&quot; attribute specifies some basic layout behavior.&#10;Defines can be used for style and inside size, width and height attributes:"/>
+				<String x:id="brief" text="The base view class that all other view classes inherit from"/>
+				<String x:id="detailed" text="It has a size and some more general properties. Not all of these properties have a meaning in all derived view classes.&#10;When views are nested, the &quot;attach&quot; attribute specifies some basic layout behavior.&#10;Defines can be used for style and inside size, width and height attributes:"/>
 				<String x:id="code" text="&lt;define w=&quot;10&quot; z=&quot;MyStyle&quot;&gt;&#10; &#9;&lt;View style=&quot;$z&quot; size=&quot;0,0,$w,20&quot; attach=&quot;all&quot;&gt;&#10; &#9;&lt;View width=&quot;$w&quot; height=&quot;20&quot; attach=&quot;hcenter top bottom&quot;/&gt;&#10; &lt;/define&gt;"/>
 				<String x:id="language" text="xml"/>
 			</Model.Documentation>
@@ -2793,6 +2802,11 @@
 						<String x:id="brief" text="Accessibility id of this view"/>
 					</Model.Documentation>
 				</Model.Member>
+				<Model.Member name="accessibility.title" type="string" typeName="string">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="Title announced by accessibility tools, may contain text variables like &quot;@tooltip[]&quot; or &quot;@title[]&quot;"/>
+					</Model.Documentation>
+				</Model.Member>
 				<Model.Member name="accessibility.proxy" type="string" typeName="string">
 					<Model.Documentation x:id="doc">
 						<String x:id="brief" text="Name or accessibility id of a child view which acts as the primary accessibility provider of this view"/>
@@ -2826,7 +2840,7 @@
 		<Model.Class name="WindowClass" parent="Element">
 			<Model.Documentation x:id="doc">
 				<String x:id="brief" text="A WindowClass describes a potential screen content"/>
-				<String x:id="detailed" text="A WindowClass is identified by it&apos;s &quot;name&quot;.&#10;The most important attributes are &quot;form.name&quot; and &quot;controller&quot;, which are used to create a view.&#10;A Command catgegory and name can be specified, that will open or close the window class.&#10;&#10;The window manager of the application maintains a parameter for each window class that reflects the&#10;open/closed state of the window. It can be used to toggle it.&#10;&#10;It depends on the application how a window class will appear on the screen.&#10;In the simplest case, it might just open a window for each window class.&#10;A more sophisticated approach is a workspace .&#10;In this case, the &quot;group&quot; attribute specifies in which workspace frames the window class can appear."/>
+				<String x:id="detailed" text="A WindowClass is identified by its &quot;name&quot;.&#10;The most important attributes are &quot;form.name&quot; and &quot;controller&quot;, which are used to create a view.&#10;A Command catgegory and name can be specified, that will open or close the window class.&#10;&#10;The window manager of the application maintains a parameter for each window class that reflects the&#10;open/closed state of the window. It can be used to toggle it.&#10;&#10;It depends on the application how a window class will appear on the screen.&#10;In the simplest case, it might just open a window for each window class.&#10;A more sophisticated approach is a workspace .&#10;In this case, the &quot;group&quot; attribute specifies in which workspace frames the window class can appear."/>
 				<String x:id="code" text="&lt;Toggle name=&quot;://WindowManager/MyClass&quot;/&gt;"/>
 				<String x:id="language" text="xml"/>
 				<List x:id="links">
@@ -2891,7 +2905,7 @@
 		</Model.Class>
 		<Model.Class name="WindowClasses" parent="Element">
 			<Model.Documentation x:id="doc">
-				<String x:id="brief" text="Enclosing tag for all WindowClasses in a skin xml file"/>
+				<String x:id="brief" text="Enclosing tag for all WindowClasses in a Skin XML file"/>
 				<List x:id="links">
 					<String text="WindowClass"/>
 				</List>
@@ -2923,7 +2937,7 @@
 		</Model.Class>
 		<Model.Class name="Workspaces" parent="Element">
 			<Model.Documentation x:id="doc">
-				<String x:id="brief" text="Enclosing tag for all Workspaces in a skin xml file"/>
+				<String x:id="brief" text="Enclosing tag for all Workspaces in a Skin XML file"/>
 				<List x:id="links">
 					<String text="Workspace"/>
 				</List>
@@ -2991,7 +3005,7 @@
 			<Model.Documentation x:id="doc">
 				<String x:id="brief" text="Defines one or multiple skin variables"/>
 				<String x:id="detailed" text="Any attribute=&quot;value&quot; pair that appears in the Define statement defines a new variable and its value.&#10;The variables are valid inside the &lt;define&gt; tag and in form instantiations from there.&#10;&#10;Apart from simple assignments of constant literals or variable values, some extra directives can be used in the value (see code example)."/>
-				<String x:id="code" text="&lt;define keyName=&quot;productKey&quot; listName=&quot;productKeyList&quot;&gt;&#10;&lt;define number=&quot;@property:number&quot; left=&quot;@eval:$number % 2&quot; permission=&quot;aux$number&quot;&gt;&#10;&#10;&lt;!-- Additional directives:&#10;@property:propertyPath:&#10;resolve the value of a property (starting with current controller)&#10;&#10;@select:$variable:str1,str2,...,strn:&#10;select a string from a list, indexed by a given variable&#10;&#10;@eval:&#10;evaluate an arithmetic expresssion, with operators&#10;+ - * / %, parenthesis, constant literals and variable values ($)&#10;--&gt;"/>
+				<String x:id="code" text="&lt;define keyName=&quot;productKey&quot; listName=&quot;productKeyList&quot;&gt;&#10;&lt;define number=&quot;@property:number&quot; left=&quot;@eval:$number % 2&quot; permission=&quot;item$number&quot;&gt;&#10;&#10;&lt;!-- Additional directives:&#10;@property:propertyPath:&#10;resolve the value of a property (starting with current controller)&#10;&#10;@select:$variable:str1,str2,...,strn:&#10;select a string from a list, indexed by a given variable&#10;&#10;@eval:&#10;evaluate an arithmetic expression, with operators&#10;+ - * / %, parenthesis, constant literals and variable values ($)&#10;--&gt;"/>
 				<String x:id="language" text="xml"/>
 			</Model.Documentation>
 			<Attributes x:id="attributes">
@@ -3001,7 +3015,7 @@
 		<Model.Class name="foreach" parent="statement">
 			<Model.Documentation x:id="doc">
 				<String x:id="brief" text="Describes a loop that repeats the contained elements"/>
-				<String x:id="detailed" text="There are two ways to use a for statement:&#10;&#10;1. Using an integer variable that starts at &quot;start&quot; and is incremented after each pass, until &quot;count&quot; passes hae been performed:&#10;2. Using a string variable that iterates the string token in &quot;in&quot; (separeted by spaces):"/>
+				<String x:id="detailed" text="There are two ways to use a for statement:&#10;&#10;1. Using an integer variable that starts at &quot;start&quot; and is incremented after each pass, until &quot;count&quot; passes have been performed:&#10;2. Using a string variable that iterates the string tokens in &quot;in&quot; (separated by spaces):"/>
 				<String x:id="code" text="&lt;!-- Example 1 --&gt;&#10;&lt;foreach variable=&quot;$index&quot; count=&quot;numTools&quot;&gt;&#10;&lt;!-- Example 2 --&gt;&#10;&lt;foreach variable=&quot;$n&quot; in=&quot;$names&quot;&gt;"/>
 				<String x:id="language" text="xml"/>
 			</Model.Documentation>
@@ -3101,7 +3115,7 @@
 		<Model.Class name="switch" parent="statement">
 			<Model.Documentation x:id="doc">
 				<String x:id="brief" text="Selects one of multiple available alternative cases based on a property or variable value"/>
-				<String x:id="code" text="&lt;switch property=&quot;myProperty&quot;&gt;&#10; &lt;case value=&quot;1&quot;&gt;&#10;  &lt;!-- ... --&gt;&#10; &lt;/case&gt;&#10; &lt;case value=&quot;0&quot;&gt;&#10;  &lt;!-- ... --&gt;&#10; &lt;/case&gt;&#10; &lt;default&gt;&#10;  &lt;!-- ... --&gt;&#10; &lt;/defautl&gt;&#10;&lt;/switch&gt;"/>
+				<String x:id="code" text="&lt;switch property=&quot;myProperty&quot;&gt;&#10; &lt;case value=&quot;1&quot;&gt;&#10;  &lt;!-- ... --&gt;&#10; &lt;/case&gt;&#10; &lt;case value=&quot;0&quot;&gt;&#10;  &lt;!-- ... --&gt;&#10; &lt;/case&gt;&#10; &lt;default&gt;&#10;  &lt;!-- ... --&gt;&#10; &lt;/default&gt;&#10;&lt;/switch&gt;"/>
 				<String x:id="language" text="xml"/>
 			</Model.Documentation>
 			<List x:id="members">
@@ -3468,22 +3482,22 @@
 		</Model.Enumeration>
 		<Model.Enumeration name="DialogButton.result">
 			<List x:id="enumerators">
-				<Model.Enumerator name="cancel" value="262144">
+				<Model.Enumerator name="cancel" value="1048576">
 					<Model.Documentation x:id="doc">
 						<String x:id="brief" text="user input is discarded, dialog is closed"/>
 					</Model.Documentation>
 				</Model.Enumerator>
-				<Model.Enumerator name="okay" value="524288">
+				<Model.Enumerator name="okay" value="2097152">
 					<Model.Documentation x:id="doc">
 						<String x:id="brief" text="user input is confirmed, dialog is closed"/>
 					</Model.Documentation>
 				</Model.Enumerator>
-				<Model.Enumerator name="close" value="1048576">
+				<Model.Enumerator name="close" value="4194304">
 					<Model.Documentation x:id="doc">
 						<String x:id="brief" text="user input is discarded, dialog is closed"/>
 					</Model.Documentation>
 				</Model.Enumerator>
-				<Model.Enumerator name="apply" value="2097152">
+				<Model.Enumerator name="apply" value="8388608">
 					<Model.Documentation x:id="doc">
 						<String x:id="brief" text="user input is confirmed, dialog stays open"/>
 					</Model.Documentation>
@@ -3669,29 +3683,19 @@
 						<String x:id="brief" text="edit only if double-clicked"/>
 					</Model.Documentation>
 				</Model.Enumerator>
-				<Model.Enumerator name="dialogedit" value="128">
+				<Model.Enumerator name="dialogedit" value="512">
 					<Model.Documentation x:id="doc">
 						<String x:id="brief" text="edit has dialog behavior"/>
 					</Model.Documentation>
 				</Model.Enumerator>
-				<Model.Enumerator name="musthittext" value="256">
+				<Model.Enumerator name="musthittext" value="1024">
 					<Model.Documentation x:id="doc">
 						<String x:id="brief" text="on mouseclick, edit only if the text was hit"/>
 					</Model.Documentation>
 				</Model.Enumerator>
-				<Model.Enumerator name="immediate" value="512">
+				<Model.Enumerator name="immediate" value="2048">
 					<Model.Documentation x:id="doc">
 						<String x:id="brief" text="parameter gets updates while editing"/>
-					</Model.Documentation>
-				</Model.Enumerator>
-				<Model.Enumerator name="hidetext" value="1024">
-					<Model.Documentation x:id="doc">
-						<String x:id="brief" text="do not display text"/>
-					</Model.Documentation>
-				</Model.Enumerator>
-				<Model.Enumerator name="nowheel" value="2048">
-					<Model.Documentation x:id="doc">
-						<String x:id="brief" text="no mousewheel"/>
 					</Model.Documentation>
 				</Model.Enumerator>
 				<Model.Enumerator name="nosuggestions" value="4096">
@@ -3843,9 +3847,8 @@
 		<Model.Enumeration name="Form.options">
 			<List x:id="enumerators">
 				<Model.Enumerator name="colorize" value="1"/>
-				<Model.Enumerator name="fitimage" value="2"/>
-				<Model.Enumerator name="allowstretch" value="4"/>
-				<Model.Enumerator name="allowzoom" value="8"/>
+				<Model.Enumerator name="contentfit" value="262144"/>
+				<Model.Enumerator name="contentfill" value="524288"/>
 				<Model.Enumerator name="selectonclick" value="16"/>
 				<Model.Enumerator name="framesbyname" value="32"/>
 				<Model.Enumerator name="windowsizable" value="64"/>
@@ -3859,7 +3862,6 @@
 				<Model.Enumerator name="backgroundlayer" value="8192"/>
 				<Model.Enumerator name="highquality" value="16384"/>
 				<Model.Enumerator name="hfitimagesize" value="32768"/>
-				<Model.Enumerator name="centerimage" value="65536"/>
 				<Model.Enumerator name="disable" value="131072"/>
 			</List>
 		</Model.Enumeration>
@@ -3957,17 +3959,17 @@
 				</Model.Enumerator>
 				<Model.Enumerator name="windowstyle" value="2">
 					<Model.Documentation x:id="doc">
-						<String x:id="brief" text="default window style: title bar"/>
+						<String x:id="brief" text="(appearance) window has a title bar"/>
 					</Model.Documentation>
 				</Model.Enumerator>
 				<Model.Enumerator name="panelstyle" value="3">
 					<Model.Documentation x:id="doc">
-						<String x:id="brief" text="panel window style: title bar, floating"/>
+						<String x:id="brief" text="(appearance) window has a title bar"/>
 					</Model.Documentation>
 				</Model.Enumerator>
 				<Model.Enumerator name="dialogstyle" value="66">
 					<Model.Documentation x:id="doc">
-						<String x:id="brief" text="default dialog window style: title bar, centered"/>
+						<String x:id="brief" text="(appearance) window has a title bar"/>
 					</Model.Documentation>
 				</Model.Enumerator>
 			</List>
@@ -4131,19 +4133,14 @@
 						<String x:id="brief" text="(appearance) fill with backcolor/forecolor depending on select parameter or colorize background image"/>
 					</Model.Documentation>
 				</Model.Enumerator>
-				<Model.Enumerator name="fitimage" value="2">
+				<Model.Enumerator name="contentfit" value="262144">
 					<Model.Documentation x:id="doc">
-						<String x:id="brief" text="(appearance) fit image proportionally and select best resolution"/>
+						<String x:id="brief" text="(appearance) scale the image to fit into the view, preserving its aspect ratio - together with kImageViewAppearanceContentFill it covers the view instead, cropping the image"/>
 					</Model.Documentation>
 				</Model.Enumerator>
-				<Model.Enumerator name="allowstretch" value="4">
+				<Model.Enumerator name="contentfill" value="524288">
 					<Model.Documentation x:id="doc">
-						<String x:id="brief" text="(appearance) allow to stretch image, requires fit option"/>
-					</Model.Documentation>
-				</Model.Enumerator>
-				<Model.Enumerator name="allowzoom" value="8">
-					<Model.Documentation x:id="doc">
-						<String x:id="brief" text="(appearance) allow to zoom image, requires fit option"/>
+						<String x:id="brief" text="(appearance) scale the image to fill the whole view, distorting its aspect ratio unless kImageViewAppearanceContentFit is set as well"/>
 					</Model.Documentation>
 				</Model.Enumerator>
 				<Model.Enumerator name="selectonclick" value="16">
@@ -4206,11 +4203,6 @@
 				<Model.Enumerator name="hfitimagesize" value="32768">
 					<Model.Documentation x:id="doc">
 						<String x:id="brief" text="(layout) auto-size view to width of current image"/>
-					</Model.Documentation>
-				</Model.Enumerator>
-				<Model.Enumerator name="centerimage" value="65536">
-					<Model.Documentation x:id="doc">
-						<String x:id="brief" text="(appearance) center image"/>
 					</Model.Documentation>
 				</Model.Enumerator>
 				<Model.Enumerator name="disable" value="131072">
@@ -4285,7 +4277,7 @@
 				</Model.Enumerator>
 				<Model.Enumerator name="simplemouse" value="112">
 					<Model.Documentation x:id="doc">
-						<String x:id="brief" text="(behavior) combined option: no drag, no rubberband, no doubleclick"/>
+						<String x:id="brief" text="(behavior) don&apos;t allow to drag items"/>
 					</Model.Documentation>
 				</Model.Enumerator>
 				<Model.Enumerator name="swallowalphachars" value="4096">
@@ -4551,12 +4543,12 @@
 			<List x:id="enumerators">
 				<Model.Enumerator name="int" value="1">
 					<Model.Documentation x:id="doc">
-						<String x:id="brief" text="numerical value integer"/>
+						<String x:id="brief" text="integer value"/>
 					</Model.Documentation>
 				</Model.Enumerator>
 				<Model.Enumerator name="float" value="2">
 					<Model.Documentation x:id="doc">
-						<String x:id="brief" text="numerical value floating point"/>
+						<String x:id="brief" text="floating-point value"/>
 					</Model.Documentation>
 				</Model.Enumerator>
 				<Model.Enumerator name="string" value="3">
@@ -4571,7 +4563,7 @@
 				</Model.Enumerator>
 				<Model.Enumerator name="scroll" value="9">
 					<Model.Documentation x:id="doc">
-						<String x:id="brief" text="scroll parameter"/>
+						<String x:id="brief" text="integer value with page size"/>
 					</Model.Documentation>
 				</Model.Enumerator>
 			</List>
@@ -4824,7 +4816,7 @@
 				</Model.Enumerator>
 				<Model.Enumerator name="autohideboth" value="3">
 					<Model.Documentation x:id="doc">
-						<String x:id="brief" text="automatically shows/hides both scrollbars when necessary"/>
+						<String x:id="brief" text="automatically shows/hides horizontal scrollbar when necessary"/>
 					</Model.Documentation>
 				</Model.Enumerator>
 				<Model.Enumerator name="hbuttons" value="4">
@@ -4985,79 +4977,74 @@
 		</Model.Enumeration>
 		<Model.Enumeration name="SelectBox.options">
 			<List x:id="enumerators">
-				<Model.Enumerator name="hidetext" value="128">
-					<Model.Documentation x:id="doc">
-						<String x:id="brief" text="do not display text"/>
-					</Model.Documentation>
-				</Model.Enumerator>
-				<Model.Enumerator name="hidefocus" value="256">
+				<Model.Enumerator name="hidefocus" value="262144">
 					<Model.Documentation x:id="doc">
 						<String x:id="brief" text="don&apos;t draw focus rectangle"/>
 					</Model.Documentation>
 				</Model.Enumerator>
-				<Model.Enumerator name="hidebutton" value="512">
+				<Model.Enumerator name="hidebutton" value="524288">
 					<Model.Documentation x:id="doc">
-						<String x:id="brief" text="don&apos;t draw the select button"/>
+						<String x:id="brief" text="don&apos;t draw the popup button"/>
 					</Model.Documentation>
 				</Model.Enumerator>
-				<Model.Enumerator name="ignorekeys" value="1024">
+				<Model.Enumerator name="ignorekeys" value="1048576">
 					<Model.Documentation x:id="doc">
 						<String x:id="brief" text="ignore arrow keys (when menu closed); Option+Up/Down is still handled to open the menu"/>
 					</Model.Documentation>
 				</Model.Enumerator>
-				<Model.Enumerator name="inversewheel" value="2048">
+				<Model.Enumerator name="inversewheel" value="2097152">
 					<Model.Documentation x:id="doc">
 						<String x:id="brief" text="inverse mousewheel direction"/>
 					</Model.Documentation>
 				</Model.Enumerator>
-				<Model.Enumerator name="stayopenonclick" value="4096">
+				<Model.Enumerator name="stayopenonclick" value="4194304">
 					<Model.Documentation x:id="doc">
 						<String x:id="brief" text="popup stays open on single click on an item, closes on doubleclick"/>
 					</Model.Documentation>
 				</Model.Enumerator>
-				<Model.Enumerator name="leadingbutton" value="8192">
+				<Model.Enumerator name="leadingicon" value="8388608">
 					<Model.Documentation x:id="doc">
-						<String x:id="brief" text="draw the select button on left hand side from the text"/>
+						<String x:id="brief" text="pin the popup button to the leading edge, before the text"/>
 					</Model.Documentation>
 				</Model.Enumerator>
-				<Model.Enumerator name="trailingbutton" value="16384">
+				<Model.Enumerator name="trailingicon" value="16777216">
 					<Model.Documentation x:id="doc">
-						<String x:id="brief" text="draw the select button on right hand side even when no text is displayed (hidetext)"/>
+						<String x:id="brief" text="pin the popup button to the trailing edge, also when no text is displayed (hidetext)"/>
 					</Model.Documentation>
 				</Model.Enumerator>
-				<Model.Enumerator name="offstate" value="32768">
+				<Model.Enumerator name="offstate" value="33554432">
 					<Model.Documentation x:id="doc">
 						<String x:id="brief" text="draw the first item as it is in off state"/>
 					</Model.Documentation>
 				</Model.Enumerator>
-				<Model.Enumerator name="nowheel" value="65536">
-					<Model.Documentation x:id="doc">
-						<String x:id="brief" text="no mousewheel"/>
-					</Model.Documentation>
-				</Model.Enumerator>
-				<Model.Enumerator name="nomodifier" value="131072">
+				<Model.Enumerator name="nomodifier" value="67108864">
 					<Model.Documentation x:id="doc">
 						<String x:id="brief" text="mouse down events with modifiers are ignored"/>
 					</Model.Documentation>
 				</Model.Enumerator>
-				<Model.Enumerator name="hideimage" value="262144">
+				<Model.Enumerator name="hideimage" value="134217728">
 					<Model.Documentation x:id="doc">
-						<String x:id="brief" text="hide the image taken from the visualStyle &apos;states&apos; image or the parameter, in case it is an imageprovider"/>
+						<String x:id="brief" text="hide the value image taken from the parameter, in case it is an imageprovider"/>
 					</Model.Documentation>
 				</Model.Enumerator>
-				<Model.Enumerator name="showtitle" value="524288">
+				<Model.Enumerator name="showtitle" value="268435456">
 					<Model.Documentation x:id="doc">
 						<String x:id="brief" text="show view title instead of parameter value"/>
 					</Model.Documentation>
 				</Model.Enumerator>
-				<Model.Enumerator name="dragopen" value="1048576">
+				<Model.Enumerator name="dragopen" value="536870912">
 					<Model.Documentation x:id="doc">
 						<String x:id="brief" text="defer opening the menu until mouse is dragged / swipe is detected"/>
 					</Model.Documentation>
 				</Model.Enumerator>
-				<Model.Enumerator name="closemenu" value="2097152">
+				<Model.Enumerator name="closemenu" value="1073741824">
 					<Model.Documentation x:id="doc">
 						<String x:id="brief" text="close menu when mouse/touch is outside, even when nothing was selected"/>
+					</Model.Documentation>
+				</Model.Enumerator>
+				<Model.Enumerator name="noactivate" value="-2147483648">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="show the popup without taking OS keyboard focus, so the view that currently has focus keeps it"/>
 					</Model.Documentation>
 				</Model.Enumerator>
 			</List>
@@ -5290,11 +5277,25 @@
 						<String x:id="brief" text="interpret text markup"/>
 					</Model.Documentation>
 				</Model.Enumerator>
+				<Model.Enumerator name="hidetext" value="128">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="do not display text"/>
+					</Model.Documentation>
+				</Model.Enumerator>
+				<Model.Enumerator name="nowheel" value="256">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="no mousewheel"/>
+					</Model.Documentation>
+				</Model.Enumerator>
 			</List>
 		</Model.Enumeration>
 		<Model.Enumeration name="TextBox.texttrimmode">
 			<List x:id="enumerators">
-				<Model.Enumerator name="default" value="0"/>
+				<Model.Enumerator name="default" value="0">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="put &quot;..&quot; to the right but leave last four characters"/>
+					</Model.Documentation>
+				</Model.Enumerator>
 				<Model.Enumerator name="keepend" value="0">
 					<Model.Documentation x:id="doc">
 						<String x:id="brief" text="put &quot;..&quot; to the right but leave last four characters"/>
@@ -5527,7 +5528,7 @@
 			<List x:id="enumerators">
 				<Model.Enumerator name="all" value="15">
 					<Model.Documentation x:id="doc">
-						<String x:id="brief" text="all of the view&apos;s edges keep their distances to the corresponding parent edge"/>
+						<String x:id="brief" text="the view&apos;s left edge keeps it&apos;s distance to the parent&apos;s left edge"/>
 					</Model.Documentation>
 				</Model.Enumerator>
 				<Model.Enumerator name="left" value="1">
@@ -5572,7 +5573,7 @@
 				</Model.Enumerator>
 				<Model.Enumerator name="fitsize" value="192">
 					<Model.Documentation x:id="doc">
-						<String x:id="brief" text="when childs are sized, the view adjusts it&apos;s size to fit the childs"/>
+						<String x:id="brief" text="when childs are sized, the view adjusts it&apos;s width to fit the childs"/>
 					</Model.Documentation>
 				</Model.Enumerator>
 				<Model.Enumerator name="prefercurrent" value="256">

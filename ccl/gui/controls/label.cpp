@@ -100,7 +100,7 @@ Label::~Label ()
 ThemeRenderer* Label::getRenderer ()
 {	
 	if(renderer == nullptr)
-		renderer = getTheme ().createRenderer (ThemePainter::kLabelRenderer, visualStyle);
+		renderer = getTheme ().createRenderer (ThemePainter::kLabelRenderer, visualStyle, this);
 	return renderer;
 }
 
@@ -183,12 +183,9 @@ void Label::calcAutoSize (Rect& r)
 
 		Rect padding;
 		vs.getPadding (padding);
-		
-		ccl_lower_limit (padding.top, 2);
-		ccl_lower_limit (padding.bottom, 2);
 
 		padding.zoom (getZoomFactor ());
-		
+
 		r.right  += padding.left + padding.right;
 		r.bottom += padding.top + padding.bottom;
 	}
@@ -230,7 +227,7 @@ void Label::onSize (const Point& delta)
 			invalidate ();
 
 		if(multiLine && (sizeMode & kFitSize) == kVFitSize)
-			(NEW Message ("checkFitSize"))->post (this); // must calc height for given width
+			deferCheckFitSize (); // must calc height for given width
 	}
 
 	SuperClass::onSize (delta);
@@ -270,19 +267,9 @@ void Label::setTitle (StringRef title)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void CCL_API Label::notify (ISubject* subject, MessageRef msg)
-{
-	if(msg == "checkFitSize")
-		checkFitSize ();
-	else
-		SuperClass::notify (subject, msg);
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
 void Label::draw (const UpdateRgn& updateRgn)
 {
-	getRenderer ()->draw (this, updateRgn);
+	getRenderer ()->draw (updateRgn);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////

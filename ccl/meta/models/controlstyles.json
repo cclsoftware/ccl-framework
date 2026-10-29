@@ -14,25 +14,25 @@
 					"brief": "(appearance) fill with backcolor/forecolor depending on select parameter or colorize background image"
 				},
 				{
-					"name": "kImageViewAppearanceFitImage",
+					"name": "kImageViewAppearanceFitImageLegacy",
 					"value": "1<<1",
 					"type": "int",
 					"expression": true,
-					"brief": "(appearance) fit image proportionally and select best resolution"
+					"brief": "(appearance, legacy) fit image proportionally and select best resolution - replaced by kImageViewAppearanceContentFit"
 				},
 				{
-					"name": "kImageViewAppearanceAllowStretch",
+					"name": "kImageViewAppearanceAllowStretchLegacy",
 					"value": "1<<2",
 					"type": "int",
 					"expression": true,
-					"brief": "(appearance) allow to stretch image, requires fit option"
+					"brief": "(appearance, legacy) let a fitted image grow beyond its own size - replaced by kImageViewAppearanceContentFit"
 				},
 				{
-					"name": "kImageViewAppearanceAllowZoom",
+					"name": "kImageViewAppearanceAllowZoomLegacy",
 					"value": "1<<3",
 					"type": "int",
 					"expression": true,
-					"brief": "(appearance) allow to zoom image, requires fit option"
+					"brief": "(appearance, legacy) zoom image to fill the whole view, preserving its aspect ratio, requires fit option - replaced by kImageViewAppearanceContentFit and kImageViewAppearanceContentFill"
 				},
 				{
 					"name": "kImageViewBehaviorSelectOnClick",
@@ -119,11 +119,11 @@
 					"brief": "(layout) auto-size view to width of current image"
 				},
 				{
-					"name": "kImageViewAppearanceCenterImage",
+					"name": "kImageViewAppearanceCenterImageLegacy",
 					"value": "1<<16",
 					"type": "int",
 					"expression": true,
-					"brief": "(appearance) center image"
+					"brief": "(appearance, legacy) center image - the image is centered in its original size when neither kImageViewAppearanceContentFit nor kImageViewAppearanceContentFill is set"
 				},
 				{
 					"name": "kImageViewBehaviorDisable",
@@ -133,8 +133,22 @@
 					"brief": "(behavior) disable view, i.e. don't allow children to perform any edits"
 				},
 				{
+					"name": "kImageViewAppearanceContentFit",
+					"value": "1<<18",
+					"type": "int",
+					"expression": true,
+					"brief": "(appearance) scale the image to fit into the view, preserving its aspect ratio - together with kImageViewAppearanceContentFill it covers the view instead, cropping the image"
+				},
+				{
+					"name": "kImageViewAppearanceContentFill",
+					"value": "1<<19",
+					"type": "int",
+					"expression": true,
+					"brief": "(appearance) scale the image to fill the whole view, distorting its aspect ratio unless kImageViewAppearanceContentFit is set as well"
+				},
+				{
 					"name": "kImageViewLastFlag",
-					"value": "17",
+					"value": "19",
 					"type": "int"
 				}
 			]
@@ -682,7 +696,7 @@
 					"type": "int",
 					"expression": true,
 					"brief": "(appearance) window with custom frame can have rounded corners (not available on all platforms)"
-				},				 
+				},
 				{
 					"name": "kWindowCombinedStyleDefault",
 					"value": "kWindowAppearanceTitleBar",
@@ -1173,8 +1187,22 @@
 					"brief": "edit only if double-clicked"
 				},
 				{
+					"name": "kTextBoxAppearanceHideText",
+					"value": "1<<7",
+					"type": "int",
+					"expression": true,
+					"brief": "do not display text"
+				},
+				{
+					"name": "kTextBoxBehaviorNoWheel",
+					"value": "1<<8",
+					"type": "int",
+					"expression": true,
+					"brief": "no mousewheel"
+				},
+				{
 					"name": "kLastTextBoxStyle",
-					"value": "kTextBoxBehaviorDoubleClickEdit",
+					"value": "kTextBoxBehaviorNoWheel",
 					"type": "int",
 					"expression": true,
 					"brief": ""
@@ -1324,57 +1352,43 @@
 					"brief": "parameter gets updates while editing"
 				},
 				{
-					"name": "kEditBoxAppearanceHideText",
-					"value": "kLastTextBoxStyle<<4",
-					"type": "int",
-					"expression": true,
-					"brief": "do not display text"
-				},
-				{
-					"name": "kEditBoxBehaviorNoWheel",
-					"value": "kLastTextBoxStyle<<5",
-					"type": "int",
-					"expression": true,
-					"brief": "no mousewheel"
-				},
-				{
 					"name": "kEditBoxBehaviorNoSuggestions",
-					"value": "kLastTextBoxStyle<<6",
+					"value": "kLastTextBoxStyle<<4",
 					"type": "int",
 					"expression": true,
 					"brief": "no text suggestions"
 				},
 				{
 					"name": "kEditBoxBehaviorNoClearButton",
-					"value": "kLastTextBoxStyle<<7",
+					"value": "kLastTextBoxStyle<<5",
 					"type": "int",
 					"expression": true,
 					"brief": "no clear button (X)"
 				},
 				{
 					"name": "kEditBoxBehaviorExtended",
-					"value": "kLastTextBoxStyle<<8",
+					"value": "kLastTextBoxStyle<<6",
 					"type": "int",
 					"expression": true,
 					"brief": "use framework editing implementation instead of native text control (regardless of global configuration)"
 				},
 				{
 					"name": "kEditBoxBehaviorDragText",
-					"value": "kLastTextBoxStyle<<9",
+					"value": "kLastTextBoxStyle<<7",
 					"type": "int",
 					"expression": true,
 					"brief": "drag a text selection to another position to cut and paste it"
 				},
 				{
 					"name": "kEditBoxBehaviorPermanentCaret",
-					"value": "kLastTextBoxStyle<<10",
+					"value": "kLastTextBoxStyle<<8",
 					"type": "int",
 					"expression": true,
 					"brief": "show caret permanently when not focused"
 				},
 				{
 					"name": "kEditBoxAppearanceOpaqueEdit",
-					"value": "kLastTextBoxStyle<<11",
+					"value": "kLastTextBoxStyle<<9",
 					"type": "int",
 					"expression": true,
 					"brief": "draw background while editing, even if the control is transparent"
@@ -1422,109 +1436,102 @@
 			"enumerators":
 			[
 				{
-					"name": "kSelectBoxAppearanceHideText",
-					"value": "kLastTextBoxStyle<<1",
-					"type": "int",
-					"expression": true,
-					"brief": "do not display text"
-				},
-				{
 					"name": "kSelectBoxAppearanceHideFocus",
-					"value": "kLastTextBoxStyle<<2",
+					"value": "kLastEditBoxStyle<<1",
 					"type": "int",
 					"expression": true,
 					"brief": "don't draw focus rectangle"
 				},
 				{
 					"name": "kSelectBoxAppearanceHideButton",
-					"value": "kLastTextBoxStyle<<3",
+					"value": "kLastEditBoxStyle<<2",
 					"type": "int",
 					"expression": true,
-					"brief": "don't draw the select button"
+					"brief": "don't draw the popup button"
 				},
 				{
 					"name": "kSelectBoxBehaviorIgnoreKeys",
-					"value": "kLastTextBoxStyle<<4",
+					"value": "kLastEditBoxStyle<<3",
 					"type": "int",
 					"expression": true,
 					"brief": "ignore arrow keys (when menu closed); Option+Up/Down is still handled to open the menu"
 				},
 				{
 					"name": "kSelectBoxBehaviorInverseWheel",
-					"value": "kLastTextBoxStyle<<5",
+					"value": "kLastEditBoxStyle<<4",
 					"type": "int",
 					"expression": true,
 					"brief": "inverse mousewheel direction"
 				},
 				{
 					"name": "kSelectBoxBehaviorStayOpenOnClick",
-					"value": "kLastTextBoxStyle<<6",
+					"value": "kLastEditBoxStyle<<5",
 					"type": "int",
 					"expression": true,
 					"brief": "popup stays open on single click on an item, closes on doubleclick"
 				},
 				{
-					"name": "kSelectBoxAppearanceLeadingButton",
-					"value": "kLastTextBoxStyle<<7",
+					"name": "kSelectBoxAppearanceLeadingIcon",
+					"value": "kLastEditBoxStyle<<6",
 					"type": "int",
 					"expression": true,
-					"brief": "draw the select button on left hand side from the text"
+					"brief": "pin the popup button to the leading edge, before the text"
 				},
 				{
-					"name": "kSelectBoxAppearanceTrailingButton",
-					"value": "kLastTextBoxStyle<<8",
+					"name": "kSelectBoxAppearanceTrailingIcon",
+					"value": "kLastEditBoxStyle<<7",
 					"type": "int",
 					"expression": true,
-					"brief": "draw the select button on right hand side even when no text is displayed (hidetext)"
+					"brief": "pin the popup button to the trailing edge, also when no text is displayed (hidetext)"
 				},
 				{
 					"name": "kSelectBoxAppearanceOffState",
-					"value": "kLastTextBoxStyle<<9",
+					"value": "kLastEditBoxStyle<<8",
 					"type": "int",
 					"expression": true,
 					"brief": "draw the first item as it is in off state"
 				},
 				{
-					"name": "kSelectBoxBehaviorNoWheel",
-					"value": "kLastTextBoxStyle<<10",
-					"type": "int",
-					"expression": true,
-					"brief": "no mousewheel"
-				},
-				{
 					"name": "kSelectBoxBehaviorNoModifier",
-					"value": "kLastTextBoxStyle<<11",
+					"value": "kLastEditBoxStyle<<9",
 					"type": "int",
 					"expression": true,
 					"brief": "mouse down events with modifiers are ignored"
 				},
 				{
 					"name": "kSelectBoxAppearanceHideImage",
-					"value": "kLastTextBoxStyle<<12",
+					"value": "kLastEditBoxStyle<<10",
 					"type": "int",
 					"expression": true,
-					"brief": "hide the image taken from the visualStyle 'states' image or the parameter, in case it is an imageprovider"
+					"brief": "hide the value image taken from the parameter, in case it is an imageprovider"
 				},
 				{
 					"name": "kSelectBoxAppearanceTitleAsText",
-					"value": "kLastTextBoxStyle<<13",
+					"value": "kLastEditBoxStyle<<11",
 					"type": "int",
 					"expression": true,
 					"brief": "show view title instead of parameter value"
 				},
 				{
 					"name": "kSelectBoxBehaviorDragOpen",
-					"value": "kLastTextBoxStyle<<14",
+					"value": "kLastEditBoxStyle<<12",
 					"type": "int",
 					"expression": true,
 					"brief": "defer opening the menu until mouse is dragged / swipe is detected"
 				},
 				{
 					"name": "kSelectBoxBehaviorCloseMenu",
-					"value": "kLastTextBoxStyle<<15",
+					"value": "kLastEditBoxStyle<<13",
 					"type": "int",
 					"expression": true,
 					"brief": "close menu when mouse/touch is outside, even when nothing was selected"
+				},
+				{
+					"name": "kSelectBoxBehaviorNoActivate",
+					"value": "kLastEditBoxStyle<<14",
+					"type": "int",
+					"expression": true,
+					"brief": "show the popup without taking OS keyboard focus, so the view that currently has focus keeps it"
 				}
 			]
 		},

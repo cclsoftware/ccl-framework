@@ -257,7 +257,7 @@ IView* CCL_API EULAComponent::createView (StringID name, VariantRef data, const 
 		Font::measureText (rect, bounds.getWidth (), text, font);
 		rect.bottom += 100;
 
-		ControlBox textBox (CCL::ClassID::TextBox, textParam, rect, StyleFlags (Styles::kTransparent, Styles::kTextBoxAppearanceMultiLine));
+		ControlBox textBox (ClassID::TextBox, textParam, rect, StyleFlags (Styles::kTransparent, Styles::kTextBoxAppearanceMultiLine));
 		return textBox;
 	}
 	return nullptr;

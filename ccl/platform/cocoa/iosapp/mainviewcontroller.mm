@@ -1,7 +1,7 @@
 //************************************************************************************************
 //
 // This file is part of Crystal Class Library (R)
-// Copyright (c) 2025 CCL Software Licensing GmbH.
+// Copyright (c) 2026 CCL Software Licensing GmbH.
 // All Rights Reserved.
 //
 // Licensed for use under either:
@@ -35,6 +35,15 @@
 //************************************************************************************************
 
 @implementation CCL_ISOLATED (MainViewController)
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+- (void)dealloc
+{
+	[uiInitializedHandler release];
+
+	[super dealloc];
+}
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -133,6 +142,13 @@
 		CCL_ISOLATED (AppView)* appView = (CCL_ISOLATED (AppView)*)self.view;
 		applicationView = [appView createApplicationView:CCL::GUI.getApplication ()];
 		CCL::GUI.onAppStateChanged (CCL::IApplication::kUIInitialized);
+
+		if(uiInitializedHandler)
+		{
+			uiInitializedHandler ();
+			[uiInitializedHandler release];
+			uiInitializedHandler = nil;
+		}
 	}
 }
 

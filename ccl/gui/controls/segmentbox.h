@@ -143,7 +143,7 @@ protected:
 	tbool CCL_API interpretCommand (const CommandMsg& msg) override;
 };
 
-DECLARE_VISUALSTYLE_CLASS (SegmentBox)
+DECLARE_TYPELIB_ENTRY (SegmentBox)
 
 } // namespace CCL
 

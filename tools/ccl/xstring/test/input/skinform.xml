@@ -11,7 +11,7 @@
 			<Horizontal>
 				<HelpAnchor helpid="Anchor">
 					<Horizontal>
-						<Button title="TestButton" tooltip="Button tooltip"/>
+						<Button title="TestButton" tooltip="Button tooltip" accessibility.title="Accessible Button Title"/>
 						<EditBox name="TestEditBox" placeholder="EditBox placeholder"/>
 						<Link command.category="File" command.name="New" tooltip="@cmd.title[]">
 							<Link title="New..." command.category="File" command.name="New"/>

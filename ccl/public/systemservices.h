@@ -247,10 +247,6 @@ inline void CleanupThreadLocalStorage () { CCL_ISOLATED (CleanupThreadLocalStora
 // File Management APIs
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-/** Hash byte array. */
-CCL_EXPORT uint32 CCL_API CCL_ISOLATED (Hash) (const void* key, uint32 length, uint32 initialValue);
-inline uint32 Hash (const void* key, uint32 length, uint32 initialValue) { return CCL_ISOLATED (Hash) (key, length, initialValue); }
-
 /** Get file system singleton. */
 CCL_EXPORT INativeFileSystem& CCL_API CCL_ISOLATED (GetFileSystem) ();
 inline INativeFileSystem& GetFileSystem () { return CCL_ISOLATED (GetFileSystem) (); }

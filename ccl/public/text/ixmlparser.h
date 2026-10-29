@@ -76,7 +76,7 @@ interface IXmlContentHandler: IUnknown
 	virtual tresult CCL_API endElement (StringRef name) = 0;
 
 	/** Notification of character data. Can be called several times with small chunks of a single entity. */
-	virtual tresult CCL_API characterData (const uchar* data, int length, tbool isCDATA) = 0;
+	virtual tresult CCL_API characterData (UStringPtr data, int length, tbool isCDATA) = 0;
 
 	/** Notification of processing instruction (<?target data?>). */
 	virtual tresult CCL_API processingInstruction (StringRef target, StringRef data) = 0;

@@ -61,6 +61,7 @@ ccl_list_append_once (cclgui_platform_system_sources
     ${CCL_DIR}/platform/win/gui/dragndrop.win.cpp
     ${CCL_DIR}/platform/win/gui/dragndrop.win.h
     ${CCL_DIR}/platform/win/gui/fontresource.win.cpp
+    ${CCL_DIR}/platform/win/gui/inputmethod.win.cpp
     ${CCL_DIR}/platform/win/gui/notifyicon.win.cpp
     ${CCL_DIR}/platform/win/gui/systemshell.win.cpp
     ${CCL_DIR}/platform/win/gui/webbrowserview.win.cpp

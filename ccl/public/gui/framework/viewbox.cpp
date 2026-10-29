@@ -458,7 +458,23 @@ void ViewBox::setAccessibilityEnabled (bool state)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool ViewBox::getAttribute (Variant& value, const char* id) const
+void ViewBox::setAccessibilityTitle (StringRef title)
+{
+	view->setViewAttribute (IView::kAccessibilityTitle, title);
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+String ViewBox::getAccessibilityTitle () const
+{
+	Variant v;
+	view->getViewAttribute (v, IView::kAccessibilityTitle);
+	return v.asString ();
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+bool ViewBox::getAttribute (Variant& value, CStringPtr id) const
 {
 	UnknownPtr<IObject> iObject (view);
 	if(iObject)
@@ -468,7 +484,7 @@ bool ViewBox::getAttribute (Variant& value, const char* id) const
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool ViewBox::setAttribute (const char* id, VariantRef value)
+bool ViewBox::setAttribute (CStringPtr id, VariantRef value)
 {
 	UnknownPtr<IObject> iObject (view);
 	if(iObject)

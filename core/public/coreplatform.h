@@ -1,7 +1,7 @@
 //************************************************************************************************
 //
 // This file is part of Crystal Class Library (R)
-// Copyright (c) 2025 CCL Software Licensing GmbH.
+// Copyright (c) 2026 CCL Software Licensing GmbH.
 // All Rights Reserved.
 //
 // Licensed for use under either:
@@ -22,8 +22,8 @@
 /*
 	Common platform switches:
 	
-	* CORE_PLATFORM_DESKTOP : Defined for desktop platforms (Windows, macOS, Linux) 
-	* CORE_PLATFORM_MOBILE  : Defined for mobile platforms (iOS, Android) 
+	* CORE_PLATFORM_DESKTOP : Defined for desktop platforms (Windows, macOS, Linux)
+	* CORE_PLATFORM_MOBILE  : Defined for mobile platforms (iOS, Android, WebAssembly)
 	* CORE_PLATFORM_RTOS    : Platform is an RTOS (Zephyr, Little Kernel, etc.)
 	* CORE_PLATFORM_64BIT   : Platform is 64 bit (x86-64 or Arm64)
 	* CORE_PLATFORM_ARM     : Arm platform architecture
@@ -84,6 +84,12 @@
 #elif CORE_PLATFORM_CMSIS
 	/** CMSIS platform **/
 	#define CORE_PLATFORM_RTOS 1
+
+#elif defined(__wasm__) || defined(__EMSCRIPTEN__)
+	#include <emscripten.h>
+	/** WebAssembly defined here. */
+	#define CORE_PLATFORM_WASM 1
+	#define CORE_PLATFORM_MOBILE 1
 
 #elif __linux__
 	/** Linux defined here. */
@@ -185,6 +191,8 @@
 	#elif CORE_PLATFORM_LINUX || CORE_PLATFORM_ANDROID
 		#include <signal.h>
 		#define ASSERT(expr)	if(!(expr)) ::raise (SIGTRAP);
+	#elif CORE_PLATFORM_WASM
+		#define ASSERT(expr)	if(!(expr)) emscripten_debugger ();
     #else
 		#define ASSERT(expr)	assert (expr);
 	#endif
@@ -213,6 +221,12 @@
 	/** Exported functions. */
 	#define CORE_EXPORT				extern "C"
 
+#elif CORE_PLATFORM_WASM
+	#define INLINE					__attribute__((always_inline)) inline
+	#define CORE_ALIGN_AS(size)		__attribute__((__aligned__(size)))
+	#define CORE_ALIGN(type, size)	type CORE_ALIGN_AS (size)
+	#define CORE_EXPORT				extern "C" EMSCRIPTEN_KEEPALIVE
+
 #elif defined(__GNUC__)
 	#define INLINE					__attribute__((always_inline)) inline
 	#define CORE_ALIGN_AS(size)		__attribute__((__aligned__(size)))
@@ -239,15 +253,6 @@
 	#define CORE_STATIC_TEMPLATE_MEMBER static
 #endif
 
-/* Hint for compiler to optimize hot function. */
-#if CTL_RTOS
-	#define CORE_HOT_FUNCTION __attribute__ ((section(".fast")))
-#elif CORE_PLATFORM_CMSIS
-	#define CORE_HOT_FUNCTION __attribute__ ((section(".text.ITCM")))
-#elif !defined (CORE_HOT_FUNCTION)
-	#define CORE_HOT_FUNCTION
-#endif
-           
 //////////////////////////////////////////////////////////////////////////////////////////////////
 // Warnings
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -289,6 +294,13 @@
 #undef EndFor
 /** End of iteration macros. */
 #define EndFor }}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+// Configuration
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+// configurable framework settings
+#include "core/public/coreconfiguration.h"
 
 // include our own memory allocator (can be disabled within coremalloc.h)
 #include "core/public/coremalloc.h"

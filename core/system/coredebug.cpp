@@ -47,7 +47,7 @@ void Core::DebugPrintf (CStringPtr format, ...)
 	va_list marker;
 	va_start (marker, format);
 
-	const int kPrintfBufferSize = STRING_STACK_SPACE_MAX; 
+	const int kPrintfBufferSize = CORE_STRING_STACK_MAX; 
 	char string[kPrintfBufferSize];
 	::vsnprintf (string, kPrintfBufferSize-1, format, marker);
 	string[kPrintfBufferSize-1] = 0;

@@ -164,7 +164,7 @@ bool SecretServiceStore::openSession ()
 
 	try
 	{
-		auto result = OpenSession (kAlgorithm, "");
+		auto result = OpenSession (kAlgorithm, sdbus::Variant (""));
 		session = std::get<1> (result);
 	}
 	CATCH_DBUS_ERROR
@@ -189,7 +189,7 @@ bool SecretServiceStore::unlockDefaultCollection (bool silent)
 	std::tuple<std::vector<sdbus::ObjectPath>, sdbus::ObjectPath> result;
 	try
 	{
-		result = Unlock ({ kDefaultCollection });
+		result = Unlock ({sdbus::ObjectPath (kDefaultCollection)});
 	}
 	CATCH_DBUS_ERROR
 
@@ -214,8 +214,8 @@ tbool SecretServiceStore::setCredentials (CStringPtr targetName, CStringPtr user
 
 	if(!unlockDefaultCollection ())
 		return false;
-	
-	SecretServiceCollection collection (dbusSupport, kDefaultCollection);
+
+	SecretServiceCollection collection (dbusSupport, sdbus::ObjectPath (kDefaultCollection));
 	return collection.createItem (session, targetName, userName, data, dataLength);
 }
 
@@ -229,7 +229,7 @@ tbool SecretServiceStore::getCredentials (IO::IByteStream& username, IO::IByteSt
 	if(!unlockDefaultCollection ())
 		return false;
 	
-	SecretServiceCollection collection (dbusSupport, kDefaultCollection);
+	SecretServiceCollection collection (dbusSupport, sdbus::ObjectPath (kDefaultCollection));
 	sdbus::ObjectPath itemObject = collection.searchItem (session, targetName);
 	if(itemObject.empty ())
 		return false;
@@ -248,7 +248,7 @@ tbool SecretServiceStore::removeCredentials (CStringPtr targetName)
 	if(!unlockDefaultCollection ())
 		return false;
 	
-	SecretServiceCollection collection (dbusSupport, kDefaultCollection);
+	SecretServiceCollection collection (dbusSupport, sdbus::ObjectPath (kDefaultCollection));
 	sdbus::ObjectPath itemObject = collection.searchItem (session, targetName);
 	if(itemObject.empty ())
 		return false;
@@ -310,12 +310,12 @@ SecretServiceCollection::~SecretServiceCollection ()
 bool SecretServiceCollection::createItem (const sdbus::ObjectPath& session, CStringPtr targetName, CStringPtr userName, void* data, uint32 dataLength)
 {
 	std::map<std::string, sdbus::Variant> properties;
-	properties[kLabelProperty] = targetName;
+	properties[kLabelProperty] = sdbus::Variant (targetName);
 
 	std::map<std::string, std::string> attributes;
 	attributes[kTargetNameAttribute] = targetName;
 	attributes[kUserNameAttribute] = userName;
-	properties[kAttributesProperty] = attributes;
+	properties[kAttributesProperty] = sdbus::Variant (attributes);
 
 	std::vector<uint8_t> dataVector;
 	dataVector.assign (static_cast<uint8_t*> (data), static_cast<uint8_t*> (data) + dataLength);
@@ -358,7 +358,7 @@ sdbus::ObjectPath SecretServiceCollection::searchItem (const sdbus::ObjectPath& 
 	CATCH_DBUS_ERROR
 
 	if(result.empty ())
-		return "";
+		return sdbus::ObjectPath ("");
 	return result[0];
 }
 

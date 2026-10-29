@@ -149,7 +149,7 @@ public:
 private:
 	void unload ();
 };
-	
+
 //************************************************************************************************
 // LinuxExecutableLoader
 //************************************************************************************************
@@ -274,32 +274,6 @@ int LinuxPlatformIntegrationLoader::getPriority (const IClassDescription& descri
 // LinuxSystemInformation
 //************************************************************************************************
 
-static int64 getUtcOffset (const DateTime& dateTime)
-{
-	// based on https://stackoverflow.com/questions/9076494/how-to-convert-from-utc-to-local-time-in-c
-	
-	tm currentUtc = {0};
-	CRTTypeConverter::tmFromDateTime (currentUtc, dateTime);
-	
-	time_t now = ::mktime (&currentUtc);
-	tm local = *::gmtime (&now);
-	
-	return local.tm_sec - currentUtc.tm_sec
-			+60LL*(local.tm_min - currentUtc.tm_min)
-			+3600LL*(local.tm_hour - currentUtc.tm_hour)
-			+86400LL*(local.tm_yday - currentUtc.tm_yday)
-			+(local.tm_year-70)*31536000LL
-			-(local.tm_year-69)/4*86400LL
-			+(local.tm_year-1)/100*86400LL
-			-(local.tm_year+299)/400*86400LL
-			-(currentUtc.tm_year-70)*31536000LL
-			+(currentUtc.tm_year-69)/4*86400LL
-			-(currentUtc.tm_year-1)/100*86400LL
-			+(currentUtc.tm_year+299)/400*86400LL;
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
 static void getHomeDirectory (IUrl& path)
 {
 	uid_t uid = ::geteuid ();
@@ -420,9 +394,9 @@ bool LinuxSystemInformation::getNativeLocation (IUrl& path, System::FolderType f
 
 	case System::kAppSupportFolder :
 		{
-			char applicationPath[STRING_STACK_SPACE_MAX];
+			char applicationPath[CORE_STRING_STACK_MAX];
 			ssize_t length = ::readlink ("/proc/self/exe", applicationPath, ARRAY_COUNT (applicationPath));
-			if(length > 0 && length + 1 < STRING_STACK_SPACE_MAX)
+			if(length > 0 && length + 1 < CORE_STRING_STACK_MAX)
 			{
 				applicationPath[length] = 0;
 				path.fromPOSIXPath (applicationPath, IUrl::kFile);
@@ -560,7 +534,7 @@ bool LinuxSystemInformation::getXdgUserDir (IUrl& url, StringID id) const
 		while((bytesRead = ::getline (&lineBuffer, &length, fp)) != -1)
 		{
 			String line (Text::kSystemEncoding, lineBuffer);
-			(::free) (lineBuffer);
+			::free (lineBuffer);
 			lineBuffer = nullptr;
 			if(line.startsWith (String (Text::kSystemEncoding, id)))
 			{
@@ -576,7 +550,7 @@ bool LinuxSystemInformation::getXdgUserDir (IUrl& url, StringID id) const
 			}
 		}
 		if(lineBuffer)
-			(::free) (lineBuffer);
+			::free (lineBuffer);
 		::fclose (fp);
 		
 		if(succeeded)
@@ -632,7 +606,7 @@ int64 CCL_API LinuxSystemInformation::getSecureComputerTime () const
 
 void CCL_API LinuxSystemInformation::getComputerName (String& name, int flags) const
 {
-	char hostname[STRING_STACK_SPACE_MAX];
+	char hostname[CORE_STRING_STACK_MAX];
 	::gethostname (hostname, ARRAY_COUNT (hostname));
 	name.appendCString (Text::kSystemEncoding, hostname);
 }
@@ -712,15 +686,7 @@ void CCL_API LinuxSystemInformation::getComputerInfo (IAttributeList& attributes
 		return;
 
 	// Operating System
-	utsname utsName {};
-	if(::uname (&utsName) == 0)
-	{
-		attributes.setAttribute (System::kOSName, String (Text::kUTF8, utsName.sysname));
-		attributes.setAttribute (System::kOSVersion, String (Text::kUTF8, utsName.release));
-	}
-	
-	// CPU
-	FILE* fp = ::fopen ("/proc/cpuinfo", "r");
+	FILE* fp = ::fopen ("/etc/os-release", "r");
 	if(fp)
 	{
 		char* lineBuffer = nullptr;
@@ -729,7 +695,44 @@ void CCL_API LinuxSystemInformation::getComputerInfo (IAttributeList& attributes
 		while((bytesRead = ::getline (&lineBuffer, &length, fp)) != -1)
 		{
 			String line (Text::kUTF8, lineBuffer);
-			(::free) (lineBuffer);
+			::free (lineBuffer);
+			lineBuffer = nullptr;
+			String value = line.subString (line.index ("=") + 1).trimWhitespace ();
+			if(value.startsWith ("\""))
+				value = value.subString (1, value.length () - 2);
+			if(line.startsWith ("PRETTY_NAME="))
+				attributes.setAttribute (System::kOSName, value);
+			else if(line.startsWith ("VERSION="))
+				attributes.setAttribute (System::kOSVersion, value);
+		}
+		if(lineBuffer)
+			::free (lineBuffer);
+		::fclose (fp);
+	}
+
+	if(!attributes.contains (System::kOSName) || !attributes.contains (System::kOSVersion))
+	{
+		utsname utsName {};
+		if(::uname (&utsName) == 0)
+		{
+			if(!attributes.contains (System::kOSName))
+				attributes.setAttribute (System::kOSName, String (Text::kUTF8, utsName.sysname));
+			if(!attributes.contains (System::kOSVersion))
+				attributes.setAttribute (System::kOSVersion, String (Text::kUTF8, utsName.release));
+		}
+	}
+	
+	// CPU
+	fp = ::fopen ("/proc/cpuinfo", "r");
+	if(fp)
+	{
+		char* lineBuffer = nullptr;
+		size_t length = 0;
+		ssize_t bytesRead = 0;
+		while((bytesRead = ::getline (&lineBuffer, &length, fp)) != -1)
+		{
+			String line (Text::kUTF8, lineBuffer);
+			::free (lineBuffer);
 			lineBuffer = nullptr;
 			String value = line.subString (line.index (":") + 1).trimWhitespace ();
 			if(value.startsWith ("\""))
@@ -738,10 +741,10 @@ void CCL_API LinuxSystemInformation::getComputerInfo (IAttributeList& attributes
 				attributes.setAttribute (System::kCPUModelHumanReadable, value);
 			else if(line.startsWith ("model"))
 				attributes.setAttribute (System::kCPUIdentifier, value);
-	    }
-	    if(lineBuffer)
-			(::free) (lineBuffer);
-	    ::fclose (fp);
+		}
+		if(lineBuffer)
+			::free (lineBuffer);
+		::fclose (fp);
 	}
 
 	fp = ::fopen ("/sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_max_freq", "r");
@@ -753,7 +756,7 @@ void CCL_API LinuxSystemInformation::getComputerInfo (IAttributeList& attributes
 		while((bytesRead = ::getline (&lineBuffer, &length, fp)) != -1)
 		{
 			String line (Text::kUTF8, lineBuffer);
-			(::free) (lineBuffer);
+			::free (lineBuffer);
 			lineBuffer = nullptr;
 			double floatValue = 0;
 			line.getFloatValue (floatValue);
@@ -761,10 +764,10 @@ void CCL_API LinuxSystemInformation::getComputerInfo (IAttributeList& attributes
 			line.getIntValue (intValue);
 			attributes.setAttribute (System::kCPUSpeedMHz, floatValue / 1024.);
 			attributes.setAttribute (System::kCPUSpeed, intValue);
-	    }
-	    if(lineBuffer)
-			(::free) (lineBuffer);
-	    ::fclose (fp);
+		}
+		if(lineBuffer)
+			::free (lineBuffer);
+		::fclose (fp);
 	}
 	
 	// Memory
@@ -852,7 +855,7 @@ void CCL_API LinuxSystemInformation::getComputerInfo (IAttributeList& attributes
 			ifreq record {};
 			ifconf config {};
 			
-			char buffer[STRING_STACK_SPACE_MAX];
+			char buffer[CORE_STRING_STACK_MAX];
 			config.ifc_len = sizeof(buffer);
 			config.ifc_buf = buffer;
 			if(::ioctl (socket, SIOCGIFCONF, &config) >= 0)
@@ -1080,7 +1083,7 @@ tresult CCL_API LinuxExecutableLoader::execute (Threading::ProcessID& processId,
 		if(fp == nullptr)
 			return kResultFailed;
 		
-		char buffer[STRING_STACK_SPACE_MAX];
+		char buffer[CORE_STRING_STACK_MAX];
 		while(::fgets (buffer, ARRAY_COUNT (buffer), fp) != nullptr)
 		{
 			if(stream)
@@ -1147,9 +1150,9 @@ tresult CCL_API LinuxExecutableLoader::getExecutablePath (IUrl& path, Threading:
 	MutableCString linkName;
 	linkName.appendFormat ("/proc/%d/exe", processId);
 	
-	char executablePath[STRING_STACK_SPACE_MAX];
+	char executablePath[CORE_STRING_STACK_MAX];
 	ssize_t length = ::readlink (linkName.str (), executablePath, ARRAY_COUNT (executablePath));
-	if(length <= 0 || length + 1 >= STRING_STACK_SPACE_MAX)
+	if(length <= 0 || length + 1 >= CORE_STRING_STACK_MAX)
 		return kResultFailed;
 	executablePath[length] = 0;
 	
@@ -1212,9 +1215,9 @@ tbool CCL_API LinuxImage::getPath (IUrl& url) const
 	{
 		if(nativeRef == System::GetMainModuleRef ())
 		{
-			char applicationPath[STRING_STACK_SPACE_MAX];
+			char applicationPath[CORE_STRING_STACK_MAX];
 			ssize_t length = ::readlink ("/proc/self/exe", applicationPath, ARRAY_COUNT (applicationPath));
-			if(length > 0 && length + 1 < STRING_STACK_SPACE_MAX)
+			if(length > 0 && length + 1 < CORE_STRING_STACK_MAX)
 			{
 				applicationPath[length] = '\0';
 				url.fromPOSIXPath (applicationPath, IUrl::kFile);

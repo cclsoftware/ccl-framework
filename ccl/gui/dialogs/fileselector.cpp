@@ -97,7 +97,7 @@ View* FileSelector::createCustomView ()
 	if(customView == nullptr && hook != nullptr)
 	{
 		UnknownPtr<IViewFactory> viewFactory (getHook ());
-		customView = unknown_cast<View> (viewFactory->createView ("FileSelectorView", Variant (asUnknown ()), CCL::Rect ()));
+		customView = unknown_cast<View> (viewFactory->createView ("FileSelectorView", Variant (asUnknown ()), Rect ()));
 	}
 	if(customView)
 		customView->retain ();

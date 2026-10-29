@@ -832,14 +832,14 @@ ColorSchemeOption::ColorSchemeOption (StringID schemeName)
 	paramList.addParam (IColorScheme::kMainSchemeDependent);
 	
 	IParameter* p1 = paramList.addFloat (-1.f, 1.f, IColorScheme::kSaturationLevel);
-	p1->setFormatter (AutoPtr<IFormatter> (NEW CCL::Format::Bipolar (NEW CCL::Format::Percent)));
+	p1->setFormatter (AutoPtr<IFormatter> (NEW Format::Bipolar (NEW Format::Percent)));
 	IParameter* p2 = paramList.addFloat (-1.f, 1.f, IColorScheme::kLuminanceLevel, Tag::kLuminance);
-	p2->setFormatter (AutoPtr<IFormatter> (NEW CCL::Format::Bipolar (NEW CCL::Format::Percent)));
+	p2->setFormatter (AutoPtr<IFormatter> (NEW Format::Bipolar (NEW Format::Percent)));
 	IParameter* p3 = paramList.addFloat (-1.f, 1.f, IColorScheme::kContrastLevel);
-	p3->setFormatter (AutoPtr<IFormatter> (NEW CCL::Format::Bipolar (NEW CCL::Format::Percent)));
+	p3->setFormatter (AutoPtr<IFormatter> (NEW Format::Bipolar (NEW Format::Percent)));
 	
 	IParameter* combinedLuminanceParam = paramList.addFloat (0.f, 1.f, "combinedLuminance", Tag::kCombinedLuminance);
-	combinedLuminanceParam->setFormatter (AutoPtr<IFormatter> (NEW CCL::Format::Bipolar (NEW CCL::Format::Percent)));
+	combinedLuminanceParam->setFormatter (AutoPtr<IFormatter> (NEW Format::Bipolar (NEW Format::Percent)));
 	combinedLuminanceParam->setDefaultValue (0.25f);
 	
 	// TODO: implement a better way to make luminance accessible...

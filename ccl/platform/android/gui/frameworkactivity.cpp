@@ -1,7 +1,7 @@
 //************************************************************************************************
 //
 // This file is part of Crystal Class Library (R)
-// Copyright (c) 2025 CCL Software Licensing GmbH.
+// Copyright (c) 2026 CCL Software Licensing GmbH.
 // All Rights Reserved.
 //
 // Licensed for use under either:
@@ -55,6 +55,26 @@ namespace CCL {
 namespace Android {
 
 //************************************************************************************************
+// PermissionRequestResults
+//************************************************************************************************
+
+class PermissionRequestResults: public Unknown,
+								public IPermissionRequestResults
+{
+public:
+	void addResult (const Result& result);
+
+	// IPermissionRequestResults
+	int CCL_API getCount () const override;
+	tbool CCL_API getResult (Result& result, int index) const override;
+
+	CLASS_INTERFACE (IPermissionRequestResults, Unknown)
+
+private:
+	Vector<Result> results;
+};
+
+//************************************************************************************************
 // dev.ccl.FrameworkActivity
 //************************************************************************************************
 
@@ -95,6 +115,7 @@ DEFINE_JNI_CLASS (FrameworkActivityClass)
 	DEFINE_JNI_METHOD (reportLaunchError, "(Ljava/lang/String;)V")
 	DEFINE_JNI_STATIC_METHOD (getMainModuleID, "()Ljava/lang/String;")
 	DEFINE_JNI_METHOD (getNativeLibraryDir, "()Ljava/lang/String;")
+	DEFINE_JNI_METHOD (checkAndRequestPermissions, "([Ljava/lang/String;J)V")
 END_DEFINE_JNI_CLASS
 
 DEFINE_JNI_CLASS (FrameworkActivityFileInfoClass)
@@ -105,8 +126,38 @@ END_DEFINE_JNI_CLASS
 } // namespace Android
 } // namespace CCL
 
+using namespace Core;
+using namespace Core::Java;
+
 using namespace CCL;
 using namespace CCL::Android;
+
+//************************************************************************************************
+// PermissionRequestResults
+//************************************************************************************************
+
+void PermissionRequestResults::addResult (const Result& result)
+{
+	results.add (result);
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+int CCL_API PermissionRequestResults::getCount () const
+{
+	return results.count ();
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+tbool CCL_API PermissionRequestResults::getResult (Result& result, int index) const
+{
+	if(!results.isValidIndex (index))
+		return false;
+
+	result = results[index];
+	return true;
+}
 
 //************************************************************************************************
 // FrameworkActivity
@@ -290,6 +341,23 @@ void CCL_API FrameworkActivity::getNativeLibraryDir (String& dir) const
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
+IAsyncOperation* CCL_API FrameworkActivity::checkAndRequestPermissions (const String permissions[], int permissionsCount) const
+{
+	JniAccessor jni;
+	JniStringArray jPermissions (jni, permissionsCount);
+	for(int i = 0; i < permissionsCount; i++)
+	{
+		MutableCString permission (permissions[i], Text::kUTF8);
+		jPermissions.setElement (i, permission);
+	}
+
+	AutoPtr<AsyncOperation> op = NEW AsyncOperation;
+	FrameworkActivityClass.checkAndRequestPermissions (*this, jPermissions, JniCast<AsyncOperation>::toIntPtr (op));
+	return op.detach ();
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
 AndroidIntent* FrameworkActivity::getIntent () const
 {
 	JniAccessor jni;
@@ -353,8 +421,8 @@ float FrameworkActivity::getDensityFactor ()
 	int minimumDPI = 160;
 	int maximumDPI = density;
 
-	CCL::Configuration::Registry::instance ().getValue (minimumDPI, "CCL.Android", "MinimumDPI");
-	CCL::Configuration::Registry::instance ().getValue (maximumDPI, "CCL.Android", "MaximumDPI");
+	Configuration::Registry::instance ().getValue (minimumDPI, "CCL.Android", "MinimumDPI");
+	Configuration::Registry::instance ().getValue (maximumDPI, "CCL.Android", "MaximumDPI");
 
 	float maximumScaleFactor = ccl_max (1.0, floorf (float(density) / float(minimumDPI) * 4.0) / 4.0);
 	float minimumScaleFactor = ccl_max (1.0, ceilf (float(density) / float(maximumDPI) * 4.0) / 4.0);
@@ -364,8 +432,8 @@ float FrameworkActivity::getDensityFactor ()
 	ccl_order (screenSize.x, screenSize.y);
 
 	Point requiredSize;
-	CCL::Configuration::Registry::instance ().getValue (requiredSize.x, "CCL.Android", "RequiredScreenWidth");
-	CCL::Configuration::Registry::instance ().getValue (requiredSize.y, "CCL.Android", "RequiredScreenHeight");
+	Configuration::Registry::instance ().getValue (requiredSize.x, "CCL.Android", "RequiredScreenWidth");
+	Configuration::Registry::instance ().getValue (requiredSize.y, "CCL.Android", "RequiredScreenHeight");
 	if(requiredSize.x < requiredSize.y)
 		screenSize.y -= getStatusBarHeight ();
 	else
@@ -405,7 +473,7 @@ float FrameworkActivity::getBitmapDensityFactor ()
 			keyName.appendFormat ("%d", factor);
 
 			int megaBytes = 0;
-			CCL::Configuration::Registry::instance ().getValue (megaBytes, "CCL.Android.RequiredMemory", keyName);
+			Configuration::Registry::instance ().getValue (megaBytes, "CCL.Android.RequiredMemory", keyName);
 			return megaBytes * 1024 * 1024;
 		};
 
@@ -492,8 +560,8 @@ void FrameworkActivity::updateSystemUIVisibility ()
 	// hide system UI elements if requested in cclgui.config
 	String statusBarMode;
 	String navigationBarMode;
-	CCL::Configuration::Registry::instance ().getValue (statusBarMode, "CCL.Android", "StatusBarMode");
-	CCL::Configuration::Registry::instance ().getValue (navigationBarMode, "CCL.Android", "NavigationBarMode");
+	Configuration::Registry::instance ().getValue (statusBarMode, "CCL.Android", "StatusBarMode");
+	Configuration::Registry::instance ().getValue (navigationBarMode, "CCL.Android", "NavigationBarMode");
 
 	bool isLandscape = (getOrientation () == Styles::kLandscape);
 	bool isSmallScreen = FrameworkActivityClass.getScreenSize (*this) < ACONFIGURATION_SCREENSIZE_LARGE;
@@ -795,4 +863,26 @@ DECLARE_JNI_CLASS_METHOD_CCLGUI_NO_ARGS (bool, FrameworkActivity, onBackPressedN
 		CommandMsg msg ("Navigation", "Back");
 		return CommandTable::instance ().interpretCommand (msg);
 	}
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+DECLARE_JNI_CLASS_METHOD_CCLGUI (void, FrameworkActivity, onRequestPermissionsResultNative, JniIntPtr nativeOperation, jobjectArray permissions, jintArray grantResults)
+{
+	AsyncOperation* operation = JniCast<AsyncOperation>::fromIntPtr (nativeOperation);
+
+	JniStringArray permissionsArray (env, permissions);
+	Vector<jint> resultsVector;
+	JniIntArray (env, grantResults).getData (resultsVector);
+
+	AutoPtr<PermissionRequestResults> results = NEW PermissionRequestResults;
+	for(int i = 0; i < permissionsArray.getLength (); i++)
+	{
+		LocalStringRef permission (env, permissionsArray[i]);
+
+		results->addResult ({ fromJavaString (permission), PermissionRequestResults::GrantedState (resultsVector[i]) });
+	}
+
+	operation->setResult (Variant (static_cast<IPermissionRequestResults*> (results), true));
+	operation->setStateDeferred (IAsyncInfo::kCompleted);
 }

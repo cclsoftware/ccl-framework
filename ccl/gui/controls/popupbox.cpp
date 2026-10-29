@@ -283,6 +283,13 @@ bool PopupBox::onMouseDown (const MouseEvent& event)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
+View* PopupBox::findFocusView (const MouseEvent& event)
+{
+	return nullptr; // child views don't receive mouse clicks (see onMouseDown), so they must not get focus
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
 View* PopupBox::enterMouse (const MouseEvent& event, View* currentMouseView)
 {
 	if(getStyle ().isCustomStyle (Styles::kPopupBoxBehaviorWantsMouseView))

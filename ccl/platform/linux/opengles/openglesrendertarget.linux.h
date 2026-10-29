@@ -23,7 +23,7 @@
 
 #include "ccl/platform/linux/skia/skiarendertarget.linux.h"
 
-#include "ccl/platform/shared/opengles/openglesrendertarget.h"
+#include "ccl/platform/shared/opengles/eglopenglesrendertarget.h"
 
 struct wl_egl_window;
 
@@ -36,7 +36,7 @@ namespace Linux {
 // LinuxOpenGLESRenderTarget
 //************************************************************************************************
 
-class LinuxOpenGLESRenderTarget: public OpenGLESRenderTarget,
+class LinuxOpenGLESRenderTarget: public EGLOpenGLESRenderTarget,
 				 				 public WaylandRenderTarget
 {
 public:
@@ -47,6 +47,9 @@ protected:
 	wl_egl_window* eglWindow;
 
 	bool initialize (wl_surface* surface);
+
+	virtual bool initialize () { return true; }
+	virtual void clear () {}
 };
 
 //************************************************************************************************

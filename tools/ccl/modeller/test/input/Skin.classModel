@@ -1,7 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Model.ClassRepository xmlns:x="https://ccl.dev/xml" name="Skin Elements">
 	<List x:id="classes">
-		<Model.Class name="TestElement"/>
+		<Model.Class name="TestElement">
+			<List x:id="members">
+				<Model.Member name="rowHeight" type="void"/>
+				<Model.Member name="rowLabel" type="void"/>
+			</List>
+		</Model.Class>
 		<Model.Class name="AnotherTestElement"/>
+		<Model.Class name="MultiLineElement"/>
+		<Model.Class name="RelatedDocElement"/>
+		<Model.Class name="QualifiedNestedOuterElement"/>
+		<Model.Class name="ScopedElement"/>
+		<Model.Class name="UsingScopedElement"/>
+		<Model.Class name="MacroElement"/>
+		<Model.Class name="DocClass">
+			<List x:id="members">
+				<Model.Member name="fooProperty" type="void"/>
+			</List>
+		</Model.Class>
+		<Model.Class name="DocStringIdClass">
+			<List x:id="members">
+				<Model.Member name="resolvedName" type="void"/>
+			</List>
+		</Model.Class>
+	</List>
+	<List x:id="enums">
+		<Model.Enumeration name="TestElement.Style">
+			<List x:id="enumerators">
+				<Model.Enumerator name="Normal"/>
+				<Model.Enumerator name="Highlighted"/>
+			</List>
+		</Model.Enumeration>
+		<Model.Enumeration name="AliasElement.Type">
+			<List x:id="enumerators">
+				<Model.Enumerator name="int"/>
+				<Model.Enumerator name="string"/>
+			</List>
+		</Model.Enumeration>
 	</List>
 </Model.ClassRepository>

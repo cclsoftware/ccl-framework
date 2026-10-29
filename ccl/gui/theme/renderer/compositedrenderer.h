@@ -34,16 +34,16 @@ class CompositedRenderer: public ThemeRenderer
 public:
 	DECLARE_CLASS_ABSTRACT (CompositedRenderer, ThemeRenderer)
 
-	CompositedRenderer (VisualStyle* visualStyle = nullptr);
+	CompositedRenderer (VisualStyle* visualStyle, View* owner);
 
 	// ThemeRenderer
-	void update (View* view, const UpdateInfo& info) override;
+	void update (const UpdateInfo& info) override;
 
 protected:
 	IBackgroundView* backgroundView;
 	Point position;
 
-	void drawCompositedBackground (IGraphics& graphics, View* view, RectRef rect);
+	void drawCompositedBackground (IGraphics& graphics, RectRef rect);
 };
 
 } // namespace CCL

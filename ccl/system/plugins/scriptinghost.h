@@ -59,8 +59,9 @@ public:
 	{
 	public:
 		DECLARE_CLASS (ResultsList, Object)
+		DECLARE_PROPERTY_NAMES (ResultsList)
 
-		struct ResultDef { const char* name; tresult result; };
+		struct ResultDef { CStringPtr name; tresult result; };
 		static const ResultDef resultList[];
 
 		// IObject
@@ -90,11 +91,11 @@ public:
 		tbool CCL_API invokeMethod (Variant& returnValue, MessageRef msg) override;
 	};
 
-	class ScriptableIO: public Object
+	class ScriptIO: public Object
 	{
 	public:
-		DECLARE_CLASS (ScriptableIO, Object)
-		DECLARE_METHOD_NAMES (ScriptableIO)
+		DECLARE_CLASS (ScriptIO, Object)
+		DECLARE_METHOD_NAMES (ScriptIO)
 
 		// IObject
 		tbool CCL_API invokeMethod (Variant& returnValue, MessageRef msg) override;
@@ -118,7 +119,7 @@ protected:
 	ResultsList* resultsList;
 	Console* console;
 	Signals* signals;
-	ScriptableIO* scriptableIO;
+	ScriptIO* scriptIO;
 	ObjectTable* children;
 };
 

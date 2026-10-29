@@ -31,7 +31,7 @@ using namespace CCL;
 
 CCL_EXPORT IWindow* CCL_API System::CCL_ISOLATED (CreateChildWindow) (IView* _view, void* nativeParent)
 {
-	CCL::View* view = unknown_cast<View> (_view);
+	View* view = unknown_cast<View> (_view);
 	if(view == nullptr)
 		return nullptr;
 

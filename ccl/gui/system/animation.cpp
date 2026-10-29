@@ -461,6 +461,13 @@ Variant Animation::getFinalValue () const
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
+void CCL_API Animation::clone (IAnimation*& animation) const
+{
+	animation = static_cast<Animation*> (clone ());
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
 void Animation::resetValue ()
 {
 	AnimationClockScope scope (clock);
@@ -499,6 +506,8 @@ bool BasicAnimation::canAnimate (VariantRef value)
 		case IUIValue::kRectF :
 		case IUIValue::kPointF3D :
 		case IUIValue::kPointF4D :
+		case IUIValue::kPen :
+		case IUIValue::kBrush :
 			return true;
 		}
 
@@ -546,6 +555,13 @@ tresult CCL_API BasicAnimation::setEndValue (VariantRef value)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
+void CCL_API BasicAnimation::getDescription (AnimationDescription& description) const
+{
+	SuperClass::getDescription (description);
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
 void CCL_API BasicAnimation::setDescription (const AnimationDescription& description)
 {
 	SuperClass::setDescription (description); 
@@ -556,6 +572,13 @@ void CCL_API BasicAnimation::setDescription (const AnimationDescription& descrip
 void CCL_API BasicAnimation::setCompletionHandler (IAnimationCompletionHandler* handler)
 {
 	SuperClass::setCompletionHandler (handler); 
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+void CCL_API BasicAnimation::clone (IAnimation*& animation) const
+{
+	SuperClass::clone (animation);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -669,6 +692,28 @@ Variant BasicAnimation::getValue (double normalizedValue) const
 					object.fromColorF (c);
 				}
 				break;
+
+			case IUIValue::kPen :
+				{
+					Pen startPen, endPen, p;
+					start->toPen (startPen);
+					end->toPen (endPen);
+					p = startPen;
+					p.setColor (Color::linearGradient (startPen.getColor (), endPen.getColor (), (float)normalizedValue));
+					p.setWidth ((Pen::Size)interpolate (startPen.getWidth (), endPen.getWidth (), normalizedValue));
+					object.fromPen (p);
+				}
+				break;
+
+			case IUIValue::kBrush :
+				{
+					Brush startBrush (Brush::kSolid), endBrush (Brush::kSolid), b (Brush::kSolid);
+					start->toBrush (startBrush);
+					end->toBrush (endBrush);
+					GraphicsHelper::instance ().blendBrushes (b, startBrush, endBrush, (float)normalizedValue);
+					object.fromBrush (b);
+				}
+				break;
 			}
 		}
 
@@ -685,6 +730,13 @@ DEFINE_CLASS_UID (TransformAnimation, 0x5c52b447, 0xdfe, 0x4574, 0x9c, 0xec, 0x6
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
+void CCL_API TransformAnimation::getDescription (AnimationDescription& description) const
+{
+	SuperClass::getDescription (description);
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
 void CCL_API TransformAnimation::setDescription (const AnimationDescription& description)
 {
 	SuperClass::setDescription (description);
@@ -695,6 +747,13 @@ void CCL_API TransformAnimation::setDescription (const AnimationDescription& des
 void CCL_API TransformAnimation::setCompletionHandler (IAnimationCompletionHandler* handler)
 {
 	SuperClass::setCompletionHandler (handler); 
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+void CCL_API TransformAnimation::clone (IAnimation*& animation) const
+{
+	SuperClass::clone (animation);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -820,13 +879,18 @@ Variant TransformAnimation::getValue (double normalizedValue) const
 // AnimationManager::TargetItem
 //************************************************************************************************
 
-AnimationManager::TargetItem::TargetItem (IObject* target)
+AnimationManager::TargetItem::TargetItem (IObject* target, bool mustObserve)
 : target (target),
-  subject (UnknownPtr<ISubject> (target))
+  subject (nullptr)
 {
-	ASSERT (target && subject)
-	if(subject)
-		subject->addObserver (this);
+	ASSERT (target)
+	if(mustObserve == true)
+	{
+		subject = UnknownPtr<ISubject> (target);
+		ASSERT (subject)
+		if(subject)
+			subject->addObserver (this);
+	}
 
 	animations.objectCleanup (true);
 }
@@ -877,7 +941,7 @@ bool AnimationManager::TargetItem::remove (Animation* a)
 
 Animation* AnimationManager::TargetItem::find (StringID propertyId) const
 {
-	ArrayForEach (animations, Animation, a)
+	ArrayForEachFast (animations, Animation, a)
 		if(a->getTargetProperty ().getID () == propertyId)
 			return a;
 	EndFor
@@ -933,7 +997,7 @@ AnimationClock* AnimationManager::getSharedClock (StringID clockName)
 	if(clockName.isEmpty ())
 		return nullptr;
 
-	ArrayForEach (sharedClocks, AnimationClock, clock)
+	ArrayForEachFast (sharedClocks, AnimationClock, clock)
 		if(clock->getName () == clockName)
 			return clock;
 	EndFor
@@ -998,7 +1062,8 @@ tresult CCL_API AnimationManager::unregisterHandler (IAnimationHandler* handler)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-tresult CCL_API AnimationManager::addAnimation (IObject* _target, StringID _propertyId, const IAnimation* _prototype)
+tresult CCL_API AnimationManager::addAnimation (IObject* _target, StringID _propertyId, const IAnimation* _prototype,
+												int options)
 {	
 	// resolve target
 	Property targetProperty (_target, _propertyId); 
@@ -1012,7 +1077,7 @@ tresult CCL_API AnimationManager::addAnimation (IObject* _target, StringID _prop
 		
 	// try handlers first...
 	VectorForEach (handlers, IAnimationHandler*, handler)
-		if(handler->addAnimation (target, propertyId, prototype) == kResultOk)
+		if(handler->addAnimation (target, propertyId, prototype, options) == kResultOk)
 			return kResultOk;
 	EndFor
 
@@ -1025,18 +1090,19 @@ tresult CCL_API AnimationManager::addAnimation (IObject* _target, StringID _prop
 		animation->setClock (clock);
 	}
 
-	add (animation, target);
+	bool mustObserve = get_flag<int> (options, kManualTargetRemoval) == false;
+	add (animation, target, mustObserve);
 	animation->start ();
 	return kResultOk;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void AnimationManager::add (Animation* animation, IObject* target)
+void AnimationManager::add (Animation* animation, IObject* target, bool mustObserve)
 {
 	TargetItem* item = lookup (target);
 	if(item == nullptr)
-		getBucket (target).append (item = NEW TargetItem (target));
+		getBucket (target).append (item = NEW TargetItem (target, mustObserve));
 
 	// remove existing animation for this property
 	Animation* existing = item->find (animation->getTargetProperty ().getID ());
@@ -1089,14 +1155,35 @@ tresult CCL_API AnimationManager::removeAnimation (IObject* _target, StringID _p
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void AnimationManager::onTargetDestroyed (IObject* target)
+tresult CCL_API AnimationManager::removeTarget (IObject* target)
+{
+	ASSERT (target)
+	if(!target)
+		return kResultInvalidArgument;
+	
+	if(onTargetDestroyed (target))
+		return kResultOk;
+
+	// try handlers last (currently not used)...
+	VectorForEach (handlers, IAnimationHandler*, handler)
+		if(handler->removeTarget (target) == kResultOk)
+			return kResultOk;
+	EndFor
+
+	return kResultFalse;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+bool AnimationManager::onTargetDestroyed (IObject* target)
 {
 	TargetItem* item = lookup (target);
-	if(item)
-	{
-		getBucket (item->getTarget ()).remove (item);
-		item->release ();
-	}
+	if(!item)
+		return false;
+
+	getBucket (item->getTarget ()).remove (item);
+	item->release ();
+	return true;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////

@@ -12,7 +12,7 @@
 // For more information, please visit ccl.dev.
 //
 // Filename    : ccl/gui/theme/renderer/sliderrenderer.cpp
-// Description : Control Renderer
+// Description : Slider Renderer
 //
 //************************************************************************************************
 
@@ -20,10 +20,10 @@
 
 #include "ccl/gui/controls/slider.h"
 #include "ccl/gui/graphics/imaging/image.h"
+#include "ccl/gui/graphics/imaging/coloredbitmap.h"
+
 #include "ccl/public/gui/iparameter.h"
 #include "ccl/public/gui/framework/controlscalepainter.h"
-
-#include "ccl/gui/graphics/imaging/coloredbitmap.h"
 
 using namespace CCL;
 
@@ -32,33 +32,34 @@ using namespace CCL;
 /** A Slider draws handle moving over a background. */
 //************************************************************************************************
 
-BEGIN_VISUALSTYLE_CLASS (Slider, VisualStyle, "SliderStyle")
-	ADD_VISUALSTYLE_IMAGE  ("vBack")					///< background image (vertical slider) - can have optional second frame for on-state of style "bargraph" - optional "disabled" on-state frame cannot be the first one
-	ADD_VISUALSTYLE_IMAGE  ("vHandle")					///< handle (vertical slider) - can have optional second "pressed" frame - and optional third "mouseover" frame - optional "disabled" frame cannot be the first one
-	ADD_VISUALSTYLE_IMAGE  ("vDeepBack")				///< additional background (vertical slider)
-	ADD_VISUALSTYLE_IMAGE  ("vSmallBack")				///< background image (vertical slider with option "small") - with optional frames (see above)
-	ADD_VISUALSTYLE_IMAGE  ("vSmallHandle")				///< handle (vertical slider with option "small") - with optional frames (see above)
-	ADD_VISUALSTYLE_IMAGE  ("hBack")					///< background image (horizontal slider) - with optional frames (see above)
-	ADD_VISUALSTYLE_IMAGE  ("hHandle")					///< handle (horizontal slider) - with optional frames (see above)
-	ADD_VISUALSTYLE_IMAGE  ("hDeepBack")				///< additional background (horizontal slider)
-	ADD_VISUALSTYLE_IMAGE  ("hSmallBack")				///< background image (horizontal slider with option "small") - with optional frames (see above)
-	ADD_VISUALSTYLE_IMAGE  ("hSmallHandle")				///< handle (horizontal slider with option "small") - with optional frames (see above)
-	ADD_VISUALSTYLE_METRIC ("scaleHandle")				///< when handles are too big or small they are scaled with respect to their aspectratio
-	ADD_VISUALSTYLE_METRIC ("margin")					///< margin between handle and view edges in min/max handle positions
-	ADD_VISUALSTYLE_METRIC ("touchFineMinScale")		///< min finescale factor (0\.\.\.1)
-	ADD_VISUALSTYLE_METRIC ("touchFineMaxScale")		///< max finescale factor (0\.\.\.1)
-	ADD_VISUALSTYLE_METRIC ("touchFineMinSpeed")		///< lower bound for finescale factor interpolation
-	ADD_VISUALSTYLE_METRIC ("touchFineMaxSpeed")		///< upper bound for finescale factor interpolation
-	ADD_VISUALSTYLE_COLOR ("centerlinecolor")			///< color for a centerline, when the parameter is bipolar and style is "bargraph"
-	ADD_VISUALSTYLE_METRIC ("centerlinewidth")			///< width for the centerline
-	ADD_VISUALSTYLE_COLOR ("handleColor")				///< color to colorize the handle, when the parameter is bipolar and style is "bargraph"
-	ADD_VISUALSTYLE_COLOR ("disabledHandleColor")		///< color to colorize the handle, when the parameter is disabled (usually handles are not drawn in this case)
-END_VISUALSTYLE_CLASS (Slider)
+DEFINE_TYPELIB_ENTRY_WITH_PARENT (Slider, VisualStyle, "SliderStyle", VISUALSTYLES_TYPELIB)
+BEGIN_TYPELIB_MEMBERS (Slider)
+	ADD_TYPELIB_MEMBER_IMAGE ("vBack")					///< background image (vertical slider) - can have optional second frame for on-state of style "bargraph" - optional "disabled" on-state frame cannot be the first one
+	ADD_TYPELIB_MEMBER_IMAGE ("vHandle")				///< handle (vertical slider) - can have optional second "pressed" frame - and optional third "mouseover" frame - optional "disabled" frame cannot be the first one
+	ADD_TYPELIB_MEMBER_IMAGE ("vDeepBack")				///< additional background (vertical slider)
+	ADD_TYPELIB_MEMBER_IMAGE ("vSmallBack")				///< background image (vertical slider with option "small") - with optional frames (see above)
+	ADD_TYPELIB_MEMBER_IMAGE ("vSmallHandle")			///< handle (vertical slider with option "small") - with optional frames (see above)
+	ADD_TYPELIB_MEMBER_IMAGE ("hBack")					///< background image (horizontal slider) - with optional frames (see above)
+	ADD_TYPELIB_MEMBER_IMAGE ("hHandle")				///< handle (horizontal slider) - with optional frames (see above)
+	ADD_TYPELIB_MEMBER_IMAGE ("hDeepBack")				///< additional background (horizontal slider)
+	ADD_TYPELIB_MEMBER_IMAGE ("hSmallBack")				///< background image (horizontal slider with option "small") - with optional frames (see above)
+	ADD_TYPELIB_MEMBER_IMAGE ("hSmallHandle")			///< handle (horizontal slider with option "small") - with optional frames (see above)
+	ADD_TYPELIB_MEMBER_METRIC ("scaleHandle")			///< when handles are too big or small they are scaled with respect to their aspectratio
+	ADD_TYPELIB_MEMBER_METRIC ("margin")				///< margin between handle and view edges in min/max handle positions
+	ADD_TYPELIB_MEMBER_METRIC ("touchFineMinScale")		///< min finescale factor (0\.\.\.1)
+	ADD_TYPELIB_MEMBER_METRIC ("touchFineMaxScale")		///< max finescale factor (0\.\.\.1)
+	ADD_TYPELIB_MEMBER_METRIC ("touchFineMinSpeed")		///< lower bound for finescale factor interpolation
+	ADD_TYPELIB_MEMBER_METRIC ("touchFineMaxSpeed")		///< upper bound for finescale factor interpolation
+	ADD_TYPELIB_MEMBER_COLOR ("centerlinecolor")		///< color for a centerline, when the parameter is bipolar and style is "bargraph"
+	ADD_TYPELIB_MEMBER_METRIC ("centerlinewidth")		///< width for the centerline
+	ADD_TYPELIB_MEMBER_COLOR ("handleColor")			///< color to colorize the handle, when the parameter is bipolar and style is "bargraph"
+	ADD_TYPELIB_MEMBER_COLOR ("disabledHandleColor")	///< color to colorize the handle, when the parameter is disabled (usually handles are not drawn in this case)
+END_TYPELIB_MEMBERS (Slider)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-SliderRenderer::SliderRenderer (VisualStyle* visualStyle)
-: CompositedRenderer (visualStyle),
+SliderRenderer::SliderRenderer (VisualStyle* visualStyle, View* owner)
+: CompositedRenderer (visualStyle, owner),
   initDone (false),
   margin (0),
   scaleOffset (0),
@@ -71,10 +72,10 @@ SliderRenderer::SliderRenderer (VisualStyle* visualStyle)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void SliderRenderer::init (const View* view)
+void SliderRenderer::init ()
 {
-	Slider* slider = (Slider*)view;
-	StyleRef style = view->getStyle ();
+	Slider* slider = static_cast<Slider*> (owner);
+	StyleRef style = owner->getStyle ();
 	
 	margin = visualStyle->getMetric<int> ("margin", 0);
 	scaleHandle = visualStyle->getMetric<bool> ("scaleHandle", false);
@@ -268,7 +269,7 @@ void SliderRenderer::drawBackcolor (GraphicsPort& port, Slider* slider, Color fo
 		if(UnknownPtr<IColorParam> colorParam = slider->getColorParam ())
 			colorParam->getColor (enabledColor);
 		
-		if(enabledColor.getAlphaF () == 0)
+		if(!enabledColor.isVisible ())
 			enabledColor = foreColor;
 		
 		if(hilite)
@@ -305,13 +306,13 @@ void SliderRenderer::drawBackcolor (GraphicsPort& port, Slider* slider, Color fo
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void SliderRenderer::draw (View* view, const UpdateRgn& updateRgn)
+void SliderRenderer::draw (const UpdateRgn& updateRgn)
 {
 	if(!initDone)
-		init (view);
+		init ();
 
-	GraphicsPort port (view);
-	Slider* slider = (Slider*)view;
+	GraphicsPort port (owner);
+	Slider* slider = static_cast<Slider*> (owner);
 	
 	if(slider->getStyle ().isCustomStyle (Styles::kSliderAppearanceTickScale))
 		drawTickScale (port, slider);
@@ -321,7 +322,7 @@ void SliderRenderer::draw (View* view, const UpdateRgn& updateRgn)
 	else
 		drawBackcolor (port, slider, getVisualStyle ()->getForeColor ());
 	
-	if(slider->isEnabled () || (disabledHandleColor.getAlphaF () != 0) || disabledHandleIndex > 0)
+	if(slider->isEnabled () || disabledHandleColor.isVisible () || disabledHandleIndex > 0)
 		drawHandle (port, slider, handleImage, slider->getValue ());
 }
 
@@ -374,7 +375,7 @@ void SliderRenderer::drawHandle (GraphicsPort& port, Slider* slider, IImage* han
 			colorParam->getColor (color);
 		}
 	}
-	else if(disabledHandleColor.getAlphaF () != 0)
+	else if(disabledHandleColor.isVisible ())
 	{
 		colorizeHandle = true;
 		color = disabledHandleColor;
@@ -499,19 +500,19 @@ void SliderRenderer::calcBarGraphRects (Rect& src1, Rect& src2, Slider* slider, 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-int SliderRenderer::hitTest (View* view, const Point& loc, Point* offset)
+int SliderRenderer::hitTest (PointRef where, Point* offset)
 {
 	if(!initDone)
-		init (view);
+		init ();
 
 	Rect rect;
-	getHandleRect ((Slider*)view, handleImage, rect, ((Slider*)view)->getValue ());
-	if(rect.pointInside (loc))
+	getHandleRect ((Slider*)owner, handleImage, rect, ((Slider*)owner)->getValue ());
+	if(rect.pointInside (where))
 	{
 		if(offset)
 		{
-			offset->x = loc.x - rect.left;
-			offset->y = loc.y - rect.top;
+			offset->x = where.x - rect.left;
+			offset->y = where.y - rect.top;
 		}
 		return Slider::kPartHandle;
 	}
@@ -520,7 +521,7 @@ int SliderRenderer::hitTest (View* view, const Point& loc, Point* offset)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool SliderRenderer::getHandleRect (const Slider* slider, IImage* handleImage, CCL::Rect& rect, float value)
+bool SliderRenderer::getHandleRect (const Slider* slider, IImage* handleImage, Rect& rect, float value)
 {
 	StyleRef style = slider->getStyle ();
 
@@ -537,7 +538,7 @@ bool SliderRenderer::getHandleRect (const Slider* slider, IImage* handleImage, C
 			handleW = slider->getWidth ();
 		}
 
-		if(!slider->isEnabled () && disabledHandleColor.getAlphaF () == 0 && disabledHandleIndex == -1)
+		if(!slider->isEnabled () && !disabledHandleColor.isVisible () && disabledHandleIndex == -1)
 			handleH = 1;
 			
 		float max = (float)(slider->getHeight () - handleH - margin * 2);
@@ -560,7 +561,7 @@ bool SliderRenderer::getHandleRect (const Slider* slider, IImage* handleImage, C
 			handleH = slider->getHeight ();
 		}
 
-		if(!slider->isEnabled () && disabledHandleColor.getAlphaF () == 0 && disabledHandleIndex == -1)
+		if(!slider->isEnabled () && !disabledHandleColor.isVisible () && disabledHandleIndex == -1)
 			handleW = 1;
 
 		float max = (float)(slider->getWidth () - handleW - margin * 2);
@@ -575,7 +576,7 @@ bool SliderRenderer::getHandleRect (const Slider* slider, IImage* handleImage, C
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool SliderRenderer::getTrackRect (const Slider* slider, CCL::Rect& rect)
+bool SliderRenderer::getTrackRect (const Slider* slider, Rect& rect)
 {
 	rect.left   = margin;
 	rect.top    = margin;
@@ -586,12 +587,12 @@ bool SliderRenderer::getTrackRect (const Slider* slider, CCL::Rect& rect)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool SliderRenderer::getPartRect (const View* view, int partCode, CCL::Rect& rect)
+bool SliderRenderer::getPartRect (Rect& rect, int partCode)
 {
 	if(!initDone)
-		init (view);
+		init ();
 
-	const Slider* slider = static_cast<const Slider*> (view);
+	const Slider* slider = static_cast<const Slider*> (owner);
 	
 	if(partCode == Slider::kPartHandle)
 		return getHandleRect (slider, handleImage, rect, slider->getValue ());
@@ -606,27 +607,28 @@ bool SliderRenderer::getPartRect (const View* view, int partCode, CCL::Rect& rec
 /** A Range Slider draws two handle moving over a background. */
 //************************************************************************************************
 
-BEGIN_VISUALSTYLE_CLASS (RangeSlider, VisualStyle, "RangeSliderStyle")
-	ADD_VISUALSTYLE_IMAGE  ("hHandle2")			///< handle (horizontal slider)
-	ADD_VISUALSTYLE_IMAGE  ("vHandle2")			///< handle (vertical slider)
-	ADD_VISUALSTYLE_IMAGE  ("hSmallHandle2")	///< handle (horizontal slider with option "small")
-	ADD_VISUALSTYLE_IMAGE  ("vSmallHandle2")	///< handle (vertical slider with option "small")
-END_VISUALSTYLE_CLASS (RangeSlider)
+DEFINE_TYPELIB_ENTRY_WITH_PARENT (RangeSlider, VisualStyle, "RangeSliderStyle", VISUALSTYLES_TYPELIB)
+BEGIN_TYPELIB_MEMBERS (RangeSlider)
+	ADD_TYPELIB_MEMBER_IMAGE ("hHandle2") ///< handle (horizontal slider)
+	ADD_TYPELIB_MEMBER_IMAGE ("vHandle2") ///< handle (vertical slider)
+	ADD_TYPELIB_MEMBER_IMAGE ("hSmallHandle2") ///< handle (horizontal slider with option "small")
+	ADD_TYPELIB_MEMBER_IMAGE ("vSmallHandle2") ///< handle (vertical slider with option "small")
+END_TYPELIB_MEMBERS (RangeSlider)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-RangeSliderRenderer::RangeSliderRenderer (VisualStyle* visualStyle)
-: SliderRenderer (visualStyle)
+RangeSliderRenderer::RangeSliderRenderer (VisualStyle* visualStyle, View* owner)
+: SliderRenderer (visualStyle, owner)
 {}
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void RangeSliderRenderer::init (const View* view)
+void RangeSliderRenderer::init ()
 {
-	SliderRenderer::init (view);
+	SliderRenderer::init ();
 	
-	Slider* slider = (Slider*)view;
-	StyleRef style = view->getStyle ();
+	Slider* slider = static_cast<Slider*> (owner);
+	StyleRef style = owner->getStyle ();
 	
 	if(style.isVertical ())
 	{
@@ -664,13 +666,13 @@ void RangeSliderRenderer::init (const View* view)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void RangeSliderRenderer::draw (View* view, const UpdateRgn& updateRgn)
+void RangeSliderRenderer::draw (const UpdateRgn& updateRgn)
 {
 	if(!initDone)
-		init (view);
+		init ();
 	
-	GraphicsPort port (view);
-	RangeSlider* slider = (RangeSlider*)view;
+	GraphicsPort port (owner);
+	RangeSlider* slider = static_cast<RangeSlider*> (owner);
 	
 	if(slider->getStyle ().isCustomStyle (Styles::kSliderAppearanceTickScale))
 		drawTickScale (port, slider);
@@ -692,9 +694,9 @@ void RangeSliderRenderer::draw (View* view, const UpdateRgn& updateRgn)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool RangeSliderRenderer::getPartRect (const View* view, int partCode, CCL::Rect& rect)
+bool RangeSliderRenderer::getPartRect (Rect& rect, int partCode)
 {
-	const RangeSlider* slider = static_cast<const RangeSlider*> (view);
+	const RangeSlider* slider = static_cast<const RangeSlider*> (owner);
 	switch(partCode)
 	{
 		case RangeSlider::kFirstHandle:

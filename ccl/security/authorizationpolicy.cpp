@@ -102,6 +102,7 @@ DEFINE_AUTHPOLICY_CLASS (ConditionItem, ContainerItem, "AuthCondition")
 //************************************************************************************************
 
 DEFINE_CLASS_HIDDEN (Item, Object)
+DEFINE_CLASS_NAMESPACE (Item, NAMESPACE_CCL)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -163,6 +164,7 @@ bool Item::save (const Storage& storage) const
 //************************************************************************************************
 
 DEFINE_CLASS_HIDDEN (ContainerItem, Item)
+DEFINE_CLASS_NAMESPACE (Item, NAMESPACE_CCL)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 

@@ -88,7 +88,7 @@ IImage* ImageCache::requestImage (IImage* source, Coord width, Coord height)
 			dr.top = height * i;
 			dr.bottom = dr.top + height;
 
-			ImageMode mode (ImageMode::kInterpolationHighQuality);
+			ImageMode mode (kImageInterpolationHighQuality);
 			device.drawImage (source, sr, dr, &mode);
 		}
 	};
@@ -183,7 +183,10 @@ CachedImage::~CachedImage ()
 IImage* CachedImage::operator = (IImage* image)
 {
 	if(cached)
+	{
 		ImageCache::instance ().releaseImage (cached);
+		cached = nullptr; // the scaled version belongs to the previous source
+	}
 	source = image;
 	return image;
 }
@@ -279,15 +282,25 @@ void ModifiedImageCache::removeAll ()
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-IImage* CCL_API ModifiedImageCache::lookup (IImage* source, ColorRef color, tbool drawAsTemplate)
+IImage* CCL_API ModifiedImageCache::lookup (IImage* source, ColorRef color)
 {
 	if(source == nullptr)
 		return nullptr;
-	
+
+	if(color.isVisible () == false)
+		return source;
+
+	bool drawAsTemplate = false;
 	if(Image* sourceImage = unknown_cast<Image> (source))
+	{
 		if(sourceImage->getIsTemplate ())
 			drawAsTemplate = true;
-	
+		else if(sourceImage->getIsAdaptive ())
+			drawAsTemplate = false;
+		else
+			return source;
+	}
+
 	if(MultiImage* multiImage = unknown_cast<MultiImage> (source)) 		// special multiImage case...
 		source = multiImage->getFrame (multiImage->getCurrentFrame ());	// ...use current frame as source
 

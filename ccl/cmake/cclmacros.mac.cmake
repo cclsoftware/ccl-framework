@@ -53,13 +53,20 @@ macro (ccl_add_shader_resource target source)
         "$<$<CONFIG:Release>:-ffast-math>"
     )
 
+	if (CMAKE_GENERATOR STREQUAL "Xcode")
+		set (METAL_SDK "\$PLATFORM_NAME")
+		set (METAL_TARGET -target "air64-\$LLVM_TARGET_TRIPLE_VENDOR-\$LLVM_TARGET_TRIPLE_OS_VERSION\$LLVM_TARGET_TRIPLE_SUFFIX")
+	else ()
+		set (METAL_SDK macosx)
+		set (METAL_TARGET "")
+	endif ()
+
 	add_custom_command (
 		OUTPUT "${compiled_shader}"
 		DEPENDS "${source}"
-		COMMAND xcrun -sdk macosx metal ${METAL_DEBUG_FLAGS} ${METAL_RELEASE_FLAGS} -I "${CCL_DIR}/.." -c ${source} -o ${source}.air
-		COMMAND xcrun -sdk macosx metallib ${source}.air -o  "${compiled_shader}"
+		COMMAND xcrun -sdk ${METAL_SDK} metal ${METAL_TARGET} ${METAL_DEBUG_FLAGS} ${METAL_RELEASE_FLAGS} -I "${CCL_DIR}/.." -c ${source} -o ${source}.air
+		COMMAND xcrun -sdk ${METAL_SDK} metallib ${source}.air -o  "${compiled_shader}"
 		COMMAND_EXPAND_LISTS
-        VERBATIM
 	)
 
 	add_custom_command (TARGET ${target} PRE_LINK

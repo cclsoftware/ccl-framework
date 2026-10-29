@@ -32,7 +32,7 @@ namespace CCL {
 class AndroidFontResource: public FontResource
 {
 public:
-	AndroidFontResource (CCL::IStream& stream, StringRef name, int fontStyle);
+	AndroidFontResource (IStream& stream, StringRef name, int fontStyle);
 	~AndroidFontResource ();
 
 private:
@@ -47,14 +47,14 @@ using namespace CCL;
 // AndroidFontResource
 //************************************************************************************************
 
-FontResource* FontResource::install (CCL::IStream& stream, StringRef name, int fontStyle)
+FontResource* FontResource::install (IStream& stream, StringRef name, int fontStyle)
 {
 	return NEW AndroidFontResource (stream, name, fontStyle);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-AndroidFontResource::AndroidFontResource (CCL::IStream& stream, StringRef name, int fontStyle)
+AndroidFontResource::AndroidFontResource (IStream& stream, StringRef name, int fontStyle)
 : font (gGraphicsFactory->loadFont (stream, name, fontStyle))
 {}
 

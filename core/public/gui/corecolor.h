@@ -125,6 +125,9 @@ struct Color
 
 	/** Check if color is translucent (alpha < FF). */
 	bool isTranslucent () const;
+
+	/** Check if color is visible (alpha > 0). */
+	bool isVisible () const;
 };
 
 //************************************************************************************************
@@ -300,6 +303,9 @@ inline bool Color::isOpaque () const
 
 inline bool Color::isTranslucent () const
 { return alpha != 0xFF; }
+
+inline bool Color::isVisible () const
+{ return alpha != 0x00; }
 
 inline uint8 Color::setC (float value)
 { return value > 255.f ? 0xFF : value < 0.f ? 0x00 : uint8(value); }

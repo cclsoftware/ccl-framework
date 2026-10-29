@@ -1,0 +1,14 @@
+{% include ../cclfileheader.in %}
+
+#ifndef _ccl_xmlinstructions_generated_h
+#define _ccl_xmlinstructions_generated_h
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+// XML Processing Instructions
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+{% for definition in definitions %}
+#define {{ definition.name }} {{ definition.value | cppvalue }}
+{% endfor %}
+
+#endif // _ccl_xmlinstructions_generated_h

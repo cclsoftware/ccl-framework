@@ -85,11 +85,11 @@ const UCharMapping UCharFunctions::decodingTableCP437 (UCharTables::cp437_decode
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-int UCharFunctions::compareStringsNumerically (const uchar* a, const uchar* b, bool ignoreCase)
+int UCharFunctions::compareStringsNumerically (UStringPtr a, UStringPtr b, bool ignoreCase)
 {
 	struct CompareHelper
 	{
-		static int compareRight (const uchar* a, const uchar* b)
+		static int compareRight (UStringPtr a, UStringPtr b)
 		{
 			int bias = 0;
 			for(;; a++, b++)
@@ -119,7 +119,7 @@ int UCharFunctions::compareStringsNumerically (const uchar* a, const uchar* b, b
 			return 0;
 		}
 
-		static int compareLeft (const uchar* a, const uchar* b)
+		static int compareLeft (UStringPtr a, UStringPtr b)
 		{
 			for(;; a++, b++)
 			{

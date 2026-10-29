@@ -793,7 +793,7 @@ View* SkinWizard::createView (CStringRef scope, CStringRef name, IUnknown* contr
 
 View* SkinWizard::createView (CStringRef name, IUnknown* controller)
 {
-	const char* p = strrchr (name.str (), '/');
+	CStringPtr p = strrchr (name.str (), '/');
 	if(p)
 	{
 		MutableCString scopeName; scopeName.append (name.str (), (int)(p - name.str ()));

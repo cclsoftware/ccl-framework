@@ -174,6 +174,8 @@ protected:
 	};
 	PROPERTY_FLAG (privateFlags, kSimulateLayeredScroll, simulateLayeredScroll)
 
+	static int getSnappedScrollValue (Coord targetPos, Coord offset, Coord snap); ///< scroll parameter value for targetPos, snapped in scroll direction
+
 	void construct ();
 	bool isConstructed () const;
 	void addHScrollBar (RectRef rect);
@@ -232,7 +234,7 @@ public:
 	tbool CCL_API setProperty (MemberID propertyId, const Variant& var) override;
 };
 
-DECLARE_VISUALSTYLE_CLASS (ScrollViewStyle)
+DECLARE_TYPELIB_ENTRY (ScrollViewStyle)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 // ScrollView inline

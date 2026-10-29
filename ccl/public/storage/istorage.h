@@ -75,7 +75,7 @@ DEFINE_IID (IStorageHandler, 0xa8c81701, 0x8e28, 0x47b8, 0xa0, 0xab, 0x34, 0x96,
 	\ingroup base_io  */
 //************************************************************************************************
 
-interface IStorageRegistry: CCL::IUnknown
+interface IStorageRegistry: IUnknown
 {
 	/** Register handler for load/save operations. */
 	virtual void CCL_API registerHandler (IStorageHandler* handler) = 0;

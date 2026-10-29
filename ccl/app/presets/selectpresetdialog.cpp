@@ -151,12 +151,9 @@ void SelectPresetDialog::updateFileInfo ()
 
 IPreset* SelectPresetDialog::runDialog (StringRef title)
 {
-	ASSERT (!getFormName ().isEmpty ())
-
 	SharedPtr<IPreset> result;
 
-	ITheme* theme = getTheme ();
-	IView* dialogView = theme ? theme->createView (getFormName (), asUnknown ()) : nullptr;
+	IView* dialogView = createView ();
 	ASSERT (dialogView != nullptr)
 	if(dialogView)
 	{
@@ -170,6 +167,15 @@ IPreset* SelectPresetDialog::runDialog (StringRef title)
 
 	saveSettings ();
 	return result.detach ();
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+IView* SelectPresetDialog::createView ()
+{
+	ASSERT (!getFormName ().isEmpty ())
+	ITheme* theme = getTheme ();
+	return theme ? theme->createView (getFormName (), asUnknown ()) : nullptr;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////

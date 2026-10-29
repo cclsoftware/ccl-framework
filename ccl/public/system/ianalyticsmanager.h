@@ -197,7 +197,7 @@ DEFINE_IID (IAnalyticsOutput, 0xc516c174, 0xf49d, 0x47e4, 0x86, 0xf9, 0xa1, 0x29
 interface IAnalyticsEventClassifier: IUnknown
 {
 	/** Optionally provide a string describing the context of an event. */
-	virtual void CCL_API classifyEvent (CCL::MutableCString& context, const IAnalyticsEvent& e) = 0;
+	virtual void CCL_API classifyEvent (MutableCString& context, const IAnalyticsEvent& e) = 0;
 
 	DECLARE_IID (IAnalyticsEventClassifier)
 };

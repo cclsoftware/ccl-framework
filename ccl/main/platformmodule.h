@@ -27,7 +27,7 @@
 #elif CCL_PLATFORM_MAC || CCL_PLATFORM_IOS
 #include <CoreFoundation/CFBundle.h>
 
-#elif CCL_PLATFORM_LINUX || CCL_PLATFORM_ANDROID
+#elif CCL_PLATFORM_LINUX || CCL_PLATFORM_ANDROID || CCL_PLATFORM_WASM
 #include <dlfcn.h>
 #endif
 
@@ -74,7 +74,7 @@ struct PlatformModuleHelper
 	static void closeModule (ModuleRef ref) {}
 
 	//////////////////////////////////////////////////////////////////////////////////////////////
-	#elif CCL_PLATFORM_LINUX || CCL_PLATFORM_ANDROID
+	#elif CCL_PLATFORM_LINUX || CCL_PLATFORM_ANDROID || CCL_PLATFORM_WASM
 	//////////////////////////////////////////////////////////////////////////////////////////////
 	
 	#define CCL_MODULE_NAME(name) "lib" name CCL_FUNCTION_POSTFIX ".so"
@@ -87,7 +87,7 @@ struct PlatformModuleHelper
 	static ModuleRef getModule (ModuleName name) { return ::dlopen (name, RTLD_NOW | RTLD_NOLOAD | RTLD_LOCAL); } // noload: only returns handle if already loaded
 	static void* getFunction (ModuleRef ref, FunctionName name) { return ::dlsym (ref, name); }
 	static void closeModule (ModuleRef ref) { ::dlclose (ref); }
-	
+
 	//////////////////////////////////////////////////////////////////////////////////////////////
 	#else
 	//////////////////////////////////////////////////////////////////////////////////////////////

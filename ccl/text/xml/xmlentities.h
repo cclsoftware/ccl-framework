@@ -45,7 +45,7 @@ public:
 class XmlEncodings
 {
 public:
-	static const char* getEncoding (TextEncoding encoding);
+	static CStringPtr getEncoding (TextEncoding encoding);
 };
 
 } // namespace CCL

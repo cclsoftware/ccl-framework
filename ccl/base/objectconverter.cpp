@@ -379,7 +379,7 @@ tbool CCL_API FilePromise::getFileSize (int64& fileSize) const
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-tbool CCL_API FilePromise::getFileTime (CCL::DateTime& fileTime) const
+tbool CCL_API FilePromise::getFileTime (DateTime& fileTime) const
 {
 	return false;
 }

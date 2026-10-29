@@ -499,6 +499,11 @@ msgctxt "Command"
 msgid "Keyboard Shortcuts"
 msgstr "キーボードショートカット"
 
+#: application.cpp
+msgctxt "Command"
+msgid "Legal Information"
+msgstr "法的情報"
+
 #: presets/presettrader.cpp
 msgctxt "Command"
 msgid "Load Preset File"

@@ -107,6 +107,7 @@ int PaletteBase::IndexRange::prevIndex (int index, tbool wrap)
 //************************************************************************************************
 
 DEFINE_CLASS_ABSTRACT_HIDDEN (PaletteBase, Object)
+DEFINE_CLASS_NAMESPACE (PaletteBase, NAMESPACE_CCL)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 

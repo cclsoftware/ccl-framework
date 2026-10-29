@@ -37,7 +37,14 @@ DECLARE_JNI_CLASS (Context, "android/content/Context")
 		MODE_PRIVATE = 0
 	};
 
+	enum PermissionCheckResult
+	{
+		PERMISSION_GRANTED = 0,
+		PERMISSION_DENIED = -1
+	};
+
 	DECLARE_JNI_METHOD (jobject, getSystemService, jstring)
+	DECLARE_JNI_METHOD (jobject, getApplicationContext)
 	DECLARE_JNI_METHOD (jstring, getPackageResourcePath)
 	DECLARE_JNI_METHOD (jobject, getCacheDir)
 	DECLARE_JNI_METHOD (jobject, getNoBackupFilesDir)
@@ -45,6 +52,7 @@ DECLARE_JNI_CLASS (Context, "android/content/Context")
 	DECLARE_JNI_METHOD (jobject, getFilesDir)
 	DECLARE_JNI_METHOD (jobject, getExternalFilesDir, jstring)
 	DECLARE_JNI_METHOD (jobject, getSharedPreferences, jstring, FileCreationMode)
+	DECLARE_JNI_METHOD (int, checkSelfPermission, jstring)
 
 	// type constants, e.g. for getExternalFilesDir
 	DECLARE_STRINGID_MEMBER (DIRECTORY_DOCUMENTS)

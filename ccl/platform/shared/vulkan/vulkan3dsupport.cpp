@@ -1085,7 +1085,7 @@ bool Vulkan3DShader::load ()
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-CCL::ITypeInfo* CCL_API Vulkan3DShader::getBufferTypeInfo (int bufferIndex)
+ITypeInfo* CCL_API Vulkan3DShader::getBufferTypeInfo (int bufferIndex)
 {
 	if(bufferTypeInfos.isEmpty ())
 		GLSLShaderReflection::getBufferTypeInfos (bufferTypeInfos, path);

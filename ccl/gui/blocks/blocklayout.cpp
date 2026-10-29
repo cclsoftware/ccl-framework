@@ -522,8 +522,10 @@ DEFINE_CLASS_HIDDEN (DecoratedLayoutNode, BlockLayoutNode)
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 DecoratedLayoutNode::DecoratedLayoutNode ()
-: background (AtomName::kBackground, RectF ())
-{}
+: background (AtomName::kBackground)
+{
+	background.isContentFill (true);
+}
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -531,7 +533,7 @@ void DecoratedLayoutNode::applyStyle (const IVisualStyleData& data)
 {
 	SuperClass::applyStyle (data);
 
-	background.setImage (StyleDataReader (data).getBackgroundImage ());
+	background.setImage (unknown_cast<Image> (StyleDataReader (data).getBackgroundImage ()));
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -556,7 +558,7 @@ DEFINE_CLASS_HIDDEN (TextLayoutNode, DecoratedLayoutNode)
 TextLayoutNode::TextLayoutNode ()
 : currentWidth (0.f),
   currentHeight (0.f),
-  textMargin (0.f),
+  textPadding (0.f),
   textMaxWidth (0.f),
   textBrush (SolidBrush ())
 {}
@@ -577,8 +579,8 @@ void TextLayoutNode::resizeToContent ()
 	{
 		RectF bounds;
 		textLayout->getBounds (bounds);
-		currentWidth = ccl_round<0, float> (bounds.getWidth () + (2 * textMargin));
-		currentHeight = ccl_round<0, float> (bounds.getHeight () + (2 * textMargin));
+		currentWidth = ccl_round<0, float> (bounds.getWidth () + (2 * textPadding));
+		currentHeight = ccl_round<0, float> (bounds.getHeight () + (2 * textPadding));
 	}
 	else
 	{
@@ -611,7 +613,7 @@ void TextLayoutNode::onLayoutChanged ()
 
 			CCL_PRINTF ("[TextLayoutNode::onLayoutChanged] Resizing text layout width to %.2f\n", currentWidth)
 
-			textLayout->resize (currentWidth - (2 * textMargin), CoordF(kMaxCoord));
+			textLayout->resize (currentWidth - (2 * textPadding), CoordF(kMaxCoord));
 
 			resizeToContent ();
         }
@@ -625,8 +627,8 @@ void TextLayoutNode::applyStyle (const IVisualStyleData& data)
 {
 	SuperClass::applyStyle (data);
 
-	textMargin = StyleDataReader (data).getMetric<float> ("text.margin", textMargin);
-	textMaxWidth = StyleDataReader (data).getMetric<float> ("text.maxwidth", textMaxWidth);
+	textPadding = StyleDataReader (data).getMetric<float> (StyleID::kPadding, textPadding);
+	textMaxWidth = StyleDataReader (data).getMetric<float> (StyleID::kMaxWidth, textMaxWidth);
 	textBrush = StyleDataReader (data).getTextBrush ();
 }
 
@@ -638,7 +640,7 @@ void TextLayoutNode::drawNode (IGraphics& graphics, RectFRef updateRect) const
 	{
 		SuperClass::drawNode (graphics, updateRect);
 
-		PointF textPosition (textMargin, textMargin);
+		PointF textPosition (textPadding, textPadding);
 		graphics.drawTextLayout (textPosition, textLayout, textBrush);
 	}
 }
@@ -655,7 +657,7 @@ DEFINE_STRINGID_MEMBER_ (ImageLayoutNode, kImageFrame, "imageFrame")
 ImageLayoutNode::ImageLayoutNode ()
 : currentWidth (0.f),
   currentHeight (0.f),
-  imageMargin (0.f),
+  imagePadding (0.f),
   currentImageFrame (0),
   animationStarted (false)
 {}
@@ -674,8 +676,8 @@ void ImageLayoutNode::resizeToContent ()
 {
 	if(IImage* contentImage = getImage ())
 	{
-		currentWidth = ccl_round<0, float> (contentImage->getWidth () + (2 * imageMargin));
-		currentHeight = ccl_round<0, float> (contentImage->getHeight () + (2 * imageMargin));
+		currentWidth = ccl_round<0, float> (contentImage->getWidth () + (2 * imagePadding));
+		currentHeight = ccl_round<0, float> (contentImage->getHeight () + (2 * imagePadding));
 	}
 	else
 	{
@@ -694,7 +696,7 @@ void ImageLayoutNode::applyStyle (const IVisualStyleData& data)
 {
 	SuperClass::applyStyle (data);
 
-	imageMargin = StyleDataReader (data).getMetric<float> ("image.margin", imageMargin);
+	imagePadding = StyleDataReader (data).getMetric<float> (StyleID::kPadding, imagePadding);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -783,7 +785,7 @@ void ImageLayoutNode::drawNode (IGraphics& graphics, RectFRef updateRect) const
 		Rect foregroundSize (0, 0, flexNode->getLayoutWidth (), flexNode->getLayoutHeight ());
 		dstRect.center (foregroundSize);
 
-		ImageMode mode (1.f, ImageMode::kInterpolationHighQuality);
+		ImageMode mode (1.f, kImageInterpolationHighQuality);
 		graphics.drawImage (contentImage, srcRect, dstRect, &mode);
 	}
 }
@@ -799,7 +801,7 @@ DEFINE_CLASS_HIDDEN (ContainerLayoutNode, BlockLayoutNode)
 ContainerLayoutNode::ContainerLayoutNode ()
 : indent (FrameworkTheme::instance ().getThemeMetric (ThemeElements::kLayoutSpacing)),
   spacing (FrameworkTheme::instance ().getThemeMetric (ThemeElements::kLayoutSpacing)),
-  textMargin (0.f),
+  textPadding (0.f),
   markerWidth (0.f),
   textBrush (SolidBrush ())
 {}
@@ -824,11 +826,11 @@ void ContainerLayoutNode::applyStyle (const IVisualStyleData& data)
 {
 	indent = StyleDataReader (data).getMetric<float> ("listitem.indent", indent);
 	spacing = StyleDataReader (data).getMetric<float> ("listitem.spacing", spacing);
-	textMargin = StyleDataReader (data).getMetric<float> ("text.margin", textMargin);
+	textPadding = StyleDataReader (data).getMetric<float> (StyleID::kPadding, textPadding);
 	textBrush = StyleDataReader (data).getTextBrush ();
 
 	// ignore flex attributes from visual style (see SuperClass) for this internal node
-	// note: child TextLayoutNode can have an additonal textMargin
+	// note: child TextLayoutNode can have an additonal textPadding
 
 	// layout: | indent | marker | spacing | child |
 	flexData.padding.left = {DesignCoord::kCoord, indent + markerWidth + spacing};
@@ -842,7 +844,7 @@ void ContainerLayoutNode::drawNode (IGraphics& graphics, RectFRef updateRect) co
 	// draw list marker string
 	if(markerTextLayout)
 	{
-		PointF textPosition (indent, textMargin);
+		PointF textPosition (indent, textPadding);
 		graphics.drawTextLayout (textPosition, markerTextLayout, textBrush);
 	}
 

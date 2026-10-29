@@ -105,10 +105,10 @@ double QuadraticCurve::getY (double x) const
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-CCL::Math::QuadraticCurve::Roots QuadraticCurve::getRoots (double y) const
+Math::QuadraticCurve::Roots QuadraticCurve::getRoots (double y) const
 {
 	// implementation of the quadratic equation, returning the real solutions if they exist
-	CCL::Math::QuadraticCurve::Roots r;
+	Math::QuadraticCurve::Roots r;
 
 	double discriminant = (b * b) - (4 * a * (c - y));
 	if(discriminant > 0)

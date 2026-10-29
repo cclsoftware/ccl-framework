@@ -31,7 +31,7 @@ namespace CCL {
 
 struct StringEntry
 {
-	const char* cString;
+	CStringPtr cString;
 	bool ownCString;
 
 	enum OwnerHint
@@ -41,7 +41,7 @@ struct StringEntry
 		kTake
 	};
 
-	StringEntry (const char* cString = nullptr, OwnerHint hint = kNoCopy);
+	StringEntry (CStringPtr cString = nullptr, OwnerHint hint = kNoCopy);
 	StringEntry (CStringRef string); // no copy!
 	virtual ~StringEntry ();
 
@@ -58,7 +58,7 @@ struct UnicodeStringEntry: StringEntry
 {
 	String theString;
 
-	UnicodeStringEntry (const char* cString = nullptr, StringRef theString = nullptr, OwnerHint hint = kNoCopy);
+	UnicodeStringEntry (CStringPtr cString = nullptr, StringRef theString = nullptr, OwnerHint hint = kNoCopy);
 };
 
 //************************************************************************************************

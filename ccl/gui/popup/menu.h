@@ -37,6 +37,7 @@ class Image;
 class MenuItemIDSet;
 
 interface IWindow;
+interface IView;
 interface IAsyncOperation;
 struct CommandMsgEx;
 
@@ -79,7 +80,7 @@ public:
 			  ICommandHandler* handler = nullptr);
 	~MenuItem ();
 
-	DECLARE_STYLEDEF (propertyNames)
+	DECLARE_STYLEDEF (attributeNames)
 
 	enum Flags
 	{
@@ -102,6 +103,7 @@ public:
 	PROPERTY_STRING   (helpID, HelpIdentifier)
 	PROPERTY_STRING   (description, Description)
 	PROPERTY_STRING   (tooltip, Tooltip)
+	PROPERTY_STRING   (value, Value)
 
 	ICommandHandler* getCommandHandler () const; ///< get handler recursive
 
@@ -180,7 +182,7 @@ public:
 	Menu (StringRef name = nullptr, StringRef title = nullptr, ICommandHandler* handler = nullptr);
 	~Menu ();
 
-	DECLARE_STYLEDEF (propertyNames)
+	DECLARE_STYLEDEF (attributeNames)
 
 	Object* getParent () const;
 
@@ -191,11 +193,13 @@ public:
 	PROPERTY_STRING (name, Name)
 	PROPERTY_STRING (variant, Variant)
 	PROPERTY_VARIABLE (float, scaleFactor, ScaleFactor)
+	PROPERTY_POINTER (IView, menuControl, MenuControl)
 	float getScaleFactorRecursive () const;
 
 	PROPERTY_STRING (initialSubMenuPath, InitialSubMenuPath)
 
 	StringRef getTitle () const;
+	void getFullTitle (String& fullTitle, bool skipRoot = true) const;
 	void setTitle (StringRef title);
 
 	Image* getIcon () const;

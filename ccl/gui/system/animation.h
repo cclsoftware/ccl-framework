@@ -116,12 +116,13 @@ public:
 	PROPERTY_VARIABLE (int, options, Options)
 	PROPERTY_FLAG (options, kAutoReverse, isAutoReverse)
 	PROPERTY_VARIABLE (int, resetMode, ResetMode)
-		
-	void getDescription (AnimationDescription& description) const;
+
+	void CCL_API getDescription (AnimationDescription& description) const override; ///< [IAnimation]
 	void CCL_API setDescription (const AnimationDescription& description) override; ///< [IAnimation]
 
 	IAnimationCompletionHandler* getCompletionHandler () const;
 	void CCL_API setCompletionHandler (IAnimationCompletionHandler* handler) override; ///< [IAnimation]
+	void CCL_API clone (IAnimation*& animation) const override; ///< [IAnimation]
 
 	void start ();
 	void stop (bool destroyed = false);
@@ -132,6 +133,8 @@ public:
 	Variant getValueAtTime (double relativeTime) const;
 	Variant getFirstValue () const;
 	Variant getFinalValue () const;
+
+	using Object::clone;
 
 	CLASS_INTERFACE (IAnimation, Object)
 
@@ -172,8 +175,10 @@ public:
 	// IBasicAnimation
 	tresult CCL_API setStartValue (VariantRef value) override;
 	tresult CCL_API setEndValue (VariantRef value) override;
+	void CCL_API getDescription (AnimationDescription& description) const override;
 	void CCL_API setDescription (const AnimationDescription& description) override;
 	void CCL_API setCompletionHandler (IAnimationCompletionHandler* handler) override;
+	void CCL_API clone (IAnimation*& animation) const override;
 
 	CLASS_INTERFACE (IBasicAnimation, Animation)
 
@@ -236,8 +241,10 @@ public:
 	tresult CCL_API addRotation (double startAngle, double endAngle) override;
 	tresult CCL_API addSkewingX (double startAngle, double endAngle) override;
 	tresult CCL_API addSkewingY (double startAngle, double endAngle) override;
+	void CCL_API getDescription (AnimationDescription& description) const override;
 	void CCL_API setDescription (const AnimationDescription& description) override;
 	void CCL_API setCompletionHandler (IAnimationCompletionHandler* handler) override;
+	void CCL_API clone (IAnimation*& animation) const override;
 
 	CLASS_INTERFACE (ITransformAnimation, Animation)
 
@@ -270,8 +277,9 @@ public:
 	void onAnimationFinished (Animation* animation);
 
 	// IAnimationManager
-	tresult CCL_API addAnimation (IObject* target, StringID propertyId, const IAnimation* prototype) override;
+	tresult CCL_API addAnimation (IObject* target, StringID propertyId, const IAnimation* prototype, int options = 0) override;
 	tresult CCL_API removeAnimation (IObject* target, StringID propertyId) override;
+	tresult CCL_API removeTarget (IObject* target) override;
 	tresult CCL_API registerHandler (IAnimationHandler* handler) override;
 	tresult CCL_API unregisterHandler (IAnimationHandler* handler) override;
 
@@ -284,7 +292,7 @@ protected:
 	class TargetItem: public Object
 	{
 	public:
-		TargetItem (IObject* target);
+		TargetItem (IObject* target, bool mustObserve);
 		~TargetItem ();
 
 		IObject* getTarget () const;
@@ -313,8 +321,8 @@ protected:
 	TargetItemBucket& getBucket (IObject* target) const;
 	TargetItem* lookup (IObject* target) const;
 
-	void add (Animation* animation, IObject* target);
-	void onTargetDestroyed (IObject* target);
+	void add (Animation* animation, IObject* target, bool mustObserve);
+	bool onTargetDestroyed (IObject* target);
 };
 
 //************************************************************************************************

@@ -37,6 +37,8 @@
 #include "ccl/gui/gui.h"
 #include "ccl/gui/keyevent.h"
 
+#include "ccl/platform/cocoa/gui/window.ios.h"
+
 #include "ccl/public/math/mathprimitives.h"
 #include "ccl/public/systemservices.h"
 #include "ccl/public/gui/framework/controlsignals.h"
@@ -146,7 +148,7 @@ void logGesture (UIGestureRecognizer* gesture, UIView* view, StringID text)
 
 - (void)setWindow:(Window*)_window
 {
-	window = _window;
+	window = IOSWindow::cast (_window);
 	if(AccessibilityManager::isEnabled () == false)
 	{
 		self.accessibilityTraits |= UIAccessibilityTraitAllowsDirectInteraction;
@@ -340,6 +342,9 @@ inline int64 makeTouchTime (UITouch* touch)
 - (BOOL)processPresses:(NSSet<UIPress*>*)presses withEvent:(UIPressesEvent*)event
 {
 	if(window == nullptr || NativeTextControl::isNativeTextControlPresent ())
+		return NO;
+
+	if(window->isSuppressKeyEvents ())
 		return NO;
 
 	bool handled = false;

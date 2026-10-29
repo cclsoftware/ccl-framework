@@ -20,9 +20,11 @@
 #define _openglesrendertarget_h
 
 #include "ccl/platform/shared/opengles/opengles3dsupport.h"
-#include "ccl/platform/shared/opengles/openglesclient.h"
 
 namespace CCL {
+
+class MutableRegion;
+class Window;
 
 //************************************************************************************************
 // OpenGLESRenderTarget
@@ -38,12 +40,9 @@ public:
 	virtual float getOpacity () const { return 1.f; }
 	virtual bool isTranslucent () const { return false; }
 
-	void initializeSurface (EGLNativeWindowType window);
-	
 	PROPERTY_AUTO_POINTER (OpenGLES3DGraphicsContext, graphicsContext3D, GraphicsContext3D)
 	
 protected:
-	EGLSurface eglSurface;
 	OpenGLESImage texture;
 	Point surfaceExtent;
 	sk_sp<SkSurface> targetSurface;
@@ -51,18 +50,18 @@ protected:
 	
 	Vector<OpenGLES3DSurface*> surfaces;
 
+	virtual GrDirectContext* getGPUContext () { return nullptr; }
 	virtual sk_sp<SkSurface> getSurface () { return nullptr; }
 	virtual void setSurface (sk_sp<SkSurface> surface) {}
 	virtual SkCanvas* getSkiaCanvas ();
-	virtual bool initialize () { return true; }
-	virtual void clear () {}
 	void render3DContent ();
 	void compose3DContent ();
 	bool flushSurface ();
-	void presentFrame ();
-	void makeCurrent ();
-	void addOpenGLES3DSurface (Native3DSurface* surface);
-	void removeOpenGLES3DSurface (Native3DSurface* surface);
+	virtual void makeCurrent () {}
+	virtual void addOpenGLES3DSurface (Native3DSurface* surface);
+	virtual void removeOpenGLES3DSurface (Native3DSurface* surface);
+	virtual void blendLayers (MutableRegion& invalidateRegion);
+	void renderWindow (Window& window, MutableRegion& invalidateRegion);
 };
 
 } // namespace CCL

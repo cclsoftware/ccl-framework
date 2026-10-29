@@ -22,6 +22,10 @@ if (NOT TARGET webp)
 	)
 
 	if(XCODE)
+		# webp's SIMD detection assumes one architecture per compiler invocation, so use the Xcode generator
+		# which builds the architectures separately.
+		set (webp_EXTERNAL_PROJECT_GENERATOR "Xcode")
+
 		# CMAKE_OSX_ARCHITECTURES typically contains ;, which is the list separator in cmake
 		string (REPLACE ";" "\\\\;" OSX_ARCHITECTURES "${CMAKE_OSX_ARCHITECTURES}")
 		list (APPEND webp_options
@@ -57,7 +61,13 @@ endif ()
 set (webp_LIBRARIES webp_library sharpyuv_library)
 set (webp_LIBRARY webp_library)
 
+if (webp_DIR AND EXISTS "${webp_DIR}/src/libwebp.rc")
+    file (STRINGS "${webp_DIR}/src/libwebp.rc" line REGEX ".*VALUE \"FileVersion\", \".*\".*")
+	string (REGEX REPLACE ".*VALUE \"FileVersion\", \"(.*)\".*" "\\1" webp_VERSION "${line}")
+endif ()
+
 include (FindPackageHandleStandardArgs)
 find_package_handle_standard_args (webp
 	REQUIRED_VARS webp_LIBRARY
+	VERSION_VAR webp_VERSION
 )

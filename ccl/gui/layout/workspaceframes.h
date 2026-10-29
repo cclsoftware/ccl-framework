@@ -341,7 +341,7 @@ private:
 //************************************************************************************************
 
 class PopupFrameItem: public FrameItem,
-					  public CCL::IWindowEventHandler
+					  public IWindowEventHandler
 {
 public:
 	DECLARE_CLASS (PopupFrameItem, FrameItem)

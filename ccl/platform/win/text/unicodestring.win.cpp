@@ -86,7 +86,7 @@ using namespace CCL;
 #include "ccl/text/strings/unicodestringbuffer.impl.h"
 #else
 
-int Text::convertToCString (char* cString, int cStringSize, TextEncoding encoding, const uchar* uString, int uStringLength)
+int Text::convertToCString (char cString[], int cStringSize, TextEncoding encoding, UStringPtr uString, int uStringLength)
 {
 	UINT codePage = getNativeEncoding (encoding);
 	return ::WideCharToMultiByte (codePage, 0, uString, uStringLength, cString, cStringSize, nullptr, nullptr);
@@ -94,7 +94,7 @@ int Text::convertToCString (char* cString, int cStringSize, TextEncoding encodin
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-int Text::convertToUnicode (uchar* uString, int uStringSize, TextEncoding encoding, const char* cString, int cStringLength)
+int Text::convertToUnicode (uchar uString[], int uStringSize, TextEncoding encoding, CStringPtr cString, int cStringLength)
 {
 	UINT codePage = getNativeEncoding (encoding);
 	return ::MultiByteToWideChar (codePage, 0, cString, cStringLength, uString, uStringSize);
@@ -102,7 +102,7 @@ int Text::convertToUnicode (uchar* uString, int uStringSize, TextEncoding encodi
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-int Text::compareStrings (const uchar* s1, int l1, const uchar* s2, int l2, int flags)
+int Text::compareStrings (UStringPtr s1, int l1, UStringPtr s2, int l2, int flags)
 {
 	DWORD compareFlags = 0;
 	if(flags & kIgnoreCase)
@@ -119,7 +119,7 @@ int Text::compareStrings (const uchar* s1, int l1, const uchar* s2, int l2, int 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-const uchar* Text::findString (const uchar* source, const uchar* value, int flags)
+UStringPtr Text::findString (UStringPtr source, UStringPtr value, int flags)
 {
 	DWORD findFlags = 0;
 	if(flags & kReverseFind)
@@ -132,27 +132,27 @@ const uchar* Text::findString (const uchar* source, const uchar* value, int flag
 	//	findFlags |= LINGUISTIC_IGNOREDIACRITIC;
 
 	int index = ::FindNLSStringEx (LOCALE_NAME_INVARIANT, findFlags, source, -1, value, -1, nullptr, nullptr, nullptr, 0);
-	const uchar* ptr = index >= 0 ? source + index : nullptr;
+	UStringPtr ptr = index >= 0 ? source + index : nullptr;
 	return ptr;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void Text::toUppercase (uchar* s)
+void Text::toUppercase (uchar s[])
 {
 	::CharUpperBuff (s, getLength (s));
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void Text::toLowercase (uchar* s)
+void Text::toLowercase (uchar s[])
 {
 	::CharLowerBuff (s, getLength (s));
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void Text::capitalize (uchar* s)
+void Text::capitalize (uchar s[])
 {
 	uchar prevChar = 0x20;
 	for(uchar* ptr = s; *ptr != 0; prevChar = *ptr++)
@@ -229,7 +229,7 @@ tresult CCL_API WindowsUnicodeString::normalize (NormalizationForm form)
 		return kResultFailed;
 
 	// "detach" current buffer (keep as source), then allocate a new buffer for destination string
-	const uchar* sourceText = text;
+	UStringPtr sourceText = text;
 	text = nullptr;
 	textByteSize = 0;
 	resizeInternal (estimatedSize);

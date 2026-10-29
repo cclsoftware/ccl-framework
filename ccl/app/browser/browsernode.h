@@ -321,7 +321,7 @@ public:
 	bool getUniqueName (MutableCString& name) override;
 
 private:
-	const char* uniqueNodeName;
+	CStringPtr uniqueNodeName;
 };
 
 //************************************************************************************************

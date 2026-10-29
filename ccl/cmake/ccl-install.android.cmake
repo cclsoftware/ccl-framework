@@ -30,6 +30,20 @@ file (WRITE ${CMAKE_CURRENT_BINARY_DIR}/corelib.android.cmake "
 	"
 )
 
+foreach (module extensions games web)
+	if (TARGET "coreextras-${module}")
+		file (WRITE ${CMAKE_CURRENT_BINARY_DIR}/coreextras-${module}.android.cmake "
+			set_target_properties (coreextras-${module} PROPERTIES IMPORTED_LOCATION \"\${CCL_LIBRARY_DIR}/android-\${VENDOR_TARGET_ARCHITECTURE}/libcoreextras-${module}.a\")
+			"
+		)
+
+		install (FILES ${CMAKE_CURRENT_BINARY_DIR}/coreextras-${module}.android.cmake
+			DESTINATION "${CCL_CMAKE_EXPORT_DESTINATION}"
+			COMPONENT public_headers_${VENDOR_NATIVE_COMPONENT_SUFFIX}
+		)
+	endif ()
+endforeach ()
+
 file (WRITE ${CMAKE_CURRENT_BINARY_DIR}/cclapp.android.cmake "
 	set_target_properties (cclapp PROPERTIES IMPORTED_LOCATION \"\${CCL_LIBRARY_DIR}/android-\${VENDOR_TARGET_ARCHITECTURE}/libcclapp.a\")
 	"
@@ -75,6 +89,19 @@ file (WRITE ${CMAKE_CURRENT_BINARY_DIR}/cclsecurity.android.cmake "
 	"
 )
 
+install (FILES
+	${CMAKE_CURRENT_BINARY_DIR}/corelib.android.cmake
+	${CMAKE_CURRENT_BINARY_DIR}/cclapp.android.cmake
+	${CMAKE_CURRENT_BINARY_DIR}/cclbase.android.cmake
+	${CMAKE_CURRENT_BINARY_DIR}/cclsystem.android.cmake
+	${CMAKE_CURRENT_BINARY_DIR}/ccltext.android.cmake
+	${CMAKE_CURRENT_BINARY_DIR}/cclgui.android.cmake
+	${CMAKE_CURRENT_BINARY_DIR}/cclnet.android.cmake
+	${CMAKE_CURRENT_BINARY_DIR}/cclsecurity.android.cmake
+	DESTINATION "${CCL_CMAKE_EXPORT_DESTINATION}"
+	COMPONENT public_headers_${VENDOR_NATIVE_COMPONENT_SUFFIX}
+)
+
 file (WRITE ${CMAKE_CURRENT_BINARY_DIR}/cclextras-stores.android.cmake "
 	ccl_add_gradle_dependency (cclextras-stores \"com.android.billingclient:billing:6.1.0\" TRANSITIVE)
 	ccl_add_gradle_dependency (cclextras-stores \"com.amazon.device:amazon-appstore-sdk:3.0.4\" TRANSITIVE)
@@ -84,19 +111,25 @@ file (WRITE ${CMAKE_CURRENT_BINARY_DIR}/cclextras-stores.android.cmake "
 	"
 )
 
-install (FILES 
-	${CMAKE_CURRENT_BINARY_DIR}/corelib.android.cmake
-	${CMAKE_CURRENT_BINARY_DIR}/cclapp.android.cmake
-	${CMAKE_CURRENT_BINARY_DIR}/cclbase.android.cmake
-	${CMAKE_CURRENT_BINARY_DIR}/cclsystem.android.cmake
-	${CMAKE_CURRENT_BINARY_DIR}/ccltext.android.cmake
-	${CMAKE_CURRENT_BINARY_DIR}/cclgui.android.cmake
-	${CMAKE_CURRENT_BINARY_DIR}/cclnet.android.cmake
-	${CMAKE_CURRENT_BINARY_DIR}/cclsecurity.android.cmake
+install (FILES
 	${CMAKE_CURRENT_BINARY_DIR}/cclextras-stores.android.cmake
 	DESTINATION "${CCL_CMAKE_EXPORT_DESTINATION}"
 	COMPONENT public_headers_${VENDOR_NATIVE_COMPONENT_SUFFIX}
 )
+
+foreach (module analytics audio devices extensions firebase gadgets modeling packages portable tools web webfs)
+	if (TARGET "cclextras-${module}")
+		file (WRITE ${CMAKE_CURRENT_BINARY_DIR}/cclextras-${module}.android.cmake "
+			set_target_properties (cclextras-${module} PROPERTIES IMPORTED_LOCATION \"\${CCL_LIBRARY_DIR}/android-\${VENDOR_TARGET_ARCHITECTURE}/libcclextras-${module}.a\")
+			"
+		)
+
+		install (FILES ${CMAKE_CURRENT_BINARY_DIR}/cclextras-${module}.android.cmake
+			DESTINATION "${CCL_CMAKE_EXPORT_DESTINATION}"
+			COMPONENT public_headers_${VENDOR_NATIVE_COMPONENT_SUFFIX}
+		)
+	endif ()
+endforeach ()
 
 file (WRITE ${CMAKE_CURRENT_BINARY_DIR}/bluetoothservice.android.cmake "
 	ccl_add_gradle_dependency (bluetoothservice \"\${CCL_LIBRARY_DIR}/android-java/bluetoothservice.aar\")
@@ -111,7 +144,7 @@ install (FILES ${CMAKE_CURRENT_BINARY_DIR}/bluetoothservice.android.cmake
 	COMPONENT public_headers_${VENDOR_NATIVE_COMPONENT_SUFFIX}
 )
 
-foreach (service dapservice jsengine modelimporter3d sqlite)
+foreach (service audioservice dapservice jsengine modelimporter3d sqlite)
 	if (TARGET "${service}")
 		file (WRITE ${CMAKE_CURRENT_BINARY_DIR}/${service}.android.cmake "
 			set_target_properties (${service} PROPERTIES IMPORTED_LOCATION \"\${CCL_LIBRARY_DIR}/android-\${VENDOR_TARGET_ARCHITECTURE}/Plugins/lib${service}.so\")

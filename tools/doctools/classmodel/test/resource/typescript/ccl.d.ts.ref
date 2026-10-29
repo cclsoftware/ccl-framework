@@ -277,8 +277,8 @@ declare namespace CCL
   export class CommandTable extends Object
   {
     private CCL_CommandTable: never;
-    interpretCommand: (category: string, name: string, checkOnly?: boolean, invoker?: Object) => boolean;
-    deferCommand: (category: string, name: string, checkOnly?: boolean, invoker?: Object) => boolean;
+    interpretCommand: (category: string, name: string, checkOnly?: boolean, invoker?: Object | null) => boolean;
+    deferCommand: (category: string, name: string, checkOnly?: boolean, invoker?: Object | null) => boolean;
     addHandler: (ICommandHandler: any) => void;
     removeHandler: (ICommandHandler: any) => void;
     findCommand: (category: string, name: string) => Object;
@@ -395,7 +395,7 @@ declare namespace CCL
     flushUpdates: () => void;
     alert: (text: any) => void;
     ask: (text: any) => void;
-    runDialog: (theme: Object, formName: string, controller?: Object, buttons?: number) => number;
+    runDialog: (theme: Object, formName: string, controller?: Object | null, buttons?: number) => number;
     runDialogWithParameters: (paramList: any, title: any) => number;
     addIdleTask: () => void;
     removeIdleTask: () => void;

@@ -12,7 +12,7 @@
 // For more information, please visit ccl.dev.
 //
 // Filename    : ccl/gui/theme/renderer/labelrenderer.cpp
-// Description : Control Renderer
+// Description : Knob Renderer
 //
 //************************************************************************************************
 
@@ -33,46 +33,47 @@ using namespace CCL;
 // KnobRenderer
 //************************************************************************************************
 
-BEGIN_VISUALSTYLE_CLASS (Knob, VisualStyle, "KnobStyle")
-	ADD_VISUALSTYLE_IMAGE  ("background")				///< background image
-	ADD_VISUALSTYLE_IMAGE  ("foreground")				///< overlay image above the circle (alternative name "overlay" can be used)
-	ADD_VISUALSTYLE_IMAGE  ("topoverlay")				///< topoverlay image (above the indicator)
-	ADD_VISUALSTYLE_METRIC ("filmstrip")				///< specifies that the "background" image should be used as a filmstrip.  Same as Knob option "filmstrip".
-	ADD_VISUALSTYLE_METRIC ("overlay.filmstrip")		///< specifies that the "foreground" image should be used as a filmstrip
-	ADD_VISUALSTYLE_METRIC ("topoverlay.filmstrip")		///< specifies that the "topoverlay" image should be used as a filmstrip
-	ADD_VISUALSTYLE_METRIC ("framecount")				///< an external framecount can be used to repeat the existing filmstrip frames and reduce the overall memory footprint
-	ADD_VISUALSTYLE_METRIC ("circle")					///< a partial circle around the center is drawn. Same as Knob option "circle". the circle color is the "hilitecolor" or set from the "colorname" parameter
-	ADD_VISUALSTYLE_METRIC ("circle.indicatorwidth")	///< draw a partial circle indicator with the given width in degrees around the center. The circle indicator uses "indicatorcolor".
-	ADD_VISUALSTYLE_COLOR  ("circle.reversecolor")		///< color used to draw a circle from the current position to range end
-	ADD_VISUALSTYLE_METRIC ("forecolor")				///< color used to draw a circle from the range start to range end (when no overlay is used)
-	ADD_VISUALSTYLE_METRIC ("strokewidth")				///< strokewidth of the optional circle
-	ADD_VISUALSTYLE_COLOR  ("hilitecolor")				///< color used to draw a circle from range start to the current position
-	ADD_VISUALSTYLE_COLOR  ("althilitecolor")			///< color used to draw a circle from the current position to the current position of an optional offset parameter. Set via Knob attribute "referencename".
-	ADD_VISUALSTYLE_METRIC ("indicator")				///< a line from the center to the end of the circle is drawn. Same as Knob option "indicator". Color "indicatorcolor" is used.
-	ADD_VISUALSTYLE_IMAGE  ("disabledoverlay")			///< optional disabled overlay image to show an individual disabled state
-	ADD_VISUALSTYLE_METRIC ("margin")					///< margin between view boudaries and circle
-	ADD_VISUALSTYLE_METRIC ("indicatormargin")			///< margin between view boudaries and indicator
-	ADD_VISUALSTYLE_COLOR  ("indicatorcolor")			///< color used for drawing the "indicator"
-	ADD_VISUALSTYLE_METRIC ("indicatorwidth")			///< used when it should be different from the strokewidth (which is the default)
-	ADD_VISUALSTYLE_METRIC ("range")					///< the range in degrees for circle and indicator
-	ADD_VISUALSTYLE_COLOR  ("state1")					///< color used for drawing a special marker when the knob's visual state is 1
-	ADD_VISUALSTYLE_COLOR  ("state2")					///< color used for drawing a special marker when the knob's visual state is 2
-	ADD_VISUALSTYLE_COLOR  ("state3")					///< color used for drawing a special marker when the knob's visual state is 3
-	ADD_VISUALSTYLE_METRIC ("allowstretch")				///< allowstretch of background image (default is TRUE)
-	ADD_VISUALSTYLE_METRIC ("linearScaler")				///< used to remap filmstrip frames. linearScaler is the slope used to transform the normalized value
-	ADD_VISUALSTYLE_METRIC ("linearOffset")				///< used to remap filmstrip frames. linearOffset is the optional offset used to transform the normalized value
-	ADD_VISUALSTYLE_METRIC ("logscaler")				///< used to remap filmstrip frames. 1/logscaler * log(normalizedValue) is used to map frames onto a logarithmic curve
-	ADD_VISUALSTYLE_METRIC ("padding.left")				///< left padding for background image
-	ADD_VISUALSTYLE_METRIC ("padding.top")				///< top padding for background image
-	ADD_VISUALSTYLE_METRIC ("padding.right")			///< right padding for background image
-	ADD_VISUALSTYLE_METRIC ("padding.bottom")			///< bottom padding for background image
-	ADD_VISUALSTYLE_METRIC ("padding")					///< padding for background image, used if one of the paddings for left, top, right, bottom is not specified
-END_VISUALSTYLE_CLASS (Knob)
+DEFINE_TYPELIB_ENTRY_WITH_PARENT (Knob, VisualStyle, "KnobStyle", VISUALSTYLES_TYPELIB)
+BEGIN_TYPELIB_MEMBERS (Knob)
+	ADD_TYPELIB_MEMBER_IMAGE ("background")				///< background image
+	ADD_TYPELIB_MEMBER_IMAGE ("foreground")				///< overlay image above the circle (alternative name "overlay" can be used)
+	ADD_TYPELIB_MEMBER_IMAGE ("topoverlay")				///< topoverlay image (above the indicator)
+	ADD_TYPELIB_MEMBER_METRIC ("filmstrip")				///< specifies that the "background" image should be used as a filmstrip.  Same as Knob option "filmstrip".
+	ADD_TYPELIB_MEMBER_METRIC ("overlay.filmstrip")		///< specifies that the "foreground" image should be used as a filmstrip
+	ADD_TYPELIB_MEMBER_METRIC ("topoverlay.filmstrip")	///< specifies that the "topoverlay" image should be used as a filmstrip
+	ADD_TYPELIB_MEMBER_METRIC ("framecount")			///< an external framecount can be used to repeat the existing filmstrip frames and reduce the overall memory footprint
+	ADD_TYPELIB_MEMBER_METRIC ("circle")				///< a partial circle around the center is drawn. Same as Knob option "circle". the circle color is the "hilitecolor" or set from the "colorname" parameter
+	ADD_TYPELIB_MEMBER_METRIC ("circle.indicatorwidth")	///< draw a partial circle indicator with the given width in degrees around the center. The circle indicator uses "indicatorcolor".
+	ADD_TYPELIB_MEMBER_COLOR ("circle.reversecolor")	///< color used to draw a circle from the current position to range end
+	ADD_TYPELIB_MEMBER_METRIC ("forecolor")				///< color used to draw a circle from the range start to range end (when no overlay is used)
+	ADD_TYPELIB_MEMBER_METRIC ("strokewidth")			///< strokewidth of the optional circle
+	ADD_TYPELIB_MEMBER_COLOR ("hilitecolor")			///< color used to draw a circle from range start to the current position
+	ADD_TYPELIB_MEMBER_COLOR ("althilitecolor")			///< color used to draw a circle from the current position to the current position of an optional offset parameter. Set via Knob attribute "referencename".
+	ADD_TYPELIB_MEMBER_METRIC ("indicator")				///< a line from the center to the end of the circle is drawn. Same as Knob option "indicator". Color "indicatorcolor" is used.
+	ADD_TYPELIB_MEMBER_IMAGE ("disabledoverlay")		///< optional disabled overlay image to show an individual disabled state
+	ADD_TYPELIB_MEMBER_METRIC ("margin")				///< margin between view boudaries and circle
+	ADD_TYPELIB_MEMBER_METRIC ("indicatormargin")		///< margin between view boudaries and indicator
+	ADD_TYPELIB_MEMBER_COLOR ("indicatorcolor")			///< color used for drawing the "indicator"
+	ADD_TYPELIB_MEMBER_METRIC ("indicatorwidth")		///< used when it should be different from the strokewidth (which is the default)
+	ADD_TYPELIB_MEMBER_METRIC ("range")					///< the range in degrees for circle and indicator
+	ADD_TYPELIB_MEMBER_COLOR ("state1")					///< color used for drawing a special marker when the knob's visual state is 1
+	ADD_TYPELIB_MEMBER_COLOR ("state2")					///< color used for drawing a special marker when the knob's visual state is 2
+	ADD_TYPELIB_MEMBER_COLOR ("state3")					///< color used for drawing a special marker when the knob's visual state is 3
+	ADD_TYPELIB_MEMBER_METRIC ("allowstretch")			///< allowstretch of background image (default is TRUE)
+	ADD_TYPELIB_MEMBER_METRIC ("linearScaler")			///< used to remap filmstrip frames. linearScaler is the slope used to transform the normalized value
+	ADD_TYPELIB_MEMBER_METRIC ("linearOffset")			///< used to remap filmstrip frames. linearOffset is the optional offset used to transform the normalized value
+	ADD_TYPELIB_MEMBER_METRIC ("logscaler")				///< used to remap filmstrip frames. 1/logscaler * log(normalizedValue) is used to map frames onto a logarithmic curve
+	ADD_TYPELIB_MEMBER_METRIC ("padding.left")			///< left padding for background image
+	ADD_TYPELIB_MEMBER_METRIC ("padding.top")			///< top padding for background image
+	ADD_TYPELIB_MEMBER_METRIC ("padding.right")			///< right padding for background image
+	ADD_TYPELIB_MEMBER_METRIC ("padding.bottom")		///< bottom padding for background image
+	ADD_TYPELIB_MEMBER_METRIC ("padding")				///< padding for background image, used if one of the paddings for left, top, right, bottom is not specified
+END_TYPELIB_MEMBERS (Knob)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-KnobRenderer::KnobRenderer (VisualStyle* visualStyle)
-: CompositedRenderer (visualStyle)
+KnobRenderer::KnobRenderer (VisualStyle* visualStyle, View* owner)
+: CompositedRenderer (visualStyle, owner)
 {
 	image = visualStyle->getBackgroundImage ();
 	overlay = visualStyle->getImage ("overlay");
@@ -92,7 +93,7 @@ KnobRenderer::KnobRenderer (VisualStyle* visualStyle)
 	circleIndicatorWidth = drawCircle ? visualStyle->getMetric<float> ("circle.indicatorwidth", 0.f) : 0.f;
 	
 	circleReverseColor = visualStyle->getColor ("circle.reversecolor", Color (0,0,0,0));
-	drawReverseRangeCircle = (circleReverseColor.getAlphaF () != 0.f) ? true : false;
+	drawReverseRangeCircle = circleReverseColor.isVisible ();
 	
 	// calculate indicator margin fallback
 	float strokeWidth = visualStyle->getStrokeWidth ();
@@ -101,7 +102,7 @@ KnobRenderer::KnobRenderer (VisualStyle* visualStyle)
 		indicatorMarginFallback += ccl_to_int (strokeWidth + 1);
 	
 	indicatorMargin = (int)visualStyle->getMetric ("indicatormargin", indicatorMarginFallback);
-	indicatorColor = visualStyle->getColor ("indicatorcolor", visualStyle->getHiliteColor ());
+	indicatorColor = visualStyle->getColor ("indicatorcolor", visualStyle->getHighlightColor ());
     indicatorWidth = (float)visualStyle->getMetric ("indicatorwidth", 0.f);
 	range = (float)visualStyle->getMetric ("range", 300.f);
 	
@@ -151,10 +152,10 @@ double KnobRenderer::transformNormalized (double value)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void KnobRenderer::draw (View* view, const UpdateRgn& updateRgn)
+void KnobRenderer::draw (const UpdateRgn& updateRgn)
 {
-	Knob* knob = (Knob*)view;
-	StyleRef style = view->getStyle ();
+	Knob* knob = static_cast<Knob*> (owner);
+	StyleRef style = owner->getStyle ();
 	Variant value = knob->getValue ();
 	Variant offsetReference = knob->getOffsetReferenceValue ();
 	bool drawOffsetCircle = knob->hasOffsetReference ();
@@ -321,11 +322,13 @@ void KnobRenderer::draw (View* view, const UpdateRgn& updateRgn)
 
 			if(knob->getParameter ()->isEnabled ())
 			{
-				Color circleColor (getVisualStyle ()->getHiliteColor ());
+				Color circleColor (getVisualStyle ()->getHighlightColor ());
 				
 				if(UnknownPtr<IColorParam> colorParam = knob->getColorParam ())
-					if(colorParam->getColor (circleColor).getAlphaF () == 0)
-						circleColor = getVisualStyle ()->getHiliteColor ();
+				{
+					if(!colorParam->getColor (circleColor).isVisible ())
+						circleColor = getVisualStyle ()->getHighlightColor ();
+				}
 				
 				pen.setColor (circleColor);
 			}
@@ -398,14 +401,14 @@ void KnobRenderer::draw (View* view, const UpdateRgn& updateRgn)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-int KnobRenderer::hitTest (View* view, const Point& loc, Point* clickOffset)
+int KnobRenderer::hitTest (PointRef where, Point* clickOffset)
 {
 	return 0;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool KnobRenderer::getPartRect (const View* view, int partCode, CCL::Rect& rect)
+bool KnobRenderer::getPartRect (Rect& rect, int partCode)
 {
 	return false;
 }

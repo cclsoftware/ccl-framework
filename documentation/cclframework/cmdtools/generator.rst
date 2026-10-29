@@ -196,7 +196,7 @@ Attribute notes:
 String Template Usage
 =====================
 
-The CCL Generator tool uses the CCL StringTemplate class to generate source files. The StringTemplate class renders a string from an Attributes container, supporting a series of commands to insert data from the container into the string. Supported commands are:
+The CCL Generator tool uses its StringTemplate class to generate source files. The StringTemplate class renders a string from an Attributes container, supporting a series of commands to insert data from the container into the string. Supported commands are:
 
 * {{ variable }}
 * {% for %} ... {% endfor %}
@@ -304,6 +304,12 @@ Each filter modifies the value of variable. Filters are applied from left to rig
 ===============
 Version history
 ===============
+
+Changelog v1.2.0
+================
+
+* cpp: map model string type to const char*
+
 
 Changelog v1.1.0
 ================

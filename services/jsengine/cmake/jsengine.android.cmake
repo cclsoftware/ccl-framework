@@ -1,0 +1,5 @@
+include_guard (DIRECTORY) 
+
+if (NOT "${JSENGINE_BACKEND}" STREQUAL "${JSENGINE_BACKEND_DEFAULT}")
+	ccl_add_nested_cmake_args (CMAKE_ARGS "-DJSENGINE_BACKEND=${JSENGINE_BACKEND}")
+endif ()

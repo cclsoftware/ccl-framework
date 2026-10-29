@@ -30,7 +30,7 @@ namespace Portable {
 // Archiver::ErrorHandler
 //************************************************************************************************
 
-class Archiver::ErrorHandler: public Core::Text::Json::ErrorHandler
+class Archiver::ErrorHandler: public Text::Json::ErrorHandler
 {
 public:
 	// ErrorHandler
@@ -49,7 +49,7 @@ public:
 using namespace Core;
 using namespace Portable;
 
-DEFINE_STATIC_SINGLETON (Core::Portable::SettingFile)
+DEFINE_STATIC_SINGLETON (SettingFile)
 
 //************************************************************************************************
 // DevelopmentSettings

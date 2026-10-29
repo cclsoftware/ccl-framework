@@ -181,7 +181,7 @@ protected:
 
 	bool enterInstanceLock (StringID appId)
 	{
-		#if CCL_PLATFORM_MAC || CCL_PLATFORM_IOS || CCL_PLATFORM_ANDROID
+		#if CCL_PLATFORM_MAC || CCL_PLATFORM_IOS || CCL_PLATFORM_ANDROID || CCL_PLATFORM_WASM
 		return true;
 		#else
 		instanceLock = System::CreateIPCSemaphore ();

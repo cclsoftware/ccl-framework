@@ -108,6 +108,36 @@ static bool tryWindowBase (WindowBase* windowBase, const CommandMsg& msg)
 	return false;
 }
 
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+static bool tryWindow (Window* window, const CommandMsg& msg)
+{
+	if(window)
+	{
+		if(IView* focusView = window->getFocusIView ())
+		{
+			UnknownPtr<ICommandHandler> focusHandler (focusView->getController ());
+			if(!focusHandler)
+			{
+				UnknownPtr<ICommandHandler> viewHandler (focusView);
+				if(viewHandler)
+					focusHandler = viewHandler;
+			}
+			if(focusHandler && focusHandler->interpretCommand (msg))
+				return true;
+		}
+
+		// try window base and it's childs recursively
+		if(tryWindowBase (window, msg))
+			return true;
+
+		UnknownPtr<ICommandHandler> windowHandler (window->getController ());
+		if(windowHandler && windowHandler->interpretCommand (msg))
+			return true;
+	}
+	return false;
+}
+
 } // namespace CCL
 
 using namespace CCL;
@@ -244,6 +274,7 @@ void CommandMsgEx::setName (StringID name)
 //************************************************************************************************
 
 DEFINE_CLASS (Command, Object)
+DEFINE_CLASS_NAMESPACE (Command, NAMESPACE_CCL)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1342,33 +1373,21 @@ bool CommandTable::interpretCommand (const CommandMsg& msg, ICommandHandler* def
 				targetWindow = Desktop.getLastWindow ();
 		}
 	}
-	
-	if(targetWindow)
-	{
-		if(IView* focusView = targetWindow->getFocusIView ())
-		{
-			UnknownPtr<ICommandHandler> focusHandler (focusView->getController ());
-			if(focusHandler && focusHandler->interpretCommand (msg))
-				return true;
-		}
 
-		// try window base and it's childs recursively
-		if(tryWindowBase (targetWindow, msg))
-			return true;
-
-		UnknownPtr<ICommandHandler> windowHandler (targetWindow->getController ());
-		if(windowHandler && windowHandler->interpretCommand (msg))
-			return true;
-	}
+	if(tryWindow (targetWindow, msg))
+		return true;
 
 	// in modal state only allow global commands
 	if(modalWindow)
 	{
-		// only restrict if there is a "real" modal dialog, ignoring counting popup selectors
+		// only restrict if there is a "real" modal dialog, ignoring popup selectors
 		// skip all PopupSelectorWindows to find the "real" target window
 		ASSERT (targetWindow == modalWindow)
 		while(PopupSelectorWindow* popup = ccl_cast<PopupSelectorWindow> (targetWindow))
 			targetWindow = unknown_cast<Window> (popup->getParentWindow ());
+
+		if(targetWindow != modalWindow && tryWindow (targetWindow, msg))
+			return true;
 
 		if(targetWindow && targetWindow->getLayer () == kDialogLayer)
 		{
@@ -1591,7 +1610,7 @@ BEGIN_METHOD_NAMES (CommandTable)
 	DEFINE_METHOD_NAME ("newCommandIterator")
 	DEFINE_METHOD_NAME ("newCategoryIterator")
 	DEFINE_METHOD_ARGR ("lookupBindings", "command", "Object") // TODO replace Object return type
-	DEFINE_METHOD_ARGR ("lookupKeyEvent", "command: Command, layoutSensitive: bool = true", "Key")
+	DEFINE_METHOD_ARGR ("lookupKeyEvent", "command: Command, layoutSensitive: bool = true", "KeyEvent")
 	DEFINE_METHOD_ARGS ("assignKey", "command, key")
 	DEFINE_METHOD_NAME ("beginTransaction")
 	DEFINE_METHOD_NAME ("endTransaction")
@@ -1724,7 +1743,7 @@ void CommandTable::dump () const
 				used->getDefaultKey ()->toString (key);
 			#endif
 		}
-		CCL::Debugger::printf ("%s;%s;%s\n", c->getCategory ().str (), c->getName ().str (), MutableCString (key).str ());
+		Debugger::printf ("%s;%s;%s\n", c->getCategory ().str (), c->getName ().str (), MutableCString (key).str ());
 	EndFor
 }
 
@@ -1756,9 +1775,9 @@ void CommandTable::dumpAvailableKeys () const
 				else
 					keyString.append (" ", kFieldLength - len);
 
-				CCL::Debugger::printf ("%s", MutableCString (keyString).str ());
+				Debugger::printf ("%s", MutableCString (keyString).str ());
 			}
-			CCL::Debugger::println ("");
+			Debugger::println ("");
 		}
 	};
 

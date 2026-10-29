@@ -31,7 +31,7 @@ static StringStatistics<char> theStats ("C-String Statistics");
 // CStringBuffer
 //************************************************************************************************
 
-CStringBuffer::CStringBuffer (const char* text)
+CStringBuffer::CStringBuffer (CStringPtr text)
 : text (nullptr),
   textByteSize (0)
 {
@@ -64,7 +64,7 @@ CStringBuffer::~CStringBuffer ()
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool CStringBuffer::assign (const char* _text)
+bool CStringBuffer::assign (CStringPtr _text)
 {
 	ASSERT (_text != nullptr)
 	int length = (int)::strlen (_text);

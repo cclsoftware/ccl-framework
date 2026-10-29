@@ -80,12 +80,12 @@ CCL_KERNEL_INIT_LEVEL (OAuthTest, kFirstRun)
 	Url url ("http://photos.example.net/photos");
 	MutableCString baseString = OAuth::normalize (HTTP::kGET, url, params);
 	CCL_PRINTF ("base = %s\n", baseString.str ());
-	const char* expectedBaseString = "GET&http%3A%2F%2Fphotos.example.net%2Fphotos&file%3Dvacation.jpg%26oauth_consumer_key%3Ddpf43f3p2l4k3l03%26oauth_nonce%3Dkllo9940pd9333jh%26oauth_signature_method%3DHMAC-SHA1%26oauth_timestamp%3D1191242096%26oauth_token%3Dnnch734d00sl2jdk%26oauth_version%3D1.0%26size%3Doriginal";
+	CStringPtr expectedBaseString = "GET&http%3A%2F%2Fphotos.example.net%2Fphotos&file%3Dvacation.jpg%26oauth_consumer_key%3Ddpf43f3p2l4k3l03%26oauth_nonce%3Dkllo9940pd9333jh%26oauth_signature_method%3DHMAC-SHA1%26oauth_timestamp%3D1191242096%26oauth_token%3Dnnch734d00sl2jdk%26oauth_version%3D1.0%26size%3Doriginal";
 	ASSERT (baseString == expectedBaseString)
 
 	MutableCString signature = OAuth::sign_HMAC_SHA1 (baseString, "kd94hf93k423kf44", "pfkkdhi9sl3r4s00");
 	CCL_PRINTF ("signature = %s\n", signature.str ());
-	const char* expectedSignature = "tR3+Ty81lMeYAr/Fid0kMTYa/WM=";
+	CStringPtr expectedSignature = "tR3+Ty81lMeYAr/Fid0kMTYa/WM=";
 	ASSERT (signature == expectedSignature)
 
 	params.setEntry (OAuth::Parameters::kSignature, signature);
@@ -140,7 +140,7 @@ int64 OAuth::getSecondsSince1970 ()
 
 MutableCString OAuth::generateNonce ()
 {
-	static const char* alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_";
+	static CStringPtr alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_";
 	static const int kAlphabetLength = (int)::strlen (alphabet);
 
 	MutableCString result;

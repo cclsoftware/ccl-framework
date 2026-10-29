@@ -45,36 +45,37 @@ DEFINE_CLASS_HIDDEN (ListStyle, ItemStyle)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-BEGIN_VISUALSTYLE_CLASS (ListStyle, VisualStyle, "ListViewStyle")
+DEFINE_TYPELIB_ENTRY_WITH_PARENT (ListStyle, VisualStyle, "ListViewStyle", VISUALSTYLES_TYPELIB)
+BEGIN_TYPELIB_MEMBERS (ListStyle)
 	// icons
-	ADD_VISUALSTYLE_METRIC ("icons.width")					///< for "viewtype=icons": total width of one item
-	ADD_VISUALSTYLE_METRIC ("icons.height")					///< for "viewtype=icons": total height of one item
-	ADD_VISUALSTYLE_METRIC ("icons.dataleft")				///< for "viewtype=icons": left of icon inside item rectangle
-	ADD_VISUALSTYLE_METRIC ("icons.datatop")				///< for "viewtype=icons": top of icon inside item rectangle
-	ADD_VISUALSTYLE_METRIC ("icons.datawidth")				///< for "viewtype=icons": width of icon
-	ADD_VISUALSTYLE_METRIC ("icons.dataheight")				///< for "viewtype=icons": height of icon
-	ADD_VISUALSTYLE_METRIC ("icons.textleft")				///< for "viewtype=icons": left of title inside item rectangle
-	ADD_VISUALSTYLE_METRIC ("icons.texttop")				///< for "viewtype=icons": top of title inside item rectangle
-	ADD_VISUALSTYLE_METRIC ("icons.textwidth")				///< for "viewtype=icons": width of title
-	ADD_VISUALSTYLE_METRIC ("icons.textheight")				///< for "viewtype=icons": height of title
-	ADD_VISUALSTYLE_METRIC ("icons.multiLineTitle")			///< for "viewtype=icons": draw title as multiline text
-	ADD_VISUALSTYLE_METRIC ("icons.mirrored")				///< for "viewtype=icons": draw icon columns in reverse order
-	ADD_VISUALSTYLE_METRIC ("icons.showthumbnails")			///< for "viewtype=icons": draw thumbnails (if available) instead of icons, 
-	ADD_VISUALSTYLE_IMAGE  ("icons.background")				///< for "viewtype=icons": draw background for each cell (use second frame for selection)
-	ADD_VISUALSTYLE_FONT   ("icons.textfont")				///< for "viewtype=icons": optional alternative font in icons mode (falls back to "textfont" if not specified)
-	ADD_VISUALSTYLE_METRIC ("icons.iconsethalfsize")		///< for "viewtype=icons": alternative way of displaying iconset images in half-size
-	ADD_VISUALSTYLE_METRIC ("icons.fixedColumns")			///< for "viewtype=icons": use a fixed number of columns
+	ADD_TYPELIB_MEMBER_METRIC ("icons.width")				///< for "viewtype=icons": total width of one item
+	ADD_TYPELIB_MEMBER_METRIC ("icons.height")				///< for "viewtype=icons": total height of one item
+	ADD_TYPELIB_MEMBER_METRIC ("icons.dataleft")			///< for "viewtype=icons": left of icon inside item rectangle
+	ADD_TYPELIB_MEMBER_METRIC ("icons.datatop")				///< for "viewtype=icons": top of icon inside item rectangle
+	ADD_TYPELIB_MEMBER_METRIC ("icons.datawidth")			///< for "viewtype=icons": width of icon
+	ADD_TYPELIB_MEMBER_METRIC ("icons.dataheight")			///< for "viewtype=icons": height of icon
+	ADD_TYPELIB_MEMBER_METRIC ("icons.textleft")			///< for "viewtype=icons": left of title inside item rectangle
+	ADD_TYPELIB_MEMBER_METRIC ("icons.texttop")				///< for "viewtype=icons": top of title inside item rectangle
+	ADD_TYPELIB_MEMBER_METRIC ("icons.textwidth")			///< for "viewtype=icons": width of title
+	ADD_TYPELIB_MEMBER_METRIC ("icons.textheight")			///< for "viewtype=icons": height of title
+	ADD_TYPELIB_MEMBER_METRIC ("icons.multiLineTitle")		///< for "viewtype=icons": draw title as multiline text
+	ADD_TYPELIB_MEMBER_METRIC ("icons.mirrored")			///< for "viewtype=icons": draw icon columns in reverse order
+	ADD_TYPELIB_MEMBER_METRIC ("icons.showthumbnails")		///< for "viewtype=icons": draw thumbnails (if available) instead of icons, 
+	ADD_TYPELIB_MEMBER_IMAGE ("icons.background")			///< for "viewtype=icons": draw background for each cell (use second frame for selection)
+	ADD_TYPELIB_MEMBER_FONT   ("icons.textfont")			///< for "viewtype=icons": optional alternative font in icons mode (falls back to "textfont" if not specified)
+	ADD_TYPELIB_MEMBER_METRIC ("icons.iconsethalfsize")		///< for "viewtype=icons": alternative way of displaying iconset images in half-size
+	ADD_TYPELIB_MEMBER_METRIC ("icons.fixedColumns")		///< for "viewtype=icons": use a fixed number of columns
 	// list
-	ADD_VISUALSTYLE_METRIC ("list.dataleft")				///< for "viewtype=list": left of list inside item rectangle
-	ADD_VISUALSTYLE_METRIC ("list.datatop")					///< for "viewtype=list": top of list inside item rectangle
-	ADD_VISUALSTYLE_METRIC ("list.datawidth")				///< for "viewtype=list": width of list
-	ADD_VISUALSTYLE_METRIC ("list.dataheight")				///< for "viewtype=list": height of list
-	ADD_VISUALSTYLE_METRIC ("list.padding.bottom")			///< for "viewtype=list": bottom padding of list
-	ADD_VISUALSTYLE_METRIC ("list.textmargin")				///< for "viewtype=list": left text margin in cell  
-	ADD_VISUALSTYLE_IMAGE  ("list.selectionbackground")		///< for "viewtype=list": draw background for a selected item as an image
-	ADD_VISUALSTYLE_IMAGE  ("list.itembackground")			///< for "viewtype=list": draw background for every unselected item in the list as an image
-	ADD_VISUALSTYLE_ALIGN  ("list.textalign")				///< for "viewtype=list": set text alignment for cells (default: kLeftCenter)
-END_VISUALSTYLE_CLASS (ListStyle)
+	ADD_TYPELIB_MEMBER_METRIC ("list.dataleft")				///< for "viewtype=list": left of list inside item rectangle
+	ADD_TYPELIB_MEMBER_METRIC ("list.datatop")				///< for "viewtype=list": top of list inside item rectangle
+	ADD_TYPELIB_MEMBER_METRIC ("list.datawidth")			///< for "viewtype=list": width of list
+	ADD_TYPELIB_MEMBER_METRIC ("list.dataheight")			///< for "viewtype=list": height of list
+	ADD_TYPELIB_MEMBER_METRIC ("list.padding.bottom")		///< for "viewtype=list": bottom padding of list
+	ADD_TYPELIB_MEMBER_METRIC ("list.textmargin")			///< for "viewtype=list": left text margin in cell  
+	ADD_TYPELIB_MEMBER_IMAGE ("list.selectionbackground")	///< for "viewtype=list": draw background for a selected item as an image
+	ADD_TYPELIB_MEMBER_IMAGE ("list.itembackground")		///< for "viewtype=list": draw background for every unselected item in the list as an image
+	ADD_TYPELIB_MEMBER_ALIGN  ("list.textalign")			///< for "viewtype=list": set text alignment for cells (default: kLeftCenter)
+END_TYPELIB_MEMBERS (ListStyle)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1562,7 +1563,7 @@ bool ListView::onMouseDown (const MouseEvent& event)
 			if(editResult)
 				return true;
 		}
-		else
+		else if(!style.isCustomStyle (Styles::kItemViewBehaviorNoUnselect))
 			setFocusItem (-1, true);
 
 		// edit cell
@@ -1752,7 +1753,7 @@ void ListView::drawItem (GraphicsPort& port, const Rect& rect, int index, const 
 		port.fillRect (outerRect, listStyle.getSelectBrush ());
 	}
 
-	ImageMode mode (1.f, listStyle.isHighQualityMode () ? ImageMode::kInterpolationHighQuality : ImageMode::kInterpolationDefault);
+	ImageMode mode (1.f, listStyle.isHighQualityMode () ? kImageInterpolationHighQuality : kImageInterpolationDefault);
 
 
 	// *** Draw Icon ***

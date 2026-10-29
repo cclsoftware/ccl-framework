@@ -27,6 +27,8 @@
 
 namespace CCL {
 
+class SkiaTextLayout;
+
 //************************************************************************************************
 // SkiaFontCache
 //************************************************************************************************
@@ -38,8 +40,14 @@ public:
 	SkiaFontCache ();
 	~SkiaFontCache ();
 
+	PROPERTY_BOOL (fontChangesSupported, FontChangesSupported)
+
 	static int fromSkFontStyle (SkFontStyle style);
 	static SkFontStyle toSkFontStyle (int style);
+
+	void addWatcher (SkiaTextLayout& layout);
+	void removeWatcher (SkiaTextLayout& layout);
+	void invalidate ();
 
 	SkFont* createFont (FontRef font);
 	void removeAll ();
@@ -88,6 +96,8 @@ protected:
 	LinkedList<StyledFont> styledFontList;
 	LinkedList<String> userFontList;
 
+	Vector<SkiaTextLayout*> watchers;
+
 	static int getUsedStyle (FontRef font) {return font.getStyle () & kStylesUsed;}
 
 	FontCacheRecord* lookup (FontRef font) const;
@@ -103,14 +113,17 @@ class SkiaTextLayout: public NativeTextLayout
 {
 public:
 	SkiaTextLayout ();
+	~SkiaTextLayout ();
 
 	DECLARE_CLASS_ABSTRACT (SkiaTextLayout, NativeTextLayout)
+
+	PROPERTY_BOOL (needUpdate, Dirty)
 
 	void draw (SkCanvas& canvas, PointF position, Color textColor);
 	tresult setBackgroundColor (const Range& range, Color color);
 	const Vector<int>& getUtf8Positions () const;
 
-	// ITextLayout
+	// NativeTextLayout
 	tresult CCL_API construct (StringRef text, Coord width, Coord height, FontRef font, LineMode lineMode, TextFormatRef format) override;
 	tresult CCL_API construct (StringRef text, CoordF width, CoordF height, FontRef font, LineMode lineMode, TextFormatRef format) override;
 	tresult CCL_API resize (Coord width, Coord height) override;
@@ -122,6 +135,7 @@ public:
 	tresult CCL_API setLineSpacing (const Range& range, float lineSpacing) override;
 	tresult CCL_API setTextColor (const Range& range, Color color) override;
 	tresult CCL_API setBaselineOffset (const Range& range, float offset) override;
+	tresult CCL_API clearFormatting () override;
 	tresult CCL_API setSuperscript (const Range& range) override;
 	tresult CCL_API setSubscript (const Range& range) override;
 	tresult CCL_API getBounds (Rect& bounds) const override;
@@ -131,7 +145,7 @@ public:
 	tresult CCL_API hitTest (int& textIndex, PointF& position) const override;
 	tresult CCL_API getCharacterBounds (RectF& offset, int textIndex) const override;
 	tresult CCL_API getTextBounds (IMutableRegion& bounds, const Range& range) const override;
-	tresult CCL_API getLineRange (Range& range, int textIndex) const override;
+	tresult CCL_API getLineRange (Range& range, int textIndex, tbool includeNewline = true) const override;
 	tresult CCL_API getWordRange (Range& range, int textIndex) const override;
 	StringRef CCL_API getText () const override;
 
@@ -178,7 +192,6 @@ protected:
 	Color defaultColor;
 	SkString familyName;
 
-	bool needUpdate;
 	bool imageBoundsChanged;
 	bool textBoundsChanged;
 	bool characterBoundsChanged;

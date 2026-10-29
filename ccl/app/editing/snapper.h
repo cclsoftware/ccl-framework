@@ -82,7 +82,7 @@ public:
 /** Uses a table of snap sizes. */
 //********************************************************************************************
 
-class TableSnapper: public CCL::AdvancedSnapper
+class TableSnapper: public AdvancedSnapper
 {
 public:
 	void addSnap (Coord size);
@@ -102,7 +102,7 @@ protected:
 	Reports snapSize 0 for all other indices. */
 //************************************************************************************************
 
-class FullVerticalSnapper: public CCL::AdvancedSnapper
+class FullVerticalSnapper: public AdvancedSnapper
 {
 public:
 	FullVerticalSnapper (IView* view);
@@ -112,7 +112,7 @@ public:
 
 	// AdvancedSnapper
 	int countSnaps () const override;
-	CCL::Coord getSnapSize (int index) const override;
+	Coord getSnapSize (int index) const override;
 
 protected:
 	ViewPtr view;

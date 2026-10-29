@@ -43,7 +43,7 @@ To make the CCL SDK available in the CMake user module registry, create the foll
 Installation on Linux
 =====================
 
-CCL is being developed and tested on Ubuntu 24.04. It is compatible with Ubuntu 22.04 as well, although some features may be disabled due to missing dependencies. In general, it should be possible to build CCL on any Linux distribution with reasonably up-to-date packages and Wayland support.
+CCL is being developed and tested on Ubuntu 26.04. It is compatible with Ubuntu 22.04 and 24.04 as well, although some features may be disabled due to missing dependencies. In general, it should be possible to build CCL on any Linux distribution with reasonably up-to-date packages and Wayland support.
 
 CMake presets shipped with CCL use ``ninja`` and ``clang``. Building with a different build system (e.g. ``make``) or a different compiler (e.g. ``gcc``) is possible, but requires some customization or additional command line arguments when running ``cmake``.
 
@@ -136,3 +136,27 @@ In Android Studio, install the following components using the SDK manager:
 IDE heap size must be configured to at least 4096 MB in Android Studio's memory settings.
 
 To build on the command line, you will need to install the Gradle build tool on the host system. The recommended version as of this writing is Gradle 9.2.0.
+
+========================================
+Installation for WebAssembly development
+========================================
+
+The Emscripten SDK is required for building WebAssembly apps.
+
+`About Emscripten <https://emscripten.org/docs/introducing_emscripten/about_emscripten.html>`_
+
+At the time of writing, version 4.0.22 is the latest version that is compatible with CCL's dependencies.
+
+Clone the SDK from ``github.com:emscripten-core/emsdk``, checkout tag 4.0.22, then run
+
+.. code-block:: bash
+
+	./emsdk install latest
+	./emsdk activate latest
+
+In addition, the following tools are required and expected to be found in PATH:
+
+* ninja
+* glslc
+* python
+* sed

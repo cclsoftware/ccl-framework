@@ -35,7 +35,7 @@ class TextReader
 public:
 	TextReader (IO::Stream& stream, bool rewind = true);
 
-	static const int kMaxLineLength = STRING_STACK_SPACE_MAX;
+	static const int kMaxLineLength = CORE_STRING_STACK_MAX;
 	typedef CStringBuffer<kMaxLineLength> LineString;
 	typedef CString64 ValueString;
 	

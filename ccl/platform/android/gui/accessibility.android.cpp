@@ -302,7 +302,7 @@ void AccessibilityElementProvider::fillAccessibilityNodeInfo (jobject view, int 
 	}
 
 	// toggles
-	if(UnknownPtr<CCL::IAccessibilityToggleProvider> toggleProvider = getEffectiveProvider ().asUnknown ())
+	if(UnknownPtr<IAccessibilityToggleProvider> toggleProvider = getEffectiveProvider ().asUnknown ())
 	{
 		JniAccessibilityNodeInfo.setClassName (info, JniString (jni, "android.widget.ToggleButton"));
 		JniAccessibilityNodeInfo.setCheckable (info, true);
@@ -317,7 +317,7 @@ void AccessibilityElementProvider::fillAccessibilityNodeInfo (jobject view, int 
 	}
 
 	// values
-	if(UnknownPtr<CCL::IAccessibilityValueProvider> valueProvider = getValueProvider ().asUnknown ())
+	if(UnknownPtr<IAccessibilityValueProvider> valueProvider = getValueProvider ().asUnknown ())
 	{
 		String value;
 		valueProvider->getValue (value);

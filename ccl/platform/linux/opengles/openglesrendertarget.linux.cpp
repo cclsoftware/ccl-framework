@@ -136,7 +136,7 @@ void OpenGLESWindowRenderTarget::applySize ()
 
 SkCanvas* OpenGLESWindowRenderTarget::getCanvas ()
 {
-	SkCanvas* canvas = OpenGLESRenderTarget::getSkiaCanvas ();
+	SkCanvas* canvas = EGLOpenGLESRenderTarget::getSkiaCanvas ();
 	if(canvas == nullptr)
 	{
 		//TODO either the graphics device or the wayland surface is gone
@@ -163,74 +163,9 @@ bool OpenGLESWindowRenderTarget::isTranslucent () const
 
 void OpenGLESWindowRenderTarget::onRender ()
 {
-	if(!invalidateRegion.getRects ().isEmpty ())
-	{
-		makeCurrent ();
-	
-		render3DContent ();
-
-		GrDirectContext* context = OpenGLESClient::instance ().getGPUContext ();
-		context->resetContext (kAll_GrBackendState);
-
-		AutoPtr<NativeGraphicsDevice> nativeDevice = ensureGraphicsDevice (NativeGraphicsEngine::instance ().createWindowDevice (&window));
-		AutoPtr<GraphicsDevice> graphicsDevice = NEW WindowGraphicsDevice (window, nativeDevice);
-		window.setGraphicsDevice (graphicsDevice);
-		
-		CCL_PROFILE_START (draw)
-		
-		// make sure to render 2D content behind transparent 3D surfaces
-		for(OpenGLES3DSurface* surface : surfaces)
-		{
-			if(surface->getContent ()->getContentHint () != kGraphicsContentTranslucent)
-				continue;
-			RectRef surfaceRect = surface->getSize ();
-			if(invalidateRegion.rectVisible (surfaceRect))
-				invalidateRegion.addRect (surfaceRect, false);
-		}
-		
-		for(int i = 0; i < invalidateRegion.getRects ().count (); i++)
-		{
-			RectRef invalidateRect = invalidateRegion.getRects ().at (i);
-			
-			graphicsDevice->saveState ();
-			graphicsDevice->addClip (invalidateRect);
-			if(isTranslucent ())
-				graphicsDevice->clearRect (invalidateRect);
-			
-			window.setInDrawEvent (true);
-			
-			if(getOpacity () < 1.f)
-			{
-				SkPaint alpha;
-				alpha.setAlphaf (getOpacity ());
-				getCanvas ()->saveLayer (nullptr, &alpha);
-			}
-			
-			window.draw (UpdateRgn (invalidateRect, &invalidateRegion));
-
-			window.setInDrawEvent (false);
-			graphicsDevice->restoreState ();
-		}
-
-		// blend prerendered 3D surfaces to canvas
-		for(OpenGLES3DSurface* surface : surfaces)
-		{
-			RectRef surfaceRect = surface->getSize ();
-			if(!invalidateRegion.rectVisible (surfaceRect))
-				continue;
-			sk_sp<SkImage> image = surface->getSkiaImage ();
-			if(image)
-			{
-				SkRect dstRect = SkRect::MakeLTRB (surfaceRect.left, surfaceRect.top, surfaceRect.right, surfaceRect.bottom);
-				SkSamplingOptions samplingOptions (SkFilterMode::kLinear, SkMipmapMode::kLinear);
-				getCanvas ()->drawImageRect (image, dstRect, samplingOptions);
-			}
-		}
-		
-		invalidateRegion.setEmpty ();
-		
-		CCL_PROFILE_STOP (draw)
-	}
+	invalidateRegion.setUpdatesSuspended (true);
+	renderWindow (window, invalidateRegion);
+	invalidateRegion.setUpdatesSuspended (false);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -355,6 +290,9 @@ float OpenGLESLayerRenderTarget::getContentScaleFactor () const
 
 SkCanvas* OpenGLESLayerRenderTarget::getCanvas ()
 {
+	if(eglSurface == nullptr)
+		initialize ();
+
 	return LinuxOpenGLESRenderTarget::getSkiaCanvas ();
 }
 

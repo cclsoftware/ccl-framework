@@ -151,17 +151,40 @@ tresult CCL_API QuartzTextLayout::construct (StringRef text, CoordF width, Coord
 	this->text = text;
 	font = _font;
 	NSString* nsString = [text.createNativeString<NSString*> () autorelease];
-	QuartzTextLayout::Range fullRange (0, text.length ());
-	
-	CTFontRef ctFont = FontCache::instance ().createFont (font, ascent, descent, leading);
-	ASSERT(ctFont)
-	NSMutableParagraphStyle* nsFormat = [[[NSParagraphStyle defaultParagraphStyle] mutableCopy] autorelease];
 
 	alignment = format.getAlignment ();
 	wordBreak = format.isWordBreak ();
 	lineMode = _lineMode;
 
-	nsString = [NSString stringWithFormat: @"%@\n", nsString]; // framesetter expects that every line is terminated with a newline
+	// CoreText lays out no line for an empty string, and none for a trailing empty paragraph.
+	if(text.isEmpty () || isOnTrailingEmptyLine (text.length ()))
+		nsString = [nsString stringByAppendingString:@"\n"];
+
+	if(string)
+		[ATTRIBUTED_STRING release];
+	string = [[NSMutableAttributedString alloc] initWithString:nsString];
+	applyDefaultAttributes ();
+
+	// make sure getTextPosition is correct for all alignment options
+	if(width == kMaxCoord)
+		width = 0;
+	if(height == kMaxCoord)
+		height = 0;
+
+	boundingRect = CGSizeMake (width, height);
+
+	return kResultOk;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+void QuartzTextLayout::applyDefaultAttributes ()
+{
+	QuartzTextLayout::Range fullRange (0, text.length ());
+
+	CTFontRef ctFont = FontCache::instance ().createFont (font, ascent, descent, leading);
+	ASSERT(ctFont)
+	NSMutableParagraphStyle* nsFormat = [[[NSParagraphStyle defaultParagraphStyle] mutableCopy] autorelease];
 
 	switch(alignment.getAlignH ())
 	{
@@ -187,10 +210,7 @@ tresult CCL_API QuartzTextLayout::construct (StringRef text, CoordF width, Coord
 	[attributes setValue:nsFormat forKey:NSParagraphStyleAttributeName];
 	[attributes setValue:(id)kCFBooleanTrue forKey:(id)kCTForegroundColorFromContextAttributeName];
 
-	if(string)
-		[ATTRIBUTED_STRING release];	
-	string = [[NSMutableAttributedString alloc] initWithString:nsString attributes:attributes];
-	[ATTRIBUTED_STRING addAttribute:(id)kCTForegroundColorFromContextAttributeName value:(id)kCFBooleanTrue range:NSMakeRange (0, [ATTRIBUTED_STRING length])];
+	[ATTRIBUTED_STRING setAttributes:attributes range:NSMakeRange (0, [ATTRIBUTED_STRING length])];
 	if(font.getStyle () & Font::kUnderline)
 		setFontStyle (fullRange, Font::kUnderline, true);
 	if(font.getStyle () & Font::kStrikeout)
@@ -200,18 +220,10 @@ tresult CCL_API QuartzTextLayout::construct (StringRef text, CoordF width, Coord
 	if(spacing != 0)
 		setSpacing (fullRange, spacing);
 
+	colorRegions.removeAll ();
+
 	resetFrameSetter ();
 	resetLine ();
-
-	// make sure getTextPosition is correct for all alignment options
-	if(width == kMaxCoord)
-		width = 0;
-	if(height == kMaxCoord)
-		height = 0;
-
-	boundingRect = CGSizeMake (width, height);
-
-	return kResultOk;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -398,6 +410,18 @@ tresult CCL_API QuartzTextLayout::setBaselineOffset (const Range& range, float o
 
 	resetFrameSetter ();
 	resetLine ();
+	return kResultOk;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+tresult CCL_API QuartzTextLayout::clearFormatting ()
+{
+	ASSERT (string != nullptr)
+	if(!string)
+		return kResultUnexpected;
+
+	applyDefaultAttributes ();
 	return kResultOk;
 }
 
@@ -593,6 +617,12 @@ void QuartzTextLayout::initTotalHeight () const
 
 tresult CCL_API QuartzTextLayout::hitTest (int& textIndex, PointF& position) const
 {
+	if(position.y < 0)
+	{
+		textIndex = 0;
+		return kResultOk;
+	}
+
 	initTotalHeight ();
 
 	CFObj<CTFrameRef> frame = createFrame (PointF (0, 0));
@@ -620,11 +650,14 @@ tresult CCL_API QuartzTextLayout::hitTest (int& textIndex, PointF& position) con
 		distance = currentDistance;
 		pos.x -= bounds.origin.x;
 		pos.y -= bounds.origin.y - bounds.size.height;
-		pos.x = ccl_min (pos.x, bounds.size.width);
+		// exclude trailing whitespace
+		pos.x = ccl_min (pos.x, bounds.size.width - CTLineGetTrailingWhitespaceWidth (line));
 		if(range.length == 1 && bounds.size.width == 0)
 			textIndex = int(range.location);
 		else
 			textIndex = int(CTLineGetStringIndexForPosition (line, pos));
+
+		textIndex = ccl_min (textIndex, text.length ()); // an appended newline is not part of the text
 
 		lineIndex++;
 	}
@@ -718,23 +751,42 @@ tresult CCL_API QuartzTextLayout::getTextBounds (IMutableRegion& result, const R
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-tresult CCL_API QuartzTextLayout::getLineRange (Range& range, int textIndex) const
+tresult CCL_API QuartzTextLayout::getLineRange (Range& range, int textIndex, tbool includeNewline) const
 {
+	if(textIndex < 0 || textIndex > text.length ())
+		return kResultInvalidArgument;
+
+	range.start = 0;
+	range.length = 0;
+
+	// CoreText does not necessarily report a line for a trailing line break, but the caret can be behind it
+	if(isOnTrailingEmptyLine (textIndex))
+	{
+		range.start = textIndex;
+		return kResultOk;
+	}
+
 	CFObj<CTFrameRef> frame = createFrame (PointF (0, 0));
 	NSArray* lines = (NSArray*)CTFrameGetLines (frame);
+	int lineEnd = 0;
 	for(id lineObj in lines)
 	{
 		CTLineRef line = (CTLineRef)lineObj;
 		CFRange cfRange = CTLineGetStringRange (line);
-		if(cfRange.location + cfRange.length > textIndex)
-		{
-			range.start = int(cfRange.location);
-			range.length = int(cfRange.length);
+
+		range.start = int(cfRange.location);
+		lineEnd = ccl_min (int(cfRange.location + cfRange.length), text.length ()); // exclude an appended newline
+		range.length = lineEnd - range.start;
+
+		if(!includeNewline)
+			excludeLineBreak (range); // TODO: handle invisible space in wrapped lines
+
+		if(lineEnd > textIndex)
 			return kResultOk;
-		}
 	}
 
-	return kResultFailed;
+	// the last line is returned for a caret behind the last character
+	return lineEnd >= textIndex ? kResultOk : kResultFailed;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -828,7 +880,6 @@ CTFrameRef QuartzTextLayout::createFrame (const PointF& position) const
 			break;
 	}
 
-	ASSERT (boundingRect.width > 0)
 	frameRect.size.width = ccl_max (boundingRect.width, actualSize.width);
 	frameRect.size.height = ccl_max (boundingRect.height, actualSize.height);
 

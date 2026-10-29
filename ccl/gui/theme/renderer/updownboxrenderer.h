@@ -12,7 +12,7 @@
 // For more information, please visit ccl.dev.
 //
 // Filename    : ccl/gui/theme/renderer/updownboxrenderer.h
-// Description : Control Renderer
+// Description : UpDownButton Renderer
 //
 //************************************************************************************************
 
@@ -30,15 +30,15 @@ namespace CCL {
 class UpDownButtonRenderer: public ThemeRenderer
 {
 public:
-	UpDownButtonRenderer (VisualStyle* visualStyle);
+	UpDownButtonRenderer (VisualStyle* visualStyle, View* owner);
 
 	// ThemeRenderer
-	void draw (View* view, const UpdateRgn& updateRgn) override;
-	int hitTest (View* view, const Point& loc, Point* clickOffset) override;
-	bool getPartRect (const View* view, int partCode, Rect& rect) override;
+	void draw (const UpdateRgn& updateRgn) override;
+	int hitTest (PointRef where, Point* clickOffset = nullptr) override;
+	bool getPartRect (Rect& rect, int partCode) override;
 };
 
-DECLARE_VISUALSTYLE_CLASS (UpDownButton)
+DECLARE_TYPELIB_ENTRY (UpDownButton)
 
 } // namespace CCL
 

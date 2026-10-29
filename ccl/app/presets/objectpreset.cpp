@@ -326,7 +326,7 @@ IPreset* PresetScriptUtils::createPresetFromArgument (VariantRef arg)
 	if(!preset)
 	{
 		// 2.) class ID: create object preset
-		UIDBytes cid = CCL::Boxed::UID::fromVariant (arg);
+		UIDBytes cid = Boxed::UID::fromVariant (arg);
 		if(const IClassDescription* description = System::GetPlugInManager ().getClassDescription (cid))
 		{
 			AutoPtr<ObjectPreset> objectPreset = NEW ObjectPreset (description);

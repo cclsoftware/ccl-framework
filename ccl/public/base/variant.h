@@ -71,7 +71,7 @@ struct Variant
 	Variant (bool b, int flags = 0): type (kInt|(flags & kBoolFormat)), lValue (b ? 1 : 0) {}
 	Variant (double v): type (kFloat), fValue (v) {}
 	Variant (float v): type (kFloat), fValue (v) {}
-	Variant (const char* s): type (kString|kShared) { String str (s); (string = str.theString)->retain (); }
+	Variant (CStringPtr s): type (kString|kShared) { String str (s); (string = str.theString)->retain (); }
 	Variant (StringRef s, bool shared = false): type (kString), string (s.theString) { if(shared) share (); }
 	Variant (const IUnknown* o, bool shared = false): type (kObject), object (const_cast<IUnknown*> (o)) { if(shared) share (); }
 	Variant (const Variant& v): type (v.getCopyType ()), lValue (v.lValue) { if(v.isShared ()) share (); }
@@ -131,7 +131,7 @@ struct Variant
 	Variant& operator = (double);
 	Variant& operator = (float);
 	Variant& operator = (StringRef);
-	Variant& operator = (const char*);
+	Variant& operator = (CStringPtr);
 	Variant& operator = (IUnknown*);
 	template<class T> Variant& operator = (const UnknownPtr<T>&);
 	template<class T> Variant& operator = (const AutoPtr<T>&);
@@ -249,7 +249,7 @@ inline Variant& Variant::operator = (StringRef s)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-inline Variant& Variant::operator = (const char* s) 
+inline Variant& Variant::operator = (CStringPtr s)
 { 
 	clear ();
 	type = kString|kShared;

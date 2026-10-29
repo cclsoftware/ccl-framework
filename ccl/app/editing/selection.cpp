@@ -31,6 +31,7 @@ using namespace CCL;
 //************************************************************************************************
 
 DEFINE_CLASS_ABSTRACT_HIDDEN (SelectionContainer, Object)
+DEFINE_CLASS_NAMESPACE (SelectionContainer, NAMESPACE_CCL)
 
 //************************************************************************************************
 // SelectionList
@@ -135,6 +136,7 @@ bool SelectionList::unselectType (MetaClassRef type)
 //************************************************************************************************
 
 DEFINE_CLASS_ABSTRACT_HIDDEN (Selection, SelectionContainer)
+DEFINE_CLASS_NAMESPACE (Selection, NAMESPACE_CCL)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 

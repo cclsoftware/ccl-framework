@@ -55,7 +55,10 @@ macro (ccl_add_plugin_library target)
 	if (NOT has_parent STREQUAL "")
 		set (${target}_target "${_current_plugin_target}" PARENT_SCOPE)
 	endif ()
+	
 	ccl_add_library (${target} MODULE SUBDIR "Plugins" POSTFIX "${CCL_ISOLATION_POSTFIX}" ${ARGN})
+	
+	set_target_properties (${_current_plugin_target} PROPERTIES CCL_PLUGIN_LIBRARY ON)
 	ccl_export_symbols (${_current_plugin_target}
 		CCLModuleMain
 		CCLGetClassFactory
@@ -64,6 +67,13 @@ macro (ccl_add_plugin_library target)
 	if (COMMAND ccl_configure_plugin)
 		ccl_configure_plugin (${_current_plugin_target})
 	endif ()
+endmacro ()
+
+# Check if a target is a plug-in library
+# @param {STRING} target  Target name.
+# @param {STRING} result  Result variable. Set to ON if the target is a plug-in library.
+macro (ccl_check_plugin target result)
+	get_target_property (${result} ${target} CCL_PLUGIN_LIBRARY)
 endmacro ()
 
 # Add an extension library, preconfigured to match vendor guidelines.

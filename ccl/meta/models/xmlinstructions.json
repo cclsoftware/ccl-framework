@@ -1,0 +1,129 @@
+{
+    "definitions": [
+        {
+            "name": "PI_NESTING_PREFIX",
+            "value": "nested:",
+            "type": "string"
+        },
+        {
+            "name": "PI_INVERT_PREFIX",
+            "value": "not:",
+            "type": "string"
+        },
+        {
+            "name": "PI_TARGET_PLATFORM",
+            "value": "platform",
+            "type": "string"
+        },
+        {
+            "name": "PI_TARGET_PLATFORMARCH",
+            "value": "platform_arch",
+            "type": "string"
+        },
+        {
+            "name": "PI_PLATFORMARCH_WIN_X86",
+            "value": "win_x86",
+            "type": "string"
+        },
+        {
+            "name": "PI_PLATFORMARCH_WIN_X64",
+            "value": "win_x64",
+            "type": "string"
+        },
+        {
+            "name": "PI_PLATFORMARCH_WIN_ARM64",
+            "value": "win_arm64",
+            "type": "string"
+        },
+        {
+            "name": "PI_PLATFORMARCH_MAC_X64",
+            "value": "mac_x64",
+            "type": "string"
+        },
+        {
+            "name": "PI_PLATFORMARCH_MAC_ARM64",
+            "value": "mac_arm64",
+            "type": "string"
+        },
+        {
+            "name": "PI_PLATFORMARCH_IOS_ARM64",
+            "value": "ios_arm64",
+            "type": "string"
+        },
+        {
+            "name": "PI_PLATFORMARCH_ANDR_X86",
+            "value": "android_x86",
+            "type": "string"
+        },
+        {
+            "name": "PI_PLATFORMARCH_ANDR_X64",
+            "value": "android_x64",
+            "type": "string"
+        },
+        {
+            "name": "PI_PLATFORMARCH_ANDR_ARM",
+            "value": "android_arm",
+            "type": "string"
+        },
+        {
+            "name": "PI_PLATFORMARCH_ANDR_ARM64",
+            "value": "android_arm64",
+            "type": "string"
+        },
+        {
+            "name": "PI_PLATFORMARCH_LINUX_X86",
+            "value": "linux_x86",
+            "type": "string"
+        },
+        {
+            "name": "PI_PLATFORMARCH_LINUX_X64",
+            "value": "linux_x64",
+            "type": "string"
+        },
+        {
+            "name": "PI_PLATFORMARCH_LINUX_ARM64",
+            "value": "linux_arm64",
+            "type": "string"
+        },
+        {
+            "name": "PI_PLATFORMARCH_WASM",
+            "value": "wasm",
+            "type": "string"
+        },
+        {
+            "name": "PI_TARGET_PLATFORM64",
+            "value": "platform64",
+            "type": "string"
+        },
+        {
+            "name": "PI_TARGET_DESKTOPPLATFORM",
+            "value": "desktop_platform",
+            "type": "string"
+        },
+        {
+            "name": "PI_TARGET_CONFIG",
+            "value": "config",
+            "type": "string"
+        },
+        {
+            "name": "PI_CONFIG_DEBUG",
+            "value": "debug",
+            "type": "string"
+        },
+        {
+            "name": "PI_CONFIG_RELEASE",
+            "value": "release",
+            "type": "string"
+        },
+        {
+            "name": "PI_TARGET_LANGUAGE",
+            "value": "language",
+            "type": "string"
+        },
+        {
+            "name": "PI_TARGET_DEFINED",
+            "value": "defined",
+            "type": "string"
+        }
+    ]
+}

@@ -92,6 +92,7 @@ public:
 
 	PlugInClass (UIDRef classID = kNullUID, StringRef name = nullptr, StringRef category = nullptr);
 	PlugInClass (const IClassDescription& description);
+	PlugInClass (const PlugInClass& other);
 
 	PROPERTY_OBJECT (UID, classID, ClassID)
 	PROPERTY_STRING (name, Name)

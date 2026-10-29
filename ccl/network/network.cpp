@@ -18,6 +18,10 @@
 
 #include "ccl/network/network.h"
 
+#ifdef CCLNET_ASYNCDNSRESOLVER_ENABLED
+#include "ccl/network/asyncdnsresolver.h"
+#endif
+
 #include "ccl/network/netsslsocket.h"
 #include "ccl/network/netstream.h"
 
@@ -33,18 +37,7 @@ using namespace Net;
 
 bool Network::startup ()
 {
-	bool result = Core::Sockets::Network::startup ();
-
-	#if (0 && DEBUG)
-	Core::CString32 macAddress;
-	Core::Sockets::Network::getLocalMACAddress (macAddress);
-	IPAddress ip;
-	Core::Sockets::Network::getLocalIPAddress (ip);
-	Core::Vector<IPAddress> ipList;
-	Core::Sockets::Network::getLocalIPAddressList (ipList);
-	#endif
-
-	return result;
+	return Core::Sockets::Network::startup ();
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -79,14 +72,19 @@ tresult CCL_API Network::getLocalIPAddress (IPAddress& address)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-tresult CCL_API Network::getAddressByHost (SocketAddress& address, StringRef hostname)
+tresult CCL_API Network::getAddressByHost (SocketAddress& address, StringRef hostname, int timeout, IProgressNotify* progress)
 {
+	#ifdef CCLNET_ASYNCDNSRESOLVER_ENABLED
+	return AsyncDNSResolver::instance ().resolve (address, hostname, timeout, progress);
+	#else
+	// Fall back to plain blocking DNS resolution
 	Core::CString256 cname;
 	hostname.toCString (kNetworkTextEncoding, cname.getBuffer (), cname.getSize ());
 
 	if(!Core::Sockets::Network::getAddressByHost (address, cname))
 		return kResultFailed;
 	return kResultOk;
+	#endif
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -139,12 +137,13 @@ ISocket* CCL_API Network::createSocket (AddressFamily addressFamily, SocketType 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-CCL::IStream* CCL_API Network::openStream (const SocketAddress& address, ProtocolType protocol)
+CCL::IStream* CCL_API Network::openStream (const SocketAddress& address, ProtocolType protocol,
+											int timeout, CCL::IProgressNotify* progress)
 {
 	AutoPtr<Socket> s = Socket::createSocket (address.family, kStream, protocol);
 	if(s)
 	{
-		tresult result = s->connect (address);
+		tresult result = s->connect (address, timeout, progress);
 		if(result == kResultOk)
 			return NEW NetworkStream (s);
 	}
@@ -153,13 +152,14 @@ CCL::IStream* CCL_API Network::openStream (const SocketAddress& address, Protoco
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-CCL::IStream* CCL_API Network::openSSLStream (const IPAddress& address, StringRef peerName, CCL::IProgressNotify* progress)
+CCL::IStream* CCL_API Network::openSSLStream (const IPAddress& address, StringRef peerName,
+											   int timeout, CCL::IProgressNotify* progress)
 {
 	AutoPtr<SSLSocket> s = SSLSocket::createSocket (address.family);
 	if(s)
 	{
 		s->setPeerName (peerName);
-		tresult result = s->connect (address, progress);
+		tresult result = s->connect (address, timeout, progress);
 		if(result == kResultOk)
 			return NEW NetworkStream (s);
 	}

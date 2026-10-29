@@ -22,6 +22,7 @@
 #include "ccl/base/storage/url.h"
 
 #include "ccl/public/base/iprogress.h"
+#include "ccl/public/system/ithreadpool.h"
 #include "ccl/public/network/web/iwebsocket.h"
 
 namespace CCL {
@@ -34,7 +35,8 @@ class WebSocketClient;
 //************************************************************************************************
 
 class WebSocket: public Object,
-				 public IWebSocket
+				 public IWebSocket,
+				 public Threading::IPeriodicItem
 {
 public:
 	DECLARE_CLASS (WebSocket, Object)
@@ -52,14 +54,18 @@ public:
 	StringRef CCL_API getExtensions () const override;
 	StringRef CCL_API getProtocol () const override;
 	UrlRef CCL_API getUrl () const override;
-	tresult CCL_API open (UrlRef url, VariantRef protocols = 0) override;
+	tresult CCL_API open (UrlRef url, VariantRef protocols = Variant ()) override;
 	tresult CCL_API close (int code = 0, StringRef reason = nullptr) override;
 	tresult CCL_API send (VariantRef data) override;
+
+	// IPeriodicItem
+	int64 CCL_API getExecutionTime () const override;
+	void CCL_API execute (int64 now) override;
 
 	// Object
 	void CCL_API notify (ISubject* subject, MessageRef msg) override;
 
-	CLASS_INTERFACE (IWebSocket, Object)
+	CLASS_INTERFACE2 (IWebSocket, IPeriodicItem, Object)
 
 protected:
 	class CancelHelper: public Object,
@@ -77,6 +83,7 @@ protected:
 
 	CancelHelper cancelHelper;
 	WebSocketClient* client;
+	int64 nextExecutionTime;
 	ReadyState readyState;
 	Url url;
 

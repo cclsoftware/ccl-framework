@@ -246,6 +246,7 @@ ExtensionManager::ExtensionManager ()
 
 	handlers.objectCleanup (true);
 	extensions.objectCleanup (true);
+	developerLocations.objectCleanup (true);
 
 	// add built-in handlers
 	addHandler (NEW ExtensionLanguageHandler); // allow loading string tables first
@@ -358,6 +359,18 @@ ExtensionDescription* ExtensionManager::scanExtension (StringRef id, StringRef s
 		if(e)
 			e->setType (ExtensionType::kDeveloper);
 	}
+
+	for(int i = 0; i < developerLocations.count () && e == nullptr; i++)
+	{
+		Url devPath;
+		Url* devLocation = ccl_cast<Url> (developerLocations[i]);
+		if(devLocation == nullptr)
+			continue;
+		ExtensionManagement::makePath (devPath, *devLocation, shortId);
+		e = ExtensionDescription::createFromPackage (devPath);
+		if(e)
+			e->setType (ExtensionType::kDeveloper);
+	}
 	#endif
 
 	if(e == nullptr)
@@ -464,6 +477,9 @@ void ExtensionManager::startup (IProgressNotify* progress)
 	Url devPath;
 	ExtensionManagement::getLocation (devPath, ExtensionType::kDeveloper);
 	scanFolder (devPath, ExtensionType::kDeveloper);
+	ArrayForEach (developerLocations, Url, location)
+		scanFolder (*location, ExtensionType::kDeveloper);
+	EndFor
 	#endif
 
 	// scan program folder
@@ -800,9 +816,25 @@ void ExtensionManager::setSharedLocation (UrlRef path)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
+void ExtensionManager::addDeveloperLocation (UrlRef path)
+{
+	if(!path.isEmpty ())
+		developerLocations.add (NEW Url (path));
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
 bool ExtensionManager::isInsideExtension (UrlRef path) const
 {
-	return ExtensionManagement::isInsideExtension (path);
+	bool result = ExtensionManagement::isInsideExtension (path);
+	if(!result)
+	{
+		ArrayForEach (developerLocations, Url, location)
+			if(location->contains (path))
+				return true;
+		EndFor
+	}
+	return result;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////

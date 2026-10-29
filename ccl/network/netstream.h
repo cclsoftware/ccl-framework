@@ -43,6 +43,8 @@ public:
 	NetworkStream (ISocket* socket = nullptr);
 	~NetworkStream ();
 
+	static constexpr int kDefaultTimeout = 60000; // 1 minute
+
 	// IStream
 	int CCL_API read (void* buffer, int size) override;
 	int CCL_API write (const void* buffer, int size) override;

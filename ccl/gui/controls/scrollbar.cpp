@@ -76,9 +76,9 @@ public:
 		ThemeRenderer* renderer = scrollBar->getRenderer ();
 		
 		Rect trackingRect;
-		renderer->getPartRect (scrollBar, ScrollBar::kPartTrackingArea, trackingRect);
+		renderer->getPartRect (trackingRect, ScrollBar::kPartTrackingArea);
 		Rect handleRect;
-		renderer->getPartRect (scrollBar, ScrollBar::kPartHandle, handleRect);
+		renderer->getPartRect (handleRect, ScrollBar::kPartHandle);
 
 		float pos = 0.f;
 		if(scrollBar->getStyle ().isVertical ())
@@ -128,7 +128,7 @@ public:
 		ScrollBar* scrollBar = (ScrollBar*)view;
 		ThemeRenderer* renderer = scrollBar->getRenderer ();
 		
-		int partCode = renderer->hitTest (scrollBar, current.where, nullptr);
+		int partCode = renderer->hitTest (current.where, nullptr);
 
 		bool inside = 
 			(hit == ScrollBar::kButtonDownPressed && partCode == ScrollBar::kPartButtonDown) ||
@@ -182,7 +182,7 @@ public:
 		ThemeRenderer* renderer = scrollBar->getRenderer ();
 		
 		Point clickOffset;
-		int partCode = renderer->hitTest (scrollBar, current.where, &clickOffset);
+		int partCode = renderer->hitTest (current.where, &clickOffset);
 
 		if(partCode == ScrollBar::kPartHandle)
 		{
@@ -310,7 +310,7 @@ MouseHandler* ScrollBar::createMouseHandler (const MouseEvent& event)
 		return nullptr;
 
 	Point clickOffset;
-	int partCode = renderer->hitTest (this, event.where, &clickOffset);
+	int partCode = renderer->hitTest (event.where, &clickOffset);
 	
 	switch(partCode)
 	{
@@ -330,7 +330,7 @@ MouseHandler* ScrollBar::createMouseHandler (const MouseEvent& event)
 			{
 				// directly jump to mouse position and move from there (as if center of handle was clicked)
 				Rect handle;
-				renderer->getPartRect (this, kPartHandle, handle);
+				renderer->getPartRect (handle, kPartHandle);
 				return NEW ScrollBarMouseHandler (this, handle.getSize () * 0.5);
 			}
 			else
@@ -411,7 +411,7 @@ ThemeRenderer* ScrollBar::getRenderer ()
 {
 	if(renderer == nullptr)
 	{
-		renderer = getTheme ().createRenderer (ThemePainter::kScrollBarRenderer, visualStyle);
+		renderer = getTheme ().createRenderer (ThemePainter::kScrollBarRenderer, visualStyle, this);
 		
 		if(!visualStyle)
 			if(VisualStyle* vs = renderer->getVisualStyle ())
@@ -439,10 +439,9 @@ ScrollButton::ScrollButton (const Rect& size, IParameter* param, int partCode)
 ThemeRenderer* ScrollButton::getRenderer ()
 {
 	if(renderer == nullptr)
-		renderer = getTheme ().createRenderer (ThemePainter::kScrollButtonRenderer, visualStyle);
+		renderer = getTheme ().createRenderer (ThemePainter::kScrollButtonRenderer, visualStyle, this);
 	return renderer;
 }
-
 
 //************************************************************************************************
 // PageControl
@@ -461,7 +460,7 @@ PageControl::PageControl (const Rect& size, IParameter* param, StyleRef style)
 ThemeRenderer* PageControl::getRenderer ()
 {
 	if(renderer == nullptr)
-		renderer = getTheme ().createRenderer (ThemePainter::kPageControlRenderer, visualStyle);
+		renderer = getTheme ().createRenderer (ThemePainter::kPageControlRenderer, visualStyle, this);
 	return renderer;
 }
 
@@ -474,7 +473,7 @@ MouseHandler* PageControl::createMouseHandler (const MouseEvent& event)
 		return nullptr;
 
 	Point clickOffset;
-	int partCode = renderer->hitTest (this, event.where, &clickOffset);
+	int partCode = renderer->hitTest (event.where, &clickOffset);
 	
 	if(partCode == kPartHandle)
 		return NEW PageControlMouseHandler (this);

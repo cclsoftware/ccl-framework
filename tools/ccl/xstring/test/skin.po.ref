@@ -3,6 +3,11 @@ msgctxt "TestForm"
 msgid "@cmd.title[]"
 msgstr ""
 
+#: ./skinform.xml
+msgctxt "TestForm"
+msgid "Accessible Button Name"
+msgstr ""
+
 #: ./skinperspective.xml
 msgctxt "TestPerspective"
 msgid "Align Center"

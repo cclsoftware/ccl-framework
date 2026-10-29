@@ -20,7 +20,6 @@
 #define _ccl_viewanimation_h
 
 #include "ccl/base/singleton.h"
-#include "ccl/base/collections/objectlist.h"
 
 #include "ccl/public/gui/framework/styleflags.h"
 #include "ccl/public/gui/framework/ianimation.h"
@@ -60,8 +59,9 @@ public:
 	void registerSelf (bool state);
 
 	// IAnimationHandler
-	tresult CCL_API addAnimation (IObject* target, StringID propertyId, const IAnimation* prototype) override;
+	tresult CCL_API addAnimation (IObject* target, StringID propertyId, const IAnimation* prototype, int options = 0) override;
 	tresult CCL_API removeAnimation (IObject* target, StringID propertyId) override;
+	tresult CCL_API removeTarget (IObject* target) override;
 
 	CLASS_INTERFACE (IAnimationHandler, Object)
 
@@ -70,34 +70,10 @@ protected:
 };
 
 //************************************************************************************************
-// AnimatorBase
-//************************************************************************************************
-
-class AnimatorBase: public Object
-{
-protected:
-	PROPERTY_VARIABLE (double, duration, Duration)
-	PROPERTY_VARIABLE (AnimationTimingType, timingType, TimingType)
-
-protected:
-	AnimatorBase (View* parentView, float contentScaleFactor);
-	
-	View* parentView;
-	float contentScaleFactor;
-	IGraphicsLayer* parentLayer;
-	AutoPtr<IGraphicsLayer> clippingLayer;
-	
-	class LayerAdder;
-	class LayerRemover;
-	IGraphicsLayer* addClippingLayer (IGraphicsLayer* parentLayer, PointRef offset, Coord width, Coord height);
-	IGraphicsLayer* createLayerForImage (IImage* image, int mode = IGraphicsLayer::kIgnoreAlpha);
-};
-
-//************************************************************************************************
 // ViewAnimator
 //************************************************************************************************
 
-class ViewAnimator: public AnimatorBase,
+class ViewAnimator: public Object,
 					public IViewAnimator
 {
 public:
@@ -107,6 +83,9 @@ public:
 	static TransitionType getInverseTransition (TransitionType transitionType);
 	
 	DECLARE_STYLEDEF (transitionTypes)
+
+	PROPERTY_VARIABLE (double, duration, Duration)
+	PROPERTY_VARIABLE (AnimationTimingType, timingType, TimingType)
 
 	PROPERTY_SHARED_AUTO (IImage, fromImage, FromImage)
 	PROPERTY_SHARED_AUTO (IImage, toImage, ToImage)
@@ -128,41 +107,30 @@ public:
 	CLASS_INTERFACE (IViewAnimator, Object)
 
 protected:
-	ViewAnimator (View* parentView, int transitionType, float contentScaleFactor);
-
+	View* parentView;
 	TransitionType transitionType;
+	float contentScaleFactor;
+	IGraphicsLayer* parentLayer;
+	AutoPtr<IGraphicsLayer> clippingLayer;
 	AutoPtr<IGraphicsLayer> fromLayer;
 	AutoPtr<IGraphicsLayer> toLayer;
 	Point toLayerOffset;
 	Point fromLayerSize;
 	IGraphicsLayer* fromLayerParent;
-	
+
+	class LayerAdder;
+	class LayerRemover;
+
+	ViewAnimator (View* parentView, int transitionType, float contentScaleFactor);
+
 	bool isPrepared () const;
 	bool prepare ();
 
+	IGraphicsLayer* addClippingLayer (IGraphicsLayer* parentLayer, PointRef offset, Coord width, Coord height);
+	IGraphicsLayer* createLayerForImage (IImage* image, int mode = IGraphicsLayer::kIgnoreAlpha);
+
 	// IObject
 	tbool CCL_API setProperty (MemberID propertyId, const Variant& var) override;
-};
-
-//************************************************************************************************
-// LayoutAnimator
-//************************************************************************************************
-
-class LayoutAnimator: public AnimatorBase
-{
-public:
-	static LayoutAnimator* create (View* parentView);
-			
-	void snipOldViews ();
-	void snipNewViews ();
-	bool makeTransition ();
-
-private:
-	ObjectList items;
-
-	struct ViewItem;
-	
-	LayoutAnimator (View* parentView, float contentScaleFactor);
 };
 
 } // namespace CCL

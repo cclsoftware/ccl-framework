@@ -24,7 +24,6 @@
 
 #include "ccl/extras/modeling/modelbrowser.h"
 #include "ccl/extras/modeling/modelinspector.h"
-#include "ccl/extras/modeling/docscanner.h"
 
 #include "ccl/app/browser/nodenavigator.h"
 
@@ -35,11 +34,6 @@
 #include "ccl/base/collections/stringdictionary.h"
 
 #include "ccl/public/text/xmlcontentparser.h"
-#include "ccl/public/gui/iparameter.h"
-#include "ccl/public/gui/framework/ifileselector.h"
-#include "ccl/public/gui/framework/iprogressdialog.h"
-#include "ccl/public/base/iprogress.h"
-#include "ccl/public/plugservices.h"
 
 namespace Spy {
 
@@ -78,17 +72,6 @@ BEGIN_XSTRINGS ("Spy")
 	XSTRING (RelatedPages, "Related Pages")
 END_XSTRINGS
 
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
-namespace Tag
-{
-	enum DocumentationBrowserTags
-	{
-		kSaveModel = 100,
-		kScanSourceCode
-	};
-}
-
 //************************************************************************************************
 // DocFileNode
 //************************************************************************************************
@@ -120,8 +103,6 @@ DocumentationBrowser::DocumentationBrowser ()
 	addComponent (documentationEditor = NEW DocumentationEditor);
 
 	classModels.objectCleanup (true);
-	paramList.addParam ("saveModel", Tag::kSaveModel);
-	paramList.addParam ("scanCode", Tag::kScanSourceCode);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -168,7 +149,6 @@ void DocumentationBrowser::scanModels ()
 
 	ASSERT (classModels.isEmpty () == false)
 
-	paramList.byTag (Tag::kSaveModel)->enable (canEdit);
 	elementInspector->setEnabled (canEdit);
 	if(canEdit == true)
 		Model::Element::setSaveMode (Model::Element::kPrepareDoc);
@@ -200,45 +180,6 @@ tbool CCL_API DocumentationBrowser::invokeMethod (Variant& returnValue, MessageR
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void DocumentationBrowser::saveModels ()
-{
-	ArrayForEachFast (classModels, ClassModelDocument, model)
-		model->saveToFile (model->getPath ());
-	EndFor
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
-void DocumentationBrowser::scanCode ()
-{
-	Url initDir;
-	GET_DEVELOPMENT_FOLDER_LOCATION (initDir, CCL_FRAMEWORK_DIRECTORY, "ccl")
-
-	AutoPtr<IFolderSelector> fs = ccl_new<IFolderSelector> (ClassID::FolderSelector);
-	if(!initDir.isEmpty ())
-		fs->setPath (initDir);
-
-	if(fs->run (CCLSTR ("Select root folder")))
-	{
-		UrlRef folder = fs->getPath ();
-
-		AutoPtr<IProgressNotify> progress = ccl_new<IProgressNotify> (ClassID::ProgressDialog);
-		if(UnknownPtr<IProgressDialog> dialog = static_cast<IProgressNotify*> (progress))
-			dialog->setOpenDelay (0.5);
-
-		ArrayForEachFast (classModels, ClassModelDocument, model)
-			AutoPtr<DocumentationScanner> scanner = DocumentationScanner::createScannerForModel (*model);
-			if(scanner)
-			{
-				if(scanner->scanCode (folder, progress))
-					scanner->applyToModel (*model);
-			}
-		EndFor
-	}
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
 void CCL_API DocumentationBrowser::notify (ISubject* subject, MessageRef msg)
 {
 	if(msg == Browser::kNodeFocused)
@@ -264,21 +205,4 @@ void CCL_API DocumentationBrowser::notify (ISubject* subject, MessageRef msg)
 
 		signal (Message (kPropertyChanged));
 	}
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
-tbool CCL_API DocumentationBrowser::paramChanged (IParameter* param)
-{
-	switch(param->getTag ())
-	{
-	case Tag::kSaveModel :
-		saveModels ();
-		break;
-
-	case Tag::kScanSourceCode :
-		scanCode ();
-		break;
-	}
-	return true;
 }

@@ -192,12 +192,18 @@ bool ComVariant::convert (CCL::Variant& cclVariant, const VARIANT& comVariant)
 		break;
 
 	case VT_I4 :
-	case VT_BOOL :
 		if(byRef)
 			cclVariant = comVariant.pintVal ? *comVariant.pintVal : 0;
 		else
 			cclVariant = comVariant.intVal;
-		cclVariant.setBoolFormat (vt == VT_BOOL);
+		break;
+
+	case VT_BOOL :
+		{
+			VARIANT_BOOL value = byRef ? (comVariant.pboolVal ? *comVariant.pboolVal : VARIANT_FALSE) : comVariant.boolVal;
+			cclVariant = value != VARIANT_FALSE ? 1 : 0;
+			cclVariant.setBoolFormat (true);
+		}
 		break;
 
 	case VT_BSTR :
@@ -246,7 +252,7 @@ bool ComVariant::convert (VARIANT& comVariant, const CCL::Variant& cclVariant)
 		if(cclVariant.isBoolFormat ())
 		{
 			comVariant.vt = VT_BOOL;
-			comVariant.intVal = cclVariant.asInt ();
+			comVariant.boolVal = cclVariant.asInt () != 0 ? VARIANT_TRUE : VARIANT_FALSE;
 		}
 		else
 		{
@@ -297,6 +303,13 @@ bool ComVariant::fromDoubleVector (VARIANT& comVariant, const CCL::Vector<double
 		ASSERT (SUCCEEDED (hr))
 	}
 	return SUCCEEDED (hr);
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+bool ComVariant::fromBool (VARIANT& comVariant, bool value)
+{
+	return convert (comVariant, Variant (value, Variant::kBoolFormat));
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////

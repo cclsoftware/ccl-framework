@@ -36,6 +36,7 @@ public:
 	// DWTextLayout
 	tresult CCL_API setTextColor (const Range& range, Color color) override;
 	tresult CCL_API setBaselineOffset (const Range& range, float offset) override;
+	tresult CCL_API clearFormatting () override;
 	tresult CCL_API setSuperscript (const Range& range) override;
 	tresult CCL_API setSubscript (const Range& range) override;
 

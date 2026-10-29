@@ -153,10 +153,14 @@ IUnknown* ControlElement::getObject (const CreateArgs& args, CStringRef objectNa
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-BEGIN_SKIN_ELEMENT_WITH_MEMBERS (ControlElement, ViewElement, TAG_CONTROL, DOC_GROUP_CONTROLS, Control)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_CMDCATEGORY, TYPE_STRING)	///< If a control triggers a command, this is the command category.
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_CMDNAME, TYPE_STRING)	    ///< If a control triggers a command, this is the command name.
-END_SKIN_ELEMENT_WITH_MEMBERS (ControlElement)
+DEFINE_CLASS_HIDDEN (ControlElement, ViewElement)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (ControlElement, ViewElement, TAG_CONTROL, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (ControlElement, DOC_GROUP_CONTROLS)
+DEFINE_TYPELIB_RELATED_CLASS (ControlElement, Control)
+BEGIN_TYPELIB_MEMBERS (ControlElement)
+	ADD_TYPELIB_MEMBER_STRING (ATTR_CMDCATEGORY) ///< If a control triggers a command, this is the command category.
+	ADD_TYPELIB_MEMBER_STRING (ATTR_CMDNAME) ///< If a control triggers a command, this is the command name.
+END_TYPELIB_MEMBERS (ControlElement)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -230,13 +234,17 @@ View* ControlElement::createView (const CreateArgs& args, View* view)
 // ButtonElement
 //************************************************************************************************
 
-BEGIN_SKIN_ELEMENT_WITH_MEMBERS (ButtonElement, ControlElement, TAG_BUTTON, DOC_GROUP_CONTROLS, Button)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_IMAGE, TYPE_STRING)	///< Background image. The button uses different frames of the image to show its different states.
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_ICON, TYPE_STRING)	///< The icon is plotted onto the button. This allows the same background bitmap to be used and varied with the icon image.
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_TITLENAME, TYPE_STRING)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_COLORNAME, TYPE_COLOR)
-END_SKIN_ELEMENT_WITH_MEMBERS (ButtonElement)
-DEFINE_SKIN_ENUMERATION (TAG_BUTTON, ATTR_OPTIONS, Button::customStyles)
+DEFINE_CLASS_HIDDEN (ButtonElement, ControlElement)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (ButtonElement, ControlElement, TAG_BUTTON, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (ButtonElement, DOC_GROUP_CONTROLS)
+DEFINE_TYPELIB_RELATED_CLASS (ButtonElement, Button)
+BEGIN_TYPELIB_MEMBERS (ButtonElement)
+	ADD_TYPELIB_MEMBER_STRING (ATTR_IMAGE)	///< Background image. The button uses different frames of the image to show its different states.
+	ADD_TYPELIB_MEMBER_STRING (ATTR_ICON)	///< The icon is plotted onto the button. This allows the same background bitmap to be used and varied with the icon image.
+	ADD_TYPELIB_MEMBER_STRING (ATTR_TITLENAME)
+	ADD_TYPELIB_MEMBER_COLOR (ATTR_COLORNAME)
+END_TYPELIB_MEMBERS (ButtonElement)
+DEFINE_TYPELIB_ENUMERATION (TAG_BUTTON, ATTR_OPTIONS, Button::customStyles, SKIN_TYPELIB)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -324,10 +332,14 @@ View* ButtonElement::createView (const CreateArgs& args, View* view)
 // DialogButtonElement
 //************************************************************************************************
 
-BEGIN_SKIN_ELEMENT_WITH_MEMBERS (DialogButtonElement, ButtonElement, TAG_DIALOGBUTTON, DOC_GROUP_CONTROLS, StandardButton)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_RESULT, TYPE_ENUM)
-END_SKIN_ELEMENT_WITH_MEMBERS (DialogButtonElement)
-DEFINE_SKIN_ENUMERATION (TAG_DIALOGBUTTON, ATTR_RESULT, Dialog::dialogButtons)
+DEFINE_CLASS_HIDDEN (DialogButtonElement, ButtonElement)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (DialogButtonElement, ButtonElement, TAG_DIALOGBUTTON, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (DialogButtonElement, DOC_GROUP_CONTROLS)
+DEFINE_TYPELIB_RELATED_CLASS (DialogButtonElement, StandardButton)
+BEGIN_TYPELIB_MEMBERS (DialogButtonElement)
+	ADD_TYPELIB_MEMBER (ATTR_RESULT, TypeNames::kEnum)
+END_TYPELIB_MEMBERS (DialogButtonElement)
+DEFINE_TYPELIB_ENUMERATION (TAG_DIALOGBUTTON, ATTR_RESULT, Dialog::dialogButtons, SKIN_TYPELIB)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -386,8 +398,20 @@ View* DialogButtonElement::createView (const CreateArgs& args, View* view)
 // ToggleElement
 //************************************************************************************************
 
-DEFINE_SKIN_ELEMENT (ToggleElement, ButtonElement, TAG_TOGGLE, DOC_GROUP_CONTROLS, Toggle)
-DEFINE_SKIN_ENUMERATION (TAG_TOGGLE, ATTR_OPTIONS, Toggle::customStyles)
+DEFINE_CLASS_HIDDEN (ToggleElement, ButtonElement)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (ToggleElement, ButtonElement, TAG_TOGGLE, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (ToggleElement, DOC_GROUP_CONTROLS)
+DEFINE_TYPELIB_RELATED_CLASS (ToggleElement, Toggle)
+BEGIN_TYPELIB_MEMBERS (ToggleElement)
+	ADD_TYPELIB_MEMBER (ATTR_ACCESSIBILITYBUTTON, TypeNames::kBool)
+END_TYPELIB_MEMBERS (ToggleElement)
+DEFINE_TYPELIB_ENUMERATION (TAG_TOGGLE, ATTR_OPTIONS, Toggle::customStyles, SKIN_TYPELIB)
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+ToggleElement::ToggleElement ()
+: accessibilityExposeAsButton (false)
+{}
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -395,7 +419,9 @@ View* ToggleElement::createView (const CreateArgs& args, View* view)
 {
 	if(!view)
 		view = NEW Toggle (size, getParameter (args), options, title);
-	
+
+	((Toggle*)view)->setAccessibilityExposeAsButton (accessibilityExposeAsButton);
+
 	return SuperClass::createView (args, view);
 }
 
@@ -408,8 +434,18 @@ bool ToggleElement::setAttributes (const SkinAttributes& a)
 	StyleFlags toggleOptions;
 	a.getOptions (toggleOptions, ATTR_OPTIONS, Toggle::customStyles);
 	options.custom |= toggleOptions.custom;
-	
+
+	accessibilityExposeAsButton = a.getBool (ATTR_ACCESSIBILITYBUTTON, false);
+
 	return true;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+bool ToggleElement::getAttributes (SkinAttributes& a) const
+{
+	a.setBool (ATTR_ACCESSIBILITYBUTTON, accessibilityExposeAsButton);
+	return SuperClass::getAttributes (a);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -424,8 +460,11 @@ bool ToggleElement::appendOptions (String& string) const
 // MultiToggleElement
 //************************************************************************************************
 
-DEFINE_SKIN_ELEMENT (MultiToggleElement, ToggleElement, TAG_MULTITOGGLE, DOC_GROUP_CONTROLS, MultiToggle)
-DEFINE_SKIN_ENUMERATION (TAG_MULTITOGGLE, ATTR_OPTIONS, MultiToggle::customStyles)
+DEFINE_CLASS_HIDDEN (MultiToggleElement, ToggleElement)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (MultiToggleElement, ToggleElement, TAG_MULTITOGGLE, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (MultiToggleElement, DOC_GROUP_CONTROLS)
+DEFINE_TYPELIB_RELATED_CLASS (MultiToggleElement, MultiToggle)
+DEFINE_TYPELIB_ENUMERATION (TAG_MULTITOGGLE, ATTR_OPTIONS, MultiToggle::customStyles, SKIN_TYPELIB)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -454,10 +493,14 @@ bool MultiToggleElement::setAttributes (const SkinAttributes& a)
 // CheckBoxElement
 //************************************************************************************************
 
-BEGIN_SKIN_ELEMENT_WITH_MEMBERS (CheckBoxElement, ToggleElement, TAG_CHECKBOX, DOC_GROUP_CONTROLS, CheckBox)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_ICON_MIXED, TYPE_STRING)	///< Icon for "mixed" state in a tri-state checkbox
-END_SKIN_ELEMENT_WITH_MEMBERS (CheckBoxElement)
-DEFINE_SKIN_ENUMERATION (TAG_CHECKBOX, ATTR_OPTIONS, CheckBox::customStyles)
+DEFINE_CLASS_HIDDEN (CheckBoxElement, ToggleElement)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (CheckBoxElement, ToggleElement, TAG_CHECKBOX, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (CheckBoxElement, DOC_GROUP_CONTROLS)
+DEFINE_TYPELIB_RELATED_CLASS (CheckBoxElement, CheckBox)
+BEGIN_TYPELIB_MEMBERS (CheckBoxElement)
+	ADD_TYPELIB_MEMBER_STRING (ATTR_ICON_MIXED) ///< Icon for "mixed" state in a tri-state checkbox
+END_TYPELIB_MEMBERS (CheckBoxElement)
+DEFINE_TYPELIB_ENUMERATION (TAG_CHECKBOX, ATTR_OPTIONS, CheckBox::customStyles, SKIN_TYPELIB)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -510,10 +553,14 @@ View* CheckBoxElement::createView (const CreateArgs& args, View* view)
 // RadioButtonElement
 //************************************************************************************************
 
-BEGIN_SKIN_ELEMENT_WITH_MEMBERS (RadioButtonElement, ButtonElement, TAG_RADIOBUTTON, DOC_GROUP_CONTROLS, RadioButton)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_VALUE, TYPE_STRING)	///< The parameter value that this button represents
-END_SKIN_ELEMENT_WITH_MEMBERS (RadioButtonElement)
-DEFINE_SKIN_ENUMERATION (TAG_RADIOBUTTON, ATTR_OPTIONS, RadioButton::customStyles)
+DEFINE_CLASS_HIDDEN (RadioButtonElement, ButtonElement)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (RadioButtonElement, ButtonElement, TAG_RADIOBUTTON, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (RadioButtonElement, DOC_GROUP_CONTROLS)
+DEFINE_TYPELIB_RELATED_CLASS (RadioButtonElement, RadioButton)
+BEGIN_TYPELIB_MEMBERS (RadioButtonElement)
+	ADD_TYPELIB_MEMBER_STRING (ATTR_VALUE) ///< The parameter value that this button represents
+END_TYPELIB_MEMBERS (RadioButtonElement)
+DEFINE_TYPELIB_ENUMERATION (TAG_RADIOBUTTON, ATTR_OPTIONS, RadioButton::customStyles, SKIN_TYPELIB)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -569,12 +616,16 @@ View* RadioButtonElement::createView (const CreateArgs& args, View* view)
 // ToolButtonElement
 //************************************************************************************************
 
-BEGIN_SKIN_ELEMENT_WITH_MEMBERS (ToolButtonElement, RadioButtonElement, TAG_TOOLBUTTON, DOC_GROUP_CONTROLS, ToolButton)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_POPUP, TYPE_ENUM)			///< Specifies the alignment of the popup relative to the ToolButton.
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_MODENAME, TYPE_STRING)	///< modename: parameter name for the modeParam used for this toolButton
-END_SKIN_ELEMENT_WITH_MEMBERS (ToolButtonElement)
-DEFINE_SKIN_ENUMERATION_PARENT (TAG_TOOLBUTTON, ATTR_POPUP, nullptr, TAG_POPUPBOX, ATTR_POPUP)
-DEFINE_SKIN_ENUMERATION (TAG_TOOLBUTTON, ATTR_OPTIONS, ToolButton::customStyles)
+DEFINE_CLASS_HIDDEN (ToolButtonElement, RadioButtonElement)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (ToolButtonElement, RadioButtonElement, TAG_TOOLBUTTON, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (ToolButtonElement, DOC_GROUP_CONTROLS)
+DEFINE_TYPELIB_RELATED_CLASS (ToolButtonElement, ToolButton)
+BEGIN_TYPELIB_MEMBERS (ToolButtonElement)
+	ADD_TYPELIB_MEMBER (ATTR_POPUP, TypeNames::kEnum) ///< Specifies the alignment of the popup relative to the ToolButton.
+	ADD_TYPELIB_MEMBER_STRING (ATTR_MODENAME) ///< modename: parameter name for the modeParam used for this toolButton
+END_TYPELIB_MEMBERS (ToolButtonElement)
+DEFINE_TYPELIB_ENUMERATION_WITH_PARENT (TAG_TOOLBUTTON, ATTR_POPUP, nullptr, TAG_POPUPBOX, ATTR_POPUP, SKIN_TYPELIB)
+DEFINE_TYPELIB_ENUMERATION (TAG_TOOLBUTTON, ATTR_OPTIONS, ToolButton::customStyles, SKIN_TYPELIB)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -640,9 +691,13 @@ View* ToolButtonElement::createView (const CreateArgs& args, View* view)
 // ValueControlElement
 //************************************************************************************************
 
-BEGIN_SKIN_ELEMENT_ABSTRACT_WITH_MEMBERS (ValueControlElement, ControlElement, TAG_VALUECONTROL, DOC_GROUP_CONTROLS, 0)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_COLORNAME, TYPE_STRING)	///< name of a color parameter used to colorize the hilite parts of value controls
-END_SKIN_ELEMENT_WITH_MEMBERS (ValueControlElement)
+DEFINE_CLASS_ABSTRACT_HIDDEN (ValueControlElement, ControlElement)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (ValueControlElement, ControlElement, TAG_VALUECONTROL, SKIN_TYPELIB)
+DEFINE_TYPELIB_ABSTRACT (ValueControlElement)
+DEFINE_TYPELIB_DOCGROUP (ValueControlElement, DOC_GROUP_CONTROLS)
+BEGIN_TYPELIB_MEMBERS (ValueControlElement)
+	ADD_TYPELIB_MEMBER_STRING (ATTR_COLORNAME) ///< name of a color parameter used to colorize the hilite parts of value controls
+END_TYPELIB_MEMBERS (ValueControlElement)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -682,9 +737,13 @@ View* ValueControlElement::createView (const CreateArgs& args, View* view)
 // ValueBarElement
 //************************************************************************************************
 
-BEGIN_SKIN_ELEMENT_WITH_MEMBERS (ValueBarElement, ValueControlElement, TAG_VALUEBAR, DOC_GROUP_CONTROLS, ValueBar)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_IMAGE, TYPE_STRING)	///< Image with 2 frames: "normal" for the background, "normalOn" for the value bar
-END_SKIN_ELEMENT_WITH_MEMBERS (ValueBarElement)
+DEFINE_CLASS_HIDDEN (ValueBarElement, ValueControlElement)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (ValueBarElement, ValueControlElement, TAG_VALUEBAR, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (ValueBarElement, DOC_GROUP_CONTROLS)
+DEFINE_TYPELIB_RELATED_CLASS (ValueBarElement, ValueBar)
+BEGIN_TYPELIB_MEMBERS (ValueBarElement)
+	ADD_TYPELIB_MEMBER_STRING (ATTR_IMAGE) ///< Image with 2 frames: "normal" for the background, "normalOn" for the value bar
+END_TYPELIB_MEMBERS (ValueBarElement)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -732,7 +791,10 @@ View* ValueBarElement::createView (const CreateArgs& args, View* view)
 // ProgressBarElement
 //************************************************************************************************
 
-DEFINE_SKIN_ELEMENT (ProgressBarElement, ValueBarElement, TAG_PROGRESSBAR, DOC_GROUP_CONTROLS, ProgressBar) 
+DEFINE_CLASS_HIDDEN (ProgressBarElement, ValueBarElement)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (ProgressBarElement, ValueBarElement, TAG_PROGRESSBAR, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (ProgressBarElement, DOC_GROUP_CONTROLS) 
+DEFINE_TYPELIB_RELATED_CLASS (ProgressBarElement, ProgressBar)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -751,7 +813,10 @@ View* ProgressBarElement::createView (const CreateArgs& args, View* view)
 // ActivityIndicatorViewElement
 //************************************************************************************************
 
-DEFINE_SKIN_ELEMENT (ActivityIndicatorViewElement, ProgressBarElement, TAG_ACTIVITYVIEW, DOC_GROUP_CONTROLS, ActivityIndicatorView) 
+DEFINE_CLASS_HIDDEN (ActivityIndicatorViewElement, ProgressBarElement)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (ActivityIndicatorViewElement, ProgressBarElement, TAG_ACTIVITYVIEW, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (ActivityIndicatorViewElement, DOC_GROUP_CONTROLS)
+DEFINE_TYPELIB_RELATED_CLASS (ActivityIndicatorViewElement, ActivityIndicatorView)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -772,12 +837,16 @@ View* ActivityIndicatorViewElement::createView (const CreateArgs& args, View* vi
 // SliderElement
 //************************************************************************************************
 
-BEGIN_SKIN_ELEMENT_WITH_MEMBERS (SliderElement, ValueControlElement, TAG_SLIDER, DOC_GROUP_CONTROLS, Slider)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_XYEDITING, TYPE_INT)		///< X/Y edit mode distance
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_MODE, TYPE_ENUM)
-END_SKIN_ELEMENT_WITH_MEMBERS (SliderElement)
-DEFINE_SKIN_ENUMERATION (TAG_SLIDER, ATTR_MODE, Slider::modes)
-DEFINE_SKIN_ENUMERATION (TAG_SLIDER, ATTR_OPTIONS, Slider::customStyles)
+DEFINE_CLASS_HIDDEN (SliderElement, ValueControlElement)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (SliderElement, ValueControlElement, TAG_SLIDER, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (SliderElement, DOC_GROUP_CONTROLS)
+DEFINE_TYPELIB_RELATED_CLASS (SliderElement, Slider)
+BEGIN_TYPELIB_MEMBERS (SliderElement)
+	ADD_TYPELIB_MEMBER (ATTR_XYEDITING, TypeNames::kInt) ///< X/Y edit mode distance
+	ADD_TYPELIB_MEMBER (ATTR_MODE, TypeNames::kEnum)
+END_TYPELIB_MEMBERS (SliderElement)
+DEFINE_TYPELIB_ENUMERATION (TAG_SLIDER, ATTR_MODE, Slider::modes, SKIN_TYPELIB)
+DEFINE_TYPELIB_ENUMERATION (TAG_SLIDER, ATTR_OPTIONS, Slider::customStyles, SKIN_TYPELIB)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -863,10 +932,14 @@ View* SliderElement::createView (const CreateArgs& args, View* view)
 // RangeSliderElement
 //************************************************************************************************
 
-BEGIN_SKIN_ELEMENT_WITH_MEMBERS (RangeSliderElement, SliderElement, TAG_RANGESLIDER, DOC_GROUP_CONTROLS, RangeSlider)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_NAME2, TYPE_STRING)	///< The name of the second range parameter
-END_SKIN_ELEMENT_WITH_MEMBERS (RangeSliderElement)
-DEFINE_SKIN_ENUMERATION (TAG_RANGESLIDER, ATTR_OPTIONS, RangeSlider::customStyles)
+DEFINE_CLASS_HIDDEN (RangeSliderElement, SliderElement)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (RangeSliderElement, SliderElement, TAG_RANGESLIDER, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (RangeSliderElement, DOC_GROUP_CONTROLS)
+DEFINE_TYPELIB_RELATED_CLASS (RangeSliderElement, RangeSlider)
+BEGIN_TYPELIB_MEMBERS (RangeSliderElement)
+	ADD_TYPELIB_MEMBER_STRING (ATTR_NAME2) ///< The name of the second range parameter
+END_TYPELIB_MEMBERS (RangeSliderElement)
+DEFINE_TYPELIB_ENUMERATION (TAG_RANGESLIDER, ATTR_OPTIONS, RangeSlider::customStyles, SKIN_TYPELIB)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -936,10 +1009,14 @@ View* RangeSliderElement::createView (const CreateArgs& args, View* view)
 // KnobElement
 //************************************************************************************************
 
-BEGIN_SKIN_ELEMENT_WITH_MEMBERS (KnobElement, SliderElement, TAG_KNOB, DOC_GROUP_CONTROLS, Knob)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_REFERENCENAME, TYPE_STRING)	///< The name of the offset parameter
-END_SKIN_ELEMENT_WITH_MEMBERS (KnobElement)
-DEFINE_SKIN_ENUMERATION (TAG_KNOB, ATTR_OPTIONS, Knob::customStyles)
+DEFINE_CLASS_HIDDEN (KnobElement, SliderElement)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (KnobElement, SliderElement, TAG_KNOB, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (KnobElement, DOC_GROUP_CONTROLS)
+DEFINE_TYPELIB_RELATED_CLASS (KnobElement, Knob)
+BEGIN_TYPELIB_MEMBERS (KnobElement)
+	ADD_TYPELIB_MEMBER_STRING (ATTR_REFERENCENAME) ///< The name of the offset parameter
+END_TYPELIB_MEMBERS (KnobElement)
+DEFINE_TYPELIB_ENUMERATION (TAG_KNOB, ATTR_OPTIONS, Knob::customStyles, SKIN_TYPELIB)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -994,9 +1071,13 @@ View* KnobElement::createView (const CreateArgs& args, View* view)
 // VectorPadElement
 //************************************************************************************************
 
-BEGIN_SKIN_ELEMENT_WITH_MEMBERS (VectorPadElement, ValueControlElement, TAG_VECTORPAD, DOC_GROUP_CONTROLS, VectorPad)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_YNAME, TYPE_STRING)	///< The name of the second (y) parameter
-END_SKIN_ELEMENT_WITH_MEMBERS (VectorPadElement)
+DEFINE_CLASS_HIDDEN (VectorPadElement, ValueControlElement)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (VectorPadElement, ValueControlElement, TAG_VECTORPAD, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (VectorPadElement, DOC_GROUP_CONTROLS)
+DEFINE_TYPELIB_RELATED_CLASS (VectorPadElement, VectorPad)
+BEGIN_TYPELIB_MEMBERS (VectorPadElement)
+	ADD_TYPELIB_MEMBER_STRING (ATTR_YNAME) ///< The name of the second (y) parameter
+END_TYPELIB_MEMBERS (VectorPadElement)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1032,10 +1113,14 @@ View* VectorPadElement::createView (const CreateArgs& args, View* view)
 // TriVectorPadElement
 //************************************************************************************************
 
-BEGIN_SKIN_ELEMENT_WITH_MEMBERS (TriVectorPadElement, VectorPadElement, TAG_TRIVECTORPAD, DOC_GROUP_CONTROLS, TriVectorPad)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_ZNAME, TYPE_STRING)	///< The name of the third (z) parameter (triangular vector pad)
-END_SKIN_ELEMENT_WITH_MEMBERS (TriVectorPadElement)
-DEFINE_SKIN_ENUMERATION (TAG_TRIVECTORPAD, ATTR_OPTIONS, TriVectorPad::customStyles)
+DEFINE_CLASS_HIDDEN (TriVectorPadElement, VectorPadElement)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (TriVectorPadElement, VectorPadElement, TAG_TRIVECTORPAD, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (TriVectorPadElement, DOC_GROUP_CONTROLS)
+DEFINE_TYPELIB_RELATED_CLASS (TriVectorPadElement, TriVectorPad)
+BEGIN_TYPELIB_MEMBERS (TriVectorPadElement)
+	ADD_TYPELIB_MEMBER_STRING (ATTR_ZNAME) ///< The name of the third (z) parameter (triangular vector pad)
+END_TYPELIB_MEMBERS (TriVectorPadElement)
+DEFINE_TYPELIB_ENUMERATION (TAG_TRIVECTORPAD, ATTR_OPTIONS, TriVectorPad::customStyles, SKIN_TYPELIB)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1081,13 +1166,17 @@ View* TriVectorPadElement::createView (const CreateArgs& args, View* view)
 // TextBoxElement
 //************************************************************************************************
 
-BEGIN_SKIN_ELEMENT_WITH_MEMBERS (TextBoxElement, ControlElement, TAG_TEXTBOX, DOC_GROUP_CONTROLS, TextBox)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_LABELNAME, TYPE_STRING)	///< (optional) specifies a parameter that gives a label text to be appended to the parameter value (like a unit).
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_COLORNAME, TYPE_STRING)	///< name of a color parameter that sets the textcolor or helps switching the text color depending on the background luminance
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_TEXTTRIMMODE, TYPE_ENUM)	///< how the text should be abbreviated when it doesn't fit in the view
-END_SKIN_ELEMENT_WITH_MEMBERS (TextBoxElement)
-DEFINE_SKIN_ENUMERATION (TAG_TEXTBOX, ATTR_OPTIONS, TextBox::customStyles)
-DEFINE_SKIN_ENUMERATION (TAG_TEXTBOX, ATTR_TEXTTRIMMODE, FontElement::textTrimModes)
+DEFINE_CLASS_HIDDEN (TextBoxElement, ControlElement)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (TextBoxElement, ControlElement, TAG_TEXTBOX, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (TextBoxElement, DOC_GROUP_CONTROLS)
+DEFINE_TYPELIB_RELATED_CLASS (TextBoxElement, TextBox)
+BEGIN_TYPELIB_MEMBERS (TextBoxElement)
+	ADD_TYPELIB_MEMBER_STRING (ATTR_LABELNAME) ///< (optional) specifies a parameter that gives a label text to be appended to the parameter value (like a unit).
+	ADD_TYPELIB_MEMBER_STRING (ATTR_COLORNAME) ///< name of a color parameter that sets the textcolor or helps switching the text color depending on the background luminance
+	ADD_TYPELIB_MEMBER (ATTR_TEXTTRIMMODE, TypeNames::kEnum) ///< how the text should be abbreviated when it doesn't fit in the view
+END_TYPELIB_MEMBERS (TextBoxElement)
+DEFINE_TYPELIB_ENUMERATION (TAG_TEXTBOX, ATTR_OPTIONS, TextBox::customStyles, SKIN_TYPELIB)
+DEFINE_TYPELIB_ENUMERATION (TAG_TEXTBOX, ATTR_TEXTTRIMMODE, FontElement::textTrimModes, SKIN_TYPELIB)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1162,14 +1251,18 @@ View* TextBoxElement::createView (const CreateArgs& args, View* view)
 // EditBoxElement
 //************************************************************************************************
 
-BEGIN_SKIN_ELEMENT_WITH_MEMBERS (EditBoxElement, TextBoxElement, TAG_EDITBOX, DOC_GROUP_CONTROLS, EditBox)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_RETURNKEY_TYPE, TYPE_ENUM)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_KEYBOARD_TYPE, TYPE_ENUM)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_PLACEHOLDER, TYPE_STRING)	///< optional placeholder string that is displayed with textcolor.placeholder when editString is empty
-END_SKIN_ELEMENT_WITH_MEMBERS (EditBoxElement)
-DEFINE_SKIN_ENUMERATION (TAG_EDITBOX, ATTR_RETURNKEY_TYPE, NativeTextControl::returnKeyTypes)
-DEFINE_SKIN_ENUMERATION (TAG_EDITBOX, ATTR_KEYBOARD_TYPE, NativeTextControl::keyboardTypes)
-DEFINE_SKIN_ENUMERATION (TAG_EDITBOX, ATTR_OPTIONS, EditBox::customStyles)
+DEFINE_CLASS_HIDDEN (EditBoxElement, TextBoxElement)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (EditBoxElement, TextBoxElement, TAG_EDITBOX, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (EditBoxElement, DOC_GROUP_CONTROLS)
+DEFINE_TYPELIB_RELATED_CLASS (EditBoxElement, EditBox)
+BEGIN_TYPELIB_MEMBERS (EditBoxElement)
+	ADD_TYPELIB_MEMBER (ATTR_RETURNKEY_TYPE, TypeNames::kEnum)
+	ADD_TYPELIB_MEMBER (ATTR_KEYBOARD_TYPE, TypeNames::kEnum)
+	ADD_TYPELIB_MEMBER_STRING (ATTR_PLACEHOLDER) ///< optional placeholder string that is displayed with textcolor.placeholder when editString is empty
+END_TYPELIB_MEMBERS (EditBoxElement)
+DEFINE_TYPELIB_ENUMERATION (TAG_EDITBOX, ATTR_RETURNKEY_TYPE, NativeTextControl::returnKeyTypes, SKIN_TYPELIB)
+DEFINE_TYPELIB_ENUMERATION (TAG_EDITBOX, ATTR_KEYBOARD_TYPE, NativeTextControl::keyboardTypes, SKIN_TYPELIB)
+DEFINE_TYPELIB_ENUMERATION (TAG_EDITBOX, ATTR_OPTIONS, EditBox::customStyles, SKIN_TYPELIB)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1255,7 +1348,10 @@ View* EditBoxElement::createView (const CreateArgs& args, View* view)
 // TextEditorElement
 //************************************************************************************************
 
-DEFINE_SKIN_ELEMENT (TextEditorElement, EditBoxElement, TAG_TEXTEDITOR, DOC_GROUP_CONTROLS, TextEditor)
+DEFINE_CLASS_HIDDEN (TextEditorElement, EditBoxElement)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (TextEditorElement, EditBoxElement, TAG_TEXTEDITOR, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (TextEditorElement, DOC_GROUP_CONTROLS)
+DEFINE_TYPELIB_RELATED_CLASS (TextEditorElement, TextEditor)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1317,10 +1413,14 @@ View* TextEditorElement::createView (const CreateArgs& args, View* view)
 // ValueBoxElement
 //************************************************************************************************
 
-BEGIN_SKIN_ELEMENT_WITH_MEMBERS (ValueBoxElement, EditBoxElement, TAG_VALUEBOX, DOC_GROUP_CONTROLS, ValueBox)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_XYEDITING, TYPE_INT)	///< X/Y edit mode distance
-END_SKIN_ELEMENT_WITH_MEMBERS (ValueBoxElement)
-DEFINE_SKIN_ENUMERATION (TAG_VALUEBOX, ATTR_OPTIONS, ValueBox::customStyles)
+DEFINE_CLASS_HIDDEN (ValueBoxElement, EditBoxElement)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (ValueBoxElement, EditBoxElement, TAG_VALUEBOX, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (ValueBoxElement, DOC_GROUP_CONTROLS)
+DEFINE_TYPELIB_RELATED_CLASS (ValueBoxElement, ValueBox)
+BEGIN_TYPELIB_MEMBERS (ValueBoxElement)
+	ADD_TYPELIB_MEMBER (ATTR_XYEDITING, TypeNames::kInt) ///< X/Y edit mode distance
+END_TYPELIB_MEMBERS (ValueBoxElement)
+DEFINE_TYPELIB_ENUMERATION (TAG_VALUEBOX, ATTR_OPTIONS, ValueBox::customStyles, SKIN_TYPELIB)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1364,12 +1464,16 @@ View* ValueBoxElement::createView (const CreateArgs& args, View* view)
 // SelectBoxElement
 //************************************************************************************************
 
-BEGIN_SKIN_ELEMENT_WITH_MEMBERS (SelectBoxElement, TextBoxElement, TAG_SELECTBOX, DOC_GROUP_CONTROLS, SelectBox)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_POPUP, TYPE_ENUM)			///< Specifies the alignment of the popup menu relative to the SelectBox.
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_POPUPSTYLE, TYPE_STRING)	///< Name of a Style that is applied to the popup menu
-END_SKIN_ELEMENT_WITH_MEMBERS (SelectBoxElement)
-DEFINE_SKIN_ENUMERATION_PARENT (TAG_SELECTBOX, ATTR_POPUP, nullptr, TAG_POPUPBOX, ATTR_POPUP)
-DEFINE_SKIN_ENUMERATION (TAG_SELECTBOX, ATTR_OPTIONS, SelectBox::customStyles)
+DEFINE_CLASS_HIDDEN (SelectBoxElement, TextBoxElement)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (SelectBoxElement, TextBoxElement, TAG_SELECTBOX, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (SelectBoxElement, DOC_GROUP_CONTROLS)
+DEFINE_TYPELIB_RELATED_CLASS (SelectBoxElement, SelectBox)
+BEGIN_TYPELIB_MEMBERS (SelectBoxElement)
+	ADD_TYPELIB_MEMBER (ATTR_POPUP, TypeNames::kEnum) ///< Specifies the alignment of the popup menu relative to the SelectBox.
+	ADD_TYPELIB_MEMBER_STRING (ATTR_POPUPSTYLE) ///< Name of a Style that is applied to the popup menu
+END_TYPELIB_MEMBERS (SelectBoxElement)
+DEFINE_TYPELIB_ENUMERATION_WITH_PARENT (TAG_SELECTBOX, ATTR_POPUP, nullptr, TAG_POPUPBOX, ATTR_POPUP, SKIN_TYPELIB)
+DEFINE_TYPELIB_ENUMERATION (TAG_SELECTBOX, ATTR_OPTIONS, SelectBox::customStyles, SKIN_TYPELIB)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1434,14 +1538,18 @@ View* SelectBoxElement::createView (const CreateArgs& args, View* view)
 // ComboBoxElement
 //************************************************************************************************
 
-BEGIN_SKIN_ELEMENT_WITH_MEMBERS (ComboBoxElement, SelectBoxElement, TAG_COMBOBOX, DOC_GROUP_CONTROLS, ComboBox)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_EDITNAME, TYPE_STRING)	///< Specifies the parameter, that is used for the edit field of the combo box. The controller is responsible for updating the menu part of the combo box.
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_RETURNKEY_TYPE, TYPE_ENUM)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_KEYBOARD_TYPE, TYPE_ENUM)
-END_SKIN_ELEMENT_WITH_MEMBERS (ComboBoxElement)
-DEFINE_SKIN_ENUMERATION_PARENT (TAG_COMBOBOX, ATTR_RETURNKEY_TYPE, nullptr, TAG_EDITBOX, ATTR_RETURNKEY_TYPE)
-DEFINE_SKIN_ENUMERATION (TAG_COMBOBOX, ATTR_KEYBOARD_TYPE, NativeTextControl::keyboardTypes)
-DEFINE_SKIN_ENUMERATION (TAG_COMBOBOX, ATTR_OPTIONS, ComboBox::customStyles)
+DEFINE_CLASS_HIDDEN (ComboBoxElement, SelectBoxElement)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (ComboBoxElement, SelectBoxElement, TAG_COMBOBOX, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (ComboBoxElement, DOC_GROUP_CONTROLS)
+DEFINE_TYPELIB_RELATED_CLASS (ComboBoxElement, ComboBox)
+BEGIN_TYPELIB_MEMBERS (ComboBoxElement)
+	ADD_TYPELIB_MEMBER_STRING (ATTR_EDITNAME) ///< Specifies the parameter, that is used for the edit field of the combo box. The controller is responsible for updating the menu part of the combo box.
+	ADD_TYPELIB_MEMBER (ATTR_RETURNKEY_TYPE, TypeNames::kEnum)
+	ADD_TYPELIB_MEMBER (ATTR_KEYBOARD_TYPE, TypeNames::kEnum)
+END_TYPELIB_MEMBERS (ComboBoxElement)
+DEFINE_TYPELIB_ENUMERATION_WITH_PARENT (TAG_COMBOBOX, ATTR_RETURNKEY_TYPE, nullptr, TAG_EDITBOX, ATTR_RETURNKEY_TYPE, SKIN_TYPELIB)
+DEFINE_TYPELIB_ENUMERATION (TAG_COMBOBOX, ATTR_KEYBOARD_TYPE, NativeTextControl::keyboardTypes, SKIN_TYPELIB)
+DEFINE_TYPELIB_ENUMERATION (TAG_COMBOBOX, ATTR_OPTIONS, ComboBox::customStyles, SKIN_TYPELIB)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1492,7 +1600,7 @@ View* ComboBoxElement::createView (const CreateArgs& args, View* view)
 	{
 		IParameter* selectParam = getParameter (args);
 		IParameter* editParam = !editName.isEmpty () ? getParameter (args, editName, this) : nullptr;
-		view = NEW ComboBox (size, selectParam, editParam, options, title);
+		view = NEW ComboBox (getTextBoxSize (), selectParam, editParam, options, title);
 		((ComboBox*)view)->setReturnKeyType (returnKeyType);
 		((ComboBox*)view)->setKeyboardType (keyboardType);
 	}
@@ -1503,8 +1611,11 @@ View* ComboBoxElement::createView (const CreateArgs& args, View* view)
 // SelectBoxElement
 //************************************************************************************************
 
-DEFINE_SKIN_ELEMENT (SegmentBoxElement, ControlElement, TAG_SEGMENTBOX, DOC_GROUP_CONTROLS, SegmentBox)
-DEFINE_SKIN_ENUMERATION (TAG_SEGMENTBOX, ATTR_OPTIONS, SegmentBox::customStyles)
+DEFINE_CLASS_HIDDEN (SegmentBoxElement, ControlElement)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (SegmentBoxElement, ControlElement, TAG_SEGMENTBOX, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (SegmentBoxElement, DOC_GROUP_CONTROLS)
+DEFINE_TYPELIB_RELATED_CLASS (SegmentBoxElement, SegmentBox)
+DEFINE_TYPELIB_ENUMERATION (TAG_SEGMENTBOX, ATTR_OPTIONS, SegmentBox::customStyles, SKIN_TYPELIB)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1551,11 +1662,15 @@ View* SegmentBoxElement::createView (const CreateArgs& args, View* view)
 // ColorBoxElement
 //************************************************************************************************
 
-BEGIN_SKIN_ELEMENT_WITH_MEMBERS (ColorBoxElement, ControlElement, TAG_COLORBOX, DOC_GROUP_CONTROLS, ColorBox)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_RADIUS, TYPE_INT)			///< For a color box with rounded courners, set the radius attribute to the desired value.
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_SELECTNAME, TYPE_STRING)	///< This attribute is the name of an optional parameter, that can be triggered, when the user clicks on the color box.
-END_SKIN_ELEMENT_WITH_MEMBERS (ColorBoxElement)
-DEFINE_SKIN_ENUMERATION (TAG_COLORBOX, ATTR_OPTIONS, ColorBox::customStyles)
+DEFINE_CLASS_HIDDEN (ColorBoxElement, ControlElement)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (ColorBoxElement, ControlElement, TAG_COLORBOX, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (ColorBoxElement, DOC_GROUP_CONTROLS)
+DEFINE_TYPELIB_RELATED_CLASS (ColorBoxElement, ColorBox)
+BEGIN_TYPELIB_MEMBERS (ColorBoxElement)
+	ADD_TYPELIB_MEMBER (ATTR_RADIUS, TypeNames::kInt) ///< For a color box with rounded courners, set the radius attribute to the desired value.
+	ADD_TYPELIB_MEMBER_STRING (ATTR_SELECTNAME) ///< This attribute is the name of an optional parameter, that can be triggered, when the user clicks on the color box.
+END_TYPELIB_MEMBERS (ColorBoxElement)
+DEFINE_TYPELIB_ENUMERATION (TAG_COLORBOX, ATTR_OPTIONS, ColorBox::customStyles, SKIN_TYPELIB)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1606,8 +1721,11 @@ View* ColorBoxElement::createView (const CreateArgs& args, View* view)
 // UpDownButtonElement
 //************************************************************************************************
 
-DEFINE_SKIN_ELEMENT (UpDownButtonElement, ButtonElement, TAG_UPDOWNBUTTON, DOC_GROUP_CONTROLS, UpDownButton)
-DEFINE_SKIN_ENUMERATION (TAG_UPDOWNBUTTON, ATTR_OPTIONS, UpDownButton::customStyles)
+DEFINE_CLASS_HIDDEN (UpDownButtonElement, ButtonElement)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (UpDownButtonElement, ButtonElement, TAG_UPDOWNBUTTON, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (UpDownButtonElement, DOC_GROUP_CONTROLS)
+DEFINE_TYPELIB_RELATED_CLASS (UpDownButtonElement, UpDownButton)
+DEFINE_TYPELIB_ENUMERATION (TAG_UPDOWNBUTTON, ATTR_OPTIONS, UpDownButton::customStyles, SKIN_TYPELIB)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1634,7 +1752,10 @@ View* UpDownButtonElement::createView (const CreateArgs& args, View* view)
 // UpDownBoxElement
 //************************************************************************************************
 
-DEFINE_SKIN_ELEMENT (UpDownBoxElement, ControlElement, TAG_UPDOWNBOX, DOC_GROUP_CONTROLS, UpDownBox) 
+DEFINE_CLASS_HIDDEN (UpDownBoxElement, ControlElement)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (UpDownBoxElement, ControlElement, TAG_UPDOWNBOX, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (UpDownBoxElement, DOC_GROUP_CONTROLS) 
+DEFINE_TYPELIB_RELATED_CLASS (UpDownBoxElement, UpDownBox)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1661,9 +1782,13 @@ View* UpDownBoxElement::createView (const CreateArgs& args, View* view)
 // SwipeBoxElement
 //************************************************************************************************
 
-BEGIN_SKIN_ELEMENT_WITH_MEMBERS (SwipeBoxElement, ControlElement, TAG_SWIPEBOX, DOC_GROUP_CONTROLS, SwipeBox)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_TARGET, TYPE_STRING)	///< (optional) Name of a target Contol class. Only controls of the given class will be used when swiping
-END_SKIN_ELEMENT_WITH_MEMBERS (SwipeBoxElement)
+DEFINE_CLASS_HIDDEN (SwipeBoxElement, ControlElement)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (SwipeBoxElement, ControlElement, TAG_SWIPEBOX, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (SwipeBoxElement, DOC_GROUP_CONTROLS)
+DEFINE_TYPELIB_RELATED_CLASS (SwipeBoxElement, SwipeBox)
+BEGIN_TYPELIB_MEMBERS (SwipeBoxElement)
+	ADD_TYPELIB_MEMBER_STRING (ATTR_TARGET) ///< (optional) Name of a target Contol class. Only controls of the given class will be used when swiping
+END_TYPELIB_MEMBERS (SwipeBoxElement)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1699,15 +1824,19 @@ View* SwipeBoxElement::createView (const CreateArgs& args, View* view)
 // DividerElement
 //************************************************************************************************
 
-BEGIN_SKIN_ELEMENT_WITH_MEMBERS (DividerElement, ControlElement, TAG_DIVIDER, DOC_GROUP_LAYOUT, Divider)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_IMAGE, TYPE_STRING)	///< name of a background image
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_OUTREACH, TYPE_INT)	///< the divider area is extended by this number of pixels outside the divider. Only works in a layout container.
-END_SKIN_ELEMENT_WITH_MEMBERS (DividerElement)
-BEGIN_SKIN_ELEMENT_ATTRIBUTES (DividerElement)
-	ADD_SKIN_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_VIEWSSTATEMENTS)
-	ADD_SKIN_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_FRAMECHILDREN)
-END_SKIN_ELEMENT_ATTRIBUTES (DividerElement)
-DEFINE_SKIN_ENUMERATION (TAG_DIVIDER, ATTR_OPTIONS, Divider::customStyles)
+DEFINE_CLASS_HIDDEN (DividerElement, ControlElement)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (DividerElement, ControlElement, TAG_DIVIDER, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (DividerElement, DOC_GROUP_LAYOUT)
+DEFINE_TYPELIB_RELATED_CLASS (DividerElement, Divider)
+BEGIN_TYPELIB_MEMBERS (DividerElement)
+	ADD_TYPELIB_MEMBER_STRING (ATTR_IMAGE) ///< name of a background image
+	ADD_TYPELIB_MEMBER (ATTR_OUTREACH, TypeNames::kInt) ///< the divider area is extended by this number of pixels outside the divider. Only works in a layout container.
+END_TYPELIB_MEMBERS (DividerElement)
+BEGIN_TYPELIB_ATTRIBUTES (DividerElement)
+	ADD_TYPELIB_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_VIEWSSTATEMENTS)
+	ADD_TYPELIB_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_FRAMECHILDREN)
+END_TYPELIB_ATTRIBUTES (DividerElement)
+DEFINE_TYPELIB_ENUMERATION (TAG_DIVIDER, ATTR_OPTIONS, Divider::customStyles, SKIN_TYPELIB)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1786,10 +1915,14 @@ View* DividerElement::createView (const CreateArgs& args, View* view)
 // AlignViewElement
 //************************************************************************************************
 
-BEGIN_SKIN_ELEMENT_WITH_MEMBERS (AlignViewElement, ControlElement, TAG_ALIGNVIEW, DOC_GROUP_LAYOUT, AlignView)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_PERSISTENCE_ID, TYPE_STRING)	///< storage id used to store and restore the selected alignment
-END_SKIN_ELEMENT_WITH_MEMBERS (AlignViewElement)
-DEFINE_SKIN_ENUMERATION (TAG_ALIGNVIEW, ATTR_OPTIONS, AlignView::customStyles)
+DEFINE_CLASS_HIDDEN (AlignViewElement, ControlElement)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (AlignViewElement, ControlElement, TAG_ALIGNVIEW, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (AlignViewElement, DOC_GROUP_LAYOUT)
+DEFINE_TYPELIB_RELATED_CLASS (AlignViewElement, AlignView)
+BEGIN_TYPELIB_MEMBERS (AlignViewElement)
+	ADD_TYPELIB_MEMBER_STRING (ATTR_PERSISTENCE_ID) ///< storage id used to store and restore the selected alignment
+END_TYPELIB_MEMBERS (AlignViewElement)
+DEFINE_TYPELIB_ENUMERATION (TAG_ALIGNVIEW, ATTR_OPTIONS, AlignView::customStyles, SKIN_TYPELIB)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1843,7 +1976,10 @@ void AlignViewElement::viewCreated (View* view)
 // ScrollBarElement
 //************************************************************************************************
 
-DEFINE_SKIN_ELEMENT (ScrollBarElement, ControlElement, TAG_SCROLLBAR, DOC_GROUP_CONTROLS, ScrollBar) 
+DEFINE_CLASS_HIDDEN (ScrollBarElement, ControlElement)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (ScrollBarElement, ControlElement, TAG_SCROLLBAR, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (ScrollBarElement, DOC_GROUP_CONTROLS) 
+DEFINE_TYPELIB_RELATED_CLASS (ScrollBarElement, ScrollBar)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1878,10 +2014,14 @@ View* ScrollBarElement::createView (const CreateArgs& args, View* view)
 // ScrollButtonElement
 //************************************************************************************************
 
-BEGIN_SKIN_ELEMENT_WITH_MEMBERS (ScrollButtonElement, ScrollBarElement, TAG_SCROLLBUTTON, DOC_GROUP_CONTROLS, ScrollButton)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_PART, TYPE_ENUM)
-END_SKIN_ELEMENT_WITH_MEMBERS (ScrollButtonElement)
-DEFINE_SKIN_ENUMERATION (TAG_SCROLLBUTTON, ATTR_PART, ScrollBar::partNames)
+DEFINE_CLASS_HIDDEN (ScrollButtonElement, ScrollBarElement)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (ScrollButtonElement, ScrollBarElement, TAG_SCROLLBUTTON, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (ScrollButtonElement, DOC_GROUP_CONTROLS)
+DEFINE_TYPELIB_RELATED_CLASS (ScrollButtonElement, ScrollButton)
+BEGIN_TYPELIB_MEMBERS (ScrollButtonElement)
+	ADD_TYPELIB_MEMBER (ATTR_PART, TypeNames::kEnum)
+END_TYPELIB_MEMBERS (ScrollButtonElement)
+DEFINE_TYPELIB_ENUMERATION (TAG_SCROLLBUTTON, ATTR_PART, ScrollBar::partNames, SKIN_TYPELIB)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1914,7 +2054,10 @@ View* ScrollButtonElement::createView (const CreateArgs& args, View* view)
 // PageControlElement
 //************************************************************************************************
 
-DEFINE_SKIN_ELEMENT (PageControlElement, ScrollBarElement, TAG_PAGECONTROL, DOC_GROUP_CONTROLS, PageControl) 
+DEFINE_CLASS_HIDDEN (PageControlElement, ScrollBarElement)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (PageControlElement, ScrollBarElement, TAG_PAGECONTROL, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (PageControlElement, DOC_GROUP_CONTROLS) 
+DEFINE_TYPELIB_RELATED_CLASS (PageControlElement, PageControl)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1932,10 +2075,14 @@ View* PageControlElement::createView (const CreateArgs& args, View* view)
 // ScrollPickerElement
 //************************************************************************************************
 
-BEGIN_SKIN_ELEMENT_WITH_MEMBERS (ScrollPickerElement, ControlElement, TAG_SCROLLPICKER, DOC_GROUP_CONTROLS, ScrollPicker)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_APPLYNAME, TYPE_STRING)	///< parameter name for an optional, transparent apply button in the center
-END_SKIN_ELEMENT_WITH_MEMBERS (ScrollPickerElement)
-DEFINE_SKIN_ENUMERATION (TAG_SCROLLPICKER, ATTR_OPTIONS, ScrollPicker::customStyles)
+DEFINE_CLASS_HIDDEN (ScrollPickerElement, ControlElement)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (ScrollPickerElement, ControlElement, TAG_SCROLLPICKER, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (ScrollPickerElement, DOC_GROUP_CONTROLS)
+DEFINE_TYPELIB_RELATED_CLASS (ScrollPickerElement, ScrollPicker)
+BEGIN_TYPELIB_MEMBERS (ScrollPickerElement)
+	ADD_TYPELIB_MEMBER_STRING (ATTR_APPLYNAME) ///< parameter name for an optional, transparent apply button in the center
+END_TYPELIB_MEMBERS (ScrollPickerElement)
+DEFINE_TYPELIB_ENUMERATION (TAG_SCROLLPICKER, ATTR_OPTIONS, ScrollPicker::customStyles, SKIN_TYPELIB)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1987,10 +2134,14 @@ View* ScrollPickerElement::createView (const CreateArgs& args, View* view)
 // TabViewElement
 //************************************************************************************************
 
-BEGIN_SKIN_ELEMENT_WITH_MEMBERS (TabViewElement, ControlElement, TAG_TABVIEW, DOC_GROUP_CONTROLS, TabView)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_PERSISTENCE_ID, TYPE_STRING)	///< A storage id used to store and restore the index of the current tab
-END_SKIN_ELEMENT_WITH_MEMBERS (TabViewElement)
-DEFINE_SKIN_ENUMERATION (TAG_TABVIEW, ATTR_OPTIONS, TabView::customStyles)
+DEFINE_CLASS_HIDDEN (TabViewElement, ControlElement)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (TabViewElement, ControlElement, TAG_TABVIEW, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (TabViewElement, DOC_GROUP_CONTROLS)
+DEFINE_TYPELIB_RELATED_CLASS (TabViewElement, TabView)
+BEGIN_TYPELIB_MEMBERS (TabViewElement)
+	ADD_TYPELIB_MEMBER_STRING (ATTR_PERSISTENCE_ID) ///< A storage id used to store and restore the index of the current tab
+END_TYPELIB_MEMBERS (TabViewElement)
+DEFINE_TYPELIB_ENUMERATION (TAG_TABVIEW, ATTR_OPTIONS, TabView::customStyles, SKIN_TYPELIB)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 

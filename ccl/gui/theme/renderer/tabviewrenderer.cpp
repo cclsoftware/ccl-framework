@@ -7,7 +7,7 @@
 // Licensed for use under either:
 //  1. a Commercial License provided by CCL Software Licensing GmbH, or
 //  2. GNU Affero General Public License v3.0 (AGPLv3).
-// 
+//
 // You must choose and comply with one of the above licensing options.
 // For more information, please visit ccl.dev.
 //
@@ -20,6 +20,7 @@
 
 #include "ccl/gui/views/graphicsport.h"
 #include "ccl/gui/graphics/graphicspath.h"
+#include "ccl/gui/controls/textmodel.h"
 
 #include "ccl/public/math/mathprimitives.h"
 #include "ccl/public/gui/graphics/types.h"
@@ -31,16 +32,26 @@ namespace CCL {
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-enum
+enum TabMetrics
 {
-	kTabSlope	= 20,
+	kTabSlope = 20,
 	kTabControl	= 10,
 	kMenuTabWidth = 16,
 	kContentMargin = 3,
-	kTabMargin = 0,
 	kTabSpacing = 0,
+	kTabMenuSpacing = 0,
 	kTabIconSpacing = 0
 };
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+namespace AtomName
+{
+	const CStringPtr kTabBackground = "tab.background";
+	const CStringPtr kTabIcon = "tab.icon";
+	const CStringPtr kTabValue = "tab.value";
+	const CStringPtr kTabMenuIcon = "tab.menuicon";
+}
 
 //************************************************************************************************
 // TabViewGeometry
@@ -66,9 +77,7 @@ template<> struct TabViewGeometry<Styles::kHorizontal>
 	static inline Coord& getStartCoord (Rect& rect)						{ return rect.left; }
 	static inline Coord& getEndCoord (Rect& rect)						{ return rect.right; }
 
-	static inline void makePath (GraphicsPath& path, RectRef r);
-	static inline void drawLabel (GraphicsDevice& port, RectRef rect, StringRef text, FontRef font, BrushRef brush, IImage* icon, Coord tabMargin, Coord iconSpacing, bool center);
-	static inline void drawButton (GraphicsDevice& port, RectRef rect, IImage* button);
+	static inline void layoutLabel (RenderAtom& iconAtom, RenderAtom& valueAtom, Transform& labelTransform, RectRef rect, StringRef text, IImage* icon, Coord iconSpacing, bool center);
 };
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -88,158 +97,676 @@ template<> struct TabViewGeometry<Styles::kVertical>
 	static inline Coord& getStartCoord (Rect& rect)						{ return rect.top; }
 	static inline Coord& getEndCoord (Rect& rect)						{ return rect.bottom; }
 
-	static inline void makePath (GraphicsPath& path, RectRef r);
-	static inline void drawLabel (GraphicsDevice& port, RectRef rect, StringRef text, FontRef font, BrushRef brush, IImage* icon, Coord tabMargin, Coord iconSpacing, bool center);
-	static inline void drawButton (GraphicsDevice& port, RectRef rect, IImage* button);
+	static inline void layoutLabel (RenderAtom& iconAtom, RenderAtom& valueAtom, Transform& labelTransform, RectRef rect, StringRef text, IImage* icon, Coord iconSpacing, bool center);
 };
 
-} // namespace CCL 
+} // namespace CCL
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-inline void TabViewGeometry<Styles::kHorizontal>::makePath (GraphicsPath& path, RectRef r)
+inline void TabViewGeometry<Styles::kHorizontal>::layoutLabel (RenderAtom& iconAtom, RenderAtom& valueAtom, Transform& labelTransform, RectRef rect, StringRef text, IImage* icon, Coord iconSpacing, bool center)
 {
-	Point p1 (r.left + kTabSlope, r.top);
-	Point p2 (r.right - kTabSlope, r.top);
-	
-	path.addBezier (Point (r.left, r.bottom), Point (r.left + kTabControl, r.bottom),
-		Point (r.left + kTabSlope - kTabControl, r.top), p1);
-	path.lineTo (p2);
-	path.lineTo (Point (r.right - kTabSlope, r.top));
-	path.addBezier (Point (r.right - kTabSlope, r.top), Point (r.right - kTabSlope + kTabControl, r.top),
-		Point (r.right - kTabControl, r.bottom), Point (r.right, r.bottom));
-}
+	labelTransform = Transform ();
 
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
-inline void TabViewGeometry<Styles::kHorizontal>::drawLabel (GraphicsDevice& port, RectRef rect, StringRef text, FontRef font, BrushRef brush, IImage* icon, Coord tabMargin, Coord iconSpacing, bool center)
-{
 	Rect labelRect (rect);
 	if(icon)
 	{
-		Rect iconSize (0, 0, icon->getWidth (), icon->getHeight ());
-		Rect iconRect (iconSize);
+		Rect iconRect (0, 0, icon->getWidth (), icon->getHeight ());
 		if(text.isEmpty ())
 			iconRect.center (rect);
 		else
 		{
 			iconRect.centerV (rect);
-			iconRect.offset (rect.left + (tabMargin / 2) + (kTabControl / 2));
+			iconRect.offset (rect.left + (kTabControl / 2));
 		}
 
-		port.drawImage (icon, iconSize, iconRect);
-
+		iconAtom.setSize (rectIntToF (iconRect));
 		labelRect.left = iconRect.right + iconSpacing;
 	}
 
 	if(!text.isEmpty ())
-		port.drawString (labelRect, text, font, brush, center ? Alignment::kCenter : Alignment::kLeftCenter);
+	{
+		RectF textBounds;
+		valueAtom.setSize (rectIntToF (labelRect));
+		valueAtom.updateTextSize (textBounds);
+
+		float top = labelRect.top + (labelRect.getHeight () - textBounds.getHeight ()) / 2.f;
+		float left = center ? (labelRect.left + (labelRect.getWidth () - textBounds.getWidth ()) / 2.f) : (float)labelRect.left;
+		valueAtom.setSize (RectF (left, top, left + textBounds.getWidth (), top + textBounds.getHeight ()));
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-inline void TabViewGeometry<Styles::kHorizontal>::drawButton (GraphicsDevice& port, RectRef rect, IImage* button)
-{
-	port.drawImage (button, Rect (0, 0, button->getWidth (), button->getHeight ()), rect);
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
-inline void TabViewGeometry<Styles::kVertical>::makePath (GraphicsPath& path, RectRef r)
-{
-	Point p1 (r.right, r.top + kTabSlope);
-	Point p2 (r.right, r.bottom - kTabSlope);
-	path.addBezier (Point (r.left, r.top), Point (r.left, r.top + kTabControl),
-		Point (r.right, r.top + kTabSlope - kTabControl), p1);
-	path.lineTo (p2);
-	path.addBezier (p2, Point (r.right, r.bottom - kTabSlope + kTabControl),
-		Point (r.right, r.bottom - kTabControl), Point (r.left, r.bottom));
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
-inline void TabViewGeometry<Styles::kVertical>::drawLabel (GraphicsDevice& port, RectRef rect, StringRef text, FontRef font, BrushRef brush, IImage* icon, Coord tabMargin, Coord iconSpacing, bool center)
+inline void TabViewGeometry<Styles::kVertical>::layoutLabel (RenderAtom& iconAtom, RenderAtom& valueAtom, Transform& labelTransform, RectRef rect, StringRef text, IImage* icon, Coord iconSpacing, bool center)
 {
 	ASSERT (icon == nullptr) // not implemented!
+	iconAtom.isHidden (true);
 
-	Transform t;
-	t.translate ((float)rect.right, (float)rect.top);
-	t.rotate (Math::degreesToRad (90.f));
+	labelTransform = Transform ();
+	labelTransform.translate ((float)rect.right, (float)rect.top);
+	labelTransform.rotate (Math::degreesToRad (90.f));
+
+	if(text.isEmpty ())
+		return;
+
 	Rect r (0, 0, rect.getHeight (), rect.getWidth ());
-	port.saveState ();
-	port.addTransform (t);
-	port.drawString (r, text, font, brush, center ? Alignment::kCenter : Alignment::kLeftCenter);
-	port.restoreState ();
+
+	RectF textBounds;
+	valueAtom.setSize (rectIntToF (r));
+	valueAtom.updateTextSize (textBounds);
+
+	float top = (r.getHeight () - textBounds.getHeight ()) / 2.f;
+	float left = center ? (r.getWidth () - textBounds.getWidth ()) / 2.f : 0.f;
+	valueAtom.setSize (RectF (left, top, left + textBounds.getWidth (), top + textBounds.getHeight ()));
+}
+
+//************************************************************************************************
+// TabViewRenderer::TabItemRenderer
+/** Draws one tab. Its atoms are kept from one appearance of the tab to the next, so they animate. */
+//************************************************************************************************
+
+class TabViewRenderer::TabItemRenderer: public AtomRenderer
+{
+public:
+	DECLARE_CLASS_ABSTRACT (TabItemRenderer, AtomRenderer)
+
+	TabItemRenderer (TabViewRenderer& tabViewRenderer);
+	~TabItemRenderer ();
+
+	enum TabAtomTags
+	{
+		kBackAtom,
+		kIconAtom,
+		kValueAtom,
+		kTabMenuAtom
+	};
+
+	void setAppearance (TabKind kind, int state, IImage* icon); ///< icon: the one the tab shows, nullptr for none
+	void setLabel (StringRef label, bool center);
+	void setSize (RectRef size);
+	void draw (IGraphics& graphics, const UpdateRgn& updateRgn);
+
+	// AtomRenderer
+	void draw (const UpdateRgn& updateRgn) override;
+	void updateAtoms () override;
+	void applyVisualStyle (RenderAtomTransaction& transaction) override;
+	bool getPartRect (Rect& rect, int partCode) override;
+	void invalidate (const RenderAtom& atom) override;
+
+protected:
+	TabViewRenderer& tabViewRenderer;
+	RenderAtom backAtom;
+	RenderAtom iconAtom;
+	RenderAtom valueAtom;
+	RenderAtom tabMenuAtom;
+	StringTextModel* textModel;
+	String label;
+	bool centered;
+	Rect size;
+	Transform labelTransform;
+	TabKind kind;
+	int state;
+	SharedPtr<IImage> icon;
+
+	#if LEGACY_STYLES_SUPPORTED
+	void applyLegacyStyle ();
+	#endif
+};
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+DEFINE_CLASS_ABSTRACT_HIDDEN (TabViewRenderer::TabItemRenderer, AtomRenderer)
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+TabViewRenderer::TabItemRenderer::TabItemRenderer (TabViewRenderer& _tabViewRenderer)
+: AtomRenderer (_tabViewRenderer.getVisualStyle (), _tabViewRenderer.getOwner ()),
+  tabViewRenderer (_tabViewRenderer),
+  backAtom (AtomName::kTabBackground, kBackAtom),
+  iconAtom (AtomName::kTabIcon, kIconAtom),
+  valueAtom (AtomName::kTabValue, kValueAtom),
+  tabMenuAtom (AtomName::kTabMenuIcon, kTabMenuAtom),
+  textModel (nullptr),
+  centered (true),
+  kind (kSingleTab),
+  state (0)
+{
+	textModel = NEW StringTextModel ();
+	valueAtom.setTextModel (textModel);
+	valueAtom.setTextFont (visualStyle->getTextFont ());
+
+	addAtom (backAtom);
+	addAtom (iconAtom);
+	addAtom (valueAtom);
+	addAtom (tabMenuAtom);
+
+	backAtom.isContentFill (true);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-inline void TabViewGeometry<Styles::kVertical>::drawButton (GraphicsDevice& port, RectRef rect, IImage* button)
+TabViewRenderer::TabItemRenderer::~TabItemRenderer ()
 {
-	port.drawImage (button, Rect (0, 0, button->getWidth (), button->getHeight ()), rect);
-	/*
-	Transform t;
-	t.translate ((float)rect.right, (float)rect.top);
-	t.rotate (Math::degreesToRad (90.f));
-	Rect r (0, 0, rect.getHeight (), rect.getWidth ());
-	port.saveState ();
-	port.addTransform (t);
-	port.drawImage (button, Rect (0, 0, button->getWidth (), button->getHeight ()), rect);
-	port.restoreState ();
-	*/
+	safe_release (textModel);
 }
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+void TabViewRenderer::TabItemRenderer::setAppearance (TabKind _kind, int _state, IImage* _icon)
+{
+	if(_kind == kind && _state == state && _icon == icon)
+		return;
+
+	kind = _kind;
+	state = _state;
+	icon = _icon;
+	invalidateStyleConditions ();
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+void TabViewRenderer::TabItemRenderer::setLabel (StringRef _label, bool center)
+{
+	centered = center;
+	if(_label == label)
+		return;
+
+	label = _label;
+	textModel->fromParamString (label);
+	valueAtom.needsTextLayoutRebuild (true);
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+void TabViewRenderer::TabItemRenderer::setSize (RectRef _size)
+{
+	size = _size;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+void TabViewRenderer::TabItemRenderer::updateAtoms ()
+{
+	SuperClass::updateAtoms ();
+
+	backAtom.setSize (rectIntToF (size));
+
+	RectRef padding = tabViewRenderer.padding;
+	Rect labelRect (size);
+	labelRect.left += padding.left;
+	labelRect.top += padding.top;
+	labelRect.right -= padding.right;
+	labelRect.bottom -= padding.bottom;
+
+	const Image* menuImage = tabMenuAtom.getImage ();
+	bool hasTabMenu = menuImage && (state & kTabStateOn) && owner->getStyle ().isCustomStyle (Styles::kTabViewBehaviorTabMenu);
+	tabMenuAtom.isHidden (!hasTabMenu);
+	if(hasTabMenu)
+	{
+		Rect menuRect (0, 0, menuImage->getWidth (), menuImage->getHeight ());
+		menuRect.offset (labelRect.right - menuRect.right);
+		menuRect.centerV (labelRect);
+		tabMenuAtom.setSize (rectIntToF (menuRect));
+		labelRect.right = menuRect.left - tabViewRenderer.tabMenuSpacing;
+	}
+
+	// the size of a shared image can depend on its frame
+	iconAtom.isHidden (!icon.isValid ());
+	if(icon)
+		icon->setCurrentFrame (iconAtom.getImageFrame ());
+
+	bool centerText = centered && !icon.isValid ();
+	Alignment alignment (centerText ? Alignment::kCenter : Alignment::kLeftCenter);
+	if(valueAtom.getTextFormat ().getAlignment ().align != alignment.align)
+	{
+		valueAtom.setTextFormat (TextFormat (alignment));
+		valueAtom.needsTextLayoutRebuild (true);
+	}
+
+	valueAtom.isHidden (label.isEmpty ());
+
+	if(owner->getStyle ().isVertical ())
+		TabViewGeometry<Styles::kVertical>::layoutLabel (iconAtom, valueAtom, labelTransform, labelRect, label, icon, tabViewRenderer.iconSpacing, centerText);
+	else
+		TabViewGeometry<Styles::kHorizontal>::layoutLabel (iconAtom, valueAtom, labelTransform, labelRect, label, icon, tabViewRenderer.iconSpacing, centerText);
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+void TabViewRenderer::TabItemRenderer::draw (IGraphics& graphics, const UpdateRgn& updateRgn)
+{
+	updateAtoms ();
+
+	backAtom.draw (graphics, updateRgn);
+	tabMenuAtom.draw (graphics, updateRgn);
+	iconAtom.draw (graphics, updateRgn);
+
+	TransformSetter transformSetter (graphics, labelTransform);
+	valueAtom.draw (graphics, updateRgn);
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+void TabViewRenderer::TabItemRenderer::draw (const UpdateRgn& updateRgn)
+{
+	GraphicsPort port (owner);
+	draw (port, updateRgn);
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+bool TabViewRenderer::TabItemRenderer::getPartRect (Rect& rect, int partCode)
+{
+	RenderAtom* atom = findAtom (partCode);
+	if(atom == nullptr || atom->isHidden ())
+		return false;
+
+	rect = rectFToInt (atom->getSize ());
+	return true;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+void TabViewRenderer::TabItemRenderer::applyVisualStyle (RenderAtomTransaction& transaction)
+{
+	setTabConditions (conditionContext, kind, state);
+
+	SuperClass::applyVisualStyle (transaction);
+
+	int styleFrame = backAtom.getImageFrame ();
+
+	#if LEGACY_STYLES_SUPPORTED
+	BEGIN_LEGACY_STYLES_ENABLED_BLOCK
+	applyLegacyStyle ();
+	END_LEGACY_STYLES_ENABLED_BLOCK
+	#endif
+
+	// named frames of the tab image follow the tab state, "imageframe" only applies to an image without them
+	int frameIndex = getTabImageFrame (backAtom.getImage (), state);
+	backAtom.setImageFrame (frameIndex >= 0 ? frameIndex : styleFrame);
+
+	// the TabViewRenderer decides about the image, as the icon takes up space within the tab
+	iconAtom.setImage (unknown_cast<Image> (icon));
+
+	auto getIconFrameName = [this] ()
+	{
+		if(state & kTabStateOn)
+			return ThemeNames::kNormalOn;
+		if(state & kTabStatePressed)
+			return ThemeNames::kPressed;
+		if(state & kTabStateMouseOver)
+			return ThemeNames::kMouseOver;
+		return ThemeNames::kNormal;
+	};
+
+	// the first frame stands in for a missing one
+	if(Image* iconImage = iconAtom.getImage ())
+		iconAtom.setImageFrame (ccl_max (0, iconImage->getFrameIndex (getIconFrameName ())));
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+void TabViewRenderer::TabItemRenderer::invalidate (const RenderAtom& atom)
+{
+	// An atom that is scaled or offset draws beyond its own rect, and in a vertical TabView the title is
+	// laid out in the coordinates of the rotated tab - so the whole tab is drawn again.
+	SuperClass::invalidate (backAtom);
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+#if LEGACY_STYLES_SUPPORTED
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+void TabViewRenderer::TabItemRenderer::applyLegacyStyle ()
+{
+	// A tab used to take its image from "first", "middle", "last" or "single" depending on its
+	// position within the row, and the menu button from "menuBackground".
+	IImage* image = tabViewRenderer.middleButton;
+	switch(kind)
+	{
+	case kLeftTab :
+		if(tabViewRenderer.firstButton)
+			image = tabViewRenderer.firstButton;
+		break;
+
+	case kRightTab :
+		if(tabViewRenderer.lastButton)
+			image = tabViewRenderer.lastButton;
+		break;
+
+	case kSingleTab :
+		if(tabViewRenderer.singleButton)
+			image = tabViewRenderer.singleButton;
+		break;
+
+	case kMenuTab :
+		// without an image of its own the menu button looks like the last tab
+		if(tabViewRenderer.menuBackground)
+			image = tabViewRenderer.menuBackground;
+		else if(tabViewRenderer.lastButton)
+			image = tabViewRenderer.lastButton;
+		break;
+
+	case kMiddleTab :
+		image = tabViewRenderer.middleButton;
+		break;
+	}
+
+	if(image)
+		backAtom.setImage (unknown_cast<Image> (image));
+
+	// "activetextcolor" was the title color of the active tab, "textcolor" the one of all others
+	Brush textBrush (visualStyle->getTextBrush ());
+	Color textColor;
+	bool hasLegacyTextColor = visualStyle->getGradient (StyleID::kTextColor) || visualStyle->getColor (textColor, StyleID::kTextColor);
+	if((state & kTabStateOn) && visualStyle->getColor (textColor, LegacyStyleID::kTabViewActiveTextColor))
+	{
+		textBrush = SolidBrush (textColor);
+		hasLegacyTextColor = true;
+	}
+
+	if(hasLegacyTextColor || !valueAtom.getBrush ().isVisible ())
+		valueAtom.setBrush (textBrush);
+
+	// "tabMenuIcon" is the menu icon the active tab displays
+	if(IImage* legacyTabMenuIcon = visualStyle->getImage (LegacyStyleID::kTabViewTabMenuIcon))
+		tabMenuAtom.setImage (unknown_cast<Image> (legacyTabMenuIcon));
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+#endif // LEGACY_STYLES_SUPPORTED
+//////////////////////////////////////////////////////////////////////////////////////////////////
 
 //************************************************************************************************
 // TabViewRenderer
 //************************************************************************************************
 
-BEGIN_VISUALSTYLE_CLASS (TabView, VisualStyle, "TabViewStyle")
-	ADD_VISUALSTYLE_IMAGE  ("background")		///< background for content rect
-	ADD_VISUALSTYLE_IMAGE  ("headerBackground")	///< background for header rect
-	ADD_VISUALSTYLE_IMAGE  ("first")			///< background for the first of multiple buttons
-	ADD_VISUALSTYLE_IMAGE  ("middle")			///< background for the middle buttons
-	ADD_VISUALSTYLE_IMAGE  ("last")				///< background for the last of multiple buttons
-	ADD_VISUALSTYLE_IMAGE  ("single")			///< background for a single button
-	ADD_VISUALSTYLE_IMAGE  ("menuIcon")			///< icon shown on menu button
-	ADD_VISUALSTYLE_IMAGE  ("menuBackground")	///< background for menu button (shown when not all tabs fit in the view)
-	ADD_VISUALSTYLE_METRIC ("tabHeight")		///< height of tab buttons
-	ADD_VISUALSTYLE_METRIC ("tabMargin")		///< the overall margin (tabMargin = left and right margin combined)
-	ADD_VISUALSTYLE_METRIC ("iconSpacing")		///< spacing between icon and label
-	ADD_VISUALSTYLE_METRIC ("tabSpacing")		///< spacing between tabs
-	ADD_VISUALSTYLE_COLOR  ("borderColor")		///< color of border frame, drawn when no"background" image is available
-	ADD_VISUALSTYLE_COLOR  ("activecolor")		///< used to draw instead of "backcolor" for the active tab (when no button image available)
-	ADD_VISUALSTYLE_COLOR  ("activetextcolor")	///< used instead of "textcolor" for the active tab
-	ADD_VISUALSTYLE_METRIC ("prefericon")		///< in case of an icon and a title - only show the icon
-END_VISUALSTYLE_CLASS (TabView)
+DEFINE_TYPELIB_ENTRY_WITH_PARENT (TabView, VisualStyle, "TabViewStyle", VISUALSTYLES_TYPELIB)
+BEGIN_TYPELIB_MEMBERS (TabView)
+	ADD_TYPELIB_MEMBER_RENDERATOM (AtomName::kBackground)	///< the content area next to the tabs
+	ADD_TYPELIB_MEMBER_RENDERATOM (AtomName::kHeader)		///< the strip behind the tabs
+	ADD_TYPELIB_MEMBER_RENDERATOM (AtomName::kTabBackground)	///< the background of a tab - the "left", "middle", "right" and "menu" style conditions select its position within the row (a single tab has none of them), "on", "mouseover", "pressed" and "disabled" its state, the first three also the named frame of its image
+	ADD_TYPELIB_MEMBER_RENDERATOM (AtomName::kTabIcon)			///< the icon of a tab - a tab without an icon of its own (like the menu button) shows the image of this atom, resolved with the "middle" or "menu" condition alone
+	ADD_TYPELIB_MEMBER_RENDERATOM (AtomName::kTabValue)			///< the title of a tab
+	ADD_TYPELIB_MEMBER_RENDERATOM (AtomName::kTabMenuIcon)		///< the menu icon the active tab displays ("tabmenu" option)
+	ADD_TYPELIB_MEMBER_METRIC (StyleID::TabView::kTabHeight)		///< height of the tabs
+	ADD_TYPELIB_MEMBER_METRIC (StyleID::TabView::kTabSpacing)		///< spacing between the tabs
+	ADD_TYPELIB_MEMBER_METRIC (StyleID::TabView::kTabMenuSpacing)	///< distance between the title and the menu icon of the active tab
+	ADD_TYPELIB_MEMBER_METRIC (StyleID::kMargin)					///< distance between the edges of the content area and the child view of the active tab
+	ADD_TYPELIB_MEMBER_METRIC (StyleID::TabView::kTabPreferIcon)	///< a tab that has an icon shows only that icon
+	ADD_TYPELIB_MEMBER_METRIC (StyleID::BIV::kIconValueSpacing)		///< distance between the icon and the title of a tab
+	ADD_TYPELIB_MEMBER_METRIC (StyleID::kExtendedPopup)				///< displays the menu as an extended menu instead of the default tree menu
+	ADD_TYPELIB_MEMBER_METRIC (StyleID::kPadding)					///< padding for the icon and the title of a tab, used if one of the paddings for left, top, right, bottom is not specified
+	ADD_TYPELIB_MEMBER_METRIC (StyleID::kPaddingLeft)				///< left padding for the icon and the title of a tab
+	ADD_TYPELIB_MEMBER_METRIC (StyleID::kPaddingTop)				///< top padding for the icon and the title of a tab
+	ADD_TYPELIB_MEMBER_METRIC (StyleID::kPaddingRight)				///< right padding for the icon and the title of a tab
+	ADD_TYPELIB_MEMBER_METRIC (StyleID::kPaddingBottom)				///< bottom padding for the icon and the title of a tab
+END_TYPELIB_MEMBERS (TabView)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-TabViewRenderer::TabViewRenderer (VisualStyle* visualStyle)
-: ThemeRenderer (visualStyle),
-  menuTabWidth (kMenuTabWidth)
+TabViewRenderer::TabViewRenderer (VisualStyle* visualStyle, View* owner)
+: ControlRenderer (visualStyle, owner),
+  iconSpacing (kTabIconSpacing),
+  tabSpacing (kTabSpacing),
+  tabMenuSpacing (kTabMenuSpacing),
+  tabSlope (kTabSlope),
+  tabExtraWidth (2 * kTabSlope),
+  tabHeight (kTabSlope),
+  contentMargin (kContentMargin),
+  inset (0),
+  menuTabWidth (kMenuTabWidth),
+  backgroundAtom (AtomName::kBackground),
+  headerAtom (AtomName::kHeader),
+  menuItem (nullptr)
 {
-	background = visualStyle->getImage ("background");
-	headerBackground = visualStyle->getImage ("headerBackground");
-	firstButton = visualStyle->getImage ("first");
-	middleButton = visualStyle->getImage ("middle");
-	lastButton = visualStyle->getImage ("last");
-	singleButton = visualStyle->getImage ("single");
-	menuIcon = visualStyle->getImage ("menuIcon");
-	menuBackground = visualStyle->getImage ("menuBackground");
-	tabMenuIcon = visualStyle->getImage ("tabMenuIcon");
-	tabMargin = visualStyle->getMetric<int> ("tabmargin", kTabMargin);
-	iconSpacing = visualStyle->getMetric<int> ("iconSpacing", kTabIconSpacing);
-	tabSpacing = visualStyle->getMetric<int> ("tabSpacing", kTabSpacing);
-	visualStyle->getPadding (padding);
-	
-	if(menuBackground)
-		menuTabWidth = menuBackground->getWidth ();
+	tabItems.objectCleanup (true);
 
-	tabSlope = (middleButton == nullptr) ? kTabSlope : 0;
-	tabHeight = visualStyle->getMetric<int> ("tabHeight", kTabSlope);
-	inset = (middleButton == nullptr) ? 2 : 0;
+	addAtom (backgroundAtom);
+	addAtom (headerAtom);
+
+	backgroundAtom.isContentFill (true);
+	headerAtom.isContentFill (true);
 }
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+TabViewRenderer::~TabViewRenderer ()
+{
+	safe_release (menuItem);
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+void TabViewRenderer::updateAtoms ()
+{
+	SuperClass::updateAtoms ();
+
+	if(owner == nullptr)
+		return;
+
+	Rect headerRect;
+	owner->getClientRect (headerRect);
+	Rect contentRect (headerRect);
+
+	if(owner->getStyle ().isVertical ())
+	{
+		TabViewGeometry<Styles::kVertical>::clientRectToHeader (headerRect, tabHeight);
+		TabViewGeometry<Styles::kVertical>::clientRectToContent (contentRect, tabHeight);
+	}
+	else
+	{
+		TabViewGeometry<Styles::kHorizontal>::clientRectToHeader (headerRect, tabHeight);
+		TabViewGeometry<Styles::kHorizontal>::clientRectToContent (contentRect, tabHeight);
+	}
+
+	headerAtom.setSize (rectIntToF (headerRect));
+	backgroundAtom.setSize (rectIntToF (contentRect));
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+void TabViewRenderer::applyVisualStyle (RenderAtomTransaction& transaction)
+{
+	SuperClass::applyVisualStyle (transaction);
+
+	// Renderer properties
+	visualStyle->getPadding (padding);
+	tabHeight = visualStyle->getMetric<int> (StyleID::TabView::kTabHeight, kTabSlope);
+	tabSpacing = visualStyle->getMetric<int> (StyleID::TabView::kTabSpacing, kTabSpacing);
+	tabMenuSpacing = visualStyle->getMetric<int> (StyleID::TabView::kTabMenuSpacing, kTabMenuSpacing);
+	contentMargin = visualStyle->getMetric<int> (StyleID::kMargin, kContentMargin);
+
+	iconSpacing = visualStyle->getMetric<int> (StyleID::BIV::kIconValueSpacing, kTabIconSpacing);
+
+	RenderAtom tabMenuAtom (AtomName::kTabMenuIcon);
+	tabMenuIcon = tabMenuAtom.getStyleImage (*visualStyle);
+
+	#if LEGACY_STYLES_SUPPORTED
+	BEGIN_LEGACY_STYLES_ENABLED_BLOCK
+	// Legacy renderer and atom properties
+	applyLegacyVisualStyle ();
+	END_LEGACY_STYLES_ENABLED_BLOCK
+	#endif
+
+	// without a tab image the tabs use the sloped geometry: they overlap and are inset from the header edge
+	RenderAtom backAtom (AtomName::kTabBackground);
+	RenderAtom iconAtom (AtomName::kTabIcon);
+	StyleConditionContext tabConditions;
+	setTabConditions (tabConditions, kMiddleTab, 0);
+	bool hasTabImage = backAtom.getStyleImage (*visualStyle, &tabConditions) != nullptr;
+	#if LEGACY_STYLES_SUPPORTED
+	BEGIN_LEGACY_STYLES_ENABLED_BLOCK
+	hasTabImage = hasTabImage || middleButton != nullptr;
+	END_LEGACY_STYLES_ENABLED_BLOCK
+	#endif
+	tabSlope = hasTabImage ? 0 : kTabSlope;
+	tabExtraWidth = hasTabImage ? kTabControl : 2 * kTabSlope;
+	inset = hasTabImage ? 0 : 2;
+
+	// the icon of the style takes up space within a tab, so it does not depend on the state of a tab either
+	styleTabIcon = iconAtom.getStyleImage (*visualStyle, &tabConditions);
+
+	// The menu button is as wide as the image that draws it.
+	setTabConditions (tabConditions, kMenuTab, 0);
+	IImage* menuTabImage = backAtom.getStyleImage (*visualStyle, &tabConditions);
+	#if LEGACY_STYLES_SUPPORTED
+	BEGIN_LEGACY_STYLES_ENABLED_BLOCK
+	if(menuBackground)
+		menuTabImage = menuBackground;
+	END_LEGACY_STYLES_ENABLED_BLOCK
+	#endif
+	menuTabWidth = menuTabImage ? menuTabImage->getWidth () : kMenuTabWidth;
+
+	menuTabIcon = iconAtom.getStyleImage (*visualStyle, &tabConditions);
+	#if LEGACY_STYLES_SUPPORTED
+	BEGIN_LEGACY_STYLES_ENABLED_BLOCK
+	// "menuIcon" is the icon of the menu button
+	if(menuIcon)
+		menuTabIcon = menuIcon;
+	END_LEGACY_STYLES_ENABLED_BLOCK
+	#endif
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+#if LEGACY_STYLES_SUPPORTED
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+void TabViewRenderer::applyLegacyVisualStyle ()
+{
+	firstButton = visualStyle->getImage (LegacyStyleID::kFirstImage);
+	middleButton = visualStyle->getImage (LegacyStyleID::kMiddleImage);
+	lastButton = visualStyle->getImage (LegacyStyleID::kLastImage);
+	singleButton = visualStyle->getImage (LegacyStyleID::kSingleImage);
+	menuIcon = visualStyle->getImage (LegacyStyleID::kTabViewMenuIcon);
+	menuBackground = visualStyle->getImage (LegacyStyleID::kTabViewMenuBackground);
+
+	// "background" and "headerBackground" are the legacy IDs of the images of the "background" and "header" atoms
+	if(IImage* legacyBackground = visualStyle->getBackgroundImage ())
+		backgroundAtom.setImage (unknown_cast<Image> (legacyBackground));
+
+	if(IImage* legacyHeaderBackground = visualStyle->getImage (LegacyStyleID::kTabViewHeaderBackground))
+		headerAtom.setImage (unknown_cast<Image> (legacyHeaderBackground));
+
+	if(IImage* legacyTabMenuIcon = visualStyle->getImage (LegacyStyleID::kTabViewTabMenuIcon))
+		tabMenuIcon = legacyTabMenuIcon;
+
+	// The content area used to be framed in "bordercolor" - and in black when the style named no
+	// border color - whenever no image covered it.
+	if(backgroundAtom.getImage () == nullptr)
+	{
+		Pen borderPen (backgroundAtom.getBorderPen ());
+		Color legacyBorderColor (Colors::kBlack);
+		if(visualStyle->getColor (legacyBorderColor, LegacyStyleID::kBorderColor) || !borderPen.isVisible ())
+		{
+			borderPen.setColor (legacyBorderColor);
+			backgroundAtom.setBorderPen (borderPen);
+		}
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+#endif // LEGACY_STYLES_SUPPORTED
+//////////////////////////////////////////////////////////////////////////////////////////////////
+// static
+int TabViewRenderer::getTabImageFrame (IImage* image, int state)
+{
+	if(image == nullptr)
+		return -1;
+
+	int frameIndex = -1;
+	if(state & kTabStateOn)
+	{
+		if(state & kTabStateMouseOver)
+			frameIndex = image->getFrameIndex (ThemeNames::kMouseOverOn);
+
+		if(state & kTabStatePressed)
+			frameIndex = image->getFrameIndex (ThemeNames::kPressedOn);
+
+		if(frameIndex < 0)
+			frameIndex = image->getFrameIndex (ThemeNames::kNormalOn);
+		if(frameIndex < 0)
+			frameIndex = image->getFrameIndex (ThemeNames::kPressedOn);
+		if(frameIndex < 0)
+			frameIndex = image->getFrameIndex (ThemeNames::kPressed);
+	}
+	else
+	{
+		if(state & kTabStateMouseOver)
+			frameIndex = image->getFrameIndex (ThemeNames::kMouseOver);
+
+		if(state & kTabStatePressed)
+			frameIndex = image->getFrameIndex (ThemeNames::kPressed);
+
+		if(frameIndex < 0)
+			frameIndex = image->getFrameIndex (ThemeNames::kNormal);
+	}
+
+	return frameIndex;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+// static
+void TabViewRenderer::setTabConditions (StyleConditionContext& context, TabKind kind, int state)
+{
+	context.setCondition (ThemeNames::kLeft, kind == kLeftTab);
+	context.setCondition (ThemeNames::kMiddle, kind == kMiddleTab);
+	context.setCondition (ThemeNames::kRight, kind == kRightTab);
+	context.setCondition (ThemeNames::kMenu, kind == kMenuTab);
+	context.setCondition (ThemeNames::kOn, (state & kTabStateOn) != 0);
+	context.setCondition (ThemeNames::kMouseOver, (state & kTabStateMouseOver) != 0);
+	context.setCondition (ThemeNames::kPressed, (state & kTabStatePressed) != 0);
+	context.setCondition (ThemeNames::kDisabled, (state & kTabStateDisabled) != 0);
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+IImage* TabViewRenderer::getDisplayedTabIcon (TabView* tabView, int index) const
+{
+	if(index == TabView::kPartMenuTab - TabView::kPartFirstTab)
+		return menuTabIcon;
+
+	if(IImage* icon = tabView->getTabIcon (index))
+		return icon;
+
+	return styleTabIcon;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+int TabViewRenderer::getTabState (TabView* tabView, int index, bool active) const
+{
+	int state = active ? kTabStateOn : 0;
+	if(tabView->getMouseOverTab () == index)
+		state |= kTabStateMouseOver;
+	if(tabView->getMouseDownTab () == index)
+		state |= kTabStatePressed;
+	if(!tabView->isEnabled ())
+		state |= kTabStateDisabled;
+
+	return state;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+TabViewRenderer::TabItemRenderer& TabViewRenderer::getTabItem (int index)
+{
+	if(index == TabView::kPartMenuTab - TabView::kPartFirstTab)
+	{
+		if(menuItem == nullptr)
+			menuItem = NEW TabItemRenderer (*this);
+
+		return *menuItem;
+	}
+
+	while(tabItems.count () <= index)
+		tabItems.add (NEW TabItemRenderer (*this));
+
+	return *static_cast<TabItemRenderer*> (tabItems.at (index));
+}
+
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -247,7 +774,7 @@ Coord TabViewRenderer::calcTabWidth (TabView* tabView, int index, FontRef font)
 {
 	String title;
 	tabView->getTabTitle (title, index);
-	return calcTabWidth (tabView, index, title, tabView->getTabIcon (index), font);
+	return calcTabWidth (tabView, index, title, getDisplayedTabIcon (tabView, index), font);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -260,7 +787,7 @@ Coord TabViewRenderer::calcTabWidth (TabView* tabView, int index, StringRef labe
 	if(icon)
 		width += icon->getWidth ();
 	if(tabView->getStyle ().isCustomStyle (Styles::kTabViewBehaviorTabMenu) && tabMenuIcon && index == tabView->getActiveIndex ())
-		width += tabMenuIcon->getWidth ();
+		width += tabMenuIcon->getWidth () + tabMenuSpacing;
 
 	Coord fillWidth = tabView->getFillWidth ();
 	if(fillWidth > 0)
@@ -272,123 +799,123 @@ Coord TabViewRenderer::calcTabWidth (TabView* tabView, int index, StringRef labe
 		if(index < remainder)
 			width++;
 	}
-	
-	return width + tabMargin + iconSpacing;
+
+	return width + padding.left + padding.right + iconSpacing;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void TabViewRenderer::drawTab (View* view, GraphicsDevice& port, RectRef r, int tabIndex)
+void TabViewRenderer::drawTab (GraphicsDevice& port, RectRef r, int tabIndex)
 {
-	TabView* tabView = (TabView*)view;
-	Font textFont (visualStyle->getTextFont ());
-	SolidBrush textBrush = visualStyle->getTextBrush ();
+	// This is called from outside the drawing loop for the image of a tab that is being reordered.
+	updateAtoms ();
 
-	TabDrawArgs args (tabView, port, textFont, textBrush, visualStyle->getColor ("activetextcolor", textBrush.getColor ()));
+	TabView* tabView = static_cast<TabView*> (owner);
+	Font textFont (visualStyle->getTextFont ());
+
+	UpdateRgn updateRgn (r);
+	TabDrawArgs args (tabView, port, updateRgn, textFont);
 
 	String label;
 	tabView->getTabTitle (label, tabIndex);
 	Font::collapseString (label, r.getWidth (), args.font, Font::kTrimModeRight);
 
-	IImage* icon = tabView->getTabIcon (tabIndex);
+	IImage* icon = getDisplayedTabIcon (tabView, tabIndex);
 	bool active = tabIndex == tabView->getActiveIndex ();
 
-	if(view->getStyle ().isVertical ())
-		drawTab<TabViewGeometry<Styles::kVertical> > (args, r, kSingleTab, tabIndex, active, label, icon, true);
-	else
-		drawTab<TabViewGeometry<Styles::kHorizontal> > (args, r, kSingleTab, tabIndex, active, label, icon, true);
+	// a renderer of its own keeps the tab in the TabView from changing its appearance
+	AutoPtr<TabItemRenderer> item = NEW TabItemRenderer (*this);
+	drawTabItem (args, *item, r, kSingleTab, tabIndex, active, label, icon, true);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void TabViewRenderer::draw (View* view, const UpdateRgn& updateRgn)
+void TabViewRenderer::draw (const UpdateRgn& updateRgn)
 {
-	if(view->getStyle ().isVertical ())
-		draw<TabViewGeometry<Styles::kVertical> > (view, updateRgn);
+	updateAtoms ();
+
+	if(owner->getStyle ().isVertical ())
+		draw<TabViewGeometry<Styles::kVertical> > (updateRgn);
 	else
-		draw<TabViewGeometry<Styles::kHorizontal> > (view, updateRgn);
+		draw<TabViewGeometry<Styles::kHorizontal> > (updateRgn);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-int TabViewRenderer::hitTest (View* view, const Point& loc, Point* clickOffset)
+int TabViewRenderer::hitTest (PointRef where, Point* clickOffset)
 {
-	if(view->getStyle ().isVertical ())
-		return hitTest<TabViewGeometry<Styles::kVertical> > (view, loc, clickOffset);
+	updateAtoms ();
+
+	if(owner->getStyle ().isVertical ())
+		return hitTest<TabViewGeometry<Styles::kVertical> > (where, clickOffset);
 	else
-		return hitTest<TabViewGeometry<Styles::kHorizontal> > (view, loc, clickOffset);
+		return hitTest<TabViewGeometry<Styles::kHorizontal> > (where, clickOffset);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool TabViewRenderer::getPartRect (const View* view, int partCode, Rect& rect)
+bool TabViewRenderer::getPartRect (Rect& rect, int partCode)
 {
-	if(view->getStyle ().isVertical ())
-		return getPartRect<TabViewGeometry<Styles::kVertical> > (view, partCode, rect);
+	updateAtoms ();
+
+	if(owner->getStyle ().isVertical ())
+		return getPartRect<TabViewGeometry<Styles::kVertical> > (rect, partCode);
 	else
-		return getPartRect<TabViewGeometry<Styles::kHorizontal> > (view, partCode, rect);
+		return getPartRect<TabViewGeometry<Styles::kHorizontal> > (rect, partCode);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-template<class Geometry> 
-void TabViewRenderer::draw (View* view, const UpdateRgn& updateRgn)
+template<class Geometry>
+void TabViewRenderer::draw (const UpdateRgn& updateRgn)
 {
-	TabView* tabView = (TabView*)view;
-	GraphicsPort port (view);
+	TabView* tabView = static_cast<TabView*> (owner);
+	GraphicsPort port (owner);
 	Font textFont (visualStyle->getTextFont ());
-	SolidBrush textBrush = visualStyle->getTextBrush ();
 
-	TabDrawArgs args (tabView, port, textFont, textBrush, visualStyle->getColor ("activetextcolor", textBrush.getColor ()));
+	TabDrawArgs args (tabView, port, updateRgn, textFont);
 
 	Rect clientRect;
-	view->getClientRect (clientRect);
+	owner->getClientRect (clientRect);
 
-	if(headerBackground)
-	{
-		
-		Rect headerRect (clientRect);
-		Geometry::clientRectToHeader (headerRect, tabHeight);
-		if(headerRect.getWidth () > 5 && headerRect.getHeight () > 5)
-		{
-			Rect bgSize (0, 0, headerBackground->getWidth (), headerBackground->getHeight ());
-			port.drawImage (headerBackground, bgSize, headerRect);
-		}
-	}
-	
-	// background
+	// header - updateAtoms () has sized the atom
+	Rect header (clientRect);
+	Geometry::clientRectToHeader (header, tabHeight);
+	if(header.getWidth () > 5 && header.getHeight () > 5)
+		headerAtom.draw (port, updateRgn);
+
+	// background - updateAtoms () has sized the atom
 	Rect content (clientRect);
 	Geometry::clientRectToContent (content, tabHeight);
 	if(content.getWidth () > 5 && content.getHeight () > 5)
-	{
-		if(background)
-		{
-			Rect bgSize (0, 0, background->getWidth (), background->getHeight ());
-			port.drawImage (background, bgSize, content);
-		}
-		else
-			port.drawRect (content, Pen (visualStyle->getColor ("borderColor")));
-	}
+		backgroundAtom.draw (port, updateRgn);
 
 	int activeIndex = tabView->getActiveIndex ();
 	int numTabs = tabView->countTabs ();
+
+	// drop the renderers of the tabs that no longer exist
+	for(int i = tabItems.count () - 1; i >= numTabs; i--)
+	{
+		Object* item = tabItems.at (i);
+		tabItems.removeAt (i);
+		item->release ();
+	}
+
 	if(numTabs <= 0)
 		return;
 
-	Rect header (clientRect);
-	Geometry::clientRectToHeader (header, tabHeight);
 	Coord tabsEndCoord = Geometry::getEndCoord (header);
 
 	// running tab
 	String label;
-	TabKind tabKind = kStartTab;
+	TabKind tabKind = kLeftTab;
 	Rect tabRect = header;
 	Geometry::headerToFirstTab (tabRect, inset, 0);
 
 	// active tab
 	String activeTabLabel;
 	IImage* activeTabIcon = nullptr;
-	TabKind activeTabKind = kStartTab;
+	TabKind activeTabKind = kLeftTab;
 	Rect activeTabRect;
 
 	// menu tab
@@ -420,16 +947,16 @@ void TabViewRenderer::draw (View* view, const UpdateRgn& updateRgn)
 
 	// use scroll offset to make the active tab completely visible
 	Coord scrollOffset = 0;
-	getPartRect (view, TabView::kPartFirstTab + activeIndex, activeTabRect);
+	getPartRect (activeTabRect, TabView::kPartFirstTab + activeIndex);
 	if(activeIndex != numTabs - 1)
 		activeTabRect.right -= tabSpacing;
-	
+
 	if(isOverflow)
 	{
 		if(hasMenu)
 		{
 			// calc menu rect
-			getPartRect (view, TabView::kPartMenuTab, menuRect);
+			getPartRect (menuRect, TabView::kPartMenuTab);
 			menuStart = Geometry::getStartCoord (menuRect);
 			tabsEndCoord = menuStart;
 		}
@@ -441,7 +968,7 @@ void TabViewRenderer::draw (View* view, const UpdateRgn& updateRgn)
 			tabView->setScrollOffset (scrollOffset);
 
 			// recalc active rect
-			getPartRect (view, TabView::kPartFirstTab + activeIndex, activeTabRect);
+			getPartRect (activeTabRect, TabView::kPartFirstTab + activeIndex);
 		}
 	}
 
@@ -457,11 +984,11 @@ void TabViewRenderer::draw (View* view, const UpdateRgn& updateRgn)
 			break;
 
 		Coord currentTabSpacing = (i == numTabs - 1) ? 0 : tabSpacing;
-		
+
 		tabView->getTabTitle (label, i);
-		IImage* icon = tabView->getTabIcon (i);
+		IImage* icon = getDisplayedTabIcon (tabView, i);
 		Coord width = calcTabWidth (tabView, i, label, icon, args.font);
-		width += (middleButton ? kTabControl : 2 * kTabSlope);
+		width += tabExtraWidth;
 		Geometry::setTabWidth (tabRect, width - currentTabSpacing);
 
 		// skip tab if completly beyond left edge
@@ -512,177 +1039,64 @@ void TabViewRenderer::draw (View* view, const UpdateRgn& updateRgn)
 				activeTabIcon = icon;
 			}
 			else
-				drawTab<Geometry> (args, tabRect, tabKind, i, false, label, icon, !collapsed);
-		}		
+				drawTabItem (args, getTabItem (i), tabRect, tabKind, i, false, label, icon, !collapsed);
+		}
 
 		Geometry::toNextTab (tabRect, - tabSlope + currentTabSpacing);
 
 		if(!beyondLeft)
-			tabKind = (hasMenu || i < numTabs - 2) ? kMidtab : kEndTab;
+			tabKind = (hasMenu || i < numTabs - 2) ? kMiddleTab : kRightTab;
 	}
 
 
 	if(activeIndex >= 0)
-		drawTab<Geometry> (args, activeTabRect, activeTabKind, activeIndex, true, activeTabLabel, activeTabIcon, true);
+		drawTabItem (args, getTabItem (activeIndex), activeTabRect, activeTabKind, activeIndex, true, activeTabLabel, activeTabIcon, true);
 
 	if(hasMenu)
 	{
-		bool mouseOverTab = (args.tabView->getMouseOverTab () == (TabView::kPartMenuTab - TabView::kPartFirstTab));
-		if(menuBackground)
-		{
-			IImage::Selector (menuBackground, mouseOverTab ? ThemeNames::kMouseOver : ThemeNames::kNormal);
-			port.drawImage (menuBackground, Rect (0, 0, menuBackground->getWidth (), menuBackground->getHeight ()), menuRect);
-		}
-		else
-			drawTab<Geometry> (args, menuRect, kEndTab, TabView::kPartMenuTab - TabView::kPartFirstTab, false, nullptr, nullptr, true);
-
-		if(menuIcon)
-		{
-			Rect iconSize (0, 0, menuIcon->getWidth (), menuIcon->getHeight ());
-			Rect iconRect (iconSize);
-			iconRect.center (menuRect);
-			IImage::Selector (menuIcon, mouseOverTab ? ThemeNames::kMouseOver : ThemeNames::kNormal);
-			port.drawImage (menuIcon, iconSize, iconRect);
-		}
+		int menuIndex = TabView::kPartMenuTab - TabView::kPartFirstTab;
+		drawTabItem (args, getTabItem (menuIndex), menuRect, kMenuTab, menuIndex, false, String::kEmpty, getDisplayedTabIcon (tabView, menuIndex), true);
 	}
 
-	view->View::draw (updateRgn);
+	owner->View::draw (updateRgn);
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+void TabViewRenderer::drawTabItem (TabDrawArgs& args, TabItemRenderer& item, RectRef tabRect, TabKind kind, int index, bool active, StringRef label, IImage* icon, bool center)
+{
+	item.setAppearance (kind, getTabState (args.tabView, index, active), icon);
+	item.setLabel (label, center);
+	item.setSize (tabRect);
+	item.draw (args.port, args.updateRgn);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 template<class Geometry>
-void TabViewRenderer::drawTab (TabDrawArgs& args, const Rect& tabRect, TabKind kind, int index, bool active, StringRef label, IImage* icon, bool center)
+int TabViewRenderer::hitTest (PointRef where, Point* clickOffset)
 {
-	if(middleButton)
-	{
-		IImage* image = middleButton;
-		switch(kind)
-		{
-		case kStartTab:
-			if(firstButton)
-				image = firstButton;
-			break;
-
-		case kEndTab:
-			if(lastButton)
-				image = lastButton;
-			break;
-
-		case kSingleTab:
-			if(singleButton)
-				image = singleButton;
-             break;
-         case kMidtab:
-            image = middleButton;
-            break;
-		}
-
-		int frameIndex = -1;
-		if(active)
-		{
-			if(args.tabView->getMouseOverTab () == index)
-				frameIndex = image->getFrameIndex (ThemeNames::kMouseOverOn);
-
-			if(args.tabView->getMouseDownTab () == index)
-				frameIndex = image->getFrameIndex (ThemeNames::kPressedOn);
-
-			if(frameIndex < 0)
-				frameIndex = image->getFrameIndex (ThemeNames::kNormalOn);
-			if(frameIndex < 0)
-				frameIndex = image->getFrameIndex (ThemeNames::kPressedOn);
-			if(frameIndex < 0)
-				frameIndex = image->getFrameIndex (ThemeNames::kPressed);
-		}
-		else
-		{
-			if(args.tabView->getMouseOverTab () == index)
-				frameIndex = image->getFrameIndex (ThemeNames::kMouseOver);
-
-			if(args.tabView->getMouseDownTab () == index)
-				frameIndex = image->getFrameIndex (ThemeNames::kPressed);
-
-			if(frameIndex < 0)
-				frameIndex = image->getFrameIndex (ThemeNames::kNormal);
-		}
-		image->setCurrentFrame (frameIndex);
-
-		Geometry::drawButton (args.port, tabRect, image);
-	}
-	else
-	{
-		Pen tabPen (visualStyle->getForeColor ());
-		SolidBrush tabBrush (visualStyle->getBackColor ());
-		SolidBrush activeTabBrush (visualStyle->getColor ("activecolor", Color(0xFF, 0xFF, 0xFF)));
-
-		GraphicsPath path;
-		Geometry::makePath (path, tabRect);
-		path.closeFigure ();
-
-		args.port.fillPath (path, active ? activeTabBrush : tabBrush);
-		args.port.drawPath (path, tabPen);
-	}
-
-	Rect labelRect = tabRect;
-	
-	labelRect.left	 += padding.left;
-	labelRect.right	 -= padding.right;
-	labelRect.top	 += padding.top;
-	labelRect.bottom  -= padding.bottom;
-	
-	if(active && tabMenuIcon && args.tabView->getStyle ().isCustomStyle (Styles::kTabViewBehaviorTabMenu))
-	{
-		// draw menu icon
-		Rect iconSize (0, 0, tabMenuIcon->getWidth (), tabMenuIcon->getHeight ());
-		Rect iconRect (iconSize);
-		iconRect.offset (labelRect.right - iconRect.right);
-		iconRect.centerV (labelRect);
-		args.port.drawImage (tabMenuIcon, iconSize, iconRect);
-
-		labelRect.right = iconRect.left;
-	}
-
-	auto getIconThemeName = [&] ()
-	{
-		if(active)
-			return ThemeNames::kNormalOn;
-		if(args.tabView->getMouseDownTab () == index)
-			return ThemeNames::kPressed;
-		if(args.tabView->getMouseOverTab () == index)
-			return ThemeNames::kMouseOver;
-		return ThemeNames::kNormal;
-	};
-
-	IImage::Selector (icon, getIconThemeName ());
-	Geometry::drawLabel (args.port, labelRect, label, args.font, active ? args.activeTextBrush : args.textBrush, icon, tabMargin, iconSpacing, icon ? false : center);
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
-template<class Geometry>
-int TabViewRenderer::hitTest (View* view, const Point& loc, Point* clickOffset)
-{
-	TabView* tabView = (TabView*)view;
-	int tab = findTab<Geometry> (tabView, loc);
+	TabView* tabView = static_cast<TabView*> (owner);
+	int tab = findTab<Geometry> (tabView, where);
 	if(tab >= 0)
 	{
 		tab += TabView::kPartFirstTab;
 		if(tab <= TabView::kPartLastTab)
 			return tab;
 	}
-	
+
 	Rect client;
 	tabView->getClientRect (client);
 
 	Rect rect (client);
 	rect.contract (inset);
 	Geometry::clientRectToContent (rect, tabHeight);
-	if(rect.pointInside (loc))
+	if(rect.pointInside (where))
 		return TabView::kPartContent;
 
 	rect = client;
 	Geometry::clientRectToHeader (rect, tabHeight);
-	if(rect.pointInside (loc))
+	if(rect.pointInside (where))
 		return TabView::kPartHeader;
 
 	return TabView::kPartNone;
@@ -691,26 +1105,26 @@ int TabViewRenderer::hitTest (View* view, const Point& loc, Point* clickOffset)
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 template<class Geometry>
-bool TabViewRenderer::getPartRect (const View* view, int partCode, CCL::Rect& rect)
+bool TabViewRenderer::getPartRect (Rect& rect, int partCode)
 {
-	TabView* tabView = (TabView*)view;
+	TabView* tabView = static_cast<TabView*> (owner);
 	if(partCode == TabView::kPartContent)
 	{
-		view->getClientRect (rect);
-		rect.contract (visualStyle->getMetric<int> ("contentmargin", kContentMargin));
+		owner->getClientRect (rect);
+		rect.contract (contentMargin);
 		Geometry::clientRectToContent (rect, tabHeight);
 		return true;
 	}
 
 	if(partCode == TabView::kPartViewSize)
 	{
-		calcViewSize<Geometry> ((TabView*)view, rect);
+		calcViewSize<Geometry> (tabView, rect);
 		return true;
 	}
 
 	if(partCode == TabView::kPartHeader)
 	{
-		view->getClientRect (rect);
+		owner->getClientRect (rect);
 		Geometry::clientRectToHeader (rect, tabHeight);
 		return true;
 	}
@@ -719,7 +1133,7 @@ bool TabViewRenderer::getPartRect (const View* view, int partCode, CCL::Rect& re
 	{
 		if(tabView->isMenu ())
 		{
-			view->getClientRect (rect);
+			owner->getClientRect (rect);
 			Geometry::clientRectToHeader (rect, tabHeight);
 			Geometry::headerToFirstTab (rect, inset, 0);
 			Geometry::toNextTab (rect, -menuTabWidth);
@@ -731,18 +1145,18 @@ bool TabViewRenderer::getPartRect (const View* view, int partCode, CCL::Rect& re
 	if(partCode >= TabView::kPartFirstTab && partCode <= TabView::kPartLastTab)
 	{
 		Rect r;
-		view->getClientRect (r);
+		owner->getClientRect (r);
 		Geometry::clientRectToHeader (r, tabHeight);
 		Geometry::headerToFirstTab (r, inset, 0);
 		Geometry::offset (r, - tabView->getScrollOffset ());
 
-		Font tabFont (visualStyle->getTextFont ());	
+		Font tabFont (visualStyle->getTextFont ());
 
 		int numTabs = tabView->countTabs ();
 		for(int i = 0; i < numTabs; i++)
 		{
 			Coord width = calcTabWidth (tabView, i, tabFont);
-			Geometry::setTabWidth (r, width + (middleButton ? kTabControl : 2 * kTabSlope));
+			Geometry::setTabWidth (r, width + tabExtraWidth);
 			if(i == partCode - TabView::kPartFirstTab)
 			{
 				Geometry::offset (r, tabView->getCenterOffset ());
@@ -753,12 +1167,11 @@ bool TabViewRenderer::getPartRect (const View* view, int partCode, CCL::Rect& re
 		}
 	}
 
-	if(partCode >= TabView::kPartTabMenu && tabMenuIcon)
+	if(partCode >= TabView::kPartTabMenu)
 	{
-		int tab = partCode - TabView::kPartTabMenu;
-		getPartRect (view, TabView::kPartFirstTab + tab, rect);
-		rect.left = rect.right - tabMenuIcon->getWidth ();
-		return true;
+		int tabIndex = partCode - TabView::kPartTabMenu;
+		if(tabIndex < tabItems.count ())
+			return getTabItem (tabIndex).getPartRect (rect, TabItemRenderer::kTabMenuAtom);
 	}
 	return false;
 }
@@ -766,24 +1179,24 @@ bool TabViewRenderer::getPartRect (const View* view, int partCode, CCL::Rect& re
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 template<class Geometry>
-int TabViewRenderer::findTab (TabView* tabView, const Point& loc)
+int TabViewRenderer::findTab (TabView* tabView, PointRef where)
 {
 	Rect rect;
 	tabView->getClientRect (rect);
 //	rect.contract (inset);
 
 	Geometry::clientRectToHeader (rect, tabHeight);
-	if(!rect.pointInside (loc))
+	if(!rect.pointInside (where))
 		return -1;
 
-	if(tabView->isMenu () && loc.x > Geometry::getEndCoord (rect) - menuTabWidth)
+	if(tabView->isMenu () && where.x > Geometry::getEndCoord (rect) - menuTabWidth)
 		return TabView::kPartMenuTab - TabView::kPartFirstTab;
 
-	Point p (loc);
+	Point p (where);
 	Geometry::offset (p, tabView->getScrollOffset ());
 	Geometry::offset (rect, tabView->getCenterOffset ());
 
-	if(middleButton == nullptr)
+	if(tabSlope != 0)
 	{
 		rect.contract (1);
 		Geometry::headerToFirstTab (rect, inset, tabSlope / 2); // half width of the overlapping curves
@@ -794,11 +1207,11 @@ int TabViewRenderer::findTab (TabView* tabView, const Point& loc)
 	for(int i = 0; i < numTabs; i++)
 	{
 		Coord width = calcTabWidth (tabView, i, tabFont);
-		Geometry::setTabWidth (rect, width + (middleButton ? kTabControl : 2 * kTabSlope));
+		Geometry::setTabWidth (rect, width + tabExtraWidth);
 
 		if(Geometry::isInside (p, rect))
 			return i;
-		
+
 		Geometry::toNextTab (rect);
 	}
 	return -1;
@@ -806,20 +1219,20 @@ int TabViewRenderer::findTab (TabView* tabView, const Point& loc)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-template<class Geometry> 
+template<class Geometry>
 void TabViewRenderer::calcViewSize (TabView* tabView, Rect& r)
 {
 	Rect rect;
 	Geometry::setTabWidth (rect, 0);
 	Geometry::setTabHeight (rect, tabHeight);
-	
-	Font tabFont (visualStyle->getTextFont ());	
+
+	Font tabFont (visualStyle->getTextFont ());
 
 	int numTabs = tabView->countTabs ();
 	for(int i = 0; i < numTabs; i++)
 	{
 		Coord width = calcTabWidth (tabView, i, tabFont);
-		Geometry::setTabWidth (rect, width + (middleButton ? kTabControl : 2 * kTabSlope));
+		Geometry::setTabWidth (rect, width + tabExtraWidth);
 		if(i < (numTabs - 1))
 			Geometry::toNextTab (rect, -tabSlope);
 	}

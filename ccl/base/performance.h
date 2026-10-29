@@ -44,8 +44,8 @@ public:
 	void CCL_API endPeriod () override;
 	double CCL_API getPerformance () override;
 	void CCL_API reset () override;
-	tbool CCL_API isOverLoad () override;
-	void CCL_API setOverLoad (tbool state) override;
+	tbool CCL_API isOverload () override;
+	void CCL_API setOverload (tbool state) override;
 
 	CLASS_INTERFACE (IPerformanceMeter, Unknown)
 
@@ -56,7 +56,7 @@ protected:
 	double decay;
 	double overAccumulated;
 	int extraDurationInt;
-	bool overLoad;
+	bool overload;
 
 	virtual void setPerformance (double p);
 };

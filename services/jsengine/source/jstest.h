@@ -3,13 +3,13 @@
 // JavaScript Engine
 //
 // This file is part of Crystal Class Library (R)
-// Copyright (c) 2025 CCL Software Licensing GmbH.
+// Copyright (c) 2026 CCL Software Licensing GmbH.
 // All Rights Reserved.
 //
 // Licensed for use under either:
 //  1. a Commercial License provided by CCL Software Licensing GmbH, or
 //  2. GNU Affero General Public License v3.0 (AGPLv3).
-// 
+//
 // You must choose and comply with one of the above licensing options.
 // For more information, please visit ccl.dev.
 //
@@ -25,7 +25,7 @@
 
 namespace JScript {
 
-class Engine;
+class EngineBase;
 
 //************************************************************************************************
 // TestClass
@@ -40,9 +40,9 @@ public:
 	TestClass ();
 	~TestClass ();
 
-	static bool runTest (Engine* engine);
+	static bool runTest (EngineBase* engine);
 
-	// IObject
+	// Object
 	CCL::tbool CCL_API getProperty (CCL::Variant& var, MemberID propertyId) const override;
 	CCL::tbool CCL_API setProperty (MemberID propertyId, const CCL::Variant& var) override;
 	CCL::tbool CCL_API invokeMethod (CCL::Variant& returnValue, CCL::MessageRef msg) override;

@@ -143,7 +143,7 @@
 				"VENDOR_HOST_PLATFORM": "mac",
 				"VENDOR_TARGET_ARCHITECTURE": "aarch64",
 				"CMAKE_OSX_SYSROOT": "iphoneos",
-				"CMAKE_OSX_DEPLOYMENT_TARGET": "15",
+				"CMAKE_OSX_DEPLOYMENT_TARGET": "15.3",
 				"VENDOR_USE_CCACHE": "ON",
 				"VENDOR_SIMULATOR": "OFF"
 			}
@@ -271,6 +271,45 @@
 				"VENDOR_PLATFORM": "android",
 				"VENDOR_CXX_STANDARD": "17",
 				"VENDOR_USE_CCACHE": "ON"
+			}
+		},
+
+		{
+			"name": "ccl-wasm-base",
+			"hidden": true,
+			"inherits": "ccl-base",
+			"displayName": "WebAssembly (Emscripten)",
+			"description": "Build using Emscripten SDK for WebAssembly",
+			"generator": "Ninja",
+			"cacheVariables":
+			{
+				"VENDOR_PLATFORM": "wasm",
+				"CMAKE_CROSSCOMPILING": "TRUE",
+				"CMAKE_TOOLCHAIN_FILE": "$env{EMSDK}/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake",
+				"CMAKE_FIND_ROOT_PATH_MODE_INCLUDE": "NEVER",
+				"CMAKE_FIND_ROOT_PATH_MODE_LIBRARY": "BOTH",
+				"CMAKE_FIND_ROOT_PATH_MODE_PACKAGE": "BOTH",
+				"VENDOR_USE_CCACHE": "ON"
+			}
+		},
+		{
+			"name": "ccl-wasm-debug",
+			"hidden": true,
+			"inherits": "ccl-wasm-base",
+			"binaryDir": "${sourceDir}/build/wasm/Debug",
+			"cacheVariables":
+			{
+				"CMAKE_BUILD_TYPE": "Debug"
+			}
+		},
+		{
+			"name": "ccl-wasm-release",
+			"hidden": true,
+			"inherits": "ccl-wasm-base",
+			"binaryDir": "${sourceDir}/build/wasm/Release",
+			"cacheVariables":
+			{
+				"CMAKE_BUILD_TYPE": "Release"
 			}
 		},
 

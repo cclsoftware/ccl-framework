@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Model.ClassRepository xmlns:x="https://ccl.dev/xml" name="Namespace Collision">
+	<List x:id="classes">
+		<Model.Class name="Widget" parent="Object" parentNamespace="CCL">
+		</Model.Class>
+		<Model.Class name="Widget" namespace="Foo::Bar" parent="Object" parentNamespace="CCL">
+			<List x:id="methods">
+				<Model.Method name="getWidget">
+					<Model.ReturnValue x:id="retval" type="object" typeName="Widget"/>
+				</Model.Method>
+			</List>
+		</Model.Class>
+		<Model.Class name="Holder" namespace="Foo" parent="Object" parentNamespace="CCL">
+			<List x:id="members">
+				<Model.Member name="widget" type="object" typeName="Widget"/>
+			</List>
+		</Model.Class>
+		<Model.Class name="Boxed.Gadget" namespace="Foo" parent="Object" parentNamespace="CCL">
+		</Model.Class>
+	</List>
+</Model.ClassRepository>

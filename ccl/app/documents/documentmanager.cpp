@@ -60,6 +60,7 @@
 #include "ccl/public/gui/framework/dialogbox.h"
 #include "ccl/public/gui/framework/iprogressdialog.h"
 #include "ccl/public/gui/framework/iuserinterface.h"
+#include "ccl/public/gui/commanddispatch.h"
 #include "ccl/public/gui/iapplication.h"
 #include "ccl/public/system/cclerror.h"
 #include "ccl/public/system/isysteminfo.h"
@@ -1095,6 +1096,20 @@ bool DocumentManager::saveDocument (Document* doc, SaveMode mode, StringRef type
 void DocumentManager::deferOpenDocument (UrlRef path, bool checkUpdates)
 {
 	AutoPtr<Url> pathCopy = NEW Url (path);
+
+	AutoPtr<ICommandHandler> handler (makeCommandDelegate ([this] (const CommandMsg& msg, VariantRef data)
+	{
+		if(!msg.checkOnly ())
+		{
+			if(UnknownPtr<IUrl> path = data.asUnknown ())
+				deferOpenDocument (*path);
+		}
+		return true;
+	}, Variant (pathCopy->asUnknown ())));
+
+	if(System::GetDesktop ().closePopupAndDeferCommand (handler, CommandMsg ()))
+		return;
+
 	AutoPtr<Message> message = NEW Message ("openDocument", pathCopy->asUnknown ());
 
 	if(checkUpdates)
@@ -1427,6 +1442,8 @@ bool DocumentManager::deleteDocument (UrlRef path)
 			DocumentClass* docClass = findDocumentClass (path.getFileType ());
 			if(docClass && docClass->needsFolder ())
 			{
+				ScopedVar<bool> guard (dirtySuspended, true);
+
 				AutoPtr<Document> tempDoc  = docClass->createDocument ();
 				if(tempDoc)
 				{

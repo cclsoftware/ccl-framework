@@ -99,7 +99,7 @@ tbool CCL_API ValueControlAccessibilityProvider::isReadOnly () const
 tresult CCL_API ValueControlAccessibilityProvider::getValue (String& value) const
 {
 	if(IParameter* p = getControl ().getParameter ())
-		p->toString (value);
+		p->toAccessibleString (value);
 	else
 		value.empty ();
 	return kResultOk;

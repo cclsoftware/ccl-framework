@@ -179,6 +179,8 @@ class UserControl::AccessibilityProvider: public Object,
 										  public AbstractAccessibilityProvider
 {
 public:
+	DECLARE_CLASS_ABSTRACT (UserControl::AccessibilityProvider, Object)
+
 	AccessibilityProvider (UserControl& control);
 
 	CLASS_INTERFACE (IAccessibilityProvider, Object)

@@ -505,7 +505,7 @@ void EditTaskHandler::restoreValues (bool force)
 
 DEFINE_CLASS (EditTaskArgumentUI, Object)
 DEFINE_CLASS_UID (EditTaskArgumentUI, 0x645c45c1, 0x5262, 0x4b77, 0x92, 0xf2, 0xb7, 0x25, 0x9, 0xc7, 0xc0, 0xb0)
-DEFINE_CLASS_NAMESPACE (EditTaskArgumentUI, "Host")
+DEFINE_CLASS_CATEGORY (EditTaskArgumentUI, PLUG_CATEGORY_HOST_)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -569,6 +569,7 @@ tbool CCL_API EditTaskArgumentUI::invokeMethod (Variant& returnValue, MessageRef
 //************************************************************************************************
 
 DEFINE_CLASS_HIDDEN (EditTaskContext, Attributes)
+DEFINE_CLASS_NAMESPACE (EditTaskContext, NAMESPACE_CCL)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -603,6 +604,14 @@ void EditTaskContext::restore (bool force)
 {
 	handler->restoreValues (force);
 }
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+BEGIN_PROPERTY_NAMES (EditTaskContext)
+	DEFINE_PROPERTY_CLASS ("parameters", "ParamContainer")
+	DEFINE_PROPERTY_CLASS ("editor", "Object")
+	DEFINE_PROPERTY_TYPE ("isArgumentDialog", ITypeInfo::kBool)
+END_PROPERTY_NAMES (EditTaskContext)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 

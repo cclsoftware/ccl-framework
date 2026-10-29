@@ -37,7 +37,8 @@ namespace SkinElements {
 class Model3DElement: public ResourceObjectElement
 {
 public:
-	DECLARE_SKIN_ELEMENT (Model3DElement, ResourceObjectElement)
+	DECLARE_CLASS (Model3DElement, ResourceObjectElement)
+	DECLARE_TYPELIB_CLASS (Model3DElement)
 
 	// ResourceObjectElement
 	bool loadObject (SkinModel& model) override;
@@ -50,7 +51,8 @@ public:
 class Material3DElement: public Element
 {
 public:
-	DECLARE_SKIN_ELEMENT_ABSTRACT (Material3DElement, Element)
+	DECLARE_CLASS_ABSTRACT (Material3DElement, Element)
+	DECLARE_TYPELIB_CLASS (Material3DElement)
 
 	Material3DElement ();
 
@@ -74,7 +76,8 @@ public:
 class SolidColorMaterial3DElement: public Material3DElement
 {
 public:
-	DECLARE_SKIN_ELEMENT (SolidColorMaterial3DElement, Material3DElement)
+	DECLARE_CLASS (SolidColorMaterial3DElement, Material3DElement)
+	DECLARE_TYPELIB_CLASS (SolidColorMaterial3DElement)
 
 	SolidColorMaterial3DElement ();
 
@@ -95,7 +98,8 @@ public:
 class TextureMaterial3DElement: public Material3DElement
 {
 public:
-	DECLARE_SKIN_ELEMENT (TextureMaterial3DElement, Material3DElement)
+	DECLARE_CLASS (TextureMaterial3DElement, Material3DElement)
+	DECLARE_TYPELIB_CLASS (TextureMaterial3DElement)
 
 	TextureMaterial3DElement ();
 
@@ -115,7 +119,8 @@ public:
 class TextureMaterial3DTextureElement: public Element
 {
 public:
-	DECLARE_SKIN_ELEMENT (TextureMaterial3DTextureElement, Element)
+	DECLARE_CLASS (TextureMaterial3DTextureElement, Element)
+	DECLARE_TYPELIB_CLASS (TextureMaterial3DTextureElement)
 
 	TextureMaterial3DTextureElement ();
 
@@ -135,7 +140,8 @@ public:
 class Scene3DElement: public ResourceObjectElement
 {
 public:
-	DECLARE_SKIN_ELEMENT (Scene3DElement, ResourceObjectElement)
+	DECLARE_CLASS (Scene3DElement, ResourceObjectElement)
+	DECLARE_TYPELIB_CLASS (Scene3DElement)
 
 	// ResourceObjectElement
 	bool loadObject (SkinModel& model) override;
@@ -148,7 +154,8 @@ public:
 class SceneNode3DElement: public Element
 {
 public:
-	DECLARE_SKIN_ELEMENT_ABSTRACT (SceneNode3DElement, Element)
+	DECLARE_CLASS_ABSTRACT (SceneNode3DElement, Element)
+	DECLARE_TYPELIB_CLASS (SceneNode3DElement)
 
 	SceneNode3DElement ();
 
@@ -179,7 +186,8 @@ public:
 class Camera3DElement: public SceneNode3DElement
 {
 public:
-	DECLARE_SKIN_ELEMENT (Camera3DElement, SceneNode3DElement)
+	DECLARE_CLASS (Camera3DElement, SceneNode3DElement)
+	DECLARE_TYPELIB_CLASS (Camera3DElement)
 
 	Camera3DElement ();
 
@@ -201,7 +209,8 @@ public:
 class LightSource3DElement: public SceneNode3DElement
 {
 public:
-	DECLARE_SKIN_ELEMENT_ABSTRACT (LightSource3DElement, SceneNode3DElement)
+	DECLARE_CLASS_ABSTRACT (LightSource3DElement, SceneNode3DElement)
+	DECLARE_TYPELIB_CLASS (LightSource3DElement)
 
 	PROPERTY_MUTABLE_CSTRING (colorString, ColorString)
 
@@ -221,7 +230,8 @@ protected:
 class AmbientLight3DElement: public LightSource3DElement
 {
 public:
-	DECLARE_SKIN_ELEMENT (AmbientLight3DElement, LightSource3DElement)
+	DECLARE_CLASS (AmbientLight3DElement, LightSource3DElement)
+	DECLARE_TYPELIB_CLASS (AmbientLight3DElement)
 
 	// LightSource3DElement
 	SceneNode3D* createSceneNode () const override;
@@ -234,7 +244,8 @@ public:
 class DirectionalLight3DElement: public LightSource3DElement
 {
 public:
-	DECLARE_SKIN_ELEMENT (DirectionalLight3DElement, LightSource3DElement)
+	DECLARE_CLASS (DirectionalLight3DElement, LightSource3DElement)
+	DECLARE_TYPELIB_CLASS (DirectionalLight3DElement)
 
 	// LightSource3DElement
 	SceneNode3D* createSceneNode () const override;
@@ -247,7 +258,8 @@ public:
 class PointLight3DElement: public LightSource3DElement
 {
 public:
-	DECLARE_SKIN_ELEMENT (PointLight3DElement, LightSource3DElement)
+	DECLARE_CLASS (PointLight3DElement, LightSource3DElement)
+	DECLARE_TYPELIB_CLASS (PointLight3DElement)
 
 	PointLight3DElement ();
 
@@ -270,7 +282,8 @@ public:
 class ModelNode3DElement: public SceneNode3DElement
 {
 public:
-	DECLARE_SKIN_ELEMENT (ModelNode3DElement, SceneNode3DElement)
+	DECLARE_CLASS (ModelNode3DElement, SceneNode3DElement)
+	DECLARE_TYPELIB_CLASS (ModelNode3DElement)
 
 	PROPERTY_MUTABLE_CSTRING (modelName, ModelName)
 
@@ -288,7 +301,8 @@ public:
 class SceneView3DElement: public ViewElement
 {
 public:
-	DECLARE_SKIN_ELEMENT (SceneView3DElement, ViewElement)
+	DECLARE_CLASS (SceneView3DElement, ViewElement)
+	DECLARE_TYPELIB_CLASS (SceneView3DElement)
 
 	// ViewElement
 	View* createView (const CreateArgs& args, View* view) override;

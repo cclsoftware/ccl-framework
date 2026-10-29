@@ -1,6 +1,39 @@
 {
+	"constants":
+	[
+		{
+			"name": "kApplicationTypeDesktopID",
+			"value": "desktopapp",
+			"type": "string",
+			"brief": "identifier for desktop application type"
+		},
+		{
+			"name": "kApplicationTypeMobileID",
+			"value": "mobileapp",
+			"type": "string",
+			"brief": "identifier for mobile application type"
+		}
+	],
 	"enums":
 	[
+		{
+			"name": "ApplicationType",
+			"enumerators":
+			[
+				{
+					"name": "kApplicationTypeDesktop",
+					"type": "int",
+					"value": "0",
+					"brief": "desktop application"
+				},
+				{
+					"name": "kApplicationTypeMobile",
+					"type": "int",
+					"value": "1",
+					"brief": "mobile application"
+				}
+			]
+		},
 		{
 			"name": "AnimationTimingType",
 			"brief": "Animation timing types",
@@ -87,6 +120,41 @@
 			]
 		},
 		{
+			"name": "DragSessionDropResult",
+			"brief": "Drag session drop results",
+			"enumerators":
+			[
+				{
+					"name": "kDragSessionDropResultNone",
+					"value": "0",
+					"type": "int",
+					"expression": true,
+					"brief": "no effect"
+				},
+				{
+					"name": "kDragSessionDropResultCopyShared",
+					"value": "1<<0",
+					"type": "int",
+					"expression": true,
+					"brief": "drop causes a copy that share the data"
+				},
+				{
+					"name": "kDragSessionDropResultCopyReal",
+					"value": "1<<1",
+					"type": "int",
+					"expression": true,
+					"brief": "drop causes a complete copy"
+				},
+				{
+					"name": "kDragSessionDropResultMove",
+					"value": "1<<2",
+					"type": "int",
+					"expression": true,
+					"brief": "drop causes move"
+				}
+			]
+		},
+		{
 			"name": "OrientationType",
 			"brief": "GUI orientation types",
 			"enumerators":
@@ -126,6 +194,25 @@
 					"name": "kOrientationFlagPortraitAllowed",
 					"type": "int",
 					"value": "1<<kOrientationTypePortrait"
+				}
+			]
+		},
+		{
+			"name": "TextInputFlags",
+			"brief": "Text input flags",
+			"enumerators":
+			[
+				{
+					"name": "kTextInputFlagSensitiveData",
+					"type": "int",
+					"value": "1<<0",
+					"expression": true
+				},
+				{
+					"name": "kTextInputFlagMultiline",
+					"type": "int",
+					"value": "1<<1",
+					"expression": true
 				}
 			]
 		}

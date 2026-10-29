@@ -47,8 +47,8 @@ using namespace Web;
 //************************************************************************************************
 
 DEFINE_CLASS (XMLHttpRequest, Object)
-DEFINE_CLASS_NAMESPACE (XMLHttpRequest, "Network")
 DEFINE_CLASS_UID (XMLHttpRequest, 0xeabd31c, 0x6cd1, 0x4ff4, 0xa7, 0xc0, 0xb2, 0xb9, 0xf8, 0x54, 0xa7, 0xf3)
+DEFINE_CLASS_CATEGORY (XMLHttpRequest, PLUG_CATEGORY_NETWORK_)
 void XMLHttpRequest::forceLinkage () {} // force linkage of this file
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -278,14 +278,14 @@ tresult XMLHttpRequest::sendAsync (VariantRef data)
 		IWebHeaderCollection& headers = getRequestHeaders ();
 		headers.getEntries ().setEntry (Meta::kContentType, contentType);
 
-		System::GetWebService ().uploadInBackground (this, url, *localData, &headers, method, credentials, responseStream); 
+		System::GetWebService ().uploadInBackground ({this, url, *localData, &headers, method, credentials, responseStream}); 
 	}
 	else
 	{
 		ASSERT (method == HTTP::kGET)		
 		ASSERT (data.isNil ())
 
-		System::GetWebService ().downloadInBackground (this, url, *responseStream, credentials);
+		System::GetWebService ().downloadInBackground ({this, url, *responseStream, credentials});
 	}
 
 	isSending (true);
@@ -310,8 +310,8 @@ tresult XMLHttpRequest::sendBlocking (VariantRef data, IProgressNotify* progress
 		IWebHeaderCollection& headers = getRequestHeaders ();
 		headers.getEntries ().setEntry (Meta::kContentType, contentType);
 
-		success = System::GetWebService ().uploadData (url, *localData, &headers, *responseStream, 
-													   method, credentials, progress, &status) == kResultOk;
+		success = System::GetWebService ().uploadData ({url, *localData, &headers, *responseStream, 
+													   method, credentials, progress, &status}) == kResultOk;
 	}
 	else
 	{
@@ -319,7 +319,7 @@ tresult XMLHttpRequest::sendBlocking (VariantRef data, IProgressNotify* progress
 		ASSERT (data.isNil ())
 
 		// TODO: add support for additional headers!
-		success = System::GetWebService ().downloadData (url, *responseStream, credentials, nullptr, progress, &status) == kResultOk;
+		success = System::GetWebService ().downloadData ({url, *responseStream, credentials, nullptr, progress, &status}) == kResultOk;
 	}
 
 	isSending (false);

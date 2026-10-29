@@ -76,7 +76,7 @@ public:
 	
 	/** Write Unicode string with optional null-termination. */
 	bool writeString (StringRef string, bool terminate = true);
-	bool writeString (const uchar* chars, bool terminate = true);
+	bool writeString (UStringPtr chars, bool terminate = true);
 
 	/** Write Unicode string with preceding length field. */
 	bool writeWithLength (StringRef string);
@@ -138,7 +138,7 @@ protected:
 template<class T>
 struct StreamSizeWriter
 {
-	StreamSizeWriter (CCL::Streamer& stream)
+	StreamSizeWriter (Streamer& stream)
 	: stream (stream)
 	{
 		ASSERT (stream->isSeekable () != 0)
@@ -151,24 +151,24 @@ struct StreamSizeWriter
 		int64 newPos = stream->tell ();
 		T size = (T)(newPos - oldPos) - sizeof(T);
 		ASSERT (size >= 0)
-		stream->seek (oldPos, CCL::IStream::kSeekSet);
+		stream->seek (oldPos, IStream::kSeekSet);
 		stream.write (size);
-		stream->seek (newPos, CCL::IStream::kSeekSet);
+		stream->seek (newPos, IStream::kSeekSet);
 	}
 
-	CCL::Streamer& stream;
+	Streamer& stream;
 	int64 oldPos;
 };
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
-// inline
+// Streamer / StreamPacketizer inline
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-inline IStream& Streamer::getStream () const				{ return stream; }
-inline IStream* Streamer::operator -> () const				{ return &stream; }				
+inline IStream& Streamer::getStream () const { return stream; }
+inline IStream* Streamer::operator -> () const { return &stream; }				
 
-inline IStream& StreamPacketizer::getStream () const		{ return stream; }
-inline IStream* StreamPacketizer::operator -> () const		{ return &stream; }				
+inline IStream& StreamPacketizer::getStream () const { return stream; }
+inline IStream* StreamPacketizer::operator -> () const { return &stream; }				
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 

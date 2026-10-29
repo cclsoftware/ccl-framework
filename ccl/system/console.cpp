@@ -59,7 +59,7 @@ tbool CCL_API StandardConsole::writeLine (StringRef text)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-tbool CCL_API StandardConsole::writeLine (const char* text)
+tbool CCL_API StandardConsole::writeLine (CStringPtr text)
 {
 	if(userConsole)
 		return userConsole->writeLine (text);
@@ -80,7 +80,7 @@ tbool CCL_API StandardConsole::readLine (String& text)
 	else
 	{
 		::fflush (stdout);
-		char buffer[STRING_STACK_SPACE_MAX] = {0};
+		char buffer[CORE_STRING_STACK_MAX] = {0};
 		if(::fgets (buffer, ARRAY_COUNT (buffer), stdin) == nullptr)
 			return false;
 		text = String (Text::kUTF8, buffer);

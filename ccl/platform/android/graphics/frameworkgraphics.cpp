@@ -43,7 +43,7 @@ namespace Android {
 
 struct ProfileScope
 {
-	ProfileScope (const char* text)
+	ProfileScope (CStringPtr text)
 	: text (text),
 	  start (Debugger::getProfileTime ())
 	{}
@@ -54,7 +54,7 @@ struct ProfileScope
 	}
 
 	double start;
-	const char* text;
+	CStringPtr text;
 };
 
 #if DEBUG_LOG

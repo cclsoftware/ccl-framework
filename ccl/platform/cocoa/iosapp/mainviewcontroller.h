@@ -1,7 +1,7 @@
 //************************************************************************************************
 //
 // This file is part of Crystal Class Library (R)
-// Copyright (c) 2025 CCL Software Licensing GmbH.
+// Copyright (c) 2026 CCL Software Licensing GmbH.
 // All Rights Reserved.
 //
 // Licensed for use under either:
@@ -34,7 +34,12 @@ class IView;
 @interface CCL_ISOLATED (MainViewController) : UIViewController
 {
 	CCL::IView* applicationView;
+
+	@public
+	void (^uiInitializedHandler) (void); // invoked once in viewDidAppear:
 }
+
+- (void)dealloc;
 
 @end
 

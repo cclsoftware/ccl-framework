@@ -103,23 +103,63 @@ interface IWebService: IUnknown
 	// Uploads/Downloads
 	//////////////////////////////////////////////////////////////////////////////////////////////
 
-	/** Download remote resource to local storage. Returns result at network level, use status for application level. */
-	virtual tresult CCL_API downloadData (UrlRef remotePath, IStream& localStream,
-							IWebCredentials* credentials = nullptr, IWebHeaderCollection* headers = nullptr,
-							IProgressNotify* progress = nullptr, int* status = nullptr) = 0;
+	struct DownloadDataArgs
+	{
+		UrlRef remotePath;
+		IStream& localStream;
+		IWebCredentials* credentials = nullptr;
+		IWebHeaderCollection* headers = nullptr;
+		IProgressNotify* progress = nullptr;
+		int* status = nullptr;
+	};
 
-	/** Download remote resource asynchronously. Observer receives kBackgroundProgressNotify + kDownloadComplete messages. */
-	virtual tresult CCL_API downloadInBackground (IObserver* observer, UrlRef remotePath, IStream& localStream,
-							IWebCredentials* credentials = nullptr, IWebHeaderCollection* headers = nullptr) = 0;
+	/**	Download remote resource to local storage.
+		Returns result at network level, use status for application level. */
+	virtual tresult CCL_API downloadData (const DownloadDataArgs& args) = 0;
 
-	/** Upload data. Headers must include content type. Returns result at network level, use status for application level. */
-	virtual tresult CCL_API uploadData (UrlRef remotePath, IStream& data, IWebHeaderCollection* headers, IStream& response,
-							StringID method = nullptr, IWebCredentials* credentials = nullptr, IProgressNotify* progress = nullptr,
-							int* status = nullptr) = 0;
+	struct DownloadInBackgroundArgs
+	{
+		IObserver* observer;
+		UrlRef remotePath;
+		IStream& localStream;
+		IWebCredentials* credentials = nullptr;
+		IWebHeaderCollection* headers = nullptr;
+	};
 
-	/** Upload data asynchronously. Headers must include content type. Observer receives kBackgroundProgressNotify + kUploadComplete messages. */
-	virtual tresult CCL_API uploadInBackground (IObserver* observer, UrlRef remotePath, IStream& localStream, IWebHeaderCollection* headers,
-							StringID method = nullptr, IWebCredentials* credentials = nullptr, IStream* response = nullptr) = 0;
+	/**	Download remote resource asynchronously.
+		Observer receives kBackgroundProgressNotify and kDownloadComplete messages. */
+	virtual tresult CCL_API downloadInBackground (const DownloadInBackgroundArgs& args) = 0;
+
+	struct UploadDataArgs
+	{
+		UrlRef remotePath;
+		IStream& data;
+		IWebHeaderCollection* headers;
+		IStream& response;
+		StringID method = nullptr;
+		IWebCredentials* credentials = nullptr;
+		IProgressNotify* progress = nullptr;
+		int* status = nullptr;
+	};
+
+	/**	Upload data. Headers must include content type.
+		Returns result at network level, use status for application level. */
+	virtual tresult CCL_API uploadData (const UploadDataArgs& args) = 0;
+
+	struct UploadInBackgroundArgs
+	{
+		IObserver* observer;
+		UrlRef remotePath;
+		IStream& localStream;
+		IWebHeaderCollection* headers;
+		StringID method = nullptr;
+		IWebCredentials* credentials = nullptr;
+		IStream* response = nullptr;
+	};
+
+	/**	Upload data asynchronously. Headers must include content type.
+		Observer receives kBackgroundProgressNotify + kUploadComplete messages. */
+	virtual tresult CCL_API uploadInBackground (const UploadInBackgroundArgs& args) = 0;
 
 	/** Cancel asynchronous upload or download. */
 	virtual tresult CCL_API cancelOperation (IObserver* observer) = 0;

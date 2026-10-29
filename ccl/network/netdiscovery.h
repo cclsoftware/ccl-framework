@@ -84,10 +84,10 @@ public:
 	ServiceInstance ();
 	ServiceInstance (Core::Sockets::Discovery::DiscoveryRef sdRef);
 
-	void update (const Core::Sockets::Discovery::ServiceDescriptor& d);
-
 	PROPERTY_POINTER (IObserver, observer, Observer)
 	PROPERTY_VARIABLE (Core::Sockets::Discovery::DiscoveryRef, sdRef, Reference)
+
+	void update (const Core::Sockets::Discovery::ServiceDescriptor& d);
 
 	// Object
 	bool equals (const Object& obj) const override;

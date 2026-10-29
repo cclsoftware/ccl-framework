@@ -315,7 +315,8 @@ DAPService::DAPService ()
   receiveSocket (nullptr),
   sendSocket (nullptr),
   sequenceNumber (0),
-  connected (false)
+  connected (false),
+  terminating (false)
 {}
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -364,6 +365,8 @@ tbool CCL_API DAPService::shutdown ()
 {
 	CCL_WARN ("Shutting down DAP Service...\n", 0);
 
+	terminating = true;
+
 	if(receiveSocket)
 		receiveSocket->disconnect ();
 
@@ -373,7 +376,11 @@ tbool CCL_API DAPService::shutdown ()
 
 	if(receiveThread)
 	{
-		receiveThread->terminate ();
+		if(!receiveThread->join (5000)) // wait for receiveThreadFunction to actually finish before releasing receiveSocket below
+		{
+			CCL_WARN ("DAP Service receive thread did not terminate in time.\n", 0);
+			receiveThread->terminate ();
+		}
 		safe_release (receiveThread);
 	}
 
@@ -381,6 +388,7 @@ tbool CCL_API DAPService::shutdown ()
 		safe_release (receiveSocket);
 
 	debuggableManager = nullptr;
+	terminating = false;
 	return true;
 }
 
@@ -456,9 +464,12 @@ void DAPService::disconnect ()
 /*static*/int CCL_API DAPService::receiveThreadFunction (void* arg)
 {
 	DAPService* me = static_cast<DAPService*>(arg);
-	while(me->receiveSocket)
+	while(!me->terminating)
 	{
-		if(me->sendSocket = me->receiveSocket->accept ()) // blocking
+		if(!me->receiveSocket->isReadable (100)) // poll instead of blocking in accept () so terminating is re-checked regularly
+			continue;
+
+		if(me->sendSocket = me->receiveSocket->accept ())
 		{
 			const int kBufferSize = 64;
 			char buffer[kBufferSize] = { };
@@ -466,25 +477,24 @@ void DAPService::disconnect ()
 
 			while(me->connected)
 			{
-				if(me->sendSocket->isReadable ())
+				if(!me->sendSocket->isReadable (50))
+					continue;
+
+				MutableCString message;
+				while(me->connected && me->sendSocket->isReadable ())
 				{
-					MutableCString message;
-					while(me->connected && me->sendSocket->isReadable ())
-					{
-						int bytesRead = me->sendSocket->receive (buffer, kBufferSize); // blocking
-						message.append (buffer, bytesRead);
-					}
-
-					ASSERT (!message.isEmpty ())
-
-					if(me->connected)
-					{
-						String request;
-						request.appendCString (Text::kUTF8, message);
-						(NEW Message ("handleMessage", request))->post (me);
-					}
+					int bytesRead = me->sendSocket->receive (buffer, kBufferSize); // blocking
+					message.append (buffer, bytesRead);
 				}
-				System::ThreadSleep (50);
+
+				ASSERT (!message.isEmpty ())
+
+				if(me->connected)
+				{
+					String request;
+					request.appendCString (Text::kUTF8, message);
+					(NEW Message ("handleMessage", request))->post (me);
+				}
 			}
 
 			if(me->sendSocket)

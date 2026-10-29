@@ -86,10 +86,10 @@ public:
 	CLASS_INTERFACE2 (ITimerTask, IWindowEventHandler,ServicePlugin)
 	
 protected:
-	static const CCL::Configuration::BoolValue clientEnabled;
-	static const CCL::Configuration::IntValue clientPort;
-	static const CCL::Configuration::IntValue monitorNumber;	
-	static const CCL::Configuration::IntValue monitorCount;
+	static const Configuration::BoolValue clientEnabled;
+	static const Configuration::IntValue clientPort;
+	static const Configuration::IntValue monitorNumber;	
+	static const Configuration::IntValue monitorCount;
 	static TUIOService* theInstance;
 	static int hashIDKey (const TouchID& key, int size);
 	static const int kMaxMonitorCount = 16;
@@ -103,7 +103,7 @@ protected:
 	PointerHashMap<TouchCollection*> touchCollectionForWindow;
 	HashMap<TouchID, IWindow*> windowForTouch;
 	LinkedList<TUIOTouchInfo*> touchQueue;
-	CCL::Threading::SpinLock queueLock;
+	Threading::SpinLock queueLock;
 	
 	void processCursor (TUIO::TuioCursor& tcur);
 	IWindow* findWindow (const Point& cclPoint) const;

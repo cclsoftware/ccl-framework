@@ -86,7 +86,7 @@ public:
 	tresult CCL_API initialize (IUnknown* context = nullptr) override;
 	tresult CCL_API terminate () override;
 	tbool CCL_API paramChanged (IParameter* param) override;
-	void CCL_API notify (ISubject* subject, CCL::MessageRef msg) override;
+	void CCL_API notify (ISubject* subject, MessageRef msg) override;
 	tbool CCL_API getProperty (Variant& var, MemberID propertyId) const override;
 
 protected:

@@ -42,6 +42,12 @@ public:
 
 	EnumTypeInfo& getDefaultColors ();
 
+	// Brush (not in public interface)
+	enum class OpacityMode { kOverwrite, kMultiply };
+	float getBrushOpacity (BrushRef brush);
+	void setBrushOpacity (Brush& brush, float newOpacity, OpacityMode mode = OpacityMode::kOverwrite);
+	void blendBrushes (Brush& result, BrushRef start, BrushRef end, float t);
+
 	// Color
 	tbool CCL_API Color_fromCString (Color& This, CStringPtr cString) override;
 	tbool CCL_API Color_toCString (const Color& This, char* cString, int cStringSize, int flags) override;
@@ -108,9 +114,10 @@ public:
 	DECLARE_CLASS (UIValue, Object)
 
 	UIValue ();
+	~UIValue ();
 
 	// IUIValue
-	void CCL_API reset () override;
+	void CCL_API reset (Type newType = kNil) override;
 	tbool CCL_API copyFrom (const IUIValue* value) override;
 	Type CCL_API getType () const override;
 	void CCL_API fromPoint (PointRef p) override;
@@ -133,6 +140,10 @@ public:
 	tbool CCL_API toPointF4D (PointF4D& p) const override;
 	void CCL_API fromTransform3D (Transform3DRef t) override;
 	tbool CCL_API toTransform3D (Transform3D& t) const override;
+	void CCL_API fromPen (PenRef p) override;
+	tbool CCL_API toPen (Pen& p) const override;
+	void CCL_API fromBrush (BrushRef b) override;
+	tbool CCL_API toBrush (Brush& b) const override;
 
 	// Internal methods to avoid extra copy
 	PointRef asPointRef () const { return reinterpret_cast<PointRef> (data.point); }
@@ -145,16 +156,18 @@ public:
 	PointF4DRef asPointF4DRef () const { return reinterpret_cast<PointF4DRef> (data.pointF4d); }
 	RectFRef asRectFRef () const { return reinterpret_cast<RectFRef> (data.rectF); }
 	Transform3DRef asTransform3DRef () const { return static_cast<Transform3DRef> (data.transform3d); }
+	PenRef asPenRef () const { return reinterpret_cast<PenRef> (data.pen); }
+	BrushRef asBrushRef () const { return reinterpret_cast<BrushRef> (data.brush); }
 
 	CLASS_INTERFACE (IUIValue, Object)
 
 protected:
 	Type type;
-	union
+	union UIData
 	{
 		struct { Coord x, y; } point;
 		struct { Coord left, top, right, bottom; } rect;
-		struct { float a0, a1, b0, b1, t0, t1; } transform;		
+		struct { float a0, a1, b0, b1, t0, t1; } transform;
 		struct { uint8 red, green, blue, alpha; } color;
 		struct { float values[4]; } colorF;
 		struct { CoordF x, y; } pointF;
@@ -162,6 +175,11 @@ protected:
 		struct { CoordF x, y, z; } pointF3d;
 		struct { CoordF x, y, z, w; } pointF4d;
 		PlainTransform3D transform3d;
+		PlainPen pen;
+		PlainBrush brush;
+
+		UIData () {}
+		~UIData () {}
 	} data;
 };
 

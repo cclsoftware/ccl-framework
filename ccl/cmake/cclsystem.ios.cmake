@@ -2,6 +2,8 @@ ccl_list_append_once (cclsystem_cocoa_sources
 	${CCL_DIR}/platform/cocoa/macutils.h
 	${CCL_DIR}/platform/cocoa/macutils.mm
 	${CCL_DIR}/platform/cocoa/system/debug.cocoa.mm
+	${CCL_DIR}/platform/cocoa/system/filemanager.cocoa.h
+	${CCL_DIR}/platform/cocoa/system/filemanager.cocoa.mm
 	${CCL_DIR}/platform/cocoa/system/filemanager.ios.h
 	${CCL_DIR}/platform/cocoa/system/filemanager.ios.mm
 	${CCL_DIR}/platform/cocoa/system/filesystemsecuritystore.cocoa.h

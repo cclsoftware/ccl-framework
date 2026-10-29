@@ -48,7 +48,7 @@ public:
 	tbool CCL_API getProperty (Variant& var, MemberID propertyId) const;
 	tbool CCL_API setProperty (MemberID propertyId, const Variant& var);
 	void invalidate (RectRef rect);
-	void showWindow (bool state);
+	void showWindow (bool state = true, bool activate = true);
 	tbool CCL_API close ();
 	void getFrameSize (Rect& size) const;
 	Point& CCL_API clientToScreen (CCL::Point& pos) const;
@@ -59,12 +59,14 @@ public:
 	void setWindowSize (Rect& newSize);
 	void CCL_API center ();
 	void updateBackgroundColor ();
-	
+
+	PROPERTY_BOOL (suppressKeyEvents, SuppressKeyEvents)
+
 protected:
 	IWindow::StatusBarStyle statusBarStyle = IWindow::kLightContent;
 
 	NativeView* nativeView;
-	
+
 	void applySafeAreaInsetsToChild (CCL::RectRef windowSize);
 
 	// Window

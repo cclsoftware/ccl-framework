@@ -53,7 +53,7 @@ public:
 
 	// IPersistentStore
 	tresult CCL_API registerClass (const ITypeInfo* classInfo, TableMapping mapping = kDefaultMapping) override;
-	tresult CCL_API setMemberFlags (const ITypeInfo* typeInfo, const char* memberName, int flags) override;
+	tresult CCL_API setMemberFlags (const ITypeInfo* typeInfo, CStringPtr memberName, int flags) override;
 	tresult CCL_API setLocation (UrlRef url) override;
 	tbool CCL_API beginTransaction () override;
 	tbool CCL_API commitTransaction () override;
@@ -61,7 +61,7 @@ public:
 	tresult CCL_API updateObject (IPersistentObject* object) override;
 	tresult CCL_API removeObject (IPersistentObject* object) override;
 	IUnknownIterator* CCL_API query (const ITypeInfo& typeInfo, IExpression* condition) override;
-	tresult CCL_API collectValues (IMutableArray& values, const ITypeInfo& typeInfo, const char* memberName, IExpression* condition) override;
+	tresult CCL_API collectValues (IMutableArray& values, const ITypeInfo& typeInfo, CStringPtr memberName, IExpression* condition) override;
 
 	CLASS_INTERFACE (IPersistentStore, Object)
 

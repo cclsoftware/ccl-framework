@@ -1,7 +1,7 @@
 //************************************************************************************************
 //
 // This file is part of Crystal Class Library (R)
-// Copyright (c) 2025 CCL Software Licensing GmbH.
+// Copyright (c) 2026 CCL Software Licensing GmbH.
 // All Rights Reserved.
 //
 // Licensed for use under either:
@@ -664,6 +664,19 @@ public class FrameworkActivity extends Activity
 		}
 	}
 
+	public void checkAndRequestPermissions (String[] permissions, long asyncOperationPtr)
+	{
+		checkAndRequestPermissions (permissions,
+			new FrameworkActivity.RequestPermissionsResultHandler ()
+			{
+				@Override
+				public void onRequestPermissionsResult (String[] permissions, int[] grantResults)
+				{
+					onRequestPermissionsResultNative (asyncOperationPtr, permissions, grantResults);
+				}
+			});
+	}
+
 	@Override
 	public void onRequestPermissionsResult (int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults)
 	{
@@ -1158,4 +1171,6 @@ public class FrameworkActivity extends Activity
 
 	public native boolean onKeyEventNative (boolean isDown, int keyCode, int character, int modifiers, boolean isRepeat);
 	public native boolean onBackPressedNative ();
+
+	public native void onRequestPermissionsResultNative (long asyncOperationPtr, String[] permissions, int[] grantResults);
 }

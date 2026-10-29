@@ -46,8 +46,8 @@ namespace JOSE
 class JWProtectedObject
 {
 public:
-	PROPERTY_OBJECT (CCL::Attributes, protectedHeader, ProtectedHeader)
-	CCL::Attributes& getProtectedHeader () { return protectedHeader; }
+	PROPERTY_OBJECT (Attributes, protectedHeader, ProtectedHeader)
+	Attributes& getProtectedHeader () { return protectedHeader; }
 
 	JOSE::Algorithm getAlgorithm () const
 	{
@@ -394,8 +394,8 @@ public:
 class JWTObject
 {
 public:
-	PROPERTY_OBJECT (CCL::Attributes, claims, Claims)
-	CCL::Attributes& getClaims () { return claims; }
+	PROPERTY_OBJECT (Attributes, claims, Claims)
+	Attributes& getClaims () { return claims; }
 	
 	JWTObject& fromSignature (const JWSObject& jws)
 	{
@@ -410,7 +410,7 @@ public:
 		jws.setPayload (m);
 	}
 
-	JWTObject& fromAttributes (const CCL::Attributes& other)
+	JWTObject& fromAttributes (const Attributes& other)
 	{
 		claims.copyFrom (other);
 		return *this;

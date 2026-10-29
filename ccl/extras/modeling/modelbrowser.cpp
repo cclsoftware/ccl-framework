@@ -96,7 +96,7 @@ IUnknown* ClassModelSearchProvider::customizeSearchResult (CustomizeArgs& args, 
 	UnknownPtr<IUrl> url (resultItem);
 	if(url)
 	{
-		const char* iconName = getIconName (url->getProtocol ());
+		CStringPtr iconName = getIconName (url->getProtocol ());
 		if(iconName)
 		{
 			// replace slashes with dots for qualified names

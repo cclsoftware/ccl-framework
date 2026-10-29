@@ -35,6 +35,7 @@
 #include "ccl/gui/windows/tooltip.h"
 #include "ccl/gui/controls/autoscroller.h"
 #include "ccl/gui/theme/colorscheme.h"
+#include "ccl/gui/theme/legacystyleids.h"
 
 #include "ccl/base/collections/stringdictionary.h"
 #include "ccl/base/storage/filefilter.h"
@@ -92,16 +93,25 @@ UserInterface::TimerBlocker::~TimerBlocker ()
 }
 
 //************************************************************************************************
+// LegacyStyleID
+//************************************************************************************************
+
+#if LEGACY_STYLES_SUPPORTED
+bool LegacyStyleID::enabled = true;
+#endif
+
+//************************************************************************************************
 // UserInterface
 //************************************************************************************************
 
 DEFINE_CLASS_ABSTRACT_HIDDEN (UserInterface, Object)
-static const String kDesktopAppID ("desktopapp");
-static const String kMobileAppID ("mobileapp");
+static const String kDesktopAppID (kApplicationTypeDesktopID);
+static const String kMobileAppID (kApplicationTypeMobileID);
 const String UserInterface::kAffirmativeButtonLeftID ("affirmative-button-left");
 const String UserInterface::kAffirmativeButtonRightID ("affirmative-button-right");
 static const String kRoundedWindowCornersID ("rounded-window-corners");
 static const String kCustomMenuBarID ("custom-menu-bar");
+static const String kLegacyStylesEnabledID ("legacy-styles-enabled");
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -210,17 +220,23 @@ tbool CCL_API UserInterface::startup (ModuleRef module, IApplicationProvider* ap
 			applicationType = kDesktopApplication;
 	}
 
-	Configuration::Registry::instance ().appendValue ("XML.Parsers", "definitions", appTypeString);
+	Configuration::Registry::instance ().appendValue (Configuration::kXmlParsers, Configuration::kDefinitions, appTypeString);
 	FileFilter::getGlobalConditions ().setEntry ("GUI.apptype", appTypeString);
 
 	// definitions for platform styles
-	Configuration::Registry::instance ().appendValue ("XML.Parsers", "definitions", buttonOrder == Styles::kAffirmativeButtonLeft ? kAffirmativeButtonLeftID : kAffirmativeButtonRightID);
+	Configuration::Registry::instance ().appendValue (Configuration::kXmlParsers, Configuration::kDefinitions, buttonOrder == Styles::kAffirmativeButtonLeft ? kAffirmativeButtonLeftID : kAffirmativeButtonRightID);
 
 	if(roundedWindowCornersSupported)
-		Configuration::Registry::instance ().appendValue ("XML.Parsers", "definitions", kRoundedWindowCornersID);
+		Configuration::Registry::instance ().appendValue (Configuration::kXmlParsers, Configuration::kDefinitions, kRoundedWindowCornersID);
 
 	if(customMenuBarSupported)
-		Configuration::Registry::instance ().appendValue ("XML.Parsers", "definitions", kCustomMenuBarID);
+		Configuration::Registry::instance ().appendValue (Configuration::kXmlParsers, Configuration::kDefinitions, kCustomMenuBarID);
+
+	#if LEGACY_STYLES_SUPPORTED
+	Configuration::Registry::instance ().getValue (LegacyStyleID::enabled, "GUI", "LegacyStylesEnabled"); // can be disabled per app
+	if(LegacyStyleID::enabled == true)
+		Configuration::Registry::instance ().appendValue (Configuration::kXmlParsers, Configuration::kDefinitions, kLegacyStylesEnabledID);	
+	#endif
 
 	// init appearance mode (optional)
 	String appearanceString;

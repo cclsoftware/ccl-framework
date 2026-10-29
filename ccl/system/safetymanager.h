@@ -55,7 +55,7 @@ public:
 	void CCL_API endAction () override;
 	ICrashReport* CCL_API detectCrash () override;
 	tresult CCL_API checkStability () override;
-	void CCL_API reportException (void* exceptionInformation, const uchar* systemDumpFile) override;
+	void CCL_API reportException (void* exceptionInformation, UStringPtr systemDumpFile) override;
 	tbool CCL_API handleException () override;
 
 	// IDiagnosticDataProvider
@@ -90,9 +90,9 @@ protected:
 	
 	IObjectFilter* createCombinedFilter ();
 	virtual void enableCrashRecovery (bool state);
-	void reportCrash (const uchar* crashingModulePath, const uchar* systemDumpFile);
-	void reportCallingModule (const uchar* callingModulePath);
-	void reportUnexpectedBehavior (const uchar* modulePath);
+	void reportCrash (UStringPtr crashingModulePath, UStringPtr systemDumpFile);
+	void reportCallingModule (UStringPtr callingModulePath);
+	void reportUnexpectedBehavior (UStringPtr modulePath);
 };
 
 } // namespace CCL

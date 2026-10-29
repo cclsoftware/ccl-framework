@@ -30,7 +30,7 @@ namespace CCL {
 // Platform store macros
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-#define CCL_NO_PLATFORM_STORE CCL_PLATFORM_LINUX // no platform store on Linux
+#define CCL_NO_PLATFORM_STORE (CCL_PLATFORM_LINUX || CCL_PLATFORM_WASM) // no platform store on Linux or WebAssembly
 
 #define CCL_DEMO_STORE_MANAGER_ENABLED (CCL_NO_PLATFORM_STORE || (0 && DEBUG)) // enable demo store
 

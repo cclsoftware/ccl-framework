@@ -1,0 +1,62 @@
+//************************************************************************************************
+//
+// This file is part of Crystal Class Library (R)
+// Copyright (c) 2026 CCL Software Licensing GmbH.
+// All Rights Reserved.
+//
+// Licensed for use under either:
+//  1. a Commercial License provided by CCL Software Licensing GmbH, or
+//  2. GNU Affero General Public License v3.0 (AGPLv3).
+// 
+// You must choose and comply with one of the above licensing options.
+// For more information, please visit ccl.dev.
+//
+// Filename    : ccl_native.d.ts
+// Description : CCL framework native type information
+//
+//************************************************************************************************
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+// Global functions
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+/**
+ * Runtime include a JavaScript file from a relative or resource path.
+ *
+ * ```
+ * // Relative include example:
+ * include_file ("path/file.js")
+ *
+ * // Resource based include example:
+ * include_file ("resource://com.vendor.app/file.js")
+ * ```
+ *
+ * @param string  path to file to include, relative or as absolute resource.
+ */
+declare var include_file: (path: string) => void;
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+// Forward declared namespaces (for TypeDoc)
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+declare namespace CCL {}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+// Type aliases
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+declare namespace CCL
+{
+
+export type Coord = number; // mask Core type
+export type Color = number; // mask Core type
+export type tresult = number; // bool incomatible!
+export type Variant = boolean | number | string | Object;
+
+} // namespace CCL
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+// Generated type information
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+{{typings}}

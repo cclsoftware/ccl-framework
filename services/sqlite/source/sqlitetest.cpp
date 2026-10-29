@@ -68,7 +68,7 @@ public:
 			System::GetFileUtilities ().makeUniqueFileName (System::GetFileSystem (), *databaseUrl, false);
 
 			// create database connection
-			databaseEngine = ccl_new<IDatabaseEngine> (CCL::ClassID::SQLite);
+			databaseEngine = ccl_new<IDatabaseEngine> (ClassID::SQLite);
 			if(databaseEngine)
 				connection = databaseEngine->createConnection (*databaseUrl);
 		}
@@ -115,8 +115,8 @@ protected:
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-static const char* folderNames[]=
-	{"build", "ccl", "trunk", "devices", "engine", "lib", "media", "services", "simrec", "studioapp", "testapp", "testarea", "tools", nullptr};
+static CStringPtr folderNames[]=
+	{"build", "ccl", "core", "services", "tools", nullptr};
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -145,7 +145,7 @@ CCL_TEST_F (SQLiteTest, TestInsert)
 			for(int index = 0; index < 1000; index++)
 			{
 				int i = 0;
-				while(const char* v = folderNames[i++])
+				while(CStringPtr v = folderNames[i++])
 				{
 					String str (v);
 					str.appendIntValue (index);

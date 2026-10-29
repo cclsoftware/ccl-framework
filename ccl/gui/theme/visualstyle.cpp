@@ -98,6 +98,7 @@ tbool CCL_API StyleConditionContext::matches (StringID conditions) const
 //************************************************************************************************
 
 DEFINE_CLASS_HIDDEN (VisualStyleData, Object)
+DEFINE_CLASS_NAMESPACE (VisualStyleData, NAMESPACE_CCL)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -109,7 +110,8 @@ VisualStyleData::VisualStyleData (StringID name)
   metrics (0, 1),
   strings (0, 1),
   options (0, 1),
-  gradients (0, 1)
+  gradients (0, 1),
+  animations (0, 1)
 {}
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -122,7 +124,8 @@ VisualStyleData::VisualStyleData (const VisualStyleData& other)
   metrics (0, 1),
   strings (0, 1),
   options (0, 1),
-  gradients (0, 1)
+  gradients (0, 1),
+  animations (0, 1)
 {
 	mergeData (other);
 }
@@ -490,6 +493,26 @@ void CCL_API VisualStyleData::setGradient (StringID name, IGradient* gradient)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
+IAnimation* CCL_API VisualStyleData::getAnimation (StringID name) const
+{
+	if(AnimationItem* item = lookup (animations, name))
+		return item->getAnimation ();
+	else
+		return nullptr;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+void CCL_API VisualStyleData::setAnimation (StringID name, IAnimation* animation)
+{
+	if(AnimationItem* item = lookup (animations, name))
+		item->setAnimation (animation);
+	else
+		animations.add (AnimationItem (name, animation));
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
 tbool CCL_API VisualStyleData::getProperty (Variant& var, MemberID propertyId) const
 {
 	#define RETURN_PROPERTY(name, vector) \
@@ -502,6 +525,7 @@ tbool CCL_API VisualStyleData::getProperty (Variant& var, MemberID propertyId) c
 	RETURN_PROPERTY (kOptions, options)
 	RETURN_PROPERTY (kImages, images)
 	RETURN_PROPERTY (kGradients, gradients)
+	RETURN_PROPERTY (kAnimations, animations)
 
 	#undef RETURN_PROPERTY
 
@@ -513,6 +537,7 @@ tbool CCL_API VisualStyleData::getProperty (Variant& var, MemberID propertyId) c
 //************************************************************************************************
 
 DEFINE_CLASS (VisualStyle, VisualStyleData)
+DEFINE_CLASS_NAMESPACE (VisualStyle, NAMESPACE_CCL)
 DEFINE_CLASS_UID (VisualStyle, 0xc5f60f5b, 0x31b5, 0x47c6, 0x8f, 0x79, 0xdd, 0x18, 0x8a, 0xbc, 0x33, 0xb7)
 const VisualStyle VisualStyle::emptyStyle;
 
@@ -911,10 +936,13 @@ IImage* CCL_API VisualStyle::getImage (StringID name, IStyleConditionContext* co
 {
 	if(context)
 	{
+		// A matching condition that does not define the image falls back to the style itself.
 		ArrayForEachReverse (conditions, VisualStyleData, data)
 			if(context->matches (data->getName ()))
-				return data->getImage (name);
+				if(IImage* image = data->getImage (name))
+					return image;
 		EndFor
+
 	}
 
 	if(ImageItem* item = lookup (images, name))
@@ -964,6 +992,41 @@ IGradient* CCL_API VisualStyle::getGradient (StringID name, IStyleConditionConte
 void CCL_API VisualStyle::setGradient (StringID name, IGradient* gradient)
 {
 	SuperClass::setGradient (name, gradient);
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+IAnimation* CCL_API VisualStyle::getAnimation (StringID name) const
+{
+	return getAnimation (name, nullptr);
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+IAnimation* CCL_API VisualStyle::getAnimation (StringID name, IStyleConditionContext* context) const
+{
+	if(context)
+	{
+		ArrayForEachReverse (conditions, VisualStyleData, data)
+			if(context->matches (data->getName ()))
+				return data->getAnimation (name);
+		EndFor
+	}
+
+	if(IAnimation* animation = SuperClass::getAnimation (name))
+		return animation;
+
+	if(inherited)
+		return inherited->getAnimation (name, context);
+
+	return nullptr;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+void CCL_API VisualStyle::setAnimation (StringID name, IAnimation* animation)
+{
+	SuperClass::setAnimation (name, animation);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////

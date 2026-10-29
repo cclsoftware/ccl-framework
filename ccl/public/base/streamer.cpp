@@ -165,7 +165,7 @@ bool Streamer::readWithLength (String& string)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool Streamer::writeString (const uchar* chars, bool terminate)
+bool Streamer::writeString (UStringPtr chars, bool terminate)
 {
 	if(!chars)
 		return false;

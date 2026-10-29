@@ -103,12 +103,12 @@ void FrameworkInitializerStatic::registerClasses ()
 {
 	classFactory = NEW ClassFactory;
 	classFactory->setVersion (VersionDesc (CCL_PRODUCT_NAME, CCL_VERSION_STRING, CCL_AUTHOR_NAME, CCL_AUTHOR_COPYRIGHT, CCL_PRODUCT_WEBSITE));
-	Kernel::instance ().registerPublicClasses (*classFactory); // CCL namespace
+	Kernel::instance ().registerPublicClasses (*classFactory, NAMESPACE_CCL);
 #if CCL_STATIC_ENABLE_SYSTEM
-	Kernel::instance ().registerPublicClasses (*classFactory, "System");
+	Kernel::instance ().registerPublicClasses (*classFactory, PLUG_CATEGORY_SYSTEM_);
 #endif
 #if CCL_STATIC_ENABLE_NETWORK
-	Kernel::instance ().registerPublicClasses (*classFactory, "Network");
+	Kernel::instance ().registerPublicClasses (*classFactory, PLUG_CATEGORY_NETWORK_);
 #endif
 	System::GetPlugInManager ().registerFactory (classFactory);
 }

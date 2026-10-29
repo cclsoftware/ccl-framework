@@ -77,16 +77,15 @@ Control::Control (const Rect& size, IParameter* _param, StyleRef style, StringRe
 
 Control::~Control ()
 {
+	safe_release (renderer);
 	setParameter (nullptr);
-	if(renderer)
-		renderer->release ();
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 IParameter* CCL_API Control::getParameter () const 
 { 
-	return param; 
+	return param;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -139,6 +138,8 @@ void CCL_API Control::notify (ISubject* subject, MessageRef msg)
 		if(p && p == param)
 			paramChanged ();
 	}
+	else
+		SuperClass::notify (subject, msg);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -156,7 +157,27 @@ StringRef Control::getHelpIdentifier () const
 	if(!helpId.isEmpty () && !getStyle ().isCommonStyle (Styles::kNoHelpId))
 		return helpId;
 	return SuperClass::getHelpIdentifier ();
-}	
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+void Control::enable (bool state)
+{
+	SuperClass::enable (state);
+	if(renderer)
+		renderer->invalidateStyleConditions ();
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+bool Control::setMouseState (int state, bool _invalidate)
+{
+	bool result = SuperClass::setMouseState (state, _invalidate);
+	if(result && renderer)
+		renderer->invalidateStyleConditions ();
+
+	return result;
+}
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -170,6 +191,9 @@ void Control::paramChanged ()
 
 	if(accessibilityProvider)
 		accessibilityProvider->sendEvent (AccessibilityEvent::kValueChanged);
+
+	if(renderer)
+		renderer->invalidateStyleConditions ();
 
 	updateClient ();
 }
@@ -240,6 +264,21 @@ const IVisualStyle& CCL_API Control::getVisualStyle () const
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
+void Control::attached (View* parent)
+{
+	SuperClass::attached (parent);
+
+	if(renderer)
+	{
+		Window* window = getWindow ();
+		ASSERT (window)
+		if(window)
+			renderer->setContentScaleFactor (window->getContentScaleFactor ());
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
 void Control::onVisualStyleChanged ()
 {
 	// discard renderer when visual style changes
@@ -265,6 +304,19 @@ void Control::onColorSchemeChanged (const ColorSchemeEvent& event)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
+void Control::onDisplayPropertiesChanged (const DisplayChangedEvent& event)
+{
+	if(event.eventType == DisplayChangedEvent::kResolutionChanged)
+	{
+		if(renderer)
+			renderer->setContentScaleFactor (event.contentScaleFactor);
+	}
+
+	SuperClass::onDisplayPropertiesChanged (event);
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
 ThemeRenderer* Control::getRenderer ()
 {
 	return nullptr;
@@ -284,7 +336,7 @@ void Control::draw (const UpdateRgn& updateRgn)
 {
 	ThemeRenderer* renderer = getRenderer ();
 	if(renderer)
-		renderer->draw (this, updateRgn);
+		renderer->draw (updateRgn);
 
 	View::draw (updateRgn);
 }
@@ -309,7 +361,7 @@ void Control::updateClient ()
 
 	ThemeRenderer* renderer = getRenderer ();
 	if(renderer)
-		renderer->update (this, ThemeRenderer::UpdateInfo (&windowInfo));
+		renderer->update (ThemeRenderer::UpdateInfo (&windowInfo));
 	else
 		View::updateClient ();
 }
@@ -385,6 +437,17 @@ bool Control::contextMenuForParam (const ContextMenuEvent& event, IParameter* pa
 		return static_cast<VariantRef> (result).asBool ();
 	}
 	return false;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+void Control::getStyleConditions (StyleConditionContext& context) const
+{
+	int state = getThemeElementState ();
+	context.setCondition (ThemeNames::kDisabled, state == ThemeElements::kDisabled);
+	context.setCondition (ThemeNames::kPressed, state == ThemeElements::kPressed);
+	context.setCondition (ThemeNames::kMouseOver, state == ThemeElements::kMouseOver);
+	context.setCondition (ThemeNames::kFocused, state == ThemeElements::kFocused);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////

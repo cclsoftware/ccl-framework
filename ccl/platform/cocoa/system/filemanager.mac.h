@@ -19,7 +19,7 @@
 #ifndef _ccl_filemanager_mac_h
 #define _ccl_filemanager_mac_h
 
-#include "ccl/system/filemanager.h"
+#include "ccl/platform/cocoa/system/filemanager.cocoa.h"
 
 namespace CCL {
 
@@ -29,18 +29,16 @@ class CocoaFSEventStream;
 // MacFileManager
 //************************************************************************************************
 
-class MacFileManager: public FileManager
+class MacFileManager: public CocoaFileManager
 {
 public:
 	MacFileManager ();
 	~MacFileManager ();
 
-	// FileManager
+	// CocoaFileManager
 	tresult startWatching (UrlRef url, int flags);
 	tresult stopWatching (UrlRef url);
-	tresult startUsing (UrlRef url);
-	tresult stopUsing (UrlRef url);
-	
+
 	tbool CCL_API getFileDisplayString (String& string, UrlRef url, int type) const;
 	StringID CCL_API getFileLocationType (UrlRef url) const;
 	void CCL_API terminate ();

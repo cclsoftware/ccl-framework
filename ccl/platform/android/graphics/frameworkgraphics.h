@@ -129,8 +129,8 @@ public:
 private:
 	using FontFamily = AndroidFontTable::AndroidFontFamily;
 
-	CCL::ObjectArray fonts;
-	CCL::ObjectArray systemFonts;
+	ObjectArray fonts;
+	ObjectArray systemFonts;
 	mutable Vector<FontFamily*> systemFontFamilies;
 	PaintCache<BitmapPaintData> bitmapPaintCache;
 	PaintCache<FillPaintData> fillPaintCache;

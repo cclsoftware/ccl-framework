@@ -95,7 +95,7 @@ void CCL_API CommandDeferrer::notify (ISubject* subject, MessageRef msg)
 {
 	if(msg == kDestroyed)
 	{
-		// popup was destroyed: defer ...
+		// window was destroyed: defer ...
 		subject->removeObserver (this);
 		(NEW Message (CSTR ("perform")))->post (this);
 	}
@@ -255,6 +255,22 @@ tbool CCL_API DesktopManager::closeModalWindows ()
 			result = false;
 	EndFor
 	return result;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+tbool CCL_API DesktopManager::closeModalWindowsAndDeferCommand (ICommandHandler* handler, const CommandMsg& cmd)
+{
+	if(windows[kDialogLayer].isEmpty ())
+		return false;
+
+	// the modal loop of the outermost dialog is the last one to return
+	SharedPtr<Window> outermostDialog (windows[kDialogLayer].getFirst ());
+	if(!closeModalWindows ())
+		return false;
+
+	NEW CommandDeferrer (outermostDialog, handler, cmd);
+	return true;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////

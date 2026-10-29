@@ -24,6 +24,12 @@
 #include "ccl/public/base/cclmacros.h"
 
 namespace CCL {
+
+interface IAsyncOperation;
+
+namespace Security {
+interface ICredential; }
+
 namespace Web {
 
 //************************************************************************************************
@@ -85,7 +91,7 @@ public:
 	PROPERTY_STRING (idToken, IdToken)
 	PROPERTY_STRING (refreshToken, RefreshToken)
 	PROPERTY_STRING (accessToken, AccessToken)
-	PROPERTY_VARIABLE (CCL::int64, expirationTime, ExpirationTime)
+	PROPERTY_VARIABLE (int64, expirationTime, ExpirationTime)
 
 	void reset ();
 	bool loadFromJson (IStream& jsonStream, int64 timestamp);
@@ -93,11 +99,16 @@ public:
 
 	bool storeARTokens (StringRef credentialName) const;
 	bool restoreARTokens (StringRef credentialName);
+	IAsyncOperation* storeARTokensAsync (StringRef credentialName) const;
+	IAsyncOperation* restoreARTokensAsync (StringRef credentialName);
 	void removeARTokens (StringRef credentialName);
 
 protected:
 	static const String kIdentifier;
 	static const String kSeparator;
+
+	String toCredentialToken () const;
+	bool fromCredential (Security::ICredential& credential);
 };
 
 } // namespace Web

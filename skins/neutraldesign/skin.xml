@@ -13,10 +13,35 @@
 
 	<Externals>
 		<External name="StandardUI"/>
-		<External name="PrimaryColor*"/> <!-- 25, 30, 35, ... 75 -->
-		<External name="BaseColor*"/> <!-- 00, 05, 10, ... 100 -->
-		<External name="SeverityColor*"/> <!-- Normal, High -->
-		<External name="ActionColor*"/> <!-- 30, 35 -->
+		<External name="BaseColor00"/>
+		<External name="BaseColor06"/>
+		<External name="BaseColor08"/>
+		<External name="BaseColor12"/>
+		<External name="BaseColor16"/>
+		<External name="BaseColor18"/>
+		<External name="BaseColor23"/>
+		<External name="BaseColor25"/>
+		<External name="BaseColor32"/>
+		<External name="BaseColor36"/>
+		<External name="BaseColor42"/>
+		<External name="BaseColor45"/>
+		<External name="BaseColor50"/>
+		<External name="BaseColor55"/>
+		<External name="BaseColor60"/>
+		<External name="BaseColor65"/>
+		<External name="BaseColor70"/>
+		<External name="BaseColor75"/>
+		<External name="BaseColor78"/>
+		<External name="BaseColor85"/>
+		<External name="BaseColor90"/>
+		<External name="BaseColor95"/>
+		<External name="BaseColor100"/>
+		<External name="AccentColor25"/>
+		<External name="AccentColor35"/>
+		<External name="AccentColor40"/>
+		<External name="AccentColor50"/>
+		<External name="AccentColor55"/>
+		<External name="AccentColor60"/>
 	</Externals>
 
 	<Overlays>

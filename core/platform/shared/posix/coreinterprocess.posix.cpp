@@ -25,7 +25,7 @@
 #endif
 
 #if CORE_INTERPROCESS_IMPLEMENTATION == CORE_FEATURE_IMPLEMENTATION_POSIX
-#include <sys/fcntl.h>
+#include <fcntl.h>
 #endif
 
 using namespace Core;

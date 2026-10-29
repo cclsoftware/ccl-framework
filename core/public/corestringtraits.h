@@ -60,7 +60,7 @@ public:
 	int length () const;
 
 	/** Copy to buffer. */
-	bool copyTo (char* charBuffer, int bufferSize) const;
+	bool copyTo (char charBuffer[], int bufferSize) const;
 
 	/** Get position of other C-String. */
 	int index (CStringPtr other) const;
@@ -175,10 +175,10 @@ public:
 	T& append (uchar uc);
 
 	/** Append printf-style formatted text. */
-	T& appendFormat (const char* format, ...);
+	T& appendFormat (CStringPtr format, ...);
 
 	/** Append printf-style formatted text. */
-	T& appendFormatArgs (const char* format, va_list marker);
+	T& appendFormatArgs (CStringPtr format, va_list marker);
 
 	/** Append signed 32 bit integer value. */
 	T& appendInteger (int32 value);
@@ -216,7 +216,7 @@ private:
 class CStringTokenizerInplace
 {
 public:
-	CStringTokenizerInplace (char* string, CStringPtr delimiters, bool preserveEmptyTokens = false);
+	CStringTokenizerInplace (char string[], CStringPtr delimiters, bool preserveEmptyTokens = false);
 	~CStringTokenizerInplace ();
 
 	/** Get next token. */
@@ -243,7 +243,7 @@ public:
 	~CStringTokenizer ();
 
 protected:
-	static const int kBufferSize = STRING_STACK_SPACE_MAX;
+	static const int kBufferSize = CORE_STRING_STACK_MAX;
 	char buffer[kBufferSize];
 	char* allocatedBuffer;
 };
@@ -352,7 +352,7 @@ inline int CStringTraits<T>::length () const
 { return (int)::strlen (str ()); }
 
 template <class T>
-inline bool CStringTraits<T>::copyTo (char* charBuffer, int bufferSize) const
+inline bool CStringTraits<T>::copyTo (char charBuffer[], int bufferSize) const
 {
 	if(!charBuffer || bufferSize <= 0)
 		return false;
@@ -517,7 +517,7 @@ inline T& MutableCStringTraits<T>::append (uchar uc)
 { char string[2] = {uc <= 255 ? (char)uc : '?', 0}; return append (string); }
 
 template <class T>
-inline T& MutableCStringTraits<T>::appendFormat (const char* format, ...)
+inline T& MutableCStringTraits<T>::appendFormat (CStringPtr format, ...)
 {
 	va_list marker;
 	va_start (marker, format);
@@ -528,9 +528,9 @@ inline T& MutableCStringTraits<T>::appendFormat (const char* format, ...)
 }
 
 template <class T>
-inline T& MutableCStringTraits<T>::appendFormatArgs (const char* format, va_list marker)
+inline T& MutableCStringTraits<T>::appendFormatArgs (CStringPtr format, va_list marker)
 {
-	char buffer[STRING_STACK_SPACE_MAX];
+	char buffer[CORE_STRING_STACK_MAX];
 
 	#if defined(DSP_TI32)
 	::vsprintf (buffer, format, marker);
@@ -611,7 +611,7 @@ inline int MutableCStringTraits<T>::writeInteger (char buffer[], int bufferSize,
 // CStringTokenizerInplace implementation
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-inline CStringTokenizerInplace::CStringTokenizerInplace (char* string, CStringPtr delimiters, bool preserveEmptyTokens)
+inline CStringTokenizerInplace::CStringTokenizerInplace (char string[], CStringPtr delimiters, bool preserveEmptyTokens)
 : string (string),
   delimiters (delimiters),
   preserveEmptyTokens (preserveEmptyTokens),

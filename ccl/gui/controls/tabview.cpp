@@ -105,7 +105,7 @@ public:
 		if(showInsertPosition ())
 		{
 			Rect tabRect;
-			tabView->getRenderer ()->getPartRect (tabView, TabView::kPartFirstTab, tabRect);
+			tabView->getRenderer ()->getPartRect (tabRect, TabView::kPartFirstTab);
 
 			Color color = tabView->getTheme ().getThemeColor (ThemeElements::kAlphaCursorColor);
 			AutoPtr<IDrawable> drawable = NEW SolidDrawable (color);
@@ -122,7 +122,7 @@ public:
 		insertPos = -1;
 
 		int numTabs = tabView->countTabs ();
-		int partCode = tabView->getRenderer ()->hitTest (tabView, event.where, nullptr);
+		int partCode = tabView->getRenderer ()->hitTest (event.where, nullptr);
 		if(partCode >= TabView::kPartFirstTab && partCode <= TabView::kPartLastTab)
 		{
 			currentTab = partCode - TabView::kPartFirstTab;
@@ -152,7 +152,7 @@ public:
 		if(showInsertPosition ())
 		{
 			Rect tabRect;
-			tabView->getRenderer ()->getPartRect (tabView, partCode, tabRect);
+			tabView->getRenderer ()->getPartRect (tabRect, partCode);
 
 			Coord spritePos = tabRect.left;
 			if(currentTab == numTabs - 1 && event.where.x > tabRect.left + .66 * tabRect.getWidth ())
@@ -164,7 +164,7 @@ public:
 			else if(insertPos == numTabs)
 			{
 				// after last tab
-				tabView->getRenderer ()->getPartRect (tabView, TabView::kPartFirstTab + numTabs - 1, tabRect);
+				tabView->getRenderer ()->getPartRect (tabRect, TabView::kPartFirstTab + numTabs - 1);
 				spritePos = tabRect.right;
 			}
 
@@ -303,7 +303,7 @@ public:
 		if(tabView->getStyle ().isTransparent () == false)
 		{
 			Rect tabRect;
-			tabView->getRenderer ()->getPartRect (tabView, TabView::kPartFirstTab + dragTabIndex, tabRect);
+			tabView->getRenderer ()->getPartRect (tabRect, TabView::kPartFirstTab + dragTabIndex);
 
 			float contentScaleFactor = 1.f;
 			if(Window* window = tabView->getWindow ())
@@ -317,7 +317,7 @@ public:
 			if(tabRenderer)
 			{
 				BitmapGraphicsDevice port (bitmap);
-				tabRenderer->drawTab (tabView, port, Rect (0, 0, tabW, tabH), dragTabIndex);
+				tabRenderer->drawTab (port, Rect (0, 0, tabW, tabH), dragTabIndex);
 			}
 			AutoPtr<IDrawable> drawable = NEW ImageDrawable (bitmap, .5f);
 		
@@ -340,7 +340,7 @@ public:
 		if(targetController)
 		{
 			Boxed::Variant canReorder (true);
-			Message msg (CCL::Signals::kTabViewCanReorder, Variant (tabView->getParameter ()->getName ()), dragTabIndex, insertPos, static_cast<IVariant*> (&canReorder));
+			Message msg (Signals::kTabViewCanReorder, Variant (tabView->getParameter ()->getName ()), dragTabIndex, insertPos, static_cast<IVariant*> (&canReorder));
 			targetController->notify (tabView, msg);
 
 			event.session.setResult (canReorder.asVariant ().asBool () ? IDragSession::kDropMove : IDragSession::kDropNone);
@@ -477,6 +477,7 @@ public:
 	AccessibilityElementRole CCL_API getElementRole () const override;
 	tresult CCL_API getElementBounds (Rect& bounds, AccessibilityCoordSpace space) const override;
 	View* getView () const override;
+	int CCL_API getElementState () const override { return AccessibilityElementState::kEnabled; }
 
 	// IAccessibilitySelectionProvider
 	tbool CCL_API isSelected () const override;
@@ -512,7 +513,7 @@ public:
 			return;
 
 		TabView* tabView = (TabView*)view;
-		int partCode = tabView->getRenderer ()->hitTest (tabView, current.where, nullptr);
+		int partCode = tabView->getRenderer ()->hitTest (current.where, nullptr);
 		if(partCode >= TabView::kPartFirstTab && partCode <= TabView::kPartLastTab)
 		{
 			int tabIndex = partCode - TabView::kPartFirstTab;
@@ -524,7 +525,7 @@ public:
 			if(tabView->getStyle ().isCustomStyle (Styles::kTabViewBehaviorTabMenu) && tabIndex == tabView->getActiveIndex ())
 			{
 				Rect tabMenuRect;
-				isTabMenu = tabView->getRenderer ()->getPartRect (tabView, TabView::kPartTabMenu + tabIndex, tabMenuRect) && tabMenuRect.pointInside (current.where);
+				isTabMenu = tabView->getRenderer ()->getPartRect (tabMenuRect, TabView::kPartTabMenu + tabIndex) && tabMenuRect.pointInside (current.where);
 			}
 
 			// defer opening the menu (finish touch handling first)
@@ -561,7 +562,6 @@ DEFINE_CLASS_HIDDEN (TabView, Control)
 
 TabView::TabView (const Rect& size, IParameter* param, StyleRef style)
 : Control (size, param, style),
-  renderer (nullptr),
   scrollOffset (0),
   centerOffset (0),
   fillWidth (0),
@@ -593,8 +593,6 @@ TabView::~TabView ()
 		views.remove (view);
 		view->release ();
 	}
-	if(renderer)
-		renderer->release ();
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -614,7 +612,7 @@ void TabView::draw (const UpdateRgn& updateRgn)
 {
 	ThemeRenderer* renderer = getRenderer ();
 	if(renderer)
-		renderer->draw (this, updateRgn);
+		renderer->draw (updateRgn);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -622,7 +620,7 @@ void TabView::draw (const UpdateRgn& updateRgn)
 ThemeRenderer* TabView::getRenderer ()
 {
 	if(renderer == nullptr)
-		renderer = getTheme ().createRenderer (ThemePainter::kTabViewRenderer, visualStyle);
+		renderer = getTheme ().createRenderer (ThemePainter::kTabViewRenderer, visualStyle, this);
 	return renderer;
 }
 
@@ -631,7 +629,7 @@ ThemeRenderer* TabView::getRenderer ()
 void TabView::invalidateHeader ()
 {
 	Rect rect;
-	getRenderer ()->getPartRect (this, kPartHeader, rect);
+	getRenderer ()->getPartRect (rect, kPartHeader);
 	invalidate (rect);
 	
 	if(isAccessibilityEnabled ())
@@ -707,7 +705,7 @@ void TabView::attached (View* parent)
 void TabView::updateStyle ()
 {
 	const IVisualStyle& vs = getVisualStyle ();
-	preferIcon = vs.getMetric<bool> ("prefericon", preferIcon);
+	preferIcon = vs.getMetric<bool> (StyleID::TabView::kTabPreferIcon, preferIcon);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -877,7 +875,7 @@ int TabView::getActiveIndex () const
 
 int TabView::findTab (const Point& where)
 {
-	int partCode = getRenderer ()->hitTest (this, where, nullptr);
+	int partCode = getRenderer ()->hitTest (where, nullptr);
 	if(partCode >= kPartFirstTab && partCode <= kPartLastTab)
 		return partCode - kPartFirstTab;
 	return -1;
@@ -904,7 +902,7 @@ void TabView::getViewSize (Rect& size)
 	ThemeRenderer* renderer = getRenderer ();
 	if(renderer == nullptr)
 		return;
-	renderer->getPartRect (this, kPartContent, size);
+	renderer->getPartRect (size, kPartContent);
 }
 	
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -927,7 +925,7 @@ bool TabView::onMouseLeave (const MouseEvent& event)
 
 bool TabView::onMouseMove (const MouseEvent& event)
 {
-	int partCode = getRenderer ()->hitTest (this, event.where, nullptr);
+	int partCode = getRenderer ()->hitTest (event.where, nullptr);
 	bool isOverTab = partCode >= kPartFirstTab && partCode <= kPartLastTab;
 
 	bool isDragging = DragSession::isInternalDragActive ();
@@ -956,7 +954,7 @@ bool TabView::onMouseMove (const MouseEvent& event)
 
 bool TabView::onMouseWheel (const MouseWheelEvent& event)
 {
-	if(getRenderer ()->hitTest (this, event.where, nullptr) == TabView::kPartContent)
+	if(getRenderer ()->hitTest (event.where, nullptr) == TabView::kPartContent)
 		return View::onMouseWheel (event);
 	
 	return SuperClass::onMouseWheel (event);
@@ -994,7 +992,7 @@ void TabView::invalidateTab (int index)
 		return;
 
 	Rect rect;
-	getRenderer ()->getPartRect (this, kPartFirstTab + index, rect);
+	getRenderer ()->getPartRect (rect, kPartFirstTab + index);
 	invalidate (rect);
 }
 
@@ -1002,7 +1000,7 @@ void TabView::invalidateTab (int index)
 
 bool TabView::mouseDown (const MouseEvent& event)
 {
-	int partCode = getRenderer ()->hitTest (this, event.where, nullptr);
+	int partCode = getRenderer ()->hitTest (event.where, nullptr);
 	if(partCode >= kPartFirstTab && partCode <= kPartLastTab)
 	{
 		onMouseMove (event);
@@ -1015,7 +1013,7 @@ bool TabView::mouseDown (const MouseEvent& event)
 
 bool TabView::mouseUp (const MouseEvent& event)
 {
-	int partCode = getRenderer ()->hitTest (this, event.where, nullptr);
+	int partCode = getRenderer ()->hitTest (event.where, nullptr);
 	if(partCode >= kPartFirstTab && partCode <= kPartLastTab)
 	{
 		if(partCode == kPartMenuTab)
@@ -1058,7 +1056,7 @@ void TabView::dragTab (int tabIndex)
 
 MouseHandler* TabView::createMouseHandler (const MouseEvent& event)
 {
-	int partCode = getRenderer ()->hitTest (this, event.where, nullptr);
+	int partCode = getRenderer ()->hitTest (event.where, nullptr);
 	if(partCode >= kPartFirstTab && partCode <= kPartLastTab)
 	{
 		if(event.wasTouchEvent ())
@@ -1088,7 +1086,7 @@ MouseHandler* TabView::createMouseHandler (const MouseEvent& event)
 		if(getStyle ().isCustomStyle (Styles::kTabViewBehaviorTabMenu) && tabIndex == getActiveIndex ())
 		{
 			Rect tabMenuRect;
-			isTabMenu = renderer->getPartRect (this, kPartTabMenu + tabIndex, tabMenuRect) && tabMenuRect.pointInside (event.where);
+			isTabMenu = renderer->getPartRect (tabMenuRect, kPartTabMenu + tabIndex) && tabMenuRect.pointInside (event.where);
 		}
 
 		if(isTabMenu)
@@ -1174,7 +1172,7 @@ void TabView::showMenu (int tabIndex)
 	sizeInfo.canFlipParentEdge (true);
 		
 	const IVisualStyle& vs = getVisualStyle ();
-	if(Coord tabHeight = vs.getMetric ("tabHeight", 0))
+	if(Coord tabHeight = vs.getMetric (StyleID::TabView::kTabHeight, 0))
 	{
 		sizeInfo.flags |= PopupSizeInfo::kHasOffset;
 		Coord menuShift = getHeight () - tabHeight;
@@ -1243,7 +1241,7 @@ void TabView::showMenu (int tabIndex)
 		}
 	
 		Rect rect;
-		getRenderer ()->getPartRect (this, kPartFirstTab + tabIndex, rect);
+		getRenderer ()->getPartRect (rect, kPartFirstTab + tabIndex);
 		sizeInfo.flags = 0;
 		sizeInfo.where = rect.getLeftBottom ();
 	}
@@ -1251,10 +1249,18 @@ void TabView::showMenu (int tabIndex)
 	if(menu->isEmpty ())
 		return;
 
+	CString menuType = MenuPresentation::kTree;
+	int menuStyle = ThemePainter::kPopupMenuStyle;
+	if(visualStyle && visualStyle->getMetric<bool> (StyleID::kExtendedPopup, false))
+	{
+		menuType = MenuPresentation::kExtended;
+		menuStyle = ThemePainter::kContextMenuStyle;
+	}
+
 	PopupSelector popupSelector;
 	popupSelector.setTheme (getTheme ());
-	popupSelector.setVisualStyle (getTheme ().getStandardStyle (ThemePainter::kPopupMenuStyle));
-	popupSelector.popup (menu, sizeInfo, MenuPresentation::kTree);
+	popupSelector.setVisualStyle (getTheme ().getStandardStyle (menuStyle));
+	popupSelector.popup (menu, sizeInfo, menuType);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1307,7 +1313,7 @@ void TabView::calcAutoSize (Rect& r)
 		// add header 
 		Rect header;
 		ThemeRenderer* renderer = getRenderer ();
-		if(renderer && renderer->getPartRect (this, kPartHeader, header))
+		if(renderer && renderer->getPartRect (header, kPartHeader))
 		{
 			if(style.isVertical ())
 				r.right += header.getWidth ();
@@ -1324,7 +1330,7 @@ void TabView::calcAutoSize (Rect& r)
 		ThemeRenderer* renderer = getRenderer ();
 		if(renderer == nullptr)
 			return;
-		renderer->getPartRect (this, kPartViewSize, r);
+		renderer->getPartRect (r, kPartViewSize);
 	}
 	else
 		SuperClass::calcAutoSize (r);
@@ -1334,7 +1340,7 @@ void TabView::calcAutoSize (Rect& r)
 
 bool TabView::onContextMenu (const ContextMenuEvent& event)
 {
-	int partCode = getRenderer ()->hitTest (this, event.where, nullptr);
+	int partCode = getRenderer ()->hitTest (event.where, nullptr);
 	if(partCode >= kPartFirstTab && partCode <= kPartLastTab)
 	{
 		int tabIndex = partCode - kPartFirstTab;
@@ -1359,7 +1365,7 @@ bool TabView::onTrackTooltip (const TooltipEvent& event)
 		return true;
 
 	ItemIndex item;
-	int partCode = getRenderer ()->hitTest (this, event.where, nullptr);
+	int partCode = getRenderer ()->hitTest (event.where, nullptr);
 	if(partCode >= TabView::kPartFirstTab && partCode <= TabView::kPartLastTab)
 	{
 		int tabIndex = partCode - TabView::kPartFirstTab;
@@ -1463,7 +1469,7 @@ void TabViewAccessibilityProvider::getElementName (String& name, int tabIndex) c
 
 void TabViewAccessibilityProvider::getElementBounds (Rect& rect, int tabIndex) const
 {
-	if(getTabView ().getRenderer ()->getPartRect (&getTabView (), TabView::kPartFirstTab + tabIndex, rect))
+	if(getTabView ().getRenderer ()->getPartRect (rect, TabView::kPartFirstTab + tabIndex))
 	{
 		Rect clipping;
 		getTabView ().getVisibleClient (clipping);

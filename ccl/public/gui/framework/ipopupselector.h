@@ -49,7 +49,7 @@ struct MouseWheelEvent;
 namespace ClassID
 {
 	/** Popup Selector. */
-	DEFINE_CID (PopupSelector, 0xFCDB7599, 0x685E, 0x4E20, 0x9C, 0x7B, 0x4C, 0xC2, 0x1A, 0x2B, 0xDE, 0x00);
+	DEFINE_CID (PopupSelector, 0xFCDB7599, 0x685E, 0x4E20, 0x9C, 0x7B, 0x4C, 0xC2, 0x1A, 0x2B, 0xDE, 0x00)
 }
 
 //************************************************************************************************
@@ -120,8 +120,11 @@ interface IPopupSelector: IUnknown
 		kStayOpenOnClick        = 1<<4,	///< do not close when clicked
 		kMenuSelectCheckedItem  = 1<<5,	///< select checked items - used together with popup (IMenu* menu, ..., MenuPresentation::kTree)
 		kAcceptsOnClickOutside  = 1<<6,	///< return kOkay if a click outside caused the popup to close
-		kAcceptsAfterSwipe		= 1<<7	///< return kOkay after a swipe gesture in the popup
+		kAcceptsAfterSwipe		= 1<<7,	///< return kOkay after a swipe gesture in the popup
+		kNoActivate				= 1<<8	///< show the popup without taking OS keyboard focus away from the currently focused view
 	};
+
+	DECLARE_STRINGID_MEMBER (kPopupClosed) ///< popup was closed
 
 	/** Set theme. */
 	virtual void CCL_API setTheme (ITheme* theme) = 0;
@@ -172,6 +175,7 @@ interface IPopupSelector: IUnknown
 };
 
 DEFINE_IID (IPopupSelector, 0x5E35098C, 0x1335, 0x4C17, 0x8C, 0x1A, 0x5C, 0x8B, 0x50, 0x77, 0xAD, 0xA2)
+DEFINE_STRINGID_MEMBER (IPopupSelector, kPopupClosed, "popupClosed")
 
 //************************************************************************************************
 // IPopupSelectorClient

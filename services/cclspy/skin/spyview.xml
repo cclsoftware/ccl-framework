@@ -258,16 +258,7 @@
 		<Form name="DocumentationBrowser" title="Documentation">
 			<using controller="DocumentationBrowser">
 				<TriggerView style="DocumentationBrowserTrigger"/> <!-- trigger loads the model files -->
-				
-<!--			<Vertical attach="all" margin="0" spacing="0" options="unifysizes">-->
-<!--				<Horizontal margin="0" attach="left right">-->
-<!--					<Space attach="left right fill"/>-->
-<!--					<Button name="scanCode" title="Scan" attach="right" tooltip="Scan sourcecode for documentation"/>-->
-<!--					<Button name="saveModel" title="Save" attach="right"/>-->
-<!--					<Space attach="right"/>-->
-<!--				</Horizontal>-->
 				<View name="DocumentationBrowser.ModelView" width="300" height="300" attach="all"/>
-<!--			</Vertical>-->
 			</using>
 		</Form>
 		

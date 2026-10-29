@@ -29,7 +29,7 @@ namespace Portable {
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 #if DEBUG
-void dumpRect (const Rect& rect, const char* string)
+void dumpRect (const Rect& rect, CStringPtr string)
 {
 	DebugPrintf ("%s (%d, %d)-(%d, %d) %d x %d\n",
 				string ? string : "Rect",

@@ -35,7 +35,7 @@
 #define APP_NAME			"CCL Generator"
 
 #define VER_MAJOR			1
-#define VER_MINOR			1
+#define VER_MINOR			2
 #define VER_REVISION		0
 #define VER_BUILD			BUILD_REVISION_NUMBER
 

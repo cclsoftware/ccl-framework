@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 380" font-family="Helvetica, Arial, sans-serif">
+	<defs>
+		<style>
+			.frame { fill: #242c3f; stroke: #4b5875; stroke-width: 1.5; }
+			.content { fill: none; stroke: #4b5875; stroke-width: 1; stroke-dasharray: 4,3; }
+			.tick { stroke: #4b5875; stroke-width: 1; }
+			.guide { stroke: #8b93a8; stroke-width: 1; fill: none; }
+			.ghost { stroke: #4b5875; stroke-width: 1; stroke-dasharray: 4,3; fill: none; opacity: 0.7; }
+			.note { font-size: 10.5px; fill: #8b93a8; }
+			.tag { font-size: 10.5px; fill: #c3cbdb; text-anchor: middle; }
+			.caption { font-size: 11px; font-style: italic; fill: #c3cbdb; text-anchor: middle; }
+			.value { fill: #173049; stroke: #38bdf8; stroke-width: 1; stroke-dasharray: 4,3; }
+			.value-text { font-size: 18px; fill: #f1f4f9; }
+		</style>
+		<symbol id="pic-icon" viewBox="0 0 70 50">
+			<rect x="0.75" y="0.75" width="68.5" height="48.5" fill="#202737" stroke="#4b5875" stroke-width="1.5"/>
+			<circle cx="14" cy="14" r="6" fill="#fbbf24"/>
+			<polygon points="8,42 32,16 46,32" fill="#059669"/>
+			<polygon points="34,42 50,22 64,42" fill="#10b981"/>
+		</symbol>
+		<!-- backgroundAtom + its padded content area; rects are inset by half their stroke width so the stroke stays within the symbol's own bounds instead of being clipped by it -->
+		<symbol id="biv-frame" viewBox="0 0 600 120" width="600" height="120">
+			<rect x="0.75" y="0.75" width="598.5" height="118.5" rx="18" class="frame"/>
+			<rect x="30.5" y="30.5" width="539" height="59" class="content"/>
+		</symbol>
+		<!-- valueAtom: a plain text value, tightly boxed -->
+		<symbol id="value-box" viewBox="0 0 66 20" width="66" height="20">
+			<rect x="0.5" y="0.5" width="65" height="19" class="value"/>
+			<text x="2" y="15" class="value-text">12.5 dB</text>
+		</symbol>
+	</defs>
+
+	<rect x="1" y="1" width="718" height="378" fill="#1b2130" stroke="#4b5875" stroke-width="2"/>
+
+	<!-- primary: leading icon, icon+value group centered on the background -->
+	<g>
+		<use href="#biv-frame" x="60" y="50"/>
+		<text x="60" y="42" class="note">backgroundAtom</text>
+
+		<path d="M560,54 L560,78" class="tick"/>
+		<path d="M554,54 L566,54 M554,78 L566,78" class="tick"/>
+		<text x="560" y="46" text-anchor="middle" class="note">padding</text>
+
+		<!-- iconAtom at its own natural size, vertically centered (the default iconAlignment) -->
+		<use href="#pic-icon" x="249" y="90" width="56" height="40"/>
+
+		<use href="#value-box" x="405" y="100"/>
+
+		<path d="M305,110 L405,110" class="guide"/>
+		<path d="M311,105 L305,110 L311,115" class="guide"/>
+		<path d="M399,105 L405,110 L399,115" class="guide"/>
+		<text x="355" y="130" text-anchor="middle" class="note">iconValueSpacing</text>
+
+		<text x="277" y="158" class="tag">iconAtom</text>
+		<text x="438" y="158" class="tag">valueAtom (text)</text>
+	</g>
+	<text x="360" y="190" class="caption">order: leading icon (default)</text>
+
+	<!-- secondary: iconleading=0, iconalign=top, valuealign=top right, icon.scale=0.67.
+	     iconalign positions the icon's own (unscaled) layout box - shown as the dashed outline,
+	     flush with the top here. icon.scale is only a draw-time transform around that box's center,
+	     so the smaller rendered icon ends up centered inside it rather than also flush with the top,
+	     and iconValueSpacing is measured from the box, not from the visually smaller icon. -->
+	<g transform="translate(0,170)">
+		<use href="#biv-frame" x="60" y="50"/>
+		<use href="#value-box" x="408" y="80"/>
+		<rect x="574" y="80" width="56" height="40" class="ghost"/>
+		<use href="#pic-icon" x="583.2" y="86.6" width="37.5" height="26.8"/>
+	</g>
+	<text x="360" y="360" class="caption">order: trailing icon · iconalign=top · valuealign=top right · icon.scale=0.67</text>
+</svg>

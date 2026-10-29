@@ -48,7 +48,14 @@ interface IGradient: IUnknown
 		Color color;			///< color of gradient stop
 	};
 
+	static constexpr int kMaxStopCount = 10; ///< internal maximum stop count
+
 	DECLARE_IID (IGradient)
+
+	//////////////////////////////////////////////////////////////////////////////////////////////
+
+	/** Interpolate color from stops at position t (0..1). */
+	static Color interpolateStops (const Stop stops[], int stopCount, float t);
 };
 
 DEFINE_IID (IGradient, 0x71c68bdf, 0x3b7d, 0x4134, 0xa8, 0x50, 0xae, 0xb, 0x90, 0x96, 0x6, 0xc7)

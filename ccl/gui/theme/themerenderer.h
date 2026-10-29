@@ -21,6 +21,7 @@
 
 #include "ccl/gui/theme/visualstyle.h"
 #include "ccl/gui/theme/visualstyleclass.h"
+#include "ccl/gui/theme/legacystyleids.h"
 
 #include "ccl/public/gui/graphics/types.h"
 #include "ccl/public/gui/graphics/updatergn.h"
@@ -39,13 +40,22 @@ class ThemeRenderer: public Object
 public:
 	DECLARE_CLASS_ABSTRACT (ThemeRenderer, Object)
 
-	ThemeRenderer (VisualStyle* _visualStyle = nullptr) { visualStyle = _visualStyle; }
+	ThemeRenderer (VisualStyle* _visualStyle, View* _owner)
+	: visualStyle (_visualStyle),
+	  owner (_owner)
+	{}
 
-	virtual VisualStyle* getVisualStyle () { return visualStyle; }
+	View* getOwner () const { return owner; }
 
-	virtual void draw (View* view, const UpdateRgn& updateRgn) = 0;
+	VisualStyle* getVisualStyle () const { return visualStyle; }
 
-	virtual bool needsRedraw (View* view, const Point& sizeDelta) { return false; }
+	virtual void invalidateStyleConditions () {}
+
+	virtual void setContentScaleFactor (float factor) {}
+
+	virtual void draw (const UpdateRgn& updateRgn) = 0;
+
+	virtual bool needsRedraw (const Point& sizeDelta) { return false; }
 
 	struct UpdateInfo
 	{
@@ -57,14 +67,15 @@ public:
 		{}
 	};
 
-	virtual void update (View* view, const UpdateInfo& info);
+	virtual void update (const UpdateInfo& info);
 
-	virtual int hitTest (View* view, const Point& loc, Point* offset = nullptr) = 0;
+	virtual int hitTest (PointRef where, Point* offset = nullptr) = 0;
 
-	virtual bool getPartRect (const View* view, int partCode, Rect& rect) = 0;
+	virtual bool getPartRect (Rect& rect, int partCode) = 0;
 
 protected:
 	SharedPtr<VisualStyle> visualStyle;
+	View* owner;
 };
 
 } // namespace CCL

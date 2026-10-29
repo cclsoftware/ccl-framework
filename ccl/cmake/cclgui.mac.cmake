@@ -40,6 +40,7 @@ ccl_list_append_once (cclgui_cocoa_sources
 	${CCL_DIR}/platform/cocoa/gui/menu.cocoa.h
 	${CCL_DIR}/platform/cocoa/gui/menu.cocoa.mm
 	${CCL_DIR}/platform/cocoa/gui/textbox.cocoa.mm
+	${CCL_DIR}/platform/cocoa/gui/inputmethod.mac.mm
 	${CCL_DIR}/platform/cocoa/interfaces/iquartzbitmap.h
 	${CCL_DIR}/platform/cocoa/quartz/quartzbitmap.mm
 	${CCL_DIR}/platform/cocoa/quartz/quartzbitmap.h
@@ -83,6 +84,8 @@ ccl_list_append_once (cclgui_platform_sources
 	${CCL_DIR}/platform/shared/skia/skiadevice.cpp
 	${CCL_DIR}/platform/shared/skia/skiaengine.h
 	${CCL_DIR}/platform/shared/skia/skiaengine.cpp
+	${CCL_DIR}/platform/shared/skia/skiafontmanager.cpp
+	${CCL_DIR}/platform/shared/skia/skiafontmanager.h
 	${CCL_DIR}/platform/shared/skia/skiafonttable.h
 	${CCL_DIR}/platform/shared/skia/skiafonttable.cpp
 	${CCL_DIR}/platform/shared/skia/skiagradient.h

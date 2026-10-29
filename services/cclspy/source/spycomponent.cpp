@@ -611,7 +611,7 @@ void SpyComponent::inspectVisualStyleData (ObjectInfo& info, StringID namePrefix
 {
 	CString itemTypes [] = {IVisualStyle::kImages, IVisualStyle::kColors, IVisualStyle::kFonts, IVisualStyle::kMetrics, IVisualStyle::kOptions};
 	static const AutoPtr<PropertyHandler> propertyHandlers[] = {NEW ImagePropertyHandler, NEW ColorPropertyHandler, NEW FontPropertyHandler, nullptr, nullptr};
-	// TODO: IVisualStyle::kStrings, IVisualStyle::kGradients...
+	// TODO: IVisualStyle::kStrings, IVisualStyle::kGradients, IVisualStyle::kAnimations,...
 
 	UnknownPtr<IObject> vsObject (styleData);
 	if(vsObject)

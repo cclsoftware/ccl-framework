@@ -8,7 +8,7 @@
 			"bigIntType": "int64",
 			"floatType": "float",
 			"doubleType": "double",
-			"stringType": "String",
+			"stringType": "const char*",
 			"boolValueTrue": "true",
 			"boolValueFalse": "false"
 		},

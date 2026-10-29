@@ -52,6 +52,7 @@ public:
 	bool connect (const Sockets::SocketAddress& address) override;
 	bool disconnect () override;
 	bool isConnected () const override;
+	int getConnectStatus (int timeout) const override;
 
 	bool bind (const Sockets::SocketAddress& address) override;
 	bool listen (int maxConnections) override;

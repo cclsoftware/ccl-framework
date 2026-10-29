@@ -53,7 +53,7 @@ bool AppTemplate::startup ()
 
 	// load theme
 	Url skinFolder;
-	GET_DEVELOPMENT_FOLDER_LOCATION (skinFolder, "applications", "apptemplate/skin")
+	GET_DEVELOPMENT_FOLDER_LOCATION (skinFolder, CCL_APPLICATION_BASEDIR, "skin")
 	if(!loadTheme (skinFolder))
 		return false;
 

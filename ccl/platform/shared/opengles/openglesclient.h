@@ -46,6 +46,8 @@ public:
 	OpenGLESClient ();
 	~OpenGLESClient ();
 	
+	PROPERTY_MUTABLE_CSTRING (glExtensions, GLExtensions)
+
 	void initialize (EGLNativeDisplayType nativeDisplay);
 	void terminate ();
 	bool isInitialized () const { return initialized; }
@@ -75,10 +77,10 @@ protected:
 
 	MutableCString clientExtensions;
 	MutableCString displayExtensions;
-	MutableCString glExtensions;
 
-	virtual void initializePlatform () {};
-	virtual void terminatePlatform () {};
+	virtual void initializePlatform () {}
+	virtual void terminatePlatform () {}
+	virtual bool enableExtensions ();
 };
 
 } // namespace CCL

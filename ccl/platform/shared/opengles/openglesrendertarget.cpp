@@ -20,6 +20,10 @@
 
 #include "ccl/platform/shared/opengles/openglesrendertarget.h"
 
+#include "ccl/gui/graphics/mutableregion.h"
+#include "ccl/gui/graphics/nativegraphics.h"
+#include "ccl/gui/windows/window.h"
+
 #include <GLES2/gl2.h>
 #include <GLES2/gl2ext.h>
 
@@ -30,51 +34,23 @@ using namespace CCL;
 //************************************************************************************************
 
 OpenGLESRenderTarget::OpenGLESRenderTarget ()
-: eglSurface (EGL_NO_SURFACE)
 {}
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 OpenGLESRenderTarget::~OpenGLESRenderTarget ()
-{
-	OpenGLESClient& client = OpenGLESClient::instance ();
-	if(eglSurface != EGL_NO_SURFACE)
-	{
-		glFinish ();
-		eglDestroySurface (client.getDisplay (), eglSurface);
-	}
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
-void OpenGLESRenderTarget::initializeSurface (EGLNativeWindowType window)
-{
-	ASSERT (eglSurface == EGL_NO_SURFACE)
-	
-	OpenGLESClient& client = OpenGLESClient::instance ();
-
-	CCL_PRINTF ("Creating EGL window surface with display %x and config %x for window %x\n", client.getDisplay (), client.getConfig (), window);
-	eglSurface = eglCreateWindowSurface (client.getDisplay (), client.getConfig (), window, nullptr);
-	if(eglSurface == EGL_NO_SURFACE)
-	{
-		CCL_WARN ("%s\n", "Failed to create an EGL window surface");
-		return;
-	}
-}
+{}
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 SkCanvas* OpenGLESRenderTarget::getSkiaCanvas ()
 {
-	if(eglSurface == nullptr)
-		initialize ();
-
 	sk_sp<SkSurface> surface = getSurface ();
 	if(surface == nullptr)
 	{
 		CCL_PRINTF ("Creating a new surface: %dx%d\n", surfaceExtent.x, surfaceExtent.y)
 
-		GrDirectContext* context = OpenGLESClient::instance ().getGPUContext ();
+		GrDirectContext* context = getGPUContext ();
 		if(context == nullptr)
 			return nullptr;
 
@@ -113,7 +89,7 @@ SkCanvas* OpenGLESRenderTarget::getSkiaCanvas ()
 		targetSurface = SkSurfaces::WrapBackendRenderTarget (context, targetInfo, kBottomLeft_GrSurfaceOrigin, SkColorType::kRGBA_8888_SkColorType, nullptr, nullptr);
 		if(targetSurface == nullptr)
 		{
-			CCL_WARN ("%s\n", "Failed to create a Skia OpenGL ES window surface");
+			CCL_WARN ("%s\n", "Failed to create a Skia OpenGL ES surface");
 			return nullptr;
 		}
 
@@ -137,9 +113,92 @@ SkCanvas* OpenGLESRenderTarget::getSkiaCanvas ()
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool OpenGLESRenderTarget::flushSurface ()
+void OpenGLESRenderTarget::renderWindow (Window& window, MutableRegion& invalidateRegion)
 {
-	GrDirectContext* context = OpenGLESClient::instance ().getGPUContext ();
+	if(!invalidateRegion.getRects ().isEmpty ())
+	{
+		makeCurrent ();
+	
+		render3DContent ();
+
+		GrDirectContext* context = getGPUContext ();
+		context->resetContext (kAll_GrBackendState);
+
+		AutoPtr<NativeGraphicsDevice> nativeDevice = ensureGraphicsDevice (NativeGraphicsEngine::instance ().createWindowDevice (&window));
+		AutoPtr<GraphicsDevice> graphicsDevice = NEW WindowGraphicsDevice (window, nativeDevice);
+		window.setGraphicsDevice (graphicsDevice);
+		
+		CCL_PROFILE_START (draw)
+		
+		// make sure to render 2D content behind transparent 3D surfaces
+		for(OpenGLES3DSurface* surface : surfaces)
+		{
+			if(surface->getContent ()->getContentHint () != kGraphicsContentTranslucent)
+				continue;
+			RectRef surfaceRect = surface->getSize ();
+			if(invalidateRegion.rectVisible (surfaceRect))
+				invalidateRegion.addRect (surfaceRect);
+		}
+		
+		for(int i = 0; i < invalidateRegion.getRects ().count (); i++)
+		{
+			RectRef invalidateRect = invalidateRegion.getRects ().at (i);
+			
+			graphicsDevice->saveState ();
+			graphicsDevice->addClip (invalidateRect);
+			if(isTranslucent ())
+				graphicsDevice->clearRect (invalidateRect);
+			
+			window.setInDrawEvent (true);
+			
+			if(getOpacity () < 1.f)
+			{
+				SkPaint alpha;
+				alpha.setAlphaf (getOpacity ());
+				getSkiaCanvas ()->saveLayer (nullptr, &alpha);
+			}
+			
+			window.draw (UpdateRgn (invalidateRect, &invalidateRegion));
+
+			window.setInDrawEvent (false);
+			graphicsDevice->restoreState ();
+		}
+
+		blendLayers (invalidateRegion);
+
+		invalidateRegion.setEmpty ();
+		
+		window.setGraphicsDevice (nullptr);
+
+		CCL_PROFILE_STOP (draw)
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+void OpenGLESRenderTarget::blendLayers (MutableRegion& invalidateRegion)
+{
+	// blend prerendered 3D surfaces to canvas
+	for(OpenGLES3DSurface* surface : surfaces)
+	{
+		RectRef surfaceRect = surface->getSize ();
+		if(!invalidateRegion.rectVisible (surfaceRect))
+			continue;
+		sk_sp<SkImage> image = surface->getSkiaImage ();
+		if(image)
+		{
+			SkRect dstRect = SkRect::MakeLTRB (surfaceRect.left, surfaceRect.top, surfaceRect.right, surfaceRect.bottom);
+			SkSamplingOptions samplingOptions (SkFilterMode::kLinear, SkMipmapMode::kLinear);
+			getSkiaCanvas ()->drawImageRect (image, dstRect, samplingOptions);
+		}
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+bool OpenGLESRenderTarget::flushSurface ()
+{	
+	GrDirectContext* context = getGPUContext ();
 	if(context == nullptr)
 		return false;
 
@@ -166,36 +225,11 @@ bool OpenGLESRenderTarget::flushSurface ()
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void OpenGLESRenderTarget::presentFrame ()
-{
-	OpenGLESClient& client = OpenGLESClient::instance ();
-
-	eglSwapBuffers (client.getDisplay (), eglSurface);
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
-void OpenGLESRenderTarget::makeCurrent ()
-{
-	OpenGLESClient& client = OpenGLESClient::instance ();
-	EGLContext eglContext = client.getContext ();
-	if(eglSurface == EGL_NO_SURFACE || eglContext == EGL_NO_CONTEXT)
-		return;
-
-	eglMakeCurrent (client.getDisplay (), eglSurface, eglSurface, eglContext);
-	
-	EGLint error = eglGetError ();
-	if(error != EGL_SUCCESS)
-		CCL_WARN ("Failed to switch egl context: %x\n", error)
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
 void OpenGLESRenderTarget::addOpenGLES3DSurface (Native3DSurface* surface)
 {
 	if(OpenGLES3DSurface* gles3DSurface = ccl_cast<OpenGLES3DSurface> (surface))
 	{
-		gles3DSurface->create (OpenGLESClient::instance ().getGPUContext (), getScaleFactor ());
+		gles3DSurface->create (getGPUContext (), getScaleFactor ());
 		surfaces.add (gles3DSurface);
 	}
 
@@ -222,7 +256,7 @@ void OpenGLESRenderTarget::removeOpenGLES3DSurface (Native3DSurface* surface)
 
 void OpenGLESRenderTarget::render3DContent ()
 {
-	GrDirectContext* context = OpenGLESClient::instance ().getGPUContext ();
+	GrDirectContext* context = getGPUContext ();
 		
 	if(graphicsContext3D == nullptr)
 		return;

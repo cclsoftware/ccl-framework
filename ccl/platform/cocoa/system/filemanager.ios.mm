@@ -121,30 +121,6 @@ tresult IOSFileManager::stopWatching (UrlRef url)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-tresult IOSFileManager::startUsing (UrlRef url)
-{
-	NSURL* nsurl = [NSURL alloc];
-	MacUtils::urlToNSUrl (url, nsurl);
-	BOOL success = [nsurl startAccessingSecurityScopedResource];
-	if(success == NO)
-		return kResultFailed;
-		
-	return kResultOk;
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
-tresult IOSFileManager::stopUsing (UrlRef url)
-{
-	NSURL* nsurl = [NSURL alloc];
-	MacUtils::urlToNSUrl (url, nsurl);
-	[nsurl stopAccessingSecurityScopedResource];
-
-	return kResultOk;
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
 void IOSFileManager::setWriting (UrlRef url, bool state)
 {
 	if(state == false)

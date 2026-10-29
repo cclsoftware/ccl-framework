@@ -31,6 +31,18 @@ No info available.
 
 
 
+.. _classes-classmodel-class-RenderAtom:
+
+RenderAtom
+==========
+
+RenderAtom Brief Doc.
+
+No info available.
+
+
+
+
 .. _classes-classmodel-class-TestClass:
 
 TestClass
@@ -42,10 +54,12 @@ Test Class Brief Doc.
 
 Test Class Detailed Doc
 
-**Attributes (2)**
+**Attributes (4)**
 
+* **background** (:ref:`RenderAtom <classes-classmodel-class-RenderAtom>`): Brief doc background
 * **member1** (*string*): Brief doc member1. Detailed doc member1.
 * :ref:`member2 <classes-classmodel-enumeration-TestClass.member2>`  (*enum*): Brief doc member2
+* **unresolvedRef** (*UnknownType*): Brief doc unresolvedRef
 
 
 **Meta**

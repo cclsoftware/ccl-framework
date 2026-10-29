@@ -35,6 +35,7 @@
 #include "ccl/gui/graphics/imaging/image.h"
 #include "ccl/gui/graphics/imaging/imagecache.h"
 
+#include "ccl/base/asyncoperation.h"
 #include "ccl/base/message.h"
 
 #include "ccl/public/systemservices.h"
@@ -67,10 +68,12 @@ public:
 	
 	// ViewAccessibilityProvider
 	AccessibilityElementRole CCL_API getElementRole () const override;
-	void CCL_API getElementName (String& name) const override;
 
 protected:
 	MenuControl::ClientView& getClientView () const;
+
+	// ViewAccessibilityProvider
+	void getDefaultElementName (String& name) const override;
 };
 
 //************************************************************************************************
@@ -87,7 +90,6 @@ public:
 	
 	// ViewAccessibilityProvider
 	AccessibilityElementRole CCL_API getElementRole () const override;
-	void CCL_API getElementName (String& name) const override;
 
 	// IAccessibilityActionProvider
 	tresult CCL_API performAction () override;
@@ -96,6 +98,9 @@ public:
 
 protected:
 	MenuControl::ItemButton& getItemButton () const;
+
+	// ViewAccessibilityProvider
+	void getDefaultElementName (String& name) const override;
 };
 
 } // namespace CCL
@@ -111,30 +116,32 @@ using namespace CCL;
 //////////////////////////////////////////////////////////////////////////////////////////////////
 /** A MenuControl is a custom implementation of a menu (e\.g\. a context menu). */
 
-BEGIN_VISUALSTYLE_CLASS (MenuControl, VisualStyle, "MenuControlStyle")
-	ADD_VISUALSTYLE_FONT ("smallfont")				///< used for menu item descriptions
-	ADD_VISUALSTYLE_COLOR ("bordercolor")			///< used to draw a border around the whole menu
-	ADD_VISUALSTYLE_COLOR ("separatorcolor")		///< used to draw separator lines
-	ADD_VISUALSTYLE_COLOR ("headercolor")			///< used to fill the header area
-	ADD_VISUALSTYLE_COLOR ("selectionbackcolor")	///< used to hihlite selected items, if no "selectionbarimage" is available
-	ADD_VISUALSTYLE_COLOR ("selectionframecolor")	///< used to draw a frame around selected items
-	ADD_VISUALSTYLE_COLOR ("disabledtextcolor")		///< used instead of "textcolor" for disabled items
-	ADD_VISUALSTYLE_COLOR ("headertextcolor")		///< used instead of "textcolor" in the header area
-	ADD_VISUALSTYLE_COLOR ("selectedtextcolor")		///< used instead of "textcolor" for the currently selected item
-	ADD_VISUALSTYLE_IMAGE ("checkmarkicon")			///< a checkmark icon drawn after a checked item
-	ADD_VISUALSTYLE_COLOR  ("iconcolor")			///< color to colorize icons of unselected items
-	ADD_VISUALSTYLE_COLOR  ("selectediconcolor")	///< used instead of "iconcolor" to colorize icons of selected items
-	ADD_VISUALSTYLE_IMAGE ("selectionbarimage")		///< background image for a selected item
-	ADD_VISUALSTYLE_METRIC ("normaliconsize")		///< icon size (in points) for a normal menu
-	ADD_VISUALSTYLE_METRIC ("largeiconsize")		///< icon size (in points) for a large menu
-	ADD_VISUALSTYLE_METRIC ("spacing")				///< spacing (in points) between items
-	ADD_VISUALSTYLE_METRIC ("separatorSpacing")		///< optional spacing definition for spacing (in points) between separated items
-	ADD_VISUALSTYLE_METRIC ("segmentspacing")		///< spacing (in points) between segments of an item (icon, title, key, arrow)
-	ADD_VISUALSTYLE_METRIC ("segmentmargin")		///< margin (in points) between left border and first segment of an item (icon, title, key, arrow)
-	ADD_VISUALSTYLE_METRIC ("explicitrowheight")	///< row height (in points) is not determined by the iconsize and spacing anymore
-	ADD_VISUALSTYLE_METRIC ("menuarrowwidth")		///< width (in points) of the arrow that indicates a sub menu
-	ADD_VISUALSTYLE_METRIC ("checkmarkwidth")		///< width (in points) used to draw the checkmark icon
-END_VISUALSTYLE_CLASS (MenuControl)
+DEFINE_TYPELIB_ENTRY_WITH_PARENT (MenuControl, VisualStyle, "MenuControlStyle", VISUALSTYLES_TYPELIB)
+BEGIN_TYPELIB_MEMBERS (MenuControl)
+	ADD_TYPELIB_MEMBER_FONT ("smallfont")				///< used for menu item descriptions
+	ADD_TYPELIB_MEMBER_COLOR ("bordercolor")			///< used to draw a border around the whole menu
+	ADD_TYPELIB_MEMBER_COLOR ("separatorcolor")			///< used to draw separator lines
+	ADD_TYPELIB_MEMBER_COLOR ("headercolor")			///< used to fill the header area
+	ADD_TYPELIB_MEMBER_COLOR ("selectionbackcolor")		///< used to hihlite selected items, if no "selectionbarimage" is available
+	ADD_TYPELIB_MEMBER_COLOR ("selectionframecolor")	///< used to draw a frame around selected items
+	ADD_TYPELIB_MEMBER_COLOR ("disabledtextcolor")		///< used instead of "textcolor" for disabled items
+	ADD_TYPELIB_MEMBER_COLOR ("headertextcolor")		///< used instead of "textcolor" in the header area
+	ADD_TYPELIB_MEMBER_COLOR ("selectedtextcolor")		///< used instead of "textcolor" for the currently selected item
+	ADD_TYPELIB_MEMBER_COLOR ("valuetextcolor")			///< used instead of "textcolor" for the value text next to a sub menu entry
+	ADD_TYPELIB_MEMBER_IMAGE ("checkmarkicon")			///< a checkmark icon drawn after a checked item
+	ADD_TYPELIB_MEMBER_COLOR ("iconcolor")				///< color to colorize icons of unselected items
+	ADD_TYPELIB_MEMBER_COLOR ("selectediconcolor")		///< used instead of "iconcolor" to colorize icons of selected items
+	ADD_TYPELIB_MEMBER_IMAGE ("selectionbarimage")		///< background image for a selected item
+	ADD_TYPELIB_MEMBER_METRIC ("normaliconsize")		///< icon size (in points) for a normal menu
+	ADD_TYPELIB_MEMBER_METRIC ("largeiconsize")			///< icon size (in points) for a large menu
+	ADD_TYPELIB_MEMBER_METRIC ("spacing")				///< spacing (in points) between items
+	ADD_TYPELIB_MEMBER_METRIC ("separatorSpacing")		///< optional spacing definition for spacing (in points) between separated items
+	ADD_TYPELIB_MEMBER_METRIC ("segmentspacing")		///< spacing (in points) between segments of an item (icon, title, key, arrow)
+	ADD_TYPELIB_MEMBER_METRIC ("segmentmargin")			///< margin (in points) between left border and first segment of an item (icon, title, key, arrow)
+	ADD_TYPELIB_MEMBER_METRIC ("explicitrowheight")		///< row height (in points) is not determined by the iconsize and spacing anymore
+	ADD_TYPELIB_MEMBER_METRIC ("menuarrowwidth")		///< width (in points) of the arrow that indicates a sub menu
+	ADD_TYPELIB_MEMBER_METRIC ("checkmarkwidth")		///< width (in points) used to draw the checkmark icon
+END_TYPELIB_MEMBERS (MenuControl)
 
 DEFINE_IID_ (IMenuControl, 0xd1785e53, 0xee72, 0x4b73, 0x8f, 0x90, 0xf9, 0x5f, 0x88, 0xf0, 0x96, 0xf8)
 
@@ -153,6 +160,7 @@ MenuItemPainter::MenuItemPainter ()
   textColor (Colors::kBlack),
   disabledTextColor (Colors::kGray),
   selectedTextColor (Colors::kBlack),
+  valueTextColor (Colors::kGray),
   headerTextColor (Colors::kBlack),
   normalIconSize (20),
   largeIconSize (32),
@@ -170,9 +178,12 @@ MenuItemPainter::MenuItemPainter ()
   maxViewWidth (0),
   maxTitleWidth (0),
   maxKeyWidth (0),
+  maxValueWidth (0),
+  valueWidthLimit (180),
   fixedSubMenuWidth (0),
   checkMarkNeeded (false),
-  markupPainter (nullptr)
+  markupPainter (nullptr),
+  fitIconSize (false)
 {
 	Theme& theme = FrameworkTheme::instance ();
 	font = theme.getThemeFont (ThemeElements::kMenuFont);
@@ -207,6 +218,7 @@ void MenuItemPainter::updateStyle (const IVisualStyle& visualStyle)
 	disabledTextColor = visualStyle.getColor ("disabledtextcolor", disabledTextColor);
 	headerTextColor = visualStyle.getColor ("headertextcolor", headerTextColor);
 	selectedTextColor = visualStyle.getColor ("selectedtextcolor", selectedTextColor);
+	valueTextColor = visualStyle.getColor ("valuetextcolor", textColor);
 
 	setCheckMarkIcon (visualStyle.getImage ("checkmarkicon"));
 	if(checkMarkIcon)
@@ -223,6 +235,7 @@ void MenuItemPainter::updateStyle (const IVisualStyle& visualStyle)
 	segmentMargin = visualStyle.getMetric<Coord> ("segmentmargin", segmentMargin);
 	headerSpacing = visualStyle.getMetric<Coord> ("headerspacing", headerSpacing);
 	explicitRowHeight = visualStyle.getMetric<Coord> ("explicitrowheight", explicitRowHeight);
+	valueWidthLimit = visualStyle.getMetric<Coord> ("valueWidthLimit", valueWidthLimit);
 	
 	setMenuArrowIcon (visualStyle.getImage ("menuarrow"));
 	if(menuArrowIcon)
@@ -236,6 +249,7 @@ void MenuItemPainter::updateStyle (const IVisualStyle& visualStyle)
 	closeIconWidth = visualStyle.getMetric<Coord> ("closeiconwidth", closeIconWidth);
 	checkMarkWidth = visualStyle.getMetric<Coord> ("checkmarkwidth", checkMarkWidth);
 	fixedSubMenuWidth = visualStyle.getMetric<Coord> ("fixedsubmenuwidth", fixedSubMenuWidth);
+	fitIconSize = visualStyle.getMetric<bool> ("fitIconSize", fitIconSize);
 
 	if(visualStyle.getMetric<int> ("markup", 0) > 0)
 	{
@@ -331,6 +345,7 @@ void MenuItemPainter::recalc (const Menu& menu)
 {
 	maxTitleWidth = 0;
 	maxKeyWidth = 0;
+	maxValueWidth = 0;
 	maxViewWidth = 0;
 	checkMarkNeeded = false;
 	iconSpaceNeeded = false;
@@ -363,6 +378,13 @@ void MenuItemPainter::recalc (const Menu& menu)
 				descriptionWidth = kMaxMenuItemDescriptionWidth;
 			if(descriptionWidth > maxTitleWidth)
 				maxTitleWidth = descriptionWidth;
+		}
+
+		if(!item->getValue ().isEmpty ())
+		{
+			Coord valueWidth = ccl_min (Font::getStringWidth (item->getValue (), font), valueWidthLimit);
+			if(valueWidth > maxValueWidth)
+				maxValueWidth = valueWidth;
 		}
 
 		Coord keyWidth = 0;
@@ -415,6 +437,7 @@ void MenuItemPainter::getItemMetrics (ItemMetrics& metrics, const MenuItem& item
 	left += segmentSpacing;
 
 	Coord keySpacing = maxKeyWidth + segmentSpacing;
+	Coord valueSpacing = maxValueWidth > 0 ? maxValueWidth + segmentSpacing : 0;
 	Coord arrowSpacing = menuArrowWidth + spacing;
 
 	Coord viewWidth = maxViewWidth;
@@ -423,6 +446,8 @@ void MenuItemPainter::getItemMetrics (ItemMetrics& metrics, const MenuItem& item
 
 	metrics.keyPos = ccl_max (viewWidth - keySpacing - arrowSpacing, left);
 	left += keySpacing;
+
+	left += valueSpacing;
 
 	metrics.arrowPos = ccl_max (viewWidth - arrowSpacing, left);
 	left += arrowSpacing;
@@ -451,6 +476,17 @@ Color MenuItemPainter::getItemTextColor (const MenuItem& item, int state) const
 	if(state == View::kMouseOver)
 		return selectedTextColor;
 	return textColor;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+Color MenuItemPainter::getValueTextColor (const MenuItem& item, int state) const
+{
+	if(!item.isEnabled ())
+		return disabledTextColor;
+	if(state == View::kMouseOver)
+		return selectedTextColor;
+	return valueTextColor;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -531,9 +567,9 @@ void MenuItemPainter::drawItem (IGraphics& graphics, RectRef itemSize, const Men
 			
 			if(!item.isEnabled ())
 				modifiedIcon = ModifiedImageCache::instance ().lookup (icon, getDisabledTextColor ());
-			else if(isTemplate && selected && getSelectedIconColor ().getAlphaF () != 0)
+			else if(isTemplate && selected && getSelectedIconColor ().isVisible ())
 				modifiedIcon = ModifiedImageCache::instance ().lookup (icon, getSelectedIconColor ());
-			else if(isTemplate && getIconColor ().getAlphaF () != 0)
+			else if(isTemplate && getIconColor ().isVisible ())
 				modifiedIcon = ModifiedImageCache::instance ().lookup (icon, getIconColor ());
 			
 			graphics.drawImage (modifiedIcon ? modifiedIcon : icon, srcRect, dstRect);
@@ -589,6 +625,16 @@ void MenuItemPainter::drawItem (IGraphics& graphics, RectRef itemSize, const Men
 			Rect srcRect;
 			icon->getSize (srcRect);
 			Rect dstRect (srcRect);
+			
+			if(fitIconSize)
+			{
+				// check if image is too large
+				if(dstRect.getWidth () > iconRect.getWidth ())
+					dstRect.contract ((dstRect.getWidth () - iconRect.getWidth ()) / 2); 
+				if(dstRect.getHeight () > iconRect.getHeight ()) 
+					dstRect.contract ((dstRect.getHeight () - iconRect.getHeight ()) / 2); 
+			}
+	
 			dstRect.center (iconRect);
 			
 			drawMenuIcon (icon, srcRect, dstRect, selected, isTemplate);
@@ -628,8 +674,25 @@ void MenuItemPainter::drawItem (IGraphics& graphics, RectRef itemSize, const Men
 			}
 		}
 
+		// Value
+		if(!item.getValue ().isEmpty ())
+		{
+			Rect valueRect (itemSize);
+			valueRect.right -= menuArrowWidth;
+			valueRect.left = valueRect.right - maxValueWidth;
+
+			Color valueColor = getValueTextColor (item, state);
+
+			String itemValue (item.getValue ());
+			Font::collapseString (itemValue, valueRect.getWidth (), font, Font::kTrimModeRight);
+
+			if(markupPainter)
+				markupPainter->drawMarkupString (graphics, valueRect, itemValue, font, SolidBrush (valueColor), Alignment::kRightCenter);
+			else
+				graphics.drawString (valueRect, itemValue, font, SolidBrush (valueColor), Alignment::kRightCenter);
+		}
 		// Key
-		if(const KeyEvent* key = item.getAssignedKey ())
+		else if(const KeyEvent* key = item.getAssignedKey ())
 		{
 			Rect keyRect (itemSize);
 			keyRect.left += metrics.keyPos;
@@ -682,6 +745,12 @@ void MenuItemPainter::drawBackButton (IGraphics& graphics, RectRef itemSize, con
 {
 	Rect internalItemSize (itemSize);
 	internalItemSize.left += getMenuArrowWidth ();
+	// compensations for items before text
+	if(checkMarkNeeded)
+		internalItemSize.left -= checkMarkWidth;		
+	if(iconSpaceNeeded) 
+		internalItemSize.left -= getIconSize (getMenuVariant (item));
+
 	drawItem (graphics, internalItemSize, item, 0, false);// true  /*parentOfCurrentSubMenu*/
 
 	Rect arrowRect (getBackButtonSize (itemSize));
@@ -756,7 +825,7 @@ void MenuItemPainter::drawMenuArrow (IGraphics& graphics, RectRef itemSize, bool
 		IImage* modifiedIcon = nullptr;
 		if(!enabled)
 			modifiedIcon = ModifiedImageCache::instance ().lookup (getMenuArrowIcon (), getDisabledTextColor ());
-		else if(selected && getSelectedIconColor ().getAlphaF () != 0)
+		else if(selected && getSelectedIconColor ().isVisible ())
 			modifiedIcon = ModifiedImageCache::instance ().lookup (getMenuArrowIcon (), getSelectedIconColor ());
 		else
 			modifiedIcon = ModifiedImageCache::instance ().lookup (getMenuArrowIcon (), selected ? selectedTextColor : textColor);
@@ -937,34 +1006,47 @@ bool MenuControl::ItemButton::popupSubMenu (bool keyNavigation)
 		if(keyNavigation)
 			control->getClient ()->selectNextItem (true);
 
-		ScopedVar<MenuControl*> scope (subMenuControl, control);
-		control->popup (pos, this);
+		MenuControl* oldSubMenuControl = subMenuControl;
+		subMenuControl = control;
 
-		if(item->getSplitMenu ())
+		Promise promise (control->popup (pos, this));
+		promise.then ([this, oldSubMenuControl] (IAsyncOperation& operation)
 		{
-			// after split menu closed: close parent menu if split item was selected (clicked) 
-			if(parentControl && parentControl->getResultItem () == item)
-				parentControl->closeAll (true);
-		}
+			if(item->getSplitMenu ())
+			{
+				// after split menu closed: close parent menu if split item was selected (clicked)
+				MenuControl* parentControl = getParent<MenuControl> ();
+				if(parentControl && parentControl->getResultItem () == item)
+					parentControl->closeAll (true);
+			}
+
+			subMenuControl = oldSubMenuControl;
+		});
 	}
 	// try parameter popup
 	else if(ExtendedMenu::ParameterItem* paramItem = ccl_cast<ExtendedMenu::ParameterItem> (item))
 	{
-		PopupSelector selector;
-		selector.setTheme (getTheme ());
-		selector.setVisualStyle (getTheme ().getStandardStyle (ThemePainter::kMenuControlStyle));
-		selector.setMenuMode (true);
+		AutoPtr<PopupSelector> selector (NEW PopupSelector);
+		selector->setTheme (getTheme ());
+		selector->setVisualStyle (getTheme ().getStandardStyle (ThemePainter::kMenuControlStyle));
+		selector->setMenuMode (true);
 
 		PopupSizeInfo sizeInfo (pos, this);
 		sizeInfo.canFlipParentEdge (true);
 
-		ScopedVar<PopupSelector*> scope (subPopupSelector, &selector);
-		selector.popup (paramItem->getParameter (), sizeInfo, MenuPresentation::kExtended);
+		PopupSelector* oldSubPopupSelector = subPopupSelector;
+		subPopupSelector = selector;
 
-		// kOk or kCancel on parameter popup: close all
-		if(selector.getPopupResult () != PopupClient::kIgnore) // (we set kIgnore when closing in closeSubMenu)
-			if(MenuControl* control = (getParent<MenuControl> ()))
-				control->closeAll ();
+		Promise promise (selector->popupAsync (paramItem->getParameter (), sizeInfo, MenuPresentation::kExtended));
+		promise.then ([this, oldSubPopupSelector] (IAsyncOperation& operation)
+		{
+			// kOk or kCancel on parameter popup: close all
+			if(subPopupSelector && subPopupSelector->getPopupResult () != PopupClient::kIgnore) // (we set kIgnore when closing in closeSubMenu)
+				if(MenuControl* control = (getParent<MenuControl> ()))
+					control->closeAll ();
+
+			subPopupSelector = oldSubPopupSelector;
+		});
 	}
 	return true;
 }
@@ -1078,7 +1160,7 @@ AccessibilityElementRole CCL_API MenuItemButtonAccessibilityProvider::getElement
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void CCL_API MenuItemButtonAccessibilityProvider::getElementName (String& name) const
+void MenuItemButtonAccessibilityProvider::getDefaultElementName (String& name) const
 {
 	MenuControl::ItemButton& button = getItemButton ();
 	MenuItem* item = button.getItem ();
@@ -1095,7 +1177,7 @@ void CCL_API MenuItemButtonAccessibilityProvider::getElementName (String& name) 
 		}
 	}
 	if(name.isEmpty ())
-		SuperClass::getElementName (name);
+		SuperClass::getDefaultElementName (name);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1608,14 +1690,14 @@ AccessibilityElementRole CCL_API MenuClientAccessibilityProvider::getElementRole
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void CCL_API MenuClientAccessibilityProvider::getElementName (String& name) const
+void MenuClientAccessibilityProvider::getDefaultElementName (String& name) const
 {
 	MenuControl::ClientView& clientView = getClientView ();
 	Menu* menu = clientView.getMenu ();
 	if(menu)
 		name = menu->getTitle ();
 	if(name.isEmpty ())
-		SuperClass::getElementName (name);
+		SuperClass::getDefaultElementName (name);
 }
 
 //************************************************************************************************
@@ -1646,12 +1728,19 @@ MenuControl::MenuControl (Menu* menu, VisualStyle* menuStyle, View* target, Styl
 	updateSize ();
 
 	GUI.getMousePosition (initialMousePos);
+
+	if(menu)
+		menu->setMenuControl (this);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 MenuControl::~MenuControl ()
 {
+	if(ClientView* clientView = getClient ())
+		if(Menu* menu = clientView->getMenu ())
+			menu->setMenuControl (nullptr);
+
 	cancelSignals ();
 
 	popupClient->release ();
@@ -1719,7 +1808,7 @@ Coord MenuControl::ClientView::getMaxControlHeight () const
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool MenuControl::popup (const Point& where, View* view)
+IAsyncOperation* MenuControl::popup (const Point& where, View* view)
 {
 	ASSERT (!isTopLevel ()) // only called for a subMenu!
 
@@ -1737,7 +1826,7 @@ bool MenuControl::popup (const Point& where, View* view)
 
 	PopupSizeInfo sizeInfo (where, view);
 	sizeInfo.canFlipParentEdge (true);
-	return selector->popup (return_shared (this), popupClient, sizeInfo) != 0;
+	return selector->popupAsync (return_shared (this), popupClient, sizeInfo);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1893,6 +1982,22 @@ bool MenuControl::navigate (const KeyEvent& event)
 			}
 			else if(button->onNavigate (event))
 				return true;
+		}
+
+		// c) if focus is inside a ViewItem, offer the event to the custom view
+		if(Window* window = getWindow ())
+		{
+			if(View* focusView = window->getFocusView ())
+			{
+				ForEachMenuItem (*client->getMenu (), item)
+					if(auto viewItem = ccl_cast<ExtendedMenu::ViewItem> (item))
+					{
+						View* view = unknown_cast<View> (viewItem->getView ());
+						if(view && view->isChild (focusView, true))
+							return view->onKeyDown (event);
+					}
+				EndFor
+			}
 		}
 		break;
 	}
@@ -2272,6 +2377,33 @@ void CCL_API CompactMenuControl::notify (ISubject* subject, MessageRef msg)
 		SuperClass::notify (subject, msg);
 }
 
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+tbool CCL_API CompactMenuControl::closeDeepestMenu ()
+{
+	if(CompactMenuContainer* container = getContainer ())
+		return container->closeDeepestMenu ();
+	return false;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+BEGIN_METHOD_NAMES (CompactMenuControl)
+	DEFINE_METHOD_NAME ("closeDeepestMenu")
+END_METHOD_NAMES (CompactMenuControl)
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+tbool CCL_API CompactMenuControl::invokeMethod (Variant& returnValue, MessageRef msg)
+{
+	if(msg == "closeDeepestMenu")
+	{
+		closeDeepestMenu ();		
+		return true;
+	}
+	return SuperClass::invokeMethod (returnValue, msg);
+}
+
 //************************************************************************************************
 // CompactMenuControl::ClientView
 //************************************************************************************************
@@ -2369,7 +2501,7 @@ void CompactMenuControl::ClientView::updateHeader (HeaderType type)
 		View* newHeader = nullptr;
 		if(type == kHeaderBackButton || type == kHeaderBackAndCloseButton)
 		{
-			newHeader = NEW BackButton (painter, getMenu ());
+			newHeader = NEW BackButton (painter, getMenu (), type == kHeaderBackButton);
 			newHeader->autoSize ();
 
 			if(type == kHeaderBackAndCloseButton)
@@ -2511,14 +2643,17 @@ void CompactMenuControl::ClientView::updateSize ()
 void CompactMenuControl::ClientView::closeDeepestMenu ()
 {
 	if(CompactMenuContainer* container = getContainer ())
-		container->removeColumn (-1);
+		container->closeDeepestMenu ();
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 void CompactMenuControl::ClientView::setCurrentItem (MenuControl::ItemButton* button, bool keyNavigation)
 {
-	if(button != currentItem && !ccl_cast<BackButton> (button))
+	if(ccl_cast<BackButton> (button))
+		button = nullptr;
+	
+	if(button != currentItem)
 	{
 		MenuControl::ClientView::setCurrentItem (button, keyNavigation);
 		invalidate ();
@@ -2728,18 +2863,26 @@ DEFINE_CLASS_ABSTRACT_HIDDEN (CompactMenuControl::BackButton, CompactMenuControl
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-CompactMenuControl::BackButton::BackButton (MenuItemPainter* painter, Menu* menu)
-: HeaderButton (painter)
+CompactMenuControl::BackButton::BackButton (MenuItemPainter* painter, Menu* menu, bool fullAreaActive)
+: HeaderButton (painter), 
+  fullAreaActive (fullAreaActive)
 {
 	if(menu)
-		item->setTitle (menu->getTitle ());
+	{
+		String fullTitle;
+		menu->getFullTitle (fullTitle);
+		item->setTitle (fullTitle);
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 Rect CompactMenuControl::BackButton::getActiveArea (RectRef itemSize) const
 {
-	return painter->getBackButtonSize (itemSize);
+	if(fullAreaActive)
+		return itemSize;
+
+	return painter->getBackButtonSize (itemSize);	
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -3175,13 +3318,13 @@ void CompactMenuContainer::addColumn (CompactMenuControl* control)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void CompactMenuContainer::removeColumn (int index)
+bool CompactMenuContainer::removeColumn (int index)
 {
 	if(index < 0)
 		index = countColumns () - 1;
 
 	if(index <= 0)
-		return;
+		return false;
 
 	if(CompactMenuControl* control = getControl (index))
 	{
@@ -3218,6 +3361,8 @@ void CompactMenuContainer::removeColumn (int index)
 	if(index >= 0)
 		if(CompactMenuControl* control = getControl (index))
 			control->getCompactClient ()->setCurrentItem (nullptr, false);
+
+	return true;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -3373,3 +3518,4 @@ void CompactMenuContainer::onSize (const Point& delta)
 
 	SuperClass::onSize (delta);
 }
+

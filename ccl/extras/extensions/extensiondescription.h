@@ -158,7 +158,7 @@ public:
 
 protected:
 	AutoPtr<Url> path;
-	CCL::Attributes extraInfo;
+	Attributes extraInfo;
 	Vector<SubItem> subItems;
 
 	// IExtensionDescription

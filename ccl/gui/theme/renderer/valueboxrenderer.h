@@ -30,12 +30,12 @@ namespace CCL {
 class ValueBoxRenderer: public EditBoxRenderer
 {
 public:
-	ValueBoxRenderer (VisualStyle* visualStyle);
+	ValueBoxRenderer (VisualStyle* visualStyle, View* owner);
 
 	// to be continued...
 };
 
-DECLARE_VISUALSTYLE_CLASS (ValueBox)
+DECLARE_TYPELIB_ENTRY (ValueBox)
 
 } // namespace CCL
 

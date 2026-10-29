@@ -66,6 +66,8 @@ interface IAttributeList;
 	#endif
 #elif CCL_PLATFORM_ANDROID
 	#define EXTENSION_PLATFORM_FOLDER "android"
+#elif CCL_PLATFORM_WASM
+	#define EXTENSION_PLATFORM_FOLDER "wasm"
 #else
 	#error unknown platform
 #endif

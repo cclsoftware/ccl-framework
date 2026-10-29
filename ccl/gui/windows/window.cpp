@@ -69,13 +69,13 @@ public:
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 #if 1 && DEBUG_LOG
-static void logFocus (Window* window, const char* text)
+static void logFocus (Window* window, CStringPtr text)
 {
 	View* focus = window->getFocusView ();
 	View* saved = window->getSavedFocusView ();
 
-	const char* str1 = focus ? focus->myClass ().getPersistentName () : "0";
-	const char* str2 = saved ? saved->myClass ().getPersistentName () : "0";
+	CStringPtr str1 = focus ? focus->myClass ().getPersistentName () : "0";
+	CStringPtr str2 = saved ? saved->myClass ().getPersistentName () : "0";
 	CCL_PRINTF ("%s%s (focusView: %s,  savedFocusView: %s)\n", CCL_INDENT, text, str1, str2);
 }
 #define LOG_FOCUS(window,text) logFocus (window, text);
@@ -361,6 +361,9 @@ void Window::destruct ()
 	saveFocusView (nullptr);
 
 	delete touchInputState;
+
+	// set flag to suppress side effects of View::removeView
+	privateFlags |= kWasDestroyed; 
 
 	// remove views while attached to this 
 	removeAll ();
@@ -788,6 +791,32 @@ void Window::onChildLimitsChanged (View* child)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
+bool Window::checkChildSizeLimits ()
+{
+	if(views.count () != 1)
+		return false;
+
+	View* child = getFirst ();
+	if(child && hasExplicitSizeLimits ())
+	{
+		// set new explicit limits including the new child limits (-> limits only get stricter, never softer!)
+		SizeLimit limits (getSizeLimits ());
+		limits.include (child->getSizeLimits ());
+		setSizeLimits (limits);
+	}
+
+	// enforce size limits
+	Rect newSize (getSize ());
+	Rect oldSize (newSize);
+	getSizeLimits ().makeValid (newSize);
+	if(newSize != oldSize)
+		setSize (newSize);
+
+	return getSize () != oldSize;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
 void Window::constrainSize (Rect& rect) const
 {
 	CCL_PRINTF ("Window::constrainSize: %d x %d (current: %d x %d)\n", rect.getWidth (), rect.getHeight (), getSize ().getWidth (), getSize ().getHeight ())
@@ -980,9 +1009,9 @@ void Window::drawBackground (const UpdateRgn& updateRgn)
 	if(style.isOpaque ())
 	{
 		if(backgroundRenderer == nullptr)
-			backgroundRenderer = getTheme ().createRenderer (ThemePainter::kBackgroundRenderer, visualStyle);
+			backgroundRenderer = getTheme ().createRenderer (ThemePainter::kBackgroundRenderer, visualStyle, this);
 		if(backgroundRenderer)
-			backgroundRenderer->draw (this, updateRgn);
+			backgroundRenderer->draw (updateRgn);
 	}
 }
 
@@ -1216,13 +1245,13 @@ void Window::initSize ()
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void CCL_API Window::show ()
+void CCL_API Window::show (tbool activate)
 {
 	initSize ();
 
 	GUI.hideTooltip ();
 
-	showWindow (true);
+	showWindow (true, activate);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1323,27 +1352,8 @@ void Window::notify (ISubject* subject, MessageRef msg)
 		CCL_ADD_INDENT (2)
 		saveFocusView (nullptr);
 	}
-	else if (msg == "checkSizeLimits")
-	{
-		if(views.count () == 1)
-		{
-			View* child = getFirst ();
-			if(child && hasExplicitSizeLimits ())
-			{
-				// set new explicit limits including the new child limits (-> limits only get stricter, never softer!)
-				SizeLimit limits (getSizeLimits ());
-				limits.include (child->getSizeLimits ());
-				setSizeLimits (limits);
-			}
-
-			// enforce size limits
-			Rect s (getSize ());
-			Rect s2 (s);
-			getSizeLimits ().makeValid (s);
-			if(s != s2)
-				setSize (s);
-		}
-	}
+	else if(msg == "checkSizeLimits")
+		checkChildSizeLimits ();
 	else
 		SuperClass::notify (subject, msg);
 }
@@ -1853,7 +1863,7 @@ tbool CCL_API Window::invokeMethod (Variant& returnValue, MessageRef msg)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-tbool CCL_API CCL::Window::setContentScaleFactor (float factor)
+tbool CCL_API Window::setContentScaleFactor (float factor)
 {
 	return false;
 }
@@ -1876,7 +1886,7 @@ void Window::setWindowSize (Rect& size) {}
 void CCL_API Window::setWindowTitle (StringRef title) {}
 void CCL_API Window::moveWindow (PointRef pos) {}
 void CCL_API Window::invalidate (RectRef rect) {}
-void Window::showWindow (bool state) {}
+void Window::showWindow (bool state, bool activate) {}
 void CCL_API Window::maximize (tbool state) {}
 tbool CCL_API Window::isMaximized () const { return false; }
 tbool CCL_API Window::isMinimized () const { return false; }

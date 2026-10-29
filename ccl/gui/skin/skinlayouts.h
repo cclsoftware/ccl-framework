@@ -35,7 +35,8 @@ namespace SkinElements {
 class LayoutElement: public ViewElement
 {
 public:
-	DECLARE_SKIN_ELEMENT_ABSTRACT (LayoutElement, ViewElement)
+	DECLARE_CLASS_ABSTRACT (LayoutElement, ViewElement)
+	DECLARE_TYPELIB_CLASS (LayoutElement)
 
 	LayoutElement ();
 	~LayoutElement ();
@@ -68,7 +69,8 @@ private:
 class AnchorLayoutElement: public LayoutElement
 {
 public:
-	DECLARE_SKIN_ELEMENT (AnchorLayoutElement, LayoutElement)
+	DECLARE_CLASS (AnchorLayoutElement, LayoutElement)
+	DECLARE_TYPELIB_CLASS (AnchorLayoutElement)
 
 	PROPERTY_MUTABLE_CSTRING (layoutClass, LayoutClass)
 	PROPERTY_MUTABLE_CSTRING (persistenceID, PersistenceID)
@@ -85,19 +87,20 @@ protected:
 //************************************************************************************************
 // HorizontalElement
 /** Arranges child views horizontally, trying to fill the width of the Horizontal element.
-The intitial widths of the child views are considered their preferred widths. For a given container width,
-the total preferred with of all child views can result in either some remaining or missing width.
+The initial widths of the child views are considered their preferred widths. For a given container width,
+the total preferred width of all child views can result in either some remaining or missing width.
 
 The horizontal layout tries to distribute this remaining or missing width equally among the child views, by
-either enlarging or shrinking the childs. But this is limited by their attachments and their size limits:
-Like in the basic layout of the View class, a view only get's sized horizontally, if it's attached left and right to it's parent (attach="left right").
+either enlarging or shrinking the children. But this is limited by their attachments and their size limits:
+Like in the basic layout of the View class, a view only gets sized horizontally if it's attached left and right to its parent (attach="left right").
 */
 //************************************************************************************************
 
 class HorizontalElement: public AnchorLayoutElement
 {
 public:
-	DECLARE_SKIN_ELEMENT (HorizontalElement, AnchorLayoutElement)
+	DECLARE_CLASS (HorizontalElement, AnchorLayoutElement)
+	DECLARE_TYPELIB_CLASS (HorizontalElement)
 
 	// ViewElement
 	bool setAttributes (const SkinAttributes& a) override;
@@ -116,7 +119,8 @@ Behaves the same as <Horizontal>, but in the vertical direction. \see Horizontal
 class VerticalElement: public AnchorLayoutElement
 {
 public:
-	DECLARE_SKIN_ELEMENT (VerticalElement, AnchorLayoutElement)
+	DECLARE_CLASS (VerticalElement, AnchorLayoutElement)
+	DECLARE_TYPELIB_CLASS (VerticalElement)
 
 	// ViewElement
 	bool setAttributes (const SkinAttributes& a) override;
@@ -134,7 +138,8 @@ public:
 class RowElement: public VerticalElement
 {
 public:
-	DECLARE_SKIN_ELEMENT (RowElement, VerticalElement)
+	DECLARE_CLASS (RowElement, VerticalElement)
+	DECLARE_TYPELIB_CLASS (RowElement)
 };
 
 //************************************************************************************************
@@ -145,7 +150,8 @@ public:
 class ColumnElement: public HorizontalElement
 {
 public:
-	DECLARE_SKIN_ELEMENT (ColumnElement, HorizontalElement)
+	DECLARE_CLASS (ColumnElement, HorizontalElement)
+	DECLARE_TYPELIB_CLASS (ColumnElement)
 };
 
 //************************************************************************************************
@@ -157,14 +163,15 @@ To define the number of row and columns, either the "rows" or "columns" attribut
 The rows as a whole are arranged vertically by the same algorithm used by <Vertical>,
 while columns are arranged horizontally as in <Horizontal>.
 
-The optional attribute "cellratio" sizes childs with the given aspect ratio (width/height, e.g. 1 for square views).
+The optional attribute "cellratio" sizes children with the given aspect ratio (width/height, e.g. 1 for square views).
 */
 //************************************************************************************************
 
 class TableElement: public AnchorLayoutElement
 {
 public:
-	DECLARE_SKIN_ELEMENT (TableElement, AnchorLayoutElement)
+	DECLARE_CLASS (TableElement, AnchorLayoutElement)
+	DECLARE_TYPELIB_CLASS (TableElement)
 
 	// LayoutElement
 	Layout* createLayout () const override;
@@ -172,7 +179,7 @@ public:
 
 //************************************************************************************************
 // SizeVariantElement
-/** Dynamically selects one of it's child elements, depending on the container width or height.
+/** Dynamically selects one of its child elements, depending on the container width or height.
 Child elements must specify their minimum width or height in the "data.minsize" attribute.
 The best matching child view gets selected every time the container size changes.
 
@@ -189,7 +196,8 @@ The best matching child view gets selected every time the container size changes
 class SizeVariantElement: public AnchorLayoutElement
 {
 public:
-	DECLARE_SKIN_ELEMENT (SizeVariantElement, AnchorLayoutElement)
+	DECLARE_CLASS (SizeVariantElement, AnchorLayoutElement)
+	DECLARE_TYPELIB_CLASS (SizeVariantElement)
 
 	// LayoutElement
 	Layout* createLayout () const override;
@@ -204,7 +212,8 @@ public:
 class FlexboxElement: public LayoutElement
 {
 public:
-	DECLARE_SKIN_ELEMENT (FlexboxElement, LayoutElement)
+	DECLARE_CLASS (FlexboxElement, LayoutElement)
+	DECLARE_TYPELIB_CLASS (FlexboxElement)
 
 	// LayoutElement
 	void viewAdded (View* parent, View* child, ViewElement* childElement, SkinWizard& wizard) override;

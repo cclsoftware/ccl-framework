@@ -1,0 +1,7 @@
+{% for constant in constants %}
+{% if constant.brief %}
+inline constexpr {{ constant.type | cpptype }} {{ constant.name }} = {{ constant.value | cppvalue }}; ///< {{ constant.brief }}
+{% else %}
+inline constexpr {{ constant.type | cpptype }} {{ constant.name }} = {{ constant.value | cppvalue }};
+{% endif %}
+{% endfor %}

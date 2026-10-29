@@ -113,7 +113,7 @@ void AmazonStoreManager::shutdown ()
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-CCL::IAsyncOperation* AmazonStoreManager::requestProducts (const ConstVector<String>& productIds)
+IAsyncOperation* AmazonStoreManager::requestProducts (const ConstVector<String>& productIds)
 {
 	if(productIds.isEmpty ())
 	{
@@ -136,7 +136,7 @@ CCL::IAsyncOperation* AmazonStoreManager::requestProducts (const ConstVector<Str
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-CCL::IAsyncOperation* AmazonStoreManager::purchaseProduct (StringRef productId)
+IAsyncOperation* AmazonStoreManager::purchaseProduct (StringRef productId)
 {
 	JniAccessor jni;
 	JniString jProductId (jni, StringChars (productId), productId.length ());
@@ -147,7 +147,7 @@ CCL::IAsyncOperation* AmazonStoreManager::purchaseProduct (StringRef productId)
 	StoreTransaction* transaction = NEW StoreTransaction;
 	transaction->setTransactionID (fromJavaString (jRequestId));
 	transaction->setProductID (productId);
-	transaction->setState (CCL::PurchaseState::kInProgress);
+	transaction->setState (PurchaseState::kInProgress);
 
 	transactions->add (transaction);
 	deferSignal (NEW Message (kTransactionsChanged));
@@ -158,14 +158,14 @@ CCL::IAsyncOperation* AmazonStoreManager::purchaseProduct (StringRef productId)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-CCL::IAsyncOperation* AmazonStoreManager::getTransactions ()
+IAsyncOperation* AmazonStoreManager::getTransactions ()
 {
 	return AsyncOperation::createCompleted (Variant (transactions->asUnknown (), true), true);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-CCL::IAsyncOperation* AmazonStoreManager::getLocalLicenses ()
+IAsyncOperation* AmazonStoreManager::getLocalLicenses ()
 {
 	AsyncOperation* op = NEW AsyncOperation;
 	AmazonStoreContext.queryPurchases (context, JniCast<AsyncOperation>::toIntPtr (op));

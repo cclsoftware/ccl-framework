@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Model.ClassRepository xmlns:x="https://ccl.dev/xml" name="Type Lib Elements">
+	<List x:id="classes">
+		<Model.Class name="TestGroup">
+			<List x:id="members">
+				<Model.Member name="label" type="void">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="Display label for the group"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="icon" type="void">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="Icon shown next to the label"/>
+						<String x:id="detailed" text="Spans multiple lines - a leading comment before an entry&apos;s ADD_TYPELIB_MEMBER_* shortcut, unlike&#10;the trailing comment above, exercises a separate code path in the scanner."/>
+					</Model.Documentation>
+				</Model.Member>
+			</List>
+		</Model.Class>
+		<Model.Class name="TestItem">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text="TestItem Description"/>
+			</Model.Documentation>
+			<List x:id="members">
+				<Model.Member name="name" type="void">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="Name of the item"/>
+					</Model.Documentation>
+				</Model.Member>
+			</List>
+		</Model.Class>
+	</List>
+	<List x:id="enums">
+		<Model.Enumeration name="TestItem.Mode">
+			<List x:id="enumerators">
+				<Model.Enumerator name="normal">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="Normal operating mode"/>
+					</Model.Documentation>
+				</Model.Enumerator>
+				<Model.Enumerator name="advanced">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="Advanced operating mode"/>
+					</Model.Documentation>
+				</Model.Enumerator>
+			</List>
+		</Model.Enumeration>
+	</List>
+</Model.ClassRepository>

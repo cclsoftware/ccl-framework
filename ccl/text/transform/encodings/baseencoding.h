@@ -47,12 +47,12 @@ protected:
 	int bitsPerChar;
 	int blockSize;
 	int charsPerBlock;
-	const char* alphabet;
+	CStringPtr alphabet;
 	int alphabetLength;
 
-	static const char* kAlphabet16;
-	static const char* kAlphabet32;
-	static const char* kAlphabet64;
+	static CStringPtr kAlphabet16;
+	static CStringPtr kAlphabet32;
+	static CStringPtr kAlphabet64;
 
 	template <class Transformer> static Transformer* createInstance (UIDRef cid);
 };

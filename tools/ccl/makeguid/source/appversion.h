@@ -29,7 +29,7 @@
 #define APP_NAME			"CCL GUID Generator"
 
 #define VER_MAJOR			1
-#define VER_MINOR			0
+#define VER_MINOR			1
 #define VER_REVISION		0
 #define VER_BUILD			BUILD_REVISION_NUMBER
 

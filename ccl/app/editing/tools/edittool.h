@@ -114,9 +114,9 @@ public:
 // NativeToolSet
 //************************************************************************************************
 
-class NativeToolSet: public CCL::Object,
-					 public CCL::IToolSet,
-					 public CCL::INativeToolSet
+class NativeToolSet: public Object,
+					 public IToolSet,
+					 public INativeToolSet
 {
 public:
 	NativeToolSet ();
@@ -125,7 +125,7 @@ public:
 
 	// IToolSet
 	int countConfigurations () override { return 0; }
-	CCL::IToolConfiguration* createConfiguration (int index) override { return nullptr; }
+	IToolConfiguration* createConfiguration (int index) override { return nullptr; }
 
 	// INativeToolSet
 	Iterator* getTools () override;

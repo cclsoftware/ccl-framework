@@ -756,6 +756,24 @@ ScrollView* ScrollView::getScrollView (const View* targetView)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
+int ScrollView::getSnappedScrollValue (Coord targetPos, Coord offset, Coord snap)
+{
+	int value = -targetPos / snap;
+	if(offset < 0)
+	{
+		if(value * snap > -targetPos)
+			value--; // snap up or left
+	}
+	else
+	{
+		if(value * snap < -targetPos)
+			value++; // snap down or right
+	}
+	return value;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
 BEGIN_STYLEDEF (ScrollView::customStyles)
 	{"autohideh",	Styles::kScrollViewBehaviorAutoHideHBar},
 	{"autohidev",	Styles::kScrollViewBehaviorAutoHideVBar},
@@ -790,14 +808,15 @@ END_STYLEDEF
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-BEGIN_VISUALSTYLE_CLASS (ScrollViewStyle, VisualStyle, "ScrollViewStyle")
-	ADD_VISUALSTYLE_METRIC ("scrollBarSize")		///< size of scrollbars in pixels. For example: width for a vertical bar
-	ADD_VISUALSTYLE_METRIC ("buttonSize")			///< size of scroll buttons in pixels. For example: width for a vertical button
-	ADD_VISUALSTYLE_METRIC ("buttonSpacing")		///< spacing between scroll buttons and scrollview edge
-	ADD_VISUALSTYLE_METRIC ("borderSize")			///< size (in pixels) of an optional border
-	ADD_VISUALSTYLE_METRIC ("inertialDuration")		///< duration in seconds for inertial motion after user release the scrollview (not supported on all platforms)
-	ADD_VISUALSTYLE_METRIC ("snapDepth")			///< limits the view recursion depth for option "snapviewsdeep" (default: unlimited)
-END_VISUALSTYLE_CLASS (ScrollViewStyle)
+DEFINE_TYPELIB_ENTRY_WITH_PARENT (ScrollViewStyle, VisualStyle, "ScrollViewStyle", VISUALSTYLES_TYPELIB)
+BEGIN_TYPELIB_MEMBERS (ScrollViewStyle)
+	ADD_TYPELIB_MEMBER_METRIC ("scrollBarSize") ///< size of scrollbars in pixels. For example: width for a vertical bar
+	ADD_TYPELIB_MEMBER_METRIC ("buttonSize") ///< size of scroll buttons in pixels. For example: width for a vertical button
+	ADD_TYPELIB_MEMBER_METRIC ("buttonSpacing") ///< spacing between scroll buttons and scrollview edge
+	ADD_TYPELIB_MEMBER_METRIC ("borderSize") ///< size (in pixels) of an optional border
+	ADD_TYPELIB_MEMBER_METRIC ("inertialDuration") ///< duration in seconds for inertial motion after user release the scrollview (not supported on all platforms)
+	ADD_TYPELIB_MEMBER_METRIC ("snapDepth") ///< limits the view recursion depth for option "snapviewsdeep" (default: unlimited)
+END_TYPELIB_MEMBERS (ScrollViewStyle)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -2689,11 +2708,22 @@ bool ScrollView::onMouseWheel (const MouseWheelEvent& event)
 	else
 		return false;
 	
-	auto scrollByVH = [this](PointRef delta)
+	auto scrollByVH = [&](PointRef delta)
 	{
 		setManipulation (true);
-		scrollByV (delta.y);
-		scrollByH (delta.x);
+		if(delta.x != 0 && delta.y != 0 && canScrollH () && canScrollV () && isScrollable (hParam) && isScrollable (vParam))
+		{
+			// move in both directions at once, scrolling each direction separately shifts and redraws the client twice
+			RectRef targetRect = target->getSize ();
+			Point targetPos (-getSnappedScrollValue (targetRect.left - delta.x, delta.x, snap.x) * snap.x,
+							 -getSnappedScrollValue (targetRect.top - delta.y, delta.y, snap.y) * snap.y);
+			scrollTo (targetPos, 0);
+		}
+		else
+		{
+			scrollByV (delta.y);
+			scrollByH (delta.x);
+		}
 		setManipulation (false); // hmm, we don't know if it's over when sent via 2 finger gesture on OSX
 	};
 	
@@ -2870,17 +2900,7 @@ void CCL_API ScrollView::scrollByV (Coord offset)
 	{
 		Coord targetTop = target->getSize ().top - offset;
 
-		int value = -targetTop / snap.y;
-		if(offset < 0)
-		{
-			if(value * snap.y > -targetTop)
-				value--; // snap up
-		}
-		else
-		{
-			if(value * snap.y < -targetTop)
-				value++; // snap down
-		}
+		int value = getSnappedScrollValue (targetTop, offset, snap.y);
 		vParam->setValue (value, true);
 		CCL_PRINTF ("  scrollByV (%d): value %d, coord %d -> snapped %d\n", offset, value, -targetTop, value * snap.y)
 	}
@@ -2894,17 +2914,7 @@ void CCL_API ScrollView::scrollByH (Coord offset)
 	{
 		Coord targetLeft = target->getSize ().left - offset;
 
-		int value = -targetLeft / snap.x;
-		if(offset < 0)
-		{
-			if(value * snap.x > -targetLeft)
-				value--; // snap left
-		}
-		else
-		{
-			if(value * snap.x < -targetLeft)
-				value++; // snap right
-		}
+		int value = getSnappedScrollValue (targetLeft, offset, snap.x);
 		hParam->setValue (value, true);
 		CCL_PRINTF ("  scrollByH (%d): value %d, coord %d -> snapped %d\n", offset, value, -targetLeft, value * snap.x)
 	}

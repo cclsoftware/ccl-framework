@@ -213,7 +213,7 @@ protected:
 interface IHeaderViewRenderer: IUnknown
 {
 	/** Draw column header. */
-	virtual void drawHeader (View* view, GraphicsDevice& port, RectRef r, StringRef label, BrushRef textBrush, FontRef font) = 0;
+	virtual void drawHeader (GraphicsDevice& port, RectRef r, StringRef label, BrushRef textBrush, FontRef font) = 0;
 
 	DECLARE_IID (IHeaderViewRenderer)
 };

@@ -53,7 +53,7 @@ using namespace CCL;
 //************************************************************************************************
 
 static ObjectList crossCursorViews;
-static CCL::Configuration::BoolValue crossCursorEnabled ("Editing", "crossCursorEnabled", true);
+static Configuration::BoolValue crossCursorEnabled ("Editing", "crossCursorEnabled", true);
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -114,6 +114,7 @@ EditView* EditView::findUnderMouse (Point* relativeMousePos)
 //************************************************************************************************
 
 DEFINE_CLASS_HIDDEN (EditView, UserControl)
+DEFINE_CLASS_NAMESPACE (EditView, NAMESPACE_CCL)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -600,7 +601,7 @@ bool EditView::onContextMenu (const ContextMenuEvent& event)
 	else
 	{
 		AutoPtr<Object> clickedItem = getModel ().findItem (*this, event.where);
-		if(clickedItem)
+		if(clickedItem && !EditLayer::isNullItem (clickedItem))
 		{
 			event.contextMenu.setFocusItem (clickedItem->asUnknown ());
 
@@ -799,6 +800,14 @@ String EditView::getItemType (Object* item)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
+BEGIN_PROPERTY_NAMES (EditView)
+	DEFINE_PROPERTY_CLASS_ ("selection", "Selection", ITypeInfo::kReadOnly)
+	DEFINE_PROPERTY_CLASS_ ("model", "EditModel", ITypeInfo::kReadOnly)
+	DEFINE_PROPERTY_CLASS_ ("environment", "EditEnvironment", ITypeInfo::kReadOnly)
+END_PROPERTY_NAMES (EditView)
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
 tbool CCL_API EditView::getProperty (Variant& var, MemberID propertyId) const
 {
 	if(propertyId == "selection")
@@ -823,33 +832,33 @@ tbool CCL_API EditView::getProperty (Variant& var, MemberID propertyId) const
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 BEGIN_METHOD_NAMES (EditView)
-	DEFINE_METHOD_NAME ("findItem")
-	DEFINE_METHOD_NAME ("findItemPart")
-	DEFINE_METHOD_NAME ("findItemDeep")
-	DEFINE_METHOD_NAME ("isSameItem")
-	DEFINE_METHOD_NAME ("getItemType")
-	DEFINE_METHOD_NAME ("getEditArea")
-	DEFINE_METHOD_NAME ("getSelectionSize")
-	DEFINE_METHOD_NAME ("setFocusItem")
-	DEFINE_METHOD_NAME ("setAnchorItem")
-	DEFINE_METHOD_NAME ("select")
-	DEFINE_METHOD_NAME ("unselect")
-	DEFINE_METHOD_NAME ("canSelect")
-	DEFINE_METHOD_NAME ("dragSelection")
-	DEFINE_METHOD_NAME ("drawSelection")
-	DEFINE_METHOD_NAME ("dragEraser")
+	DEFINE_METHOD_ARGR ("findItem", "loc: Point", "Object")
+	DEFINE_METHOD_ARGR ("findItemPart", "item: Object, loc: Point", "Object")
+	DEFINE_METHOD_ARGR ("findItemDeep", "loc: Point", "Object")
+	DEFINE_METHOD_ARGR ("isSameItem", "item1: Object, item2: Object", "bool")
+	DEFINE_METHOD_ARGR ("getItemType", "item: Object", "string")
+	DEFINE_METHOD_ARGR ("getEditArea", "loc: Point", "string")
+	DEFINE_METHOD_ARGR ("getSelectionSize", "", "Rect")
+	DEFINE_METHOD_ARGS ("setFocusItem", "item: Object")
+	DEFINE_METHOD_ARGS ("setAnchorItem", "item: Object")
+	DEFINE_METHOD_ARGS ("select", "item: Object")
+	DEFINE_METHOD_ARGS ("unselect", "item: Object")
+	DEFINE_METHOD_ARGR ("canSelect", "item: Object", "bool")
+	DEFINE_METHOD_ARGS ("dragSelection", "event: MouseEvent")
+	DEFINE_METHOD_ARGR ("drawSelection", "event: MouseEvent, hook: Object = null, hint: string = ''", "EditHandler")
+	DEFINE_METHOD_ARGR ("dragEraser", "event: MouseEvent", "EditHandler")
 	DEFINE_METHOD_NAME ("deleteSelected")
-	DEFINE_METHOD_NAME ("deleteItem")
-	DEFINE_METHOD_NAME ("editItem")
-	DEFINE_METHOD_NAME ("createEditHandler")
-	DEFINE_METHOD_NAME ("getItemSize")
-	DEFINE_METHOD_NAME ("detectDoubleClick")
-	DEFINE_METHOD_NAME ("detectDrag")
-	DEFINE_METHOD_NAME ("takeFocus")
-	DEFINE_METHOD_NAME ("createSelectFunctions")
-	DEFINE_METHOD_NAME ("showSelection")
-	DEFINE_METHOD_NAME ("setCursor")
-	DEFINE_METHOD_NAME ("moveCrossCursor")
+	DEFINE_METHOD_ARGS ("deleteItem", "item: Object")
+	DEFINE_METHOD_ARGR ("editItem", "item: Object", "bool")
+	DEFINE_METHOD_ARGR ("createEditHandler", "itemPart: Object, event: MouseEvent", "EditHandler")
+	DEFINE_METHOD_ARGR ("getItemSize", "item: Object", "Rect")
+	DEFINE_METHOD_ARGR ("detectDoubleClick", "event: MouseEvent", "bool")
+	DEFINE_METHOD_ARGR ("detectDrag", "event: MouseEvent", "bool")
+	DEFINE_METHOD_ARGR ("takeFocus", "", "bool")
+	DEFINE_METHOD_ARGR ("createSelectFunctions", "functions: Object", "SelectFunctions")
+	DEFINE_METHOD_ARGS ("showSelection", "show: bool = true, redraw: bool = false")
+	DEFINE_METHOD_ARGS ("setCursor", "name: string")
+	DEFINE_METHOD_ARGS ("moveCrossCursor", "position: Point")
 END_METHOD_NAMES (EditView)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -865,6 +874,9 @@ tbool CCL_API EditView::invokeMethod (Variant& returnValue, MessageRef msg)
 		if(loc)
 		{
 			AutoPtr<Object> item = getModel ().findItem (*this, *loc);
+			if(EditLayer::isNullItem (item))
+				item = nullptr;
+
 			if(item)
 				result.takeShared (item->asUnknown ());
 		}

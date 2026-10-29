@@ -32,6 +32,12 @@ class NativeGradient;
 interface IColorScheme;
 
 //************************************************************************************************
+// GradientStopVector
+//************************************************************************************************
+
+typedef FixedSizeVector<IGradient::Stop, IGradient::kMaxStopCount> GradientStopVector;
+
+//************************************************************************************************
 // ColorGradientStop
 //************************************************************************************************
 
@@ -54,13 +60,13 @@ public:
 	void addPlainStops (const IGradient::Stop plainStops[], int count);
 	bool hasReferences (IColorScheme* scheme) const;
 	
-	void getPlainStops (Vector<IGradient::Stop>& plainStops, float opacity = 1.f) const;
+	void getPlainStops (GradientStopVector& plainStops, float opacity = 1.f) const;
 
 	// Object
 	void CCL_API notify (ISubject* subject, MessageRef msg) override;
 
 protected:
-	Vector<ColorGradientStop> stops;
+	FixedSizeVector<ColorGradientStop, IGradient::kMaxStopCount> stops;
 	Vector<ColorScheme*> colorSchemeObserverList;
 };
 
@@ -81,8 +87,22 @@ public:
 	ColorGradientStopCollection* getStops ();
 	bool hasReferences (IColorScheme* scheme) const;
 
+	float getOpacity () const;
 	void setOpacity (float opacity);
+
 	virtual void scale (float sx, float sy) = 0;
+
+	/** Get interpolated color at a normalized position (0..1) along this gradient's stops. */
+	Color getColorAt (float position) const;
+
+	/** Blend this gradient into other (weighted t, other counts as t=0, this as t=1): combines and
+		color-interpolates the stops of this and other, and interpolates geometry if
+		other has a matching geometry type, else geometry is kept as-is. */
+	virtual void blendInto (ColorGradient& other, float t) const = 0;
+
+	/** Create a copy of this gradient (same type/geometry) with its stops replaced by a
+		two-stop gradient (position 0 and 1) of the given flat color. */
+	virtual ColorGradient* cloneWithSolidColor (ColorRef color) const = 0;
 
 	virtual NativeGradient* getNativeGradient () = 0;
 
@@ -99,6 +119,9 @@ protected:
 	void setStops (ColorGradientStopCollection* stops);
 	void setPlainStops (const Stop stops[], int stopCount);
 	void reset ();
+
+	/** Combine and color-interpolate the stops of this and other (weighted t), writing the result into other. */
+	void blendStopsInto (ColorGradient& other, float t) const;
 };
 
 //************************************************************************************************
@@ -116,6 +139,8 @@ public:
 						 PointFRef endPoint = PointF ());
 	LinearColorGradient (const LinearColorGradient& other);
 
+	void setSize (PointFRef startPoint, PointFRef endPoint);
+
 	// ILinearGradient
 	tresult CCL_API construct (PointFRef startPoint, PointFRef endPoint, const Stop stops[], int stopCount,
 							   IGradient* other = nullptr) override;
@@ -123,6 +148,8 @@ public:
 	// ColorGradient
 	void scale (float sx, float sy) override;
 	NativeGradient* getNativeGradient () override;
+	void blendInto (ColorGradient& other, float t) const override;
+	ColorGradient* cloneWithSolidColor (ColorRef color) const override;
 
 	CLASS_INTERFACE (ILinearGradient, ColorGradient)
 
@@ -145,6 +172,8 @@ public:
 						 PointFRef center = PointF (), float radius = 0.f);
 	RadialColorGradient (const RadialColorGradient& other);
 
+	void setSize (PointFRef center, float radius);
+
 	// IRadialGradient
 	tresult CCL_API construct (PointFRef center, float radius, const Stop stops[], int stopCount,
 							   IGradient* other = nullptr) override;
@@ -152,6 +181,8 @@ public:
 	// ColorGradient
 	void scale (float sx, float sy) override;
 	NativeGradient* getNativeGradient () override;
+	void blendInto (ColorGradient& other, float t) const override;
+	ColorGradient* cloneWithSolidColor (ColorRef color) const override;
 
 	CLASS_INTERFACE (IRadialGradient, ColorGradient)
 

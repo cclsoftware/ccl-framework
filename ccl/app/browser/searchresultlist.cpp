@@ -19,6 +19,7 @@
 #define DEBUG_LOG 0
 
 #include "ccl/app/browser/searchresultlist.h"
+#include "ccl/app/components/searchcomponent.h"
 
 #include "ccl/base/message.h"
 #include "ccl/base/storage/url.h"
@@ -615,18 +616,16 @@ void SearchResultList::selectNextResult ()
 tbool CCL_API SearchResultList::onEditNavigation (const KeyEvent& event, IView* view)
 {
 	// transfer focus to result ListView when "Arrow Down" pressed in search edit box
-	if(event.vKey == VKey::kDown)
+	if(event.vKey == VKey::kDown && SearchComponent::isAcceptableEditView (view))
 	{
-		ViewBox vb (view);
-		if(view && (vb.getName () == "searchTerms" || vb.getName () == "editString"))
-			if(UnknownPtr<IView> resultView = getItemView ())
-			{
-				ViewBox (resultView).takeFocus ();
+		if(UnknownPtr<IView> resultView = getItemView ())
+		{
+			ViewBox (resultView).takeFocus ();
 
-				// select first or next result
-				selectNextResult ();
-				return true;
-			}
+			// select first or next result
+			selectNextResult ();
+			return true;
+		}
 	}
 	return false;
 }

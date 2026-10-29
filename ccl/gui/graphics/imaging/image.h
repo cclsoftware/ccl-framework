@@ -59,6 +59,7 @@ public:
 	// Internal methods
 	Rect& getSize (Rect&) const;
 	const Point& getSize () const;
+	PointF getSizeF () const;
 	PROPERTY_VARIABLE (bool, isTemplate, IsTemplate)
 	PROPERTY_VARIABLE (bool, isAdaptive, IsAdaptive)
 
@@ -113,6 +114,7 @@ public:
 
 inline Rect& Image::getSize (Rect& r) const { r (0, 0, size.x, size.y); return r; }
 inline const Point& Image::getSize () const { return size; }
+inline PointF Image::getSizeF () const { return {CoordF(size.x), CoordF(size.y)}; }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 

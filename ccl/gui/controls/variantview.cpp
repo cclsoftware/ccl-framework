@@ -221,6 +221,8 @@ void VariantView::draw (const UpdateRgn& updateRgn)
 
 void VariantView::updateSelectedElement (bool observedChanged)
 {
+	SharedPtr<View> lifeGuard (this); 
+
 	int index = 0;
 	if(isPropertyMode ())
 	{
@@ -261,7 +263,6 @@ void VariantView::updateSelectedElement (bool observedChanged)
 
 void VariantView::paramChanged ()
 {
-	SharedPtr<Unknown> lifeGuard (this);
 	updateSelectedElement (true);
 }
 

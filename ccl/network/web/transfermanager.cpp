@@ -442,7 +442,7 @@ void CCL_API TransferHandler::startTransfer (ITransfer& _t, IStream* localStream
 		AutoPtr<Web::IWebHeaderCollection> headers = System::GetWebService ().createHeaderCollection ();
 		headers->getEntries ().setEntry (Web::Meta::kContentType, Meta::kBinaryContentType);
 
-		System::GetWebService ().uploadInBackground (t, t->getDstUrl (), *localStream, headers, nullptr, t->getCredentials ());
+		System::GetWebService ().uploadInBackground ({t, t->getDstUrl (), *localStream, headers, nullptr, t->getCredentials ()});
 	}
 	else
 	{
@@ -453,7 +453,7 @@ void CCL_API TransferHandler::startTransfer (ITransfer& _t, IStream* localStream
 			t->getResumeData ().set (kResumePathID, UrlFullString (streamUrl));
 		}
 
-		System::GetWebService ().downloadInBackground (t, t->getSrcUrl (), *localStream, t->getCredentials ());
+		System::GetWebService ().downloadInBackground ({t, t->getSrcUrl (), *localStream, t->getCredentials ()});
 	}
 }
 
@@ -508,7 +508,7 @@ tresult CCL_API TransferHandler::resumeTransfer (ITransfer& _t)
 	else
 		localStream->rewind (); // we need start from beginning when eTag is unknown
 		
-	return System::GetWebService ().downloadInBackground (t, t->getSrcUrl (), *localStream, t->getCredentials (), headers);
+	return System::GetWebService ().downloadInBackground ({t, t->getSrcUrl (), *localStream, t->getCredentials (), headers});
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////

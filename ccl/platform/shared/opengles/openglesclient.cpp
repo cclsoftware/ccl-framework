@@ -119,13 +119,24 @@ void OpenGLESClient::initialize (EGLNativeDisplayType nativeDisplay)
 		return;
 	}
 	eglMakeCurrent (display, nullptr, nullptr, context);
-	
-	clientExtensions = eglQueryString (nullptr, EGL_EXTENSIONS);
-	displayExtensions = eglQueryString (display, EGL_EXTENSIONS);
-	glExtensions = reinterpret_cast<CStringPtr> (glGetString (GL_EXTENSIONS));
 
+	if(!enableExtensions ())
+		return;
+
+	initialized = true;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+bool OpenGLESClient::enableExtensions ()
+{
+	clientExtensions = eglQueryString (nullptr, EGL_EXTENSIONS);
 	CCL_PRINTF ("EGL client extensions: %s\n", clientExtensions.str ())
+
+	displayExtensions = eglQueryString (display, EGL_EXTENSIONS);
 	CCL_PRINTF ("EGL display extensions: %s\n", displayExtensions.str ())
+
+	glExtensions = reinterpret_cast<CStringPtr> (glGetString (GL_EXTENSIONS));
 	CCL_PRINTF ("GL extensions: %s\n", glExtensions.str ())
 
 	for(CStringPtr requiredExtension : kRequiredGLExtensions)
@@ -134,11 +145,10 @@ void OpenGLESClient::initialize (EGLNativeDisplayType nativeDisplay)
 		{
 			CCL_WARN ("Missing required GL extension: %s\n", requiredExtension)
 			terminate ();
-			return;
+			return false;
 		}
 	}
-
-	initialized = true;
+	return true;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -236,10 +246,14 @@ GrDirectContext* OpenGLESClient::getGPUContext ()
 {
 	if(gpuContext == nullptr)
 	{
-		if(!initialized || display == EGL_NO_DISPLAY || context == EGL_NO_CONTEXT)
+		if(!initialized || display == EGL_NO_DISPLAY)
 			return nullptr;
 
+		#if SK_ASSUME_WEBGL
+		sk_sp<const GrGLInterface> nativeInterface = GrGLInterfaces::MakeWebGL ();
+		#else
 		sk_sp<const GrGLInterface> nativeInterface = GrGLInterfaces::MakeEGL ();
+		#endif
 		GrContextOptions contextOptions;
 		#if DEBUG
 		contextOptions.fSkipGLErrorChecks = GrContextOptions::Enable::kNo;

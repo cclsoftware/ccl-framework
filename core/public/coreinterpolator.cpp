@@ -78,7 +78,7 @@ Interpolator* InterpolatorFactory::create (CStringPtr _name)
 	ConstString name (_name);
 	if(!name.isEmpty ())
 		VectorForEach (InterpolatorClassList::instance (), InterpolatorClass, c)
-			if(name == c.name)
+			if(name.compare (c.name, false) == 0)
 			{
 				Interpolator* interpolator = c.createFunc ();
 				interpolator->setName (c.name);
@@ -165,8 +165,13 @@ SegmentInterpolator::SegmentInterpolator (int numPoints, const BreakPoint points
 : Interpolator (points[0].range, points[numPoints - 1].range),
   breakPoints (points),
   numPoints (numPoints)
-{
-}
+{}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+SegmentInterpolator::SegmentInterpolator (const BreakPointData& data)
+: SegmentInterpolator (data.numPoints, data.points)
+{}
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 

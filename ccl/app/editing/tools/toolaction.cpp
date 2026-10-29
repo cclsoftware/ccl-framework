@@ -749,7 +749,7 @@ IPresentable* ActionTool::createHelpInfo (EditView& editView, const MouseEvent& 
 		return nullptr;
 
 	// todo: cache in IHelpInfoCollection?
-	AutoPtr<IHelpInfoBuilder> helpInfo (ccl_new<IHelpInfoBuilder> (CCL::ClassID::HelpInfoBuilder));
+	AutoPtr<IHelpInfoBuilder> helpInfo (ccl_new<IHelpInfoBuilder> (ClassID::HelpInfoBuilder));
 	helpInfo->setAttribute (IHelpInfoBuilder::kTitle, getTitle ());
 	helpInfo->setAttribute (IHelpInfoBuilder::kIcon, String (getIconName ()));
 

@@ -11,8 +11,8 @@
 // You must choose and comply with one of the above licensing options.
 // For more information, please visit ccl.dev.
 //
-// Filename    : ccl/gui/theme/renderer/buttonrenderer.cpp
-// Description : Control Renderer
+// Filename    : ccl/gui/theme/renderer/scrollbarrenderer.cpp
+// Description : ScrollBar Renderer
 //
 //************************************************************************************************
 
@@ -24,7 +24,6 @@
 #include "ccl/public/math/mathprimitives.h"
 
 using namespace CCL;
-
 
 //************************************************************************************************
 // ScrollBarRenderer
@@ -52,26 +51,27 @@ struct CCL::ScrollBarDrawState
 /** A Scrollbar indicates the scrolling position of a scroll view.
 A scroll bar has a background, up/down buttons (vertical) and a handle (thumb). */
 
-BEGIN_VISUALSTYLE_CLASS (ScrollBar, VisualStyle, "ScrollBarStyle")
-	ADD_VISUALSTYLE_IMAGE  ("vButtonUp")		///< "up" button (vertical bar)
-	ADD_VISUALSTYLE_IMAGE  ("vButtonDown")		///< "down" button (vertical bar)
-	ADD_VISUALSTYLE_IMAGE  ("vThumb")			///< handle (vertical bar)
-	ADD_VISUALSTYLE_IMAGE  ("vBack")			///< background (vertical bar)
-	ADD_VISUALSTYLE_IMAGE  ("vSmallThumb")		///< small handle (vertical bar with option "small")
-	ADD_VISUALSTYLE_IMAGE  ("vSmallBack")		///< background (vertical bar with option "small")
-	ADD_VISUALSTYLE_IMAGE  ("hButtonUp")		///< "left" button (horizontal bar)
-	ADD_VISUALSTYLE_IMAGE  ("hButtonDown")		///< "right" button (horizontal bar)
-	ADD_VISUALSTYLE_IMAGE  ("hThumb")			///< handle (horizontal bar)
-	ADD_VISUALSTYLE_IMAGE  ("hBack")			///< background (horizontal bar)
-	ADD_VISUALSTYLE_IMAGE  ("hSmallThumb")		///< small handle (horizontal bar with option "small")
-	ADD_VISUALSTYLE_IMAGE  ("hSmallBack")		///< background (horizontal bar with option "small")
-	ADD_VISUALSTYLE_METRIC ("clipBackground")	///< background is only drawn outside of handle area
-END_VISUALSTYLE_CLASS (ScrollBar)
+DEFINE_TYPELIB_ENTRY_WITH_PARENT (ScrollBar, VisualStyle, "ScrollBarStyle", VISUALSTYLES_TYPELIB)
+BEGIN_TYPELIB_MEMBERS (ScrollBar)
+	ADD_TYPELIB_MEMBER_IMAGE ("vButtonUp")			///< "up" button (vertical bar)
+	ADD_TYPELIB_MEMBER_IMAGE ("vButtonDown")		///< "down" button (vertical bar)
+	ADD_TYPELIB_MEMBER_IMAGE ("vThumb")				///< handle (vertical bar)
+	ADD_TYPELIB_MEMBER_IMAGE ("vBack")				///< background (vertical bar)
+	ADD_TYPELIB_MEMBER_IMAGE ("vSmallThumb")		///< small handle (vertical bar with option "small")
+	ADD_TYPELIB_MEMBER_IMAGE ("vSmallBack")			///< background (vertical bar with option "small")
+	ADD_TYPELIB_MEMBER_IMAGE ("hButtonUp")			///< "left" button (horizontal bar)
+	ADD_TYPELIB_MEMBER_IMAGE ("hButtonDown")		///< "right" button (horizontal bar)
+	ADD_TYPELIB_MEMBER_IMAGE ("hThumb")				///< handle (horizontal bar)
+	ADD_TYPELIB_MEMBER_IMAGE ("hBack")				///< background (horizontal bar)
+	ADD_TYPELIB_MEMBER_IMAGE ("hSmallThumb")		///< small handle (horizontal bar with option "small")
+	ADD_TYPELIB_MEMBER_IMAGE ("hSmallBack")			///< background (horizontal bar with option "small")
+	ADD_TYPELIB_MEMBER_METRIC ("clipBackground")	///< background is only drawn outside of handle area
+END_TYPELIB_MEMBERS (ScrollBar)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-ScrollBarRenderer::ScrollBarRenderer (VisualStyle* visualStyle)
-: ThemeRenderer (visualStyle),
+ScrollBarRenderer::ScrollBarRenderer (VisualStyle* visualStyle, View* owner)
+: ThemeRenderer (visualStyle, owner),
   imagesLoaded (false),
   clipBackground (false)
 {
@@ -105,12 +105,12 @@ void ScrollBarRenderer::loadImages ()
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void ScrollBarRenderer::draw (View* view, const UpdateRgn& updateRgn)
+void ScrollBarRenderer::draw (const UpdateRgn& updateRgn)
 {	
 	if(!imagesLoaded)
 		loadImages ();
 
-	ScrollBar* scrollBar = (ScrollBar*)view;
+	ScrollBar* scrollBar = static_cast<ScrollBar*> (owner);
 
 	StyleRef style = scrollBar->getStyle ();
 	ScrollBarImages& images = getImages (style);
@@ -239,40 +239,40 @@ void ScrollBarRenderer::draw (View* view, const UpdateRgn& updateRgn)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-int ScrollBarRenderer::hitTest (View* view, const Point& loc, Point* clickOffset)
+int ScrollBarRenderer::hitTest (PointRef where, Point* clickOffset)
 {
-	ScrollBar* scrollBar = (ScrollBar*)view;
-	
+	ScrollBar* scrollBar = static_cast<ScrollBar*> (owner);
+
 	StyleRef style = scrollBar->getStyle ();
 	ScrollBarImages& images = getImages (style);
 	ScrollBarDrawState state;
 	if(!getDrawState (scrollBar, state, images))
 		return 0;
 
-	if(state.drawHandle && state.handleRect.pointInside (loc))
+	if(state.drawHandle && state.handleRect.pointInside (where))
 	{
 		if (clickOffset)
 		{
-			clickOffset->x = loc.x - state.handleRect.left;
-			clickOffset->y = loc.y - state.handleRect.top;
+			clickOffset->x = where.x - state.handleRect.left;
+			clickOffset->y = where.y - state.handleRect.top;
 		}
 		return ScrollBar::kPartHandle;
 	}	
-	else if(state.drawButtons && state.buttonDownRect.pointInside (loc))
+	else if(state.drawButtons && state.buttonDownRect.pointInside (where))
 		return ScrollBar::kPartButtonDown;
 		
-	else if(state.drawButtons && state.buttonUpRect.pointInside (loc))
+	else if(state.drawButtons && state.buttonUpRect.pointInside (where))
 		return ScrollBar::kPartButtonUp;
 		
 	else
 	{
-		CCL::Rect r;
-		getPartRect (scrollBar, ScrollBar::kPartPageUp, r);
-		if(r.pointInside (loc))
+		Rect r;
+		getPartRect (r, ScrollBar::kPartPageUp);
+		if(r.pointInside (where))
 			return ScrollBar::kPartPageUp;
 
-		getPartRect (scrollBar, ScrollBar::kPartPageDown, r);
-		if(r.pointInside (loc))
+		getPartRect (r, ScrollBar::kPartPageDown);
+		if(r.pointInside (where))
 			return ScrollBar::kPartPageDown;
 	}
 	return ScrollBar::kPartNone;
@@ -280,9 +280,9 @@ int ScrollBarRenderer::hitTest (View* view, const Point& loc, Point* clickOffset
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool ScrollBarRenderer::getPartRect (const View* view, int partCode, CCL::Rect& rect)
+bool ScrollBarRenderer::getPartRect (Rect& rect, int partCode)
 {
-	ScrollBar* scrollBar = (ScrollBar*)view;
+	ScrollBar* scrollBar = static_cast<ScrollBar*> (owner);
 	
 	StyleRef style = scrollBar->getStyle ();
 	ScrollBarImages& images = getImages (style);
@@ -431,16 +431,17 @@ ScrollBarImages& ScrollBarRenderer::getImages (StyleRef style)
 // ScrollButtonRenderer
 //************************************************************************************************
 
-BEGIN_VISUALSTYLE_CLASS (ScrollButton, VisualStyle, "ScrollButtonStyle")
-	ADD_VISUALSTYLE_IMAGE  ("hButtonDown")	///< "left" button background (horizontal button)
-	ADD_VISUALSTYLE_IMAGE  ("hButtonUp")	///< "right" button background (horizontal button)
-	ADD_VISUALSTYLE_IMAGE  ("hIconDown")	///< "left" icon (horizontal button)
-	ADD_VISUALSTYLE_IMAGE  ("hIconUp")		///< "right" icon (horizontal button)
-	ADD_VISUALSTYLE_IMAGE  ("vButtonDown")	///< "down" button background (vertical button)
-	ADD_VISUALSTYLE_IMAGE  ("vButtonUp")	///< "up" button background (vertical button)
-	ADD_VISUALSTYLE_IMAGE  ("vIconDown")	///< "down" icon (vertical button)
-	ADD_VISUALSTYLE_IMAGE  ("vIconUp")		///< "up" icon (vertical button)
-END_VISUALSTYLE_CLASS (ScrollButton)
+DEFINE_TYPELIB_ENTRY_WITH_PARENT (ScrollButton, VisualStyle, "ScrollButtonStyle", VISUALSTYLES_TYPELIB)
+BEGIN_TYPELIB_MEMBERS (ScrollButton)
+	ADD_TYPELIB_MEMBER_IMAGE ("hButtonDown")	///< "left" button background (horizontal button)
+	ADD_TYPELIB_MEMBER_IMAGE ("hButtonUp")		///< "right" button background (horizontal button)
+	ADD_TYPELIB_MEMBER_IMAGE ("hIconDown")		///< "left" icon (horizontal button)
+	ADD_TYPELIB_MEMBER_IMAGE ("hIconUp")		///< "right" icon (horizontal button)
+	ADD_TYPELIB_MEMBER_IMAGE ("vButtonDown")	///< "down" button background (vertical button)
+	ADD_TYPELIB_MEMBER_IMAGE ("vButtonUp")		///< "up" button background (vertical button)
+	ADD_TYPELIB_MEMBER_IMAGE ("vIconDown")		///< "down" icon (vertical button)
+	ADD_TYPELIB_MEMBER_IMAGE ("vIconUp")		///< "up" icon (vertical button)
+END_TYPELIB_MEMBERS (ScrollButton)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -477,8 +478,8 @@ void ScrollButtonRenderer::drawTriangleIcon (IGraphics& port, RectRef clientRect
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-ScrollButtonRenderer::ScrollButtonRenderer (VisualStyle* visualStyle)
-: ThemeRenderer (visualStyle),
+ScrollButtonRenderer::ScrollButtonRenderer (VisualStyle* visualStyle, View* owner)
+: ThemeRenderer (visualStyle, owner),
   imagesLoaded (false)
 {}
 
@@ -518,11 +519,9 @@ void ScrollButtonRenderer::loadImages (ScrollButton* view)
 
 	if(!buttonImage)
 	{
-		// borrow background image from standard button renderer
-		AutoPtr<ThemeRenderer> buttonRenderer (view->getTheme ().createRenderer (ThemePainter::kButtonRenderer, nullptr));
-		if(buttonRenderer)
-			if(VisualStyle* style = buttonRenderer->getVisualStyle ())
-				buttonImage = style->getBackgroundImage ();
+		// borrow background image from standard button style
+		if(VisualStyle* style = view->getTheme ().getStandardStyle (ThemePainter::kButtonRenderer))
+			buttonImage = style->getBackgroundImage ();
 	}
 
 	imagesLoaded = true;
@@ -530,9 +529,9 @@ void ScrollButtonRenderer::loadImages (ScrollButton* view)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void ScrollButtonRenderer::draw (View* view, const UpdateRgn& updateRgn)
+void ScrollButtonRenderer::draw (const UpdateRgn& updateRgn)
 {
-	ScrollButton* scrollButton = (ScrollButton*)view;
+	ScrollButton* scrollButton = static_cast<ScrollButton*> (owner);
 	if(!imagesLoaded)
 		loadImages (scrollButton);
 
@@ -602,15 +601,15 @@ void ScrollButtonRenderer::drawTriangle (IGraphics& port, RectRef clientRect, Sc
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-int ScrollButtonRenderer::hitTest (View* view, const Point& loc, Point* clickOffset)
+int ScrollButtonRenderer::hitTest (PointRef where, Point* clickOffset)
 {
-	ScrollButton* scrollButton = (ScrollButton*)view;
+	ScrollButton* scrollButton = static_cast<ScrollButton*> (owner);
 	return scrollButton->getPartCode ();
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool ScrollButtonRenderer::getPartRect (const View* view, int partCode, Rect& rect)
+bool ScrollButtonRenderer::getPartRect (Rect& rect, int partCode)
 {
 	return false;
 }
@@ -620,16 +619,17 @@ bool ScrollButtonRenderer::getPartRect (const View* view, int partCode, Rect& re
 /** A PageControl draws a row of dots, with one dot per scroll page. */
 //************************************************************************************************
 
-BEGIN_VISUALSTYLE_CLASS (PageControl, VisualStyle, "PageControlStyle")
-	ADD_VISUALSTYLE_IMAGE  ("background")	///< image drawn undeneath the dots
-	ADD_VISUALSTYLE_IMAGE  ("dot")			///< dot image with frames "normal" and "normalOn" for the current page
-	ADD_VISUALSTYLE_METRIC ("spacing")		///< spacing (in pixels) between the dots
-END_VISUALSTYLE_CLASS (PageControl)
+DEFINE_TYPELIB_ENTRY_WITH_PARENT (PageControl, VisualStyle, "PageControlStyle", VISUALSTYLES_TYPELIB)
+BEGIN_TYPELIB_MEMBERS (PageControl)
+	ADD_TYPELIB_MEMBER_IMAGE ("background") ///< image drawn undeneath the dots
+	ADD_TYPELIB_MEMBER_IMAGE ("dot") ///< dot image with frames "normal" and "normalOn" for the current page
+	ADD_TYPELIB_MEMBER_METRIC ("spacing") ///< spacing (in pixels) between the dots
+END_TYPELIB_MEMBERS (PageControl)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-PageControlRenderer::PageControlRenderer (VisualStyle* visualStyle)
-: ThemeRenderer (visualStyle),
+PageControlRenderer::PageControlRenderer (VisualStyle* visualStyle, View* owner)
+: ThemeRenderer (visualStyle, owner),
   spacing (0),
   imagesLoaded (false)
 {}
@@ -646,20 +646,20 @@ void PageControlRenderer::loadImages ()
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void PageControlRenderer::draw (View* view, const UpdateRgn& updateRgn)
+void PageControlRenderer::draw (const UpdateRgn& updateRgn)
 {
 	if(!imagesLoaded)
 		loadImages ();
 
 	Rect client;
-	view->getClientRect (client);
-	GraphicsPort port (view);
+	owner->getClientRect (client);
+	GraphicsPort port (owner);
 
 	// *** Draw background ***
 	if(background)
 		port.drawImage (background, Rect (0, 0, background->getWidth (), background->getHeight ()), client);
 
-	PageControl* control = (PageControl*)view;
+	PageControl* control = static_cast<PageControl*> (owner);
 	
 	int numPages = control->getNumPages ();
 	int currentPage = control->getCurrentPage ();
@@ -672,7 +672,7 @@ void PageControlRenderer::draw (View* view, const UpdateRgn& updateRgn)
 	{
 		float zoomFactor = control->getZoomFactor ();
 		Rect dotRect;
-		getPartRect (view, PageControl::kPartHandle, dotRect);
+		getPartRect (dotRect, PageControl::kPartHandle);
 		Rect dotSize (0, 0, dotImage->getWidth (), dotImage->getHeight ());
 		dotRect.setSize (dotSize.getSize () * zoomFactor);
 		
@@ -688,11 +688,11 @@ void PageControlRenderer::draw (View* view, const UpdateRgn& updateRgn)
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
 
-int PageControlRenderer::hitTest (View* view, const Point& loc, Point* clickOffset)
+int PageControlRenderer::hitTest (PointRef where, Point* clickOffset)
 {
 	Rect r;
-	getPartRect (view, PageControl::kPartHandle, r);
-	if(r.pointInside (loc))
+	getPartRect (r, PageControl::kPartHandle);
+	if(r.pointInside (where))
 		return PageControl::kPartHandle;
 	
 	return PageControl::kPartNone;
@@ -700,12 +700,12 @@ int PageControlRenderer::hitTest (View* view, const Point& loc, Point* clickOffs
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool PageControlRenderer::getPartRect (const View* view, int partCode, Rect& rect)
+bool PageControlRenderer::getPartRect (Rect& rect, int partCode)
 {
 	if(!imagesLoaded)
 		loadImages ();
 	
-	const PageControl* control = static_cast<const PageControl*> (view);
+	const PageControl* control = static_cast<const PageControl*> (owner);
 	int numPages = control->getNumPages ();
 	float zoomFactor = control->getZoomFactor ();
 	
@@ -713,7 +713,7 @@ bool PageControlRenderer::getPartRect (const View* view, int partCode, Rect& rec
 	Rect dotsArea (0, 0, (dotSize.right * numPages + spacing * (numPages - 1)) * zoomFactor, dotSize.bottom * zoomFactor);
 	
 	Rect client;
-	view->getClientRect (client);
+	owner->getClientRect (client);
 	dotsArea.center (client);
 	
 	rect = dotsArea;

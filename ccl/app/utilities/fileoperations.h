@@ -94,7 +94,7 @@ public:
 
 	/// configuration (must be done before adding files)
 	PROPERTY_VARIABLE (int, transferMode, TransferMode)
-	PROPERTY_OBJECT (CCL::Url, destFolder, DestFolder) ///< common destination folder for copy or move
+	PROPERTY_OBJECT (Url, destFolder, DestFolder) ///< common destination folder for copy or move
 	PROPERTY_BOOL (silent, Silent)
 
 	Task* addFile (UrlRef path, Object* userData = nullptr);

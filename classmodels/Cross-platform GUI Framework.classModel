@@ -73,7 +73,7 @@
 						</Model.Documentation>
 					</Model.ReturnValue>
 					<List x:id="args">
-						<Model.MethodArg name="original" type="object" typeName="Parameter">
+						<Model.MethodArg name="original" type="void" typeName="Parameter | null">
 							<Model.Documentation x:id="doc">
 								<String x:id="brief" text=""/>
 							</Model.Documentation>

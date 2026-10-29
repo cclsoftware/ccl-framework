@@ -312,10 +312,7 @@ void CCL_API D2DPathGeometry::addRoundRect (RectRef rect, Coord rx, Coord ry)
 
 void CCL_API D2DPathGeometry::addRoundRect (RectFRef rect, CoordF _rx, CoordF _ry)
 {	
-	float w = rect.getWidth ();
-	float h = rect.getHeight ();
-
-	if(w <= 0 || h <= 0)
+	if(rect.isEmpty ())
 		return;
 
 	if(openSink ())
@@ -325,11 +322,14 @@ void CCL_API D2DPathGeometry::addRoundRect (RectFRef rect, CoordF _rx, CoordF _r
 		float right = rect.right - 0.5f;
 		float bottom = rect.bottom - 0.5f;
 
-		float rx = ccl_bound (_rx, 0.f, w / 2.f);
-		float ry = ccl_bound (_ry, 0.f, h / 2.f);
+		float effectiveWidth = right - left;
+		float effectiveHeight = bottom - top;
 
-		bool needHLine = w > 2.f * rx;
-		bool needVLine = h > 2.f * ry;
+		float rx = ccl_bound (_rx, 0.f, effectiveWidth / 2.f);
+		float ry = ccl_bound (_ry, 0.f, effectiveHeight / 2.f);
+
+		bool needHLine = effectiveWidth > 2.f * rx;
+		bool needVLine = effectiveHeight > 2.f * ry;
 
 		startFigure (PointF (left + rx, top));
 		if(needHLine)
@@ -344,6 +344,7 @@ void CCL_API D2DPathGeometry::addRoundRect (RectFRef rect, CoordF _rx, CoordF _r
 		if(needVLine)
 			sink->AddLine (D2D1::Point2F (left, top+ry));
 		sink->AddArc (D2D1::ArcSegment (D2D1::Point2F (left + rx, top), D2D1::SizeF (rx, ry), 0, D2D1_SWEEP_DIRECTION_CLOCKWISE, D2D1_ARC_SIZE_SMALL));
+		closeFigure ();
 	}
 }
 

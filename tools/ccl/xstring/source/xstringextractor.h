@@ -24,6 +24,7 @@
 #include "ccl/extras/tools/toolhelp.h"
 
 namespace XString {
+
 class ModeHandler;
 class Bundle;
 

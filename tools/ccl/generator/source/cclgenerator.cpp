@@ -19,12 +19,12 @@
 //************************************************************************************************
 
 #include "cclgenerator.h"
+#include "stringtemplate.h"
 
 #include "ccl/base/storage/storage.h"
 #include "ccl/base/storage/textfile.h"
 #include "ccl/base/storage/file.h"
 #include "ccl/base/storage/jsonarchive.h"
-#include "ccl/base/storage/stringtemplate.h"
 
 #include "ccl/extras/modeling/cplusplus.h"
 #include "ccl/extras/modeling/classrepository.h"

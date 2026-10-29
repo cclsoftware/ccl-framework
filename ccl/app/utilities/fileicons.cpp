@@ -123,10 +123,10 @@ IImage* CCL_API FileIcons::createFolderPreview (IImage* folderIcon, const IConta
 
 DEFINE_SINGLETON_CLASS (FileIconsPrivate, Object)
 DEFINE_CLASS_UID (FileIconsPrivate, 0x23d1a134, 0xc4bf, 0x472b, 0xb4, 0xe8, 0xa, 0xec, 0x16, 0x73, 0x25, 0x69)
-DEFINE_CLASS_NAMESPACE (FileIconsPrivate, "Host")
+DEFINE_CLASS_CATEGORY (FileIconsPrivate, PLUG_CATEGORY_HOST_)
 
 DEFINE_SINGLETON (FileIconsPrivate)
-const char* FileIconsPrivate::kIconNamePrefix  = "FileIcon:";
+CStringPtr FileIconsPrivate::kIconNamePrefix  = "FileIcon:";
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -184,7 +184,7 @@ IImage* CCL_API FileIconsPrivate::createFolderPreview (IImage* folderIcon, const
 	if(preview)
 	{
 		AutoPtr<IGraphics> g = GraphicsFactory::createBitmapGraphics (preview);
-		ImageMode mode (1.f, ImageMode::kInterpolationHighQuality);
+		ImageMode mode (1.f, kImageInterpolationHighQuality);
 
 		int contentCount = 0;
 		ForEachUnknown (content, unk)

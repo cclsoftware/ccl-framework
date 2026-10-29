@@ -88,6 +88,7 @@ public:
 	PROPERTY_SHARED_AUTO (Url, migrationSourceFolder, MigrationSourceFolder) // source folder for extension migration from older host version
 	
 	void setSharedLocation (UrlRef path);
+	void addDeveloperLocation (UrlRef path);
 
 	enum HandlerPriority { kFirstHandler = -1, kLastHandler = 0 };
 	void addHandler (ExtensionHandler* handler, int priority = kLastHandler); ///< takes ownership!
@@ -141,6 +142,7 @@ public:
 protected:
 	ObjectArray handlers;
 	ObjectArray extensions;
+	ObjectArray developerLocations;
 	XmlSettings& settings;
 	bool restored;
 	bool started;

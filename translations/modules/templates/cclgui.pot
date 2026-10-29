@@ -924,6 +924,11 @@ msgctxt "VirtualKey"
 msgid "Tab"
 msgstr ""
 
+#: ./system/accessibility.cpp
+msgctxt "Accessibility"
+msgid "Text input"
+msgstr ""
+
 #: ./graphics/nativegraphics.cpp
 msgctxt "GraphicsEngine"
 msgid "This application requires 3D graphics support, but no 3D graphics backend could be initialized."

@@ -12,7 +12,7 @@
 // For more information, please visit ccl.dev.
 //
 // Filename    : ccl/gui/theme/renderer/sliderrenderer.cpp
-// Description : Control Renderer
+// Description : Slider Renderer
 //
 //************************************************************************************************
 
@@ -20,13 +20,14 @@
 #define _ccl_sliderrenderer_h
 
 #include "ccl/gui/theme/renderer/compositedrenderer.h"
+
 #include "ccl/gui/graphics/imaging/imagecache.h"
-#include "ccl/gui/views/graphicsport.h"
 
 namespace CCL {
 
 class Slider;
 class RangeSlider;
+class GraphicsPort;
 	
 //************************************************************************************************
 // SliderRenderer
@@ -35,14 +36,15 @@ class RangeSlider;
 class SliderRenderer: public CompositedRenderer
 {
 public:
-	SliderRenderer (VisualStyle* visualStyle);
+	SliderRenderer (VisualStyle* visualStyle, View* owner);
 
-	bool getHandleRect (const Slider* slider, IImage* handleImage, CCL::Rect& rect, float value);
-	bool getTrackRect (const Slider* slider, CCL::Rect& rect);
+	bool getHandleRect (const Slider* slider, IImage* handleImage, Rect& rect, float value);
+	bool getTrackRect (const Slider* slider, Rect& rect);
 
-	void draw (View* view, const UpdateRgn& updateRgn) override;
-	int hitTest (View* view, const Point& loc, Point* clickOffset) override;
-	virtual bool getPartRect (const View* view, int partCode, CCL::Rect& rect) override;
+	// ControlRenderer
+	void draw (const UpdateRgn& updateRgn) override;
+	int hitTest (PointRef where, Point* clickOffset = nullptr) override;
+	virtual bool getPartRect (Rect& rect, int partCode) override;
 
 protected:
 	CachedImage backImage;
@@ -62,7 +64,8 @@ protected:
 	int disabledHandleIndex;
 	
 	static constexpr int kSmallSliderSize = 18;
-	virtual void init (const View* view);
+
+	virtual void init ();
 	virtual void calcBarGraphRects (Rect& src1, Rect& src2, Slider* slider, bool bipolar = false);
 	virtual IImage* createColorizedHandle (IImage* sourceImage, ColorRef color);
 	
@@ -72,7 +75,7 @@ protected:
 	void drawHandle (GraphicsPort& port, Slider* slider, IImage* handle, float value);
 };
 
-DECLARE_VISUALSTYLE_CLASS (Slider)
+DECLARE_TYPELIB_ENTRY (Slider)
 
 //************************************************************************************************
 // RangeSliderRenderer
@@ -81,24 +84,24 @@ DECLARE_VISUALSTYLE_CLASS (Slider)
 class RangeSliderRenderer: public SliderRenderer
 {
 public:
-	RangeSliderRenderer (VisualStyle* visualStyle);
+	RangeSliderRenderer (VisualStyle* visualStyle, View* owner);
 	
-	void draw (View* view, const UpdateRgn& updateRgn) override;
-	bool getPartRect (const View* view, int partCode, CCL::Rect& rect) override;
+	// SliderRenderer
+	void draw (const UpdateRgn& updateRgn) override;
+	bool getPartRect (Rect& rect, int partCode) override;
 	
 protected:
 	SharedPtr<IImage> handleImage2;
-	
-	void init (const View* view) override;
-	void calcBarGraphRects (Rect& src1, Rect& src2, Slider* slider, bool bipolar = false) override;
-	IImage* createColorizedHandle (IImage* sourceImage = nullptr, ColorRef color = Colors::kBlack) override;
-	
 	CachedImage invertedBackImage;
 	Color centerColor;
 	Color invertedCenterColor;
+	
+	void init () override;
+	void calcBarGraphRects (Rect& src1, Rect& src2, Slider* slider, bool bipolar = false) override;
+	IImage* createColorizedHandle (IImage* sourceImage = nullptr, ColorRef color = Colors::kBlack) override;
 };
 	
-DECLARE_VISUALSTYLE_CLASS (RangeSlider)
+DECLARE_TYPELIB_ENTRY (RangeSlider)
 	
 } // namespace CCL
 

@@ -29,6 +29,8 @@
 	#include "core/platform/shared/posix/coresocket.posix.h"
 #elif CORE_SOCKET_IMPLEMENTATION == CORE_FEATURE_IMPLEMENTATION_LWIP
 	#include "core/platform/shared/lwip/coresocket.lwip.h"
+#elif CORE_SOCKET_IMPLEMENTATION == CORE_FEATURE_UNIMPLEMENTED
+	#include "core/platform/shared/coreplatformsocket.h"
 #endif
 
 #include "core/network/corenetwork.h"
@@ -55,7 +57,11 @@ public:
 	bool connect (const SocketAddress& address);
 	bool disconnect ();
 	bool isConnected () const;	
-	
+
+	/** Poll a non-blocking connect() in progress. Returns 1 if the connection succeeded,
+	    0 if still pending (timeout elapsed with nothing ready yet), or SOCKET_ERROR if it failed. */
+	int getConnectStatus (int timeout) const;
+
 	bool bind (const SocketAddress& address);
 	bool listen (int maxConnections);
 	SocketID accept ();
@@ -71,7 +77,7 @@ public:
 	bool isReadable (int timeout = 0) const;
 	bool isWritable (int timeout = 0) const;
 	bool isAnyError (int timeout = 0) const;
-	
+
 	int send (const void* buffer, int size, int flags = 0);
 	int sendAll (const void* buffer, int size, int flags = 0);	
 	int receive (void* buffer, int size, int flags = 0);
@@ -152,6 +158,9 @@ inline bool Socket::isWritable (int timeout) const
 
 inline bool Socket::isAnyError (int timeout) const
 { return platformSocket.isAnyError (timeout); }
+
+inline int Socket::getConnectStatus (int timeout) const
+{ return platformSocket.getConnectStatus (timeout); }
 
 inline int Socket::send (const void* buffer, int size, int flags)
 { return platformSocket.send (buffer, size, flags); }

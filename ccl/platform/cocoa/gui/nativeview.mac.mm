@@ -706,7 +706,10 @@ bool CustomView::embedInto (NSView* parent)
 - (BOOL)performKeyEquivalent:(NSEvent*)event
 {
 	CCL_PRINTF ("=======> performKeyEquivalent \n", 0)
-		
+
+	if(window->isSuppressKeyEquivalents ())
+		return NO;
+
 	// Don't let an inactive ChildWindow receive key events (CCLContentView performKeyEquivalent just forwards to all child NSViews!)
 	// Note: PlugInView::onActivate () passes the activation to its ChildWindow, but the implementation of OSXWindow::isActive does not reflect this
 	if(ccl_cast<ChildWindow> (window) && !window->WindowBase::isActive ())

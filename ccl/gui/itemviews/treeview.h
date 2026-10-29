@@ -50,7 +50,7 @@ public:
 	void zoom (const ItemStyle& original, float zoomFactor) override;
 };
 
-DECLARE_VISUALSTYLE_CLASS (TreeStyle)
+DECLARE_TYPELIB_ENTRY (TreeStyle)
 
 //************************************************************************************************
 // TreeView

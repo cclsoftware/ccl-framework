@@ -98,6 +98,7 @@ EditModel::FocusSetter::~FocusSetter ()
 //************************************************************************************************
 
 DEFINE_CLASS_HIDDEN (EditModel, Object)
+DEFINE_CLASS_NAMESPACE (EditModel, NAMESPACE_CCL)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -722,7 +723,7 @@ tbool CCL_API EditModel::getProperty (Variant& var, MemberID propertyId) const
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 BEGIN_METHOD_NAMES (EditModel)
-	DEFINE_METHOD_NAME ("updateHighlightItem")
+	DEFINE_METHOD_ARGS ("updateHighlightItem", "editView: EditView, where: Point")
 	DEFINE_METHOD_NAME ("hideHighlight")
 	DEFINE_METHOD_NAME ("setDocumentDirty")
 END_METHOD_NAMES (EditModel)

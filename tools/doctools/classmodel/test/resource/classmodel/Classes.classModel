@@ -3,6 +3,11 @@
 	<List x:id="classes">
 		<Model.Class name="BaseClass">
 		</Model.Class>
+		<Model.Class name="RenderAtom">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text="RenderAtom Brief Doc"/>
+			</Model.Documentation>
+		</Model.Class>
 		<Model.Class name="TestClass" parent="BaseClass">
 			<Model.Documentation x:id="doc">
 				<String x:id="brief" text="Test Class Brief Doc"/>
@@ -18,6 +23,16 @@
 				<Model.Member name="member2" type="string" typeName="enum">
 					<Model.Documentation x:id="doc">
 						<String x:id="brief" text="Brief doc member2"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="background" type="object" typeName="RenderAtom">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="Brief doc background"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="unresolvedRef" type="object" typeName="UnknownType">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="Brief doc unresolvedRef"/>
 					</Model.Documentation>
 				</Model.Member>
 			</List>

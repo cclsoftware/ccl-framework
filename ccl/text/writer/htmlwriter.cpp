@@ -50,7 +50,7 @@ tresult CCL_API HtmlWriter::beginDocument (IStream& stream, TextEncoding encodin
 	if(encoding == Text::kUnknownEncoding)
 		encoding = Text::kUTF16;
 
-	const char* htmlEncoding = HtmlEncodings::getEncoding (encoding);
+	CStringPtr htmlEncoding = HtmlEncodings::getEncoding (encoding);
 	ASSERT (htmlEncoding != nullptr)
 	if(htmlEncoding == nullptr)
 		return kResultInvalidArgument; // encoding not supported!

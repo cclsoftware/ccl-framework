@@ -12,7 +12,7 @@
 // For more information, please visit ccl.dev.
 //
 // Filename    : ccl/public/textservices.h
-// Description : Text Service APIs
+// Description : Text and Data Service APIs
 //
 //************************************************************************************************
 
@@ -41,6 +41,7 @@ interface ITextStreamer;
 interface ITextWriter;
 interface IAttributeHandler;
 interface IRegularExpression;
+interface IGraphemeIterator;
 
 namespace System {
 
@@ -77,6 +78,10 @@ inline tresult ParseVariantString (Variant& result, StringRef string) { return C
 /** Create regular expression instance */
 CCL_EXPORT IRegularExpression* CCL_API CCL_ISOLATED (CreateRegularExpression) ();
 inline IRegularExpression* CreateRegularExpression () { return CCL_ISOLATED (CreateRegularExpression) (); }
+
+/** Create grapheme iterator instance */
+CCL_EXPORT IGraphemeIterator* CCL_API CCL_ISOLATED (CreateGraphemeIterator) (StringRef string, int position = 0);
+inline IGraphemeIterator* CreateGraphemeIterator (StringRef string, int position = 0) { return CCL_ISOLATED (CreateGraphemeIterator) (string, position); }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 // C-String APIs
@@ -147,7 +152,7 @@ CCL_EXPORT IMarkdownWriter* CCL_API CCL_ISOLATED (CreateMarkdownWriter) ();
 inline IMarkdownWriter* CreateMarkdownWriter () { return CCL_ISOLATED (CreateMarkdownWriter) (); }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
-// Transformation APIs
+// Data Transformation APIs
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 /** Creates new data transformer for encoding or decoding */
@@ -158,9 +163,17 @@ inline IDataTransformer* CreateDataTransformer (UIDRef cid, int mode) { return C
 CCL_EXPORT IStream* CCL_API CCL_ISOLATED (CreateTransformStream) (IStream* dataStream, IDataTransformer* transformer, tbool writeMode);
 inline IStream* CreateTransformStream (IStream* dataStream, IDataTransformer* transformer, tbool writeMode) { return CCL_ISOLATED (CreateTransformStream) (dataStream, transformer, writeMode); }
 
+/** Calculate CRC-16 checksum (polynomial 0x8005, reflected, no final XOR) */
+CCL_EXPORT uint16 CCL_API CCL_ISOLATED (Crc16) (const void* key, uint32 length, uint16 initialValue);
+inline uint16 Crc16 (const void* key, uint32 length, uint16 initialValue) { return CCL_ISOLATED (Crc16) (key, length, initialValue); }
+
 /** Calculate CRC-32 checksum */
 CCL_EXPORT uint32 CCL_API CCL_ISOLATED (Crc32) (const void* key, uint32 length, uint32 initialValue);
 inline uint32 Crc32 (const void* key, uint32 length, uint32 initialValue) { return CCL_ISOLATED (Crc32) (key, length, initialValue); }
+
+/** Hash byte array. */
+CCL_EXPORT uint32 CCL_API CCL_ISOLATED (Hash) (const void* key, uint32 length, uint32 initialValue);
+inline uint32 Hash (const void* key, uint32 length, uint32 initialValue) { return CCL_ISOLATED (Hash) (key, length, initialValue); }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 // Text I/O APIs

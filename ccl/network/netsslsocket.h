@@ -25,17 +25,24 @@
 
 #include "core/network/coresslsocket.h"
 
-using namespace Core::Sockets::SSLTypes;
-
 namespace CCL {
 namespace Net {
 
+using namespace Core::Sockets::SSLTypes;
+
+//************************************************************************************************
+// CoreSSLSocketDebug
+//************************************************************************************************
+
 #if DEBUG_SSL
-class CoreSSLSocketDebug : public Core::Sockets::SSLSocket
+class CoreSSLSocketDebug: public Core::Sockets::SSLSocket
 {
 public:
-	CoreSSLSocketDebug (AddressFamily addressFamily = kInternet) : SSLSocket (addressFamily) {;}
-	virtual void debugMessage (const char* s, int i) {CCL::Debugger::warn (s, i);}
+	CoreSSLSocketDebug (AddressFamily addressFamily = kInternet)
+	: SSLSocket (addressFamily)
+	{}
+
+	virtual void debugMessage (CStringPtr s, int i) { Debugger::warn (s, i); }
 };
 #endif
 
@@ -50,10 +57,8 @@ public:
 
 	void setPeerName (StringRef peerName);
 
-	tresult connect (const SocketAddress& address, CCL::IProgressNotify* progress);
-
 	// ISocket
-	tresult CCL_API connect (const SocketAddress& address) override;
+	tresult CCL_API connect (const SocketAddress& address, int timeout = kDefaultConnectTimeout, IProgressNotify* progress = nullptr) override;
 	tresult CCL_API disconnect () override;
 	tbool CCL_API isConnected () override;
 	tresult CCL_API getPeerAddress (SocketAddress& address) override;
@@ -83,7 +88,7 @@ protected:
 	SSLResult lastSSLResult;
 
 	void setLastResult (SSLResult result);
-	CCL::tresult handleError (const char* debugMessage);
+	tresult handleError (CStringPtr debugMessage);
 };
 
 } // namespace Net

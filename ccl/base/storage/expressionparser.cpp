@@ -89,7 +89,7 @@ const CString ExpressionParser::kPropertyPrefix = CCL_PROPERTY_PREFIX;
 bool ExpressionParser::evaluate (Variant& value, StringRef expression, const IVariableResolver& resolver)
 {
 	StringChars chars (expression);
-	MemoryStream memstream ((void*)(const uchar*)chars, (expression.length () + 1) * sizeof(uchar));
+	MemoryStream memstream ((void*)chars.str (), (expression.length () + 1) * sizeof(uchar));
 
 	ExpressionParser parser (memstream, resolver);
 	return parser.readExpression (value);

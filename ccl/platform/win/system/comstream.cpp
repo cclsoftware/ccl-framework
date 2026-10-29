@@ -111,7 +111,7 @@ STDMETHODIMP ComStream::Seek (LARGE_INTEGER dlibMove, DWORD dwOrigin, ULARGE_INT
 		plibNewPosition->QuadPart = result;
 
 	#if LOG_STREAM
-	static const char* modes[3] = {"SEEK_SET", "SEEK_CUR", "SEEK_END"};
+	static CStringPtr modes[3] = {"SEEK_SET", "SEEK_CUR", "SEEK_END"};
 	CCL::Debugger::printf ("IStream::Seek to %I64d (Mode %s)\n", dlibMove.QuadPart, modes[dwOrigin]);
 	#endif
 	return S_OK;

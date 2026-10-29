@@ -100,7 +100,7 @@ using namespace CCL;
 
 #if CCLTEXT_LIBUNISTRING_ENABLED
 
-int Text::convertToCString (char* cString, int cStringSize, TextEncoding encoding, const uchar* uString, int uStringLength)
+int Text::convertToCString (char cString[], int cStringSize, TextEncoding encoding, UStringPtr uString, int uStringLength)
 {
 	if(uString && uStringLength < 0)
 		uStringLength = getLength (uString);
@@ -133,7 +133,7 @@ int Text::convertToCString (char* cString, int cStringSize, TextEncoding encodin
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-int Text::convertToUnicode (uchar* uString, int uStringSize, TextEncoding encoding, const char* cString, int cStringLength)
+int Text::convertToUnicode (uchar uString[], int uStringSize, TextEncoding encoding, CStringPtr cString, int cStringLength)
 {
 	if(cString && cStringLength < 0)
 		cStringLength = getLength (cString);
@@ -166,7 +166,7 @@ int Text::convertToUnicode (uchar* uString, int uStringSize, TextEncoding encodi
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-int Text::compareStrings (const uchar* s1, int l1, const uchar* s2, int l2, int flags)
+int Text::compareStrings (UStringPtr s1, int l1, UStringPtr s2, int l2, int flags)
 {
 	if(s1 == nullptr)
 		return s2 == nullptr ? Text::kEqual : Text::kLess;
@@ -192,18 +192,18 @@ int Text::compareStrings (const uchar* s1, int l1, const uchar* s2, int l2, int 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-const uchar* Text::findString (const uchar* source, const uchar* value, int flags)
+UStringPtr Text::findString (UStringPtr source, UStringPtr value, int flags)
 {
 	if(source == nullptr || value == nullptr)
 		return nullptr;
 
-	const uchar* result;
-	
+	UStringPtr result = nullptr;
+
 	uchar* sourceCopy = nullptr;
 	uchar* valueCopy = nullptr;
-	
-	const uchar* hayStack = source;
-	const uchar* needle = value;
+
+	UStringPtr hayStack = source;
+	UStringPtr needle = value;
 	
 	int hayStackLength = getLength (source);
 	int needleLength = getLength (value);
@@ -238,7 +238,7 @@ const uchar* Text::findString (const uchar* source, const uchar* value, int flag
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void Text::toUppercase (uchar* s)
+void Text::toUppercase (uchar s[])
 {
 	size_t n = u16_strlen (s);
 	u16_toupper (s, n, uc_locale_language (), UNINORM_NFC, s, &n);
@@ -246,7 +246,7 @@ void Text::toUppercase (uchar* s)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void Text::toLowercase (uchar* s)
+void Text::toLowercase (uchar s[])
 {
 	size_t n = u16_strlen (s);
 	u16_tolower (s, n, uc_locale_language (), UNINORM_NFC, s, &n);
@@ -254,7 +254,7 @@ void Text::toLowercase (uchar* s)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void Text::capitalize (uchar* s)
+void Text::capitalize (uchar s[])
 {
 	size_t n = u16_strlen (s);
 	u16_totitle (s, n, uc_locale_language (), UNINORM_NFC, s, &n);
@@ -315,7 +315,7 @@ tresult CCL_API LinuxUnicodeString::appendNativeString (const void* _nativeStrin
 {
 	tresult result = kResultFailed;
 	
-	const char* nativeString = static_cast<const char*> (_nativeString);
+	CStringPtr nativeString = static_cast<CStringPtr> (_nativeString);
 	int nativeLength = Text::getLength (nativeString) + 1;
 	
 	uchar* unicodeText = NEW uchar[nativeLength];

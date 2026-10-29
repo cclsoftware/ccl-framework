@@ -34,7 +34,7 @@ namespace Threading {
 class UserThread
 {
 public:
-	UserThread (const char* threadName = "User Thread");
+	UserThread (CStringPtr threadName = "User Thread");
 	~UserThread ();
 	
 	bool isThreadStarted () const;	///< true if native thread exists, even if already finished with execution
@@ -52,7 +52,7 @@ protected:
 private:
 	static int CCL_API threadFunc (void* arg);
 
-	const char* threadName;
+	CStringPtr threadName;
 	IThread* thread;
 	bool threadAlive;
 	bool terminateRequested;

@@ -102,7 +102,7 @@ protected:
 // BatchOperation::Task
 //************************************************************************************************
 
-class BatchOperation::Task: public CCL::Object
+class BatchOperation::Task: public Object
 {
 public:
 	DECLARE_CLASS_ABSTRACT (Task, Object)
@@ -203,8 +203,8 @@ public:
 
 	// FilePromise
 	tbool CCL_API getFileName (String& fileName) const override;
-	tbool CCL_API getFileType (CCL::FileType& fileType) const override;
-	tresult CCL_API createFile (UrlRef destPath, CCL::IProgressNotify* progress) override;
+	tbool CCL_API getFileType (FileType& fileType) const override;
+	tresult CCL_API createFile (UrlRef destPath, IProgressNotify* progress) override;
 
 private:
 	SharedPtr<BatchOperation::Task> task;

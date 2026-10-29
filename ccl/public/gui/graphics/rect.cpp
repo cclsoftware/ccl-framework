@@ -25,7 +25,7 @@ using namespace CCL;
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 #if DEBUG
-void CCL::dumpRect (const Rect& rect, const char* string)
+void CCL::dumpRect (const Rect& rect, CStringPtr string)
 {
 	Debugger::printf ("%s (%d, %d)-(%d, %d) %d x %d\n",
 					  string ? string : "CCL::Rect",

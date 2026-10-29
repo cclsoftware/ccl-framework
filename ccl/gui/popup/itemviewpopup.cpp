@@ -23,6 +23,8 @@
 
 #include "ccl/gui/gui.h"
 
+#include "ccl/public/gui/framework/iwindow.h"
+
 #include "ccl/gui/layout/anchorlayout.h"
 #include "ccl/gui/layout/boxlayout.h"
 #include "ccl/gui/layout/layoutprimitives.h"
@@ -155,7 +157,7 @@ void CCL_API ItemViewPopup::attached (IWindow& popupWindow)
 	PopupSelectorClient::attached (popupWindow);
 
 	#if !IOS
-	if(itemView)
+	if(itemView && popupWindow.isActive ())
 	{
 		// if mouse is already over an item, remember it
 		Point p;

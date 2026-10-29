@@ -59,11 +59,11 @@ LocalClient::LocalClient (StringRef protocol)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-tresult CCL_API LocalClient::connect (StringRef hostname)
+tresult CCL_API LocalClient::connect (StringRef hostname, IProgressNotify* progress)
 {
 	getLastStatus (); // reset first error
 
-	return SuperClass::connect (hostname);
+	return SuperClass::connect (hostname, progress);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////

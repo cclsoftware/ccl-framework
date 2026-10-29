@@ -27,15 +27,15 @@ namespace CCL {
 
 //************************************************************************************************
 // ScrollPicker
-/** A ScrollPicker is value is a control displaying its current value in the center of an underlying scrollview.
-	Like ValueBox or Knob it allows changing the value by dragging the mouse.
-	Can be used in vertical (default) or horizontal orientation, w/o warparound option (endless dial).
- 
+/** A ScrollPicker is a control displaying its current value in the center of an underlying scroll view.
+	Like ValueBox or Knob, it allows changing the value by dragging the mouse.
+	Can be used in vertical (default) or horizontal orientation, with or without the wraparound option (endless dial).
+
  \code{.xml}
- # standard scrollpicker usage
+ <!-- standard scrollpicker usage -->
  <ScrollPicker name="foo" size="0,0,110,110"/>
 
- # Second horizontal example using the wraparound option
+ <!-- Second horizontal example using the wraparound option -->
  <Style name="HorizontalScrollPickerStyle" inherit="Standard.ScrollPicker">
 	 <Metric name="itemSize" value="30"/>
 	 <Metric name="centerSize" value="35"/>
@@ -119,7 +119,7 @@ protected:
 	ClickAction* createClickAction (PointRef where);
 };
 
-DECLARE_VISUALSTYLE_CLASS (ScrollPickerStyle)
+DECLARE_TYPELIB_ENTRY (ScrollPickerStyle)
 
 } // namespace CCL
 

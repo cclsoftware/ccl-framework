@@ -75,7 +75,7 @@ public:
 
 CCL_TEST (BaseTest, TestMultiWorker)
 {
-	CCL::Vector<WorkItem*> workItems (kNumberOfProcesses);
+	Vector<WorkItem*> workItems (kNumberOfProcesses);
 	for(int i = 0; i < kNumberOfProcesses; i++)
 		workItems.add (NEW WorkItem);
 

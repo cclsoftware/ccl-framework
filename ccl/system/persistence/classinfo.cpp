@@ -82,36 +82,36 @@ public:
 	inline Variant& at (int index) { return values[index]; }
 
 	// IObjectState
-	void CCL_API set (const char* name, VariantRef value) override
+	void CCL_API set (CStringPtr name, VariantRef value) override
 	{
 		getSlot (name) = value;
 	}
 
-	void CCL_API setString (const char* name, StringRef value) override
+	void CCL_API setString (CStringPtr name, StringRef value) override
 	{
 		getSlot (name) = Variant (value, true); // share
 	}
 
-	VariantRef CCL_API get (const char* name) const override
+	VariantRef CCL_API get (CStringPtr name) const override
 	{
 		return getSlot (name);
 	}
 
-	void CCL_API setContainer (const char* name, const IContainer& container) override
+	void CCL_API setContainer (CStringPtr name, const IContainer& container) override
 	{
 		getSlot (name) = Variant (&const_cast<IContainer&> (container));
 	}
 
-	IContainer* CCL_API getContainer (const char* name) const override
+	IContainer* CCL_API getContainer (CStringPtr name) const override
 	{
 		return (UnknownPtr<IContainer> (getSlot (name)));
 	}
 
 private:
 	Vector<Variant> values;
-	const char** memberNames;
+	CStringPtr* memberNames;
 
-	inline Variant& getSlot (const char* name) const
+	inline Variant& getSlot (CStringPtr name) const
 	{
 		for(int i = 0, num = values.getCapacity (); i < num; i++)
 			if(strcmp (memberNames[i], name) == 0)
@@ -777,7 +777,7 @@ IStatement* ClassInfo::createCollectValuesStatement (StringID memberName, IConne
 
 		sql << " order by " << memberColumn.str ();
 
-		CCL_PRINTF ("createCollectValuesStatement: %s\n", (const char*)sql);
+		CCL_PRINTF ("createCollectValuesStatement: %s\n", (CStringPtr)sql);
 		return connection->createStatement (sql);
 	}
 	return nullptr;
@@ -835,6 +835,6 @@ MutableCString& MemberInfo::makeClassIDColumnName (MutableCString& name)
 inline ClassInfo* MemberInfo::findConcreteClass (IPersistentObject* object) const
 {
 	UnknownPtr<IObject> iObject (object);
-	const char* className = iObject ? iObject->getTypeInfo ().getClassName () : getClassName ().str ();
+	CStringPtr className = iObject ? iObject->getTypeInfo ().getClassName () : getClassName ().str ();
 	return getClassInfo ()->findSubClass (className);
 }

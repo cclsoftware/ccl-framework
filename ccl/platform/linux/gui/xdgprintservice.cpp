@@ -21,13 +21,12 @@
 #include "ccl/platform/linux/gui/platformdialog.linux.h"
 #include "ccl/platform/linux/interfaces/ilinuxsystem.h"
 
-#include "ccl/platform/shared/skia/skiadevice.h"
+#include "ccl/platform/shared/skia/skiaprintservice.h"
 
 #include "ccl/base/storage/file.h"
 
 #include "ccl/public/base/memorystream.h"
 #include "ccl/public/text/cclstdstring.h"
-#include "ccl/public/math/mathprimitives.h"
 #include "ccl/public/system/isysteminfo.h"
 #include "ccl/public/system/ifileutilities.h"
 
@@ -45,15 +44,15 @@ namespace Linux {
 // XdgPrintJob
 //************************************************************************************************
 
-class XdgPrintJob: public PrintJob,
+class XdgPrintJob: public SkiaPrintJob,
 				   public LinuxPlatformDialog,
 				   public DBusProxy<org::freedesktop::portal::Print_proxy>,
 				   public PlatformIntegration::IPlatformDialog,
 				   public IXdgPortalResponseHandler
 {
 public:
-	DECLARE_CLASS_ABSTRACT (XdgPrintJob, PrintJob)
-	
+	DECLARE_CLASS_ABSTRACT (XdgPrintJob, SkiaPrintJob)
+
 	XdgPrintJob (IDBusSupport& dbusSupport);
 
 	PROPERTY_OBJECT (Url, pdfUrl, PdfUrl)
@@ -71,8 +70,6 @@ public:
 	void onResponse (const uint32_t& response, const std::map<std::string, sdbus::Variant>& results) override;
 
 private:
-	static const int kDefaultResolution = 72;
-
 	std::string parentWindowId;
 	XdgPrintSettings& settings;
 	XdgPrintSettings& setup;
@@ -82,7 +79,6 @@ private:
 	void applyPageSetup (const PageSetup& pageSetup);
 	void applyDocumentInfo (const PrinterDocumentInfo& documentInfo);
 	void getPageSetup (PageSetup& pageSetup) const;
-	bool renderDocument (MemoryStream& stream, IPageRenderer* renderer, const PrinterDocumentInfo& documentInfo);
 };
 
 //************************************************************************************************
@@ -148,7 +144,7 @@ IPageSetupDialog* CCL_API XdgPrintService::createPageSetupDialog ()
 // XdgPrintJob
 //************************************************************************************************
 
-DEFINE_CLASS_HIDDEN (XdgPrintJob, PrintJob)
+DEFINE_CLASS_HIDDEN (XdgPrintJob, SkiaPrintJob)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -261,7 +257,7 @@ tresult CCL_API XdgPrintJob::run (const PrinterDocumentInfo& documentInfo, IPage
 	}
 
 	MemoryStream stream;
-	if(!renderDocument (stream, renderer, documentInfo))
+	if(!renderDocumentToStream (stream, renderer, documentInfo))
 		return kResultFailed;
 
 	stream.rewind ();
@@ -282,7 +278,7 @@ tresult CCL_API XdgPrintJob::run (const PrinterDocumentInfo& documentInfo, IPage
 		return kResultFailed;
 
 	XdgPrintSettings options;
-	options["token"] = token;
+	options["token"] = sdbus::Variant (token);
 	sdbus::ObjectPath result;
 	try
 	{
@@ -309,19 +305,19 @@ void XdgPrintJob::applyPageSetup (const PageSetup& pageSetup)
 {
 	if(pageSetup.isValid ())
 	{
-		setup["Width"] = double(pageSetup.size.x);
-		setup["Height"] = double(pageSetup.size.y);
-		setup["MarginLeft"] = double(pageSetup.margins.left);
-		setup["MarginTop"] = double(pageSetup.margins.top);
-		setup["MarginRight"] = double(pageSetup.margins.right);
-		setup["MarginBottom"] = double(pageSetup.margins.bottom);
+		setup["Width"] = sdbus::Variant (double(pageSetup.size.x));
+		setup["Height"] = sdbus::Variant (double(pageSetup.size.y));
+		setup["MarginLeft"] = sdbus::Variant (double(pageSetup.margins.left));
+		setup["MarginTop"] = sdbus::Variant (double(pageSetup.margins.top));
+		setup["MarginRight"] = sdbus::Variant (double(pageSetup.margins.right));
+		setup["MarginBottom"] = sdbus::Variant (double(pageSetup.margins.bottom));
 		switch(pageSetup.orientation)
 		{
 		case kPageOrientationPortrait :
-			setup["Orientation"] = "portrait";
+			setup["Orientation"] = sdbus::Variant ("portrait");
 			break;
 		case kPageOrientationLandscape :
-			setup["Orientation"] = "landscape";
+			setup["Orientation"] = sdbus::Variant ("landscape");
 			break;
 		}
 	}
@@ -333,16 +329,16 @@ void XdgPrintJob::applyDocumentInfo (const PrinterDocumentInfo& documentInfo)
 {
 	if(!documentInfo.pageSize.isNull ())
 	{
-		settings["paper-width"] = double(documentInfo.pageSize.x);
-		settings["paper-height"] = double(documentInfo.pageSize.y);
+		settings["paper-width"] = sdbus::Variant (double(documentInfo.pageSize.x));
+		settings["paper-height"] = sdbus::Variant (double(documentInfo.pageSize.y));
 	}
 	if(documentInfo.hasValidPageRange ())
 	{
-		settings["paper-ranges"] = MutableCString ().appendFormat ("%d-%d", documentInfo.minPage, documentInfo.maxPage).str ();
-		settings["print-pages"] = "ranges";
+		settings["paper-ranges"] = sdbus::Variant (MutableCString ().appendFormat ("%d-%d", documentInfo.minPage, documentInfo.maxPage).str ());
+		settings["print-pages"] = sdbus::Variant ("ranges");
 	}
 	else
-		settings["print-pages"] = "all";
+		settings["print-pages"] = sdbus::Variant ("all");
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -377,36 +373,6 @@ void XdgPrintJob::getPageSetup (PageSetup& pageSetup) const
 		else if(orientation == "reverse-landscape")
 			pageSetup.orientation = kPageOrientationLandscape;
 	}
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
-bool XdgPrintJob::renderDocument (MemoryStream& stream, IPageRenderer* renderer, const PrinterDocumentInfo& documentInfo)
-{
-	PointF pixelSize;
-	pixelSize.x = Math::millimeterToInch (documentInfo.pageSize.x) * kDefaultResolution;
-	pixelSize.y = Math::millimeterToInch (documentInfo.pageSize.y) * kDefaultResolution;
-
-	if(pixelSize.isNull ())
-		return false;
-
-	SkiaPDFRenderTarget renderTarget (stream, pixelSize.x, pixelSize.y);
-	SkiaScopedGraphicsDevice nativeDevice (renderTarget, static_cast<Unknown&> (renderTarget));
-	GraphicsDevice device;
-	device.setNativeDevice (&nativeDevice);
-	
-	int minPage = documentInfo.hasValidPageRange () ? documentInfo.minPage : 0;
-	int maxPage = documentInfo.hasValidPageRange () ? documentInfo.maxPage : 0;
-
-	for(int pageNumber = minPage; pageNumber <= maxPage; pageNumber++)
-	{
-		IPageRenderer::PageRenderData data = {device, pageNumber, kDefaultResolution, documentInfo.pageSize, documentInfo.pageSize};
-		if(renderer->renderPage (data) != kResultOk)
-			return false;
-		if(pageNumber < maxPage)
-			renderTarget.nextPage ();
-	}
-	return true;
 }
 
 //************************************************************************************************

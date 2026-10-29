@@ -41,14 +41,18 @@ bool DragHandler::inChildDragEnter = false;
 
 DragHandler::DragHandler (IView* view)
 : view (view),
-  spriteBuilder (view)
+  spriteBuilder (view),
+  ignoreFolderLimit (false),
+  folderFilesSkipped (false)
 {}
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 DragHandler::DragHandler (UserControl& control)
 : view (control),
-  spriteBuilder (control)
+  spriteBuilder (control),
+  ignoreFolderLimit (false),
+  folderFilesSkipped (false)
 {}
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -100,6 +104,21 @@ void DragHandler::addDataItems (const IUnknownList& items, IUnknown* context)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
+void DragHandler::completeDataItems (const IUnknownList& items, IUnknown* context)
+{
+	if(folderFilesSkipped)
+	{
+		folderFilesSkipped = false;
+
+		// rebuild data without folder file limit
+		ScopedVar<bool> guard (ignoreFolderLimit, true);
+		data.removeAll ();
+		addDataItems (items, context);
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
 IUnknown* DragHandler::prepareDataItem (IUnknown& item, IUnknown* context)
 {
 	item.retain ();
@@ -125,11 +144,20 @@ bool DragHandler::prepareFolderContent (IUnknown& item, IUnknown* context, int m
 	if(folder && folder->isFolder ()) 
 	{
 		// if a folder is dragged, try to prepare items from files in the folder
+		if(ignoreFolderLimit)
+			maxFiles = NumericLimits::kMaxInt;
+
 		int numFiles = 0;
 		ForEachFile (System::GetFileSystem ().newIterator (*folder), path)
 			if(path->isFile ())
 			{
-				
+				if(numFiles >= maxFiles)
+				{
+					folderFilesSkipped = true;
+					spriteBuilder.addItem (CCLSTR ("..."), spriteBuilder.getLastGroup ());
+					break;
+				}
+
 				AutoPtr<IUrl> releaser;
 				IUrl* newPath = nullptr;
 				path->clone (newPath);
@@ -138,8 +166,6 @@ bool DragHandler::prepareFolderContent (IUnknown& item, IUnknown* context, int m
 				{
 					data.add (fileItem, false);
 					numFiles++;
-					if(numFiles >= maxFiles)
-						break;
 				}
 			}
 		EndFor
@@ -223,6 +249,8 @@ tbool CCL_API DragHandler::dragLeave (const DragEvent& event)
 tbool CCL_API DragHandler::drop (const DragEvent& event)
 {
 	System::GetHelpManager ().showInfo (nullptr);
+
+	completeDataItems (event.session.getItems (), event.session.getSource ());
 
 	if(childDragHandler)
 	{

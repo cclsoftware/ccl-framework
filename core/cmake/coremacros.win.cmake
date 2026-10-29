@@ -39,7 +39,7 @@ macro (ccl_process_resources target config path)
 	set (resources ${ARGN})
 	cmake_path (CONVERT "${resources}" TO_CMAKE_PATH_LIST resources NORMALIZE)
 	
-	set (rc_base_dir "${VENDOR_OUTPUT_DIRECTORY}/${VENDOR_PLATFORM}/${VENDOR_PLATFORM_SUBDIR}/rc/${target}")
+	set (rc_base_dir "${CMAKE_BINARY_DIR}/rc/${target}")
 	set (rc_file "${rc_base_dir}/${target}.rc")
 	
 	file (MAKE_DIRECTORY "${rc_base_dir}")
@@ -170,7 +170,7 @@ macro (ccl_embed_manifest target file)
 	set (filepath "${file}")
 	cmake_path (GET filepath EXTENSION LAST_ONLY file_extension)
 	if (NOT "${file_extension}" STREQUAL "manifest")
-		set (rc_base_dir "${VENDOR_OUTPUT_DIRECTORY}/${VENDOR_PLATFORM}/${VENDOR_PLATFORM_SUBDIR}/rc/${target}")
+		set (rc_base_dir "${CMAKE_BINARY_DIR}/rc/${target}")
 		file (MAKE_DIRECTORY "${rc_base_dir}")
 		set (manifest_file "${rc_base_dir}/${target}.manifest")
 		configure_file ("${file}" "${manifest_file}" COPYONLY)
@@ -374,9 +374,9 @@ macro (ccl_configure_project_vendor vendor)
 				add_custom_command (OUTPUT ${sign_target_name}_run_always
 					COMMENT "Signing binaries"
 					COMMAND "${CMD}" /c "${${vendor}_SIGNING_PRE_COMMAND}"
-					COMMAND "${CMD}" /c "${sign_file_script_native}" ${sign_args} "${artifacts_directory}/*.exe"
-					COMMAND "${CMD}" /c "${sign_file_script_native}" ${sign_args} "${artifacts_directory}/*.dll"
-					COMMAND "${CMD}" /c "${sign_file_script_native}" ${sign_args} "${artifacts_directory}/Plugins/*.dll"
+					COMMAND "${CMD}" /c "${sign_file_script_native}" ${sign_args} "${artifacts_directory}\\*.exe"
+					COMMAND "${CMD}" /c "${sign_file_script_native}" ${sign_args} "${artifacts_directory}\\*.dll"
+					COMMAND "${CMD}" /c "${sign_file_script_native}" ${sign_args} "${artifacts_directory}\\Plugins\\*.dll"
 					COMMAND "${CMD}" /c "${${vendor}_SIGNING_POST_COMMAND}"
 					VERBATIM
 				)

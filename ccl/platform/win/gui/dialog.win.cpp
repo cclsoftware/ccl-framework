@@ -68,7 +68,7 @@ IAsyncOperation* Dialog::showPlatformDialog (IWindow* parent)
 		t.base.dwExtendedStyle |= WS_EX_LAYERED;
 		setLayeredRenderTarget (true);
 	}
-	else
+	else if(!style.isCustomStyle (Styles::kWindowAppearanceCustomFrame))
 	{
 		if(style.isCustomStyle (Styles::kWindowAppearanceTitleBar))
 			t.base.style |= WS_CAPTION|WS_SYSMENU; //Note: DS_MODALFRAME hides the icon
@@ -344,14 +344,6 @@ IAsyncOperation* PopupSelectorWindow::showPlatformDialog (IWindow* parent)
 		::UnhookWindowsHookEx (gActiveMouseHook);
 		gActiveMouseHook = NULL;
 	}
-
-	// workaround after popup closed: "re-focus" EditBox
-	if(parentWindow)
-		if(EditBox* editBox = unknown_cast<EditBox> (parentWindow->getFocusIView ()))
-		{
-			editBox->onFocus (FocusEvent (FocusEvent::kKillFocus));
-			editBox->onFocus (FocusEvent (FocusEvent::kSetFocus));
-		}
 
 	return operation;
 }

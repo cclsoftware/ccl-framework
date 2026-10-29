@@ -32,7 +32,7 @@ namespace Web {
 /** Wraps IXMLHttpRequest into IAsyncOperation. */
 //************************************************************************************************
 
-class AsyncXHROperation: public CCL::AsyncOperation
+class AsyncXHROperation: public AsyncOperation
 {
 public:
 	AsyncXHROperation (IXMLHttpRequest* httpRequest) ///< takes ownership!

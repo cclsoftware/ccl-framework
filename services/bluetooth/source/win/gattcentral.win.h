@@ -179,8 +179,6 @@ public:
 	WindowsGattCentralService (WinRTGattDeviceService winrtServiceArg = nullptr);
 	~WindowsGattCentralService ();
 
-	void cancelConnectionAttempt ();
-
 	// Object
 	void CCL_API notify (ISubject* subject, MessageRef msg) override;
 
@@ -221,13 +219,12 @@ public:
 							  WinRTBluetoothAddressType bluetoothAddressType, CStringRef manufacturerData);
 	~WindowsGattCentralDevice () override;
 
-	PROPERTY_VARIABLE (ConnectionState, connectionState, ConnectionState)
-
 	void close ();
 
+	ConnectionState getConnectionState () const;
 	uint64 getBluetoothAddress () const;
-	Core::ErrorCode requestServices ();
-	void cancelConnectionAttempt ();
+	Core::ErrorCode connect ();
+	void disconnect ();
 
 	// Object
 	void CCL_API notify (ISubject* subject, MessageRef msg) override;
@@ -247,6 +244,16 @@ private:
 
 	WinRTBluetoothLEDevice winrtDevice;
 
+	ConnectionState connectionState;
+
+	// The WinRT API may call onGetGattServicesCompleted even though the services are not yet available
+	// Retry requestServices with an exponential delay
+	static constexpr int kRequestServicesRetryCount = 3;
+	static constexpr int kRequestServicesRetryInitialDelayMs = 200;
+	static constexpr float kRequestServicesRetryDelayFactor = 2;
+	int requestServicesRemainingRetries;
+	int requestServicesRetryDelayMs;
+
 	uint64 bluetoothAddress;
 	WinRTBluetoothAddressType bluetoothAddressType;
 	MutableCString identifier;
@@ -264,7 +271,9 @@ private:
 	void onConnectionStatusChanged (const WinRTBluetoothLEDevice& winrtDevice, const WinRTIInspectable& args);
 	void handleFromBluetoothAddressCompleted (const WinRTBluetoothLEDevice& winrtDevice);
 	void handleGetGattServicesCompleted (const WinRTGattDeviceServicesResult& result);
+	void handleConnectionStatusChanged ();
 
+	Core::ErrorCode requestServices ();
 	void deleteServices ();
 };
 
@@ -283,8 +292,8 @@ public:
 	void close (WindowsGattCentralDevice* device);
 
 	void notifyDeviceFound (WindowsGattCentralDevice* device);
-	void notifyConnectionStatusChanged (WindowsGattCentralDevice* device, WinRTBluetoothConnectionStatus status);
-	void notifyGattServicesAvailable (WindowsGattCentralDevice* device);
+	void notifyConnectionLost (WindowsGattCentralDevice* device);
+	void notifyConnectCompleted (WindowsGattCentralDevice* device, Core::ErrorCode error);
 
 	// Object
 	void CCL_API notify (ISubject* subject, MessageRef msg) override;

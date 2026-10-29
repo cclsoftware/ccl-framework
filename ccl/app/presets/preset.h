@@ -35,6 +35,7 @@ class Preset: public Object,
 {
 public:
 	DECLARE_CLASS (Preset, Object)
+	DECLARE_PROPERTY_NAMES (Preset)
 
 	Preset (StringRef name = nullptr, int flags = 0, IUnknown* data = nullptr);
 	~Preset ();

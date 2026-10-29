@@ -129,10 +129,7 @@
 			<DialogGroup options="secondary" attach="all">
 				<Vertical spacing="0" attach="all">
 					<ImageView style="Standard.SearchBox" size="0,0,300,20" attach="left right">
-						<EditBox name="searchString" size="0,0,280,20" options="immediate transparent" style="Standard.SearchBox" attach="left right"/>
-						<Variant property="showPlaceholderLabel" size="0,0,280,20" attach="left right">
-							<Label title="Search" height="20" style="Standard.LabelDimmed" options="transparent nohelp" attach="hcenter"/>
-						</Variant>
+						<EditBox name="searchString" placeholder="Search" size="0,0,280,20" options="immediate transparent" style="Standard.SearchBox" attach="left right"/>
 						<Button name="clear" size="280,0,20,20" tooltip="Clear" options="transparent" style="Standard.SearchBox" attach="right"/>
 					</ImageView>
 					<Space height="12"/>
@@ -268,4 +265,3 @@
         
 	</Forms>
 </Skin>
-

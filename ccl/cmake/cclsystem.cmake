@@ -79,7 +79,6 @@ set (cclsystem_exports
 	${CCL_EXPORT_PREFIX}GetThreadSelfID${CCL_EXPORT_POSTFIX}
 	${CCL_EXPORT_PREFIX}CreateThreadWithIdentifier${CCL_EXPORT_POSTFIX}
 	${CCL_EXPORT_PREFIX}GetTypeLibRegistry${CCL_EXPORT_POSTFIX}
-	${CCL_EXPORT_PREFIX}Hash${CCL_EXPORT_POSTFIX}
 	${CCL_EXPORT_PREFIX}LockMemory${CCL_EXPORT_POSTFIX}
 	${CCL_EXPORT_PREFIX}SetThreadLocalData${CCL_EXPORT_POSTFIX}
 	${CCL_EXPORT_PREFIX}SpinLockLock${CCL_EXPORT_POSTFIX}
@@ -167,6 +166,18 @@ ccl_list_append_once (cclsystem_public_headers
 	${CCL_DIR}/public/devices/ideviceenumerator.h
 	${CCL_DIR}/public/devices/iusbhidstatics.h
 
+	${CCL_DIR}/public/audio/audioparamids.h
+	${CCL_DIR}/public/audio/cclaudiotypes.h
+	${CCL_DIR}/public/audio/iaudiocallback.h
+	${CCL_DIR}/public/audio/iaudiocomponent.h
+	${CCL_DIR}/public/audio/iaudiograph.h
+	${CCL_DIR}/public/audio/iaudiolayout.h
+	${CCL_DIR}/public/audio/iaudiometer.h
+	${CCL_DIR}/public/audio/iaudioprocessor.h
+	${CCL_DIR}/public/audio/iaudioservice.h
+	${CCL_DIR}/public/audio/iaudiosource.h
+	${CCL_DIR}/public/audio/iaudiotransport.h
+
 	${CCL_DIR}/public/atomicexports.h
 	${CCL_DIR}/public/plugservices.h
 	${CCL_DIR}/public/systemservices.h
@@ -191,7 +202,6 @@ ccl_list_append_once (cclsystem_source_files
 	${CCL_DIR}/system/fileutilities.h
 	${CCL_DIR}/system/filesystemsecuritystore.cpp
 	${CCL_DIR}/system/filesystemsecuritystore.h
-	${CCL_DIR}/system/hash.cpp
 
 	${CCL_DIR}/system/localization/languagepack.cpp
 	${CCL_DIR}/system/localization/languagepack.h
@@ -341,7 +351,7 @@ if (NOT TARGET ${cclsystem})
 		
 		ccl_add_resources (${cclsystem} ${cclsystem_resources})
 
-		target_link_libraries (${cclsystem} PUBLIC ${cclbase} ${ccltext} corelib)
+		target_link_libraries (${cclsystem} PUBLIC ${ccltext} PRIVATE ${cclbase})
 		target_include_directories (${cclsystem} INTERFACE "$<INSTALL_INTERFACE:${VENDOR_PUBLIC_HEADERS_DESTINATION}>")
 		ccl_export_symbols (${cclsystem} ${cclsystem_exports})
 

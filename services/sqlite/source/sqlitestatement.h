@@ -43,13 +43,13 @@ class SQLiteStatement: public Object,
 {
 public:
 	SQLiteStatement (SQLiteConnection& connection, StringRef sqlString);
-	SQLiteStatement (SQLiteConnection& connection, const char* sqlStringUTF8);
+	SQLiteStatement (SQLiteConnection& connection, CStringPtr sqlStringUTF8);
 	~SQLiteStatement ();
 
 	// IStatement
 	void CCL_API bindVariable (int index, VariantRef value) override;
 	void CCL_API bindVariable (int index, StringRef value) override;
-	void CCL_API bindVariable (int index, const char* value) override;
+	void CCL_API bindVariable (int index, CStringPtr value) override;
 	void CCL_API bindVariable (int index, int64 value) override;
 	void CCL_API bindVariable (int index, double value) override;
 	void CCL_API bindVariable (int index, const IMemoryStream& blob) override;
@@ -62,14 +62,14 @@ public:
 
 	// IResultSet
 	int CCL_API countColumns () override;
-	const char* CCL_API getColumnName (int index) override;
-	int CCL_API getColumnIndex (const char* columnName) override;
+	CStringPtr CCL_API getColumnName (int index) override;
+	int CCL_API getColumnIndex (CStringPtr columnName) override;
 	tbool CCL_API nextRow () override;
 	tbool CCL_API getValue (int column, Variant& value) override;
 	int64 CCL_API getIntValue (int column) override;
 	double CCL_API getFloatValue (int column) override;
 	void CCL_API getStringValue (int column, String& string) override;
-	const char* CCL_API getStringValue (int column) override;
+	CStringPtr CCL_API getStringValue (int column) override;
 	tbool CCL_API isNull (int column) override;
 
 	CLASS_INTERFACE2 (IStatement, IResultSet, Object)

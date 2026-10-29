@@ -24,6 +24,8 @@
 #include "ccl/public/gui/graphics/rect.h"
 #include "ccl/public/gui/graphics/color.h"
 
+#include "ccl/meta/generated/cpp/gui-constants-generated.h"
+
 namespace CCL {
 
 interface IUnknownList;
@@ -38,7 +40,7 @@ interface IImage;
 
 namespace ClassID
 {
-	DEFINE_CID (DragSession, 0x5447ed24, 0x42cf, 0x43ed, 0x8a, 0x5b, 0xa9, 0x56, 0x4b, 0x93, 0xea, 0x5f);
+	DEFINE_CID (DragSession, 0x5447ed24, 0x42cf, 0x43ed, 0x8a, 0x5b, 0xa9, 0x56, 0x4b, 0x93, 0xea, 0x5f)
 }
 
 //************************************************************************************************
@@ -61,10 +63,10 @@ interface IDragSession: IUnknown
 	/** Drop results. */
 	enum DropResults
 	{
-		kDropNone = 0,			///< no effect
-		kDropCopyShared = 1<<0,	///< drop causes a copy that share the data
-		kDropCopyReal = 1<<1,	///< drop causes a complete copy
-		kDropMove = 1<<2		///< drop causes move
+		kDropNone = kDragSessionDropResultNone,
+		kDropCopyShared = kDragSessionDropResultCopyShared,
+		kDropCopyReal = kDragSessionDropResultCopyReal,
+		kDropMove = kDragSessionDropResultMove
 	};
 
 	/** Input device used for dragging. */

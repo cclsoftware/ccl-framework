@@ -131,6 +131,16 @@ msgstr "Zip 파일"
 
 #: localization/localeinfo.cpp
 msgctxt "Locales"
+msgid "%(1) Kilobytes per second"
+msgstr "초당 %(1) 킬로바이트"
+
+#: localization/localeinfo.cpp
+msgctxt "Locales"
+msgid "%(1) Megabytes per second"
+msgstr "초당 %(1) 메가바이트"
+
+#: localization/localeinfo.cpp
+msgctxt "Locales"
 msgid "%(1) days ago"
 msgstr "%(1)일 전"
 

@@ -455,38 +455,39 @@ DEFINE_CLASS_HIDDEN (ItemStyle, Object)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-BEGIN_VISUALSTYLE_CLASS (ItemStyle, VisualStyle, "ItemViewStyle")
-	ADD_VISUALSTYLE_IMAGE  ("folderIcon")				///< icon for folder items (closed)
-	ADD_VISUALSTYLE_IMAGE  ("openFolderIcon")			///< icon for open folder items
-	ADD_VISUALSTYLE_IMAGE  ("scrolling.background")		///< background for the whole view
-	ADD_VISUALSTYLE_COLOR  ("selectionColor")			///< used to fill a rectangle around selected items
-	ADD_VISUALSTYLE_COLOR  ("selectedtextcolor")		///< used instead of "textcolor" for selected items
-	ADD_VISUALSTYLE_COLOR  ("iconcolor")				///< color to colorize icons of unselected items
-	ADD_VISUALSTYLE_COLOR  ("selectediconcolor")		///< color to colorize icons of selected items
-	ADD_VISUALSTYLE_COLOR  ("backcolor2")				///< used to draw alternating backgrounds, the other color is "backcolor"
-	ADD_VISUALSTYLE_COLOR  ("separatorcolor")			///< color of separating line between rows
-	ADD_VISUALSTYLE_COLOR  ("menu.separatorcolor")		///< color of separating line for menu separators
-	ADD_VISUALSTYLE_METRIC ("margin")					///< margin (in pixels) of itemview content
-	ADD_VISUALSTYLE_METRIC ("rowHeight")				///< height of rows (in pixels)
-	ADD_VISUALSTYLE_METRIC ("scrollRows")				///< how many rows should scroll on mousewheel
-	ADD_VISUALSTYLE_METRIC ("thumbnailMarginV")			///< additional vertical margin for itemContent if thumbnails available
-	ADD_VISUALSTYLE_METRIC ("thumbnailPadding.left")	///< left padding for thumbnails
-	ADD_VISUALSTYLE_METRIC ("thumbnailPadding.top")		///< top padding for thumbnails
-	ADD_VISUALSTYLE_METRIC ("thumbnailPadding.bottom")	///< bottom padding for thumbnails
-	ADD_VISUALSTYLE_METRIC ("thumbnailLimit.height")	///< thumbnails will be scaled down to (at least) this limit
-	ADD_VISUALSTYLE_METRIC ("thumbnailLimit.width")		///< thumbnails will be scaled down to (at least) this limit
-	ADD_VISUALSTYLE_METRIC ("thumbnailFactor")			///< thumbnails exceeding the thumbnail limits will be scaled with this factor
-	ADD_VISUALSTYLE_COLOR  ("thumbnailFrameColor")		///< color of separating frame around thumbnails
-	ADD_VISUALSTYLE_METRIC ("columnWidth.xxx")			///< overrides the default width (in pixels) for the column with name "xxx"
-	ADD_VISUALSTYLE_COLOR ("xxx.backcolor")				///< custom background color for items of kind "xxx"
-	ADD_VISUALSTYLE_COLOR ("xxx.backcolor2")			///< custom alternating background color for items of kind "xxx"
-	ADD_VISUALSTYLE_COLOR ("xxx.separatorcolor")		///< custom separator line color for items of kind "xxx"
-	ADD_VISUALSTYLE_METRIC ("xxx.rowHeight")			///< custom rowHeight for items of kind "xxx"
-	ADD_VISUALSTYLE_METRIC ("separatorBeneath")			///< draw one pixel separator beneath items (on the bottom border - not below)
-	ADD_VISUALSTYLE_METRIC ("highQualityMode")			///< set highQualityMode for image interpolations
-	ADD_VISUALSTYLE_METRIC ("vSnapEnabled")				///< enable snapping to itemSize after scrolling
-	ADD_VISUALSTYLE_STRING ("headerViewStyle")			///< name of a visualStyle for the header view
-END_VISUALSTYLE_CLASS (ItemStyle)
+DEFINE_TYPELIB_ENTRY_WITH_PARENT (ItemStyle, VisualStyle, "ItemViewStyle", VISUALSTYLES_TYPELIB)
+BEGIN_TYPELIB_MEMBERS (ItemStyle)
+	ADD_TYPELIB_MEMBER_IMAGE ("folderIcon")					///< icon for folder items (closed)
+	ADD_TYPELIB_MEMBER_IMAGE ("openFolderIcon")				///< icon for open folder items
+	ADD_TYPELIB_MEMBER_IMAGE ("scrolling.background")		///< background for the whole view
+	ADD_TYPELIB_MEMBER_COLOR ("selectionColor")				///< used to fill a rectangle around selected items
+	ADD_TYPELIB_MEMBER_COLOR ("selectedtextcolor")			///< used instead of "textcolor" for selected items
+	ADD_TYPELIB_MEMBER_COLOR ("iconcolor")					///< color to colorize icons of unselected items
+	ADD_TYPELIB_MEMBER_COLOR ("selectediconcolor")			///< color to colorize icons of selected items
+	ADD_TYPELIB_MEMBER_COLOR ("backcolor2")					///< used to draw alternating backgrounds, the other color is "backcolor"
+	ADD_TYPELIB_MEMBER_COLOR ("separatorcolor")				///< color of separating line between rows
+	ADD_TYPELIB_MEMBER_COLOR ("menu.separatorcolor")		///< color of separating line for menu separators
+	ADD_TYPELIB_MEMBER_METRIC ("margin")					///< margin (in pixels) of itemview content
+	ADD_TYPELIB_MEMBER_METRIC ("rowHeight")					///< height of rows (in pixels)
+	ADD_TYPELIB_MEMBER_METRIC ("scrollRows")				///< how many rows should scroll on mousewheel
+	ADD_TYPELIB_MEMBER_METRIC ("thumbnailMarginV")			///< additional vertical margin for itemContent if thumbnails available
+	ADD_TYPELIB_MEMBER_METRIC ("thumbnailPadding.left")		///< left padding for thumbnails
+	ADD_TYPELIB_MEMBER_METRIC ("thumbnailPadding.top")		///< top padding for thumbnails
+	ADD_TYPELIB_MEMBER_METRIC ("thumbnailPadding.bottom")	///< bottom padding for thumbnails
+	ADD_TYPELIB_MEMBER_METRIC ("thumbnailLimit.height")		///< thumbnails will be scaled down to (at least) this limit
+	ADD_TYPELIB_MEMBER_METRIC ("thumbnailLimit.width")		///< thumbnails will be scaled down to (at least) this limit
+	ADD_TYPELIB_MEMBER_METRIC ("thumbnailFactor")			///< thumbnails exceeding the thumbnail limits will be scaled with this factor
+	ADD_TYPELIB_MEMBER_COLOR ("thumbnailFrameColor")		///< color of separating frame around thumbnails
+	ADD_TYPELIB_MEMBER_METRIC ("columnWidth.xxx")			///< overrides the default width (in pixels) for the column with name "xxx"
+	ADD_TYPELIB_MEMBER_COLOR ("xxx.backcolor")				///< custom background color for items of kind "xxx"
+	ADD_TYPELIB_MEMBER_COLOR ("xxx.backcolor2")				///< custom alternating background color for items of kind "xxx"
+	ADD_TYPELIB_MEMBER_COLOR ("xxx.separatorcolor")			///< custom separator line color for items of kind "xxx"
+	ADD_TYPELIB_MEMBER_METRIC ("xxx.rowHeight")				///< custom rowHeight for items of kind "xxx"
+	ADD_TYPELIB_MEMBER_METRIC ("separatorBeneath")			///< draw one pixel separator beneath items (on the bottom border - not below)
+	ADD_TYPELIB_MEMBER_METRIC ("highQualityMode")			///< set highQualityMode for image interpolations
+	ADD_TYPELIB_MEMBER_METRIC ("vSnapEnabled")				///< enable snapping to itemSize after scrolling
+	ADD_TYPELIB_MEMBER_STRING ("headerViewStyle")			///< name of a visualStyle for the header view
+END_TYPELIB_MEMBERS (ItemStyle)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1760,7 +1761,7 @@ void ItemView::drawThumbnail (GraphicsPort& port, Image& thumbnailImage, PointRe
 	getLimitedThumbnailSize (dstRect, thumbnailImage.getOriginal ());
 	dstRect.moveTo (pos);
 	
-	ImageMode mode (1.0f, ImageMode::kInterpolationHighQuality);
+	ImageMode mode (1.0f, kImageInterpolationHighQuality);
 	port.drawImage (&thumbnailImage, iconRect, dstRect, &mode);
 
 	if(getItemStyle ().getThumbnailFramePen ().getColor ().alpha != 0x00)

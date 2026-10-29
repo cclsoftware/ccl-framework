@@ -60,7 +60,7 @@ latex_elements = {
     'releasename': u'{{ config.build_version }}',
     'extraclassoptions': 'openany,oneside',
     'pointsize': r'12pt',
-    'sphinxsetup': 'VerbatimColor={RGB}{255, 255, 242}, TitleColor={RGB}{62, 62, 71}, VerbatimBorderColor={RGB}{161, 161, 161}, verbatimwrapslines=0',
+    'sphinxsetup': 'VerbatimColor={RGB}{255, 255, 242}, TitleColor={RGB}{62, 62, 71}, VerbatimBorderColor={RGB}{161, 161, 161}, verbatimwrapslines=false',
     'preamble': r'''
 \usepackage{mdframed}
 \renewenvironment{sphinxalltt}{

@@ -122,6 +122,9 @@ namespace MacUtils
 	// Path conversion
 	//////////////////////////////////////////////////////////////////////////////////////////////
 
+	// Convert a path String for use with lower-level APIs
+	bool toFileSystemRepresentation (char* pathBuffer, int bufferSize, StringRef path);
+
 	bool urlFromCFURL (IUrl& url, CFURLRef cfUrlRef, int type = IUrl::kFile);
 	bool urlToCFURL (const IUrl& url, CFURLRef& cfUrlRef, int type = IUrl::kFile);
 

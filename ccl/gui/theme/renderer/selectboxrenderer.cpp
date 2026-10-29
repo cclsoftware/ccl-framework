@@ -17,386 +17,470 @@
 //************************************************************************************************
 
 #include "ccl/gui/theme/renderer/selectboxrenderer.h"
+#include "ccl/gui/theme/renderer/textboxrenderer.h"
 
-#include "ccl/gui/graphics/imaging/imagecache.h"
 #include "ccl/gui/controls/selectbox.h"
+#include "ccl/gui/views/graphicsport.h"
+
 #include "ccl/public/gui/iparameter.h"
-#include "ccl/public/math/mathprimitives.h"
 
 using namespace CCL;
 
-extern const char* ButtonStateNames[]; // buttonrenderer.cpp
+extern CStringPtr ButtonStateNames[]; // buttonrenderer.cpp
 
 //************************************************************************************************
 // SelectBoxRenderer
 /** If option "transparent" is not set, a SelectBox draws a background image. 
 When no image is specified, it is filled in "backcolor", and a rectangular frame in color "forecolor" can be drawn with option "border".
 
-An image "states" can be used to show a different frame for (integer) each parameter value.
+A SelectBox uses the same render atoms as a Button: the "background" atom draws the background,
+the "icon" atom draws the popup button, and the "value" atom draws the text.
 
-The "button" image is drawn at the right (can be changed with option "leadingbutton").
-The remaining space shows the text representation of the parameter, with an optional "padding". */
+The background image shows the current parameter value when it has no element state frames: each of
+its frames stands for one (integer) value then, like the frames of a MultiToggle button. Such a state
+image covers the whole control, so it is usually opaque.
+
+The popup button is pinned to an edge of the area left by "padding", like the icon of a Button,
+and the value keeps a distance of "iconvaluespacing" to it. The edge is the horizontal part of
+"iconalign": left and right pin the button, centered leaves it unpinned - which only shows when
+the text is hidden or "iconoverlay" is set, because otherwise the button is pinned to the trailing
+edge to keep the space for the text. With hidden text, an unpinned button is centered within the
+whole control, ignoring "padding".
+When the parameter provides an image itself, the "value" atom draws this image instead of the text.
+
+A color parameter ("colorname") only affects the "value" and the "icon" atom when the atom has a
+"contrastcolorbright" or a "contrastcoloralphablend". Unlike a Button or a TextBox, a SelectBox never
+draws them in the color of the parameter itself. */
 //************************************************************************************************
 
-BEGIN_VISUALSTYLE_CLASS (SelectBox, VisualStyle, "SelectBoxStyle")
-	ADD_VISUALSTYLE_IMAGE  ("button")			///< image used to draw the button that indicates that somthing can popup
-	ADD_VISUALSTYLE_IMAGE  ("states")			///< image with frames for each (integer) parameter state
-	ADD_VISUALSTYLE_METRIC ("padding.left")		///< left padding for the text
-	ADD_VISUALSTYLE_METRIC ("padding.top")		///< top padding for the text
-	ADD_VISUALSTYLE_METRIC ("padding.right")	///< right padding for the text
-	ADD_VISUALSTYLE_METRIC ("padding.bottom")	///< bottom padding for the text
-	ADD_VISUALSTYLE_METRIC ("padding")			///< padding for title, used if one of the paddings for left, top, right, bottom is not specified
-	ADD_VISUALSTYLE_METRIC ("fill.image")		///< image from imageprovider is resized to fill out the selectbox size (aspectratio is kept) value: ]0-1]
-	ADD_VISUALSTYLE_METRIC ("fill.button")		///< button image is resized to fill out the selectbox height (aspectratio is kept) value: ]0-1]
-	ADD_VISUALSTYLE_COLOR ("contextcolor")		///< if set, used to create a modified version of the image given by the imageprovider
-	ADD_VISUALSTYLE_METRIC ("scaletext.maxfont")///< explicit maximal fontsize when scaletext option is set
-	ADD_VISUALSTYLE_METRIC ("scaletext.minfont")///< explicit minimal fontsize when scaletext option is set
-	ADD_VISUALSTYLE_METRIC ("button.beneath")	///< button image is drawn beneath text or state images and doesn't affect their drawrect
-	ADD_VISUALSTYLE_METRIC ("button.leading")	///< button image is drawn before the text - set can also be set with button-option "leadingbutton"
-	ADD_VISUALSTYLE_METRIC ("button.trailing")	///< button image is drawn after the text - can also be set with button-option "trailingbutton"
-END_VISUALSTYLE_CLASS (SelectBox)
+DEFINE_TYPELIB_ENTRY_WITH_PARENT (SelectBox, TextBox, "SelectBoxStyle", VISUALSTYLES_TYPELIB)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-SelectBoxRenderer::SelectBoxRenderer (VisualStyle* visualStyle)
-: CompositedRenderer (visualStyle),
+DEFINE_CLASS_ABSTRACT (SelectBoxRenderer, BIVRenderer)
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+SelectBoxRenderer::SelectBoxRenderer (VisualStyle* visualStyle, View* owner)
+: BIVRenderer (visualStyle, owner),
+  buttonFill (0.f),
   hideText (false),
   hideButton (false),
   hideImage (false),
-  buttonBeneath (false),
-  leadingButton (false),
-  trailingButton (false),
-  hasOffState (false),
-  imageFillSize (0.f),
-  buttonFillSize (0.f),
-  textColorThreshold (0.35f),
-  initialized (false)
+  showValueText (true),
+  fitTextSpace (-1)
+  #if LEGACY_STYLES_SUPPORTED
+  , valueImageFill (0.f)
+  #endif
 {
+	order = kTrailingIcon; // the popup button is drawn after the value by default
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void SelectBoxRenderer::initialize (StyleRef style, const View* view)
+void SelectBoxRenderer::applyVisualStyle (RenderAtomTransaction& transaction)
 {
-	if(visualStyle == nullptr)
+	if(visualStyle == nullptr || owner == nullptr)
 		return;
-	
-	hideText = style.isCustomStyle (Styles::kSelectBoxAppearanceHideText);
+
+	StyleRef style = owner->getStyle ();
+
+	hideText = style.isCustomStyle (Styles::kTextBoxAppearanceHideText);
 	hideButton = style.isCustomStyle (Styles::kSelectBoxAppearanceHideButton);
 	hideImage = style.isCustomStyle (Styles::kSelectBoxAppearanceHideImage);
-	hasOffState = style.isCustomStyle (Styles::kSelectBoxAppearanceOffState);
-	leadingButton = style.isCustomStyle (Styles::kSelectBoxAppearanceLeadingButton);
-	trailingButton = style.isCustomStyle (Styles::kSelectBoxAppearanceTrailingButton);
-	
-	leadingButton = visualStyle->getMetric<bool> ("button.leading", leadingButton);
-	trailingButton = visualStyle->getMetric<bool> ("button.trailing", trailingButton);
-	buttonBeneath = visualStyle->getMetric<bool> ("button.beneath", false);
-	background = visualStyle->getImage ("background");
-	button = visualStyle->getImage ("button");
-	states = visualStyle->getImage ("states");
-	contextColor = visualStyle->getColor ("contextcolor", Colors::kTransparentBlack);
-	
-	contextColorOn = visualStyle->getColor ("contextcolor.on", contextColor);
-	imageFillSize = visualStyle->getMetric<float> ("fill.image", 0.f);
-	buttonFillSize = visualStyle->getMetric<float> ("fill.button", 0.f);
-	
-	textColorThreshold = visualStyle->getMetric<float> ("textcolor.threshold", textColorThreshold);
-	
-	textColor = visualStyle->getTextColor ();
-	textColorOn = visualStyle->getColor ("textcolor.on", textColor);
-	textColorMouseOver = visualStyle->getColor ("textcolor.mouseover", textColor);
-	
-	textColorBright = visualStyle->getColor ("textcolor.bright", textColor);
-	Color disabledFallback (textColor);
-	textColorDisabled = visualStyle->getColor ("textcolor.disabled", disabledFallback.alphaBlend (visualStyle->getBackColor (), .5f));
-	
-	visualStyle->getPadding (padding);
-	
-	textScaler.setExplicitMaximalFontSize (visualStyle->getMetric<float> ("scaletext.maxfont", 100));
-	textScaler.setExplicitMinimalFontSize (visualStyle->getMetric<float> ("scaletext.minfont", 6));
 
-	initialized = true;
+	// the edge the popup button is pinned to is the horizontal icon alignment - centered means unpinned
+	Alignment buttonAlignment (iconAlignment);
+	if(style.isCustomStyle (Styles::kSelectBoxAppearanceLeadingIcon))
+		buttonAlignment.setAlignH (Alignment::kLeft);
+	else if(style.isCustomStyle (Styles::kSelectBoxAppearanceTrailingIcon))
+		buttonAlignment.setAlignH (Alignment::kRight);
+	else
+		buttonAlignment.setAlignH (Alignment::kHCenter);
+
+	// "iconleading" is the style's say on the order and therefore on the edge, so it wins over the
+	// button options - the base class reads it again to apply it to the element order
+	if(visualStyle->getMetric<bool> (StyleID::BIV::kIconLeading, false))
+		buttonAlignment.setAlignH (Alignment::kLeft);
+
+	setButtonAlignment (buttonAlignment);
+
+	// the "on" condition selects the "...On" frames and colors of the visual style
+	conditionContext.setCondition (ThemeNames::kOn, isOnState ());
+
+	// This resets all atom properties that are set below.
+	SuperClass::applyVisualStyle (transaction);
+
+	buttonFill = iconFillFactor;
+
+	#if LEGACY_STYLES_SUPPORTED
+	BEGIN_LEGACY_STYLES_ENABLED_BLOCK
+	Alignment legacyButtonAlignment (iconAlignment);
+	if(visualStyle->getMetric<bool> (LegacyStyleID::kSelectBoxButtonLeading, false))
+	{
+		legacyButtonAlignment.setAlignH (Alignment::kLeft);
+		setButtonAlignment (legacyButtonAlignment);
+	}
+	else if(visualStyle->getMetric<bool> (LegacyStyleID::kSelectBoxButtonTrailing, false))
+	{
+		legacyButtonAlignment.setAlignH (Alignment::kRight);
+		setButtonAlignment (legacyButtonAlignment);
+	}
+
+	// the state image used to be drawn by a separate "states" atom on top of the background
+	if(Image* legacyStates = unknown_cast<Image> (visualStyle->getImage (LegacyStyleID::kSelectBoxStates)))
+		backgroundAtom.setImage (legacyStates);
+
+	if(Image* legacyButton = unknown_cast<Image> (visualStyle->getImage (LegacyStyleID::kSelectBoxButton)))
+		iconAtom.setImage (legacyButton);
+
+	if(iconAtom.canRecolorImage ())
+		iconAtom.setBrush (getIconBrush ());
+
+	buttonFill = visualStyle->getMetric<float> (LegacyStyleID::kSelectBoxButtonFillFactor, buttonFill);
+	END_LEGACY_STYLES_ENABLED_BLOCK
+	#endif
+
+	if(Image* background = backgroundAtom.getImage ())
+		backgroundAtom.setImageFrame (getBackgroundFrame (*background));
+	else if(style.isBorder ())
+		backgroundAtom.setBorderPen (visualStyle->getForePen ());
+
+	iconAtom.isContentFit (buttonFill > 0.f); // the popup button is scaled to fit into the rect
+
+	// the button that indicates the popup is drawn as icon
+	Image* button = iconAtom.getImage ();
+	iconAtom.isHidden (button == nullptr || hideButton);
+	if(button)
+		iconAtom.setImageFrame (getElementStateFrame (*button));
+
+	valueAtom.isTextMultiline (style.isCustomStyle (Styles::kTextBoxAppearanceMultiLine));
+	if(valueAtom.isTextMultiline ())
+		valueAtom.setWordBreak (true);
+
+	valueAtom.isContentFill (style.isCustomStyle (Styles::kTextBoxAppearanceScaleText));
+
+	updateValueBrush ();
+
+	bool valueImageReplacesText = updateValueImage (); // the image color overrides the text color
+
+	SelectBox* selectBox = static_cast<SelectBox*> (owner);
+	IParameter* param = selectBox->getParameter ();
+	bool isOutOfRange = param == nullptr || param->isOutOfRange ();
+	bool showTitleAsText = style.isCustomStyle (Styles::kSelectBoxAppearanceTitleAsText);
+
+	showValueText = !hideText && !valueImageReplacesText && !(isOutOfRange && !showTitleAsText);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void SelectBoxRenderer::draw (View* view, const UpdateRgn& updateRgn)
+void SelectBoxRenderer::setButtonAlignment (AlignmentRef alignment)
 {
-	StyleRef style = view->getStyle ();
-	
-	if(initialized == false)
-		initialize (style, view);
+	setIconAlignment (alignment);
+	if(alignment.getAlignH () == Alignment::kLeft)
+		order = kLeadingIcon;
+	else
+		order = kTrailingIcon;
+}
 
-	SelectBox* selectBox = (SelectBox*)view;
-	GraphicsPort port (selectBox);
+//////////////////////////////////////////////////////////////////////////////////////////////////
 
-	bool paramIsOn = selectBox->getParameter () ? selectBox->getParameter ()->getValue ().asBool () : false;
-	bool isOutOfRange = selectBox->getParameter () ? selectBox->getParameter ()->isOutOfRange () : true;
-	bool drawAsOnState = (hasOffState && paramIsOn);
-	
-	Rect r;
-	selectBox->getClientRect (r);
-	
-	auto selectImageFrame = [&](IImage* image)
+bool SelectBoxRenderer::updateValueImage ()
+{
+	#if LEGACY_STYLES_SUPPORTED
+	BEGIN_LEGACY_STYLES_ENABLED_BLOCK
+	valueImageFill = 0.f;
+	END_LEGACY_STYLES_ENABLED_BLOCK
+	#endif
+
+	// a parameter that provides an image is shown by that image instead of its value text
+	if(hideImage)
+		valueAtom.setImage (nullptr);
+	else if(UnknownPtr<IImageProvider> imageProvider = static_cast<SelectBox*> (owner)->getParameter ())
 	{
-		int elementState = selectBox->getThemeElementState ();
-		if(image->getFrameIndex (ButtonStateNames[elementState]) == -1)
-			elementState = 0;
-		
-		int offStateOffset = 0;
-		if(drawAsOnState)
-			offStateOffset = ThemeElements::kNumElementStates;
-		
-		IImage::Selector (image, ButtonStateNames[elementState + offStateOffset]);
-	};
-	
-	if(style.isOpaque ())
-	{
-		if(background)
-		{
-			selectImageFrame (background);
-			port.drawImage (background, Rect (0, 0, background->getWidth (), background->getHeight ()), r);
-		}
-		else
-		{
-			port.fillRect (updateRgn.bounds, visualStyle->getBackBrush ());
-			if(style.isBorder ())
-				port.drawRect (r, visualStyle->getForePen ());
-		}
+		if(Image* image = unknown_cast<Image> (imageProvider->getImage ()))
+			valueAtom.setImage (image);
 	}
 
-	if(button && !hideButton)
+	bool hasValueImage = valueAtom.getImage () != nullptr;
+	if(!hasValueImage)
 	{
-		selectImageFrame (button);
-		Rect imageSrc (0, 0, button->getWidth (), button->getHeight ());
-		Point imageSize (button->getWidth (), button->getHeight ());
-		Rect buttonRect (r);
+		valueAtom.isContentFit (false);
+		return false;
+	}
 
-		float imageResize = buttonFillSize * ccl_min (r.getHeight (), r.getWidth ());
-		float resizeRatio = (imageResize > 0.f) ? (imageResize / ccl_max (imageSize.x, imageSize.y)) : 1;
-		imageSize *= resizeRatio;
+	// the image is fitted into the value area, keeping its aspect ratio - "scaletext" only scales text
+	valueAtom.isContentFit (true);
+	valueAtom.isContentFill (false);
+
+	#if LEGACY_STYLES_SUPPORTED
+	BEGIN_LEGACY_STYLES_ENABLED_BLOCK
+	// the atom brush is given by "value.color" now, "contextcolor" still overrides it
+	Color contextColor = visualStyle->getColor (LegacyStyleID::kContextColor, Colors::kTransparentBlack);
+	if(isOnState ())
+		contextColor = visualStyle->getColor (LegacyStyleID::kSelectBoxContextColorOn, contextColor);
+
+	if(contextColor.isVisible ())
+		valueAtom.setBrush (SolidBrush (contextColor)); // a visible color creates a modified version of the image
+
+	valueImageFill = visualStyle->getMetric<float> (LegacyStyleID::kImageFillFactor, 0.f);
+	END_LEGACY_STYLES_ENABLED_BLOCK
+	#endif
+
+	return true;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+int SelectBoxRenderer::getBackgroundFrame (const Image& image) const
+{
+	// A background image with element state frames is drawn like the background of a Button. One
+	// without them is a state image: each of its frames stands for one (integer) parameter value.
+	if(image.getFrameIndex (ButtonStateNames[ThemeElements::kNormal]) >= 0)
+		return getElementStateFrame (image);
+
+	IParameter* param = static_cast<SelectBox*> (owner)->getParameter ();
+	if(param == nullptr)
+		return 0;
+
+	if(!param->isEnabled ())
+	{
+		int disabledFrame = image.getFrameIndex (ThemeNames::kDisabled);
+		if(disabledFrame >= 0)
+			return disabledFrame;
+	}
+
+	return param->getValue ().asInt ();
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+void SelectBoxRenderer::updateValueBrush ()
+{
+	if(!owner->isEnabled ())
+		return; // the disabled text color has already been applied
+
+	SelectBox* selectBox = static_cast<SelectBox*> (owner);
+
+	if(UnknownPtr<IColorParam> colorParam = selectBox->getColorParam ())
+	{
+		Color colorParamColor (Colors::kTransparentBlack);
+		colorParam->getColor (colorParamColor);
+
+		// a SelectBox never takes over the color of the parameter itself
+		if(valueAtom.hasDefinedContrast ())
+			valueAtom.applyContrastColor (colorParamColor);
+
+		if(iconAtom.canRecolorImage () && iconAtom.hasDefinedContrast ())
+			iconAtom.applyContrastColor (colorParamColor);
+	}
+
+	Brush valueBrush (valueAtom.getBrush ());
+
+	#if LEGACY_STYLES_SUPPORTED
+	BEGIN_LEGACY_STYLES_ENABLED_BLOCK
+	// an explicit color for the current visual state overrides the text color
+	int visualState = selectBox->getVisualState ();
+	if(visualState > 0)
+	{
+		MutableCString colorName;
+		colorName.appendFormat (LegacyStyleID::kSelectBoxStateColorFormat, visualState);
+		valueBrush.setColor (visualStyle->getColor (colorName, valueBrush.getColor ()));
+	}
+	END_LEGACY_STYLES_ENABLED_BLOCK
+	#endif
+
+	valueAtom.setBrush (valueBrush);
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+void SelectBoxRenderer::checkFitTextSpace ()
+{
+	// With "fittext" the collapsed value text is a cache over the display area (see TextBox::modifyDisplayString ()),
+	// so it must be reevaluated whenever that area changes.
+	StyleRef style = owner->getStyle ();
+	if(valueAtom.isTextMultiline () || !style.isCustomStyle (Styles::kTextBoxAppearanceFitText))
+		return;
+
+	SelectBox* selectBox = static_cast<SelectBox*> (owner);
+	Coord displaySpace = style.isVertical () ? selectBox->getDisplayHeight () : selectBox->getDisplayWidth ();
+	if(displaySpace != fitTextSpace)
+	{
+		fitTextSpace = displaySpace;
+		valueAtom.needsTextLayoutRebuild (true);
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+void SelectBoxRenderer::updateAtoms ()
+{
+	if(owner == nullptr)
+		return;
+
+	SelectBox* selectBox = static_cast<SelectBox*> (owner);
+
+	if(updateTextModel (selectBox->getTextModel ()))
+		valueAtom.updateTextLayout ();
+
+	checkFitTextSpace (); // must happen before the text layout is built below
+
+	SuperClass::updateAtoms ();
+
+	// The popup button is pinned to an edge of the padded area and the value takes the remaining
+	// space, so icon and value are placed here instead of being aligned as one group.
+	StyleRef style = owner->getStyle ();
+	RectF totalRect (backgroundAtom.getSize ());
+	RectF paddedRect (totalRect);
+	paddedRect.left   += padding.left;
+	paddedRect.top    += padding.top;
+	paddedRect.right  -= padding.right;
+	paddedRect.bottom -= padding.bottom;
+
+	RectF valueRect (paddedRect);	// area left for the value text
+	RectF buttonRect (paddedRect);
+
+	if(!iconAtom.isHidden ())
+	{
+		RectF imageSize;
+		getImageSize (imageSize, iconAtom.getImage (), totalRect, buttonFill);
 
 		if(style.isVertical ())
 		{
-			if(!hideText)
-				buttonRect.top = r.bottom - imageSize.y;
+			if(hideText)
+				buttonRect = totalRect; // the button is centered within the whole control
+			else
+				buttonRect.top = buttonRect.bottom - imageSize.getHeight ();
 
-			r.bottom = buttonRect.top;
+			valueRect.bottom = buttonRect.top - iconValueSpacing;
 		}
 		else
 		{
-			if(hideText)
+			int buttonAlignH = iconAlignment.getAlignH ();
+			if(buttonAlignH == Alignment::kLeft) // pin to left
+				buttonRect.right = buttonRect.left + imageSize.getWidth ();
+			else if(buttonAlignH == Alignment::kRight || !(hideText || iconOverlay)) // pin to right
+				buttonRect.left = buttonRect.right - imageSize.getWidth ();
+			else if(hideText)
+				buttonRect = totalRect; // the button is centered within the whole control
+			// otherwise the popup button is centered within the padded area
+
+			if(!iconOverlay) // an overlay button doesn't take away space from the value
 			{
-				if(trailingButton)
-					buttonRect.left = r.right - imageSize.x;
-				else if(leadingButton)
-					buttonRect.right = imageSize.x;
-			}
-			else
-			{
-				if(leadingButton)
-					buttonRect.right = imageSize.x;
-				else if(buttonBeneath && !trailingButton)
-					; // don't modify "buttonrect"
+				if(buttonAlignH == Alignment::kLeft)
+					valueRect.left = buttonRect.right + iconValueSpacing;
 				else
-					buttonRect.left = r.right - imageSize.x;
-					
+					valueRect.right = buttonRect.left - iconValueSpacing;
 			}
-			
-			if(buttonBeneath)
-				; // don't modify "r"
-			else if(leadingButton)
-				r.left = buttonRect.right;
-			else
-				r.right = buttonRect.left;
 		}
 
-		Point imagePos = buttonRect.getLeftTop () + ((buttonRect.getSize () - imageSize) * .5f);
-		
-		Rect dst;
-		dst.setSize (imageSize);
-		dst.moveTo (imagePos);
-		
-		port.drawImage (button, imageSrc, dst);
+		RectF iconRect (imageSize);
+		iconRect.center (buttonRect);
+		snapToPixelGrid (iconRect, buttonRect);
+		iconAtom.setSize (iconRect);
 	}
 
-	if(!r.isEmpty ())
+	// an image provided by the parameter takes the place of the value text
+	bool hasValueImage = valueAtom.getImage () != nullptr;
+	valueAtom.isHidden ((!showValueText && !hasValueImage) || valueRect.isEmpty ());
+
+	#if LEGACY_STYLES_SUPPORTED
+	BEGIN_LEGACY_STYLES_ENABLED_BLOCK
+	// "fill.image" sizes the value image relative to the control and may reach beyond it, which the
+	// atom's proportional fitting cannot express
+	if(hasValueImage && valueImageFill > 0.f && !valueAtom.isHidden ())
 	{
-		if(!hideImage)
-		{
-
-			auto drawCentered = [&](IImage* image)
-			{
-				Rect imageSrc (0, 0, image->getWidth (), image->getHeight ());
-				Point imageSize (image->getWidth (), image->getHeight ());
-				Point imagePos;
-							
-				float imageResize = imageFillSize * ccl_min (r.getHeight (), r.getWidth ());
-				float resizeRatio = (imageResize > 0.f) ? (imageResize / ccl_max (imageSize.x, imageSize.y)) : 1;
-				imageSize *= resizeRatio;
-				imagePos = r.getLeftTop () + ((r.getSize () - imageSize) * .5f);
-				
-				Rect dst;
-				dst.setSize (imageSize);
-				dst.moveTo (imagePos);
-				
-				port.drawImage (image, imageSrc, dst);
-			};
-			
-			if(states)
-			{
-				// use param value as frame index
-				int frameIndex = 0;
-				if(IParameter* param = selectBox->getParameter ())
-				{
-					if(param->isEnabled ())
-						frameIndex = param->getValue ().asInt ();
-					else
-					{
-						frameIndex = states->getFrameIndex (ThemeNames::kDisabled);
-						if(frameIndex < 0)
-							frameIndex = param->getValue ().asInt ();
-					}
-				}
-				states->setCurrentFrame (frameIndex);
-				
-				if(states->getType () == IImage::kScalable)
-					port.drawImage (states, Rect (0, 0, states->getWidth (), states->getHeight ()), r);
-				else
-				{
-					IImage* modifiedState = states;
-						
-					if((drawAsOnState && contextColorOn.getAlphaF () != 0))
-						modifiedState = ModifiedImageCache::instance ().lookup (states, contextColorOn);
-					else if(contextColor.getAlphaF () != 0)
-						modifiedState = ModifiedImageCache::instance ().lookup (states, contextColor);
-				
-					drawCentered (modifiedState);
-				}
-			}
-			else if(UnknownPtr<IImageProvider> imageProvider = selectBox->getParameter ())
-			{
-				if(IImage* image = imageProvider->getImage ())
-				{
-					IImage* modifiedImage = nullptr;
-					
-					if((drawAsOnState && contextColorOn.getAlphaF () != 0))
-						modifiedImage = ModifiedImageCache::instance ().lookup (image, contextColorOn);
-					else if(contextColor.getAlphaF () != 0)
-						modifiedImage = ModifiedImageCache::instance ().lookup (image, contextColor);
-
-					drawCentered (modifiedImage ? modifiedImage : image);
-					hideText = true;
-				}
-			}
-		}
-
-		r.left   += padding.left;
-		r.right  -= padding.right;
-		r.top    += padding.top;
-		r.bottom -= padding.bottom;
-
-		if(selectBox->isFocused () && !style.isCustomStyle (Styles::kSelectBoxAppearanceHideFocus))
-		{
-			Rect focusRect;
-			selectBox->getClientRect (focusRect);
-			
-			if(background && background->getFrameIndex (ButtonStateNames[ThemeElements::kFocused]) >= 0) // draw focus overlay if available
-			{
-				IImage::Selector (background, ButtonStateNames[ThemeElements::kFocused]);
-				port.drawImage (background, Rect (0, 0, background->getWidth (), background->getHeight ()), focusRect);
-			}
-		}
-
-		StringRef text = selectBox->getText ();
-		if(!hideText && !text.isEmpty () && !(isOutOfRange && !style.isCustomStyle (Styles::kSelectBoxAppearanceTitleAsText)))
-		{
-			Font font (visualStyle->getTextFont ().zoom (selectBox->getZoomFactor ()));
-						
-			if(style.isCustomStyle (Styles::kTextBoxAppearanceScaleText))
-				textScaler.scaleTextFont (font, r, text);
-
-			SolidBrush textBrush (textColor);
-			
-			bool buttonMouseOver = ThemeElements::kMouseOver == selectBox->getThemeElementState ();
-			if(buttonMouseOver)
-				textBrush.setColor (textColorMouseOver);
-			
-			if(drawAsOnState)
-				textBrush.setColor (textColorOn);
-			
-			UnknownPtr<IColorParam> colorParam = selectBox->getColorParam ();
-			if(needsBrightText (colorParam))
-				textBrush.setColor (textColorBright);
-				
-			int state = selectBox->getVisualState ();
-			if(state > 0)
-			{
-				MutableCString colorName;
-				colorName.appendFormat ("state%d", state);
-				textBrush.setColor (visualStyle->getColor (colorName, textColor));
-			}
-
-			if(!selectBox->isEnabled ())
-				textBrush.setColor (textColorDisabled);
-
-			if(style.isVertical ())
-			{
-				Transform t;
-				t.translate ((float)r.left, (float)r.bottom);
-				t.rotate (Math::degreesToRad (270.f));
-				Rect r2 (0, 0, r.getHeight (), r.getWidth ());
-				port.saveState ();
-				port.addTransform (t);
-				port.drawString (r2, text, font, textBrush, visualStyle->getTextAlignment ());
-				port.restoreState ();
-			}
-			else
-			{
-				port.drawString (r, text, font, textBrush, visualStyle->getTextAlignment ());
-			}
-		}
+		RectF imageRect;
+		getImageSize (imageRect, valueAtom.getImage (), totalRect, valueImageFill);
+		imageRect.center (valueRect);
+		valueRect = imageRect;
 	}
+	END_LEGACY_STYLES_ENABLED_BLOCK
+	#endif
+
+	valueAtom.setSize (valueRect);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool SelectBoxRenderer::needsBrightText (IColorParam* colorParam) const
+void SelectBoxRenderer::draw (const UpdateRgn& updateRgn)
 {
-	if(colorParam)
-	{
-		Color colorParamColor;
-		colorParam->getColor (colorParamColor);
-		return colorParamColor.getLuminance () < textColorThreshold;
-	}
-	
-	return false;
+	SuperClass::draw (updateRgn);
+
+	StyleRef style = owner->getStyle ();
+	if(!owner->isFocused () || style.isCustomStyle (Styles::kSelectBoxAppearanceHideFocus))
+		return;
+
+	Image* background = backgroundAtom.getImage ();
+	if(background == nullptr || backgroundAtom.isHidden ())
+		return;
+
+	int focusFrame = background->getFrameIndex (ThemeNames::kFocused);
+	if(focusFrame < 0) // draw focus overlay if available
+		return;
+
+	background->setCurrentFrame (focusFrame);
+
+	GraphicsPort port (owner);
+	Rect src (0, 0, background->getWidth (), background->getHeight ());
+	port.drawImage (background, src, rectFToInt (backgroundAtom.getSize ()));
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-int SelectBoxRenderer::hitTest (View* view, const Point& loc, Point* clickOffset)
+bool SelectBoxRenderer::isOnState () const
+{
+	if(owner == nullptr || !owner->getStyle ().isCustomStyle (Styles::kSelectBoxAppearanceOffState))
+		return false;
+
+	IParameter* param = static_cast<SelectBox*> (owner)->getParameter ();
+	return param ? param->getValue ().asBool () : false;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+int SelectBoxRenderer::getElementStateFrame (const Image& image) const
+{
+	int elementState = owner->getThemeElementState ();
+	if(image.getFrameIndex (ButtonStateNames[elementState]) < 0)
+		elementState = ThemeElements::kNormal;
+
+	if(isOnState ())
+	{
+		int onStateFrame = image.getFrameIndex (ButtonStateNames[elementState + ThemeElements::kNumElementStates]);
+		if(onStateFrame >= 0)
+			return onStateFrame;
+	}
+
+	int frame = image.getFrameIndex (ButtonStateNames[elementState]);
+	return frame < 0 ? 0 : frame;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+int SelectBoxRenderer::hitTest (PointRef where, Point* clickOffset)
 {
 	Rect r;
 
-	getPartRect (view, SelectBox::kPartContentArea, r);
-	if(r.pointInside (loc))
+	getPartRect (r, SelectBox::kPartContentArea);
+	if(r.pointInside (where))
 	{
 		if(clickOffset)
 		{
-			clickOffset->x = loc.x - r.left;
-			clickOffset->y = loc.y - r.top;
+			clickOffset->x = where.x - r.left;
+			clickOffset->y = where.y - r.top;
 		}
 		return SelectBox::kPartContentArea;
 	}
 
-	getPartRect (view, SelectBox::kPartDropDownButton, r);
-	if(r.pointInside (loc))
+	getPartRect (r, SelectBox::kPartDropDownButton);
+	if(r.pointInside (where))
 	{
 		if(clickOffset)
 		{
-			clickOffset->x = loc.x - r.left;
-			clickOffset->y = loc.y - r.top;
+			clickOffset->x = where.x - r.left;
+			clickOffset->y = where.y - r.top;
 		}
 		return SelectBox::kPartDropDownButton;
 	}
@@ -405,32 +489,40 @@ int SelectBoxRenderer::hitTest (View* view, const Point& loc, Point* clickOffset
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool SelectBoxRenderer::getPartRect (const View* view, int partCode, CCL::Rect& r)
+bool SelectBoxRenderer::getPartRect (Rect& r, int partCode)
 {
-	if(initialized == false)
-		initialize (view->getStyle (), view);
-		
+	if(owner == nullptr)
+		return false;
+
+	if(styleConditionsDirty)
+		AtomRenderer::updateAtoms (); // apply the visual style only - measuring the text here could recurse via the fit text handling
+
+	Image* button = hideButton ? nullptr : iconAtom.getImage ();
+
 	if(partCode == SelectBox::kPartContentArea)
 	{
-		if(view->getStyle ().isCustomStyle (Styles::kSelectBoxAppearanceHideText))
+		if(hideText)
 			return false;
 
-		view->getClientRect (r);
-		if(button && !hideButton)
+		owner->getClientRect (r);
+		if(button)
 		{
-			if(view->getStyle ().isVertical ())
-				r.bottom -= button->getHeight ();
-			else if(leadingButton)
-				r.left += button->getWidth ();
+			// "iconvaluespacing" is kept between the popup button and the value, so it is not part of
+			// the content area either - an overlay button takes no space, hence no spacing (see updateAtoms ())
+			Coord spacing = iconOverlay ? 0 : iconValueSpacing;
+			if(owner->getStyle ().isVertical ())
+				r.bottom -= button->getHeight () + iconValueSpacing;
+			else if(iconAlignment.getAlignH () == Alignment::kLeft)
+				r.left += button->getWidth () + spacing;
 			else
-				r.right -= button->getWidth ();
+				r.right -= button->getWidth () + spacing;
 		}
 		r.contract (1);
 		return true;
 	}
 	else if(partCode == SelectBox::kPartDisplayArea)
 	{
-		if(getPartRect (view, SelectBox::kPartContentArea, r))
+		if(getPartRect (r, SelectBox::kPartContentArea))
 		{
 			r.left += padding.left;
 			r.top += padding.top;
@@ -442,15 +534,15 @@ bool SelectBoxRenderer::getPartRect (const View* view, int partCode, CCL::Rect& 
 	}
 	else if(partCode == SelectBox::kPartDropDownButton)
 	{
-		if(!button || hideButton)
+		if(button == nullptr)
 			return false;
 
-		view->getClientRect (r);
-		if(!view->getStyle ().isCustomStyle (Styles::kSelectBoxAppearanceHideText))
+		owner->getClientRect (r);
+		if(!hideText)
 		{
-			if(view->getStyle ().isVertical ())
+			if(owner->getStyle ().isVertical ())
 				r.top = r.bottom - button->getHeight ();
-			else if(leadingButton)
+			else if(iconAlignment.getAlignH () == Alignment::kLeft)
 				r.right -= r.left + button->getWidth ();
 			else
 				r.left = r.right - button->getWidth ();

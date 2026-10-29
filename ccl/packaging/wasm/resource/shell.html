@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<!--
+	This file is part of Crystal Class Library (R)
+	Copyright (c) 2026 CCL Software Licensing GmbH.
+	All Rights Reserved.
+
+	Licensed for use under either:
+	 1. a Commercial License provided by CCL Software Licensing GmbH, or
+	 2. GNU Affero General Public License v3.0 (AGPLv3).
+
+	You must choose and comply with one of the above licensing options.
+	For more information, please visit ccl.dev.
+
+	Filename    : shell.html
+	Description : CCL WebAssembly Application Shell
+
+	The startup overlay below is deliberately self-contained: it has to paint before anything else
+	exists. The application stylesheet (styles/ccl.css) is read out of the WebAssembly file system
+	by CCL.initStyles, so it is only available once the runtime is already up - which is the very
+	period this overlay covers.
+
+	Applications replace this whole file through the VENDOR_HTML_SHELL_FILE CMake variable to get
+	their own branding. Everything that reports into the overlay does so through optional calls
+	(CCL.startup?.*), so a replacement shell does not have to provide any of it.
+-->
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+		<style>
+			:root
+			{
+				--cclStartupBackground: hsl(212,0%,96%);
+				--cclStartupForeground: hsl(212,0%,35%);
+				--cclStartupTrack: hsl(212,0%,86%);
+				--cclStartupAccent: hsl(212,0%,45%);
+				--cclStartupError: hsl(0,65%,42%);
+			}
+
+			@media (prefers-color-scheme: dark)
+			{
+				:root
+				{
+					--cclStartupBackground: hsl(212,0%,12%);
+					--cclStartupForeground: hsl(212,0%,70%);
+					--cclStartupTrack: hsl(212,0%,22%);
+					--cclStartupAccent: hsl(212,0%,75%);
+					--cclStartupError: hsl(0,75%,68%);
+				}
+			}
+
+			#cclStartup
+			{
+				position: fixed;
+				inset: 0;
+				z-index: 1000;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				background: var(--cclStartupBackground);
+				color: var(--cclStartupForeground);
+				font: 13px/1.6 system-ui, sans-serif;
+				opacity: 1;
+				transition: opacity 250ms ease-out;
+			}
+			#cclStartup.cclStartupHidden
+			{
+				opacity: 0;
+				pointer-events: none;
+			}
+
+			/* The panel fades in with a short delay so that a start served entirely from cache
+			   does not flash a spinner. The background is painted immediately either way. */
+			.cclStartupPanel
+			{
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				gap: 14px;
+				text-align: center;
+				user-select: none;
+				opacity: 0;
+				transition: opacity 250ms ease-out;
+			}
+			#cclStartup.cclStartupVisible .cclStartupPanel
+			{
+				opacity: 1;
+			}
+
+			.cclStartupSpinner
+			{
+				width: 26px;
+				height: 26px;
+				box-sizing: border-box;
+				border: 2px solid var(--cclStartupTrack);
+				border-top-color: var(--cclStartupAccent);
+				border-radius: 50%;
+				animation: cclStartupSpin 800ms linear infinite;
+			}
+
+			@keyframes cclStartupSpin
+			{
+				to { transform: rotate(360deg); }
+			}
+
+			.cclStartupTrack
+			{
+				width: 220px;
+				height: 3px;
+				border-radius: 2px;
+				background: var(--cclStartupTrack);
+				overflow: hidden;
+			}
+
+			#cclStartupBar
+			{
+				width: 0;
+				height: 100%;
+				border-radius: 2px;
+				background: var(--cclStartupAccent);
+				transition: width 200ms ease-out;
+			}
+
+			#cclStartupDetail
+			{
+				min-height: 1.6em; /* reserve the line so the panel doesn't jump */
+				max-width: 32em;
+				font-size: 11px;
+				opacity: 0.7;
+				user-select: text;
+			}
+
+			#cclStartup.cclStartupFailed .cclStartupSpinner,
+			#cclStartup.cclStartupFailed .cclStartupTrack
+			{
+				display: none;
+			}
+			#cclStartup.cclStartupFailed #cclStartupStatus
+			{
+				color: var(--cclStartupError);
+			}
+
+			@media (prefers-reduced-motion: reduce)
+			{
+				.cclStartupSpinner
+				{
+					animation-duration: 2400ms;
+				}
+				#cclStartup,
+				.cclStartupPanel,
+				#cclStartupBar
+				{
+					transition: none;
+				}
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="cclStartup" role="status" aria-live="polite">
+			<div class="cclStartupPanel">
+				<div id="cclStartupSpinner" class="cclStartupSpinner"></div>
+				<div id="cclStartupTrack" class="cclStartupTrack"><div id="cclStartupBar"></div></div>
+				<div id="cclStartupStatus">Loading…</div>
+				<div id="cclStartupDetail"></div>
+			</div>
+		</div>
+
+		<script>
+			var CCL = CCL || {};
+			var Module = Module || {};
+
+			//////////////////////////////////////////////////////////////////////////////////////
+			// Startup overlay
+			//////////////////////////////////////////////////////////////////////////////////////
+
+			CCL.startup = {
+				/** Slices of the progress bar, in the order they are reached. The weights are rough
+				estimates of wall clock time for a large application: the preloaded data package is
+				usually the biggest download, and the plug-in preload is a long serial phase. */
+				phases: {
+					download: { from: 0.00, to: 0.70, text: 'Downloading…' },
+					prepare:  { from: 0.70, to: 0.80, text: 'Preparing…' },
+					plugins:  { from: 0.80, to: 0.97, text: 'Loading plug-ins…' },
+					start:    { from: 0.97, to: 1.00, text: 'Starting…' }
+				},
+
+				element: document.getElementById ('cclStartup'),
+				barElement: document.getElementById ('cclStartupBar'),
+				statusElement: document.getElementById ('cclStartupStatus'),
+				detailElement: document.getElementById ('cclStartupDetail'),
+
+				progress: 0,
+				currentPhase: null,
+				dependencyTotal: 0,
+				failed: false,
+				hidden: false,
+				observer: null
+			};
+
+			CCL.startup.setElementText = function (element, text)
+			{
+				if(element && element.textContent !== text)
+					element.textContent = text;
+			};
+
+			CCL.startup.setProgress = function (value)
+			{
+				// Never move backwards: the wasm module and the data package download in parallel
+				// and every report is best effort, so a monotonic bar is the only honest
+				// presentation. This also absorbs a fraction that overshoots (see setStatus).
+				if(!(value > this.progress))
+					return;
+
+				this.progress = Math.min (value, 1);
+				if(this.barElement)
+					this.barElement.style.width = (this.progress * 100).toFixed (1) + '%';
+			};
+
+			/**
+			* Report progress within a startup phase
+			* @param {string} id  - phase id, see CCL.startup.phases
+			* @param {number} fraction  - [optional] progress within the phase, 0..1
+			* @param {string} detail  - [optional] additional text shown below the phase name
+			*/
+			CCL.startup.setPhase = function (id, fraction, detail)
+			{
+				if(this.hidden || this.failed)
+					return;
+
+				const phase = this.phases[id];
+				if(phase)
+				{
+					if(id !== this.currentPhase)
+					{
+						this.currentPhase = id;
+						this.setElementText (this.detailElement, '');
+					}
+
+					const known = typeof fraction === 'number' && isFinite (fraction);
+					const clamped = known ? Math.min (Math.max (fraction, 0), 1) : 0;
+					this.setProgress (phase.from + (phase.to - phase.from) * clamped);
+					this.setElementText (this.statusElement, phase.text);
+				}
+
+				if(typeof detail === 'string')
+					this.setElementText (this.detailElement, detail);
+			};
+
+			CCL.startup.describe = function (detail)
+			{
+				if(!detail)
+					return '';
+				if(typeof detail === 'string')
+					return detail;
+				if(detail.message)
+					return String (detail.message);
+				return String (detail);
+			};
+
+			/**
+			* Report a startup failure. Only the first one is shown
+			* @param {string} message  - user facing message
+			* @param {*} detail  - [optional] Error, string or anything printable
+			*/
+			CCL.startup.fail = function (message, detail)
+			{
+				if(this.failed || this.hidden)
+					return;
+
+				this.failed = true;
+				console.error ('[CCL] Startup failed:', message, detail);
+
+				if(!this.element)
+					return;
+
+				this.element.classList.add ('cclStartupFailed');
+				this.element.setAttribute ('role', 'alert');
+				this.setElementText (this.statusElement, message);
+				this.setElementText (this.detailElement, this.describe (detail));
+				this.reveal ();
+			};
+
+			CCL.startup.reveal = function ()
+			{
+				if(this.element && !this.hidden)
+					this.element.classList.add ('cclStartupVisible');
+			};
+
+			CCL.startup.hide = function ()
+			{
+				if(this.hidden)
+					return;
+
+				this.hidden = true;
+
+				if(this.observer)
+				{
+					this.observer.disconnect ();
+					this.observer = null;
+				}
+
+				const element = this.element;
+				if(!element)
+					return;
+
+				// Nothing was ever shown - drop the overlay right away instead of fading nothing.
+				if(!element.classList.contains ('cclStartupVisible'))
+				{
+					element.remove ();
+					return;
+				}
+
+				// Reveal the application even if a failure was reported earlier
+				element.classList.add ('cclStartupHidden');
+				setTimeout (() => element.remove (), 400);
+			};
+
+			/**
+			* Hide the overlay once the application has a window on screen.
+			*/
+			CCL.startup.watchForFirstWindow = function ()
+			{
+				if(typeof MutationObserver === 'undefined')
+					return;
+
+				this.observer = new MutationObserver (() =>
+				{
+					if(!document.querySelector ('body > .window'))
+						return;
+
+					// Give the application a chance to paint into the canvas before revealing it.
+					requestAnimationFrame (() => requestAnimationFrame (() => CCL.startup.hide ()));
+				});
+				this.observer.observe (document.body, { childList: true });
+			};
+
+			CCL.startup.watchForFirstWindow ();
+			setTimeout (() => CCL.startup.reveal (), 150);
+
+			//////////////////////////////////////////////////////////////////////////////////////
+			// Emscripten runtime hooks
+			//////////////////////////////////////////////////////////////////////////////////////
+
+			Module.setStatus = function (text)
+			{
+				// The generated runtime reports byte accurate progress for the preloaded data
+				// package in Module.dataFileDownloads.
+				// Note that 'total' comes from the Content-Length header, which is the *compressed*
+				// size when the package is served with Content-Encoding, while 'loaded' counts
+				// decompressed bytes.
+				const downloads = Module.dataFileDownloads;
+				if(downloads)
+				{
+					let loaded = 0;
+					let total = 0;
+					for(const download of Object.values (downloads))
+					{
+						loaded += download.loaded;
+						total += download.total;
+					}
+					CCL.startup.setPhase ('download', total > 0 ? loaded / total : null);
+				}
+
+			};
+
+			Module.monitorRunDependencies = function (left)
+			{
+				// Coarse counter over the runtime's own startup dependencies: wasm instantiation,
+				// the pthread worker pool and the data package.
+				CCL.startup.dependencyTotal = Math.max (CCL.startup.dependencyTotal, left);
+
+				const total = CCL.startup.dependencyTotal;
+				CCL.startup.setPhase ('prepare', total > 0 ? (total - left) / total : 1);
+			};
+
+			Module.onAbort = function (what)
+			{
+				CCL.startup.fail ('The application stopped unexpectedly.', what);
+			};
+
+			// While the overlay is still up there is no application yet that could report an error,
+			// so anything escaping to the page would otherwise leave a permanently blank page.
+			window.addEventListener ('error', (event) =>
+			{
+				if(!CCL.startup.hidden)
+					CCL.startup.fail ('The application could not be started.', event.error || event.message);
+			});
+
+			window.addEventListener ('unhandledrejection', (event) =>
+			{
+				if(!CCL.startup.hidden)
+					CCL.startup.fail ('The application could not be started.', event.reason);
+			});
+		</script>
+
+		{{{ SCRIPT }}}
+	</body>
+</html>

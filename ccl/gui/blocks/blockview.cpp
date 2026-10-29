@@ -352,9 +352,10 @@ DEFINE_CLASS_UID (BlockView, 0xf293110d, 0x125c, 0x44a5, 0x95, 0x55, 0xe9, 0x99,
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-BEGIN_VISUALSTYLE_CLASS (BlockView, VisualStyle, "BlockViewStyle")
-	ADD_VISUALSTYLE_COLOR  ("selectioncolor") ///< background color for selected ranges
-END_VISUALSTYLE_CLASS (BlockView)
+DEFINE_TYPELIB_ENTRY_WITH_PARENT (BlockView, VisualStyle, "BlockViewStyle", VISUALSTYLES_TYPELIB)
+BEGIN_TYPELIB_MEMBERS (BlockView)
+	ADD_TYPELIB_MEMBER_COLOR ("selectioncolor") ///< background color for selected ranges
+END_TYPELIB_MEMBERS (BlockView)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -555,7 +556,7 @@ BlockLayoutNode* BlockView::findLayoutNodeAndTextPos (int& textPosition, PointRe
 		{
 			PointF p (pointIntToF (where) - scrollPosition);
 			node->rootToLocal (p);
-			Coord textMargin = getVisualStyle ().getMetric<float> ("text.margin", 0);
+			Coord textMargin = getVisualStyle ().getMetric<float> (StyleID::kPadding, 0);
 			PointF textOffset (-textMargin, -textMargin);
 			p.offset (textOffset);
 
@@ -595,7 +596,7 @@ void BlockView::updateSelection ()
 	// collect selection rectangles from layout nodes
 	BlockSelection::Iterator iterator (*selection);
 	BlockSelection::TextRange textRange;
-	CoordF textMargin = getVisualStyle ().getMetric<float> ("text.margin", 0.f);
+	CoordF textMargin = getVisualStyle ().getMetric<float> (StyleID::kPadding, 0.f);
 	PointF textOffset (textMargin, textMargin);
 	while(const BlockLayoutNode* layoutNode = iterator.nextBlockRange (textRange, *layout))
 	{

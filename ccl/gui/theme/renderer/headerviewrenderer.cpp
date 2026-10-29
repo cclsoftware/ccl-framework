@@ -12,7 +12,7 @@
 // For more information, please visit ccl.dev.
 //
 // Filename    : ccl/gui/theme/renderer/headerviewrenderer.cpp
-// Description : Control Renderer
+// Description : HeaderView Renderer
 //
 //************************************************************************************************
 
@@ -26,15 +26,16 @@ using namespace CCL;
 The "backgound" image is draw in each column rectangle, and the column title is drawn in top. */
 //************************************************************************************************
 
-BEGIN_VISUALSTYLE_CLASS (HeaderView, VisualStyle, "HeaderViewStyle")
-	ADD_VISUALSTYLE_METRIC ("spacing")			///< space between two columns
-	ADD_VISUALSTYLE_COLOR ("backcolor.spacing")	///< color for the space between two columns
-END_VISUALSTYLE_CLASS (HeaderView)
+DEFINE_TYPELIB_ENTRY_WITH_PARENT (HeaderView, VisualStyle, "HeaderViewStyle", VISUALSTYLES_TYPELIB)
+BEGIN_TYPELIB_MEMBERS (HeaderView)
+	ADD_TYPELIB_MEMBER_METRIC ("spacing") ///< space between two columns
+	ADD_TYPELIB_MEMBER_COLOR ("backcolor.spacing") ///< color for the space between two columns
+END_TYPELIB_MEMBERS (HeaderView)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-HeaderViewRenderer::HeaderViewRenderer (VisualStyle* visualStyle)
-:	ThemeRenderer (visualStyle)
+HeaderViewRenderer::HeaderViewRenderer (VisualStyle* visualStyle, View* owner)
+: ThemeRenderer (visualStyle, owner)
 {
 	image = visualStyle->getBackgroundImage ();
 	columnSpacing = visualStyle->getMetric ("spacing", 0);
@@ -44,11 +45,10 @@ HeaderViewRenderer::HeaderViewRenderer (VisualStyle* visualStyle)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void HeaderViewRenderer::draw (View* view, const UpdateRgn& updateRgn)
+void HeaderViewRenderer::draw (const UpdateRgn& updateRgn)
 {	
-	GraphicsPort port (view);
-	// Theme& theme = view->getTheme ();
-	HeaderView* headerView = (HeaderView*)view;
+	GraphicsPort port (owner);
+	HeaderView* headerView = static_cast<HeaderView*> (owner);
 	ColumnHeaderList* columnList = headerView->getColumnHeaders ();
 
 	IImage::Selector (image, IImage::kNormal);
@@ -65,7 +65,7 @@ void HeaderViewRenderer::draw (View* view, const UpdateRgn& updateRgn)
 				continue;
 		
 			// draw item background
-			Rect r (0, 0, c->getWidth () - columnSpacing, view->getHeight ());
+			Rect r (0, 0, c->getWidth () - columnSpacing, owner->getHeight ());
 			r.offset (left);
 
 			drawHeader (port, r, *c, textBrush, font);
@@ -78,12 +78,12 @@ void HeaderViewRenderer::draw (View* view, const UpdateRgn& updateRgn)
 		}
 
 		// fill empty space
-		if(left < view->getWidth ()) 
+		if(left < owner->getWidth ()) 
 		{
 			Rect r;
 			r.left = left;
-			r.right = view->getWidth ();
-			r.bottom = view->getHeight ();
+			r.right = owner->getWidth ();
+			r.bottom = owner->getHeight ();
 			if(image)
 			{
 				IImage::Selector (image, ThemeNames::kNormal);
@@ -96,7 +96,7 @@ void HeaderViewRenderer::draw (View* view, const UpdateRgn& updateRgn)
 	else
 	{
 		Rect r;
-		view->getClientRect (r);
+		owner->getClientRect (r);
 		if(image)
 		{
 			IImage::Selector (image, ThemeNames::kNormal);
@@ -109,7 +109,7 @@ void HeaderViewRenderer::draw (View* view, const UpdateRgn& updateRgn)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void HeaderViewRenderer::drawHeader (View* view, GraphicsDevice& port, RectRef r, StringRef label, BrushRef textBrush, FontRef font)
+void HeaderViewRenderer::drawHeader (GraphicsDevice& port, RectRef r, StringRef label, BrushRef textBrush, FontRef font)
 {
 	if(image)
 	{
@@ -175,21 +175,20 @@ void HeaderViewRenderer::drawHeader (IGraphics& graphics, RectRef headerRect, Co
 			p[2] = Point (iconRect.getCenter ().x, iconRect.bottom);
 		}
 
-		//AntiAliasSetter smoother (graphics);
 		graphics.fillTriangle (p, textBrush);
 	}
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-int HeaderViewRenderer::hitTest (View* view, const Point& loc, Point* clickOffset)
+int HeaderViewRenderer::hitTest (PointRef where, Point* clickOffset)
 {
 	return 0;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool HeaderViewRenderer::getPartRect (const View* view, int partCode, Rect& rect)
+bool HeaderViewRenderer::getPartRect (Rect& rect, int partCode)
 {
 	return false;
 }

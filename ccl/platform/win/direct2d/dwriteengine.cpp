@@ -768,11 +768,6 @@ tresult CCL_API DWTextLayout::construct (StringRef text, CoordF width, CoordF he
 	//if(lineMode == kSingleLine)
 	//	DWInterop::setCharacterTrimming (textFormat, true);
 
-	// when layout is used to measure how many lines are needed in a multiline layout for a given width, 
-	// sometimes the height is too small. This seems to fix it:
-	if(wordWrap && width > 1)
-		width--; 
-
 	setAlignment (format.getAlignment ());
 	layout = DWriteEngine::instance ().createTextLayoutWithFontAttributes (text, textFormat, width, height, font);
 	if(layout)
@@ -798,11 +793,6 @@ tresult CCL_API DWTextLayout::resize (Coord width, Coord height)
 
 tresult CCL_API DWTextLayout::resize (CoordF width, CoordF height)
 {
-	// when layout is used to measure how many lines are needed in a multiline layout for a given width, 
-	// sometimes the height is too small. This seems to fix it:
-	if(wordWrap && width > 1)
-		width--;
-
 	if(layout)
 	{
 		HRESULT hr = layout->SetMaxWidth (width);
@@ -920,6 +910,41 @@ tresult CCL_API DWTextLayout::setBaselineOffset (const Range& range, float offse
 {
 	CCL_NOT_IMPL ("Baseline offset must be handled by derived class!\n")
 	return kResultNotImplemented;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+tresult CCL_API DWTextLayout::clearFormatting ()
+{
+	ASSERT (layout.isValid ())
+	if(!layout)
+		return kResultUnexpected;
+
+	DWRITE_TEXT_RANGE textRange = {0, (UINT32)text.length ()};
+
+	TCHAR familyName[64] = {};
+	layout->GetFontFamilyName (familyName, 64);
+	layout->SetFontFamilyName (familyName, textRange);
+	layout->SetFontWeight (layout->GetFontWeight (), textRange);
+	layout->SetFontStyle (layout->GetFontStyle (), textRange);
+	layout->SetFontStretch (layout->GetFontStretch (), textRange);
+	layout->SetFontSize (layout->GetFontSize (), textRange);
+	layout->SetUnderline (font.isUnderline (), textRange);
+	layout->SetStrikethrough (font.isStrikeout (), textRange);
+
+	ComPtr<IDWriteTextLayout1> textLayout1;
+	if(SUCCEEDED (layout.as (textLayout1)))
+	{
+		textLayout1->SetCharacterSpacing (0.f, font.getSpacing (), 0.f, textRange);
+
+		float lineSpacing = font.getLineSpacing ();
+		if(lineSpacing != 1.f)
+			textLayout1->SetLineSpacing (DWRITE_LINE_SPACING_METHOD_PROPORTIONAL, lineSpacing, kLineSpacingBaselineFactor * lineSpacing);
+		else
+			textLayout1->SetLineSpacing (DWRITE_LINE_SPACING_METHOD_DEFAULT, 0.f, 0.f);
+	}
+
+	return kResultOk;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1048,11 +1073,17 @@ tresult CCL_API DWTextLayout::hitTest (int& textIndex, PointF& position) const
 	BOOL isTrailingHit = false;
 	BOOL isInside = false;
 	HRESULT hr = layout->HitTestPoint (position.x, position.y, &isTrailingHit, &isInside, &hitTestMetrics);
-	textIndex = hitTestMetrics.textPosition;
-	position.x = hitTestMetrics.left;
-	position.y = hitTestMetrics.top;
-	if(isTrailingHit)
-		textIndex += 1;
+
+	if(!isInside && hitTestMetrics.top > position.y)
+		textIndex = 0;
+	else
+	{
+		textIndex = hitTestMetrics.textPosition;
+		position.x = hitTestMetrics.left;
+		position.y = hitTestMetrics.top;
+		if(isTrailingHit && (isInside || textIndex == text.length () - 1))
+			textIndex += 1;
+	}
 
 	return static_cast<tresult> (hr);
 }
@@ -1112,11 +1143,14 @@ tresult CCL_API DWTextLayout::getTextBounds (IMutableRegion& bounds, const Range
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-tresult CCL_API DWTextLayout::getLineRange (Range& range, int textIndex) const
+tresult CCL_API DWTextLayout::getLineRange (Range& range, int textIndex, tbool includeNewline) const
 {
 	ASSERT (layout.isValid ())
 	if(!layout)
 		return kResultUnexpected;
+
+	if(textIndex < 0 || textIndex > text.length ())
+		return kResultInvalidArgument;
 
 	UINT32 count = 0;
 	HRESULT hr = layout->GetLineMetrics (nullptr, 0, &count);
@@ -1132,18 +1166,20 @@ tresult CCL_API DWTextLayout::getLineRange (Range& range, int textIndex) const
 	UINT32 currentTextPosition = 0;
 	for(UINT32 i = 0; i < count; i++)
 	{
-		if(currentTextPosition + metrics[i].length > textIndex)
+		range.start = currentTextPosition;
+		range.length = metrics[i].length;
+		if(!includeNewline)
 		{
-			range.start = currentTextPosition;
-			range.length = metrics[i].length;
-			return kResultOk;
+			if(metrics[i].newlineLength > 0)
+				range.length -= metrics[i].newlineLength;
+			else if(wordWrap && metrics[i].trailingWhitespaceLength > 0)
+				range.length -= 1;
 		}
+		if(currentTextPosition + metrics[i].length > textIndex)
+			return kResultOk;
 		currentTextPosition += metrics[i].length;
 	}
-
-	range.start = currentTextPosition;
-	range.length = 0;
-	return kResultOk;
+	return currentTextPosition >= textIndex ? kResultOk : kResultFailed;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////

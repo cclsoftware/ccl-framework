@@ -25,11 +25,10 @@ using namespace CCL;
 /** Drawn like an EditBox. */
 //************************************************************************************************
 
-BEGIN_VISUALSTYLE_CLASS (ValueBox, EditBox, "ValueBoxStyle")
-END_VISUALSTYLE_CLASS (ValueBox)
+DEFINE_TYPELIB_ENTRY_WITH_PARENT (ValueBox, EditBox, "ValueBoxStyle", VISUALSTYLES_TYPELIB)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-ValueBoxRenderer::ValueBoxRenderer (VisualStyle* visualStyle)
-: EditBoxRenderer (visualStyle)
+ValueBoxRenderer::ValueBoxRenderer (VisualStyle* visualStyle, View* owner)
+: EditBoxRenderer (visualStyle, owner)
 {}

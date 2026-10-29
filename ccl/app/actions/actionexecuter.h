@@ -38,6 +38,7 @@ class ActionExecuter: public Object,
 public:
 	DECLARE_CLASS (ActionExecuter, Object)
 	DECLARE_METHOD_NAMES (ActionExecuter)
+	DECLARE_PROPERTY_NAMES (ActionExecuter)
 
 	ActionExecuter (IActionContext* context = nullptr);
 	~ActionExecuter ();

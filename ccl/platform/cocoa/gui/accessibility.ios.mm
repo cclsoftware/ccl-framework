@@ -167,7 +167,12 @@ using namespace iOS;
 	if(!provider)
 		return nil;
 
-	// this is not yet defined in IAccessibilityProvider
+	if(provider->getEffectiveProvider ().getElementRole () == AccessibilityElementRole::kTextField)
+	{
+		String hint;
+		AccessibilityProvider::getTextInputHint (hint);
+		return [hint.createNativeString<NSString*> () autorelease];
+	}
 
 	return nil;
 }
@@ -179,7 +184,7 @@ using namespace iOS;
 	if(!provider)
 		return nil;
 
-	if(UnknownPtr<CCL::IAccessibilityValueProvider> valueProvider = provider->getValueProvider ().asUnknown ())
+	if(UnknownPtr<IAccessibilityValueProvider> valueProvider = provider->getValueProvider ().asUnknown ())
 	{
 		String value;
 		tresult result = valueProvider->getValue (value);
@@ -187,7 +192,7 @@ using namespace iOS;
 			return [value.createNativeString<NSString*> () autorelease];
 	}
 
-	if(UnknownPtr<CCL::IAccessibilityToggleProvider> toggleProvider = provider->getEffectiveProvider ().asUnknown ())
+	if(UnknownPtr<IAccessibilityToggleProvider> toggleProvider = provider->getEffectiveProvider ().asUnknown ())
 	{
 		String label;
 		AccessibilityProvider::getToggleText (label, toggleProvider->isToggleOn ());
@@ -219,7 +224,7 @@ using namespace iOS;
 	if(state & AccessibilityElementState::kHasFocus) // is this the correct mapping?
 		traits |= UIAccessibilityTraitSelected;
 
-	if(UnknownPtr<CCL::IAccessibilityValueProvider> valueProvider = provider->getValueProvider ().asUnknown ())
+	if(UnknownPtr<IAccessibilityValueProvider> valueProvider = provider->getValueProvider ().asUnknown ())
 		if(valueProvider->canIncrement ())
 			traits |= UIAccessibilityTraitAdjustable;
 
@@ -284,7 +289,10 @@ using namespace iOS;
 	if(!provider)
 		return NO;
 
-	if(UnknownPtr<CCL::IAccessibilityToggleProvider> toggleProvider = provider->getEffectiveProvider ().asUnknown ())
+	if(UnknownPtr<IAccessibilityActionProvider> actionProvider = provider->getEffectiveProvider ().asUnknown ())
+		return actionProvider->performAction () == kResultOk ? YES : NO;
+
+	if(UnknownPtr<IAccessibilityToggleProvider> toggleProvider = provider->getEffectiveProvider ().asUnknown ())
 		return toggleProvider->toggle () == kResultOk ? YES : NO;
 
 	return NO;
@@ -297,7 +305,7 @@ using namespace iOS;
 	if(!provider)
 		return;
 
-	if(UnknownPtr<CCL::IAccessibilityValueProvider> valueProvider = provider->getValueProvider ().asUnknown ())
+	if(UnknownPtr<IAccessibilityValueProvider> valueProvider = provider->getValueProvider ().asUnknown ())
 	{
 		valueProvider->increment ();
 		[self postNotification:UIAccessibilityAnnouncementNotification argument:[self accessibilityValue]];
@@ -311,7 +319,7 @@ using namespace iOS;
 	if(!provider)
 		return;
 
-	if(UnknownPtr<CCL::IAccessibilityValueProvider> valueProvider = provider->getValueProvider ().asUnknown ())
+	if(UnknownPtr<IAccessibilityValueProvider> valueProvider = provider->getValueProvider ().asUnknown ())
 	{
 		valueProvider->decrement ();
 		[self postNotification:UIAccessibilityAnnouncementNotification argument:[self accessibilityValue]];
@@ -400,8 +408,21 @@ UIAccessibilityElementProvider::UIAccessibilityElementProvider (AccessibilityPro
 
 void UIAccessibilityElementProvider::disconnect ()
 {
+	if(AccessibilityProvider* parentProvider = getOwner ().getParentProvider ())
+		if(UIAccessibilityElementProvider* platformParent = toPlatformProvider (parentProvider))
+			platformParent->disconnectFromParent (&getOwner ());
+
 	if(element)
 		[element disconnect];
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+void UIAccessibilityElementProvider::disconnectFromParent (AccessibilityProvider* childProvider)
+{
+	if(UIAccessibilityElementProvider* platformChild = toPlatformProvider (childProvider))
+		if(element)
+			[element removeChild:platformChild->getElement ()];
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -417,16 +438,6 @@ void UIAccessibilityElementProvider::onChildProviderAdded (AccessibilityProvider
 	if(UIAccessibilityElementProvider* platformChild = toPlatformProvider (childProvider))
 		if(element)
 			[element addChild:platformChild->getElement ()];
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
-void UIAccessibilityElementProvider::onChildProviderRemoved (AccessibilityProvider* childProvider)
-{
-	SuperClass::onChildProviderRemoved (childProvider);
-	if(UIAccessibilityElementProvider* platformChild = toPlatformProvider (childProvider))
-		if(element)
-			[element removeChild:platformChild->getElement ()];
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////

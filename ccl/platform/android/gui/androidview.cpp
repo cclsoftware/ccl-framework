@@ -39,6 +39,7 @@ DEFINE_JNI_CLASS (AndroidView)
 	DEFINE_JNI_METHOD (invalidate, "()V")
 	DEFINE_JNI_METHOD (setVisibility, "(I)V")
 	DEFINE_JNI_METHOD (getVisibility, "()I")
+	DEFINE_JNI_METHOD (getWindowToken, "()Landroid/os/IBinder;")
 END_DEFINE_JNI_CLASS
 
 //************************************************************************************************
@@ -47,10 +48,19 @@ END_DEFINE_JNI_CLASS
 
 DEFINE_JNI_CLASS (ViewGroup)
 	DEFINE_JNI_METHOD (addView,  "(Landroid/view/View;)V")
-    DEFINE_JNI_METHOD_NAME (addViewAt, addView, "(Landroid/view/View;I)V")
+	DEFINE_JNI_METHOD_NAME (addViewAt, addView, "(Landroid/view/View;I)V")
 	DEFINE_JNI_METHOD (removeView, "(Landroid/view/View;)V")
 	DEFINE_JNI_METHOD (setClipChildren, "(Z)V")
 	DEFINE_JNI_METHOD (indexOfChild, "(Landroid/view/View;)I")
+END_DEFINE_JNI_CLASS
+
+//************************************************************************************************
+// android.view.inputmethod.InputMethodManager
+//************************************************************************************************
+
+DEFINE_JNI_CLASS (InputMethodManager)
+	DEFINE_JNI_METHOD (showSoftInput, "(Landroid/view/View;I)Z")
+	DEFINE_JNI_METHOD (hideSoftInputFromWindow, "(Landroid/os/IBinder;I)Z")
 END_DEFINE_JNI_CLASS
 
 } // namespace Android

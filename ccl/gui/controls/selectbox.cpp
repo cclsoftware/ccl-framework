@@ -140,21 +140,20 @@ using namespace CCL;
 //************************************************************************************************
 
 BEGIN_STYLEDEF (SelectBox::customStyles)
-	{"hidetext",	Styles::kSelectBoxAppearanceHideText},
 	{"hidefocus",	Styles::kSelectBoxAppearanceHideFocus},
 	{"hidebutton",	Styles::kSelectBoxAppearanceHideButton},
 	{"ignorekeys",	Styles::kSelectBoxBehaviorIgnoreKeys},
 	{"inversewheel",	Styles::kSelectBoxBehaviorInverseWheel},
 	{"stayopenonclick", Styles::kSelectBoxBehaviorStayOpenOnClick},
-	{"leadingbutton", 	Styles::kSelectBoxAppearanceLeadingButton},
-	{"trailingbutton",	Styles::kSelectBoxAppearanceTrailingButton},
+	{"leadingicon", 	Styles::kSelectBoxAppearanceLeadingIcon},
+	{"trailingicon",	Styles::kSelectBoxAppearanceTrailingIcon},
 	{"offstate",	Styles::kSelectBoxAppearanceOffState},
-	{"nowheel",     Styles::kSelectBoxBehaviorNoWheel},
 	{"nomodifier",	Styles::kSelectBoxBehaviorNoModifier},
 	{"hideimage",	Styles::kSelectBoxAppearanceHideImage},
 	{"showtitle",	Styles::kSelectBoxAppearanceTitleAsText},
 	{"dragopen", 	Styles::kSelectBoxBehaviorDragOpen},
 	{"closemenu", 	Styles::kSelectBoxBehaviorCloseMenu},
+	{"noactivate",	Styles::kSelectBoxBehaviorNoActivate},
 END_STYLEDEF
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -170,7 +169,7 @@ SelectBox::SelectBox (const Rect& size, IParameter* param, StyleRef style, Strin
   popupOptions (style.isVertical () ? PopupSizeInfo::kRight|PopupSizeInfo::kTop : PopupSizeInfo::kLeft|PopupSizeInfo::kBottom)
 {
 	wantsFocus (true);
-	setWheelEnabled (style.isCustomStyle (Styles::kSelectBoxBehaviorNoWheel) == false);
+	setWheelEnabled (style.isCustomStyle (Styles::kTextBoxBehaviorNoWheel) == false);
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -213,7 +212,7 @@ ThemeRenderer* SelectBox::getRenderer ()
 {
 	if(renderer == nullptr)
 	{
-		renderer = getTheme ().createRenderer (ThemePainter::kSelectBoxRenderer, visualStyle);
+		renderer = getTheme ().createRenderer (ThemePainter::kSelectBoxRenderer, visualStyle, this);
 		// keep this order - initPopupSelector () might call getRenderer () 
 		initPopupSelector ();
 	}
@@ -256,9 +255,18 @@ void CCL_API SelectBox::notify (ISubject* subject, MessageRef msg)
 		if(popupSelector && popupSelector->getCurrentWindow ())
 			popupSelector->getCurrentWindow ()->closePopup ();
 	}
-	else if(msg == PopupSelector::kPopupClosed)
+	else if(msg == IPopupSelector::kPopupClosed)
 	{
 		setMouseState (kMouseNone);
+
+		// forward to the parameter so its observers are notified even if they didn't cause closing the popup.
+		// We also observe param, so check for popupSelector to prevent infinite loops.
+		if(param && isEqualUnknown (subject, popupSelector ? popupSelector->asUnknown () : nullptr))
+		{
+			UnknownPtr<ISubject> paramSubject (param);
+			if(paramSubject)
+				paramSubject->deferSignal (NEW Message (IPopupSelector::kPopupClosed));
+		}
 	}
 	else if(msg == "showMenu")
 	{
@@ -339,11 +347,19 @@ void SelectBox::showMenu ()
 		if(style.isCustomStyle (Styles::kSelectBoxBehaviorStayOpenOnClick))
 			behavior = IPopupSelector::kStayOpenOnClick;
 
+		if(style.isCustomStyle (Styles::kSelectBoxBehaviorNoActivate))
+		{
+			behavior |= IPopupSelector::kNoActivate;
+
+			// avoid modal popup window on desktop platforms that would always take OS keyboard focus to run its modal loop
+			popupSelector->setNonModal (true);
+		}
+
 		popupSelector->setBehavior (behavior);
-	
+
 		if(style.isCustomStyle (Styles::kSelectBoxBehaviorCloseMenu))
 			popupSelector->closeAfterDrag (true);
-		
+
 		popupSelector->popup (param, sizeInfo, menuType);
 	}
 }
@@ -451,7 +467,6 @@ bool SelectBox::onKeyDown (const KeyEvent& event)
 	return Control::onKeyDown (event);
 }
 
-
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 bool SelectBox::onMouseEnter (const MouseEvent& event)
@@ -491,12 +506,12 @@ bool SelectBox::onGesture (const GestureEvent& event)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-StringRef SelectBox::getText ()
+void SelectBox::modifyDisplayString (String& displayString) const
 {
 	if(style.isCustomStyle (Styles::kSelectBoxAppearanceTitleAsText))
-		return getTitle ();
+		displayString = getTitle ();
 
-	return SuperClass::getText ();
+	SuperClass::modifyDisplayString (displayString);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -520,7 +535,7 @@ Coord SelectBox::getDisplayWidth () const
 	if(renderer)
 	{
 		Rect contentRect;
-		renderer->getPartRect (this, kPartDisplayArea, contentRect);
+		renderer->getPartRect (contentRect, kPartDisplayArea);
 		return contentRect.getWidth ();
 	}
 	else
@@ -534,7 +549,7 @@ Coord SelectBox::getDisplayHeight () const
 	if(renderer)
 	{
 		Rect contentRect;
-		renderer->getPartRect (this, kPartDisplayArea, contentRect);
+		renderer->getPartRect (contentRect, kPartDisplayArea);
 		return contentRect.getHeight ();
 	}
 	else
@@ -545,34 +560,48 @@ Coord SelectBox::getDisplayHeight () const
 
 void SelectBox::calcAutoSize (Rect& r)
 {
+	if(auto* renderer = ccl_cast<SelectBoxRenderer> (getRenderer ()))
+		renderer->updateAtoms ();
+	
 	SuperClass::calcAutoSize (r);
 
 	if(!isHFitAndFitText () && !style.isCustomStyle (Styles::kSelectBoxAppearanceHideButton))
 		r.right += getDropDownButtonWidth ();
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+const ITextLayout* SelectBox::getTextLayout () const
+{
+	if(auto* selectBoxRenderer = ccl_cast<SelectBoxRenderer> (renderer))
+		return selectBoxRenderer->getTextLayout ();
+
+	return nullptr;
+}
+
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 Coord SelectBox::getHFitWidth () const
-{	
-	if(style.isCustomStyle (Styles::kSelectBoxAppearanceHideButton))
-		return SuperClass::getHFitWidth ();
-	else
-		return SuperClass::getHFitWidth () + getDropDownButtonWidth ();
+{
+	// nonzero even without a popup button: the content area is contracted as well
+	return SuperClass::getHFitWidth () + getDropDownButtonWidth ();
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 Coord SelectBox::getDropDownButtonWidth () const
 {
-	// compensate for contract (1) in getDisplayWidth
-	Coord width = 2;
-	
-	Rect buttonRect;
-	ccl_const_cast (this)->getRenderer ()->getPartRect (this, SelectBox::kPartDropDownButton, buttonRect);
-	width += buttonRect.getWidth ();
-	
-	return width;
+	// Everything the content area does not get: the popup button, its "iconvaluespacing", and the
+	// contraction in getPartRect (). Derived from the content area itself so that it cannot drift
+	// apart from it - the difference is independent of the current width.
+	Rect clientRect;
+	getClientRect (clientRect);
+
+	Rect contentRect;
+	if(!ccl_const_cast (this)->getRenderer ()->getPartRect (contentRect, SelectBox::kPartContentArea))
+		return 0; // no text is shown, so nothing is taken away from it
+
+	return clientRect.getWidth () - contentRect.getWidth ();
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -705,7 +734,7 @@ ThemeRenderer* ComboBox::getRenderer ()
 {
 	if(renderer == nullptr)
 	{
-		renderer = getTheme ().createRenderer (ThemePainter::kComboBoxRenderer, visualStyle);
+		renderer = getTheme ().createRenderer (ThemePainter::kComboBoxRenderer, visualStyle, this);
 		// keep this order - initPopupSelector () might call getRenderer ()
 		initPopupSelector ();
 	}
@@ -753,11 +782,11 @@ void ComboBox::attached (View* parent)
 	if(editParam && textControl == nullptr)
 	{
 		Rect r;
-		getRenderer ()->getPartRect (this, kPartDisplayArea, r);
+		getRenderer ()->getPartRect (r, kPartDisplayArea);
 
 		StyleFlags editBoxStyle (getStyle ());
 		editBoxStyle.setCommonStyle (Styles::kTransparent);
-		editBoxStyle.setCustomStyle (Styles::kEditBoxAppearanceHideText);
+		editBoxStyle.setCustomStyle (Styles::kTextBoxAppearanceHideText);
 		editBoxStyle.setCustomStyle (Styles::kTextBoxAppearanceMultiLine, false);
 
 		textControl = NEW EditBox (r, editParam, editBoxStyle);
@@ -821,12 +850,15 @@ bool ComboBox::onFocus (const FocusEvent& event)
 bool ComboBox::onMouseDown (const MouseEvent& event)
 {
 	ThemeRenderer* renderer = getRenderer ();
-	if(renderer->hitTest (this, event.where, nullptr) == kPartContentArea && canEdit ())
+	if(renderer->hitTest (event.where, nullptr) == kPartContentArea && canEdit ())
 	{
-		if(textControl && (!style.isCustomStyle (Styles::kTextBoxBehaviorDoubleClickEdit) || detectDoubleClick (event)))
+		if(textControl && (isEditing () || !style.isCustomStyle (Styles::kTextBoxBehaviorDoubleClickEdit) || detectDoubleClick (event)))
 		{
 			textControl->takeFocus ();
-			return textControl->onMouseDown (event);
+
+			MouseEvent textControlEvent (event);
+			textControlEvent.where.offset (-textControl->getSize ().left, -textControl->getSize ().top);
+			return textControl->onMouseDown (textControlEvent);
 		}
 	}
 
@@ -891,6 +923,16 @@ bool ComboBox::onKeyDown (const KeyEvent& event)
 	}
 
 	return SelectBox::onKeyDown (event);
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+tbool CCL_API ComboBox::onEditNavigation (const KeyEvent& event, IView* control)
+{
+	if((event.vKey == VKey::kUp || event.vKey == VKey::kDown) && popupSelector)
+		return onKeyDown (event);
+
+	return false;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////

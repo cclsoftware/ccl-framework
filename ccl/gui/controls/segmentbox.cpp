@@ -96,11 +96,12 @@ protected:
 // SegmentBox
 //************************************************************************************************
 
-BEGIN_VISUALSTYLE_CLASS (SegmentBox, VisualStyle, "SegmentBox")
-	ADD_VISUALSTYLE_COLOR  ("state1")				///< alternative text color when the parameter's visual state is 1
-	ADD_VISUALSTYLE_COLOR  ("state2")				///< alternative text color when the parameter's visual state is 2
-	ADD_VISUALSTYLE_COLOR  ("state3")				///< alternative text color when the parameter's visual state is 3
-END_VISUALSTYLE_CLASS (SegmentBox)
+DEFINE_TYPELIB_ENTRY_WITH_PARENT (SegmentBox, VisualStyle, "SegmentBoxStyle", VISUALSTYLES_TYPELIB)
+BEGIN_TYPELIB_MEMBERS (SegmentBox)
+	ADD_TYPELIB_MEMBER_COLOR ("state1") ///< alternative text color when the parameter's visual state is 1
+	ADD_TYPELIB_MEMBER_COLOR ("state2") ///< alternative text color when the parameter's visual state is 2
+	ADD_TYPELIB_MEMBER_COLOR ("state3") ///< alternative text color when the parameter's visual state is 3
+END_TYPELIB_MEMBERS (SegmentBox)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -238,7 +239,7 @@ bool SegmentBox::checkState (IParamSplitter* splitter)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void SegmentBox::updateSizeInfo (CCL::IParamSplitter *splitter)
+void SegmentBox::updateSizeInfo (IParamSplitter *splitter)
 {
 	charWidth = getCharWidth ();
 	delimiterWidth = getDelimiterWidth ();
@@ -539,7 +540,7 @@ void SegmentBox::draw (const UpdateRgn& updateRgn)
 			}
 
 			// transfer to screen
-			//ImageMode mode (ImageMode::kInterpolationPixelQuality);
+			//ImageMode mode (kImageInterpolationPixelQuality);
 			port.drawImage (bitmap, rect, rect);//, &mode);
 		}
 	}
@@ -600,7 +601,7 @@ void SegmentBox::updateClient ()
 
 				// transfer to screen
 				GraphicsPort port (this);
-				//ImageMode mode (ImageMode::kInterpolationPixelQuality);
+				//ImageMode mode (kImageInterpolationPixelQuality);
 				port.drawImage (bitmap, rect, rect);//, &mode);
 				updateInfo.addDirtyRect (rect);
 				done = true;

@@ -10,18 +10,22 @@ Views can be arranged responsively considering outer constraints like the availa
 
 Two layout systems are supported, anchor layouts and a subset of the CSS Flexbox layout system.
 
-Both can be used side-by-side and nested withing the same view tree. For more information on interfacing between both systems, see chapter :ref:`Interfacing between Flexbox and Anchor Layouts<Flexbox_anchor_interfacing>`.
+Both can be used side-by-side and nested within the same view tree. For more information on interfacing between both systems, see chapter :ref:`Interfacing between Flexbox and Anchor Layouts<Flexbox_anchor_interfacing>`.
+
+.. tip::
+
+  ``attach="all"`` keeps a child view's edges pinned to all four parent edges as the parent resizes - it does not set an initial size by itself. To make a child fill its parent, give it the same size as the parent (e.g. ``size="0,0,1024,720"``) and add ``attach="all"``; read on for finer control over individual edges.
 
 *************
 Anchor Layout
 *************
 
-By default, resizing a view doesn't affect the size or relative position of it's children. However, the "attach" attribute of a |xml.class.view| offers several options to define a certain relationship between positions and sizes of child and parent views.
+By default, resizing a view doesn't affect the size or relative position of its children. However, the "attach" attribute of a |xml.class.view| offers several options to define a certain relationship between positions and sizes of child and parent views.
 
 Basic Layout of Views
 =====================
 
-By specifying one or more of the four edge names "left, right, top, bottom" the respective edges of the child follow the corresponding parent edges. When the parent view is resized, the distance between an attached child edge and it's corresponding parent edge stays fixed as long as possible within the current size limits. 
+By specifying one or more of the four edge names "left, right, top, bottom" the respective edges of the child follow the corresponding parent edges. When the parent view is resized, the distance between an attached child edge and its corresponding parent edge stays fixed as long as possible within the current size limits. 
 
 Table 3.1. View Attach Examples
 ===============================
@@ -43,10 +47,10 @@ Responsive Children and Alignment
 =================================
 Within a tree of views there are in general two types of reaction to a change:
 
-* Parents react to changes within their children e.g. a view suddenly has to provide more information and needs more space so the parent increases it's size to fit all children
-* Children react to changes within their parent e.g. the parent is restricted to a certain size, maybe due to a small screen, so it's children have to adapt to the available space
+* Parents react to changes within their children e.g. a view suddenly has to provide more information and needs more space so the parent increases its size to fit all children
+* Children react to changes within their parent e.g. the parent is restricted to a certain size, maybe due to a small screen, so its children have to adapt to the available space
 
-In the latter case, the behaviour of "attach"  must not be confused with alignment, i.e. setting attach="right" on all children of a view like
+In the latter case, the behaviour of "attach" must not be confused with alignment, i.e. setting attach="right" on all children of a view like
 
 .. code-block:: xml
 
@@ -161,7 +165,7 @@ Interfacing between Flexbox and Anchor Layouts
                     <!-- Same as before, but now the label should hug its contents
                     * The label will be aligned to the left hand side, since the inherited size 
                     takes precedence over align="stretch" -->
-                    <Label title="A label hugging it's text" flex.sizemode="hug"/>
+                    <Label title="A label hugging its text" flex.sizemode="hug"/>
                 </Flexbox>
             </Form>
 

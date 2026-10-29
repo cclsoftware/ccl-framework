@@ -134,7 +134,7 @@ ManagementEnumerator* ManagementServices::execQuery (StringRef query)
 #if DEBUG
 void ManagementServices::dumpAll ()
 {
-	static const char* queryList[] =
+	static CStringPtr queryList[] =
 	{
 		"SELECT * FROM Win32_Processor",
 		"SELECT * FROM Win32_DiskDrive",

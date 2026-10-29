@@ -32,7 +32,7 @@ bool FormatParser::parse (const IString& format)
 {
 	IString::CharData chars;
 	format.getChars (chars);
-	const uchar* text = chars.text;
+	UStringPtr text = chars.text;
 	if(!text)
 		return false;
 
@@ -43,9 +43,9 @@ bool FormatParser::parse (const IString& format)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool FormatParser::parse (const uchar* format, int length)
+bool FormatParser::parse (UStringPtr format, int length)
 {
-	const uchar* f = format;
+	UStringPtr f = format;
 	for(int i = 0; i < length; i++)
 	{
 		if((f[i] == '%'))

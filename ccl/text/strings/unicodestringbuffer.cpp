@@ -32,7 +32,7 @@ static StringStatistics<uchar> theStats ("Unicode String Statistics");
 //************************************************************************************************
 
 static const uchar emptyString[1] = {0};
-const uchar* UnicodeStringBuffer::kEmpty = emptyString;
+UStringPtr UnicodeStringBuffer::kEmpty = emptyString;
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -101,7 +101,7 @@ void UnicodeStringBuffer::releaseInternal ()
 // Constant (immutable) string methods
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-tresult UnicodeStringBuffer::makeConstant (const char* asciiString)
+tresult UnicodeStringBuffer::makeConstant (CStringPtr asciiString)
 {
 	ASSERT (text == nullptr) // must be called only once!
 	if(Text::isEmpty (asciiString))
@@ -179,7 +179,7 @@ tresult CCL_API UnicodeStringBuffer::releaseChars (CharData& data) const
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-tresult CCL_API UnicodeStringBuffer::copyTo (uchar* charBuffer, int bufferSize) const
+tresult CCL_API UnicodeStringBuffer::copyTo (uchar charBuffer[], int bufferSize) const
 {
 	if(!charBuffer || bufferSize <= 0)
 		return kResultInvalidArgument;
@@ -198,7 +198,7 @@ tresult CCL_API UnicodeStringBuffer::copyTo (uchar* charBuffer, int bufferSize) 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-tresult CCL_API UnicodeStringBuffer::toCString (TextEncoding encoding, char* cString, int cStringSize, int* bytesWritten) const
+tresult CCL_API UnicodeStringBuffer::toCString (TextEncoding encoding, char cString[], int cStringSize, int* bytesWritten) const
 {
 	if(!Text::isValidCStringEncoding (encoding) || !cString || cStringSize <= 0)
 		return kResultInvalidArgument;
@@ -225,7 +225,7 @@ tresult CCL_API UnicodeStringBuffer::toCString (TextEncoding encoding, char* cSt
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-tresult CCL_API UnicodeStringBuffer::toPascalString (TextEncoding encoding, unsigned char* pString, int pStringSize) const
+tresult CCL_API UnicodeStringBuffer::toPascalString (TextEncoding encoding, unsigned char pString[], int pStringSize) const
 {
 	if(!pString || pStringSize <= 0)
 		return kResultInvalidArgument;
@@ -265,7 +265,7 @@ tbool CCL_API UnicodeStringBuffer::equals (const IString* otherString) const
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-tbool CCL_API UnicodeStringBuffer::equalsChars (const uchar* charBuffer, int count) const
+tbool CCL_API UnicodeStringBuffer::equalsChars (UStringPtr charBuffer, int count) const
 {
 	ASSERT (ccl_is_aligned (charBuffer))
 
@@ -286,20 +286,20 @@ int CCL_API UnicodeStringBuffer::compare (const IString* _otherString, int flags
 		return Text::kEqual;
 
 	UnicodeStringBuffer* otherString = castToString<UnicodeStringBuffer> (_otherString);
-	const uchar* s1 = text ? text : kEmpty;
-	const uchar* s2 = otherString && otherString->text ? otherString->text : kEmpty;
+	UStringPtr s1 = text ? text : kEmpty;
+	UStringPtr s2 = otherString && otherString->text ? otherString->text : kEmpty;
 
 	return Text::compareStrings (s1, -1, s2, -1, flags);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-int CCL_API UnicodeStringBuffer::compareChars (const uchar* charBuffer, int count) const
+int CCL_API UnicodeStringBuffer::compareChars (UStringPtr charBuffer, int count) const
 {
 	ASSERT (ccl_is_aligned (charBuffer))
 
-	const uchar* s1 = text ? text : kEmpty;
-	const uchar* s2 = charBuffer ? charBuffer : kEmpty;
+	UStringPtr s1 = text ? text : kEmpty;
+	UStringPtr s2 = charBuffer ? charBuffer : kEmpty;
 
 	return Text::compareStrings (s1, -1, s2, count, 0);
 }
@@ -311,7 +311,7 @@ int CCL_API UnicodeStringBuffer::findSubString (const IString* _otherString, int
 	UnicodeStringBuffer* otherString = castToString<UnicodeStringBuffer> (_otherString);
 	if(!isEmpty () && otherString && !otherString->isEmpty ())
 	{
-		const uchar* ptr = Text::findString (text, otherString->text, flags);
+		UStringPtr ptr = Text::findString (text, otherString->text, flags);
 		if(ptr)
 			return (int)(ptr - text);
 	}
@@ -394,7 +394,7 @@ bool UnicodeStringBuffer::resizeInternal (int newLength, bool fixed)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-tresult UnicodeStringBuffer::assignInternal (const uchar* charBuffer, int count)
+tresult UnicodeStringBuffer::assignInternal (UStringPtr charBuffer, int count)
 {
 	ASSERT (count >= 0)
 
@@ -415,7 +415,7 @@ tresult UnicodeStringBuffer::assignInternal (const uchar* charBuffer, int count)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-tresult UnicodeStringBuffer::appendInternal (const uchar* charBuffer, int count)
+tresult UnicodeStringBuffer::appendInternal (UStringPtr charBuffer, int count)
 {
 	ASSERT (count >= 0)
 
@@ -446,7 +446,7 @@ void UnicodeStringBuffer::updateMetadata (int newLength)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-tresult CCL_API UnicodeStringBuffer::assignChars (const uchar* charBuffer, int count)
+tresult CCL_API UnicodeStringBuffer::assignChars (UStringPtr charBuffer, int count)
 {
 	ASSERT (ccl_is_aligned (charBuffer))
 
@@ -460,7 +460,7 @@ tresult CCL_API UnicodeStringBuffer::assignChars (const uchar* charBuffer, int c
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-tresult CCL_API UnicodeStringBuffer::appendCString (TextEncoding encoding, const char* cString, int count)
+tresult CCL_API UnicodeStringBuffer::appendCString (TextEncoding encoding, CStringPtr cString, int count)
 {
 	if(count == 0 || Text::isEmpty (cString))
 		return kResultOk;
@@ -513,7 +513,7 @@ tresult CCL_API UnicodeStringBuffer::appendCString (TextEncoding encoding, const
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-tresult CCL_API UnicodeStringBuffer::appendPascalString (TextEncoding encoding, const unsigned char* pString)
+tresult CCL_API UnicodeStringBuffer::appendPascalString (TextEncoding encoding, const unsigned char pString[])
 {
 	if(!pString || (pString && !pString[0]))
 		return kResultOk;
@@ -524,7 +524,7 @@ tresult CCL_API UnicodeStringBuffer::appendPascalString (TextEncoding encoding, 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-tresult CCL_API UnicodeStringBuffer::appendChars (const uchar* charBuffer, int count)
+tresult CCL_API UnicodeStringBuffer::appendChars (UStringPtr charBuffer, int count)
 {
 	ASSERT (ccl_is_aligned (charBuffer))
 
@@ -644,11 +644,11 @@ void CCL_API UnicodeStringBuffer::trimWhitespace ()
 	};
 
 	int oldLength = getLength ();
-	const uchar* start = text;
+	UStringPtr start = text;
 	while(*start && isWhitespace (*start))
 		start++;
 
-	const uchar* end = text + oldLength - 1;
+	UStringPtr end = text + oldLength - 1;
 	while(end > start && isWhitespace(*end))
 		end--;
 
@@ -704,10 +704,10 @@ int CCL_API UnicodeStringBuffer::replace (const IString* searchString, const ISt
 
 	struct SearchFuncs
 	{
-		static const uchar* searchMatchCase (const uchar* str, const uchar* searchStr)	{ return Text::findString (str, searchStr, 0); }
-		static const uchar* searchIgnoreCase (const uchar* str, const uchar* searchStr)	{ return Text::findString (str, searchStr, Text::kIgnoreCase); }
+		static UStringPtr searchMatchCase (UStringPtr str, UStringPtr searchStr)	{ return Text::findString (str, searchStr, 0); }
+		static UStringPtr searchIgnoreCase (UStringPtr str, UStringPtr searchStr)	{ return Text::findString (str, searchStr, Text::kIgnoreCase); }
 
-		typedef const uchar* (Search) (const uchar*, const uchar*);
+		typedef UStringPtr (Search) (UStringPtr, UStringPtr);
 	};
 
 	SearchFuncs::Search* searchFunc = flags & Text::kIgnoreCase ? &SearchFuncs::searchIgnoreCase : &SearchFuncs::searchMatchCase;
@@ -715,7 +715,7 @@ int CCL_API UnicodeStringBuffer::replace (const IString* searchString, const ISt
 	UnicodeStringBuffer* searchStr = castToString<UnicodeStringBuffer> (searchString);
 	int numReplaced = 0;
 
-	if(const uchar* matchPtr = searchFunc (text, searchStr->text))
+	if(UStringPtr matchPtr = searchFunc (text, searchStr->text))
 	{
 		int matchPos = (int)(matchPtr - text);
 
@@ -727,7 +727,7 @@ int CCL_API UnicodeStringBuffer::replace (const IString* searchString, const ISt
 		AutoPtr<IString> source = cloneString ();
 		CharData sourceData;
 		source->getChars (sourceData);
-		const uchar* sourcePtr = sourceData.text + matchPos; // first match pos in copy
+		UStringPtr sourcePtr = sourceData.text + matchPos; // first match pos in copy
 
 		// start with chars before first match
 		truncate (matchPos);

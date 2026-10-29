@@ -253,7 +253,7 @@ Point TriVectorPad::getHandlePosition () const
 Point TriVectorPad::getTrianglePoint (CornerID code, bool hoverTriangle) const
 {
 	Rect triangleRect;
-	const_cast<TriVectorPad*>(this)->getRenderer ()->getPartRect (this, hoverTriangle ? kPartHoverTriangle : kPartTriangle, triangleRect);
+	const_cast<TriVectorPad*>(this)->getRenderer ()->getPartRect (triangleRect, hoverTriangle ? kPartHoverTriangle : kPartTriangle);
 	
 	switch(code)
 	{
@@ -355,7 +355,7 @@ bool TriVectorPad::onMouseMove (const MouseEvent& event)
 {
 	if(isInsideTriangle (event.where, true))
 	{
-		int partCode = getRenderer ()->hitTest (this, event.where);
+		int partCode = getRenderer ()->hitTest (event.where);
 		if(isSnapPointCode (partCode))
 		{
 			setHighlightSnapPoint (partCode);
@@ -381,7 +381,7 @@ bool TriVectorPad::onMouseDown (const MouseEvent& event)
 	Rect rect;
 	int partCode;
 	if(hitHandleOrSnapPoint (partCode, event))
-		getRenderer ()->getPartRect (this, partCode, rect);
+		getRenderer ()->getPartRect (rect, partCode);
 	
 	if(rect.pointInside (event.where) || isInsideTriangle (event.where))
 		return SuperClass::onMouseDown (event);
@@ -420,7 +420,7 @@ bool TriVectorPad::onMouseWheel (const MouseWheelEvent& event)
 ThemeRenderer* TriVectorPad::getRenderer ()
 {
 	if(renderer == nullptr)
-		renderer = getTheme ().createRenderer (ThemePainter::kTriVectorPadRenderer, visualStyle);
+		renderer = getTheme ().createRenderer (ThemePainter::kTriVectorPadRenderer, visualStyle, this);
 
 	return renderer;
 }
@@ -438,7 +438,7 @@ MouseHandler* TriVectorPad::createMouseHandler (const MouseEvent& event)
 	Rect rect;
 	int partCode;
 	if(hitHandleOrSnapPoint (partCode, event))
-		getRenderer ()->getPartRect (this, partCode, rect);
+		getRenderer ()->getPartRect (rect, partCode);
 	
 	Point clickOffset;
 	if(rect.pointInside (event.where))
@@ -568,7 +568,7 @@ Point TriVectorPad::convertBarycentricToCartesian (PointF3DRef bp) const
 Point TriVectorPad::convertNormalizedToCartesian (PointF& a) const
 {
 	Rect triangleRect;
-	const_cast<TriVectorPad*>(this)->getRenderer ()->getPartRect (this, kPartTriangle, triangleRect);
+	const_cast<TriVectorPad*>(this)->getRenderer ()->getPartRect (triangleRect, kPartTriangle);
 
 	a.x *= triangleRect.getWidth ();
 	a.y *= triangleRect.getHeight ();
@@ -607,7 +607,7 @@ PointF TriVectorPad::convertCartesianToNormalized (PointRef p) const
 {
 	PointF normP;
 	Rect triangleRect;
-	const_cast<TriVectorPad*>(this)->getRenderer ()->getPartRect (this, kPartTriangle, triangleRect);
+	const_cast<TriVectorPad*>(this)->getRenderer ()->getPartRect (triangleRect, kPartTriangle);
 	normP.x = (p.x - triangleRect.left) / (float)triangleRect.getWidth ();
 	normP.y = (p.y - triangleRect.top) / (float)triangleRect.getHeight ();
 	
@@ -794,7 +794,7 @@ void TriVectorPad::calcSnapPointValueFactor (PointF3DRef b)
 	double distanceC = getDistance (currentPos, getSnapPoint (kPartSnapPointC));
 
 	Rect triangleRect;
-	getRenderer ()->getPartRect (this, kPartTriangle, triangleRect);
+	getRenderer ()->getPartRect (triangleRect, kPartTriangle);
 	double spreadRangeThreshold = ccl_min ((triangleRect.getHeight () / 4), (triangleRect.getWidth () / 4));
 	
 	snapPointValueFactor = 1 - (ccl_min (distanceA, ccl_min (distanceB, ccl_min (distanceC, spreadRangeThreshold))) / spreadRangeThreshold);
@@ -855,7 +855,7 @@ bool TriVectorPad::hitHandleOrSnapPoint (int& partCode, const MouseEvent& event)
 {
 	if(isInsideTriangle (event.where, true))
 	{
-		partCode = getRenderer ()->hitTest (this, event.where);
+		partCode = getRenderer ()->hitTest (event.where);
 		if(partCode == kPartHandle || isSnapPointCode (partCode))
 			return true;
 	}
@@ -930,7 +930,7 @@ bool TriVectorPad::onContextMenu (const ContextMenuEvent& event)
 	if(isContextMenuEnabled ())
 	{
 		Rect handleRect;
-		getRenderer ()->getPartRect (this, kPartHandle, handleRect);
+		getRenderer ()->getPartRect (handleRect, kPartHandle);
 		
 		// not above main handle
 		if(!handleRect.pointInside (event.where))

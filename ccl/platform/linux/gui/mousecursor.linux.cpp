@@ -107,6 +107,29 @@ protected:
 };
 
 //************************************************************************************************
+// LinuxShapeCursor
+//************************************************************************************************
+
+#if WAYLAND_USE_CURSOR_SHAPE
+class LinuxShapeCursor: public MouseCursor,
+						public Linux::WaylandObject
+{
+public:
+	LinuxShapeCursor (int themeCursorId, wp_cursor_shape_device_v1* cursorShapeDevice);
+
+	// MouseCursor
+	void makeCurrent () override;
+	
+	// WaylandObject
+	void onCompositorDisconnected () override;
+
+protected:
+	int shapeId;
+	wp_cursor_shape_device_v1* cursorShapeDevice;
+};
+#endif // WAYLAND_USE_CURSOR_SHAPE
+
+//************************************************************************************************
 // LinuxCursorFactory
 //************************************************************************************************
 
@@ -129,6 +152,7 @@ public:
 	
 protected:
 	wl_cursor_theme* theme;
+	wp_cursor_shape_device_v1* cursorShapeDevice;
 	int useCount;
 };
 
@@ -152,7 +176,8 @@ CCL_KERNEL_INIT_LEVEL (LinuxMouseCursor, kFrameworkLevelFirst)
 
 LinuxCursorFactory::LinuxCursorFactory ()
 : theme (nullptr),
-  useCount (0)
+  useCount (0),
+  cursorShapeDevice (nullptr)
 {
 	WaylandClient::instance ().registerObject (*this);
 }
@@ -161,6 +186,10 @@ LinuxCursorFactory::LinuxCursorFactory ()
 
 LinuxCursorFactory::~LinuxCursorFactory ()
 {	
+	#if WAYLAND_USE_CURSOR_SHAPE
+	if(cursorShapeDevice)
+		wp_cursor_shape_device_v1_destroy (cursorShapeDevice);
+	#endif
 	WaylandClient::instance ().unregisterObject (*this);
 }
 
@@ -192,8 +221,8 @@ wl_cursor* LinuxCursorFactory::createThemeCursor (int themeCursorId)
 	if(sharedMemory == nullptr)
 		return nullptr;
 	
-	const char* themeName = ::getenv ("XCURSOR_THEME");
-	const char* cursorSize = ::getenv ("XCURSOR_SIZE");
+	CStringPtr themeName = ::getenv ("XCURSOR_THEME");
+	CStringPtr cursorSize = ::getenv ("XCURSOR_SIZE");
 	
 	String cursorSizeString;
 	if(cursorSize != nullptr)
@@ -381,6 +410,19 @@ MouseCursor* LinuxCursorFactory::createCursor (int themeCursorId)
 {
 	ASSERT (themeCursorId >= 0 && themeCursorId < ThemeElements::kNumCursors)
 
+	#if WAYLAND_USE_CURSOR_SHAPE
+	if(cursorShapeDevice == nullptr)
+	{
+		wp_cursor_shape_manager_v1* cursorShapeManager = WaylandClient::instance ().getCursorShapeManager ();
+		wl_pointer* pointer = InputHandler::instance ().getPointer ();
+		if(cursorShapeManager && pointer)
+			cursorShapeDevice = wp_cursor_shape_manager_v1_get_pointer (cursorShapeManager, pointer);
+	}
+
+	if(cursorShapeDevice)
+		return NEW LinuxShapeCursor (themeCursorId, cursorShapeDevice);
+	#endif // WAYLAND_USE_CURSOR_SHAPE
+
 	wl_cursor* nativeCursor = createThemeCursor (themeCursorId);
 	SOFT_ASSERT (nativeCursor, "Failed to load cursor")
 	
@@ -401,6 +443,7 @@ MouseCursor* LinuxCursorFactory::createCursor (int themeCursorId)
 void LinuxCursorFactory::onCompositorDisconnected ()
 {
 	theme = nullptr;
+	cursorShapeDevice = nullptr;
 }
 
 //************************************************************************************************
@@ -594,7 +637,7 @@ void LinuxBitmapCursor::updateCursorImage ()
 	processor.setup (image, Colors::kWhite, 0, &size);
 	BitmapFilterList copyFilter; // no filtering, just copy
 	processor.process (static_cast<IBitmapFilterList&> (copyFilter));
-	CCL::Bitmap* bitmap = unknown_cast<Bitmap> (processor.getOutput ());
+	Bitmap* bitmap = unknown_cast<Bitmap> (processor.getOutput ());
 	
 	ASSERT (bitmap != nullptr)
 	if(bitmap)
@@ -603,3 +646,104 @@ void LinuxBitmapCursor::updateCursorImage ()
 		buffer.attach (surface);
 	}
 }
+
+//************************************************************************************************
+// LinuxShapeCursor
+//************************************************************************************************
+
+#if WAYLAND_USE_CURSOR_SHAPE
+
+LinuxShapeCursor::LinuxShapeCursor (int themeCursorId, wp_cursor_shape_device_v1* cursorShapeDevice)
+: shapeId (WP_CURSOR_SHAPE_DEVICE_V1_SHAPE_DEFAULT),
+  cursorShapeDevice (cursorShapeDevice)
+{
+	switch(themeCursorId)
+	{
+	case ThemeElements::kArrowCursor :
+		shapeId = WP_CURSOR_SHAPE_DEVICE_V1_SHAPE_DEFAULT;
+		break;
+	case ThemeElements::kWaitCursor :
+		shapeId = WP_CURSOR_SHAPE_DEVICE_V1_SHAPE_WAIT;
+		break;
+	case ThemeElements::kCrosshairCursor :
+		shapeId = WP_CURSOR_SHAPE_DEVICE_V1_SHAPE_CROSSHAIR;
+		break;
+	case ThemeElements::kPointhandCursor :
+		shapeId = WP_CURSOR_SHAPE_DEVICE_V1_SHAPE_POINTER;
+		break;
+	case ThemeElements::kSizeHorizontalCursor :
+		shapeId = WP_CURSOR_SHAPE_DEVICE_V1_SHAPE_COL_RESIZE;
+		break;
+	case ThemeElements::kSizeVerticalCursor :
+		shapeId = WP_CURSOR_SHAPE_DEVICE_V1_SHAPE_ROW_RESIZE;
+		break;
+	case ThemeElements::kSizeLeftCursor :
+		shapeId = WP_CURSOR_SHAPE_DEVICE_V1_SHAPE_W_RESIZE;
+		break;
+	case ThemeElements::kSizeRightCursor :
+		shapeId = WP_CURSOR_SHAPE_DEVICE_V1_SHAPE_E_RESIZE;
+		break;
+	case ThemeElements::kSizeUpCursor :
+		shapeId = WP_CURSOR_SHAPE_DEVICE_V1_SHAPE_N_RESIZE;
+		break;
+	case ThemeElements::kSizeDownCursor :
+		shapeId = WP_CURSOR_SHAPE_DEVICE_V1_SHAPE_S_RESIZE;
+		break;
+	case ThemeElements::kSizeLeftUpCursor :
+		shapeId = WP_CURSOR_SHAPE_DEVICE_V1_SHAPE_NW_RESIZE;
+		break;
+	case ThemeElements::kSizeLeftDownCursor :
+		shapeId = WP_CURSOR_SHAPE_DEVICE_V1_SHAPE_SW_RESIZE;
+		break;
+	case ThemeElements::kSizeRightUpCursor :
+		shapeId = WP_CURSOR_SHAPE_DEVICE_V1_SHAPE_NE_RESIZE;
+		break;
+	case ThemeElements::kSizeRightDownCursor :
+		shapeId = WP_CURSOR_SHAPE_DEVICE_V1_SHAPE_SE_RESIZE;
+		break;
+	case ThemeElements::kSizeLeftUpRightDownCursor :
+		shapeId = WP_CURSOR_SHAPE_DEVICE_V1_SHAPE_NWSE_RESIZE;
+		break;
+	case ThemeElements::kSizeLeftDownRightUpCursor :
+		shapeId = WP_CURSOR_SHAPE_DEVICE_V1_SHAPE_NESW_RESIZE;
+		break;
+	case ThemeElements::kTextCursor :
+		shapeId = WP_CURSOR_SHAPE_DEVICE_V1_SHAPE_TEXT;
+		break;
+	case ThemeElements::kCopyCursor :
+		shapeId = WP_CURSOR_SHAPE_DEVICE_V1_SHAPE_COPY;
+		break;
+	case ThemeElements::kGrabCursor :
+		shapeId = WP_CURSOR_SHAPE_DEVICE_V1_SHAPE_GRAB;
+		break;
+	case ThemeElements::kGrabbingCursor :
+		shapeId = WP_CURSOR_SHAPE_DEVICE_V1_SHAPE_GRABBING;
+		break;
+	case ThemeElements::kNoDropCursor :
+		shapeId = WP_CURSOR_SHAPE_DEVICE_V1_SHAPE_NO_DROP;
+		break;
+	case ThemeElements::kZoomInCursor :
+		shapeId = WP_CURSOR_SHAPE_DEVICE_V1_SHAPE_ZOOM_IN;
+		break;
+	case ThemeElements::kZoomOutCursor :
+		shapeId = WP_CURSOR_SHAPE_DEVICE_V1_SHAPE_ZOOM_OUT;
+		break;
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+void LinuxShapeCursor::onCompositorDisconnected ()
+{
+	cursorShapeDevice = nullptr;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+void LinuxShapeCursor::makeCurrent ()
+{
+	if(cursorShapeDevice)
+		wp_cursor_shape_device_v1_set_shape (cursorShapeDevice, WaylandClient::instance ().getEnterSerial (), shapeId);
+}
+
+#endif // WAYLAND_USE_CURSOR_SHAPE

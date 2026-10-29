@@ -81,7 +81,7 @@ void FormatterFactory::add (FormatterFactory* factory)
 IFormatter* FormatterFactory::create (StringID name)
 {
 	VectorForEach (getFormatterFactories (), FormatterFactory*, factory)
-		if(name == factory->name)
+		if(name.compare (factory->name, false) == 0)
 			return factory->create ();
 	EndFor
 
@@ -145,7 +145,7 @@ void CCL_API CoreFormatter::setRange (VariantRef minValue, VariantRef maxValue)
 
 tbool CCL_API CoreFormatter::printString (String& string, VariantRef value) const
 {
-	char stringBuffer[STRING_STACK_SPACE_MAX] = {0};
+	char stringBuffer[CORE_STRING_STACK_MAX] = {0};
 	Core::Formatter::Data data = {nullptr, stringBuffer, sizeof(stringBuffer), value.asFloat (), &range};
 	formatter.print (data);
 	string.empty ();

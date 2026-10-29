@@ -1,0 +1,1 @@
+target_compile_definitions (miniaudio INTERFACE MA_NO_WINMM MA_NO_DSOUND)

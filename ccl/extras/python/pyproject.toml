@@ -1,0 +1,15 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ccl-extras"
+version = "0.0.1"
+description = "CCL utilities for Python development"
+readme = "README.md"
+requires-python = ">=3.9"
+authors = [{name = "CCL Software Licensing GmbH"}]
+license = {file = "LICENSE"}
+
+[project.urls]
+Homepage = "https://ccl.dev"

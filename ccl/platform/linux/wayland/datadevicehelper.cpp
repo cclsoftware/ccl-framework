@@ -106,6 +106,29 @@ CStringRef DataDeviceHelper::getClipboardMimeType (bool utf8Encoded)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
+bool DataDeviceHelper::isClipboardMimeType (CStringRef mimeType)
+{
+	return mimeType == getClipboardMimeType (true) || mimeType == getClipboardMimeType ();
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+void DataDeviceHelper::readText (String& text, int fd, TextEncoding encoding)
+{
+	MutableCString bytes;
+	char buffer[CORE_STRING_STACK_MAX];
+	while(true)
+	{
+		ssize_t bytesRead = ::read (fd, buffer, sizeof(buffer));
+		if(bytesRead <= 0)
+			break;
+		bytes.append (buffer, int(bytesRead));
+	}
+	text.appendCString (encoding, bytes.str (), bytes.length ());
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
 void DataDeviceHelper::registerSurface (Surface& surface)
 {
 	if(!surfaces.contains (&surface))
@@ -141,14 +164,7 @@ StringRef DataDeviceHelper::getClipboardText () const
 		::fcntl (clipboardFds[0], F_SETFL, flags | O_NONBLOCK);
 		
 		clipboardText.empty ();
-		char buffer[STRING_STACK_SPACE_MAX];
-		while(true)
-		{
-			ssize_t bytesRead = ::read (clipboardFds[0], buffer, sizeof(buffer));
-			if(bytesRead <= 0)
-				break;
-			clipboardText.appendCString (clipboardEncoding, buffer, int (bytesRead));
-		}
+		readText (clipboardText, clipboardFds[0], clipboardEncoding);
 		::close (clipboardFds[0]);
 		clipboardFds[0] = -1;
 	}

@@ -48,7 +48,7 @@ template<class Data>
 class PaintCache
 {
 public:
-	PaintCache (FrameworkGraphicsFactory* graphicsFactory, int maxSize, const char* name = 0);
+	PaintCache (FrameworkGraphicsFactory* graphicsFactory, int maxSize, CStringPtr name = 0);
 	~PaintCache ();
 
 	jobject getPaint (const Data& data); // returns Paint to be passed to FrameworkGraphics java draw calls
@@ -70,7 +70,7 @@ protected:
 	IntrusiveLinkedList<Item> items;
 	int maxSize;
 	int total;
-	const char* name;
+	CStringPtr name;
 
 	#if PAINT_CACHE_STATISTIC
 	int numReused;
@@ -82,7 +82,7 @@ protected:
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 template<class Data>
-PaintCache<Data>::PaintCache (FrameworkGraphicsFactory* graphicsFactory, int maxSize, const char* name)
+PaintCache<Data>::PaintCache (FrameworkGraphicsFactory* graphicsFactory, int maxSize, CStringPtr name)
 : graphicsFactory (graphicsFactory),
   maxSize (maxSize),
   name (name),
@@ -172,7 +172,7 @@ struct BitmapPaintData
 		if(mode)
 		{
 			alpha = mode->getAlphaF () * 255;
-			filtered = mode->getInterpolationMode () != ImageMode::kInterpolationPixelQuality;
+			filtered = mode->getInterpolationMode () != kImageInterpolationPixelQuality;
 		}
 		else
 		{

@@ -9,33 +9,34 @@ from pathlib import Path
 from modules.parser import Parser, ParserConfig
 from modules.model import Model
 from modules.filewriter import FileWriter, RecursiveObjectFileWriter
+from modules.printer import Printer
 
-__copyright__ = "Copyright (c) 2023 CCL Software Licensing GmbH"
+__copyright__ = "Copyright (c) 2026 CCL Software Licensing GmbH"
 
 
 class TypeDocConverter:
 
     @staticmethod
-    def write_full_documentation(file_in: pathlib.Path, model: Model, config: ParserConfig) -> None:
+    def write_full_documentation(file_in: pathlib.Path, model: Model, printer: Printer, config: ParserConfig) -> None:
         """
         Write summary file and top level element individual files.
         """
 
         # collect these to set them in index file toc tree
         toc_tree_files = list()
-        recursive_writer = RecursiveObjectFileWriter(model, config)
+        recursive_writer = RecursiveObjectFileWriter(model, printer, config)
         recursive_writer.write_files(toc_tree_files)
 
         index_file_path = pathlib.Path(config.out_path, "index.rst")
-        FileWriter.write_index(model, file_in, index_file_path, toc_tree_files)
+        FileWriter.write_index(model, printer, file_in, index_file_path, toc_tree_files)
 
     @staticmethod
-    def write_shortcut_list(file_in: pathlib.Path, model: Model, config: ParserConfig) -> None:
+    def write_shortcut_list(file_in: pathlib.Path, model: Model, printer: Printer, config: ParserConfig) -> None:
         """
         Write single file containing shortcuts to all top level elements.
         """
         index_ref_file_path = pathlib.Path(config.out_path, "index.ref.rst")
-        FileWriter.write_shortcut_list(model, file_in, index_ref_file_path)
+        FileWriter.write_shortcut_list(model, printer, file_in, index_ref_file_path)
 
     @staticmethod
     def run(file_in: pathlib.Path, out_path: pathlib.Path, anchor_name: str, write_reference_file: bool) -> None:
@@ -67,7 +68,9 @@ class TypeDocConverter:
             logging.info(f"output path {out_path} not found, creating directory")
             out_path.mkdir(parents=True, exist_ok=True)
 
+        printer = Printer()
+
         # remove suffix to append .rst and .ref.rst if needed
-        TypeDocConverter.write_full_documentation(file_in, model, config)
+        TypeDocConverter.write_full_documentation(file_in, model, printer, config)
         if config.write_refs:
-            TypeDocConverter.write_shortcut_list(file_in, model, config)
+            TypeDocConverter.write_shortcut_list(file_in, model, printer, config)

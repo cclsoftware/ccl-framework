@@ -341,6 +341,21 @@ macro (ccl_add_proguard_file target path)
 	file (APPEND "${gradle_proguard_file}" "android.buildTypes.release.proguardFiles += \"${path}\"\n")
 endmacro ()
 
+# Add arguments to nested CMake calls
+# @group android
+# @param {STRING} CMAKE_ARGS  [variadic] List of arguments to pass to native CMake subprojects.
+macro (ccl_add_nested_cmake_args)
+	cmake_parse_arguments (params "" "" "CMAKE_ARGS" ${ARGN})
+
+	foreach (arg ${params_CMAKE_ARGS})
+		list (FIND CCL_NESTED_CMAKE_ARGS "${arg}" index)
+
+		if (${index} EQUAL -1)
+			list (APPEND CCL_NESTED_CMAKE_ARGS ${arg})
+		endif ()
+	endforeach ()
+endmacro ()
+
 # Generate a .gradle file referencing project assets
 # @group android
 # @param {STRING} target  Name of the target to add asset files to.
@@ -439,6 +454,8 @@ macro (ccl_process_resources target config path)
 			elseif (IS_DIRECTORY "${resource}")
 				set (prefix "${prefix}/${resource_file}")
 			endif ()
+
+			string (REPLACE "/${VENDOR_PLATFORM_SUBDIR}/" "/\${project.ext.buildArchitecture}/" resource "${resource}")
 
 			file (APPEND "${gradle_resources_file}"
 				"\t\tfrom(\"${resource}\") { into \"${prefix}\" }\n")
@@ -624,10 +641,7 @@ endmacro ()
 # @group android
 # @param {STRING} project  Parent project target name.
 # @param {STRING} appid  Application ID, e.g. dev.ccl.ccldemo.
-# @param {STRING} CMAKE_ARGS  [variadic] List of arguments to pass to native CMake subprojects.
 macro (ccl_add_deployment_project project appid)
-	cmake_parse_arguments (params "" "" "CMAKE_ARGS" ${ARGN})
-
 	# Add sub-project AAR dependencies to deployment project
 	ccl_add_gradle_dependency (${project} "${PROJECT_AAR_LIBRARIES}")
 
@@ -872,11 +886,17 @@ macro (ccl_add_deployment_project project appid)
 		"\tdefaultConfig {\n"
 		"\t\texternalNativeBuild {\n"
 		"\t\t\tcmake {\n"
-		"\t\t\t\targuments '--preset=android', '-DENABLE_ASAN=${ENABLE_ASAN}', '-DENABLE_HWASAN=${ENABLE_HWASAN}'")
+		"\t\t\t\targuments '--preset=android'")
 
 	if (CMAKE_MODULE_PATH)
+		# Gradle runs CMake from a different working directory, so convert to absolute paths
+		set (absolute_module_path "")
+		foreach (module_dir IN LISTS CMAKE_MODULE_PATH)
+			cmake_path (ABSOLUTE_PATH module_dir BASE_DIRECTORY "${CMAKE_SOURCE_DIR}" NORMALIZE)
+			list (APPEND absolute_module_path "${module_dir}")
+		endforeach ()
 		file (APPEND "${gradle_native_build_file}"
-			", \"-DCMAKE_MODULE_PATH='${CMAKE_MODULE_PATH}'\"")
+			", \"-DCMAKE_MODULE_PATH='${absolute_module_path}'\"")
 	endif ()
 
 	if (CCL_PREFER_PREBUILT_EXPORTS)
@@ -887,15 +907,9 @@ macro (ccl_add_deployment_project project appid)
 	file (APPEND "${gradle_native_build_file}"
 		", \"-DCCL_EXPORTS_PATH='${VENDOR_OUTPUT_DIRECTORY}/${VENDOR_PLATFORM}/\${buildArchitecture}/\${cmakeConfiguration}/${CCL_ISOLATION_POSTFIX}/exports'\"")
 
-	if (CCL_SPIRV_CROSS_DIR)
-		cmake_path (NORMAL_PATH CCL_SPIRV_CROSS_DIR)
+	foreach (arg ${CCL_NESTED_CMAKE_ARGS})
 		file (APPEND "${gradle_native_build_file}"
-			", \"-DCCL_SPIRV_CROSS_DIR='${CCL_SPIRV_CROSS_DIR}'\"")
-	endif ()
-
-	foreach (arg ${params_CMAKE_ARGS})
-		file (APPEND "${gradle_native_build_file}"
-			", '${arg}'")
+			", \"${arg}\"")
 	endforeach ()
 
 	file (APPEND "${gradle_native_build_file}"

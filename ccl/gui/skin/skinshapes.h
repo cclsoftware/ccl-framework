@@ -37,7 +37,8 @@ This is the base class of all shapes, not to be used directly. */
 class ShapeElement: public Element
 {
 public:
-	DECLARE_SKIN_ELEMENT (ShapeElement, Element)
+	DECLARE_CLASS (ShapeElement, Element)
+	DECLARE_TYPELIB_CLASS (ShapeElement)
 
 	DECLARE_STYLEDEF (shapeStyles)
 
@@ -65,7 +66,8 @@ protected:
 class ComplexShapeElement: public ShapeElement
 {
 public:
-	DECLARE_SKIN_ELEMENT (ComplexShapeElement, ShapeElement)
+	DECLARE_CLASS (ComplexShapeElement, ShapeElement)
+	DECLARE_TYPELIB_CLASS (ComplexShapeElement)
 
 	// Element
 	bool setAttributes (const SkinAttributes& a) override;
@@ -87,7 +89,8 @@ protected:
 class LineShapeElement: public ShapeElement
 {
 public:
-	DECLARE_SKIN_ELEMENT (LineShapeElement, ShapeElement)
+	DECLARE_CLASS (LineShapeElement, ShapeElement)
+	DECLARE_TYPELIB_CLASS (LineShapeElement)
 	
 	DECLARE_STYLEDEF (scaleAlignment)
 
@@ -107,7 +110,8 @@ protected:
 class RectShapeElement: public ShapeElement
 {
 public:
-	DECLARE_SKIN_ELEMENT (RectShapeElement, ShapeElement)
+	DECLARE_CLASS (RectShapeElement, ShapeElement)
+	DECLARE_TYPELIB_CLASS (RectShapeElement)
 
 	// Element
 	bool setAttributes (const SkinAttributes& a) override;
@@ -125,7 +129,8 @@ protected:
 class EllipseShapeElement: public RectShapeElement
 {
 public:
-	DECLARE_SKIN_ELEMENT (EllipseShapeElement, RectShapeElement)
+	DECLARE_CLASS (EllipseShapeElement, RectShapeElement)
+	DECLARE_TYPELIB_CLASS (EllipseShapeElement)
 
 protected:
 	Shape* newShape () const override;
@@ -139,7 +144,8 @@ protected:
 class TriangleShapeElement: public ShapeElement
 {
 public:
-	DECLARE_SKIN_ELEMENT (TriangleShapeElement, ShapeElement)
+	DECLARE_CLASS (TriangleShapeElement, ShapeElement)
+	DECLARE_TYPELIB_CLASS (TriangleShapeElement)
 
 	// Element
 	bool setAttributes (const SkinAttributes& a) override;
@@ -157,7 +163,8 @@ protected:
 class EmbeddedImageShapeElement: public ShapeElement
 {
 public:
-	DECLARE_SKIN_ELEMENT (EmbeddedImageShapeElement, ShapeElement)
+	DECLARE_CLASS (EmbeddedImageShapeElement, ShapeElement)
+	DECLARE_TYPELIB_CLASS (EmbeddedImageShapeElement)
 
 	PROPERTY_MUTABLE_CSTRING (imageName, ImageName)
 
@@ -177,7 +184,8 @@ protected:
 class ShapeImageElement: public ImageElement
 {
 public:
-	DECLARE_SKIN_ELEMENT (ShapeImageElement, ImageElement)
+	DECLARE_CLASS (ShapeImageElement, ImageElement)
+	DECLARE_TYPELIB_CLASS (ShapeImageElement)
 
 	// ImageElement
 	bool loadImage (SkinModel& model) override;

@@ -50,13 +50,22 @@ interface IDeviceDescription: IUnknown
 	virtual void CCL_API getDeviceAttributes (IAttributeList& a) const = 0;
 
 	//////////////////////////////////////////////////////////////////////////////////////////////
-	// Device flags and attributes
+	// Device flags
 	//////////////////////////////////////////////////////////////////////////////////////////////
 
-	static constexpr int kMediaRenderCapability = 1<<0;		///< device can render media
-	static constexpr int kMediaCaptureCapability = 1<<1;	///< device can capture media
+	static constexpr int kMediaRenderCapability = 1<<0;	///< device can render media
+	static constexpr int kMediaCaptureCapability = 1<<1; ///< device can capture media
+	
+	static constexpr int kMediaDuplexCapability =
+		kMediaRenderCapability|kMediaCaptureCapability; ///< device can render and capture simultaneously
 
-	DECLARE_STRINGID_MEMBER (kDeviceContainerID)			///< device container ID (Windows)
+	static constexpr int kIsSystemDefault = 1<<2; ///< device is system default
+
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	// Device attributes
+	//////////////////////////////////////////////////////////////////////////////////////////////
+
+	DECLARE_STRINGID_MEMBER (kDeviceContainerID) ///< device container ID (Windows)
 
 	DECLARE_IID (IDeviceDescription)
 };

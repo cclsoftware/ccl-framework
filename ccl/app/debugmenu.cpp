@@ -106,8 +106,8 @@ void DebugMenuComponent::buildMenu (IMenu& menu, bool extend)
 
 	if(extend)
 	{
-		Message msg (CCL::Signals::kExtendDebugMenu, &menu);
-		SignalSource (CCL::Signals::kDebug).signal (msg);
+		Message msg (Signals::kExtendDebugMenu, &menu);
+		SignalSource (Signals::kDebug).signal (msg);
 	}	
 }
 

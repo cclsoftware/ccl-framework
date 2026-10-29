@@ -69,7 +69,7 @@ interface IWebHeaderCollection: IUnknown
 	virtual tbool CCL_API parseFileName (String& fileName) const = 0;
 
 	/** Parse the response date from the "Date" header. */
-	virtual tbool CCL_API parseDate (CCL::DateTime& date) const = 0;
+	virtual tbool CCL_API parseDate (DateTime& date) const = 0;
 
 	/** Returns true for chunked transfer ("Transfer-Encoding"). */
 	virtual tbool CCL_API isChunkedTransfer () const = 0;

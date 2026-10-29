@@ -34,6 +34,7 @@
 #include "ccl/text/strings/stringtable.h"
 #include "ccl/text/strings/translationtable.h"
 #include "ccl/text/strings/formatparser.h"
+#include "ccl/text/strings/graphemeiterator.h"
 #include "ccl/text/strings/cstringbuffer.h"
 #include "ccl/text/strings/regularexpression.h"
 #include "ccl/text/strings/jsonhandler.h"
@@ -133,6 +134,13 @@ CCL_EXPORT tresult CCL_API CCL_ISOLATED (ParseVariantString) (Variant& result, S
 CCL_EXPORT IRegularExpression* CCL_API CCL_ISOLATED (CreateRegularExpression) ()
 {
 	return NEW RegularExpression;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+CCL_EXPORT IGraphemeIterator* CCL_API CCL_ISOLATED (CreateGraphemeIterator) (StringRef string, int position)
+{
+	return NEW GraphemeIterator (string, position);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -295,6 +303,23 @@ CCL_EXPORT IStream* CCL_API CCL_ISOLATED (CreateTransformStream) (IStream* dataS
 			reader->release ();
 	}
 	return nullptr;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+CCL_EXPORT uint16 CCL_API CCL_ISOLATED (Crc16) (const void* key, uint32 length, uint16 initialValue)
+{
+	static const uint16 kCrc16ReflectedPoly = 0xA001;
+
+	uint16 crc = initialValue;
+	const uint8* data = static_cast<const uint8*> (key);
+	for(uint32 i = 0; i < length; i++)
+	{
+		crc ^= data[i];
+		for(int bit = 0; bit < 8; bit++)
+			crc = (crc & 1) ? uint16((crc >> 1) ^ kCrc16ReflectedPoly) : uint16(crc >> 1);
+	}
+	return crc;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////

@@ -72,10 +72,10 @@ protected:
 		: gestureType (gestureType), priority (priority) {}
 	};
 
-	const CCL::Vector<GestureItem>& getRequiredGestures () const;
+	const Vector<GestureItem>& getRequiredGestures () const;
 
 private:
-	CCL::Vector<GestureItem> requiredGestures;
+	Vector<GestureItem> requiredGestures;
 };
 
 //************************************************************************************************
@@ -188,7 +188,7 @@ inline tbool CCL_API AbstractTouchHandler::getRequiredGesture (int& gestureType,
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-inline const CCL::Vector<AbstractTouchHandler::GestureItem>& AbstractTouchHandler::getRequiredGestures () const
+inline const Vector<AbstractTouchHandler::GestureItem>& AbstractTouchHandler::getRequiredGestures () const
 {
 	return requiredGestures;
 }

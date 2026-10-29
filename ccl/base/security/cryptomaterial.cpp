@@ -357,21 +357,21 @@ IStream& Material::asStream ()
 
 MutableCString Material::toCHex () const
 {
-	return encode (CCL::ClassID::Base16Encoding);
+	return encode (ClassID::Base16Encoding);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 MutableCString Material::toCBase32 () const
 {
-	return encode (CCL::ClassID::Base32Encoding);
+	return encode (ClassID::Base32Encoding);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 MutableCString Material::toCBase64 () const
 {
-	return encode (CCL::ClassID::Base64Encoding);
+	return encode (ClassID::Base64Encoding);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -394,21 +394,21 @@ MutableCString Material::toCBase64URL () const
 
 Material& Material::fromHex (CStringRef string)
 {
-	return decode (string, CCL::ClassID::Base16Encoding);
+	return decode (string, ClassID::Base16Encoding);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 Material& Material::fromBase32 (CStringRef string)
 {
-	return decode (string, CCL::ClassID::Base32Encoding);
+	return decode (string, ClassID::Base32Encoding);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 Material& Material::fromBase64 (CStringRef string)
 {
-	return decode (string, CCL::ClassID::Base64Encoding);
+	return decode (string, ClassID::Base64Encoding);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////

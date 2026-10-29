@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Model.ClassRepository xmlns:x="https://ccl.dev/xml" name="PANEL_TYPELIB">
+	<List x:id="classes">
+		<Model.Class name="Label" parent="Panel">
+			<List x:id="members">
+				<Model.Member name="label" type="string" typeName="string"/>
+				<Model.Member name="highlightColor" type="string" typeName="color"/>
+			</List>
+		</Model.Class>
+		<Model.Class name="Panel" abstract="1">
+			<List x:id="members">
+				<Model.Member name="enabled" type="bool" typeName="bool"/>
+				<Model.Member name="opacity" type="float" typeName="float"/>
+			</List>
+			<Attributes x:id="attributes">
+				<Attribute id="Class:SchemaGroups" value="Panel Control"/>
+				<Attribute id="Class:ChildGroup" value="Panel"/>
+				<Attribute id="Class:DocGroup" value="Controls"/>
+			</Attributes>
+		</Model.Class>
+	</List>
+	<List x:id="enums">
+		<Model.Enumeration name="Label.alignment" parent="Panel.alignment">
+		</Model.Enumeration>
+		<Model.Enumeration name="Panel.alignment">
+			<List x:id="enumerators">
+				<Model.Enumerator name="left"/>
+				<Model.Enumerator name="center"/>
+				<Model.Enumerator name="right"/>
+			</List>
+		</Model.Enumeration>
+	</List>
+</Model.ClassRepository>

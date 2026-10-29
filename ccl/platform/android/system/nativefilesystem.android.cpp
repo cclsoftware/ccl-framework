@@ -44,11 +44,11 @@ public:
 
 tbool CCL_API AndroidNativeFileSystem::AndroidFileStream::getPath (IUrl& path)
 { 
-	char filePath[STRING_STACK_SPACE_MAX] = {0};
+	char filePath[CORE_STRING_STACK_MAX] = {0};
 	MutableCString fdPath ("/proc/self/fd/");
 	fdPath.appendInteger (intFromPointer (file));
 	ssize_t length = ::readlink (fdPath, filePath, ARRAY_COUNT (filePath));
-	if(length > 0 && length + 1 < STRING_STACK_SPACE_MAX)
+	if(length > 0 && length + 1 < CORE_STRING_STACK_MAX)
 	{
 		filePath[length] = 0;
 		return path.fromPOSIXPath (filePath, IUrl::kFile);
@@ -62,9 +62,9 @@ tbool CCL_API AndroidNativeFileSystem::AndroidFileStream::getPath (IUrl& path)
 
 String AndroidNativeFileSystem::translateMode (int mode)
 {
-	bool wantRead = mode & CCL::IStream::kReadMode;
-	bool wantWrite = mode & CCL::IStream::kWriteMode;
-	bool wantCreate = mode & CCL::IStream::kCreate;
+	bool wantRead = mode & IStream::kReadMode;
+	bool wantWrite = mode & IStream::kWriteMode;
+	bool wantCreate = mode & IStream::kCreate;
 
 	String modeString;
 	if(wantRead && wantWrite)

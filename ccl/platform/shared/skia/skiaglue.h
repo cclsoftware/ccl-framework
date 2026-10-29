@@ -78,12 +78,20 @@
 #include "skia/include/gpu/ganesh/gl/egl/GrGLMakeEGLInterface.h"
 #endif
 
+#if SK_ASSUME_WEBGL
+#include "skia/include/gpu/ganesh/gl/GrGLMakeWebGLInterface.h"
+#endif
+
 #if SK_FONTCONFIG
 #include "skia/include/ports/SkFontMgr_fontconfig.h"
 #endif
 
 #if CCL_PLATFORM_MAC || CCL_PLATFORM_IOS
 #include "skia/include/ports/SkFontMgr_mac_ct.h"
+#endif
+
+#if CCL_PLATFORM_WASM
+#include "skia/include/ports/SkFontMgr_directory.h"
 #endif
 
 #include "skia/include/effects/SkGradientShader.h"

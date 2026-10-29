@@ -472,11 +472,17 @@ MutableCString& MutableCString::trimWhitespace ()
 		writeEnable ();
 		startPtr = text; // refresh startPtr (writeEnable can change it!)
 
+		// s1/s2 were computed against the OLD buffer and may now be dangling if
+		// writeEnable() cloned a new one - rebuild them from the (possibly new)
+		// startPtr and the already-computed offsets instead of reusing them.
+		char* trimmedStart = (char*)startPtr + whiteSpaceAtStart;
+		char* trimmedEnd = (char*)startPtr + (len - 1 - whiteSpaceAtEnd);
+
 		if(whiteSpaceAtEnd > 0) // trim end
-			((char*)s2)[1] = 0;
+			trimmedEnd[1] = 0;
 
 		if(whiteSpaceAtStart > 0)
-			memmove ((char*)startPtr, s1, len + 1 - whiteSpaceAtEnd - whiteSpaceAtStart);
+			memmove ((char*)startPtr, trimmedStart, len + 1 - whiteSpaceAtEnd - whiteSpaceAtStart);
 	}
 	return *this;
 }

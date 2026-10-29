@@ -47,7 +47,8 @@ public:
 
 	INavigator* getNavigator () const;
 
-	// View
+	// Button
+	void CCL_API push () override;
 	void draw (const UpdateRgn& updateRgn) override;
 	MouseHandler* createMouseHandler (const MouseEvent& event) override;
 	bool onMouseEnter (const MouseEvent& event) override;

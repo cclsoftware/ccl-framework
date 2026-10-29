@@ -78,6 +78,7 @@ END_XSTRINGS
 - (CCL::CocoaPopupMenu*)getCCLMenu;
 - (BOOL)isSystemEditItem:(NSMenuItem*)item;
 - (void)selectSystemEditItem:(NSMenuItem*)item;
+- (BOOL)isTextEditingItem:(NSMenuItem*)item;
 @end
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -105,7 +106,7 @@ END_XSTRINGS
 
 - (BOOL)validateMenuItem:(NSMenuItem*)nsItem
 {
-	if(nsItem.keyEquivalentModifierMask == 0 && NativeTextControl::isNativeTextControlPresent ())
+	if(Desktop.isInTextInput () && (nsItem.keyEquivalentModifierMask == 0 || [self isTextEditingItem:nsItem]))
 		return NO;
 
 	bool result = false;
@@ -218,6 +219,33 @@ END_XSTRINGS
 		case 0x7A :
 			return YES;
 		}
+
+	return NO;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+- (BOOL)isTextEditingItem:(NSMenuItem*)item
+{
+	// navigation and deletion keys, the edit box handles them with any modifier
+	if([item.keyEquivalent length] == 0)
+		return NO;
+
+	switch([item.keyEquivalent characterAtIndex:0])
+	{
+	case NSLeftArrowFunctionKey :
+	case NSRightArrowFunctionKey :
+	case NSUpArrowFunctionKey :
+	case NSDownArrowFunctionKey :
+	case NSHomeFunctionKey :
+	case NSEndFunctionKey :
+	case NSPageUpFunctionKey :
+	case NSPageDownFunctionKey :
+	case NSDeleteFunctionKey :
+	case NSBackspaceCharacter :
+	case NSDeleteCharacter :
+		return YES;
+	}
 
 	return NO;
 }
@@ -571,7 +599,7 @@ IAsyncOperation* CocoaPopupMenu::popupPlatformMenu (const CCL::Point& where, IWi
 	NSWindow* nsWindow = toNSWindow (window);
 
 	NSEvent* event = [NSApp currentEvent];
-	if(event.type == NSEventTypeRightMouseDown)
+	if(event.type == NSEventTypeRightMouseDown || (event.type == NSEventTypeLeftMouseDown && (event.modifierFlags & NSEventModifierFlagControl)))
 		[NSMenu popUpContextMenu:menu withEvent:event forView:[nsWindow contentView]];
 
 	MenuItemID result = -1;

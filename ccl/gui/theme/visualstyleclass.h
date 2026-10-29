@@ -19,98 +19,47 @@
 #ifndef _ccl_visualstyleclass_h
 #define _ccl_visualstyleclass_h
 
-#include "ccl/base/typelib.h"
+#include "ccl/gui/guitypelib.h"
+
+#include "ccl/base/singleton.h"
 
 namespace CCL {
 
-//////////////////////////////////////////////////////////////////////////////////////////////////
-// Visual Style Meta Class Macros
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
-/*
-	Example:
-
-	BEGIN_VISUALSTYLE_CLASS (Control, VisualStyle, "ControlStyle")
-		ADD_VISUALSTYLE_COLOR  ("background")
-		ADD_VISUALSTYLE_METRIC ("margin")
-		...
-	END_VISUALSTYLE_CLASS (Control)
-*/
-
-#define BEGIN_VISUALSTYLE_CLASS(Class, Parent, name) \
-	VisualStyleClass CCL::__vsc##Class (name, &__vsc##Parent); \
-	Model::MemberDescription __vscMembers##Class []= {
-
-#define BEGIN_VISUALSTYLE_BASE(Class, name) \
-	VisualStyleClass CCL::__vsc##Class (name, 0); \
-	Model::MemberDescription __vscMembers##Class[]= {
-
-#define END_VISUALSTYLE_CLASS(Class) Model::MemberDescription () }; \
-	static VisualStyleClass::MemberDescriptionModifier UNIQUE_IDENT (__vscmod) (__vsc##Class, __vscMembers##Class); \
-	static VisualStyleClass::Registrar __reg##Class (__vsc##Class);
-
-#define DECLARE_VISUALSTYLE_CLASS(Class) \
-	extern VisualStyleClass __vsc##Class;
-
-#define ADD_VISUALSTYLE_COLOR(name) \
-	Model::MemberDescription (name, ITypeInfo::kString, "color"),
-
-#define ADD_VISUALSTYLE_METRIC(name) \
-	Model::MemberDescription (name, ITypeInfo::kFloat, "metric"),
-
-#define ADD_VISUALSTYLE_FONT(name) \
-	Model::MemberDescription (name, ITypeInfo::kString, "string"),
-
-#define ADD_VISUALSTYLE_ALIGN(name) \
-	Model::MemberDescription (name, ITypeInfo::kInt, "enum"),
-
-#define ADD_VISUALSTYLE_OPTIONS(name) \
-	Model::MemberDescription (name, ITypeInfo::kInt, "enum"),
-
-#define ADD_VISUALSTYLE_IMAGE(name) \
-	Model::MemberDescription (name, ITypeInfo::kString, "image"),
-
-#define ADD_VISUALSTYLE_STRING(name) \
-	Model::MemberDescription (name, ITypeInfo::kString, "string"),
+namespace VisualStyleClass {
 
 //************************************************************************************************
-// VisualStyleClass
+// VisualStyleClass::Library
 //************************************************************************************************
 
-class VisualStyleClass: public TypeInfo
+class Library: public TypeLibrary,
+			   public Singleton<Library>
 {
 public:
-	VisualStyleClass (const char* name, const VisualStyleClass* parentClass = nullptr);
+	Library ();
 
-	struct Registrar;
-	class Library;
-	static TypeLibrary& getTypeLibrary ();
-
-	// TypeInfo
-	bool getDetails (ITypeInfoDetails& details) const override;
-
-	struct MemberDescriptionModifier
-	{
-		MemberDescriptionModifier (VisualStyleClass& This, Model::MemberDescription members[]);
-	};
-
-private:
-	Model::MemberDescription* members;
+protected:
+	CStringEnumTypeInfo metrics;
+	CStringEnumTypeInfo colors;
+	CStringEnumTypeInfo cursors;
+	CStringEnumTypeInfo fonts;
+	CStringEnumTypeInfo standardStyles;
+	CStringEnumTypeInfo elementImages;
+	CStringEnumTypeInfo elementStates;
+	CStringEnumTypeInfo elementStatesOn;
 };
 
-DECLARE_VISUALSTYLE_CLASS (VisualStyle)
+//////////////////////////////////////////////////////////////////////////////////////////////////
 
-//************************************************************************************************
-// VisualStyleClass::Registrar
-//************************************************************************************************
-
-struct VisualStyleClass::Registrar
+inline Library& getTypeLibrary ()
 {
-	Registrar (VisualStyleClass& vsc)
-	{
-		VisualStyleClass::getTypeLibrary ().addType (&vsc);
-	}
-};
+	return Library::instance ();
+}
+
+} // namespace VisualStyleClass
+
+#define VISUALSTYLES_TYPELIB CCL::VisualStyleClass::getTypeLibrary ()
+
+DECLARE_TYPELIB_ENTRY (VisualStyle)
 
 } // namespace CCL
 

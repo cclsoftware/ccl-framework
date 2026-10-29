@@ -112,12 +112,31 @@ bool FileFilter::Item::load (const Storage& storage)
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 inline bool FileFilter::Item::matchesValue (StringRef value)
-{
-	if(value == excludeValue)
+{	
+	String delimiter (",");
+	if(excludeValue.contains (delimiter))
+	{	
+		ForEachStringToken (excludeValue, delimiter, excluded)
+			excluded.trimWhitespace ();		
+			if(value == excluded)
+				return false;
+		EndFor
+	}
+	else if(value == excludeValue)
 		return false;
 
 	if(includeValue.isEmpty ())
 		return true;
+
+	if(includeValue.contains (delimiter))	
+	{
+		ForEachStringToken (excludeValue, delimiter, included)
+			included.trimWhitespace ();		
+			if(value == included)
+				return true;
+		EndFor
+		return false;
+	}
 
 	return value == includeValue;
 }

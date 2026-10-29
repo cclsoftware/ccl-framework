@@ -160,8 +160,8 @@ public:
 
 #if CORE_DISCOVERY_IMPLEMENTATION == CORE_FEATURE_UNIMPLEMENTED
 
-typedef int DiscoveryRef;
-typedef int TextRecordRef;
+typedef void* DiscoveryRef;
+typedef void* TextRecordRef;
 
 //************************************************************************************************
 // TextRecord stub implementation

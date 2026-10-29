@@ -91,7 +91,11 @@ ErrorCode LinuxGattCentralDescriptor::readAsync ()
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void LinuxGattCentralDescriptor::onReadValueReply (const std::vector<uint8_t>& value, const sdbus::Error* error)
+#if SDBUS_CPP_VERSION == 2
+void LinuxGattCentralDescriptor::onReadValueReply (const std::vector<uint8_t>& value, std::optional<sdbus::Error> error)
+#else
+void LinuxGattCentralDescriptor::onReadValueReply (const std::vector<uint8_t>& value, SDBusError error)
+#endif
 {
 	// ASSERT Main Thread
 	if(error)
@@ -115,7 +119,11 @@ ErrorCode LinuxGattCentralDescriptor::writeAsync (const uint8 valueBuffer[], int
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void LinuxGattCentralDescriptor::onWriteValueReply (const sdbus::Error* error)
+#if SDBUS_CPP_VERSION == 2
+void LinuxGattCentralDescriptor::onWriteValueReply (std::optional<sdbus::Error> error)
+#else
+void LinuxGattCentralDescriptor::onWriteValueReply (SDBusError error)
+#endif
 {
 	if(error)
 		PRINT_DBUS_ERROR (*error, "[onWriteValueReply]")
@@ -189,7 +197,7 @@ ErrorCode LinuxGattCentralCharacteristic::readAsync ()
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void LinuxGattCentralCharacteristic::onReadValueReply (const std::vector<uint8_t>& value, const sdbus::Error* error)
+void LinuxGattCentralCharacteristic::onReadValueReply (const std::vector<uint8_t>& value, SDBusError error)
 {
 	if(error)
 	{
@@ -213,7 +221,7 @@ ErrorCode LinuxGattCentralCharacteristic::subscribeAsync ()
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void LinuxGattCentralCharacteristic::onStartNotifyReply (const sdbus::Error* error)
+void LinuxGattCentralCharacteristic::onStartNotifyReply (SDBusError error)
 {
 	if(error)
 		PRINT_DBUS_ERROR (*error, "[onStartNotifyReply]")
@@ -234,7 +242,7 @@ ErrorCode LinuxGattCentralCharacteristic::unsubscribeAsync ()
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void LinuxGattCentralCharacteristic::onStopNotifyReply (const sdbus::Error* error)
+void LinuxGattCentralCharacteristic::onStopNotifyReply (SDBusError error)
 {
 	if(error)
 		PRINT_DBUS_ERROR (*error, "[onStopNotifyReply]")
@@ -254,7 +262,7 @@ ErrorCode LinuxGattCentralCharacteristic::writeAsync (const uint8 valueBuffer[],
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void LinuxGattCentralCharacteristic::onWriteValueReply (const sdbus::Error* error)
+void LinuxGattCentralCharacteristic::onWriteValueReply (SDBusError error)
 {
 	if(error)
 		PRINT_DBUS_ERROR (*error, "[onWriteValueReply]")
@@ -264,11 +272,11 @@ void LinuxGattCentralCharacteristic::onWriteValueReply (const sdbus::Error* erro
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void LinuxGattCentralCharacteristic::onPropertiesChanged (const std::string& interfaceName, const std::map<std::string, sdbus::Variant>& changed_properties, const std::vector<std::string>& invalidated_properties)
+void LinuxGattCentralCharacteristic::onPropertiesChanged (const SDBusInterfaceName& interfaceName, const std::map<SDBusMemberName, sdbus::Variant>& changed_properties, const std::vector<SDBusMemberName>& invalidated_properties)
 {
 	for(const auto& [propertyName, propertyValue] : changed_properties)
 	{
-		if(propertyName == "Value" && propertyValue.peekValueType () == "ay")
+		if(propertyName == "Value" && std::string (propertyValue.peekValueType ()) == "ay")
 		{
 			observers.notify (&IGattCentralCharacteristicObserver::onNotificationReceived, (static_cast<std::vector<uint8>> (propertyValue)).data (), int((static_cast<std::vector<uint8>>(propertyValue)).size ()));
 			return;
@@ -418,11 +426,11 @@ LinuxGattCentralDevice::LinuxGattCentralDevice (LinuxGattCentral& central, const
 {
 	try // some properties might be not set
 	{
-		std::map<std::string, sdbus::Variant> properties = GetAll (kInterfaceDevice);
-		if(properties.count (kPropertyManufacturerData) == 1)
-			manufacturerDataToCStr (manufacturerData, properties.at (kPropertyManufacturerData));
-		if(properties.count (kPropertyName) == 1)
-			name = (static_cast<std::string> (properties.at (kPropertyName))).c_str ();
+		std::map<SDBusPropertyName, sdbus::Variant> properties = GetAll (kInterfaceDevice);
+		if(properties.count (SDBusPropertyName (kPropertyManufacturerData)) == 1)
+			manufacturerDataToCStr (manufacturerData, properties.at (SDBusPropertyName (kPropertyManufacturerData)).get<std::map<uint16, sdbus::Variant>> ());
+		if(properties.count (SDBusPropertyName (kPropertyName)) == 1)
+			name = (static_cast<std::string> (properties.at (SDBusPropertyName (kPropertyName)))).c_str ();
 	}
 	CATCH_DBUS_ERROR
 	services.objectCleanup ();
@@ -445,7 +453,7 @@ const ObjectArray& LinuxGattCentralDevice::getServices () const
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void LinuxGattCentralDevice::onPropertiesChanged (const std::string& interfaceName, const std::map<std::string, sdbus::Variant>& changed_properties, const std::vector<std::string>& invalidated_properties)
+void LinuxGattCentralDevice::onPropertiesChanged (const SDBusInterfaceName& interfaceName, const std::map<SDBusMemberName, sdbus::Variant>& changed_properties, const std::vector<SDBusMemberName>& invalidated_properties)
 {
 	bool relevantDataChanged = false;
 	for(const auto& [propName, propValue] : changed_properties)
@@ -463,15 +471,15 @@ void LinuxGattCentralDevice::onPropertiesChanged (const std::string& interfaceNa
 		}
 		else if(propName == kPropertyManufacturerData)
 		{
-			manufacturerDataToCStr (manufacturerData, propValue);
+			manufacturerDataToCStr (manufacturerData, propValue.get<std::map<uint16, sdbus::Variant>> ());
 			relevantDataChanged = true;
 
 			CCL_PRINTF ("%s changed ManufacturerData: %s\n", name.str (), manufacturerData.str ());
 		}
 		else if(propName == kPropertyConnected)
-			setConnected (propValue);
+			setConnected (propValue.get<bool> ());
 		else if(propName == kPropertyServicesResolved)
-			setServicesResolved (propValue);
+			setServicesResolved (propValue.get<bool> ());
 	}
 
 	if(relevantDataChanged && central.isDeviceDataValid (this))
@@ -480,7 +488,7 @@ void LinuxGattCentralDevice::onPropertiesChanged (const std::string& interfaceNa
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void LinuxGattCentralDevice::onConnectReply (const sdbus::Error* error)
+void LinuxGattCentralDevice::onConnectReply (SDBusError error)
 {
 	if(error)
 	{
@@ -493,7 +501,7 @@ void LinuxGattCentralDevice::onConnectReply (const sdbus::Error* error)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void LinuxGattCentralDevice::onDisconnectReply (const sdbus::Error* error)
+void LinuxGattCentralDevice::onDisconnectReply (SDBusError error)
 {
 	if(error)
 	{
@@ -782,7 +790,7 @@ ErrorCode LinuxGattCentral::startScanning (const IDFilter& serviceFilter, const 
 	// enable scanning
 	try
 	{
-		adapterProxy->SetDiscoveryFilter ({{"Transport", "le"}});
+		adapterProxy->SetDiscoveryFilter ({{"Transport", sdbus::Variant ("le")}});
 		adapterProxy->StartDiscovery ();
 	}
 	catch(const sdbus::Error& e)
@@ -830,7 +838,7 @@ void LinuxGattCentral::investigateExistingDevices ()
 {
 	if(!objectManagerProxy)
 		return;
-	std::map<sdbus::ObjectPath, std::map<std::string, std::map<std::string, sdbus::Variant>>> result = objectManagerProxy->GetManagedObjects ();
+	std::map<sdbus::ObjectPath, std::map<SDBusInterfaceName, std::map<SDBusMemberName, sdbus::Variant>>> result = objectManagerProxy->GetManagedObjects ();
 	for(const auto& [path, interfaces] : result)
 		objectManagerProxy->onInterfacesAdded (path, interfaces);
 }
@@ -999,32 +1007,32 @@ ObjectManagerProxy::ObjectManagerProxy (IDBusSupport& dbusSupport, LinuxGattCent
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void ObjectManagerProxy::onInterfacesAdded (const sdbus::ObjectPath& path, const std::map<std::string, std::map<std::string, sdbus::Variant>>& interfaces)
+void ObjectManagerProxy::onInterfacesAdded (const sdbus::ObjectPath& path, const std::map<SDBusInterfaceName, std::map<SDBusMemberName, sdbus::Variant>>& interfaces)
 {
-	if(deviceRegExp->isFullMatch (path.c_str ()) && interfaces.count (kInterfaceDevice) == 1)
+	if(deviceRegExp->isFullMatch (path.c_str ()) && interfaces.count (SDBusInterfaceName (kInterfaceDevice)) == 1)
 	{
 		central.addNewDevice (path);
 	}
-	else if(serviceRegExp->isFullMatch (path.c_str ()) && (interfaces.count (kInterfaceService) == 1) &&
-			(interfaces.at (kInterfaceService).count (kPropertyDevice) == 1))
+	else if(serviceRegExp->isFullMatch (path.c_str ()) && (interfaces.count (SDBusInterfaceName (kInterfaceService)) == 1) &&
+			(interfaces.at (SDBusInterfaceName (kInterfaceService)).count (SDBusMemberName (kPropertyDevice)) == 1))
 	{
-		LinuxGattCentralDevice* device = central.findDeviceByPath (interfaces.at (kInterfaceService).at (kPropertyDevice));
+		LinuxGattCentralDevice* device = central.findDeviceByPath (interfaces.at (SDBusInterfaceName (kInterfaceService)).at (SDBusMemberName (kPropertyDevice)).get<sdbus::ObjectPath> ());
 		if(!device)
 			return;
 		device->addService (path);
 	}
-	else if(characteristicRegExp->isFullMatch (path.c_str ()) && (interfaces.count (kInterfaceCharacteristics) == 1) &&
-			(interfaces.at (kInterfaceCharacteristics).count (kPropertyService) == 1))
+	else if(characteristicRegExp->isFullMatch (path.c_str ()) && (interfaces.count (SDBusInterfaceName (kInterfaceCharacteristics)) == 1) &&
+			(interfaces.at (SDBusInterfaceName (kInterfaceCharacteristics)).count (SDBusMemberName (kPropertyService)) == 1))
 	{
-		LinuxGattCentralService* service = central.findServiceByPath (interfaces.at (kInterfaceCharacteristics).at (kPropertyService));
+		LinuxGattCentralService* service = central.findServiceByPath (interfaces.at (SDBusInterfaceName (kInterfaceCharacteristics)).at (SDBusMemberName (kPropertyService)).get<sdbus::ObjectPath> ());
 		if(!service)
 			return;
 		service->addCharacteristic (path);
 	}
-	else if(descriptorRegExp->isFullMatch (path.c_str ()) && (interfaces.count (kInterfaceDescriptor) == 1) &&
-			(interfaces.at (kInterfaceDescriptor).count (kPropertyCharacteristic) == 1))
+	else if(descriptorRegExp->isFullMatch (path.c_str ()) && (interfaces.count (SDBusInterfaceName (kInterfaceDescriptor)) == 1) &&
+			(interfaces.at (SDBusInterfaceName (kInterfaceDescriptor)).count (SDBusMemberName (kPropertyCharacteristic)) == 1))
 	{
-		LinuxGattCentralCharacteristic* characteristic = central.findCharacteristicByPath (interfaces.at (kInterfaceDescriptor).at (kPropertyCharacteristic));
+		LinuxGattCentralCharacteristic* characteristic = central.findCharacteristicByPath (interfaces.at (SDBusInterfaceName (kInterfaceDescriptor)).at (SDBusMemberName (kPropertyCharacteristic)).get<sdbus::ObjectPath> ());
 		if(!characteristic)
 			return;
 		characteristic->addDescriptor (path);
@@ -1033,7 +1041,7 @@ void ObjectManagerProxy::onInterfacesAdded (const sdbus::ObjectPath& path, const
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void ObjectManagerProxy::onInterfacesRemoved (const sdbus::ObjectPath& path, const std::vector<std::string>& interfaces)
+void ObjectManagerProxy::onInterfacesRemoved (const sdbus::ObjectPath& path, const std::vector<SDBusInterfaceName>& interfaces)
 {
 	CCL_PRINTF ("onInterfacesRemoved: %s\n", path.c_str ());
 	if(deviceRegExp->isFullMatch (path.c_str ()))

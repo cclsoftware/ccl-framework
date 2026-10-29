@@ -103,9 +103,22 @@ interface IAnimation: IUnknown
 
 	virtual void CCL_API setDescription (const AnimationDescription& description) = 0;
 
+	virtual void CCL_API getDescription (AnimationDescription& description) const = 0;
+
 	virtual void CCL_API setCompletionHandler (IAnimationCompletionHandler* handler) = 0;
 
+	virtual void CCL_API clone (IAnimation*& animation) const = 0;
+
 	DECLARE_IID (IAnimation)
+
+	//////////////////////////////////////////////////////////////////////////////////////////////
+
+	template <typename IFace> IFace* cloneAs () const
+	{
+		AutoPtr<IAnimation> animation;
+		clone (animation);
+		return UnknownPtr<IFace> (animation).detach ();
+	}
 };
 
 DEFINE_IID (IAnimation, 0x7055bf75, 0xc0e2, 0x49fd, 0xb3, 0x4f, 0xe9, 0x48, 0xf5, 0xa9, 0x95, 0x0)
@@ -223,11 +236,20 @@ DEFINE_IID (ITimingFunction, 0x2262d86d, 0xd949, 0x4663, 0x84, 0x61, 0xa1, 0xe5,
 
 interface IAnimationHandler: IUnknown
 {
+	enum Options
+	{
+		kManualTargetRemoval = 1<<0 ///< removeTarget() must be called manually (no dependencies)
+	};
+
 	/** Add animation for given target property. Animation object will be copied. */
-	virtual tresult CCL_API addAnimation (IObject* target, StringID propertyId, const IAnimation* prototype) = 0;
+	virtual tresult CCL_API addAnimation (IObject* target, StringID propertyId, const IAnimation* prototype,
+										  int options = 0) = 0;
 
 	/** Remove animation for given target property. */
 	virtual tresult CCL_API removeAnimation (IObject* target, StringID propertyId) = 0;
+
+	/** Manually remove target. */
+	virtual tresult CCL_API removeTarget (IObject* target) = 0;
 
 	DECLARE_IID (IAnimationHandler)
 };
@@ -239,7 +261,7 @@ DEFINE_IID (IAnimationHandler, 0xd97b8842, 0x3b81, 0x4fa0, 0x9d, 0x1f, 0x2e, 0xd
 //************************************************************************************************
 
 interface IAnimationManager: IAnimationHandler
-{
+{	
 	/** Register animation handler. */
 	virtual tresult CCL_API registerHandler (IAnimationHandler* handler) = 0;
 

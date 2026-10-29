@@ -74,9 +74,9 @@ namespace Styles
 	};
 }
 
-using CCL::Styles::OrientationType;
-using CCL::Styles::OrientationTypeFlags;
-using CCL::Styles::PlatformStyleID;
+using Styles::OrientationType;
+using Styles::OrientationTypeFlags;
+using Styles::PlatformStyleID;
 
 //************************************************************************************************
 // IApplicationProvider
@@ -123,8 +123,8 @@ interface IUserInterface: IUnknown
 	/** Application types. */
 	DEFINE_ENUM (ApplicationType)
 	{
-		kDesktopApplication,	///< desktop application
-		kMobileApplication		///< mobile application
+		kDesktopApplication = kApplicationTypeDesktop,	///< desktop application
+		kMobileApplication = kApplicationTypeMobile		///< mobile application
 	};
 
 	/** Get application type (desktop or mobile), can be defined in cclgui.config. */
@@ -311,7 +311,7 @@ DEFINE_IID (IUserInterface, 0xc63c93df, 0x6c59, 0x4ff5, 0xb2, 0xd1, 0xd9, 0x41, 
 	\ingroup gui_event */
 //************************************************************************************************
 
-interface IUIEventHandler: CCL::IUnknown
+interface IUIEventHandler: IUnknown
 {
 	/** Handle global user interface event. */
 	virtual tbool CCL_API handleEvent (IWindow* window, const GUIEvent& event) = 0;

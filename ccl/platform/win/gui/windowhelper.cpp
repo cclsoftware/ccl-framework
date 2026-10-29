@@ -197,7 +197,7 @@ bool ActivateApplication (IApplication* application, bool startupMode, ArgsRef a
 		String commandLine;
 		args.toString (commandLine);
 		StringChars stringChars (commandLine);
-		const uchar* stringData = stringChars;
+		UStringPtr stringData = stringChars;
 
 		COPYDATASTRUCT data = {0};
 		data.dwData = 'Cmdl';

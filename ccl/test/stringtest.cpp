@@ -35,7 +35,7 @@ static const String kTestString = CCLSTR ("This is a constant string!");
 #define TEST_SYSTEM_ENCODINGS 1 // not available on all platforms!
 #define kNumTestEncodings ARRAY_COUNT (testEncodings)
 
-static const struct { TextEncoding encoding; const char* string; } testEncodings[] =
+static const struct { TextEncoding encoding; CStringPtr string; } testEncodings[] =
 {
 	{Text::kASCII,			"US-ASCII"},
 	{Text::kISOLatin1,		"ISO Latin 1"},
@@ -50,7 +50,7 @@ static const struct { TextEncoding encoding; const char* string; } testEncodings
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-static const char* getEncodingString (TextEncoding encoding)
+static CStringPtr getEncodingString (TextEncoding encoding)
 {
 	for(int i = 0; i < kNumTestEncodings; i++)
 		if(encoding == testEncodings[i].encoding)
@@ -149,8 +149,6 @@ CCL_TEST (StringTest, TestCaseConversion)
 
 CCL_TEST (StringTest, TestCStringEncodings)
 {
-	return; // TODO: This test fails (Bug: #75)
-	
 	#if TEST_SYSTEM_ENCODINGS
 	int passCount = 2;
 	#else
@@ -163,8 +161,16 @@ CCL_TEST (StringTest, TestCStringEncodings)
 		if(pass == 1)
 			prototype = kTestString;
 		else
-			prototype.appendCString (Text::kSystemEncoding, "Ein Text mit \u00FCml\u00E4uten ...!");
-
+			#if CCL_PLATFORM_MAC || CCL_PLATFORM_IOS
+			// kSystemEncoding == Mac Roman
+			prototype.appendCString (Text::kSystemEncoding, "Ein Text mit \x9F" "ml" "\x8A" "uten ...!");
+			#elif CCL_PLATFORM_LINUX
+			// kSystemEncoding == locale charset (UTF-8)
+			prototype.appendCString (Text::kSystemEncoding, "Ein Text mit \xC3\xBC" "ml" "\xC3\xA4" "uten ...!");
+			#else
+			// Windows (CP_ACP ≈ 1252) and Android (hardcoded ISO Latin-1)
+			prototype.appendCString (Text::kSystemEncoding, "Ein Text mit \xFC" "ml" "\xE4" "uten ...!");
+			#endif
 		MutableCString message;
 		message.appendFormat ("%d) l = %d %s umlauts", pass, prototype.length (), pass == 1 ? "no" : "with");
 		Logging::debug (String (message));

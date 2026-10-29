@@ -55,12 +55,16 @@ void linkSkinViews () {} // force linkage of this file
 // VariantElement
 //************************************************************************************************
 
-BEGIN_SKIN_ELEMENT_WITH_MEMBERS (VariantElement, ViewElement, TAG_VARIANT, DOC_GROUP_LAYOUT, VariantView)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_PROPERTY, TYPE_STRING)   ///< property that selects the current view
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_CONTROLLER, TYPE_STRING) ///< controller that has the property
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_TRANSITION, TYPE_ENUM)   ///< transition that happens when view is replaced.
-END_SKIN_ELEMENT_WITH_MEMBERS (VariantElement)
-DEFINE_SKIN_ENUMERATION (TAG_VARIANT, ATTR_OPTIONS, VariantView::customStyles)
+DEFINE_CLASS_HIDDEN (VariantElement, ViewElement)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (VariantElement, ViewElement, TAG_VARIANT, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (VariantElement, DOC_GROUP_LAYOUT)
+DEFINE_TYPELIB_RELATED_CLASS (VariantElement, VariantView)
+BEGIN_TYPELIB_MEMBERS (VariantElement)
+	ADD_TYPELIB_MEMBER_STRING (ATTR_PROPERTY) ///< property that selects the current view
+	ADD_TYPELIB_MEMBER_STRING (ATTR_CONTROLLER) ///< controller that has the property
+	ADD_TYPELIB_MEMBER (ATTR_TRANSITION, TypeNames::kEnum) ///< transition that happens when view is replaced.
+END_TYPELIB_MEMBERS (VariantElement)
+DEFINE_TYPELIB_ENUMERATION (TAG_VARIANT, ATTR_OPTIONS, VariantView::customStyles, SKIN_TYPELIB)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -145,8 +149,11 @@ void VariantElement::viewCreated (View* view)
 // LabelElement
 //************************************************************************************************
 
-DEFINE_SKIN_ELEMENT (LabelElement, ViewElement, TAG_LABEL, DOC_GROUP_VIEWS, Label)
-DEFINE_SKIN_ENUMERATION (TAG_LABEL, ATTR_OPTIONS, Label::customStyles)
+DEFINE_CLASS_HIDDEN (LabelElement, ViewElement)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (LabelElement, ViewElement, TAG_LABEL, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (LabelElement, DOC_GROUP_VIEWS)
+DEFINE_TYPELIB_RELATED_CLASS (LabelElement, Label)
+DEFINE_TYPELIB_ENUMERATION (TAG_LABEL, ATTR_OPTIONS, Label::customStyles, SKIN_TYPELIB)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -177,9 +184,13 @@ View* LabelElement::createView (const CreateArgs& args, View* view)
 // HeadingElement
 //************************************************************************************************
 
-BEGIN_SKIN_ELEMENT_WITH_MEMBERS (HeadingElement, LabelElement, TAG_HEADING, DOC_GROUP_VIEWS, Heading)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_LEVEL, TYPE_INT) ///< heading level (1 to 6)
-END_SKIN_ELEMENT_WITH_MEMBERS (HeadingElement)
+DEFINE_CLASS_HIDDEN (HeadingElement, LabelElement)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (HeadingElement, LabelElement, TAG_HEADING, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (HeadingElement, DOC_GROUP_VIEWS)
+DEFINE_TYPELIB_RELATED_CLASS (HeadingElement, Heading)
+BEGIN_TYPELIB_MEMBERS (HeadingElement)
+	ADD_TYPELIB_MEMBER (ATTR_LEVEL, TypeNames::kInt) ///< heading level (1 to 6)
+END_TYPELIB_MEMBERS (HeadingElement)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -227,7 +238,10 @@ View* HeadingElement::createView (const CreateArgs& args, View* view)
 // PictureElement
 //************************************************************************************************
 
-DEFINE_SKIN_ELEMENT (PictureElement, ImageViewElement, TAG_PICTURE, DOC_GROUP_VIEWS, PictureViewer)
+DEFINE_CLASS_HIDDEN (PictureElement, ImageViewElement)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (PictureElement, ImageViewElement, TAG_PICTURE, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (PictureElement, DOC_GROUP_VIEWS)
+DEFINE_TYPELIB_RELATED_CLASS (PictureElement, PictureViewer)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -243,13 +257,17 @@ View* PictureElement::createView (const CreateArgs& args, View* view)
 // PopupBoxElement
 //************************************************************************************************
 
-BEGIN_SKIN_ELEMENT_WITH_MEMBERS (PopupBoxElement, ViewElement, TAG_POPUPBOX, DOC_GROUP_VIEWS, PopupBox)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_POPUP, TYPE_ENUM)		   ///< Specifies the alignment of the popup relative to the PopupBox.
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_POPUPSTYLE, TYPE_STRING) ///< Specifies the style that is used for the popup
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_FORMNAME, TYPE_STRING)   ///< The name of the skin form that defines the view that pops up.
-END_SKIN_ELEMENT_WITH_MEMBERS (PopupBoxElement)
-DEFINE_SKIN_ENUMERATION (TAG_POPUPBOX, ATTR_POPUP, PopupSelector::popupStyles)
-DEFINE_SKIN_ENUMERATION (TAG_POPUPBOX, ATTR_OPTIONS, PopupBox::customStyles)
+DEFINE_CLASS_HIDDEN (PopupBoxElement, ViewElement)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (PopupBoxElement, ViewElement, TAG_POPUPBOX, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (PopupBoxElement, DOC_GROUP_VIEWS)
+DEFINE_TYPELIB_RELATED_CLASS (PopupBoxElement, PopupBox)
+BEGIN_TYPELIB_MEMBERS (PopupBoxElement)
+	ADD_TYPELIB_MEMBER (ATTR_POPUP, TypeNames::kEnum) ///< Specifies the alignment of the popup relative to the PopupBox.
+	ADD_TYPELIB_MEMBER_STRING (ATTR_POPUPSTYLE) ///< Specifies the style that is used for the popup
+	ADD_TYPELIB_MEMBER_STRING (ATTR_FORMNAME) ///< The name of the skin form that defines the view that pops up.
+END_TYPELIB_MEMBERS (PopupBoxElement)
+DEFINE_TYPELIB_ENUMERATION (TAG_POPUPBOX, ATTR_POPUP, PopupSelector::popupStyles, SKIN_TYPELIB)
+DEFINE_TYPELIB_ENUMERATION (TAG_POPUPBOX, ATTR_OPTIONS, PopupBox::customStyles, SKIN_TYPELIB)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -355,8 +373,11 @@ View* PopupBoxElement::createView (const CreateArgs& args, View* view)
 // DialogGroupElement
 //************************************************************************************************
 
-DEFINE_SKIN_ELEMENT (DialogGroupElement, ViewElement, TAG_DIALOGGROUP, DOC_GROUP_LAYOUT, DialogGroup)
-DEFINE_SKIN_ENUMERATION (TAG_DIALOGGROUP, ATTR_OPTIONS, DialogGroup::customStyles)
+DEFINE_CLASS_HIDDEN (DialogGroupElement, ViewElement)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (DialogGroupElement, ViewElement, TAG_DIALOGGROUP, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (DialogGroupElement, DOC_GROUP_LAYOUT)
+DEFINE_TYPELIB_RELATED_CLASS (DialogGroupElement, DialogGroup)
+DEFINE_TYPELIB_ENUMERATION (TAG_DIALOGGROUP, ATTR_OPTIONS, DialogGroup::customStyles, SKIN_TYPELIB)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -388,10 +409,12 @@ View* DialogGroupElement::createView (const CreateArgs& args, View* view)
 // TargetElement
 //************************************************************************************************
 
-DEFINE_SKIN_ELEMENT (TargetElement, ViewElement, TAG_TARGET, DOC_GROUP_VIEWS, 0)
-BEGIN_SKIN_ELEMENT_ATTRIBUTES (TargetElement)
-	ADD_SKIN_SCHEMAGROUP_ATTRIBUTE ("") // remove inherited schema groups
-END_SKIN_ELEMENT_ATTRIBUTES (TargetElement)
+DEFINE_CLASS_HIDDEN (TargetElement, ViewElement)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (TargetElement, ViewElement, TAG_TARGET, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (TargetElement, DOC_GROUP_VIEWS)
+BEGIN_TYPELIB_ATTRIBUTES (TargetElement)
+	ADD_TYPELIB_SCHEMAGROUP_ATTRIBUTE ("") // remove inherited schema groups
+END_TYPELIB_ATTRIBUTES (TargetElement)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -433,7 +456,9 @@ View* TargetElement::createView (const CreateArgs& args, View* view)
 // ScrollHeaderElement
 //************************************************************************************************
 
-DEFINE_SKIN_ELEMENT (ScrollHeaderElement, TargetElement, TAG_SCROLLHEADER, DOC_GROUP_VIEWS, 0)
+DEFINE_CLASS_HIDDEN (ScrollHeaderElement, TargetElement)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (ScrollHeaderElement, TargetElement, TAG_SCROLLHEADER, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (ScrollHeaderElement, DOC_GROUP_VIEWS)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -450,18 +475,22 @@ ScrollHeaderElement::ScrollHeaderElement ()
 // ScrollViewElement
 //************************************************************************************************
 
-BEGIN_SKIN_ELEMENT_WITH_MEMBERS (ScrollViewElement, ViewElement, TAG_SCROLLVIEW, DOC_GROUP_VIEWS, ScrollView)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_PERSISTENCE_ID, TYPE_STRING) ///< storage id used to store and restore the scroll state
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_HSCROLLSTYLE, TYPE_STRING)   ///< name of a visual style for the horizontal scrollbar
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_VSCROLLSTYLE, TYPE_STRING)   ///< name of a visual style for the vertical scrollbar
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_HSCROLLNAME, TYPE_STRING)	   ///< name of the horizontal scroll parameter
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_VSCROLLNAME, TYPE_STRING)	   ///< name of the vertical scroll parameter
-END_SKIN_ELEMENT_WITH_MEMBERS (ScrollViewElement)
-BEGIN_SKIN_ELEMENT_ATTRIBUTES (ScrollViewElement)
-	ADD_SKIN_CHILDGROUP_ATTRIBUTE (TAG_TARGET)
-END_SKIN_ELEMENT_ATTRIBUTES (ScrollViewElement)
+DEFINE_CLASS_HIDDEN (ScrollViewElement, ViewElement)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (ScrollViewElement, ViewElement, TAG_SCROLLVIEW, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (ScrollViewElement, DOC_GROUP_VIEWS)
+DEFINE_TYPELIB_RELATED_CLASS (ScrollViewElement, ScrollView)
+BEGIN_TYPELIB_MEMBERS (ScrollViewElement)
+	ADD_TYPELIB_MEMBER_STRING (ATTR_PERSISTENCE_ID) ///< storage id used to store and restore the scroll state
+	ADD_TYPELIB_MEMBER_STRING (ATTR_HSCROLLSTYLE) ///< name of a visual style for the horizontal scrollbar
+	ADD_TYPELIB_MEMBER_STRING (ATTR_VSCROLLSTYLE) ///< name of a visual style for the vertical scrollbar
+	ADD_TYPELIB_MEMBER_STRING (ATTR_HSCROLLNAME) ///< name of the horizontal scroll parameter
+	ADD_TYPELIB_MEMBER_STRING (ATTR_VSCROLLNAME) ///< name of the vertical scroll parameter
+END_TYPELIB_MEMBERS (ScrollViewElement)
+BEGIN_TYPELIB_ATTRIBUTES (ScrollViewElement)
+	ADD_TYPELIB_CHILDGROUP_ATTRIBUTE (TAG_TARGET)
+END_TYPELIB_ATTRIBUTES (ScrollViewElement)
 
-DEFINE_SKIN_ENUMERATION (TAG_SCROLLVIEW, ATTR_OPTIONS, ScrollView::customStyles)
+DEFINE_TYPELIB_ENUMERATION (TAG_SCROLLVIEW, ATTR_OPTIONS, ScrollView::customStyles, SKIN_TYPELIB)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -600,16 +629,20 @@ View* ScrollViewElement::createView (const CreateArgs& args, View* view)
 // ItemViewElement
 //************************************************************************************************
 
-BEGIN_SKIN_ELEMENT_ABSTRACT_WITH_MEMBERS (ItemViewElement, ScrollViewElement, TAG_ITEMVIEW, DOC_GROUP_VIEWS, 0)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_SCROLLOPTIONS, TYPE_ENUM) ///< Options for the surrounding scrollview
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_HEADERSTYLE, TYPE_STRING) ///< Name of a visual style that will be assigned to the column header view
-END_SKIN_ELEMENT_WITH_MEMBERS (ItemViewElement)
-BEGIN_SKIN_ELEMENT_ATTRIBUTES (ItemViewElement)
-	ADD_SKIN_CHILDGROUP_ATTRIBUTE (SCHEMA_GROUP_VIEWSSTATEMENTS)
-END_SKIN_ELEMENT_ATTRIBUTES (ItemViewElement)
+DEFINE_CLASS_ABSTRACT_HIDDEN (ItemViewElement, ScrollViewElement)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (ItemViewElement, ScrollViewElement, TAG_ITEMVIEW, SKIN_TYPELIB)
+DEFINE_TYPELIB_ABSTRACT (ItemViewElement)
+DEFINE_TYPELIB_DOCGROUP (ItemViewElement, DOC_GROUP_VIEWS)
+BEGIN_TYPELIB_MEMBERS (ItemViewElement)
+	ADD_TYPELIB_MEMBER (ATTR_SCROLLOPTIONS, TypeNames::kEnum) ///< Options for the surrounding scrollview
+	ADD_TYPELIB_MEMBER_STRING (ATTR_HEADERSTYLE) ///< Name of a visual style that will be assigned to the column header view
+END_TYPELIB_MEMBERS (ItemViewElement)
+BEGIN_TYPELIB_ATTRIBUTES (ItemViewElement)
+	ADD_TYPELIB_CHILDGROUP_ATTRIBUTE (SCHEMA_GROUP_VIEWSSTATEMENTS)
+END_TYPELIB_ATTRIBUTES (ItemViewElement)
 
-DEFINE_SKIN_ENUMERATION_PARENT (TAG_ITEMVIEW, ATTR_SCROLLOPTIONS, nullptr, TAG_SCROLLVIEW, ATTR_OPTIONS)
-DEFINE_SKIN_ENUMERATION (TAG_ITEMVIEW, ATTR_OPTIONS, ItemView::customStyles)
+DEFINE_TYPELIB_ENUMERATION_WITH_PARENT (TAG_ITEMVIEW, ATTR_SCROLLOPTIONS, nullptr, TAG_SCROLLVIEW, ATTR_OPTIONS, SKIN_TYPELIB)
+DEFINE_TYPELIB_ENUMERATION (TAG_ITEMVIEW, ATTR_OPTIONS, ItemView::customStyles, SKIN_TYPELIB)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -697,13 +730,17 @@ View* ItemViewElement::createView (const CreateArgs& args, View* view)
 // ListViewElement
 //************************************************************************************************
 
-BEGIN_SKIN_ELEMENT_WITH_MEMBERS (ListViewElement, ItemViewElement, TAG_LISTVIEW, DOC_GROUP_VIEWS, ListControl)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_VIEWTYPE, TYPE_ENUM)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_TEXTTRIMMODE, TYPE_ENUM)
-END_SKIN_ELEMENT_WITH_MEMBERS (ListViewElement)
-DEFINE_SKIN_ENUMERATION (TAG_LISTVIEW, ATTR_VIEWTYPE, ListView::viewTypeNames)
-DEFINE_SKIN_ENUMERATION (TAG_LISTVIEW, ATTR_OPTIONS, ListView::customStyles)
-DEFINE_SKIN_ENUMERATION_PARENT (TAG_LISTVIEW, ATTR_TEXTTRIMMODE, nullptr, TAG_TEXTBOX, ATTR_TEXTTRIMMODE)
+DEFINE_CLASS_HIDDEN (ListViewElement, ItemViewElement)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (ListViewElement, ItemViewElement, TAG_LISTVIEW, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (ListViewElement, DOC_GROUP_VIEWS)
+DEFINE_TYPELIB_RELATED_CLASS (ListViewElement, ListControl)
+BEGIN_TYPELIB_MEMBERS (ListViewElement)
+	ADD_TYPELIB_MEMBER (ATTR_VIEWTYPE, TypeNames::kEnum)
+	ADD_TYPELIB_MEMBER (ATTR_TEXTTRIMMODE, TypeNames::kEnum)
+END_TYPELIB_MEMBERS (ListViewElement)
+DEFINE_TYPELIB_ENUMERATION (TAG_LISTVIEW, ATTR_VIEWTYPE, ListView::viewTypeNames, SKIN_TYPELIB)
+DEFINE_TYPELIB_ENUMERATION (TAG_LISTVIEW, ATTR_OPTIONS, ListView::customStyles, SKIN_TYPELIB)
+DEFINE_TYPELIB_ENUMERATION_WITH_PARENT (TAG_LISTVIEW, ATTR_TEXTTRIMMODE, nullptr, TAG_TEXTBOX, ATTR_TEXTTRIMMODE, SKIN_TYPELIB)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -752,8 +789,11 @@ ItemControlBase* ListViewElement::createControl (const CreateArgs& args)
 // TreeViewElement
 //************************************************************************************************
 
-DEFINE_SKIN_ELEMENT (TreeViewElement, ItemViewElement, TAG_TREEVIEW, DOC_GROUP_VIEWS, TreeControl)
-DEFINE_SKIN_ENUMERATION (TAG_TREEVIEW, ATTR_OPTIONS, TreeView::customStyles)
+DEFINE_CLASS_HIDDEN (TreeViewElement, ItemViewElement)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (TreeViewElement, ItemViewElement, TAG_TREEVIEW, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (TreeViewElement, DOC_GROUP_VIEWS)
+DEFINE_TYPELIB_RELATED_CLASS (TreeViewElement, TreeControl)
+DEFINE_TYPELIB_ENUMERATION (TAG_TREEVIEW, ATTR_OPTIONS, TreeView::customStyles, SKIN_TYPELIB)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -773,8 +813,11 @@ ItemControlBase* TreeViewElement::createControl (const CreateArgs& args)
 // DropBoxElement
 //************************************************************************************************
 
-DEFINE_SKIN_ELEMENT (DropBoxElement, ItemViewElement, TAG_DROPBOX, DOC_GROUP_VIEWS, DropBoxControl)
-DEFINE_SKIN_ENUMERATION (TAG_DROPBOX, ATTR_OPTIONS, DropBox::customStyles)
+DEFINE_CLASS_HIDDEN (DropBoxElement, ItemViewElement)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (DropBoxElement, ItemViewElement, TAG_DROPBOX, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (DropBoxElement, DOC_GROUP_VIEWS)
+DEFINE_TYPELIB_RELATED_CLASS (DropBoxElement, DropBoxControl)
+DEFINE_TYPELIB_ENUMERATION (TAG_DROPBOX, ATTR_OPTIONS, DropBox::customStyles, SKIN_TYPELIB)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -799,8 +842,11 @@ ItemControlBase* DropBoxElement::createControl (const CreateArgs& args)
 // WebViewElement
 //************************************************************************************************
 
-DEFINE_SKIN_ELEMENT (WebViewElement, ViewElement, TAG_WEBVIEW, DOC_GROUP_VIEWS, WebBrowserView)
-DEFINE_SKIN_ENUMERATION (TAG_WEBVIEW, ATTR_OPTIONS, WebBrowserView::customStyles)
+DEFINE_CLASS_HIDDEN (WebViewElement, ViewElement)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (WebViewElement, ViewElement, TAG_WEBVIEW, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (WebViewElement, DOC_GROUP_VIEWS)
+DEFINE_TYPELIB_RELATED_CLASS (WebViewElement, WebBrowserView)
+DEFINE_TYPELIB_ENUMERATION (TAG_WEBVIEW, ATTR_OPTIONS, WebBrowserView::customStyles, SKIN_TYPELIB)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -828,10 +874,14 @@ View* WebViewElement::createView (const CreateArgs& args, View* view)
 // CommandBarViewElement
 //************************************************************************************************
 
-BEGIN_SKIN_ELEMENT_WITH_MEMBERS (CommandBarViewElement, ViewElement, TAG_COMMANDBARVIEW, DOC_GROUP_CONTROLS, CommandBarView)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_FORMNAME, TYPE_STRING)	 ///< name of a form for items
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_MENUFORMNAME, TYPE_STRING) ///< name of a from for a context menu
-END_SKIN_ELEMENT_WITH_MEMBERS (CommandBarViewElement)
+DEFINE_CLASS_HIDDEN (CommandBarViewElement, ViewElement)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (CommandBarViewElement, ViewElement, TAG_COMMANDBARVIEW, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (CommandBarViewElement, DOC_GROUP_CONTROLS)
+DEFINE_TYPELIB_RELATED_CLASS (CommandBarViewElement, CommandBarView)
+BEGIN_TYPELIB_MEMBERS (CommandBarViewElement)
+	ADD_TYPELIB_MEMBER_STRING (ATTR_FORMNAME) ///< name of a form for items
+	ADD_TYPELIB_MEMBER_STRING (ATTR_MENUFORMNAME) ///< name of a from for a context menu
+END_TYPELIB_MEMBERS (CommandBarViewElement)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 

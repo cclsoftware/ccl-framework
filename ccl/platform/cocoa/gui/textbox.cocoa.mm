@@ -50,7 +50,8 @@ public:
 
 	// NativeTextControl
 	void updateText ();
-	void getControlText (String& string);
+	void getControlText (String& string) const;
+	int getControlTextLength () const;
 	void setSelection (int start, int length);
 	void setScrollPosition (PointRef where);
 	Point getScrollPosition () const;
@@ -306,9 +307,7 @@ using namespace MacOS;
 
 - (void)setSelection:(int)start length:(int)length
 {
-	[self setSelectedRange:NSMakeRange (0,0)];
-	if(length >= 0)
-		[self setSelectedRange:NSMakeRange (start, length)];
+	[self setSelectedRange:NSMakeRange (start, length)];
 }
 
 @end
@@ -406,11 +405,7 @@ using namespace MacOS;
 - (void)setSelection:(int)start length:(int)length
 {
 	[self selectText:nil];
-	if(length >= 0)
-	{
-		NSTextView* editor = [self fieldEditor];
-		[editor setSelectedRange:NSMakeRange (start, length)];
-	}
+	[[self fieldEditor] setSelectedRange:NSMakeRange (start, length)];
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -493,11 +488,7 @@ using namespace MacOS;
 - (void)setSelection:(int)start length:(int)length
 {
 	[self selectText:nil];
-	if(length >= 0)
-	{
-		NSTextView* editor = [self fieldEditor];
-		[editor setSelectedRange:NSMakeRange (start, length)];
-	}
+	[[self fieldEditor] setSelectedRange:NSMakeRange (start, length)];
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -683,7 +674,7 @@ void CocoaTextControl::updateText ()
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void CocoaTextControl::getControlText (String& text)
+void CocoaTextControl::getControlText (String& text) const
 {
 	if(textField != nil)
 		text.appendNativeString ([textField stringValue]);
@@ -691,9 +682,24 @@ void CocoaTextControl::getControlText (String& text)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
+int CocoaTextControl::getControlTextLength () const
+{
+	if(textField == nil)
+		return 0;
+
+	return int([[textField stringValue] length]);
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
 void CocoaTextControl::setSelection (int start, int length)
 {
-	[textField setSelection:start length:length];
+	int caret = 0;
+	int anchor = 0;
+	getSelectionPositions (caret, anchor, start, length);
+
+	// a selected range has no direction
+	[textField setSelection:ccl_min (caret, anchor) length:ccl_abs (anchor - caret)];
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////

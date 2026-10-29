@@ -20,6 +20,7 @@
 
 #include "ccl/app/components/searchcomponent.h"
 #include "ccl/app/components/searchprovider.h"
+#include "ccl/app/components/stringlistcomponent.h"
 
 #include "ccl/base/message.h"
 #include "ccl/base/storage/file.h"
@@ -27,6 +28,7 @@
 
 #include "ccl/public/collections/unknownlist.h"
 #include "ccl/public/base/iprogress.h"
+#include "ccl/public/gui/framework/viewbox.h"
 #include "ccl/public/system/isearcher.h"
 #include "ccl/public/systemservices.h"
 
@@ -167,7 +169,7 @@ SearchComponent::SearchComponent ()
   currentPaginationOffset (0),
   searchOptions (ISearchDescription::kIgnoreDelimiters)
 {
-	paramList.addString (CSTR ("searchTerms"), Tag::kSearchTerms);
+	paramList.addString (CSTR (kSearchTermsName), Tag::kSearchTerms);
 	paramList.addString (CSTR ("searchLocation"), Tag::kSearchLocation);
 	paramList.addImage (CSTR ("searchIcon"), Tag::kSearchIcon);
 	paramList.addParam (CSTR ("clear"), Tag::kClear);
@@ -213,6 +215,17 @@ void SearchComponent::setVisible (bool state)
 bool SearchComponent::areSearchTermsFocused () const
 {
 	return paramList.byTag (Tag::kSearchTermsFocused)->getValue ().asBool ();
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+bool SearchComponent::isAcceptableEditView (IView* view)
+{
+	if(!view)
+		return false;
+
+	ViewBox vb (view);
+	return vb.getName () == kSearchTermsName || vb.getName () == TextCompletionComponent::kEditStringName;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////

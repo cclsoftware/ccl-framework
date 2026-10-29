@@ -62,6 +62,7 @@ WaylandClient::WaylandClient ()
   importerV1 (nullptr),
   exporterV1 (nullptr),
   dmaBuffer (nullptr),
+  cursorShapeManager (nullptr),
   seatCapabilities (0),
   serial (0),
   enterSerial (0),
@@ -130,6 +131,10 @@ void WaylandClient::shutdown ()
 	MonitorHelper::instance ().terminate ();
 	DmaBufferHelper::instance ().terminate ();
 	
+	#if WAYLAND_USE_CURSOR_SHAPE
+	if(cursorShapeManager)
+		wp_cursor_shape_manager_v1_destroy (cursorShapeManager);
+	#endif
 	if(dmaBuffer)
 		zwp_linux_dmabuf_v1_destroy (dmaBuffer);
 	if(pointerConstraints)
@@ -182,6 +187,7 @@ void WaylandClient::shutdown ()
 			wl_display_disconnect (display);
 	}
 	
+	cursorShapeManager = nullptr;
 	dmaBuffer = nullptr;
 	relativePointerManager = nullptr;
 	pointerConstraints = nullptr;
@@ -386,6 +392,11 @@ void WaylandClient::Listener::onGlobal (void* data, wl_registry* registry, uint3
 	// DMA Buffer
 	else if(interfaceName == zwp_linux_dmabuf_v1_interface.name && This->context.getDmaBuffer () == nullptr)
 		This->context.setDmaBuffer (static_cast<zwp_linux_dmabuf_v1*> (wl_registry_bind (registry, name, &zwp_linux_dmabuf_v1_interface, ccl_min<uint32_t> (4, version))));
+	#if WAYLAND_USE_CURSOR_SHAPE
+	// Cursor Shape
+	else if(interfaceName == wp_cursor_shape_manager_v1_interface.name && This->context.getCursorShapeManager () == nullptr)
+		This->context.setCursorShapeManager (static_cast<wp_cursor_shape_manager_v1*> (wl_registry_bind (registry, name, &wp_cursor_shape_manager_v1_interface, ccl_min<uint32_t> (2, version))));
+	#endif
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////

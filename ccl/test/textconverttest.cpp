@@ -73,7 +73,7 @@ CCL_TEST (TextConvertTest, TestBaseEncoding)
 		int baseEncodedLength = encodedStream.getBytesWritten ();
 		char null = 0;
 		encodedStream.write (&null, 1); // null terminator
-		const char* baseEncodedData = (const char*)encodedStream.getMemoryAddress ();
+		CStringPtr baseEncodedData = (CStringPtr)encodedStream.getMemoryAddress ();
 		Logging::debug (baseEncodedData);
 
 		// 2) Decoding
@@ -104,7 +104,7 @@ CCL_TEST (TextConvertTest, TestBaseEncoding)
 
 		int decodedLength = decodedStream.getBytesWritten ();
 		decodedStream.write (&null, 1); // null terminator
-		const char* decodedData = (const char*)decodedStream.getMemoryAddress ();
+		CStringPtr decodedData = (CStringPtr)decodedStream.getMemoryAddress ();
 
 		CCL_TEST_ASSERT (kTestString.length () == decodedLength);
 		CCL_TEST_ASSERT (kTestString == decodedData);
@@ -226,4 +226,38 @@ CCL_TEST (TextConvertTest, TestTextStreamer)
 		}
 
 	Logging::debug ("Done %(1)", ":-)");
+}
+
+//************************************************************************************************
+// Crc16Test
+//************************************************************************************************
+
+class Crc16Test: public Test
+{
+public:
+	void setUp () override
+	{
+		checkInput = "123456789";
+	}
+
+protected:
+	CString checkInput;
+};
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+CCL_TEST_F (Crc16Test, ZeroInitialValueMatchesArcCheckValue)
+{
+	uint16 crc = System::Crc16 (checkInput.str (), uint32(checkInput.length ()), 0x0000);
+
+	CCL_TEST_ASSERT_EQUAL (uint16(0xBB3D), crc);
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+CCL_TEST_F (Crc16Test, FFFFInitialValueMatchesModbusCheckValue)
+{
+	uint16 crc = System::Crc16 (checkInput.str (), uint32(checkInput.length ()), 0xFFFF);
+
+	CCL_TEST_ASSERT_EQUAL (uint16(0x4B37), crc);
 }

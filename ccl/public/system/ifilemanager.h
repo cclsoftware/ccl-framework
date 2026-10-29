@@ -74,10 +74,13 @@ interface IFileManager: IUnknown
 	virtual IAsyncOperation* CCL_API triggerFileUpdate (UrlRef url) = 0;
 
 	/** Convert file URL to user-friendly display representation, type is IUrl::StringType. */
-	virtual tbool CCL_API getFileDisplayString (String& string, UrlRef url, int type) const = 0; 
+	virtual tbool CCL_API getFileDisplayString (String& string, UrlRef url, int type) const = 0;
+
+	/** Convert a file URL to the byte representation expected by lower-level filesystem APIs. */
+	virtual tbool CCL_API getFileSystemRepresentation (char pathBuffer[], int bufferSize, UrlRef url) const = 0;
 
 	/** Classify file or folder location. /see FileLocationType */
-	virtual StringID CCL_API getFileLocationType (UrlRef url) const = 0; 
+	virtual StringID CCL_API getFileLocationType (UrlRef url) const = 0;
 
 	/** Exit all threads and cleanup. */
 	virtual void CCL_API terminate () = 0;

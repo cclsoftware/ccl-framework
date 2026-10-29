@@ -12,7 +12,7 @@
 // For more information, please visit ccl.dev.
 //
 // Filename    : ccl/gui/theme/renderer/valuebarrenderer.cpp
-// Description : Control Renderer
+// Description : ValueBar Renderer
 //
 //************************************************************************************************
 
@@ -32,21 +32,22 @@ using namespace CCL;
 If no image is specified, "forecolor" and "backcolor" are used to draw the bar and the background as a filled rectangle. */
 //************************************************************************************************
 
-BEGIN_VISUALSTYLE_CLASS (ValueBar, VisualStyle, "ValueBarStyle")
-	ADD_VISUALSTYLE_IMAGE  ("background")	///< used to draw the background (frame "normal") and bar (frame "normalOn")
-	ADD_VISUALSTYLE_COLOR ("centerlinecolor")	///< color for a centerline, when the parameter is bipolar
-	ADD_VISUALSTYLE_METRIC ("centerlinewidth")	///< width for the centerline
-	ADD_VISUALSTYLE_METRIC ("colorize.hilite")	///< use hilitecolor or colorparam color if applicable to colorize the hiliteimage
-	ADD_VISUALSTYLE_COLOR ("backcolor")		///< the background valuebar color when no valueBarImage is available
-	ADD_VISUALSTYLE_COLOR ("hilitecolor")		///< the active valuebar color (using "forecolor" as fallback) - also used to colorize the valueBarImage when "colorize.hilite" is true
-	ADD_VISUALSTYLE_COLOR ("hilitecolor.transparent")	///< hilitecolor.transparent is used when colorize.hilite is set and the current color from colorparam is transparent
-	ADD_VISUALSTYLE_COLOR ("hilitecolor.alphablend")	///< the non-transparent "colorname" color will be alphablended with this color (using "color.alphablend" as fallback) and used to colorize the hiliteimage
-END_VISUALSTYLE_CLASS (ValueBar)
+DEFINE_TYPELIB_ENTRY_WITH_PARENT (ValueBar, VisualStyle, "ValueBarStyle", VISUALSTYLES_TYPELIB)
+BEGIN_TYPELIB_MEMBERS (ValueBar)
+	ADD_TYPELIB_MEMBER_IMAGE ("background")				///< used to draw the background (frame "normal") and bar (frame "normalOn")
+	ADD_TYPELIB_MEMBER_COLOR ("centerlinecolor")			///< color for a centerline, when the parameter is bipolar
+	ADD_TYPELIB_MEMBER_METRIC ("centerlinewidth")			///< width for the centerline
+	ADD_TYPELIB_MEMBER_METRIC ("colorize.hilite")			///< use hilitecolor or colorparam color if applicable to colorize the hiliteimage
+	ADD_TYPELIB_MEMBER_COLOR ("backcolor")					///< the background valuebar color when no valueBarImage is available
+	ADD_TYPELIB_MEMBER_COLOR ("hilitecolor")				///< the active valuebar color (using "forecolor" as fallback) - also used to colorize the valueBarImage when "colorize.hilite" is true
+	ADD_TYPELIB_MEMBER_COLOR ("hilitecolor.transparent")	///< hilitecolor.transparent is used when colorize.hilite is set and the current color from colorparam is transparent
+	ADD_TYPELIB_MEMBER_COLOR ("hilitecolor.alphablend")		///< the non-transparent "colorname" color will be alphablended with this color (using "color.alphablend" as fallback) and used to colorize the hiliteimage
+END_TYPELIB_MEMBERS (ValueBar)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-ValueBarRenderer::ValueBarRenderer (VisualStyle* visualStyle)
-: CompositedRenderer (visualStyle),
+ValueBarRenderer::ValueBarRenderer (VisualStyle* visualStyle, View* owner)
+: CompositedRenderer (visualStyle, owner),
   activeFrameIndex (1),
   backFrameIndex (0),
   useColorize (false),
@@ -76,7 +77,7 @@ void ValueBarRenderer::initialize ()
 			isScalableImage = true;
 	}
 		
-	hiliteColor = visualStyle->getColor (StyleID::kHiliteColor, visualStyle->getForeColor ());
+	hiliteColor = visualStyle->getColor (StyleID::kHighlightColor, visualStyle->getForeColor ());
 	hiliteTransparentColor = visualStyle->getColor ("hilitecolor.transparent", hiliteColor);
 	hiliteColorAlphaBlend = visualStyle->getColor ("hilitecolor.alphablend", visualStyle->getColor ("color.alphablend", Colors::kTransparentBlack));
 	useColorize = visualStyle->getMetric<bool> ("colorize.hilite", false);
@@ -90,12 +91,12 @@ void ValueBarRenderer::initialize ()
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void ValueBarRenderer::draw (View* view, const UpdateRgn& updateRgn)
+void ValueBarRenderer::draw (const UpdateRgn& updateRgn)
 {
 	if(initialized == false)
 		initialize ();
 	
-	ValueBar* valueBar = (ValueBar*)view;
+	ValueBar* valueBar = static_cast<ValueBar*> (owner);
 	float value = valueBar->getValue ();
 
 	Rect back, hilite;
@@ -103,7 +104,7 @@ void ValueBarRenderer::draw (View* view, const UpdateRgn& updateRgn)
 
 	//CCL_PRINTF ("ValueBar %4.4f %3d %3d %3d %3d + %3d %3d %3d %3d\n", value, rect.left, rect.top, rect.getWidth (), rect.getHeight (), rect2.left, rect2.top, rect2.getWidth (), rect2.getHeight ())
 
-	GraphicsPort port (view);
+	GraphicsPort port (owner);
 	UnknownPtr<IColorParam> colorParam = valueBar->getColorParam ();
 	
 	const VisualStyle& vs = *getVisualStyle ();
@@ -111,7 +112,7 @@ void ValueBarRenderer::draw (View* view, const UpdateRgn& updateRgn)
 	if(valueBarImage)
 	{
 		if(isScalableImage == false)
-			valueBarImage.update (view->getWidth (), view->getHeight ());
+			valueBarImage.update (owner->getWidth (), owner->getHeight ());
 
 		valueBarImage->setCurrentFrame (backFrameIndex);
 		
@@ -129,7 +130,7 @@ void ValueBarRenderer::draw (View* view, const UpdateRgn& updateRgn)
 		{
 			IImage* hiliteImage = valueBarImage;
 			if(useColorize)
-				hiliteImage = ModifiedImageCache::instance ().lookup (valueBarImage, getHiliteColor (colorParam), true);
+				hiliteImage = ModifiedImageCache::instance ().lookup (valueBarImage, getHiliteColor (colorParam));
 		
 			port.drawImage (hiliteImage, getSourceRect (valueBar, hilite), hilite);
 		}
@@ -148,15 +149,15 @@ void ValueBarRenderer::draw (View* view, const UpdateRgn& updateRgn)
 		Point start, end;
 		if(valueBar->getStyle ().isHorizontal ())
 		{
-			Coord xOff =  (view->getWidth () / 2) - (int)(centerLinePen.getWidth () / 2);
+			Coord xOff =  (owner->getWidth () / 2) - (int)(centerLinePen.getWidth () / 2);
 			start.offset (xOff, 0);
-			end.offset (xOff, view->getHeight ());
+			end.offset (xOff, owner->getHeight ());
 		}
 		else
 		{
-			Coord yOff = (view->getHeight () / 2) - (int)(centerLinePen.getWidth () / 2);
+			Coord yOff = (owner->getHeight () / 2) - (int)(centerLinePen.getWidth () / 2);
 			start.offset (0, yOff);
-			end.offset (view->getWidth (), yOff);
+			end.offset (owner->getWidth (), yOff);
 		}
 		port.drawLine (start, end, centerLinePen);
 	}
@@ -203,11 +204,11 @@ ColorRef ValueBarRenderer::getHiliteColor (IColorParam* colorParam) const
 		colorParamColor = Colors::kTransparentBlack;
 		colorParam->getColor (colorParamColor);
 		
-		if(colorParamColor.getAlphaF () == 0.f)
+		if(!colorParamColor.isVisible ())
 		{
 			colorParamColor = hiliteTransparentColor;
 		}
-		else if(hiliteColorAlphaBlend.getAlphaF () != 0)
+		else if(hiliteColorAlphaBlend.isVisible ())
 		{
 			colorParamColor.alphaBlend (hiliteColorAlphaBlend, hiliteColorAlphaBlend.getAlphaF ());
 		}
@@ -220,33 +221,33 @@ ColorRef ValueBarRenderer::getHiliteColor (IColorParam* colorParam) const
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-int ValueBarRenderer::hitTest (View* view, const Point& loc, Point* clickOffset)
+int ValueBarRenderer::hitTest (PointRef where, Point* clickOffset)
 {
 	return 0;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool ValueBarRenderer::getPartRect (const View* view, int partCode, CCL::Rect& rect)
+bool ValueBarRenderer::getPartRect (Rect& rect, int partCode)
 {
 	return false;
 }
-
 
 //************************************************************************************************
 // ProgressBarRenderer
 /** A Progres bar draws a bar that reflects the parameter value over a background. */
 //************************************************************************************************
 
-BEGIN_VISUALSTYLE_CLASS (ProgressBar, VisualStyle, "ProgressBarStyle")
-	ADD_VISUALSTYLE_IMAGE  ("foreground")	///< used to draw a bar over the background that reflects the parameter value
-	ADD_VISUALSTYLE_IMAGE  ("indicator")	///< drawn at the boundary between the background and the bar
-END_VISUALSTYLE_CLASS (ProgressBar)
+DEFINE_TYPELIB_ENTRY_WITH_PARENT (ProgressBar, VisualStyle, "ProgressBarStyle", VISUALSTYLES_TYPELIB)
+BEGIN_TYPELIB_MEMBERS (ProgressBar)
+	ADD_TYPELIB_MEMBER_IMAGE ("foreground") ///< used to draw a bar over the background that reflects the parameter value
+	ADD_TYPELIB_MEMBER_IMAGE ("indicator") ///< drawn at the boundary between the background and the bar
+END_TYPELIB_MEMBERS (ProgressBar)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-ProgressBarRenderer::ProgressBarRenderer (VisualStyle* visualStyle)
-: CompositedRenderer (visualStyle)
+ProgressBarRenderer::ProgressBarRenderer (VisualStyle* visualStyle, View* owner)
+: CompositedRenderer (visualStyle, owner)
 {
 	background = visualStyle->getImage ("background");
 	foreground = visualStyle->getImage ("foreground");
@@ -255,9 +256,9 @@ ProgressBarRenderer::ProgressBarRenderer (VisualStyle* visualStyle)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void ProgressBarRenderer::draw (View* view, const UpdateRgn& updateRgn)
+void ProgressBarRenderer::draw (const UpdateRgn& updateRgn)
 {	
-	ProgressBar* progressBar = (ProgressBar*)view;
+	ProgressBar* progressBar = static_cast<ProgressBar*> (owner);
 	float value = progressBar->getValue ();
 	StyleRef style = progressBar->getStyle ();
 	
@@ -319,14 +320,14 @@ void ProgressBarRenderer::draw (View* view, const UpdateRgn& updateRgn)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-int ProgressBarRenderer::hitTest (View* view, const Point& loc, Point* clickOffset)
+int ProgressBarRenderer::hitTest (PointRef where, Point* clickOffset)
 {
 	return 0;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool ProgressBarRenderer::getPartRect (const View* view, int partCode, CCL::Rect& rect)
+bool ProgressBarRenderer::getPartRect (Rect& rect, int partCode)
 {
 	return false;
 }

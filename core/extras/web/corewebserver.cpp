@@ -35,7 +35,7 @@ namespace HTTP {
 // HTTP::LineBuffer
 //************************************************************************************************
 
-typedef CStringBuffer<STRING_STACK_SPACE_MAX> LineBuffer;
+typedef CStringBuffer<CORE_STRING_STACK_MAX> LineBuffer;
 
 #define CRLF "\r\n"
 #define DEFAULT_VERSION HTTP::kV1_1

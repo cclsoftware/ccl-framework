@@ -30,6 +30,7 @@
 #include "ccl/gui/views/focusnavigator.h"
 #include "ccl/gui/views/mousehandler.h"
 #include "ccl/gui/views/viewdecorator.h"
+#include "ccl/gui/controls/editbox.h"
 #include "ccl/gui/skin/form.h"
 #include "ccl/gui/keyevent.h"
 
@@ -109,11 +110,12 @@ using namespace CCL;
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-BEGIN_VISUALSTYLE_CLASS (PopupSelector, VisualStyle, "PopupSelectorStyle")
-	ADD_VISUALSTYLE_METRIC  ("popup.offset.x")			///< an additional horizontal offset to the popup position, applied when opened from SelectBox or PopupBox
-	ADD_VISUALSTYLE_METRIC  ("popup.offset.y")			///< an additional vertical offset to the popup position, applied when opened from SelectBox or PopupBox
-	ADD_VISUALSTYLE_METRIC  ("popup.minwidth")			///< the popup's minwidth sizelimit - used to override the default sizelimit (the width of the PopupBox)
-END_VISUALSTYLE_CLASS (PopupSelector)
+DEFINE_TYPELIB_ENTRY_WITH_PARENT (PopupSelector, VisualStyle, "PopupSelectorStyle", VISUALSTYLES_TYPELIB)
+BEGIN_TYPELIB_MEMBERS (PopupSelector)
+	ADD_TYPELIB_MEMBER_METRIC ("popup.offset.x") ///< an additional horizontal offset to the popup position, applied when opened from SelectBox or PopupBox
+	ADD_TYPELIB_MEMBER_METRIC ("popup.offset.y") ///< an additional vertical offset to the popup position, applied when opened from SelectBox or PopupBox
+	ADD_TYPELIB_MEMBER_METRIC ("popup.minwidth") ///< the popup's minwidth sizelimit - used to override the default sizelimit (the width of the PopupBox)
+END_TYPELIB_MEMBERS (PopupSelector)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -601,7 +603,7 @@ PopupSelectorWindow::PopupSelectorWindow (Window* _parentWindow, IPopupSelectorC
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-tresult CCL_API PopupSelectorWindow::queryInterface (CCL::UIDRef iid, void** ptr)
+tresult CCL_API PopupSelectorWindow::queryInterface (UIDRef iid, void** ptr)
 {
 	if(ccl_iid<IPopupSelectorClient> ().equals (iid) && client)
 	{
@@ -631,8 +633,8 @@ void PopupSelectorWindow::attached (View* parent)
 
 bool PopupSelectorWindow::onPopupDeactivated ()
 {
-	// popup window deactivated (eg. clicked outside): close if no other modal window exists above us
-	if(Desktop.getTopWindow (kPopupLayer) == this)
+	// popup window deactivated (eg. clicked outside): close if not already closing and no other modal window exists above us
+	if(!isClosing && Desktop.getTopWindow (kPopupLayer) == this)
 	{
 		// defer closing if we are inside a drag session that was started from this window
 		DragSession* dragSession = DragSession::getActiveSession ();
@@ -752,6 +754,11 @@ bool PopupSelectorWindow::onMouseUp (const MouseEvent& event)
 
 bool PopupSelectorWindow::onKeyDown (const KeyEvent& event)
 {
+	auto* editBox = ccl_cast<EditBox> (getFocusView ());
+	if(editBox && editBox->isEditing () && !editBox->shouldUseNativeControl ())
+		if(editBox->onKeyDown (event))
+			return true;
+
 	if(client && checkClientResult (client->onKeyDown (event)))
 		return true;
 
@@ -925,7 +932,7 @@ NonModalPopupSelectorWindow::~NonModalPopupSelectorWindow ()
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-tresult CCL_API NonModalPopupSelectorWindow::queryInterface (CCL::UIDRef iid, void** ptr)
+tresult CCL_API NonModalPopupSelectorWindow::queryInterface (UIDRef iid, void** ptr)
 {
 	if(ccl_iid<IPopupSelectorClient> ().equals (iid) && client)
 	{
@@ -1081,7 +1088,6 @@ void NonModalPopupSelectorWindow::onGestureProcessed (const GestureEvent& event,
 
 DEFINE_CLASS (PopupSelector, Object)
 DEFINE_CLASS_UID (PopupSelector, 0xFCDB7599, 0x685E, 0x4E20, 0x9C, 0x7B, 0x4C, 0xC2, 0x1A, 0x2B, 0xDE, 0x00)
-DEFINE_STRINGID_MEMBER_ (PopupSelector, kPopupClosed, "popupClosed")
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1572,7 +1578,7 @@ IAsyncOperation* PopupSelector::doPopup (IView* popupView, IPopupSelectorClient*
 
 	constexpr int kCommonStyleMask = Styles::kTransparent|Styles::kTranslucent;
 	StyleFlags windowStyle (view->getStyle ().common & kCommonStyleMask, Styles::kWindowBehaviorPopupSelector);
-	
+
 	// take certain window style flags from a content form's windowStyle
 	constexpr int kCommonWindowStyleMask = kCommonStyleMask;
 	constexpr int kCustomWindowStyleMask = Styles::kWindowAppearanceCustomFrame | Styles::kWindowBehaviorSheetStyle;
@@ -1587,9 +1593,9 @@ IAsyncOperation* PopupSelector::doPopup (IView* popupView, IPopupSelectorClient*
 		auto window = NEW NonModalPopupSelectorWindow (parentWindow, client, size, windowStyle);
 		prepareWindow (window);
 
-		window->show ();
+		window->show (!(behavior & IPopupSelector::kNoActivate));
 		window->addToDesktop ();
-		window->activate ();
+
 		window->attached (window);
 
 		window->addHandler (this);
@@ -1633,7 +1639,7 @@ void PopupSelector::onPopupClosed ()
 	if(client)
 		client->onPopupClosed (popupResult = currentWindow->getPopupResult ());
 
-	signal (Message (kPopupClosed));
+	signal (Message (IPopupSelector::kPopupClosed));
 
 	if(behavior & IPopupSelector::kRestoreMousePos)
 		GUI.setMousePosition (oldMousePos);

@@ -64,6 +64,7 @@ END_XSTRINGS
 static const CString kStartDownload = CSTR ("startDownload");
 static const CString kRestartDownload = CSTR ("restartDownload");
 DEFINE_CLASS_HIDDEN (Element, Component)
+DEFINE_CLASS_NAMESPACE (Element, NAMESPACE_CCL)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 

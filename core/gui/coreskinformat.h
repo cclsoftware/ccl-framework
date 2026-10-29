@@ -113,6 +113,7 @@ namespace ViewAttributes
 	using ResourceAttributes::kHeight;
 
 	const CStringPtr kTitle = "title";
+	const CStringPtr kTitleName = "titlename";
 	const CStringPtr kImage = "image";
 	const CStringPtr kIcon = "icon";
 	const CStringPtr kBackground = "background";

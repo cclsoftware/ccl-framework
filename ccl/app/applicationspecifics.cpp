@@ -91,7 +91,7 @@ void ApplicationSpecifics::enableNotifyIcon (bool state, bool autoShow)
 	{
 		if(state)
 		{
-			notifyIcon = ccl_new<INotifyIcon> (CCL::ClassID::NotifyIcon);
+			notifyIcon = ccl_new<INotifyIcon> (ClassID::NotifyIcon);
 			if(notifyIcon)
 			{
 				auto& root = RootComponent::instance ();

@@ -83,6 +83,7 @@ protected:
 	IObject* scriptObject;
 	ObjectArray functions;
 	Vector<IObjectNode*> children;
+	Vector<IParameter*> scriptPropertyParams;
 
 	// IScriptComponent
 	void CCL_API construct (IUnknown* outerComponent) override;

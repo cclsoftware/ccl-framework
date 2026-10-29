@@ -64,7 +64,7 @@ IStatement* CCL_API SQLiteConnection::createStatement (StringRef sql)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-IStatement* CCL_API SQLiteConnection::createStatement (const char* sql)
+IStatement* CCL_API SQLiteConnection::createStatement (CStringPtr sql)
 {
 	return NEW SQLiteStatement (*this, sql);
 }
@@ -79,7 +79,7 @@ tbool CCL_API SQLiteConnection::execute (StringRef sql)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-tbool CCL_API SQLiteConnection::execute (const char* sqlUTF8)
+tbool CCL_API SQLiteConnection::execute (CStringPtr sqlUTF8)
 {
 	SQLiteStatement statement (*this, sqlUTF8);
 	return statement.execute ();
@@ -95,7 +95,7 @@ tbool CCL_API SQLiteConnection::execute (StringRef sql, Variant& result)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-tbool CCL_API SQLiteConnection::execute (const char* sqlUTF8, Variant& result)
+tbool CCL_API SQLiteConnection::execute (CStringPtr sqlUTF8, Variant& result)
 {
 	SQLiteStatement statement (*this, sqlUTF8);
 	return statement.execute (result);
@@ -136,7 +136,7 @@ tbool CCL_API SQLiteConnection::commitTransaction ()
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-tbool CCL_API SQLiteConnection::hasTable (const char* name)
+tbool CCL_API SQLiteConnection::hasTable (CStringPtr name)
 {
 	SQLiteStatement statement (*this, "select name from sqlite_master where type='table' and name=?");
 	statement.bindVariable (0, name);
@@ -147,7 +147,7 @@ tbool CCL_API SQLiteConnection::hasTable (const char* name)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-tbool CCL_API SQLiteConnection::hasColumn (const char* table, const char* column)
+tbool CCL_API SQLiteConnection::hasColumn (CStringPtr table, CStringPtr column)
 {
 	SQLiteStatement statement (*this, "select sql from sqlite_master where type='table' and name=?");
 	statement.bindVariable (0, table);
@@ -164,7 +164,7 @@ tbool CCL_API SQLiteConnection::hasColumn (const char* table, const char* column
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-tbool CCL_API SQLiteConnection::hasView (const char* name)
+tbool CCL_API SQLiteConnection::hasView (CStringPtr name)
 {
 	SQLiteStatement statement (*this, "select name from sqlite_master where type='view' and name=?");
 	statement.bindVariable (0, name);
@@ -180,7 +180,7 @@ tbool CCL_API SQLiteConnection::getLastError (String& message)
 	int code = sqlite3_errcode (connection);
 	if(code != SQLITE_OK && code < SQLITE_ROW)
 	{
-		message = (const uchar*)sqlite3_errmsg16 (connection);
+		message = (UStringPtr)sqlite3_errmsg16 (connection);
 		message.append ("(");
 		message.appendIntValue (code);
 		message.append (")");

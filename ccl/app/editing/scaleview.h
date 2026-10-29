@@ -41,7 +41,6 @@ public:
 	Scale* getScale () const;
 
 	// UserControl
-	void draw (const DrawEvent& event) override;
 	bool onMouseEnter (const MouseEvent& event) override;
 	bool onMouseMove (const MouseEvent& event) override;
 	bool onMouseLeave (const MouseEvent& event) override;

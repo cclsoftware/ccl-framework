@@ -32,6 +32,9 @@ class NodeSorter;
 class FolderNode;
 class PlugInSelectorPopup;
 
+interface IAsyncOperation;
+struct PopupSizeInfo;
+
 namespace Browsable {
 class PlugInCategoryNode; }
 
@@ -205,11 +208,22 @@ public:
 	virtual Browsable::PlugInCategoryNode* createBrowserNode () const {return nullptr;}
 	virtual String getSelectorID () const { return getCategory1 ().getCategory (); }
 
+	enum PopupMode { kPopupModeMenu = 0, kPopupModeBrowser };
+
+	IAsyncOperation* showPopup (PopupMode mode, const PopupSizeInfo& sizeInfo);
+	IAsyncOperation* showPopup (const PopupSizeInfo& sizeInfo); // uses global mode, see setPopupModeParam
+	void embedInMenu (PopupMode mode, IMenu* menu, StringRef subMenuTitle);
+	void embedInMenu (IMenu* menu, StringRef subMenuTitle); // uses global mode
+
+	DECLARE_STRINGID_MEMBER (kBeginSelection)
+	DECLARE_STRINGID_MEMBER (kEndSelection)
+
 	// Component
 	IUnknown* CCL_API getObject (StringID name, UIDRef classID) override;
 	tbool CCL_API paramChanged (IParameter* param) override;
+	void CCL_API paramEdit (IParameter* param, tbool begin) override;
 
-	static void setPopupModeParam (IParameter* param);
+	static void setPopupModeParam (IParameter* param); // values: PopupMode
 
 protected:
 	// IObject
@@ -220,7 +234,11 @@ private:
 	bool runningModal;
 	static SharedPtr<IParameter> globalPopupModeParam;
 
+	class MenuAdapterView;
+
 	enum Tag { kPlugList = 100, kSelectorMode };
+
+	PlugInSelectorPopup* getPopupSelectorClient ();
 };
 
 //************************************************************************************************
@@ -248,9 +266,9 @@ class PlugInSorterComponent: public NodeSorterComponent
 public:
 	PlugInSorterComponent ();
 
-	static CCL::NodeSorter* createUserFolderSorter ();
-	static CCL::NodeSorter* createVendorSorter ();
-	static CCL::NodeSorter* createSubCategorySorter ();
+	static NodeSorter* createUserFolderSorter ();
+	static NodeSorter* createVendorSorter ();
+	static NodeSorter* createSubCategorySorter ();
 };
 
 } // namespace CCL

@@ -12,7 +12,7 @@
 // For more information, please visit ccl.dev.
 //
 // Filename    : ccl/gui/theme/renderer/dividerrenderer.cpp
-// Description : Control Renderer
+// Description : Divider Renderer
 //
 //************************************************************************************************
 
@@ -28,17 +28,18 @@ using namespace CCL;
 /** A divider draws a background image, and optionally a handle centered on top. */
 //************************************************************************************************
 
-BEGIN_VISUALSTYLE_CLASS (Divider, VisualStyle, "DividerStyle")
-	ADD_VISUALSTYLE_IMAGE  ("hImage")	///< background for a horizontal divider
-	ADD_VISUALSTYLE_IMAGE  ("vImage")	///< background for a vertical divider
-	ADD_VISUALSTYLE_IMAGE  ("hGrip")	///< handle for a horizontal divider
-	ADD_VISUALSTYLE_IMAGE  ("vGrip")	///< handle for a vertical divider
-END_VISUALSTYLE_CLASS (Divider)
+DEFINE_TYPELIB_ENTRY_WITH_PARENT (Divider, VisualStyle, "DividerStyle", VISUALSTYLES_TYPELIB)
+BEGIN_TYPELIB_MEMBERS (Divider)
+	ADD_TYPELIB_MEMBER_IMAGE ("hImage") ///< background for a horizontal divider
+	ADD_TYPELIB_MEMBER_IMAGE ("vImage") ///< background for a vertical divider
+	ADD_TYPELIB_MEMBER_IMAGE ("hGrip") ///< handle for a horizontal divider
+	ADD_TYPELIB_MEMBER_IMAGE ("vGrip") ///< handle for a vertical divider
+END_TYPELIB_MEMBERS (Divider)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-DividerRenderer::DividerRenderer (VisualStyle* visualStyle)
-:	ThemeRenderer (visualStyle)
+DividerRenderer::DividerRenderer (VisualStyle* visualStyle, View* owner)
+: ThemeRenderer (visualStyle, owner)
 {
 	hImage = visualStyle->getImage ("hImage");
 	vImage = visualStyle->getImage ("vImage");
@@ -48,22 +49,22 @@ DividerRenderer::DividerRenderer (VisualStyle* visualStyle)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void DividerRenderer::draw (View* view, const UpdateRgn& updateRgn)
+void DividerRenderer::draw (const UpdateRgn& updateRgn)
 {
-	if(view->getStyle ().isTransparent ())
+	if(owner->getStyle ().isTransparent ())
 		return;
 
-	GraphicsPort port (view);
+	GraphicsPort port (owner);
 	Rect rect;
-	view->getClientRect (rect);
+	owner->getClientRect (rect);
 
-	auto selectFrame = [view](IImage* image)
+	auto selectFrame = [this](IImage* image)
 	{
 		MutableCString frame;
 
-		if(view->getMouseState () == ThemeElements::kPressed)
+		if(owner->getMouseState () == ThemeElements::kPressed)
 			frame = ThemeNames::kPressed;
-		else if(view->getMouseState () == ThemeElements::kMouseOver)
+		else if(owner->getMouseState () == ThemeElements::kMouseOver)
 			frame = ThemeNames::kMouseOver;
 		else
 			frame = ThemeNames::kNormal;
@@ -71,7 +72,7 @@ void DividerRenderer::draw (View* view, const UpdateRgn& updateRgn)
 		IImage::Selector (image, frame);
 	};
 
-	IImage* image = view->getStyle ().isVertical () ? hImage : vImage;
+	IImage* image = owner->getStyle ().isVertical () ? hImage : vImage;
 	if(image)
 	{
 		selectFrame (image);
@@ -81,7 +82,7 @@ void DividerRenderer::draw (View* view, const UpdateRgn& updateRgn)
 	else
 		port.fillRect (rect, SolidBrush (visualStyle->getBackColor ()));
 
-	image = view->getStyle ().isVertical () ? hGrip : vGrip;
+	image = owner->getStyle ().isVertical () ? hGrip : vGrip;
 	if(image)
 	{
 		selectFrame (image);
@@ -94,24 +95,24 @@ void DividerRenderer::draw (View* view, const UpdateRgn& updateRgn)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool DividerRenderer::needsRedraw (View* view, const Point& sizeDelta)
+bool DividerRenderer::needsRedraw (const Point& sizeDelta)
 {
-	if(view->getStyle ().isTransparent () || sizeDelta.isNull ())
+	if(owner->getStyle ().isTransparent () || sizeDelta.isNull ())
 		return false;
 
-	return (view->getStyle ().isVertical () ? hGrip : vGrip) != nullptr;
+	return (owner->getStyle ().isVertical () ? hGrip : vGrip) != nullptr;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-int DividerRenderer::hitTest (View* view, const Point& loc, Point* clickOffset)
+int DividerRenderer::hitTest (PointRef where, Point* clickOffset)
 {
 	return 0;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool DividerRenderer::getPartRect (const View* view, int partCode, CCL::Rect& rect)
+bool DividerRenderer::getPartRect (Rect& rect, int partCode)
 {
 	return false;
 }

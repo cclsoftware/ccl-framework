@@ -54,6 +54,7 @@ class Application: public Component,
 {
 public:
 	DECLARE_CLASS (Application, Component)
+	DECLARE_PROPERTY_NAMES (Application)
 
 	Application (StringID appID = nullptr, StringRef companyName = nullptr, StringRef appName = nullptr,
 				 StringID appPackageID = nullptr, StringRef appVersion = nullptr, int versionInt = 0);
@@ -79,9 +80,6 @@ public:
 
 	/** Put application shutdown code in here. */
 	virtual bool shutdown ();
-
-	/** Show about dialog. */
-	virtual void showAbout ();
 
 	/** Application restart has been requested via global signal. */
 	virtual void onRestartRequested (MessageRef msg);
@@ -112,6 +110,7 @@ public:
 	tbool CCL_API checkCommandCategory (CStringRef category) const override;
 	virtual bool onQuit (CmdArgs);
 	virtual bool onAbout (CmdArgs);
+	virtual bool onLegalInformation (CmdArgs);
 	virtual bool onShowOptions (CmdArgs args);
 	virtual bool onShowCommands (CmdArgs args);
 	virtual bool onOpenSettingsFolder (CmdArgs args);
@@ -168,7 +167,11 @@ protected:
 
 	/** Create application window. */
 	IWindow* createWindow (bool show = true);
-	IView* createAboutView ();
+
+	/** Show about dialog. */
+	void showAbout ();
+	/** Show dialog with legal information. */
+	void showLegalInformation ();
 
 	// IMenuExtension
 	void CCL_API extendMenu (IMenu& menu, StringID name) override;

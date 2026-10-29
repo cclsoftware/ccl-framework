@@ -134,6 +134,43 @@ class StringParserTest(unittest.TestCase):
         test_string = "BAR _FOO (a,b)"
         self.assertFalse(StringParser.contains_token(test_string, "FOO"))
 
+        test_string = "BARFOO (a,b)"
+        self.assertFalse(StringParser.contains_token(test_string, "FOO"))
+
+        test_string = "_FOO (a) FOO (b)"
+        self.assertTrue(StringParser.contains_token(test_string, "FOO"))
+
+        # Occurrences in string literals are ignored.
+        test_string = 'printf ("FOO failed: \\"%s\\"")'
+        self.assertFalse(StringParser.contains_token(test_string, "FOO"))
+
+        test_string = 'printf ("FOO failed") FOO (b)'
+        self.assertTrue(StringParser.contains_token(test_string, "FOO"))
+
+        # Call parameters may contain string literals.
+        test_string = 'FOO (#a ", " #b)'
+        self.assertTrue(StringParser.contains_token(test_string, 'FOO (#a ", " #b)'))
+
+    def test_replace_token(self):
+        test_string = "FOO (a) BARFOO (a) FOO_ (a)"
+        self.assertEqual("x BARFOO (a) FOO_ (a)", StringParser.replace_token(test_string, "FOO (a)", "x"))
+
+        test_string = "typename T a"
+        self.assertEqual("typename T b", StringParser.replace_token(test_string, "a", "b"))
+
+        # Occurrences in string literals are not replaced.
+        test_string = '"FOO (a)" FOO (a)'
+        self.assertEqual('"FOO (a)" x', StringParser.replace_token(test_string, "FOO (a)", "x"))
+
+        # Replacement is inserted literally.
+        test_string = "FOO"
+        self.assertEqual("\"\\n\"", StringParser.replace_token(test_string, "FOO", "\"\\n\""))
+
+    def test_extract_call_params_string_token(self):
+        """Do not match macro name as part of another identifier."""
+        params_str = StringParser.extract_call_params_string("BARFOO (a) FOO (b)", "FOO")
+        self.assertEqual("(b)", params_str)
+
     def test_extract_name(self):
         """Extract macro name from macro text."""
 

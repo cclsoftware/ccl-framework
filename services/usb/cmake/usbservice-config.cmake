@@ -18,7 +18,7 @@
 #
 #************************************************************************************************
 
-if (IOS OR ANDROID)
+if (IOS OR ANDROID OR "${VENDOR_PLATFORM}" STREQUAL "wasm")
     return ()
 endif ()
 

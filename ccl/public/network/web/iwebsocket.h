@@ -95,7 +95,7 @@ interface IWebSocket: IUnknown
 	//////////////////////////////////////////////////////////////////////////////////////////////
 
 	/** Open connection. */
-	virtual tresult CCL_API open (UrlRef url, VariantRef protocols = 0) = 0;
+	virtual tresult CCL_API open (UrlRef url, VariantRef protocols = Variant ()) = 0;
 
 	/** Close connection. */
 	virtual tresult CCL_API close (int code = 0, StringRef reason = nullptr) = 0;

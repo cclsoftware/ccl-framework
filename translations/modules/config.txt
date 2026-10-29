@@ -7,6 +7,7 @@ code ../../ccl/extras ./templates/cclextras.pot
 
 auto ../../ccl/packaging/android/resource/values ./templates/cclplatform-android.pot
 
+code ../../services/audio/source ./templates/audioservice.pot
 code ../../services/tuio/source ./templates/tuioservice.pot
 skin ../../services/tuio/skin ./templates/tuioservice-skin.pot
 

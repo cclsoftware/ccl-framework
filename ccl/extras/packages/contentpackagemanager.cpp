@@ -175,8 +175,9 @@ END_COMMANDS (ContentPackageManager)
 //************************************************************************************************
 
 DEFINE_SINGLETON_CLASS (ContentPackageManager, PackageManager)
+DEFINE_CLASS_NAMESPACE (ContentPackageManager, NAMESPACE_CCL)
 DEFINE_CLASS_UID (ContentPackageManager, 0xc077f684, 0xdc73, 0x4c44, 0x91, 0xaa, 0x10, 0xbc, 0x8, 0x5d, 0xf6, 0xcc) // ClassID::ContentPackageManager
-DEFINE_CLASS_NAMESPACE (ContentPackageManager, "Host")
+DEFINE_CLASS_CATEGORY (ContentPackageManager, PLUG_CATEGORY_HOST_)
 DEFINE_COMPONENT_SINGLETON (ContentPackageManager)
 IMPLEMENT_COMMANDS (ContentPackageManager, PackageManager)
 
@@ -408,7 +409,7 @@ void ContentPackageManager::requestUpdate (IUnifiedPackageSource& source, int up
 {
 	if(startupLevel < kStartupLocalSources)
 		return;
-	if((updateFlags & (kPackageRemoved|kPackageChanged)) != 0 && startupLevel < kStartupAll)
+	if(startupLevel < kStartupAll)
 	{
 		updateLocalSources ();
 		return;
@@ -918,7 +919,7 @@ bool ContentPackageManager::onInstallFromFile (CmdArgs msg)
 {
 	if(!msg.checkOnly ())
 	{
-		AutoPtr<IFileSelector> fs = ccl_new<IFileSelector> (CCL::ClassID::FileSelector);
+		AutoPtr<IFileSelector> fs = ccl_new<IFileSelector> (ClassID::FileSelector);
 		if(fs.isValid () == false)
 			return false;
 		for(const FileType& fileType : staticFileTypeFilter->getFileTypes ())

@@ -68,7 +68,7 @@ public:
 	bool isAutoSaving () const;
 	bool doSave (Document& document);
 
-	static const CCL::String kAutosaveExtension;
+	static const String kAutosaveExtension;
 	static bool isAutoSaveFile (UrlRef path);
 
 	PROPERTY_AUTO_POINTER (IAutoSaveHook, autoSaveHook, AutoSaveHook)

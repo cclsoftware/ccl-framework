@@ -54,7 +54,7 @@ MutableCString CCL::ccl_analytics_classify (IAnalyticsEvent& e, IAnalyticsEventC
 {
 	// appContext from event data 
 	AttributeReadAccessor attributes (e.getData ());
-	MutableCString context (attributes.getString (CCL::AnalyticsID::kApplicationContext));
+	MutableCString context (attributes.getString (AnalyticsID::kApplicationContext));
 
 	// additional context provided by classifier
 	MutableCString eventContext;

@@ -329,7 +329,7 @@ int PosixTextRecord::getCount () const
 
 bool PosixTextRecord::getItemAt (CString64& key, CString64& value, int index) const
 {
-	const char* valuePtr = nullptr;
+	CStringPtr valuePtr = nullptr;
 	uint8_t valueLen = 0;
 	
 	DNSServiceErrorType error = ::TXTRecordGetItemAtIndex (length, buffer, (uint16_t)index, (uint16_t)key.getSize (), key.getBuffer (), &valueLen, (const void**)&valuePtr);
@@ -346,7 +346,7 @@ bool PosixTextRecord::getItemAt (CString64& key, CString64& value, int index) co
 bool PosixTextRecord::getValue (CString64& value, CStringPtr key) const
 {
 	uint8_t valueLen = 0;
-	const char* valuePtr = (const char*)::TXTRecordGetValuePtr (length, buffer, key, &valueLen);
+	CStringPtr valuePtr = (CStringPtr)::TXTRecordGetValuePtr (length, buffer, key, &valueLen);
 	if(!valuePtr)
 		return false;
 

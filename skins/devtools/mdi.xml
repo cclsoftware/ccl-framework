@@ -32,9 +32,14 @@
 		<ShapeImage name="LinkBoxVariantOutline" url="icons/mdi/link-box-variant-outline.svg" template="true"/>
 		<ShapeImage name="EyeOutline" url="icons/mdi/eye-outline.svg" template="true"/>
 		<ShapeImage name="PencilOutline" url="icons/mdi/pencil-outline.svg" template="true"/>
+		<ShapeImage name="Play" url="icons/mdi/play.svg" template="true"/>
 		<ShapeImage name="Plus" url="icons/mdi/plus.svg" template="true"/>
 		<ShapeImage name="Minus" url="icons/mdi/minus.svg" template="true"/>
+		<ShapeImage name="Record" url="icons/mdi/record.svg" template="true"/>
 		<ShapeImage name="Refresh" url="icons/mdi/refresh.svg" template="true"/>
+		<ShapeImage name="RepeatVariant" url="icons/mdi/repeat-variant.svg" template="true"/>
+		<ShapeImage name="SkipPrevious" url="icons/mdi/skip-previous.svg" template="true"/>
+		<ShapeImage name="Stop" url="icons/mdi/stop.svg" template="true"/>
 		<ShapeImage name="ArrowLeftThin" url="icons/mdi/arrow-left-thin.svg" template="true"/>
 		<ShapeImage name="ArrowRightThin" url="icons/mdi/arrow-right-thin.svg" template="true"/>
 		<ShapeImage name="Menu" url="icons/mdi/menu.svg" template="true"/>

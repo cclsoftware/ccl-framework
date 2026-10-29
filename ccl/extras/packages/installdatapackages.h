@@ -54,7 +54,7 @@ public:
 	void retrievePackages (UrlRef url, bool refresh) override;
 
 	// Object
-	void CCL_API notify (ISubject* subject, CCL::MessageRef msg) override;
+	void CCL_API notify (ISubject* subject, MessageRef msg) override;
 
 protected:
 	struct AuthorizerConfiguration
@@ -107,8 +107,10 @@ class ManifestPackageHandler: public UnifiedPackageHandler
 public:
 	// action ids
 	DECLARE_STRINGID_MEMBER (kClaimLicense)
+	DECLARE_STRINGID_MEMBER (kCopyKey)
 
 	static bool claimLicenseData (UnifiedPackage& package);
+	static bool copyLicenseKey (UnifiedPackage& package);
 
 	// UnifiedPackageHandler
 	bool canHandle (UnifiedPackage* package) const override;

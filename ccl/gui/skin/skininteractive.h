@@ -37,7 +37,8 @@ namespace SkinElements {
 class AnchorElement: public Element
 {
 public:
-	DECLARE_SKIN_ELEMENT (AnchorElement, Element)
+	DECLARE_CLASS (AnchorElement, Element)
+	DECLARE_TYPELIB_CLASS (AnchorElement)
 
 	PROPERTY_STRING (url, Url)
 
@@ -58,7 +59,7 @@ The title can be omitted, and child views can be used instead e.g. an ImageView.
 
 \code{.xml}
 <!-- Example: link url specified in parent anchor element -->
-<Anchor url = "https:://ccl.dev">
+<Anchor url = "https://ccl.dev">
 	<Link title = "...">
 </Anchor>
 \endcode
@@ -68,7 +69,8 @@ The title can be omitted, and child views can be used instead e.g. an ImageView.
 class LinkElement: public ControlElement
 {
 public:
-	DECLARE_SKIN_ELEMENT (LinkElement, ControlElement)
+	DECLARE_CLASS (LinkElement, ControlElement)
+	DECLARE_TYPELIB_CLASS (LinkElement)
 
 	PROPERTY_OBJECT (StyleFlags, style, Style)
 
@@ -81,7 +83,7 @@ public:
 //************************************************************************************************
 // TriggerViewElement
 /** A view that sends messages on certain gui events.
-These messages can be refered to in the "event" attribute of a <Trigger>. \see TriggerElement
+These messages can be referred to in the "event" attribute of a <Trigger>. \see TriggerElement
 
 Available events are "onAttached", "onRemoved", "onMouseDown", "onSingleClick" "onDoubleClick", "onSingleTap",
 "onLongPress", "onSwipe", "onSwipeH", "onSwipeV". */
@@ -90,7 +92,8 @@ Available events are "onAttached", "onRemoved", "onMouseDown", "onSingleClick" "
 class TriggerViewElement: public ViewElement
 {
 public:
-	DECLARE_SKIN_ELEMENT (TriggerViewElement, ViewElement)
+	DECLARE_CLASS (TriggerViewElement, ViewElement)
+	DECLARE_TYPELIB_CLASS (TriggerViewElement)
 	
 	TriggerViewElement ();
 
@@ -105,13 +108,13 @@ public:
 
 //************************************************************************************************
 // TriggerElement
-/** A trigger reacts on an event, signaled by a view.
-The event can be any messsage signaled by a view (attribute "event"). \see TriggerViewElement
+/** A trigger reacts to an event, signaled by a view.
+The event can be any message signaled by a view (attribute "event"). \see TriggerViewElement
 
 As a special case, a "propertyChanged" message can be handled, that only triggers when the property takes a given value. (attributes "property", "value").
-When the "trigger" option of a view is set, it sends "propertyChanged" messages for it's "mousestate", "value" and "visualState" (the latter two only for controls).
+When the "trigger" option of a view is set, it sends "propertyChanged" messages for its "mousestate", "value" and "visualState" (the latter two only for controls).
 
-When a trigger receives the specified event or property change, it executes all of it's actions, which are placed as child elemnts in the <Trigger>.
+When a trigger receives the specified event or property change, it executes all of its actions, which are placed as child elements in the <Trigger>.
 Actions are executed in order of their appearance.
 
 Available actions are:
@@ -146,7 +149,8 @@ class TriggerElement: public Element,
 					  public ITriggerPrototype
 {
 public:
-	DECLARE_SKIN_ELEMENT (TriggerElement, Element)
+	DECLARE_CLASS (TriggerElement, Element)
+	DECLARE_TYPELIB_CLASS (TriggerElement)
 
 	PROPERTY_AUTO_POINTER (Trigger, prototype, Prototype)
 
@@ -169,7 +173,8 @@ class TriggerListElement: public Element,
 						  public ITriggerPrototype
 {
 public:
-	DECLARE_SKIN_ELEMENT (TriggerListElement, Element)
+	DECLARE_CLASS (TriggerListElement, Element)
+	DECLARE_TYPELIB_CLASS (TriggerListElement)
 
 	// ITriggerPrototype
 	void CCL_API applyTrigger (IObject* target) override;
@@ -221,7 +226,8 @@ When a "parameter" path is specified instead of "property", the parameter is set
 class SetterElement: public TriggerActionElement
 {
 public:
-	DECLARE_SKIN_ELEMENT (SetterElement, TriggerActionElement)
+	DECLARE_CLASS (SetterElement, TriggerActionElement)
+	DECLARE_TYPELIB_CLASS (SetterElement)
 
 	SetterElement ();
 
@@ -250,7 +256,8 @@ An <Invoker> action cannot pass any arguments to the method.
 class InvokerElement: public TriggerActionElement
 {
 public:
-	DECLARE_SKIN_ELEMENT (InvokerElement, TriggerActionElement)
+	DECLARE_CLASS (InvokerElement, TriggerActionElement)
+	DECLARE_TYPELIB_CLASS (InvokerElement)
 
 	InvokerElement ();
 
@@ -288,7 +295,8 @@ Has no special attributes. The <Animation> has to be a child of this element.
 class StartAnimationElement: public TriggerActionElement
 {
 public:
-	DECLARE_SKIN_ELEMENT (StartAnimationElement, TriggerActionElement)
+	DECLARE_CLASS (StartAnimationElement, TriggerActionElement)
+	DECLARE_TYPELIB_CLASS (StartAnimationElement)
 
 	StartAnimationElement ();
 
@@ -309,7 +317,8 @@ Looks for an animation for the given "property" (path relative to the triggering
 class StopAnimationElement: public TriggerActionElement
 {
 public:
-	DECLARE_SKIN_ELEMENT (StopAnimationElement, TriggerActionElement)
+	DECLARE_CLASS (StopAnimationElement, TriggerActionElement)
+	DECLARE_TYPELIB_CLASS (StopAnimationElement)
 
 	StopAnimationElement ();
 
@@ -321,7 +330,7 @@ public:
 //************************************************************************************************
 // AnimationElement
 /** Describes an animation of a property.
-Must be placed inside a <StartAnimation>. \see StartAnimationElement
+Can be placed inside a <StartAnimation>. \see StartAnimationElement or be used as transition between <StyleCondition> scopes. \see StyleConditionElement
 
 The "property" path is relative to the triggering view.
 An Animation specifies that the property value should transition "from" a start value "to" an end value for some "duration".
@@ -334,7 +343,8 @@ Multiple animations can be in the same "group" to ensure synchronized execution.
 class AnimationElement: public Element
 {
 public:
-	DECLARE_SKIN_ELEMENT (AnimationElement, Element)
+	DECLARE_CLASS (AnimationElement, Element)
+	DECLARE_TYPELIB_CLASS (AnimationElement)
 
 	AnimationElement ();
 	~AnimationElement ();

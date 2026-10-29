@@ -47,6 +47,21 @@ namespace Styles
 };
 
 //************************************************************************************************
+// TabView style identifiers
+//************************************************************************************************
+
+namespace StyleID
+{
+	namespace TabView
+	{
+		const CStringPtr kTabHeight = "tabheight";
+		const CStringPtr kTabSpacing = "tabspacing";
+		const CStringPtr kTabMenuSpacing = "tabmenuspacing";
+		const CStringPtr kTabPreferIcon = "tabprefericon";
+	}
+}
+
+//************************************************************************************************
 // TabView
 /** Shows a list of tab buttons to control a parameter or chose a child view. 
 A tab view draws a row of Tab buttons, which behave like radio buttons. 
@@ -133,7 +148,6 @@ private:
 	friend class ReorderTabsDragHandler;
 	class TouchMouseHandler;
 	
-	ThemeRenderer* renderer;
 	int mouseOverTab;
 	int mouseDownTab;
 	int tooltipIndex;
@@ -163,7 +177,7 @@ private:
 interface ITabViewRenderer: IUnknown
 {
 	/** Draw one tab. */
-	virtual void drawTab (View* view, GraphicsDevice& port, RectRef r, int tabIndex) = 0;
+	virtual void drawTab (GraphicsDevice& port, RectRef r, int tabIndex) = 0;
 
 	DECLARE_IID (ITabViewRenderer)
 };

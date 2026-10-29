@@ -98,7 +98,7 @@ if '%force%' == 'true' (
 			set /p signsize=< "!file!.signed"
 			set /p signcert=< "!file!.signed.cert"
 
-			if !filesize! == !signsize! if !cert!!thumbprint! == !signcert! (
+			if !filesize! == !signsize! if !cert!!thumbprint!!dmdf! == !signcert! (
 				for %%i in ("!file!") do set filedate=%%~ti
 				for %%i in ("!file!.signed") do set signdate=%%~ti
 				for /f "delims=" %%i in ('dir /b /o:d "!file!" "!file!.signed"') do set newest=%%i
@@ -136,7 +136,7 @@ if '%force%' == 'true' (
 
 	if not errorlevel 1 (
 		for %%x in (!files!) do echo %%~zx> "%%x.signed"
-		for %%x in (!files!) do echo %cert%%thumbprint%> "%%x.signed.cert"
+		for %%x in (!files!) do echo %cert%%thumbprint%%dmdf%> "%%x.signed.cert"
 		goto success
 	)
 
@@ -145,7 +145,7 @@ if '%force%' == 'true' (
 
 	rem Use ping with a TEST-NET IP to delay execution as the timeout command will not work in non-interactive scripts.
 	echo.
-	echo *** Code signing failed. Waiting %delay% seconds before retry. ***
+	echo *** Code signing failed with error level %errorlevel%. Waiting %delay% seconds before retry. ***
 	ping 192.0.2.0 -n 1 -w %delay%000 > NUL
 	set /a delay*=2
 	echo.

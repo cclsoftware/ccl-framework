@@ -12,7 +12,7 @@
 // For more information, please visit ccl.dev.
 //
 // Filename    : ccl/gui/theme/renderer/headerviewrenderer.cpp
-// Description : Control Renderer
+// Description : HeaderView Renderer
 //
 //************************************************************************************************
 
@@ -20,12 +20,10 @@
 #define _ccl_headerrenderer_h
 
 #include "ccl/gui/theme/themerenderer.h"
+
 #include "ccl/gui/itemviews/headerview.h"
 
 namespace CCL {
-
-class GraphicsPort;
-class HeaderView;
 
 //************************************************************************************************
 // HeaderViewRenderer
@@ -35,20 +33,23 @@ class HeaderViewRenderer: public ThemeRenderer,
 						  public IHeaderViewRenderer
 {	
 public:
-	HeaderViewRenderer (VisualStyle* visualStyle);
+	HeaderViewRenderer (VisualStyle* visualStyle, View* owner);
 
-	void draw (View* view, const UpdateRgn& updateRgn) override;
+	void draw (const UpdateRgn& updateRgn) override;
 
 	// IHeaderViewRenderer
-	void drawHeader (View* view, GraphicsDevice& port, RectRef r, StringRef label, BrushRef textBrush, FontRef font) override;
-	int hitTest (View* view, const Point& loc, Point* clickOffset) override;
-	bool getPartRect (const View* view, int partCode, Rect& rect) override;
+	void drawHeader (GraphicsDevice& port, RectRef r, StringRef label, BrushRef textBrush, FontRef font) override;
+
+	// ThemeRenderer
+	int hitTest (PointRef where, Point* clickOffset = nullptr) override;
+	bool getPartRect (Rect& rect, int partCode) override;
 
 	CLASS_INTERFACE (IHeaderViewRenderer, ThemeRenderer)
 
 protected:
-	SharedPtr<IImage> image;
 	static const int kTextInset = 2;
+
+	SharedPtr<IImage> image;
 	int columnSpacing;
 	Color columnSpacingColor;
 	Color columnSizableSpacingColor;
@@ -56,7 +57,7 @@ protected:
 	void drawHeader (IGraphics& graphics, RectRef r, ColumnHeader& c, BrushRef textBrush, FontRef font);
 };
 
-DECLARE_VISUALSTYLE_CLASS (HeaderView)
+DECLARE_TYPELIB_ENTRY (HeaderView)
 
 } // namespace CCL
 

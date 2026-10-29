@@ -227,6 +227,7 @@ void NewDocumentAssistant::FileList::removeExclusiveItems ()
 //************************************************************************************************
 
 DEFINE_CLASS_HIDDEN (NewDocumentAssistant, Component)
+DEFINE_CLASS_NAMESPACE (NewDocumentAssistant, NAMESPACE_CCL)
 String NewDocumentAssistant::kDocumentComponent ("DocumentComponent");
 DEFINE_STRINGID_MEMBER_ (NewDocumentAssistant, kFilesID, "files")
 Configuration::BoolValue NewDocumentAssistant::applyCustomization ("Application.NewDocumentAssistant", "applyCustomization", true);
@@ -1116,8 +1117,8 @@ void NewDocumentAssistant::setDropImportFile (UrlRef url, bool temporary)
 BEGIN_METHOD_NAMES (NewDocumentAssistant)
 	DEFINE_METHOD_ARGR ("loadSecondaryTemplates", "path: Url", "DocumentTemplateList")
 	DEFINE_METHOD_ARGR ("selectSecondaryTemplate", "index: int", "")
-	DEFINE_METHOD_ARGR ("setDropFileTypes", "fileTypes: Container", "")
-	DEFINE_METHOD_ARGR ("setExclusiveDropFileTypes", "fileTypes: Container", "")
+	DEFINE_METHOD_ARGR ("setDropFileTypes", "fileTypes: Container | FileType[]", "")
+	DEFINE_METHOD_ARGR ("setExclusiveDropFileTypes", "fileTypes: Container | FileType[]", "")
 	DEFINE_METHOD_ARGR ("getClassIcon", "className: string", "Object") // <-- TODO: find a better place...
 	DEFINE_METHOD_ARGS ("setDropImportFile", "path: Url, temporaryDocument: bool = false")
 	DEFINE_METHOD_ARGS ("setConfirmEnabled", "state: bool")

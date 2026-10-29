@@ -21,14 +21,17 @@
 #include "ccl/network/netsocket.h"
 
 #include "ccl/public/base/variant.h"
+#include "ccl/public/base/iprogress.h"
+#include "ccl/public/text/cstring.h"
 #include "ccl/public/system/cclerror.h"
+#include "ccl/public/systemservices.h"
 
 #if 0 // LATER TODO: cclnet does not support translations!
 	#include "ccl/public/text/translation.h"
 #else
 	#define BEGIN_XSTRINGS(x)
 	#define END_XSTRINGS
-	#define XSTRING(name, text) static const char* name = text;
+	#define XSTRING(name, text) static CStringPtr name = text;
 	#define XSTR(name) String (name)
 #endif
 
@@ -73,11 +76,10 @@ Socket::Socket (SocketID descriptor)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-tresult CCL_API Socket::connect (const SocketAddress& address)
+tresult CCL_API Socket::connect (const SocketAddress& address, int timeout, IProgressNotify* progress)
 {
-	if(!coreSocket.connect (address))
-		return handleError ("Socket connect failed");
-	return kResultOk;
+	int64 deadline = System::GetSystemTicks () + timeout;
+	return BaseSocket::connect (coreSocket, address, deadline, progress, "Socket");
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -249,7 +251,7 @@ SocketID Socket::getDescriptor () const
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-tresult Socket::handleError (const char* debugMessage)
+tresult Socket::handleError (CStringPtr debugMessage)
 {
 	return BaseSocket::handleError (coreSocket, debugMessage);
 }
@@ -258,7 +260,59 @@ tresult Socket::handleError (const char* debugMessage)
 // BaseSocket
 //************************************************************************************************
 
-tresult BaseSocket::handleError (Core::Sockets::Socket& coreSocket, const char* debugMessage)
+const CStringPtr BaseSocket::kConnectError = "%s connect failed";
+const CStringPtr BaseSocket::kNonBlockError = "%s set non-blocking failed";
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+tresult BaseSocket::connect (Core::Sockets::Socket& socket, const SocketAddress& address, int deadline, IProgressNotify* progress, CStringPtr socketName)
+{
+	// switch to non-blocking mode before connecting, so the TCP connect itself can never block indefinitely
+	if(!socket.setOption (SocketOption::kNonBlocking, 1))
+	{
+		MutableCString message;
+		message.appendFormat (kNonBlockError, socketName);
+		return handleError (socket, message);
+	}
+
+	if(!socket.connect (address))
+	{
+		MutableCString message;
+		message.appendFormat (kConnectError, socketName);
+		return handleError (socket, message);
+	}
+
+	// bounds cancellation latency; one select() syscall per slice, no busy-wait
+	for(;;)
+	{
+		int state = socket.getConnectStatus (kPollSlice);
+		if(state > 0)
+			return kResultOk;
+		if(state < 0)
+		{
+			socket.disconnect ();
+			MutableCString message;
+			message.appendFormat (kConnectError, socketName);
+			return handleError (socket, message);
+		}
+
+		if(progress && progress->isCanceled ())
+		{
+			socket.disconnect ();
+			return kResultAborted;
+		}
+		if(System::GetSystemTicks () >= deadline)
+		{
+			ccl_raise (XSTR (ConnectionTimeOut), kResultConnectionTimeOut);
+			socket.disconnect ();
+			return kResultConnectionTimeOut;
+		}
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+tresult BaseSocket::handleError (Core::Sockets::Socket& coreSocket, CStringPtr debugMessage)
 {
 	int errorCode = coreSocket.getErrorCode ();
 
@@ -276,50 +330,50 @@ tresult BaseSocket::translateErrorCode (int nativeError)
 	#if CCL_PLATFORM_WINDOWS
 	switch(nativeError)
 	{
-	case WSAENETUNREACH:
-	case WSAENETDOWN:
-	case WSAEHOSTDOWN:
-	case WSAEHOSTUNREACH:
+	case WSAENETUNREACH :
+	case WSAENETDOWN :
+	case WSAEHOSTDOWN :
+	case WSAEHOSTUNREACH :
 		return kResultNetworkUnreachable;
-	case WSAEADDRINUSE:
-	case WSAEISCONN:
+	case WSAEADDRINUSE :
+	case WSAEISCONN :
 		return kResultAddressInUse;
-	case WSAENETRESET:
-	case WSAECONNRESET:
+	case WSAENETRESET :
+	case WSAECONNRESET :
 		return kResultConnectionReset;
-	case WSAECONNABORTED:
-	case WSAENOTCONN:
-	case WSAESHUTDOWN:
+	case WSAECONNABORTED :
+	case WSAENOTCONN :
+	case WSAESHUTDOWN :
 		return kResultConnectionAborted;
-	case WSAETIMEDOUT:
+	case WSAETIMEDOUT :
 		return kResultConnectionTimeOut;
-	case WSAECONNREFUSED:
+	case WSAECONNREFUSED :
 		return kResultConnectionRefused;
-	case WSA_NOT_ENOUGH_MEMORY:
+	case WSA_NOT_ENOUGH_MEMORY :
 		return kResultOutOfMemory;
 	}
 	#else
 	switch(nativeError)
 	{
-	case ENETDOWN:
-	case ENETUNREACH:
-	case EHOSTDOWN:
+	case ENETDOWN :
+	case ENETUNREACH :
+	case EHOSTDOWN :
 		return kResultNetworkUnreachable;
-	case EADDRINUSE:
+	case EADDRINUSE :
 		return kResultAddressInUse;
-	case ENETRESET:
-	case ECONNRESET:
+	case ENETRESET :
+	case ECONNRESET :
 		return kResultConnectionReset;
-	case ECONNABORTED:
-	case ENOTCONN:
-	case ESHUTDOWN:
+	case ECONNABORTED :
+	case ENOTCONN :
+	case ESHUTDOWN :
 		return kResultConnectionAborted;
-	case ETIMEDOUT:
+	case ETIMEDOUT :
 		return kResultConnectionTimeOut;
-	case ECONNREFUSED:
-	case EISCONN:
+	case ECONNREFUSED :
+	case EISCONN :
 		return kResultConnectionRefused;
-	case ENOBUFS:
+	case ENOBUFS :
 		return kResultOutOfMemory;
 	}
 	#endif
@@ -330,22 +384,32 @@ tresult BaseSocket::translateErrorCode (int nativeError)
 
 String BaseSocket::getErrorString (int nativeError)
 {
-	switch(translateErrorCode (nativeError))
+	String errorString;
+	if(getResultString (errorString, translateErrorCode (nativeError)))
+		return errorString;
+	return errorString.appendFormat (XSTR (SockedError), nativeError);
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+bool BaseSocket::getResultString (String& result, tresult error)
+{
+	switch(error)
 	{
-	case kResultNetworkUnreachable:
-		return XSTR (NetworkUnreachable);
-	case kResultAddressInUse:
-		return XSTR (AddressInUse);
-	case kResultConnectionReset:
-		return XSTR (ConnectionReset);
-	case kResultConnectionAborted:
-		return XSTR (ConnectionAborted);
-	case kResultConnectionTimeOut:
-		return XSTR (ConnectionTimeOut);
-	case kResultConnectionRefused:
-		return XSTR (ConnectionRefused);
-	case kResultOutOfMemory:
-		return XSTR (OutOfMemory);
+	case kResultNetworkUnreachable :
+		result = XSTR (NetworkUnreachable); return true;
+	case kResultAddressInUse :
+		result = XSTR (AddressInUse); return true;
+	case kResultConnectionReset :
+		result = XSTR (ConnectionReset); return true;
+	case kResultConnectionAborted :
+		result = XSTR (ConnectionAborted); return true;
+	case kResultConnectionTimeOut :
+		result = XSTR (ConnectionTimeOut); return true;
+	case kResultConnectionRefused :
+		result = XSTR (ConnectionRefused); return true;
+	case kResultOutOfMemory :
+		result = XSTR (OutOfMemory); return true;
 	}
-	return String ().appendFormat (XSTR (SockedError), nativeError);
+	return false;
 }

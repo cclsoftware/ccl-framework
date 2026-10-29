@@ -34,7 +34,7 @@ class JniString
 {
 public:
 	JniString (JNIEnv* jni, CStringPtr text);
-	JniString (JNIEnv* jni, const uchar* text, int length);
+	JniString (JNIEnv* jni, UStringPtr text, int length);
 	~JniString ();
 
 	jstring getString () const { return string; }
@@ -100,7 +100,7 @@ inline JniString::JniString (JNIEnv* jni, CStringPtr text)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-inline JniString::JniString (JNIEnv* jni, const uchar* text, int length)
+inline JniString::JniString (JNIEnv* jni, UStringPtr text, int length)
 : jni (jni),
   string (jni->NewString (text, length))
 {

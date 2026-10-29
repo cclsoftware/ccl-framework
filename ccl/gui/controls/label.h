@@ -65,7 +65,6 @@ public:
 	void onVisualStyleChanged () override;
 	void onColorSchemeChanged (const ColorSchemeEvent& event) override;
 	void draw (const UpdateRgn& updateRgn) override;
-	void CCL_API notify (ISubject* subject, MessageRef msg) override;
 	AccessibilityProvider* getAccessibilityProvider () override;
 	const IVisualStyle& CCL_API getVisualStyle () const override;
 

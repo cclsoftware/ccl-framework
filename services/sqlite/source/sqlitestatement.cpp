@@ -59,7 +59,7 @@ SQLiteStatement::SQLiteStatement (SQLiteConnection& connection, StringRef sqlStr
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-SQLiteStatement::SQLiteStatement (SQLiteConnection& connection, const char* sqlStringUTF8)
+SQLiteStatement::SQLiteStatement (SQLiteConnection& connection, CStringPtr sqlStringUTF8)
 : statement (nullptr),
   wasExecuted (false)
 {
@@ -128,7 +128,7 @@ void SQLiteStatement::checkReset ()
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void CCL_API SQLiteStatement::bindVariable (int index, CCL::VariantRef value)
+void CCL_API SQLiteStatement::bindVariable (int index, VariantRef value)
 {
 	checkReset ();
 
@@ -185,7 +185,7 @@ void CCL_API SQLiteStatement::bindVariable (int index, StringRef value)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void CCL_API SQLiteStatement::bindVariable (int index, const char* value)
+void CCL_API SQLiteStatement::bindVariable (int index, CStringPtr value)
 {
 	checkReset ();
 	sqlite3_bind_text (statement, index + 1, value, -1, SQLITE_TRANSIENT);
@@ -306,14 +306,14 @@ int CCL_API SQLiteStatement::countColumns ()
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-const char* CCL_API SQLiteStatement::getColumnName (int index)
+CStringPtr CCL_API SQLiteStatement::getColumnName (int index)
 {
 	return sqlite3_column_name (statement, index);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-int CCL_API SQLiteStatement::getColumnIndex (const char* columnName)
+int CCL_API SQLiteStatement::getColumnIndex (CStringPtr columnName)
 {
 	int numColumns = sqlite3_column_count (statement);
 	for(int i = 0; i < numColumns; i++)
@@ -353,7 +353,7 @@ tbool CCL_API SQLiteStatement::getValue (int column, Variant& value)
 			return true;
 		case SQLITE_TEXT:
 		{
-			String str ((const uchar*)sqlite3_column_text16(statement, column));
+			String str ((UStringPtr)sqlite3_column_text16(statement, column));
 			LOG_ERROR
 			value = str;
 			value.share ();
@@ -394,15 +394,15 @@ double CCL_API SQLiteStatement::getFloatValue (int column)
 
 void CCL_API SQLiteStatement::getStringValue (int column, String& string)
 {
-	string = (const uchar*)sqlite3_column_text16 (statement, column);
+	string = (UStringPtr)sqlite3_column_text16 (statement, column);
 	LOG_ERROR
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-const char* CCL_API SQLiteStatement::getStringValue (int column)
+CStringPtr CCL_API SQLiteStatement::getStringValue (int column)
 {
-	const char* string = (const char*)sqlite3_column_text (statement, column);
+	CStringPtr string = (CStringPtr)sqlite3_column_text (statement, column);
 	LOG_ERROR
 	return string;
 }

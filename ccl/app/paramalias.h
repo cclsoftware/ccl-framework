@@ -54,6 +54,7 @@ public:
 	// IParameter (specific to alias)
 	StringID CCL_API getName () const override;
 	void CCL_API setName (StringID name) override;
+	void CCL_API setTitle (StringRef title) override;
 	void CCL_API connect (IParamObserver* controller, int tag) override;
 	int CCL_API getTag () const override;
 	IUnknown* CCL_API getController () const override;
@@ -62,6 +63,7 @@ public:
 	IParameter* CCL_API getOriginal () override;
 	IUnknown* CCL_API createIdentity () override;
 	int CCL_API getType () const override;
+	tbool CCL_API getTitle (String& title, int flags = 0) const override;
 	tbool CCL_API isEnabled () const override;
 	void CCL_API enable (tbool state) override;
 	tbool CCL_API getState (int mask) const override;
@@ -97,6 +99,7 @@ public:
 	void CCL_API getString (String& string, VariantRef value) const override;
 	void CCL_API toString (String& string) const override;
 	void CCL_API fromString (StringRef string, tbool update = false) override;
+	void CCL_API toAccessibleString (String& string) const override;
 
 	// Object
 	void CCL_API notify (ISubject* subject, MessageRef msg) override;
@@ -109,6 +112,7 @@ protected:
 	int tag;
 	int flags;
 	MutableCString name;
+	String title;
 	IParameter* param;
 	ISubject* paramSubject;
 	SharedPtr<IFormatter> ownFormatter;

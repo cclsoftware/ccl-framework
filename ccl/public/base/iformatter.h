@@ -40,6 +40,14 @@ CCL::tbool CCL_API scanString (CCL::Variant& value, CCL::StringRef string) const
 DEFINE_FORMATTER_METHODS \
 CCL::CStringPtr CCL_API getFactoryName () const override { return factoryName ? factoryName : NameString; }
 
+#define DEFINE_ACCESSIBLE_FORMATTER_METHOD \
+CCL::tbool CCL_API printAccessibleString (CCL::String& string, CCL::VariantRef value) const override \
+{ string = printAccessible (value); return string.isEmpty () == false; }
+
+#define DEFINE_ACCESSIBLE_FORMATTER_METHODS(ParentClass) \
+DEFINE_ACCESSIBLE_FORMATTER_METHOD \
+CLASS_INTERFACE (CCL::IAccessibleFormatter, ParentClass)
+
 #define DECLARE_FORMATTER_FACTORY(ClassName) \
 typedef CCL::TFormatterFactory<ClassName> Factory; \
 static Factory __factory;
@@ -98,6 +106,21 @@ interface IFormatterRange: IUnknown
 };
 
 DEFINE_IID (IFormatterRange, 0xb273e100, 0xd284, 0x4e07, 0x8d, 0xc7, 0x57, 0x47, 0xbd, 0x46, 0x4d, 0x1a)
+
+//************************************************************************************************
+// IAccessibleFormatter
+/** Optional formatter interface providing a text for screen readers.
+	\ingroup gui_param */
+//************************************************************************************************
+
+interface IAccessibleFormatter: IUnknown
+{
+	virtual tbool CCL_API printAccessibleString (String& string, VariantRef value) const = 0;
+
+	DECLARE_IID (IAccessibleFormatter)
+};
+
+DEFINE_IID (IAccessibleFormatter, 0xa5d766b0, 0x89a2, 0x4295, 0x89, 0x10, 0x4b, 0x90, 0xec, 0x47, 0x19, 0xc6)
 
 //************************************************************************************************
 // Formatter

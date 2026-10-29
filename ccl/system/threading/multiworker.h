@@ -62,13 +62,13 @@ protected:
 	WorkgroupID workgroup;
 
 	int done;
-	CCL::Threading::AtomicInt cycleEnd;
-	CCL::Threading::AtomicInt working;
-	CCL::Threading::AtomicInt finished;
-	CCL::Threading::IAtomicStack* workList;
-	CCL::Threading::IAtomicStack* availableSlaves;
+	Threading::AtomicInt cycleEnd;
+	Threading::AtomicInt working;
+	Threading::AtomicInt finished;
+	Threading::IAtomicStack* workList;
+	Threading::IAtomicStack* availableSlaves;
 
-	CCL::Vector<MultiWorkerSlave*> slaves;	
+	Vector<MultiWorkerSlave*> slaves;	
 	
 	void doWork (bool master);
 	void slaveAvailable (MultiWorkerSlave* slave);

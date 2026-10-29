@@ -146,7 +146,7 @@ tresult CCL_API SkinParser::startElement (StringRef name, const IStringDictionar
 	if(firstTag)
 	{
 		firstTag = false;
-		bool isSkin = asciiName.compare (TAG_SKIN, MetaElement::kTagsCaseSensitive) == Text::kEqual;
+		bool isSkin = asciiName.compare (TAG_SKIN, SkinElementLibrary::kTagsCaseSensitive) == Text::kEqual;
 
 		if(isSkin) // set root attributes
 			model->setAttributes (SkinXmlAttributes (attributes));
@@ -154,7 +154,7 @@ tresult CCL_API SkinParser::startElement (StringRef name, const IStringDictionar
 		return isSkin ? kResultOk : kResultFalse;
 	}
 
-	Element* e = MetaElement::createElement (asciiName);
+	Element* e = getTypeLibrary ().createElement (asciiName);
 	if(e == nullptr) // unknown xml tag
 	{
 		e = NEW Element;
@@ -195,7 +195,7 @@ tresult CCL_API SkinParser::endElement (StringRef name)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-tresult CCL_API SkinParser::characterData (const uchar* data, int length, tbool isCDATA)
+tresult CCL_API SkinParser::characterData (UStringPtr data, int length, tbool isCDATA)
 {
 	if(skipping)
 		return kResultOk;

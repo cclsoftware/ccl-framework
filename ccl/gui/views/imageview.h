@@ -24,6 +24,8 @@
 #include "ccl/public/gui/idatatarget.h"
 #include "ccl/public/gui/framework/iusercontrol.h" // IBackgroundView
 #include "ccl/gui/theme/visualstyleclass.h"
+#include "ccl/gui/theme/legacystyleids.h"
+#include "ccl/gui/theme/renderatom.h"
 
 namespace CCL {
 
@@ -35,7 +37,8 @@ interface IImageProvider;
 //************************************************************************************************
 
 class ImageView: public View,
-				 public IBackgroundView
+				 public IBackgroundView,
+				 public IRenderAtomClient
 {
 public:
 	DECLARE_CLASS (ImageView, View)
@@ -61,6 +64,10 @@ public:
 	tbool CCL_API canDrawControlBackground () const override;
 	void CCL_API drawControlBackground (IGraphics& graphics, RectRef r, PointRef offset) override;
 
+	// IRenderAtomClient
+	using View::invalidate;
+	void invalidate (const RenderAtom& atom) override;
+
 	// View
 	IGraphicsLayer* CCL_API getParentLayer (Point& offset) const override;
 	void attached (View* parent) override;
@@ -75,30 +82,30 @@ public:
 	LayerHint CCL_API getLayerHint () const override;
 	ITouchHandler* createTouchHandler (const TouchEvent& event) override;
 	void onVisualStyleChanged () override;
-	void onColorSchemeChanged (const CCL::ColorSchemeEvent& event) override;
+	void onColorSchemeChanged (const ColorSchemeEvent& event) override;
 
 	PROPERTY_FLAG (privateFlags, kHasBackgroundFromVisualStyle, hasBackgroundFromVisualStyle)
 
-	CLASS_INTERFACE (IBackgroundView, View)
+	CLASS_INTERFACE2 (IBackgroundView, IRenderAtomClient, View)
 
 protected:
 	SharedPtr<IImage> background;
+	RenderAtom backgroundAtom;
 	AutoPtr<IGraphicsLayer> backgroundLayer;
+	StyleConditionContext conditionContext;
 	IParameter* selectParam;
 	IImageProvider* imageProvider;
-	Color imageContrastTransparentColor;
-	Color imageContrastBrightColor;
-	Color imageContextColor;
-	Color imageColor;
-	Color imageColorOn;
-	Color alphaBlendColor;
-	float brightColorThreshold;
 	int frame;
 	int border;
-	float imageFillSize;
-	bool useModifiedImage;
-	bool drawAsTemplate;
 	bool initialized;
+
+	#if LEGACY_STYLES_SUPPORTED
+	Color imageColor;	///< "imagecolor" / "imagecolor.on" - colorizes the image, it never fills the view
+	Color contextColor;
+	bool useModifiedImage;
+	bool modifiedImageAllowed;
+	bool growImageAllowed;
+	#endif
 
 	class InsertDataDragHandler;
 	class SelectMouseHandler;
@@ -115,16 +122,25 @@ protected:
 		kHasBackgroundFromVisualStyle = 1<<(kLastPrivateFlag + 1)
 	};
 
+	bool isSelected () const;
+
 	void initialize ();
+	void updateAtomStyle ();
 	void determineFrameIndex ();
-	bool hasModifyBackgroundColor (Color& contextColor) const;
+
+	Color getImageColor ();
+	Brush getFillBrush () const;
+
+	#if LEGACY_STYLES_SUPPORTED
+	void applyLegacyVisualStyle ();
+	#endif
 
 	// IObject
 	tbool CCL_API getProperty (Variant& var, MemberID propertyId) const override;
 	tbool CCL_API setProperty (MemberID propertyId, const Variant& var) override;
 };
 
-DECLARE_VISUALSTYLE_CLASS (ImageView)
+DECLARE_TYPELIB_ENTRY (ImageView)
 
 } // namespace CCL
 

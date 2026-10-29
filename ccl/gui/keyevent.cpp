@@ -28,7 +28,7 @@ namespace CCL {
 // Key Names (parsed by String Extractor)
 //************************************************************************************************
 
-static const char* keyNames[VKey::kNumVirtualKeys] =
+static CStringPtr keyNames[VKey::kNumVirtualKeys] =
 {
 	#define _K(s) s
 
@@ -155,9 +155,9 @@ int VKey::toSystemKey (VirtualKey key)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-const char* VKey::getKeyName (VirtualKey key)
+CStringPtr VKey::getKeyName (VirtualKey key)
 {
-	#if CCL_PLATFORM_WINDOWS || CCL_PLATFORM_LINUX || CCL_PLATFORM_ANDROID
+	#if CCL_PLATFORM_WINDOWS || CCL_PLATFORM_LINUX || CCL_PLATFORM_ANDROID || CCL_PLATFORM_WASM
 	if(key == kCommand)
 		return "Ctrl";
 	if(key == kOption)
@@ -168,7 +168,7 @@ const char* VKey::getKeyName (VirtualKey key)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-VirtualKey VKey::getKeyByName (const char* name)
+VirtualKey VKey::getKeyByName (CStringPtr name)
 {
 	for(int i = 0; i < kNumVirtualKeys; i++)
 		if(CString (keyNames[i]) == name)

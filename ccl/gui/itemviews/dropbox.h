@@ -133,7 +133,7 @@ protected:
 	mutable int lastColumnCount;
 };
 
-DECLARE_VISUALSTYLE_CLASS (DropBoxStyle)
+DECLARE_TYPELIB_ENTRY (DropBoxStyle)
 	
 } // namespace CCL
 

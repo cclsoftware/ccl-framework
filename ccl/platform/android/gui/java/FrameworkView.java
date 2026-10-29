@@ -21,6 +21,7 @@ package dev.ccl.cclgui;
 import android.os.*;
 import android.view.*;
 import android.view.accessibility.*;
+import android.view.inputmethod.*;
 import android.graphics.*;
 import android.app.Activity;
 import android.content.Context;
@@ -121,6 +122,8 @@ public class FrameworkView extends ViewGroup
 
 	private final Point screenPos = new Point ();
 	private PointF mousePos = new PointF ();
+
+	private InputMethod activeInputMethod;
 
 	private final AccessibilityManager accessibilityManager;
 	private FrameworkAccessibilityNodeProvider accessibilityNodeProvider;
@@ -606,6 +609,20 @@ public class FrameworkView extends ViewGroup
 		event.setSource (FrameworkView.this, virtualViewId);
 
 		requestSendAccessibilityEvent (FrameworkView.this, event);
+	}
+
+	public void setActiveInputMethod (InputMethod inputMethod)
+	{
+		activeInputMethod = inputMethod;
+	}
+
+	@Override
+	public InputConnection onCreateInputConnection (EditorInfo outAttrs)
+	{
+		if(activeInputMethod == null)
+			return super.onCreateInputConnection (outAttrs);
+
+		return activeInputMethod.onCreateInputConnection (outAttrs);
 	}
 
     public native long constructNative (FrameworkGraphics graphics);

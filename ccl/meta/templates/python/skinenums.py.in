@@ -1,0 +1,16 @@
+{% include cclfileheader.in %}
+
+{% for enum in enums %}
+# ##############################################################################################
+# {{ enum.name }}
+# ##############################################################################################
+
+{% for enumerator in enum.enumerators %}
+{% if enumerator.brief %}
+{{ enum.name | identifier | upper }}_{{ enumerator.name | identifier | upper }} = {{ enumerator.name | escapestring }}  # {{ enumerator.brief }}
+{% else %}
+{{ enum.name | identifier | upper }}_{{ enumerator.name | identifier | upper }} = {{ enumerator.name | escapestring }}
+{% endif %}
+{% endfor %}
+
+{% endfor %}

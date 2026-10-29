@@ -109,12 +109,14 @@ void SceneResource3D::addSceneNodesRecursive (ContainerNode3D& parentNode, const
 // Model3DElement
 //************************************************************************************************
 
-DEFINE_SKIN_ELEMENT (Model3DElement, ResourceObjectElement, TAG_MODEL3D, DOC_GROUP_3D, 0)
+DEFINE_CLASS_HIDDEN (Model3DElement, ResourceObjectElement)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (Model3DElement, ResourceObjectElement, TAG_MODEL3D, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (Model3DElement, DOC_GROUP_3D)
 
-BEGIN_SKIN_ELEMENT_ATTRIBUTES (Model3DElement)
-	ADD_SKIN_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_RESOURCES)
-	ADD_SKIN_CHILDGROUP_ATTRIBUTE (SCHEMA_GROUP_MODEL3DCHILDREN)
-END_SKIN_ELEMENT_ATTRIBUTES (Model3DElement)
+BEGIN_TYPELIB_ATTRIBUTES (Model3DElement)
+	ADD_TYPELIB_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_RESOURCES)
+	ADD_TYPELIB_CHILDGROUP_ATTRIBUTE (SCHEMA_GROUP_MODEL3DCHILDREN)
+END_TYPELIB_ATTRIBUTES (Model3DElement)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -158,15 +160,18 @@ END_STYLEDEF
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-BEGIN_SKIN_ELEMENT_WITH_MEMBERS (Material3DElement, Element, TAG_MATERIAL3D, DOC_GROUP_3D, 0)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_DEPTHBIAS, TYPE_FLOAT) ///< depth bias
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_LIGHTMASK, TYPE_ENUM)	///< light mask
-END_SKIN_ELEMENT_WITH_MEMBERS (Material3DElement)
-DEFINE_SKIN_ENUMERATION (TAG_MATERIAL3D, ATTR_LIGHTMASK, Material3DElement::lightMaskFlags)
+DEFINE_CLASS_HIDDEN (Material3DElement, Element)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (Material3DElement, Element, TAG_MATERIAL3D, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (Material3DElement, DOC_GROUP_3D)
+BEGIN_TYPELIB_MEMBERS (Material3DElement)
+	ADD_TYPELIB_MEMBER (ATTR_DEPTHBIAS, TypeNames::kFloat) ///< depth bias
+	ADD_TYPELIB_MEMBER (ATTR_LIGHTMASK, TypeNames::kEnum) ///< light mask
+END_TYPELIB_MEMBERS (Material3DElement)
+DEFINE_TYPELIB_ENUMERATION (TAG_MATERIAL3D, ATTR_LIGHTMASK, Material3DElement::lightMaskFlags, SKIN_TYPELIB)
 
-BEGIN_SKIN_ELEMENT_ATTRIBUTES (Material3DElement)
-	ADD_SKIN_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_MODEL3DCHILDREN)
-END_SKIN_ELEMENT_ATTRIBUTES (Material3DElement)
+BEGIN_TYPELIB_ATTRIBUTES (Material3DElement)
+	ADD_TYPELIB_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_MODEL3DCHILDREN)
+END_TYPELIB_ATTRIBUTES (Material3DElement)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -211,10 +216,13 @@ void Material3DElement::applyMaterialAttributes (Material3D* material) const
 // SolidColorMaterial3DElement
 //************************************************************************************************
 
-BEGIN_SKIN_ELEMENT_WITH_MEMBERS (SolidColorMaterial3DElement, Material3DElement, TAG_SOLIDCOLORMATERIAL3D, DOC_GROUP_3D, 0)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_COLOR, TYPE_COLOR) ///< material color
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_SHININESS, TYPE_FLOAT) ///< material shininess
-END_SKIN_ELEMENT_WITH_MEMBERS (SolidColorMaterial3DElement)
+DEFINE_CLASS_HIDDEN (SolidColorMaterial3DElement, Material3DElement)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (SolidColorMaterial3DElement, Material3DElement, TAG_SOLIDCOLORMATERIAL3D, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (SolidColorMaterial3DElement, DOC_GROUP_3D)
+BEGIN_TYPELIB_MEMBERS (SolidColorMaterial3DElement)
+	ADD_TYPELIB_MEMBER_COLOR (ATTR_COLOR) ///< material color
+	ADD_TYPELIB_MEMBER (ATTR_SHININESS, TypeNames::kFloat) ///< material shininess
+END_TYPELIB_MEMBERS (SolidColorMaterial3DElement)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -273,9 +281,12 @@ void SolidColorMaterial3DElement::applyMaterialAttributes (Material3D* material)
 // TextureMaterial3DElement
 //************************************************************************************************
 
-BEGIN_SKIN_ELEMENT_WITH_MEMBERS (TextureMaterial3DElement, Material3DElement, TAG_TEXTUREMATERIAL3D, DOC_GROUP_3D, 0)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_OPACITY, TYPE_FLOAT) ///< texture opacity
-END_SKIN_ELEMENT_WITH_MEMBERS (TextureMaterial3DElement)
+DEFINE_CLASS_HIDDEN (TextureMaterial3DElement, Material3DElement)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (TextureMaterial3DElement, Material3DElement, TAG_TEXTUREMATERIAL3D, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (TextureMaterial3DElement, DOC_GROUP_3D)
+BEGIN_TYPELIB_MEMBERS (TextureMaterial3DElement)
+	ADD_TYPELIB_MEMBER (ATTR_OPACITY, TypeNames::kFloat) ///< texture opacity
+END_TYPELIB_MEMBERS (TextureMaterial3DElement)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -340,7 +351,7 @@ void TextureMaterial3DElement::applyMaterialAttributes (Material3D* material) co
 						bitmap = NEW Bitmap (image->getWidth (), image->getHeight (), Bitmap::kRGBAlpha, scaleFactor);
 						
 						BitmapGraphicsDevice device (bitmap);
-						ImageMode mode (ImageMode::kInterpolationHighQuality);
+						ImageMode mode (kImageInterpolationHighQuality);
 						device.drawImage (image, Point (), &mode);
 					}
 				
@@ -369,14 +380,17 @@ BEGIN_STYLEDEF (TextureMaterial3DTextureElement::textureOptions)
 	{"immutable", kTextureImmutable},
 END_STYLEDEF
 
-BEGIN_SKIN_ELEMENT_WITH_MEMBERS (TextureMaterial3DTextureElement, Element, TAG_TEXTUREMATERIAL3D_TEXTURE, DOC_GROUP_3D, 0)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_OPTIONS, TYPE_ENUM) ///< texture options
-END_SKIN_ELEMENT_WITH_MEMBERS (TextureMaterial3DTextureElement)
-DEFINE_SKIN_ENUMERATION (TAG_TEXTUREMATERIAL3D_TEXTURE, ATTR_OPTIONS, TextureMaterial3DTextureElement::textureOptions)
+DEFINE_CLASS_HIDDEN (TextureMaterial3DTextureElement, Element)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (TextureMaterial3DTextureElement, Element, TAG_TEXTUREMATERIAL3D_TEXTURE, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (TextureMaterial3DTextureElement, DOC_GROUP_3D)
+BEGIN_TYPELIB_MEMBERS (TextureMaterial3DTextureElement)
+	ADD_TYPELIB_MEMBER (ATTR_OPTIONS, TypeNames::kEnum) ///< texture options
+END_TYPELIB_MEMBERS (TextureMaterial3DTextureElement)
+DEFINE_TYPELIB_ENUMERATION (TAG_TEXTUREMATERIAL3D_TEXTURE, ATTR_OPTIONS, TextureMaterial3DTextureElement::textureOptions, SKIN_TYPELIB)
 
-BEGIN_SKIN_ELEMENT_ATTRIBUTES (TextureMaterial3DTextureElement)
-	ADD_SKIN_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_TEXTUREMATERIAL3DCHILDREN)
-END_SKIN_ELEMENT_ATTRIBUTES (TextureMaterial3DTextureElement)
+BEGIN_TYPELIB_ATTRIBUTES (TextureMaterial3DTextureElement)
+	ADD_TYPELIB_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_TEXTUREMATERIAL3DCHILDREN)
+END_TYPELIB_ATTRIBUTES (TextureMaterial3DTextureElement)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -406,12 +420,14 @@ bool TextureMaterial3DTextureElement::getAttributes (SkinAttributes& a) const
 // Scene3DElement
 //************************************************************************************************
 
-DEFINE_SKIN_ELEMENT (Scene3DElement, ResourceObjectElement, TAG_SCENE3D, DOC_GROUP_3D, 0)
+DEFINE_CLASS_HIDDEN (Scene3DElement, ResourceObjectElement)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (Scene3DElement, ResourceObjectElement, TAG_SCENE3D, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (Scene3DElement, DOC_GROUP_3D)
 
-BEGIN_SKIN_ELEMENT_ATTRIBUTES (Scene3DElement)
-	ADD_SKIN_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_RESOURCES)
-	ADD_SKIN_CHILDGROUP_ATTRIBUTE (SCHEMA_GROUP_SCENE3DCHILDREN)
-END_SKIN_ELEMENT_ATTRIBUTES (Scene3DElement)
+BEGIN_TYPELIB_ATTRIBUTES (Scene3DElement)
+	ADD_TYPELIB_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_RESOURCES)
+	ADD_TYPELIB_CHILDGROUP_ATTRIBUTE (SCHEMA_GROUP_SCENE3DCHILDREN)
+END_TYPELIB_ATTRIBUTES (Scene3DElement)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -429,17 +445,21 @@ BEGIN_STYLEDEF (SceneNode3DElement::nodeOptions)
 	{"hittesting", kHitTestingEnabled},
 END_STYLEDEF
 
-BEGIN_SKIN_ELEMENT_ABSTRACT_WITH_MEMBERS (SceneNode3DElement, Element, TAG_SCENENODE3D, DOC_GROUP_3D, 0)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_POSITION, TYPE_POINT3D) ///< 3D position (x, y, z)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_ORIENTATION, TYPE_POINT3D) ///< 3D orientation (yaw, pitch, roll in radians)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_SCALE, TYPE_POINT3D) ///< 3D scale (x, y, z)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_OPTIONS, TYPE_ENUM) ///< node options
-END_SKIN_ELEMENT_WITH_MEMBERS (SceneNode3DElement)
-DEFINE_SKIN_ENUMERATION (TAG_SCENENODE3D, ATTR_OPTIONS, SceneNode3DElement::nodeOptions)
+DEFINE_CLASS_ABSTRACT_HIDDEN (SceneNode3DElement, Element)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (SceneNode3DElement, Element, TAG_SCENENODE3D, SKIN_TYPELIB)
+DEFINE_TYPELIB_ABSTRACT (SceneNode3DElement)
+DEFINE_TYPELIB_DOCGROUP (SceneNode3DElement, DOC_GROUP_3D)
+BEGIN_TYPELIB_MEMBERS (SceneNode3DElement)
+	ADD_TYPELIB_MEMBER (ATTR_POSITION, TypeNames::kPoint3D) ///< 3D position (x, y, z)
+	ADD_TYPELIB_MEMBER (ATTR_ORIENTATION, TypeNames::kPoint3D) ///< 3D orientation (yaw, pitch, roll in radians)
+	ADD_TYPELIB_MEMBER (ATTR_SCALE, TypeNames::kPoint3D) ///< 3D scale (x, y, z)
+	ADD_TYPELIB_MEMBER (ATTR_OPTIONS, TypeNames::kEnum) ///< node options
+END_TYPELIB_MEMBERS (SceneNode3DElement)
+DEFINE_TYPELIB_ENUMERATION (TAG_SCENENODE3D, ATTR_OPTIONS, SceneNode3DElement::nodeOptions, SKIN_TYPELIB)
 
-BEGIN_SKIN_ELEMENT_ATTRIBUTES (SceneNode3DElement)
-	ADD_SKIN_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_SCENE3DCHILDREN)
-END_SKIN_ELEMENT_ATTRIBUTES (SceneNode3DElement)
+BEGIN_TYPELIB_ATTRIBUTES (SceneNode3DElement)
+	ADD_TYPELIB_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_SCENE3DCHILDREN)
+END_TYPELIB_ATTRIBUTES (SceneNode3DElement)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -507,11 +527,14 @@ void SceneNode3DElement::applyNodeAttributes (SceneNode3D* node) const
 // Camera3DElement
 //************************************************************************************************
 
-BEGIN_SKIN_ELEMENT_WITH_MEMBERS (Camera3DElement, SceneNode3DElement, TAG_CAMERA3D, DOC_GROUP_3D, 0)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_LOOKAT_POSITION, TYPE_POINT3D) ///< camera 'look at' position (3D)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_LOOKAT_UPVECTOR, TYPE_POINT3D) ///< camera 'look at' up vector (3D)	
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_FIELDOFVIEW_ANGLE, TYPE_FLOAT) ///< camera field of view angle in degrees
-END_SKIN_ELEMENT_WITH_MEMBERS (Camera3DElement)
+DEFINE_CLASS_HIDDEN (Camera3DElement, SceneNode3DElement)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (Camera3DElement, SceneNode3DElement, TAG_CAMERA3D, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (Camera3DElement, DOC_GROUP_3D)
+BEGIN_TYPELIB_MEMBERS (Camera3DElement)
+	ADD_TYPELIB_MEMBER (ATTR_LOOKAT_POSITION, TypeNames::kPoint3D) ///< camera 'look at' position (3D)
+	ADD_TYPELIB_MEMBER (ATTR_LOOKAT_UPVECTOR, TypeNames::kPoint3D) ///< camera 'look at' up vector (3D)	
+	ADD_TYPELIB_MEMBER (ATTR_FIELDOFVIEW_ANGLE, TypeNames::kFloat) ///< camera field of view angle in degrees
+END_TYPELIB_MEMBERS (Camera3DElement)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -566,9 +589,13 @@ void Camera3DElement::applyNodeAttributes (SceneNode3D* node) const
 // LightSource3DElement
 //************************************************************************************************
 
-BEGIN_SKIN_ELEMENT_ABSTRACT_WITH_MEMBERS (LightSource3DElement, SceneNode3DElement, TAG_LIGHTSOURCE3D, DOC_GROUP_3D, 0)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_COLOR, TYPE_COLOR) ///< light color
-END_SKIN_ELEMENT_WITH_MEMBERS (LightSource3DElement)
+DEFINE_CLASS_ABSTRACT_HIDDEN (LightSource3DElement, SceneNode3DElement)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (LightSource3DElement, SceneNode3DElement, TAG_LIGHTSOURCE3D, SKIN_TYPELIB)
+DEFINE_TYPELIB_ABSTRACT (LightSource3DElement)
+DEFINE_TYPELIB_DOCGROUP (LightSource3DElement, DOC_GROUP_3D)
+BEGIN_TYPELIB_MEMBERS (LightSource3DElement)
+	ADD_TYPELIB_MEMBER_COLOR (ATTR_COLOR) ///< light color
+END_TYPELIB_MEMBERS (LightSource3DElement)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -618,7 +645,9 @@ void LightSource3DElement::applyNodeAttributes (SceneNode3D* node) const
 // AmbientLight3DElement
 //************************************************************************************************
 
-DEFINE_SKIN_ELEMENT (AmbientLight3DElement, LightSource3DElement, TAG_AMBIENTLIGHT3D, DOC_GROUP_3D, 0)
+DEFINE_CLASS_HIDDEN (AmbientLight3DElement, LightSource3DElement)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (AmbientLight3DElement, LightSource3DElement, TAG_AMBIENTLIGHT3D, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (AmbientLight3DElement, DOC_GROUP_3D)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -631,7 +660,9 @@ SceneNode3D* AmbientLight3DElement::createSceneNode () const
 // DirectionalLight3DElement
 //************************************************************************************************
 
-DEFINE_SKIN_ELEMENT (DirectionalLight3DElement, LightSource3DElement, TAG_DIRECTIONALIGHT3D, DOC_GROUP_3D, 0)
+DEFINE_CLASS_HIDDEN (DirectionalLight3DElement, LightSource3DElement)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (DirectionalLight3DElement, LightSource3DElement, TAG_DIRECTIONALIGHT3D, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (DirectionalLight3DElement, DOC_GROUP_3D)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -644,12 +675,15 @@ SceneNode3D* DirectionalLight3DElement::createSceneNode () const
 // PointLight3DElement
 //************************************************************************************************
 
-BEGIN_SKIN_ELEMENT_WITH_MEMBERS (PointLight3DElement, LightSource3DElement, TAG_POINTLIGHT3D, DOC_GROUP_3D, 0)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_ATTENUATIONRADIUS, TYPE_FLOAT) ///< attenuation radius
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_ATTENUATIONMINIMUM, TYPE_FLOAT) ///< attenuation minimum
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_ATTENUATIONFACTOR, TYPE_FLOAT) ///< attenuation linear factor
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_ATTENUATIONCONSTANT, TYPE_FLOAT) ///< attenuation constant term
-END_SKIN_ELEMENT_WITH_MEMBERS (PointLight3DElement)
+DEFINE_CLASS_HIDDEN (PointLight3DElement, LightSource3DElement)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (PointLight3DElement, LightSource3DElement, TAG_POINTLIGHT3D, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (PointLight3DElement, DOC_GROUP_3D)
+BEGIN_TYPELIB_MEMBERS (PointLight3DElement)
+	ADD_TYPELIB_MEMBER (ATTR_ATTENUATIONRADIUS, TypeNames::kFloat) ///< attenuation radius
+	ADD_TYPELIB_MEMBER (ATTR_ATTENUATIONMINIMUM, TypeNames::kFloat) ///< attenuation minimum
+	ADD_TYPELIB_MEMBER (ATTR_ATTENUATIONFACTOR, TypeNames::kFloat) ///< attenuation linear factor
+	ADD_TYPELIB_MEMBER (ATTR_ATTENUATIONCONSTANT, TypeNames::kFloat) ///< attenuation constant term
+END_TYPELIB_MEMBERS (PointLight3DElement)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -710,9 +744,12 @@ void PointLight3DElement::applyNodeAttributes (SceneNode3D* node) const
 // ModelNode3DElement
 //************************************************************************************************
 
-BEGIN_SKIN_ELEMENT_WITH_MEMBERS (ModelNode3DElement, SceneNode3DElement, TAG_MODELNODE3D, DOC_GROUP_3D, 0)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_MODEL, TYPE_STRING) ///< model name
-END_SKIN_ELEMENT_WITH_MEMBERS (ModelNode3DElement)
+DEFINE_CLASS_HIDDEN (ModelNode3DElement, SceneNode3DElement)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (ModelNode3DElement, SceneNode3DElement, TAG_MODELNODE3D, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (ModelNode3DElement, DOC_GROUP_3D)
+BEGIN_TYPELIB_MEMBERS (ModelNode3DElement)
+	ADD_TYPELIB_MEMBER_STRING (ATTR_MODEL) ///< model name
+END_TYPELIB_MEMBERS (ModelNode3DElement)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -761,7 +798,9 @@ void ModelNode3DElement::applyNodeAttributes (SceneNode3D* node) const
 // SceneView3DElement
 //************************************************************************************************
 
-DEFINE_SKIN_ELEMENT (SceneView3DElement, ViewElement, TAG_SCENEVIEW3D, DOC_GROUP_3D, 0)
+DEFINE_CLASS_HIDDEN (SceneView3DElement, ViewElement)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (SceneView3DElement, ViewElement, TAG_SCENEVIEW3D, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (SceneView3DElement, DOC_GROUP_3D)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 

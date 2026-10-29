@@ -279,7 +279,7 @@ void Knob::calcAutoSize (Rect& r)
 ThemeRenderer* Knob::getRenderer ()
 {	
 	if(renderer == nullptr)
-		renderer = getTheme ().createRenderer (ThemePainter::kKnobRenderer, visualStyle);
+		renderer = getTheme ().createRenderer (ThemePainter::kKnobRenderer, visualStyle, this);
 	return renderer;
 }
 

@@ -103,14 +103,15 @@ Url& Development::makeAbsolutePath (Url& url, CStringPtr rootProject, CStringPtr
 		return url;
 	
 	Url rootFolder;
+	String rootProjectPath (rootProject);
+
 	#if CCL_PLATFORM_MAC || CCL_PLATFORM_IOS || CCL_PLATFORM_LINUX
 	url.fromPOSIXPath (relativePath, type);
-	if(rootProject && rootProject[0] == '/')
+	if(UrlUtils::isCanonicalAbsolutePath (rootProjectPath))
 		rootFolder.fromPOSIXPath (rootProject, IUrl::kFolder);
 	#else
 	url.fromNativePath (StringChars (String (relativePath)), type);
-	String rootProjectPath (rootProject);
-	if(rootProjectPath.length () > 1 && rootProjectPath[1] == ':')
+	if(UrlUtils::isCanonicalAbsolutePath (rootProjectPath))
 		rootFolder.fromNativePath (StringChars (rootProjectPath), IUrl::kFolder);
 	#endif
 	

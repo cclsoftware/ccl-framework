@@ -56,4 +56,4 @@ public:
 
 } // namespace CCL
 
-#endif // _ccl_skia_engine_cocoa_h
+#endif // _ccl_skia_engine_linux_h

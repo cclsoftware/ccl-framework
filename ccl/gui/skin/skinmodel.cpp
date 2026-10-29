@@ -49,6 +49,7 @@
 #include "ccl/gui/system/mousecursor.h"
 #include "ccl/gui/system/fontresource.h"
 #include "ccl/gui/system/accessibility.h"
+#include "ccl/gui/system/animation.h"
 #include "ccl/gui/theme/colorscheme.h"
 #include "ccl/gui/theme/visualstyleselector.h"
 
@@ -220,83 +221,110 @@ DEFINE_CLASS_ABSTRACT_HIDDEN (HelpAnchorView, View)
 // Element classes
 //************************************************************************************************
 
-DEFINE_SKIN_ELEMENT (Resources, Element, TAG_RESOURCES, DOC_GROUP_GENERAL, 0)
-BEGIN_SKIN_ELEMENT_ATTRIBUTES (Resources)
-	ADD_SKIN_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_TOPLEVEL)
-	ADD_SKIN_CHILDGROUP_ATTRIBUTE (SCHEMA_GROUP_RESOURCES)
-END_SKIN_ELEMENT_ATTRIBUTES (Resources)
+DEFINE_CLASS_HIDDEN (Resources, Element)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (Resources, Element, TAG_RESOURCES, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (Resources, DOC_GROUP_GENERAL)
+BEGIN_TYPELIB_ATTRIBUTES (Resources)
+	ADD_TYPELIB_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_TOPLEVEL)
+	ADD_TYPELIB_CHILDGROUP_ATTRIBUTE (SCHEMA_GROUP_RESOURCES)
+END_TYPELIB_ATTRIBUTES (Resources)
 
-DEFINE_SKIN_ELEMENT (Forms, Element, TAG_FORMS, DOC_GROUP_GENERAL, 0)
-BEGIN_SKIN_ELEMENT_ATTRIBUTES (Forms)
-	ADD_SKIN_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_TOPLEVEL)
-	ADD_SKIN_CHILDGROUP_ATTRIBUTE (TAG_FORM)
-END_SKIN_ELEMENT_ATTRIBUTES (Forms)
+DEFINE_CLASS_HIDDEN (Forms, Element)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (Forms, Element, TAG_FORMS, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (Forms, DOC_GROUP_GENERAL)
+BEGIN_TYPELIB_ATTRIBUTES (Forms)
+	ADD_TYPELIB_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_TOPLEVEL)
+	ADD_TYPELIB_CHILDGROUP_ATTRIBUTE (TAG_FORM)
+END_TYPELIB_ATTRIBUTES (Forms)
 
-DEFINE_SKIN_ELEMENT (Includes, Element, TAG_INCLUDES, DOC_GROUP_GENERAL, 0)
-BEGIN_SKIN_ELEMENT_ATTRIBUTES (Includes)
-	ADD_SKIN_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_TOPLEVEL)
-	ADD_SKIN_CHILDGROUP_ATTRIBUTE (TAG_INCLUDE)
-END_SKIN_ELEMENT_ATTRIBUTES (Includes)
+DEFINE_CLASS_HIDDEN (Includes, Element)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (Includes, Element, TAG_INCLUDES, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (Includes, DOC_GROUP_GENERAL)
+BEGIN_TYPELIB_ATTRIBUTES (Includes)
+	ADD_TYPELIB_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_TOPLEVEL)
+	ADD_TYPELIB_CHILDGROUP_ATTRIBUTE (TAG_INCLUDE)
+END_TYPELIB_ATTRIBUTES (Includes)
 
-DEFINE_SKIN_ELEMENT (Imports, Element, TAG_IMPORTS, DOC_GROUP_GENERAL, 0)
-BEGIN_SKIN_ELEMENT_ATTRIBUTES (Imports)
-	ADD_SKIN_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_TOPLEVEL)
-	ADD_SKIN_CHILDGROUP_ATTRIBUTE (TAG_IMPORT)
-END_SKIN_ELEMENT_ATTRIBUTES (Imports)
+DEFINE_CLASS_HIDDEN (Imports, Element)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (Imports, Element, TAG_IMPORTS, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (Imports, DOC_GROUP_GENERAL)
+BEGIN_TYPELIB_ATTRIBUTES (Imports)
+	ADD_TYPELIB_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_TOPLEVEL)
+	ADD_TYPELIB_CHILDGROUP_ATTRIBUTE (TAG_IMPORT)
+END_TYPELIB_ATTRIBUTES (Imports)
 
-DEFINE_SKIN_ELEMENT (Externals, Element, TAG_EXTERNALS, DOC_GROUP_GENERAL, 0)
-BEGIN_SKIN_ELEMENT_ATTRIBUTES (Externals)
-	ADD_SKIN_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_TOPLEVEL)
-	ADD_SKIN_CHILDGROUP_ATTRIBUTE (TAG_EXTERNAL)
-END_SKIN_ELEMENT_ATTRIBUTES (Externals)
+DEFINE_CLASS_HIDDEN (Externals, Element)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (Externals, Element, TAG_EXTERNALS, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (Externals, DOC_GROUP_GENERAL)
+BEGIN_TYPELIB_ATTRIBUTES (Externals)
+	ADD_TYPELIB_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_TOPLEVEL)
+	ADD_TYPELIB_CHILDGROUP_ATTRIBUTE (TAG_EXTERNAL)
+END_TYPELIB_ATTRIBUTES (Externals)
 
-DEFINE_SKIN_ELEMENT (Overlays, Element, TAG_OVERLAYS, DOC_GROUP_GENERAL, 0)
-BEGIN_SKIN_ELEMENT_ATTRIBUTES (Overlays)
-	ADD_SKIN_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_TOPLEVEL)
-	ADD_SKIN_CHILDGROUP_ATTRIBUTE (TAG_OVERLAY)
-END_SKIN_ELEMENT_ATTRIBUTES (Overlays)
+DEFINE_CLASS_HIDDEN (Overlays, Element)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (Overlays, Element, TAG_OVERLAYS, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (Overlays, DOC_GROUP_GENERAL)
+BEGIN_TYPELIB_ATTRIBUTES (Overlays)
+	ADD_TYPELIB_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_TOPLEVEL)
+	ADD_TYPELIB_CHILDGROUP_ATTRIBUTE (TAG_OVERLAY)
+END_TYPELIB_ATTRIBUTES (Overlays)
 
-DEFINE_SKIN_ELEMENT (Shapes, Element, TAG_SHAPES, DOC_GROUP_GENERAL, 0)
-BEGIN_SKIN_ELEMENT_ATTRIBUTES (Shapes)
-	ADD_SKIN_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_TOPLEVEL)
-	ADD_SKIN_CHILDGROUP_ATTRIBUTE (SCHEMA_GROUP_SHAPES)
-END_SKIN_ELEMENT_ATTRIBUTES (Shapes)
+DEFINE_CLASS_HIDDEN (Shapes, Element)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (Shapes, Element, TAG_SHAPES, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (Shapes, DOC_GROUP_GENERAL)
+BEGIN_TYPELIB_ATTRIBUTES (Shapes)
+	ADD_TYPELIB_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_TOPLEVEL)
+	ADD_TYPELIB_CHILDGROUP_ATTRIBUTE (SCHEMA_GROUP_SHAPES)
+END_TYPELIB_ATTRIBUTES (Shapes)
 
-DEFINE_SKIN_ELEMENT (StylesElement, Element, TAG_STYLES, DOC_GROUP_GENERAL, 0)
-BEGIN_SKIN_ELEMENT_ATTRIBUTES (StylesElement)
-	ADD_SKIN_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_TOPLEVEL)
-	ADD_SKIN_CHILDGROUP_ATTRIBUTE (TAG_STYLE)
-END_SKIN_ELEMENT_ATTRIBUTES (StylesElement)
+DEFINE_CLASS_HIDDEN (StylesElement, Element)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (StylesElement, Element, TAG_STYLES, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (StylesElement, DOC_GROUP_GENERAL)
+BEGIN_TYPELIB_ATTRIBUTES (StylesElement)
+	ADD_TYPELIB_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_TOPLEVEL)
+	ADD_TYPELIB_CHILDGROUP_ATTRIBUTE (TAG_STYLE)
+END_TYPELIB_ATTRIBUTES (StylesElement)
 
-DEFINE_SKIN_ELEMENT (IncludeElement, ResourceElement, TAG_INCLUDE, DOC_GROUP_GENERAL, 0)
-BEGIN_SKIN_ELEMENT_ATTRIBUTES (IncludeElement)
-	ADD_SKIN_SCHEMAGROUP_ATTRIBUTE ("") // remove inherited schema groups
-END_SKIN_ELEMENT_ATTRIBUTES (IncludeElement)
+DEFINE_CLASS_HIDDEN (IncludeElement, ResourceElement)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (IncludeElement, ResourceElement, TAG_INCLUDE, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (IncludeElement, DOC_GROUP_GENERAL)
+BEGIN_TYPELIB_ATTRIBUTES (IncludeElement)
+	ADD_TYPELIB_SCHEMAGROUP_ATTRIBUTE ("") // remove inherited schema groups
+END_TYPELIB_ATTRIBUTES (IncludeElement)
 
-DEFINE_SKIN_ELEMENT (ExternalElement, Element, TAG_EXTERNAL, DOC_GROUP_GENERAL, 0)
+DEFINE_CLASS_HIDDEN (ExternalElement, Element)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (ExternalElement, Element, TAG_EXTERNAL, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (ExternalElement, DOC_GROUP_GENERAL)
 
-DEFINE_SKIN_ELEMENT (WindowClassesElement, Element, TAG_WINDOWCLASSES, DOC_GROUP_GENERAL, 0)
-BEGIN_SKIN_ELEMENT_ATTRIBUTES (WindowClassesElement)
-	ADD_SKIN_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_TOPLEVEL)
-	ADD_SKIN_CHILDGROUP_ATTRIBUTE (TAG_WINDOWCLASS)
-END_SKIN_ELEMENT_ATTRIBUTES (WindowClassesElement)
+DEFINE_CLASS_HIDDEN (WindowClassesElement, Element)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (WindowClassesElement, Element, TAG_WINDOWCLASSES, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (WindowClassesElement, DOC_GROUP_GENERAL)
+BEGIN_TYPELIB_ATTRIBUTES (WindowClassesElement)
+	ADD_TYPELIB_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_TOPLEVEL)
+	ADD_TYPELIB_CHILDGROUP_ATTRIBUTE (TAG_WINDOWCLASS)
+END_TYPELIB_ATTRIBUTES (WindowClassesElement)
 
-DEFINE_SKIN_ELEMENT (WorkspacesElement, Element, TAG_WORKSPACES, DOC_GROUP_GENERAL, 0)
-BEGIN_SKIN_ELEMENT_ATTRIBUTES (WorkspacesElement)
-	ADD_SKIN_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_TOPLEVEL)
-	ADD_SKIN_CHILDGROUP_ATTRIBUTE (TAG_WORKSPACE)
-END_SKIN_ELEMENT_ATTRIBUTES (WorkspacesElement)
+DEFINE_CLASS_HIDDEN (WorkspacesElement, Element)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (WorkspacesElement, Element, TAG_WORKSPACES, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (WorkspacesElement, DOC_GROUP_GENERAL)
+BEGIN_TYPELIB_ATTRIBUTES (WorkspacesElement)
+	ADD_TYPELIB_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_TOPLEVEL)
+	ADD_TYPELIB_CHILDGROUP_ATTRIBUTE (TAG_WORKSPACE)
+END_TYPELIB_ATTRIBUTES (WorkspacesElement)
 
 //************************************************************************************************
 // ImportElement
 //************************************************************************************************
 
-BEGIN_SKIN_ELEMENT_WITH_MEMBERS (ImportElement, ResourceElement, TAG_IMPORT, DOC_GROUP_GENERAL, 0)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_DEFINES, TYPE_STRING) ///< optional defines to be evaluated by the package
-END_SKIN_ELEMENT_WITH_MEMBERS (ImportElement)
-BEGIN_SKIN_ELEMENT_ATTRIBUTES (ImportElement)
-	ADD_SKIN_SCHEMAGROUP_ATTRIBUTE ("") // remove inherited schema groups
-END_SKIN_ELEMENT_ATTRIBUTES (ImportElement)
+DEFINE_CLASS_HIDDEN (ImportElement, ResourceElement)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (ImportElement, ResourceElement, TAG_IMPORT, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (ImportElement, DOC_GROUP_GENERAL)
+BEGIN_TYPELIB_MEMBERS (ImportElement)
+	ADD_TYPELIB_MEMBER_STRING (ATTR_DEFINES) ///< optional defines to be evaluated by the package
+END_TYPELIB_MEMBERS (ImportElement)
+BEGIN_TYPELIB_ATTRIBUTES (ImportElement)
+	ADD_TYPELIB_SCHEMAGROUP_ATTRIBUTE ("") // remove inherited schema groups
+END_TYPELIB_ATTRIBUTES (ImportElement)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -329,10 +357,12 @@ SkinModel* SkinModel::getModel (const Element* _e)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-DEFINE_SKIN_ELEMENT (SkinModel, Element, TAG_SKIN, DOC_GROUP_GENERAL, 0)
-BEGIN_SKIN_ELEMENT_ATTRIBUTES (SkinModel)
-	ADD_SKIN_CHILDGROUP_ATTRIBUTE (SCHEMA_GROUP_TOPLEVEL)
-END_SKIN_ELEMENT_ATTRIBUTES (SkinModel)
+DEFINE_CLASS_HIDDEN (SkinModel, Element)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (SkinModel, Element, TAG_SKIN, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (SkinModel, DOC_GROUP_GENERAL)
+BEGIN_TYPELIB_ATTRIBUTES (SkinModel)
+	ADD_TYPELIB_CHILDGROUP_ATTRIBUTE (SCHEMA_GROUP_TOPLEVEL)
+END_TYPELIB_ATTRIBUTES (SkinModel)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -530,7 +560,7 @@ VisualStyle* SkinModel::getStyle (CStringRef name, Element* caller)
 	{
 		// allow style lookup from other scopes...
 		StyleElement* styleElement = nullptr;
-		const char* p = ::strrchr (name.str (), '/');
+		CStringPtr p = ::strrchr (name.str (), '/');
 		if(p)
 		{
 			MutableCString scopeName;
@@ -627,7 +657,7 @@ T* SkinModel::getResourceElement (CStringRef _name, SkinModel*& model)
 	T* element = nullptr;
 
 	// allow resource lookup from other scopes...
-	const char* p = ::strrchr (name.str (), '/');
+	CStringPtr p = ::strrchr (name.str (), '/');
 	if(p)
 	{
 		MutableCString scopeName;
@@ -908,10 +938,13 @@ void SkinModel::takeSubModels (SkinModel& model)
 // OverlayElement
 //************************************************************************************************
 
-BEGIN_SKIN_ELEMENT_WITH_MEMBERS (OverlayElement, Element, TAG_OVERLAY, DOC_GROUP_GENERAL, 0)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_TARGET, TYPE_STRING)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_SOURCE, TYPE_STRING)
-END_SKIN_ELEMENT_WITH_MEMBERS (OverlayElement)
+DEFINE_CLASS_HIDDEN (OverlayElement, Element)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (OverlayElement, Element, TAG_OVERLAY, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (OverlayElement, DOC_GROUP_GENERAL)
+BEGIN_TYPELIB_MEMBERS (OverlayElement)
+	ADD_TYPELIB_MEMBER_STRING (ATTR_TARGET)
+	ADD_TYPELIB_MEMBER_STRING (ATTR_SOURCE)
+END_TYPELIB_MEMBERS (OverlayElement)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -982,12 +1015,15 @@ void OverlayElement::loadFinished ()
 // ResourceElement
 //************************************************************************************************
 
-BEGIN_SKIN_ELEMENT_WITH_MEMBERS (ResourceElement, Element, TAG_RESOURCE, DOC_GROUP_RESOURCES, 0)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_URL, TYPE_STRING)	///< url of the file
-END_SKIN_ELEMENT_WITH_MEMBERS (ResourceElement)
-BEGIN_SKIN_ELEMENT_ATTRIBUTES (ResourceElement)
-	ADD_SKIN_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_RESOURCES)
-END_SKIN_ELEMENT_ATTRIBUTES (ResourceElement)
+DEFINE_CLASS_HIDDEN (ResourceElement, Element)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (ResourceElement, Element, TAG_RESOURCE, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (ResourceElement, DOC_GROUP_RESOURCES)
+BEGIN_TYPELIB_MEMBERS (ResourceElement)
+	ADD_TYPELIB_MEMBER_STRING (ATTR_URL) ///< url of the file
+END_TYPELIB_MEMBERS (ResourceElement)
+BEGIN_TYPELIB_ATTRIBUTES (ResourceElement)
+	ADD_TYPELIB_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_RESOURCES)
+END_TYPELIB_ATTRIBUTES (ResourceElement)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1009,7 +1045,10 @@ bool ResourceElement::getAttributes (SkinAttributes& a) const
 // ResourceObjectElement
 //************************************************************************************************
 
-DEFINE_SKIN_ELEMENT_ABSTRACT (ResourceObjectElement, ResourceElement, TAG_OBJECT, DOC_GROUP_RESOURCES, 0)
+DEFINE_CLASS_ABSTRACT_HIDDEN (ResourceObjectElement, ResourceElement)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (ResourceObjectElement, ResourceElement, TAG_OBJECT, SKIN_TYPELIB)
+DEFINE_TYPELIB_ABSTRACT (ResourceObjectElement)
+DEFINE_TYPELIB_DOCGROUP (ResourceObjectElement, DOC_GROUP_RESOURCES)
 
 //************************************************************************************************
 // ImageElement
@@ -1077,22 +1116,26 @@ double ImageElement::parseDuration (StringRef string)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-BEGIN_SKIN_ELEMENT_WITH_MEMBERS (ImageElement, ResourceElement, TAG_IMAGE, DOC_GROUP_RESOURCES, Image)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_IMAGE, TYPE_STRING)	///< name of the image
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_FRAMES, TYPE_STRING)	///< number of frames in the image, or space-separated list of frame names
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_DURATION, TYPE_FLOAT)	///< duration of a filmstrip animation with this image
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_TEMPLATE, TYPE_BOOL)	///< template images can be colorized by the framework
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_ADAPTIVE, TYPE_BOOL)	///< adaptive images can adapt to the brightness of a given color by the framework
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_TILE, TYPE_ENUM)		///< specifies how the image is tiled when used to fill a larger area
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_MARGIN, TYPE_RECT)	///< margins used for some tile modes: "left, top, right, bottom"
-END_SKIN_ELEMENT_WITH_MEMBERS (ImageElement)
-BEGIN_SKIN_ELEMENT_ATTRIBUTES (ImageElement)
-	ADD_SKIN_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_IMAGECHILDREN)
-	ADD_SKIN_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_RESOURCES)
-	ADD_SKIN_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_STYLECHILDREN)
-	ADD_SKIN_CHILDGROUP_ATTRIBUTE (SCHEMA_GROUP_IMAGECHILDREN)
-END_SKIN_ELEMENT_ATTRIBUTES (ImageElement)
-DEFINE_SKIN_ENUMERATION (TAG_IMAGE, ATTR_TILE, ImageElement::tileMethods)
+DEFINE_CLASS_HIDDEN (ImageElement, ResourceElement)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (ImageElement, ResourceElement, TAG_IMAGE, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (ImageElement, DOC_GROUP_RESOURCES)
+DEFINE_TYPELIB_RELATED_CLASS (ImageElement, Image)
+BEGIN_TYPELIB_MEMBERS (ImageElement)
+	ADD_TYPELIB_MEMBER_STRING (ATTR_IMAGE)					///< name of the image
+	ADD_TYPELIB_MEMBER_STRING (ATTR_FRAMES)					///< number of frames in the image, or space-separated list of frame names
+	ADD_TYPELIB_MEMBER (ATTR_DURATION, TypeNames::kFloat)	///< duration of a filmstrip animation with this image
+	ADD_TYPELIB_MEMBER (ATTR_TEMPLATE, TypeNames::kBool)	///< template images can be colorized by the framework
+	ADD_TYPELIB_MEMBER (ATTR_ADAPTIVE, TypeNames::kBool)	///< adaptive images can adapt to the brightness of a given color by the framework
+	ADD_TYPELIB_MEMBER (ATTR_TILE, TypeNames::kEnum)		///< specifies how the image is tiled when used to fill a larger area
+	ADD_TYPELIB_MEMBER (ATTR_MARGIN, TypeNames::kRect)		///< margins used for some tile modes: "left, top, right, bottom"
+END_TYPELIB_MEMBERS (ImageElement)
+BEGIN_TYPELIB_ATTRIBUTES (ImageElement)
+	ADD_TYPELIB_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_IMAGECHILDREN)
+	ADD_TYPELIB_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_RESOURCES)
+	ADD_TYPELIB_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_STYLECHILDREN)
+	ADD_TYPELIB_CHILDGROUP_ATTRIBUTE (SCHEMA_GROUP_IMAGECHILDREN)
+END_TYPELIB_ATTRIBUTES (ImageElement)
+DEFINE_TYPELIB_ENUMERATION (TAG_IMAGE, ATTR_TILE, ImageElement::tileMethods, SKIN_TYPELIB)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1371,14 +1414,18 @@ void CCL_API ImageElement::setImage (IImage* _image)
 // ImagePartElement
 //************************************************************************************************
 
-BEGIN_SKIN_ELEMENT_WITH_MEMBERS (ImagePartElement, ImageElement, TAG_IMAGEPART, DOC_GROUP_RESOURCES, ImagePart)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_SIZE, TYPE_SIZE)	///< recangle the describes the excerpt area in the original image
-END_SKIN_ELEMENT_WITH_MEMBERS (ImagePartElement)
-BEGIN_SKIN_ELEMENT_ATTRIBUTES (ImagePartElement)
-	ADD_SKIN_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_IMAGECHILDREN)
-	ADD_SKIN_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_RESOURCES)
-	ADD_SKIN_CHILDGROUP_ATTRIBUTE (TAG_IMAGEFILTER)
-END_SKIN_ELEMENT_ATTRIBUTES (ImagePartElement)
+DEFINE_CLASS_HIDDEN (ImagePartElement, ImageElement)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (ImagePartElement, ImageElement, TAG_IMAGEPART, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (ImagePartElement, DOC_GROUP_RESOURCES)
+DEFINE_TYPELIB_RELATED_CLASS (ImagePartElement, ImagePart)
+BEGIN_TYPELIB_MEMBERS (ImagePartElement)
+	ADD_TYPELIB_MEMBER (ATTR_SIZE, TypeNames::kSize) ///< recangle the describes the excerpt area in the original image
+END_TYPELIB_MEMBERS (ImagePartElement)
+BEGIN_TYPELIB_ATTRIBUTES (ImagePartElement)
+	ADD_TYPELIB_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_IMAGECHILDREN)
+	ADD_TYPELIB_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_RESOURCES)
+	ADD_TYPELIB_CHILDGROUP_ATTRIBUTE (TAG_IMAGEFILTER)
+END_TYPELIB_ATTRIBUTES (ImagePartElement)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1433,11 +1480,13 @@ bool ImagePartElement::getAttributes (SkinAttributes& a) const
 // IconSetElement
 //************************************************************************************************
 
-DEFINE_SKIN_ELEMENT (IconSetElement, ImageElement, TAG_ICONSET, DOC_GROUP_RESOURCES, 0)
-BEGIN_SKIN_ELEMENT_ATTRIBUTES (IconSetElement)
-	ADD_SKIN_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_RESOURCES)
-	ADD_SKIN_CHILDGROUP_ATTRIBUTE ("")
-END_SKIN_ELEMENT_ATTRIBUTES (IconSetElement)
+DEFINE_CLASS_HIDDEN (IconSetElement, ImageElement)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (IconSetElement, ImageElement, TAG_ICONSET, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (IconSetElement, DOC_GROUP_RESOURCES)
+BEGIN_TYPELIB_ATTRIBUTES (IconSetElement)
+	ADD_TYPELIB_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_RESOURCES)
+	ADD_TYPELIB_CHILDGROUP_ATTRIBUTE ("")
+END_TYPELIB_ATTRIBUTES (IconSetElement)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1510,14 +1559,17 @@ END_STYLEDEF
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-BEGIN_SKIN_ELEMENT_WITH_MEMBERS (ImageFilterElement, Element, TAG_IMAGEFILTER, DOC_GROUP_RESOURCES, 0)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_COLOR, TYPE_COLOR)	///< filter color
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_VALUE, TYPE_FLOAT)	///< filter value
-END_SKIN_ELEMENT_WITH_MEMBERS (ImageFilterElement)
-BEGIN_SKIN_ELEMENT_ATTRIBUTES (ImageFilterElement)
-	ADD_SKIN_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_IMAGECHILDREN)
-END_SKIN_ELEMENT_ATTRIBUTES (ImageFilterElement)
-DEFINE_SKIN_ENUMERATION (TAG_IMAGEFILTER, ATTR_NAME, ImageFilterElement::filterNames)
+DEFINE_CLASS_HIDDEN (ImageFilterElement, Element)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (ImageFilterElement, Element, TAG_IMAGEFILTER, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (ImageFilterElement, DOC_GROUP_RESOURCES)
+BEGIN_TYPELIB_MEMBERS (ImageFilterElement)
+	ADD_TYPELIB_MEMBER_COLOR (ATTR_COLOR) ///< filter color
+	ADD_TYPELIB_MEMBER (ATTR_VALUE, TypeNames::kFloat) ///< filter value
+END_TYPELIB_MEMBERS (ImageFilterElement)
+BEGIN_TYPELIB_ATTRIBUTES (ImageFilterElement)
+	ADD_TYPELIB_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_IMAGECHILDREN)
+END_TYPELIB_ATTRIBUTES (ImageFilterElement)
+DEFINE_TYPELIB_ENUMERATION (TAG_IMAGEFILTER, ATTR_NAME, ImageFilterElement::filterNames, SKIN_TYPELIB)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1580,13 +1632,17 @@ bool ImageFilterElement::getAttributes (SkinAttributes& a) const
 // CursorElement
 //************************************************************************************************
 
-BEGIN_SKIN_ELEMENT_WITH_MEMBERS (CursorElement, Element, TAG_CURSOR, DOC_GROUP_RESOURCES, MouseCursor)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_IMAGE, TYPE_STRING)	///< cursor image
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_HOTSPOT, TYPE_POINT)	///< the active point in the image
-END_SKIN_ELEMENT_WITH_MEMBERS (CursorElement)
-BEGIN_SKIN_ELEMENT_ATTRIBUTES (CursorElement)
-	ADD_SKIN_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_RESOURCES)
-END_SKIN_ELEMENT_ATTRIBUTES (CursorElement)
+DEFINE_CLASS_HIDDEN (CursorElement, Element)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (CursorElement, Element, TAG_CURSOR, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (CursorElement, DOC_GROUP_RESOURCES)
+DEFINE_TYPELIB_RELATED_CLASS (CursorElement, MouseCursor)
+BEGIN_TYPELIB_MEMBERS (CursorElement)
+	ADD_TYPELIB_MEMBER_STRING (ATTR_IMAGE) ///< cursor image
+	ADD_TYPELIB_MEMBER (ATTR_HOTSPOT, TypeNames::kPoint) ///< the active point in the image
+END_TYPELIB_MEMBERS (CursorElement)
+BEGIN_TYPELIB_ATTRIBUTES (CursorElement)
+	ADD_TYPELIB_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_RESOURCES)
+END_TYPELIB_ATTRIBUTES (CursorElement)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1643,10 +1699,13 @@ bool CursorElement::loadCursor (SkinModel& model)
 // GradientStopElement
 //************************************************************************************************
 
-BEGIN_SKIN_ELEMENT_WITH_MEMBERS (GradientStopElement, Element, TAG_GRADIENTSTOP, DOC_GROUP_RESOURCES, 0)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_POSITION, TYPE_FLOAT)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_COLOR, TYPE_COLOR)
-END_SKIN_ELEMENT_WITH_MEMBERS (GradientStopElement)
+DEFINE_CLASS_HIDDEN (GradientStopElement, Element)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (GradientStopElement, Element, TAG_GRADIENTSTOP, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (GradientStopElement, DOC_GROUP_RESOURCES)
+BEGIN_TYPELIB_MEMBERS (GradientStopElement)
+	ADD_TYPELIB_MEMBER (ATTR_POSITION, TypeNames::kFloat)
+	ADD_TYPELIB_MEMBER_COLOR (ATTR_COLOR)
+END_TYPELIB_MEMBERS (GradientStopElement)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1689,15 +1748,17 @@ bool GradientStopElement::getAttributes (SkinAttributes& a) const
 // GradientElement
 //************************************************************************************************
 
-BEGIN_SKIN_ELEMENT_WITH_MEMBERS (GradientElement, Element, TAG_GRADIENT, DOC_GROUP_RESOURCES, 0)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_STARTCOLOR, TYPE_COLOR)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_ENDCOLOR, TYPE_COLOR)
-END_SKIN_ELEMENT_WITH_MEMBERS (GradientElement)
-BEGIN_SKIN_ELEMENT_ATTRIBUTES (GradientElement)
-	ADD_SKIN_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_RESOURCES)
-	ADD_SKIN_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_STYLECHILDREN)
-	ADD_SKIN_CHILDGROUP_ATTRIBUTE (TAG_GRADIENTSTOP)
-END_SKIN_ELEMENT_ATTRIBUTES (GradientElement)
+DEFINE_CLASS_HIDDEN (GradientElement, Element)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (GradientElement, Element, TAG_GRADIENT, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (GradientElement, DOC_GROUP_RESOURCES)
+BEGIN_TYPELIB_MEMBERS (GradientElement)
+	ADD_TYPELIB_MEMBER_COLOR (ATTR_STARTCOLOR)
+	ADD_TYPELIB_MEMBER_COLOR (ATTR_ENDCOLOR)
+END_TYPELIB_MEMBERS (GradientElement)
+BEGIN_TYPELIB_ATTRIBUTES (GradientElement)
+	ADD_TYPELIB_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_RESOURCES)
+	ADD_TYPELIB_CHILDGROUP_ATTRIBUTE (TAG_GRADIENTSTOP)
+END_TYPELIB_ATTRIBUTES (GradientElement)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1753,10 +1814,17 @@ ColorGradientStopCollection* GradientElement::createStops () const
 // LinearGradientElement
 //************************************************************************************************
 
-BEGIN_SKIN_ELEMENT_WITH_MEMBERS (LinearGradientElement, GradientElement, TAG_LINEARGRADIENT, DOC_GROUP_RESOURCES, 0)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_START, TYPE_POINT)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_END, TYPE_POINT)
-END_SKIN_ELEMENT_WITH_MEMBERS (LinearGradientElement)
+DEFINE_CLASS_HIDDEN (LinearGradientElement, GradientElement)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (LinearGradientElement, GradientElement, TAG_LINEARGRADIENT, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (LinearGradientElement, DOC_GROUP_RESOURCES)
+BEGIN_TYPELIB_MEMBERS (LinearGradientElement)
+	ADD_TYPELIB_MEMBER (ATTR_START, TypeNames::kPoint)
+	ADD_TYPELIB_MEMBER (ATTR_END, TypeNames::kPoint)
+END_TYPELIB_MEMBERS (LinearGradientElement)
+BEGIN_TYPELIB_ATTRIBUTES (LinearGradientElement)
+	ADD_TYPELIB_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_STYLECHILDREN)
+	ADD_TYPELIB_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_RESOURCES)
+END_TYPELIB_ATTRIBUTES (LinearGradientElement)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1794,10 +1862,17 @@ bool LinearGradientElement::getAttributes (SkinAttributes& a) const
 // RadialGradientElement
 //************************************************************************************************
 
-BEGIN_SKIN_ELEMENT_WITH_MEMBERS (RadialGradientElement, GradientElement, TAG_RADIALGRADIENT, DOC_GROUP_RESOURCES, 0)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_CENTER, TYPE_POINT)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_RADIUS, TYPE_FLOAT)
-END_SKIN_ELEMENT_WITH_MEMBERS (RadialGradientElement)
+DEFINE_CLASS_HIDDEN (RadialGradientElement, GradientElement)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (RadialGradientElement, GradientElement, TAG_RADIALGRADIENT, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (RadialGradientElement, DOC_GROUP_RESOURCES)
+BEGIN_TYPELIB_MEMBERS (RadialGradientElement)
+	ADD_TYPELIB_MEMBER (ATTR_CENTER, TypeNames::kPoint)
+	ADD_TYPELIB_MEMBER (ATTR_RADIUS, TypeNames::kFloat)
+END_TYPELIB_MEMBERS (RadialGradientElement)
+BEGIN_TYPELIB_ATTRIBUTES (RadialGradientElement)
+	ADD_TYPELIB_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_STYLECHILDREN)
+	ADD_TYPELIB_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_RESOURCES)
+END_TYPELIB_ATTRIBUTES (RadialGradientElement)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1841,10 +1916,14 @@ bool RadialGradientElement::getAttributes (SkinAttributes& a) const
 // FontResourceElement
 //************************************************************************************************
 
-BEGIN_SKIN_ELEMENT_WITH_MEMBERS (FontResourceElement, ResourceElement, TAG_FONTRESOURCE, DOC_GROUP_RESOURCES, FontResource)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_STYLE, TYPE_ENUM)
-END_SKIN_ELEMENT_WITH_MEMBERS (FontResourceElement)
-DEFINE_SKIN_ENUMERATION_PARENT (TAG_FONTRESOURCE, ATTR_STYLE, nullptr, TAG_FONT, ATTR_STYLE)
+DEFINE_CLASS_HIDDEN (FontResourceElement, ResourceElement)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (FontResourceElement, ResourceElement, TAG_FONTRESOURCE, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (FontResourceElement, DOC_GROUP_RESOURCES)
+DEFINE_TYPELIB_RELATED_CLASS (FontResourceElement, FontResource)
+BEGIN_TYPELIB_MEMBERS (FontResourceElement)
+	ADD_TYPELIB_MEMBER (ATTR_STYLE, TypeNames::kEnum)
+END_TYPELIB_MEMBERS (FontResourceElement)
+DEFINE_TYPELIB_ENUMERATION_WITH_PARENT (TAG_FONTRESOURCE, ATTR_STYLE, nullptr, TAG_FONT, ATTR_STYLE, SKIN_TYPELIB)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1900,17 +1979,22 @@ bool FontResourceElement::getAttributes (SkinAttributes& a) const
 // ControlStatement
 //************************************************************************************************
 
-DEFINE_SKIN_ELEMENT_ABSTRACT (ControlStatement, Element, TAG_STATEMENT, DOC_GROUP_GENERAL, 0)
-BEGIN_SKIN_ELEMENT_ATTRIBUTES (ControlStatement)
-	ADD_SKIN_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_VIEWSSTATEMENTS)
-	ADD_SKIN_CHILDGROUP_ATTRIBUTE (SCHEMA_GROUP_VIEWSSTATEMENTS)
-END_SKIN_ELEMENT_ATTRIBUTES (ControlStatement)
+DEFINE_CLASS_ABSTRACT_HIDDEN (ControlStatement, Element)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (ControlStatement, Element, TAG_STATEMENT, SKIN_TYPELIB)
+DEFINE_TYPELIB_ABSTRACT (ControlStatement)
+DEFINE_TYPELIB_DOCGROUP (ControlStatement, DOC_GROUP_GENERAL)
+BEGIN_TYPELIB_ATTRIBUTES (ControlStatement)
+	ADD_TYPELIB_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_VIEWSSTATEMENTS)
+	ADD_TYPELIB_CHILDGROUP_ATTRIBUTE (SCHEMA_GROUP_VIEWSSTATEMENTS)
+END_TYPELIB_ATTRIBUTES (ControlStatement)
 
 //************************************************************************************************
 // DefineStatement
 //************************************************************************************************
 
-DEFINE_SKIN_ELEMENT (DefineStatement, ControlStatement, TAG_DEFINE, DOC_GROUP_GENERAL, 0)
+DEFINE_CLASS_HIDDEN (DefineStatement, ControlStatement)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (DefineStatement, ControlStatement, TAG_DEFINE, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (DefineStatement, DOC_GROUP_GENERAL)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1976,7 +2060,10 @@ bool DefineStatement::getAttributes (SkinAttributes& a) const
 // UsingStatement
 //************************************************************************************************
 
-BEGIN_SKIN_ELEMENT_WITH_MEMBERS (UsingStatement, ControlStatement, TAG_USING, DOC_GROUP_GENERAL, 0)
+DEFINE_CLASS_HIDDEN (UsingStatement, ControlStatement)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (UsingStatement, ControlStatement, TAG_USING, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (UsingStatement, DOC_GROUP_GENERAL)
+BEGIN_TYPELIB_MEMBERS (UsingStatement)
 /** Relative or absolute path to the new controller. 
 Examples:
 
@@ -1986,10 +2073,10 @@ relative path:
 
 absolute path:
   "object://WindowManager"	*/
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_CONTROLLER, TYPE_STRING)	///< relative or absolute path to the new controller
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_NAMESPACE, TYPE_STRING)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_OPTIONAL, TYPE_BOOL)      ///< Flag that controller might not exist
-END_SKIN_ELEMENT_WITH_MEMBERS (UsingStatement)
+	ADD_TYPELIB_MEMBER_STRING (ATTR_CONTROLLER) ///< relative or absolute path to the new controller
+	ADD_TYPELIB_MEMBER_STRING (ATTR_NAMESPACE)
+	ADD_TYPELIB_MEMBER (ATTR_OPTIONAL, TypeNames::kBool) ///< Flag that controller might not exist
+END_TYPELIB_MEMBERS (UsingStatement)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -2040,15 +2127,18 @@ bool UsingStatement::getAttributes (SkinAttributes& a) const
 // SwitchStatement
 //************************************************************************************************
 
-BEGIN_SKIN_ELEMENT_WITH_MEMBERS (SwitchStatement, ControlStatement, TAG_SWITCH, DOC_GROUP_GENERAL, 0)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_PROPERTY, TYPE_STRING)	///< Name of the property or variable ($)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_CONTROLLER, TYPE_STRING)	///< Optional controller for evaluating the property or variable
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_DEFINED, TYPE_STRING)		///< Interpreted as variable name, evaluates to 1 if the variable exists. Used as an alternative to the "property" attribute
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_NOTDEFINED, TYPE_STRING)	///< Same as 'defined', but negates the condition
-END_SKIN_ELEMENT_WITH_MEMBERS (SwitchStatement)
-BEGIN_SKIN_ELEMENT_ATTRIBUTES (SwitchStatement)
-	ADD_SKIN_CHILDGROUP_ATTRIBUTE (SCHEMA_GROUP_SWITCHCHILDREN)
-END_SKIN_ELEMENT_ATTRIBUTES (SwitchStatement)
+DEFINE_CLASS_HIDDEN (SwitchStatement, ControlStatement)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (SwitchStatement, ControlStatement, TAG_SWITCH, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (SwitchStatement, DOC_GROUP_GENERAL)
+BEGIN_TYPELIB_MEMBERS (SwitchStatement)
+	ADD_TYPELIB_MEMBER_STRING (ATTR_PROPERTY) ///< Name of the property or variable ($)
+	ADD_TYPELIB_MEMBER_STRING (ATTR_CONTROLLER) ///< Optional controller for evaluating the property or variable
+	ADD_TYPELIB_MEMBER_STRING (ATTR_DEFINED) ///< Interpreted as variable name, evaluates to 1 if the variable exists. Used as an alternative to the "property" attribute
+	ADD_TYPELIB_MEMBER_STRING (ATTR_NOTDEFINED) ///< Same as 'defined', but negates the condition
+END_TYPELIB_MEMBERS (SwitchStatement)
+BEGIN_TYPELIB_ATTRIBUTES (SwitchStatement)
+	ADD_TYPELIB_CHILDGROUP_ATTRIBUTE (SCHEMA_GROUP_SWITCHCHILDREN)
+END_TYPELIB_ATTRIBUTES (SwitchStatement)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -2125,12 +2215,15 @@ bool SwitchStatement::getAttributes (SkinAttributes& a) const
 // CaseStatement
 //************************************************************************************************
 
-BEGIN_SKIN_ELEMENT_WITH_MEMBERS (CaseStatement, ControlStatement, TAG_CASE, DOC_GROUP_GENERAL, 0)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_VALUE, TYPE_STRING)	///< The value for which the contained elements should appear
-END_SKIN_ELEMENT_WITH_MEMBERS (CaseStatement)
-BEGIN_SKIN_ELEMENT_ATTRIBUTES (CaseStatement)
-	ADD_SKIN_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_SWITCHCHILDREN)
-END_SKIN_ELEMENT_ATTRIBUTES (CaseStatement)
+DEFINE_CLASS_HIDDEN (CaseStatement, ControlStatement)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (CaseStatement, ControlStatement, TAG_CASE, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (CaseStatement, DOC_GROUP_GENERAL)
+BEGIN_TYPELIB_MEMBERS (CaseStatement)
+	ADD_TYPELIB_MEMBER_STRING (ATTR_VALUE) ///< The value for which the contained elements should appear
+END_TYPELIB_MEMBERS (CaseStatement)
+BEGIN_TYPELIB_ATTRIBUTES (CaseStatement)
+	ADD_TYPELIB_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_SWITCHCHILDREN)
+END_TYPELIB_ATTRIBUTES (CaseStatement)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -2167,10 +2260,12 @@ void CaseStatement::loadFinished ()
 // DefaultStatement
 //************************************************************************************************
 
-DEFINE_SKIN_ELEMENT (DefaultStatement, ControlStatement, TAG_DEFAULT, DOC_GROUP_GENERAL, 0)
-BEGIN_SKIN_ELEMENT_ATTRIBUTES (DefaultStatement)
-	ADD_SKIN_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_SWITCHCHILDREN)
-END_SKIN_ELEMENT_ATTRIBUTES (DefaultStatement)
+DEFINE_CLASS_HIDDEN (DefaultStatement, ControlStatement)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (DefaultStatement, ControlStatement, TAG_DEFAULT, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (DefaultStatement, DOC_GROUP_GENERAL)
+BEGIN_TYPELIB_ATTRIBUTES (DefaultStatement)
+	ADD_TYPELIB_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_SWITCHCHILDREN)
+END_TYPELIB_ATTRIBUTES (DefaultStatement)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -2186,12 +2281,15 @@ void DefaultStatement::loadFinished ()
 // IfStatement
 //************************************************************************************************
 
-BEGIN_SKIN_ELEMENT_WITH_MEMBERS (IfStatement, SwitchStatement, TAG_IF, DOC_GROUP_GENERAL, 0)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_VALUE, TYPE_STRING) ///< The value for which the contained elements should appear
-END_SKIN_ELEMENT_WITH_MEMBERS (IfStatement)
-BEGIN_SKIN_ELEMENT_ATTRIBUTES (IfStatement)
-	ADD_SKIN_CHILDGROUP_ATTRIBUTE (SCHEMA_GROUP_VIEWSSTATEMENTS)
-END_SKIN_ELEMENT_ATTRIBUTES (IfStatement)
+DEFINE_CLASS_HIDDEN (IfStatement, SwitchStatement)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (IfStatement, SwitchStatement, TAG_IF, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (IfStatement, DOC_GROUP_GENERAL)
+BEGIN_TYPELIB_MEMBERS (IfStatement)
+	ADD_TYPELIB_MEMBER_STRING (ATTR_VALUE) ///< The value for which the contained elements should appear
+END_TYPELIB_MEMBERS (IfStatement)
+BEGIN_TYPELIB_ATTRIBUTES (IfStatement)
+	ADD_TYPELIB_CHILDGROUP_ATTRIBUTE (SCHEMA_GROUP_VIEWSSTATEMENTS)
+END_TYPELIB_ATTRIBUTES (IfStatement)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -2243,12 +2341,15 @@ Element* IfStatement::getCaseElement (VariantRef _value)
 // ForEachStatement
 //************************************************************************************************
 
-BEGIN_SKIN_ELEMENT_WITH_MEMBERS (ForEachStatement, ControlStatement, TAG_FOREACH, DOC_GROUP_GENERAL, 0)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_VARIABLE, TYPE_STRING) ///< The variable that controls the loop
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_COUNT, TYPE_INT)       ///< Number of repetitions. Can be a variable (starting with $).
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_START, TYPE_INT)   ///< Start value of the loop variable. Can be a variable (starting with $). Default value is 0.
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_IN, TYPE_STRING)       ///< String tokens to be iterated, separted by spaces. Can be a variable (starting with $).
-END_SKIN_ELEMENT_WITH_MEMBERS (ForEachStatement)
+DEFINE_CLASS_HIDDEN (ForEachStatement, ControlStatement)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (ForEachStatement, ControlStatement, TAG_FOREACH, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (ForEachStatement, DOC_GROUP_GENERAL)
+BEGIN_TYPELIB_MEMBERS (ForEachStatement)
+	ADD_TYPELIB_MEMBER_STRING (ATTR_VARIABLE) ///< The variable that controls the loop
+	ADD_TYPELIB_MEMBER (ATTR_COUNT, TypeNames::kInt) ///< Number of repetitions. Can be a variable (starting with $).
+	ADD_TYPELIB_MEMBER (ATTR_START, TypeNames::kInt) ///< Start value of the loop variable. Can be a variable (starting with $). Default value is 0.
+	ADD_TYPELIB_MEMBER_STRING (ATTR_IN) ///< String tokens to be iterated, separted by spaces. Can be a variable (starting with $).
+END_TYPELIB_MEMBERS (ForEachStatement)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -2283,10 +2384,13 @@ END_STYLEDEF
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-BEGIN_SKIN_ELEMENT_WITH_MEMBERS (ZoomStatement, ControlStatement, TAG_ZOOM, DOC_GROUP_GENERAL, 0)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_FACTOR, TYPE_FLOAT)	///< zoom factor for views
-END_SKIN_ELEMENT_WITH_MEMBERS (ZoomStatement)
-DEFINE_SKIN_ENUMERATION (TAG_ZOOM, ATTR_MODE, ZoomStatement::modes)
+DEFINE_CLASS_HIDDEN (ZoomStatement, ControlStatement)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (ZoomStatement, ControlStatement, TAG_ZOOM, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (ZoomStatement, DOC_GROUP_GENERAL)
+BEGIN_TYPELIB_MEMBERS (ZoomStatement)
+	ADD_TYPELIB_MEMBER (ATTR_FACTOR, TypeNames::kFloat)	///< zoom factor for views
+END_TYPELIB_MEMBERS (ZoomStatement)
+DEFINE_TYPELIB_ENUMERATION (TAG_ZOOM, ATTR_MODE, ZoomStatement::modes, SKIN_TYPELIB)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -2320,12 +2424,15 @@ bool ZoomStatement::getAttributes (SkinAttributes& a) const
 // VisualStyleSelectorElement
 //************************************************************************************************
 
-BEGIN_SKIN_ELEMENT_WITH_MEMBERS (VisualStyleSelectorElement, ControlStatement, TAG_STYLESELECTOR, DOC_GROUP_GENERAL, 0)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_VARIABLE, TYPE_STRING)	///< A variable that references the dynamic style (starting with $).
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_PROPERTY, TYPE_STRING)	///< Name of the property or variable ($)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_CONTROLLER, TYPE_STRING)	///< Optional controller for evaluating the property or variable
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_STYLES, TYPE_STRING)		///< The available style names, separted by spaces.
-END_SKIN_ELEMENT_WITH_MEMBERS (VisualStyleSelectorElement)
+DEFINE_CLASS_HIDDEN (VisualStyleSelectorElement, ControlStatement)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (VisualStyleSelectorElement, ControlStatement, TAG_STYLESELECTOR, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (VisualStyleSelectorElement, DOC_GROUP_GENERAL)
+BEGIN_TYPELIB_MEMBERS (VisualStyleSelectorElement)
+	ADD_TYPELIB_MEMBER_STRING (ATTR_VARIABLE) ///< A variable that references the dynamic style (starting with $).
+	ADD_TYPELIB_MEMBER_STRING (ATTR_PROPERTY) ///< Name of the property or variable ($)
+	ADD_TYPELIB_MEMBER_STRING (ATTR_CONTROLLER) ///< Optional controller for evaluating the property or variable
+	ADD_TYPELIB_MEMBER_STRING (ATTR_STYLES) ///< The available style names, separted by spaces.
+END_TYPELIB_MEMBERS (VisualStyleSelectorElement)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -2562,58 +2669,62 @@ END_STYLEDEF
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-BEGIN_SKIN_ELEMENT_WITH_MEMBERS (ViewElement, Element, TAG_VIEW, DOC_GROUP_GENERAL, 0)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_SIZE, TYPE_SIZE)  ///< Size of the view in format "left, top, width, height". Alternative forms are "rect" and "width" + "height". 
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_RECT, TYPE_RECT)  ///< Size of the view in format "left, top, right, bottom". Alternative forms are "size" and "width" + "height".
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_WIDTH, TYPE_METRIC) ///< Width of the view. Alternative forms: "size" and "rect".
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_HEIGHT, TYPE_METRIC) ///< Height of the view. Alternative forms: "size" and "rect".
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_TITLE, TYPE_STRING)  ///< Title of the view. Some views display their title.
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_TOOLTIP, TYPE_STRING) ///< Tooltip that appears when mouse rest on the view for a certain time
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_ATTACH, TYPE_ENUM) ///< Attachment of the view relative to it's parent
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_STYLE, TYPE_STRING) ///< Name of the style class used to display the view. \see Style
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_OPTIONS, TYPE_ENUM) ///< Options that change behavior and appearance of the view
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_LAYERBACKING, TYPE_ENUM) ///< Enables layer backing
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_SIZELIMITS, TYPE_RECT) ///< Minimum and maximum width and height of the view. Specified in order "minWidth, minHeight, maxWidth, maxHeight". Specifying "0" for a minimum or  "-1" for a maximum means unlimited. "none" means completely unlimited.
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_LAYOUTPRIORITY, TYPE_INT) ///< Priority of this view when placed inside a <Horizontal> or <Vertical> layout with option "hidepriority". Views with lower priority are hidden first, views with priority "-1" are never hidden. "groupdecor" displays its view when there are views between two groupdecor items.
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_MINSIZE, TYPE_INT) ///< For views inside a <SizeVariant>: minimum container width or height that selects this view (if there's no view with a higher "data.minsize")
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_LOCALIZE, TYPE_BOOL)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_TRANSITION, TYPE_ENUM)
+DEFINE_CLASS_HIDDEN (ViewElement, Element)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (ViewElement, Element, TAG_VIEW, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (ViewElement, DOC_GROUP_GENERAL)
+BEGIN_TYPELIB_MEMBERS (ViewElement)
+	ADD_TYPELIB_MEMBER (ATTR_SIZE, TypeNames::kSize)  ///< Size of the view in format "left, top, width, height". Alternative forms are "rect" and "width" + "height". 
+	ADD_TYPELIB_MEMBER (ATTR_RECT, TypeNames::kRect)  ///< Size of the view in format "left, top, right, bottom". Alternative forms are "size" and "width" + "height".
+	ADD_TYPELIB_MEMBER (ATTR_WIDTH, TypeNames::kMetric) ///< Width of the view. Alternative forms: "size" and "rect".
+	ADD_TYPELIB_MEMBER (ATTR_HEIGHT, TypeNames::kMetric) ///< Height of the view. Alternative forms: "size" and "rect".
+	ADD_TYPELIB_MEMBER_STRING (ATTR_TITLE)  ///< Title of the view. Some views display their title.
+	ADD_TYPELIB_MEMBER_STRING (ATTR_TOOLTIP) ///< Tooltip that appears when mouse rest on the view for a certain time
+	ADD_TYPELIB_MEMBER (ATTR_ATTACH, TypeNames::kEnum) ///< Attachment of the view relative to it's parent
+	ADD_TYPELIB_MEMBER_STRING (ATTR_STYLE) ///< Name of the style class used to display the view. \see Style
+	ADD_TYPELIB_MEMBER (ATTR_OPTIONS, TypeNames::kEnum) ///< Options that change behavior and appearance of the view
+	ADD_TYPELIB_MEMBER (ATTR_LAYERBACKING, TypeNames::kEnum) ///< Enables layer backing
+	ADD_TYPELIB_MEMBER (ATTR_SIZELIMITS, TypeNames::kRect) ///< Minimum and maximum width and height of the view. Specified in order "minWidth, minHeight, maxWidth, maxHeight". Specifying "0" for a minimum or  "-1" for a maximum means unlimited. "none" means completely unlimited.
+	ADD_TYPELIB_MEMBER (ATTR_LAYOUTPRIORITY, TypeNames::kInt) ///< Priority of this view when placed inside a <Horizontal> or <Vertical> layout with option "hidepriority". Views with lower priority are hidden first, views with priority "-1" are never hidden. "groupdecor" displays its view when there are views between two groupdecor items.
+	ADD_TYPELIB_MEMBER (ATTR_MINSIZE, TypeNames::kInt) ///< For views inside a <SizeVariant>: minimum container width or height that selects this view (if there's no view with a higher "data.minsize")
+	ADD_TYPELIB_MEMBER (ATTR_LOCALIZE, TypeNames::kBool)
+	ADD_TYPELIB_MEMBER (ATTR_TRANSITION, TypeNames::kEnum)
 
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_FLEXGROW, TYPE_FLOAT)		  		///< Defines how remaining space in the parent is distributed relative to the other children's flex grow values
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_FLEXSHRINK, TYPE_FLOAT)	  		///< Defines how much an element should shrink relative to other children's flex shrink values, if there is not enough space.
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_FLEXBASIS, TYPE_METRIC)	   		///< The initial item size along the main axis inside a flexbox. If set to "auto", the size of the item in the main axis direction is used
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_FLEXALIGNSELF, TYPE_ENUM)	   		///< Overrides the flexbox item alignment setting when layed out inside a flexbox  [auto, flexstart, flexend, center, stretch]
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_FLEXMARGIN, TYPE_STRING)	   		///< Shorthand for individual margins, enter between one and four values which are interpreted as follows: "left=top=right=bottom", "left=right, top=bottom", "left, top, right, bottom=0", "left, top, right, bottom"
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_FLEXMARGINTOP, TYPE_METRIC)		///< Space added to the top of this element if the parent is a flexbox
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_FLEXMARGINRIGHT, TYPE_METRIC)		///< Space added to the right of this element if the parent is a flexbox
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_FLEXMARGINBOTTOM, TYPE_METRIC)	///< Space added to the bottom of this element if the parent is a flexbox
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_FLEXMARGINLEFT, TYPE_METRIC)		///< Space added to the left of this element if the parent is a flexbox
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_FLEXINSET, TYPE_STRING)			///< Shorthand for individual insets, enter between one and four values which are interpreted as follows: "left=top=right=bottom", "left=right, top=bottom", "left, top, right, bottom=0", "left, top, right, bottom"
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_FLEXINSETTOP, TYPE_METRIC)		///< Distance of the top edge to the corresponding parent edge if positionType is "absolute" or to the calculated top edge of this element if the positionType is "relative"
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_FLEXINSETRIGHT, TYPE_METRIC)		///< Distance of the right edge to the corresponding parent edge if positionType is "absolute" or to the calculated right edge of this element if the positionType is "relative"
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_FLEXINSETBOTTOM, TYPE_METRIC)		///< Distance of the bottom edge to the corresponding parent edge if positionType is "absolute" or to the calculated bottom edge of this element if the positionType is "relative"
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_FLEXINSETLEFT, TYPE_METRIC)		///< Distance of the left edge to the corresponding parent edge if positionType is "absolute" or to the calculated left edge of this element if the positionType is "relative"
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_FLEXPOSITIONTYPE, TYPE_ENUM)		///< Elements with absolute position type are excluded from the flow inside a flexbox and positioned absolutely
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_FLEXSIZEMODE, TYPE_ENUM)			///< Items can either fill the available space or hug their content [hug, hughorizontal, hugvertical, fill]
+	ADD_TYPELIB_MEMBER (ATTR_FLEXGROW, TypeNames::kFloat) ///< Defines how remaining space in the parent is distributed relative to the other children's flex grow values
+	ADD_TYPELIB_MEMBER (ATTR_FLEXSHRINK, TypeNames::kFloat) ///< Defines how much an element should shrink relative to other children's flex shrink values, if there is not enough space.
+	ADD_TYPELIB_MEMBER (ATTR_FLEXBASIS, TypeNames::kMetric) ///< The initial item size along the main axis inside a flexbox. If set to "auto", the size of the item in the main axis direction is used
+	ADD_TYPELIB_MEMBER (ATTR_FLEXALIGNSELF, TypeNames::kEnum) ///< Overrides the flexbox item alignment setting when layed out inside a flexbox  [auto, flexstart, flexend, center, stretch]
+	ADD_TYPELIB_MEMBER_STRING (ATTR_FLEXMARGIN) ///< Shorthand for individual margins, enter between one and four values which are interpreted as follows: "left=top=right=bottom", "left=right, top=bottom", "left, top, right, bottom=0", "left, top, right, bottom"
+	ADD_TYPELIB_MEMBER (ATTR_FLEXMARGINTOP, TypeNames::kMetric) ///< Space added to the top of this element if the parent is a flexbox
+	ADD_TYPELIB_MEMBER (ATTR_FLEXMARGINRIGHT, TypeNames::kMetric) ///< Space added to the right of this element if the parent is a flexbox
+	ADD_TYPELIB_MEMBER (ATTR_FLEXMARGINBOTTOM, TypeNames::kMetric) ///< Space added to the bottom of this element if the parent is a flexbox
+	ADD_TYPELIB_MEMBER (ATTR_FLEXMARGINLEFT, TypeNames::kMetric) ///< Space added to the left of this element if the parent is a flexbox
+	ADD_TYPELIB_MEMBER_STRING (ATTR_FLEXINSET) ///< Shorthand for individual insets, enter between one and four values which are interpreted as follows: "left=top=right=bottom", "left=right, top=bottom", "left, top, right, bottom=0", "left, top, right, bottom"
+	ADD_TYPELIB_MEMBER (ATTR_FLEXINSETTOP, TypeNames::kMetric) ///< Distance of the top edge to the corresponding parent edge if positionType is "absolute" or to the calculated top edge of this element if the positionType is "relative"
+	ADD_TYPELIB_MEMBER (ATTR_FLEXINSETRIGHT, TypeNames::kMetric) ///< Distance of the right edge to the corresponding parent edge if positionType is "absolute" or to the calculated right edge of this element if the positionType is "relative"
+	ADD_TYPELIB_MEMBER (ATTR_FLEXINSETBOTTOM, TypeNames::kMetric) ///< Distance of the bottom edge to the corresponding parent edge if positionType is "absolute" or to the calculated bottom edge of this element if the positionType is "relative"
+	ADD_TYPELIB_MEMBER (ATTR_FLEXINSETLEFT, TypeNames::kMetric) ///< Distance of the left edge to the corresponding parent edge if positionType is "absolute" or to the calculated left edge of this element if the positionType is "relative"
+	ADD_TYPELIB_MEMBER (ATTR_FLEXPOSITIONTYPE, TypeNames::kEnum) ///< Elements with absolute position type are excluded from the flow inside a flexbox and positioned absolutely
+	ADD_TYPELIB_MEMBER (ATTR_FLEXSIZEMODE, TypeNames::kEnum) ///< Items can either fill the available space or hug their content [hug, hughorizontal, hugvertical, fill]
 
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_ACCESSIBILITYID, TYPE_STRING)		///< Accessibility id of this view
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_ACCESSIBILITYPROXY, TYPE_STRING)	///< Name or accessibility id of a child view which acts as the primary accessibility provider of this view
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_ACCESSIBILITYLABEL, TYPE_STRING)	///< Name or accessibility id of a child view which provides a label for this view
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_ACCESSIBILITYVALUE, TYPE_STRING)	///< Name or accessibility id of a child view which provides the value for this view
-END_SKIN_ELEMENT_WITH_MEMBERS (ViewElement)
-BEGIN_SKIN_ELEMENT_ATTRIBUTES (ViewElement)
-	ADD_SKIN_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_VIEWSSTATEMENTS)
-	ADD_SKIN_CHILDGROUP_ATTRIBUTE (SCHEMA_GROUP_VIEWSSTATEMENTS)
-END_SKIN_ELEMENT_ATTRIBUTES (ViewElement)
+	ADD_TYPELIB_MEMBER_STRING (ATTR_ACCESSIBILITYID) ///< Accessibility id of this view
+	ADD_TYPELIB_MEMBER_STRING (ATTR_ACCESSIBILITYTITLE) ///< Title announced by accessibility tools, may contain text variables like "@tooltip[]" or "@title[]"
+	ADD_TYPELIB_MEMBER_STRING (ATTR_ACCESSIBILITYPROXY) ///< Name or accessibility id of a child view which acts as the primary accessibility provider of this view
+	ADD_TYPELIB_MEMBER_STRING (ATTR_ACCESSIBILITYLABEL) ///< Name or accessibility id of a child view which provides a label for this view
+	ADD_TYPELIB_MEMBER_STRING (ATTR_ACCESSIBILITYVALUE) ///< Name or accessibility id of a child view which provides the value for this view
+END_TYPELIB_MEMBERS (ViewElement)
+BEGIN_TYPELIB_ATTRIBUTES (ViewElement)
+	ADD_TYPELIB_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_VIEWSSTATEMENTS)
+	ADD_TYPELIB_CHILDGROUP_ATTRIBUTE (SCHEMA_GROUP_VIEWSSTATEMENTS)
+END_TYPELIB_ATTRIBUTES (ViewElement)
 
-DEFINE_SKIN_ENUMERATION (TAG_VIEW, ATTR_OPTIONS, View::commonStyles)
-DEFINE_SKIN_ENUMERATION (TAG_VIEW, ATTR_ATTACH, View::resizeStyles)
-DEFINE_SKIN_ENUMERATION (TAG_VIEW, ATTR_TRANSITION, ViewAnimator::transitionTypes)
-DEFINE_SKIN_ENUMERATION (TAG_VIEW, ATTR_LAYERBACKING, ViewElement::layerBackingTypes)
-DEFINE_SKIN_ENUMERATION (TAG_VIEW, ATTR_ACCESSIBILITY, ViewElement::accessibilityTypes)
-DEFINE_SKIN_ENUMERATION (TAG_VIEW, ATTR_FLEXALIGNSELF, FlexShared::flexAlignSelf)
-DEFINE_SKIN_ENUMERATION (TAG_VIEW, ATTR_FLEXPOSITIONTYPE, FlexShared::flexPositionType)
-DEFINE_SKIN_ENUMERATION (TAG_VIEW, ATTR_FLEXSIZEMODE, FlexShared::flexSizeMode)
+DEFINE_TYPELIB_ENUMERATION (TAG_VIEW, ATTR_OPTIONS, View::commonStyles, SKIN_TYPELIB)
+DEFINE_TYPELIB_ENUMERATION (TAG_VIEW, ATTR_ATTACH, View::resizeStyles, SKIN_TYPELIB)
+DEFINE_TYPELIB_ENUMERATION (TAG_VIEW, ATTR_TRANSITION, ViewAnimator::transitionTypes, SKIN_TYPELIB)
+DEFINE_TYPELIB_ENUMERATION (TAG_VIEW, ATTR_LAYERBACKING, ViewElement::layerBackingTypes, SKIN_TYPELIB)
+DEFINE_TYPELIB_ENUMERATION (TAG_VIEW, ATTR_ACCESSIBILITY, ViewElement::accessibilityTypes, SKIN_TYPELIB)
+DEFINE_TYPELIB_ENUMERATION (TAG_VIEW, ATTR_FLEXALIGNSELF, FlexShared::flexAlignSelf, SKIN_TYPELIB)
+DEFINE_TYPELIB_ENUMERATION (TAG_VIEW, ATTR_FLEXPOSITIONTYPE, FlexShared::flexPositionType, SKIN_TYPELIB)
+DEFINE_TYPELIB_ENUMERATION (TAG_VIEW, ATTR_FLEXSIZEMODE, FlexShared::flexSizeMode, SKIN_TYPELIB)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -2771,6 +2882,14 @@ bool ViewElement::setAttributes (const SkinAttributes& a)
 	// accessibility
 	if(a.exists (ATTR_ACCESSIBILITYID))
 		getAccessibilityInfo ().id = a.getCString (ATTR_ACCESSIBILITYID);
+	if(a.exists (ATTR_ACCESSIBILITYTITLE))
+	{
+		String& elementTitle = getAccessibilityInfo ().elementTitle;
+		elementTitle = a.getString (ATTR_ACCESSIBILITYTITLE);
+		if(a.getBool (ATTR_LOCALIZE, true))
+			elementTitle = translate (elementTitle);
+		mustResolveAccessibilityTitle (elementTitle.contains (SkinVariable::prefix));
+	}
 	if(a.exists (ATTR_ACCESSIBILITYPROXY))
 		getAccessibilityInfo ().proxyId = a.getCString (ATTR_ACCESSIBILITYPROXY);
 	if(a.exists (ATTR_ACCESSIBILITYLABEL))
@@ -2848,6 +2967,7 @@ bool ViewElement::getAttributes (SkinAttributes& a) const
 	if(accessibilityInfo)
 	{
 		a.setString (ATTR_ACCESSIBILITYID, accessibilityInfo->id);
+		a.setString (ATTR_ACCESSIBILITYTITLE, accessibilityInfo->elementTitle);
 		a.setString (ATTR_ACCESSIBILITYPROXY, accessibilityInfo->proxyId);
 		a.setString (ATTR_ACCESSIBILITYLABEL, accessibilityInfo->labelProviderId);
 		a.setString (ATTR_ACCESSIBILITYVALUE, accessibilityInfo->valueProviderId);
@@ -3025,7 +3145,13 @@ View* ViewElement::createView (const CreateArgs& args, View* view)
 	if(accessibilityType == kAccessibilityDisabled)
 		view->setAccessibilityEnabled (false);
 	
-	if(accessibilityInfo && !accessibilityInfo->isEmpty ())
+	if(accessibilityInfo && !accessibilityInfo->elementTitle.isEmpty ())
+	{
+		StringRef elementTitle = accessibilityInfo->elementTitle;
+		view->setAccessibilityTitle (mustResolveAccessibilityTitle () ? args.wizard.resolveTitle (elementTitle) : elementTitle);
+	}
+
+	if(accessibilityInfo && accessibilityInfo->hasRelations ())
 	{
 		SkinWizard::ResolvedName resolvedAccessibilityName (args.wizard, accessibilityInfo->id.isEmpty () ? name : accessibilityInfo->id);
 		SkinWizard::ResolvedName resolvedAccessibilityProxy (args.wizard, accessibilityInfo->proxyId);
@@ -3084,14 +3210,18 @@ void ViewElement::applyZoomFactor (Rect& r, View* view, const CreateArgs& args) 
 // ImageViewElement
 //************************************************************************************************
 
-BEGIN_SKIN_ELEMENT_WITH_MEMBERS (ImageViewElement, ViewElement, TAG_IMAGEVIEW, DOC_GROUP_GENERAL, ImageView)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_IMAGE, TYPE_STRING)		///< name of an image resource
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_SELECTNAME, TYPE_STRING)	///< name of a parameter that selects the image frame ("normal" or "pressed")
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_PROVIDER, TYPE_STRING)	///< name of an application object that can provide an image
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_DATATARGET, TYPE_STRING)	///< name of an application object that manages dragging data onto the image
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_TRANSITION, TYPE_ENUM)	///< an animation that is performed when the image changes
-END_SKIN_ELEMENT_WITH_MEMBERS (ImageViewElement)
-DEFINE_SKIN_ENUMERATION (TAG_IMAGEVIEW, ATTR_OPTIONS, ImageView::customStyles)
+DEFINE_CLASS_HIDDEN (ImageViewElement, ViewElement)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (ImageViewElement, ViewElement, TAG_IMAGEVIEW, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (ImageViewElement, DOC_GROUP_GENERAL)
+DEFINE_TYPELIB_RELATED_CLASS (ImageViewElement, ImageView)
+BEGIN_TYPELIB_MEMBERS (ImageViewElement)
+	ADD_TYPELIB_MEMBER_STRING (ATTR_IMAGE) ///< name of an image resource
+	ADD_TYPELIB_MEMBER_STRING (ATTR_SELECTNAME) ///< name of a parameter that selects the image frame ("normal" or "pressed")
+	ADD_TYPELIB_MEMBER_STRING (ATTR_PROVIDER) ///< name of an application object that can provide an image
+	ADD_TYPELIB_MEMBER_STRING (ATTR_DATATARGET) ///< name of an application object that manages dragging data onto the image
+	ADD_TYPELIB_MEMBER (ATTR_TRANSITION, TypeNames::kEnum) ///< an animation that is performed when the image changes
+END_TYPELIB_MEMBERS (ImageViewElement)
+DEFINE_TYPELIB_ENUMERATION (TAG_IMAGEVIEW, ATTR_OPTIONS, ImageView::customStyles, SKIN_TYPELIB)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -3173,22 +3303,26 @@ View* ImageViewElement::createView (const CreateArgs& args, View* view)
 // FormElement
 //************************************************************************************************
 
-BEGIN_SKIN_ELEMENT_WITH_MEMBERS (FormElement, ImageViewElement, TAG_FORM, DOC_GROUP_GENERAL, Form)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_WINDOWSTYLE, TYPE_ENUM) ///< The style applied to the window when the form is opened as window.
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_DIALOGBUTTONS, TYPE_ENUM) 
+DEFINE_CLASS_HIDDEN (FormElement, ImageViewElement)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (FormElement, ImageViewElement, TAG_FORM, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (FormElement, DOC_GROUP_GENERAL)
+DEFINE_TYPELIB_RELATED_CLASS (FormElement, Form)
+BEGIN_TYPELIB_MEMBERS (FormElement)
+	ADD_TYPELIB_MEMBER (ATTR_WINDOWSTYLE, TypeNames::kEnum) ///< The style applied to the window when the form is opened as window.
+	ADD_TYPELIB_MEMBER (ATTR_DIALOGBUTTONS, TypeNames::kEnum) 
 /** The name of a view in the form that will become the focus view when the form opens. 
 If this optional name is specified, the child views of the form are searched (depth-first) to find the first view with that name. 
 	
 This view becomes focus view e.g. when the form is used to open a dialog or window.  */
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_FIRSTFOCUS, TYPE_STRING) 
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_HELPIDENTIFIER, TYPE_STRING) ///< A string id that refers to a page in the user documentation
-END_SKIN_ELEMENT_WITH_MEMBERS (FormElement)
-BEGIN_SKIN_ELEMENT_ATTRIBUTES (FormElement)
-	ADD_SKIN_SCHEMAGROUP_ATTRIBUTE ("") // remove inherited schema groups
-END_SKIN_ELEMENT_ATTRIBUTES (FormElement)
-DEFINE_SKIN_ENUMERATION_PARENT (TAG_FORM, ATTR_WINDOWSTYLE, Window::windowStyles, TAG_VIEW, ATTR_OPTIONS)
-DEFINE_SKIN_ENUMERATION (TAG_FORM, ATTR_OPTIONS, Form::customStyles)
-DEFINE_SKIN_ENUMERATION_PARENT (TAG_FORM, ATTR_DIALOGBUTTONS, nullptr, TAG_DIALOGBUTTON, ATTR_RESULT)
+	ADD_TYPELIB_MEMBER_STRING (ATTR_FIRSTFOCUS) 
+	ADD_TYPELIB_MEMBER_STRING (ATTR_HELPIDENTIFIER) ///< A string id that refers to a page in the user documentation
+END_TYPELIB_MEMBERS (FormElement)
+BEGIN_TYPELIB_ATTRIBUTES (FormElement)
+	ADD_TYPELIB_SCHEMAGROUP_ATTRIBUTE ("") // remove inherited schema groups
+END_TYPELIB_ATTRIBUTES (FormElement)
+DEFINE_TYPELIB_ENUMERATION_WITH_PARENT (TAG_FORM, ATTR_WINDOWSTYLE, Window::windowStyles, TAG_VIEW, ATTR_OPTIONS, SKIN_TYPELIB)
+DEFINE_TYPELIB_ENUMERATION (TAG_FORM, ATTR_OPTIONS, Form::customStyles, SKIN_TYPELIB)
+DEFINE_TYPELIB_ENUMERATION_WITH_PARENT (TAG_FORM, ATTR_DIALOGBUTTONS, nullptr, TAG_DIALOGBUTTON, ATTR_RESULT, SKIN_TYPELIB)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -3248,11 +3382,15 @@ View* FormElement::createView (const CreateArgs& args, View* view)
 // FormDelegateElement
 //************************************************************************************************
 
-BEGIN_SKIN_ELEMENT_WITH_MEMBERS (FormDelegateElement, ViewElement, TAG_FORMDELEGATE, DOC_GROUP_GENERAL, FormDelegateView)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_FORMNAME, TYPE_STRING)  ///< The name of the form for creating the content view
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_CONTROLLER, TYPE_STRING) ///< The name of the controller for creating the content view. Can be a sub controller of the current controller, or an absolute controler path.
-END_SKIN_ELEMENT_WITH_MEMBERS (FormDelegateElement)
-DEFINE_SKIN_ENUMERATION (TAG_FORMDELEGATE, ATTR_OPTIONS, FormDelegateView::customStyles)
+DEFINE_CLASS_HIDDEN (FormDelegateElement, ViewElement)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (FormDelegateElement, ViewElement, TAG_FORMDELEGATE, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (FormDelegateElement, DOC_GROUP_GENERAL)
+DEFINE_TYPELIB_RELATED_CLASS (FormDelegateElement, FormDelegateView)
+BEGIN_TYPELIB_MEMBERS (FormDelegateElement)
+	ADD_TYPELIB_MEMBER_STRING (ATTR_FORMNAME) ///< The name of the form for creating the content view
+	ADD_TYPELIB_MEMBER_STRING (ATTR_CONTROLLER) ///< The name of the controller for creating the content view. Can be a sub controller of the current controller, or an absolute controler path.
+END_TYPELIB_MEMBERS (FormDelegateElement)
+DEFINE_TYPELIB_ENUMERATION (TAG_FORMDELEGATE, ATTR_OPTIONS, FormDelegateView::customStyles, SKIN_TYPELIB)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -3307,10 +3445,14 @@ bool FormDelegateElement::appendOptions (String& string) const
 // ZoomableViewElement
 //************************************************************************************************
 
-BEGIN_SKIN_ELEMENT_WITH_MEMBERS (ZoomableViewElement, ViewElement, TAG_ZOOMABLE, DOC_GROUP_GENERAL, ZoomableView)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_FORMNAME, TYPE_STRING)  ///< The name of the form for creating the content view
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_FACTORS, TYPE_STRING)  ///< List of supported zoom factors (no restriction if empty)
-END_SKIN_ELEMENT_WITH_MEMBERS (ZoomableViewElement)
+DEFINE_CLASS_HIDDEN (ZoomableViewElement, ViewElement)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (ZoomableViewElement, ViewElement, TAG_ZOOMABLE, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (ZoomableViewElement, DOC_GROUP_GENERAL)
+DEFINE_TYPELIB_RELATED_CLASS (ZoomableViewElement, ZoomableView)
+BEGIN_TYPELIB_MEMBERS (ZoomableViewElement)
+	ADD_TYPELIB_MEMBER_STRING (ATTR_FORMNAME) ///< The name of the form for creating the content view
+	ADD_TYPELIB_MEMBER_STRING (ATTR_FACTORS) ///< List of supported zoom factors (no restriction if empty)
+END_TYPELIB_MEMBERS (ZoomableViewElement)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -3371,9 +3513,13 @@ bool ZoomableViewElement::getAttributes (SkinAttributes& a) const
 // CursorViewElement
 //************************************************************************************************
 
-BEGIN_SKIN_ELEMENT_WITH_MEMBERS (CursorViewElement, ImageViewElement, TAG_CURSORVIEW, DOC_GROUP_GENERAL, CursorView)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_CURSOR, TYPE_STRING)  ///< Name of a cursor resource.
-END_SKIN_ELEMENT_WITH_MEMBERS (CursorViewElement)
+DEFINE_CLASS_HIDDEN (CursorViewElement, ViewElement)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (CursorViewElement, ViewElement, TAG_CURSORVIEW, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (CursorViewElement, DOC_GROUP_GENERAL)
+DEFINE_TYPELIB_RELATED_CLASS (CursorViewElement, CursorView)
+BEGIN_TYPELIB_MEMBERS (CursorViewElement)
+	ADD_TYPELIB_MEMBER_STRING (ATTR_CURSOR) ///< Name of a cursor resource.
+END_TYPELIB_MEMBERS (CursorViewElement)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -3414,9 +3560,13 @@ View* CursorViewElement::createView (const CreateArgs& args, View* view)
 // HelpAnchorElement
 //************************************************************************************************
 
-BEGIN_SKIN_ELEMENT_WITH_MEMBERS (HelpAnchorElement, ViewElement, TAG_HELPANCHOR, DOC_GROUP_GENERAL, HelpInfoView)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_HELPIDENTIFIER, TYPE_STRING) ///< A string id that refers to a page in the user documentation
-END_SKIN_ELEMENT_WITH_MEMBERS (HelpAnchorElement)
+DEFINE_CLASS_HIDDEN (HelpAnchorElement, ViewElement)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (HelpAnchorElement, ViewElement, TAG_HELPANCHOR, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (HelpAnchorElement, DOC_GROUP_GENERAL)
+DEFINE_TYPELIB_RELATED_CLASS (HelpAnchorElement, HelpInfoView)
+BEGIN_TYPELIB_MEMBERS (HelpAnchorElement)
+	ADD_TYPELIB_MEMBER_STRING (ATTR_HELPIDENTIFIER) ///< A string id that refers to a page in the user documentation
+END_TYPELIB_MEMBERS (HelpAnchorElement)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -3449,18 +3599,22 @@ View* HelpAnchorElement::createView (const CreateArgs& args, View* view)
 // WindowClassElement
 //************************************************************************************************
 
-BEGIN_SKIN_ELEMENT_WITH_MEMBERS (WindowClassElement, Element, TAG_WINDOWCLASS, DOC_GROUP_WORKSPACE, WindowClass)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_NAME, TYPE_STRING)		///< general identifier
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_TITLE, TYPE_STRING)		///< window class title visible to user
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_FORMNAME, TYPE_STRING)	///< form name
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_GROUP, TYPE_STRING)		///< associates window class with a frame in a perspective
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_CMDCATEGORY, TYPE_STRING)	///< command category
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_CMDNAME, TYPE_STRING)		///< command name
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_VISIBLE, TYPE_BOOL)		///< true if window should be visible by default
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_CONTROLLER, TYPE_STRING)	///< object table url of associated controller
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_WORKSPACE, TYPE_STRING)	///< in which workspace this should appear
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_PERSISTENCE_ID, TYPE_STRING)	///< storage id used to store and restore the layout state
-END_SKIN_ELEMENT_WITH_MEMBERS (WindowClassElement)
+DEFINE_CLASS_HIDDEN (WindowClassElement, Element)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (WindowClassElement, Element, TAG_WINDOWCLASS, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (WindowClassElement, DOC_GROUP_WORKSPACE)
+DEFINE_TYPELIB_RELATED_CLASS (WindowClassElement, WindowClass)
+BEGIN_TYPELIB_MEMBERS (WindowClassElement)
+	ADD_TYPELIB_MEMBER_STRING (ATTR_NAME) ///< general identifier
+	ADD_TYPELIB_MEMBER_STRING (ATTR_TITLE) ///< window class title visible to user
+	ADD_TYPELIB_MEMBER_STRING (ATTR_FORMNAME) ///< form name
+	ADD_TYPELIB_MEMBER_STRING (ATTR_GROUP) ///< associates window class with a frame in a perspective
+	ADD_TYPELIB_MEMBER_STRING (ATTR_CMDCATEGORY) ///< command category
+	ADD_TYPELIB_MEMBER_STRING (ATTR_CMDNAME) ///< command name
+	ADD_TYPELIB_MEMBER (ATTR_VISIBLE, TypeNames::kBool) ///< true if window should be visible by default
+	ADD_TYPELIB_MEMBER_STRING (ATTR_CONTROLLER) ///< object table url of associated controller
+	ADD_TYPELIB_MEMBER_STRING (ATTR_WORKSPACE) ///< in which workspace this should appear
+	ADD_TYPELIB_MEMBER_STRING (ATTR_PERSISTENCE_ID) ///< storage id used to store and restore the layout state
+END_TYPELIB_MEMBERS (WindowClassElement)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -3565,14 +3719,18 @@ void WindowClassElement::loadFinished ()
 // WorkspaceElement
 //************************************************************************************************
 
-BEGIN_SKIN_ELEMENT_WITH_MEMBERS (WorkspaceElement, Element, TAG_WORKSPACE, DOC_GROUP_WORKSPACE, Workspace)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_WINDOWSTYLE, TYPE_ENUM)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_STORABLE, TYPE_BOOL)
-END_SKIN_ELEMENT_WITH_MEMBERS (WorkspaceElement)
-BEGIN_SKIN_ELEMENT_ATTRIBUTES (WorkspaceElement)
-	ADD_SKIN_CHILDGROUP_ATTRIBUTE (TAG_PERSPECTIVE)
-END_SKIN_ELEMENT_ATTRIBUTES (WorkspaceElement)
-DEFINE_SKIN_ENUMERATION_PARENT (TAG_WORKSPACE, ATTR_WINDOWSTYLE, nullptr, TAG_FORM, ATTR_WINDOWSTYLE)
+DEFINE_CLASS_HIDDEN (WorkspaceElement, Element)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (WorkspaceElement, Element, TAG_WORKSPACE, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (WorkspaceElement, DOC_GROUP_WORKSPACE)
+DEFINE_TYPELIB_RELATED_CLASS (WorkspaceElement, Workspace)
+BEGIN_TYPELIB_MEMBERS (WorkspaceElement)
+	ADD_TYPELIB_MEMBER (ATTR_WINDOWSTYLE, TypeNames::kEnum)
+	ADD_TYPELIB_MEMBER (ATTR_STORABLE, TypeNames::kBool)
+END_TYPELIB_MEMBERS (WorkspaceElement)
+BEGIN_TYPELIB_ATTRIBUTES (WorkspaceElement)
+	ADD_TYPELIB_CHILDGROUP_ATTRIBUTE (TAG_PERSPECTIVE)
+END_TYPELIB_ATTRIBUTES (WorkspaceElement)
+DEFINE_TYPELIB_ENUMERATION_WITH_PARENT (TAG_WORKSPACE, ATTR_WINDOWSTYLE, nullptr, TAG_FORM, ATTR_WINDOWSTYLE, SKIN_TYPELIB)
 
 ObjectList WorkspaceElement::workspaceCleanupList;
 
@@ -3681,23 +3839,27 @@ void WorkspaceElement::discardWorkspace ()
 // PerspectiveElement
 //************************************************************************************************
 
-BEGIN_SKIN_ELEMENT_WITH_MEMBERS (PerspectiveElement, Element, TAG_PERSPECTIVE, DOC_GROUP_WORKSPACE, Perspective)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_TITLE, TYPE_STRING)		///< title visible to user
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_ICON, TYPE_STRING)		///< icon
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_OPTIONS, TYPE_ENUM)		///< \see Perspective.customStyles
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_ORIENTATION, TYPE_ENUM)	///< \see Perspective.orientation
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_TRANSITION, TYPE_ENUM)	///< transition used when perspective is selected
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_STYLE, TYPE_STRING)		///< name of an optional style class used to draw the background of the full perspective. \see Style
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_BACKGROUNDOPTIONS, TYPE_STRING) ///< options for drawing background. \see ImageView
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_BACKCMDCATEGORY, TYPE_STRING)	///< command category for "back" navigation from this perspective
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_BACKCMDNAME, TYPE_STRING)	///< command name for "back" navigation from this perspective
-END_SKIN_ELEMENT_WITH_MEMBERS (PerspectiveElement)
-BEGIN_SKIN_ELEMENT_ATTRIBUTES (PerspectiveElement)
-	ADD_SKIN_CHILDGROUP_ATTRIBUTE (SCHEMA_GROUP_PERSPECTIVECHILDREN)
-END_SKIN_ELEMENT_ATTRIBUTES (PerspectiveElement)
-DEFINE_SKIN_ENUMERATION (TAG_PERSPECTIVE, ATTR_OPTIONS, Perspective::customStyles)
-DEFINE_SKIN_ENUMERATION (TAG_PERSPECTIVE, ATTR_ORIENTATION, Perspective::orientations)
-DEFINE_SKIN_ENUMERATION_PARENT (TAG_PERSPECTIVE, ATTR_TRANSITION, nullptr, TAG_VIEW, ATTR_TRANSITION)
+DEFINE_CLASS_HIDDEN (PerspectiveElement, Element)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (PerspectiveElement, Element, TAG_PERSPECTIVE, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (PerspectiveElement, DOC_GROUP_WORKSPACE)
+DEFINE_TYPELIB_RELATED_CLASS (PerspectiveElement, Perspective)
+BEGIN_TYPELIB_MEMBERS (PerspectiveElement)
+	ADD_TYPELIB_MEMBER_STRING (ATTR_TITLE) ///< title visible to user
+	ADD_TYPELIB_MEMBER_STRING (ATTR_ICON) ///< icon
+	ADD_TYPELIB_MEMBER (ATTR_OPTIONS, TypeNames::kEnum) ///< \see Perspective.customStyles
+	ADD_TYPELIB_MEMBER (ATTR_ORIENTATION, TypeNames::kEnum) ///< \see Perspective.orientation
+	ADD_TYPELIB_MEMBER (ATTR_TRANSITION, TypeNames::kEnum) ///< transition used when perspective is selected
+	ADD_TYPELIB_MEMBER_STRING (ATTR_STYLE) ///< name of an optional style class used to draw the background of the full perspective. \see Style
+	ADD_TYPELIB_MEMBER_STRING (ATTR_BACKGROUNDOPTIONS) ///< options for drawing background. \see ImageView
+	ADD_TYPELIB_MEMBER_STRING (ATTR_BACKCMDCATEGORY) ///< command category for "back" navigation from this perspective
+	ADD_TYPELIB_MEMBER_STRING (ATTR_BACKCMDNAME) ///< command name for "back" navigation from this perspective
+END_TYPELIB_MEMBERS (PerspectiveElement)
+BEGIN_TYPELIB_ATTRIBUTES (PerspectiveElement)
+	ADD_TYPELIB_CHILDGROUP_ATTRIBUTE (SCHEMA_GROUP_PERSPECTIVECHILDREN)
+END_TYPELIB_ATTRIBUTES (PerspectiveElement)
+DEFINE_TYPELIB_ENUMERATION (TAG_PERSPECTIVE, ATTR_OPTIONS, Perspective::customStyles, SKIN_TYPELIB)
+DEFINE_TYPELIB_ENUMERATION (TAG_PERSPECTIVE, ATTR_ORIENTATION, Perspective::orientations, SKIN_TYPELIB)
+DEFINE_TYPELIB_ENUMERATION_WITH_PARENT (TAG_PERSPECTIVE, ATTR_TRANSITION, nullptr, TAG_VIEW, ATTR_TRANSITION, SKIN_TYPELIB)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -3811,22 +3973,26 @@ Perspective* PerspectiveElement::createPerspective (SkinModel& model)
 // FrameElement
 //************************************************************************************************
 
-BEGIN_SKIN_ELEMENT_WITH_MEMBERS (FrameElement, Element, TAG_FRAME, DOC_GROUP_WORKSPACE, FrameItem)
-	ADD_SKIN_ELEMENT_MEMBER (TAG_DEFAULT, TYPE_STRING)		///< name of a window class that should initially appear in the frame
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_CONDITION, TYPE_STRING)	///< an absolute path of a property that is evaluated to check if this frame can be used. The condition can be inverted by prepending it with "not "
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_DECOR, TYPE_STRING)		///< name of a decorating form that is wrapped around the form of the window class. The decor form should include the actual content as view "Content" from controller "$frame". The decor form name is prepended with "Workspace."
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_FRIEND, TYPE_STRING)		///< name of a frame thats gets activated instead of this frame on mouse click
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_WIDTH, TYPE_METRIC)		///< initial width
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_HEIGHT, TYPE_METRIC)		///< initial height
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_GROUPS, TYPE_STRING)		///< space separated list of window class group names that may appear in this frame
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_OPTIONS, TYPE_ENUM)
-END_SKIN_ELEMENT_WITH_MEMBERS (FrameElement)
-BEGIN_SKIN_ELEMENT_ATTRIBUTES (FrameElement)
-	ADD_SKIN_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_FRAMECHILDREN)
-	ADD_SKIN_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_PERSPECTIVECHILDREN)
-	ADD_SKIN_CHILDGROUP_ATTRIBUTE (SCHEMA_GROUP_FRAMECHILDREN)
-END_SKIN_ELEMENT_ATTRIBUTES (FrameElement)
-DEFINE_SKIN_ENUMERATION (TAG_FRAME, ATTR_OPTIONS, FrameItem::customStyles)
+DEFINE_CLASS_HIDDEN (FrameElement, Element)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (FrameElement, Element, TAG_FRAME, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (FrameElement, DOC_GROUP_WORKSPACE)
+DEFINE_TYPELIB_RELATED_CLASS (FrameElement, FrameItem)
+BEGIN_TYPELIB_MEMBERS (FrameElement)
+	ADD_TYPELIB_MEMBER_STRING (TAG_DEFAULT) ///< name of a window class that should initially appear in the frame
+	ADD_TYPELIB_MEMBER_STRING (ATTR_CONDITION) ///< an absolute path of a property that is evaluated to check if this frame can be used. The condition can be inverted by prepending it with "not "
+	ADD_TYPELIB_MEMBER_STRING (ATTR_DECOR) ///< name of a decorating form that is wrapped around the form of the window class. The decor form should include the actual content as view "Content" from controller "$frame". The decor form name is prepended with "Workspace."
+	ADD_TYPELIB_MEMBER_STRING (ATTR_FRIEND) ///< name of a frame thats gets activated instead of this frame on mouse click
+	ADD_TYPELIB_MEMBER (ATTR_WIDTH, TypeNames::kMetric) ///< initial width
+	ADD_TYPELIB_MEMBER (ATTR_HEIGHT, TypeNames::kMetric) ///< initial height
+	ADD_TYPELIB_MEMBER_STRING (ATTR_GROUPS) ///< space separated list of window class group names that may appear in this frame
+	ADD_TYPELIB_MEMBER (ATTR_OPTIONS, TypeNames::kEnum)
+END_TYPELIB_MEMBERS (FrameElement)
+BEGIN_TYPELIB_ATTRIBUTES (FrameElement)
+	ADD_TYPELIB_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_FRAMECHILDREN)
+	ADD_TYPELIB_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_PERSPECTIVECHILDREN)
+	ADD_TYPELIB_CHILDGROUP_ATTRIBUTE (SCHEMA_GROUP_FRAMECHILDREN)
+END_TYPELIB_ATTRIBUTES (FrameElement)
+DEFINE_TYPELIB_ENUMERATION (TAG_FRAME, ATTR_OPTIONS, FrameItem::customStyles, SKIN_TYPELIB)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -3967,16 +4133,20 @@ bool FrameElement::isGroup ()
 // EmbeddedFrameElement
 //************************************************************************************************
 
-BEGIN_SKIN_ELEMENT_WITH_MEMBERS (EmbeddedFrameElement, ViewElement, TAG_EMBEDDED_FRAME, DOC_GROUP_WORKSPACE, EmbeddedFrameView)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_PARENT_CLASS, TYPE_STRING)	///< parent class, whose view host the corresponding EmbeddedFrame view. Only used when describing an the EmbeddedFrame.
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_WORKSPACE, TYPE_STRING)		///< workspace id. Only used when describing an EmbeddedFrame view.
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_TRANSITION, TYPE_ENUM)		///< transition used when content is replaced
-END_SKIN_ELEMENT_WITH_MEMBERS (EmbeddedFrameElement)
-BEGIN_SKIN_ELEMENT_ATTRIBUTES (EmbeddedFrameElement)
-	ADD_SKIN_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_VIEWSSTATEMENTS)
-	ADD_SKIN_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_FRAMECHILDREN)
-	ADD_SKIN_CHILDGROUP_ATTRIBUTE (TAG_FRAME)
-END_SKIN_ELEMENT_ATTRIBUTES (EmbeddedFrameElement)
+DEFINE_CLASS_HIDDEN (EmbeddedFrameElement, ViewElement)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (EmbeddedFrameElement, ViewElement, TAG_EMBEDDED_FRAME, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (EmbeddedFrameElement, DOC_GROUP_WORKSPACE)
+DEFINE_TYPELIB_RELATED_CLASS (EmbeddedFrameElement, EmbeddedFrameView)
+BEGIN_TYPELIB_MEMBERS (EmbeddedFrameElement)
+	ADD_TYPELIB_MEMBER_STRING (ATTR_PARENT_CLASS) ///< parent class, whose view host the corresponding EmbeddedFrame view. Only used when describing an the EmbeddedFrame.
+	ADD_TYPELIB_MEMBER_STRING (ATTR_WORKSPACE) ///< workspace id. Only used when describing an EmbeddedFrame view.
+	ADD_TYPELIB_MEMBER (ATTR_TRANSITION, TypeNames::kEnum) ///< transition used when content is replaced
+END_TYPELIB_MEMBERS (EmbeddedFrameElement)
+BEGIN_TYPELIB_ATTRIBUTES (EmbeddedFrameElement)
+	ADD_TYPELIB_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_VIEWSSTATEMENTS)
+	ADD_TYPELIB_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_FRAMECHILDREN)
+	ADD_TYPELIB_CHILDGROUP_ATTRIBUTE (TAG_FRAME)
+END_TYPELIB_ATTRIBUTES (EmbeddedFrameElement)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -4047,19 +4217,22 @@ END_STYLEDEF
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-BEGIN_SKIN_ELEMENT_WITH_MEMBERS (ParameterElement, Element, TAG_PARAMETER, DOC_GROUP_WORKSPACE, 0)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_TYPE, TYPE_ENUM)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_OPTIONS, TYPE_ENUM)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_VALUE, TYPE_STRING)  ///< initial parameter value
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_RANGE, TYPE_STRING)  ///< "min,max" for int and float; "range, pagesize" for scroll parameter; comma-separated list of values for a list
-END_SKIN_ELEMENT_WITH_MEMBERS (ParameterElement)
-BEGIN_SKIN_ELEMENT_ATTRIBUTES (ParameterElement)
-	ADD_SKIN_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_FRAMECHILDREN)
-	ADD_SKIN_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_PERSPECTIVECHILDREN)
-END_SKIN_ELEMENT_ATTRIBUTES (ParameterElement)
+DEFINE_CLASS_HIDDEN (ParameterElement, Element)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (ParameterElement, Element, TAG_PARAMETER, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (ParameterElement, DOC_GROUP_WORKSPACE)
+BEGIN_TYPELIB_MEMBERS (ParameterElement)
+	ADD_TYPELIB_MEMBER (ATTR_TYPE, TypeNames::kEnum)
+	ADD_TYPELIB_MEMBER (ATTR_OPTIONS, TypeNames::kEnum)
+	ADD_TYPELIB_MEMBER_STRING (ATTR_VALUE) ///< initial parameter value
+	ADD_TYPELIB_MEMBER_STRING (ATTR_RANGE) ///< "min,max" for int and float; "range, pagesize" for scroll parameter; comma-separated list of values for a list
+END_TYPELIB_MEMBERS (ParameterElement)
+BEGIN_TYPELIB_ATTRIBUTES (ParameterElement)
+	ADD_TYPELIB_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_FRAMECHILDREN)
+	ADD_TYPELIB_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_PERSPECTIVECHILDREN)
+END_TYPELIB_ATTRIBUTES (ParameterElement)
 
-DEFINE_SKIN_ENUMERATION (TAG_PARAMETER, ATTR_TYPE, ParameterElement::types)
-DEFINE_SKIN_ENUMERATION (TAG_PARAMETER, ATTR_OPTIONS, ParameterElement::options)
+DEFINE_TYPELIB_ENUMERATION (TAG_PARAMETER, ATTR_TYPE, ParameterElement::types, SKIN_TYPELIB)
+DEFINE_TYPELIB_ENUMERATION (TAG_PARAMETER, ATTR_OPTIONS, ParameterElement::options, SKIN_TYPELIB)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -4155,7 +4328,9 @@ bool ParameterElement::getAttributes (SkinAttributes& a) const
 // SpaceElement
 //************************************************************************************************
 
-DEFINE_SKIN_ELEMENT (SpaceElement, ViewElement, TAG_SPACE, DOC_GROUP_GENERAL, 0)
+DEFINE_CLASS_HIDDEN (SpaceElement, ViewElement)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (SpaceElement, ViewElement, TAG_SPACE, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (SpaceElement, DOC_GROUP_GENERAL)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -4187,7 +4362,9 @@ View* SpaceElement::createView (const CreateArgs& args, View* view)
 // NullSpaceElement
 //************************************************************************************************
 
-DEFINE_SKIN_ELEMENT (NullSpaceElement, SpaceElement, TAG_NULLSPACE, DOC_GROUP_GENERAL, 0)
+DEFINE_CLASS_HIDDEN (NullSpaceElement, SpaceElement)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (NullSpaceElement, SpaceElement, TAG_NULLSPACE, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (NullSpaceElement, DOC_GROUP_GENERAL)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -4202,21 +4379,28 @@ View* NullSpaceElement::createView (const CreateArgs& args, View* view)
 // StyleDataElement
 //************************************************************************************************
 
-BEGIN_SKIN_ELEMENT_ABSTRACT_WITH_MEMBERS (StyleDataElement, Element, TAG_STYLEDATA, DOC_GROUP_STYLES, 0)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_FORECOLOR, TYPE_COLOR)	///< color of foreground
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_BACKCOLOR, TYPE_COLOR)	///< color of background
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_HILITECOLOR, TYPE_COLOR)	///< color used for a hilite or seleciton state
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_TEXTCOLOR, TYPE_COLOR)	///< color used for drawing text
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_STROKEWIDTH, TYPE_METRIC)	///< width (in pixels) of drawn lines
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_BORDER, TYPE_METRIC)		///< border (in pixels)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_TEXTALIGN, TYPE_ENUM)		///< text alignment
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_TEXTOPTIONS, TYPE_ENUM)	///< text options
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_TEXTFACE, TYPE_STRING)	///< name of font face
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_TEXTTHEMEID, TYPE_STRING)	///< identifier of theme font
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_TEXTSIZE, TYPE_METRIC)	///< size of text
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_TEXTSTYLE, TYPE_ENUM)		///< style of font
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_TEXTSMOOTHING, TYPE_ENUM)	///< smoothing of font
-END_SKIN_ELEMENT_WITH_MEMBERS (StyleDataElement)
+DEFINE_CLASS_ABSTRACT_HIDDEN (StyleDataElement, Element)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (StyleDataElement, Element, TAG_STYLEDATA, SKIN_TYPELIB)
+DEFINE_TYPELIB_ABSTRACT (StyleDataElement)
+DEFINE_TYPELIB_DOCGROUP (StyleDataElement, DOC_GROUP_STYLES)
+BEGIN_TYPELIB_MEMBERS (StyleDataElement)
+	ADD_TYPELIB_MEMBER_COLOR (ATTR_FORECOLOR) ///< color of foreground
+	ADD_TYPELIB_MEMBER_COLOR (ATTR_BACKCOLOR) ///< color of background
+	ADD_TYPELIB_MEMBER_COLOR (ATTR_HILITECOLOR) ///< color used for a hilite or seleciton state
+	ADD_TYPELIB_MEMBER_COLOR (ATTR_TEXTCOLOR) ///< color used for drawing text
+	ADD_TYPELIB_MEMBER (ATTR_STROKEWIDTH, TypeNames::kMetric) ///< width (in pixels) of drawn lines
+	ADD_TYPELIB_MEMBER (ATTR_BORDER, TypeNames::kMetric) ///< border (in pixels)
+	ADD_TYPELIB_MEMBER (ATTR_TEXTALIGN, TypeNames::kEnum) ///< text alignment
+	ADD_TYPELIB_MEMBER (ATTR_TEXTOPTIONS, TypeNames::kEnum) ///< text options
+	ADD_TYPELIB_MEMBER_STRING (ATTR_TEXTFACE) ///< name of font face
+	ADD_TYPELIB_MEMBER_STRING (ATTR_TEXTTHEMEID) ///< identifier of theme font
+	ADD_TYPELIB_MEMBER (ATTR_TEXTSIZE, TypeNames::kMetric) ///< size of text
+	ADD_TYPELIB_MEMBER (ATTR_TEXTSTYLE, TypeNames::kEnum) ///< style of font
+	ADD_TYPELIB_MEMBER (ATTR_TEXTSMOOTHING, TypeNames::kEnum) ///< smoothing of font
+END_TYPELIB_MEMBERS (StyleDataElement)
+BEGIN_TYPELIB_ATTRIBUTES (StyleDataElement)
+	ADD_TYPELIB_CHILDGROUP_ATTRIBUTE (SCHEMA_GROUP_STYLECHILDREN)
+END_TYPELIB_ATTRIBUTES (StyleDataElement)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -4324,7 +4508,7 @@ bool StyleDataElement::getAttributes (SkinAttributes& a) const
 
 	a.setColor (ATTR_FORECOLOR, StyleDataReader (styleData).getForeColor ());
 	a.setColor (ATTR_BACKCOLOR, StyleDataReader (styleData).getBackColor ());
-	a.setColor (ATTR_HILITECOLOR, StyleDataReader (styleData).getHiliteColor ());
+	a.setColor (ATTR_HILITECOLOR, StyleDataReader (styleData).getHighlightColor ());
 	a.setColor (ATTR_TEXTCOLOR, StyleDataReader (styleData).getTextColor ());
 	a.setFloat (ATTR_STROKEWIDTH, StyleDataReader (styleData).getStrokeWidth ());
 	a.setOptions (ATTR_TEXTALIGN, StyleDataReader (styleData).getTextAlignment ().align, AlignElement::alignStyles);
@@ -4373,6 +4557,9 @@ void StyleDataElement::loadFinished ()
 		
 		else if(element->canCast (ccl_typeid<ImageElement> ()))
 			images.append (Pair (elementName, ((ImageElement*)element)->getAlias ()));
+
+		else if(element->canCast (ccl_typeid<AnimationElement> ()))
+			styleData.setAnimation (elementName, ((AnimationElement*)element)->getAnimation ());
 	EndFor
 }
 
@@ -4410,7 +4597,12 @@ void StyleDataElement::loadResources (SkinModel& model)
 // StyleConditionElement
 //************************************************************************************************
 
-DEFINE_SKIN_ELEMENT (StyleConditionElement, StyleDataElement, TAG_STYLECONDITION, DOC_GROUP_STYLES, 0)
+DEFINE_CLASS_HIDDEN (StyleConditionElement, StyleDataElement)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (StyleConditionElement, StyleDataElement, TAG_STYLECONDITION, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (StyleConditionElement, DOC_GROUP_STYLES)
+BEGIN_TYPELIB_ATTRIBUTES (StyleConditionElement)
+	ADD_TYPELIB_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_STYLECHILDREN)
+END_TYPELIB_ATTRIBUTES (StyleConditionElement)
 
 //************************************************************************************************
 // StyleElement
@@ -4422,18 +4614,18 @@ END_STYLEDEF
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-BEGIN_SKIN_ELEMENT_WITH_MEMBERS (StyleElement, StyleDataElement, TAG_STYLE, DOC_GROUP_STYLES, 0)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_APPSTYLE, TYPE_BOOL)		///< make style accessible from all skin scopes
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_OVERRIDE, TYPE_BOOL)		///< silence warning for styles that are replaced on purpose
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_INHERIT, TYPE_STRING)		///< inherit elements from this style
-END_SKIN_ELEMENT_WITH_MEMBERS (StyleElement)
-BEGIN_SKIN_ELEMENT_ATTRIBUTES (StyleElement)
-	ADD_SKIN_CHILDGROUP_ATTRIBUTE (SCHEMA_GROUP_STYLECHILDREN)
-END_SKIN_ELEMENT_ATTRIBUTES (StyleElement)
-DEFINE_SKIN_ENUMERATION (TAG_STYLE, ATTR_TEXTOPTIONS, StyleElement::textOptions)
-DEFINE_SKIN_ENUMERATION_PARENT (TAG_STYLE, ATTR_TEXTALIGN, nullptr, TAG_ALIGN, ATTR_ALIGN)
-DEFINE_SKIN_ENUMERATION (TAG_STYLE, ATTR_TEXTSTYLE, FontElement::fontStyles)
-DEFINE_SKIN_ENUMERATION_PARENT (TAG_STYLE, ATTR_TEXTSMOOTHING, nullptr, TAG_FONT, ATTR_SMOOTHING)
+DEFINE_CLASS_HIDDEN (StyleElement, StyleDataElement)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (StyleElement, StyleDataElement, TAG_STYLE, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (StyleElement, DOC_GROUP_STYLES)
+BEGIN_TYPELIB_MEMBERS (StyleElement)
+	ADD_TYPELIB_MEMBER (ATTR_APPSTYLE, TypeNames::kBool) ///< make style accessible from all skin scopes
+	ADD_TYPELIB_MEMBER (ATTR_OVERRIDE, TypeNames::kBool) ///< silence warning for styles that are replaced on purpose
+	ADD_TYPELIB_MEMBER_STRING (ATTR_INHERIT) ///< inherit elements from this style
+END_TYPELIB_MEMBERS (StyleElement)
+DEFINE_TYPELIB_ENUMERATION (TAG_STYLE, ATTR_TEXTOPTIONS, StyleElement::textOptions, SKIN_TYPELIB)
+DEFINE_TYPELIB_ENUMERATION_WITH_PARENT (TAG_STYLE, ATTR_TEXTALIGN, nullptr, TAG_ALIGN, ATTR_ALIGN, SKIN_TYPELIB)
+DEFINE_TYPELIB_ENUMERATION (TAG_STYLE, ATTR_TEXTSTYLE, FontElement::fontStyles, SKIN_TYPELIB)
+DEFINE_TYPELIB_ENUMERATION_WITH_PARENT (TAG_STYLE, ATTR_TEXTSMOOTHING, nullptr, TAG_FONT, ATTR_SMOOTHING, SKIN_TYPELIB)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -4545,11 +4737,13 @@ void StyleElement::loadResources (SkinModel& model)
 // ThemeStyleElement
 //************************************************************************************************
 
-DEFINE_SKIN_ELEMENT (ThemeStyleElement, StyleElement, TAG_THEMESTYLE, DOC_GROUP_STYLES, 0)
-BEGIN_SKIN_ELEMENT_ATTRIBUTES (ThemeStyleElement)
-	ADD_SKIN_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_TOPLEVEL)
-	ADD_SKIN_CHILDGROUP_ATTRIBUTE (SCHEMA_GROUP_THEMEELEMENTCHILDREN)
-END_SKIN_ELEMENT_ATTRIBUTES (ThemeStyleElement)
+DEFINE_CLASS_HIDDEN (ThemeStyleElement, StyleElement)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (ThemeStyleElement, StyleElement, TAG_THEMESTYLE, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (ThemeStyleElement, DOC_GROUP_STYLES)
+BEGIN_TYPELIB_ATTRIBUTES (ThemeStyleElement)
+	ADD_TYPELIB_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_TOPLEVEL)
+	ADD_TYPELIB_CHILDGROUP_ATTRIBUTE (SCHEMA_GROUP_THEMEELEMENTCHILDREN)
+END_TYPELIB_ATTRIBUTES (ThemeStyleElement)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -4586,10 +4780,13 @@ void ThemeStyleElement::loadResources (SkinModel& model)
 // StyleAliasElement
 //************************************************************************************************
 
-BEGIN_SKIN_ELEMENT_WITH_MEMBERS (StyleAliasElement, StyleElement, TAG_STYLEALIAS, DOC_GROUP_STYLES, 0)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_STYLES, TYPE_STRING)		///< The available style names, separted by spaces.
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_PARAMETER, TYPE_STRING)	///< Url of a parameter that selects on of the styles specified in "styles".
-END_SKIN_ELEMENT_WITH_MEMBERS (StyleAliasElement)
+DEFINE_CLASS_HIDDEN (StyleAliasElement, StyleElement)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (StyleAliasElement, StyleElement, TAG_STYLEALIAS, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (StyleAliasElement, DOC_GROUP_STYLES)
+BEGIN_TYPELIB_MEMBERS (StyleAliasElement)
+	ADD_TYPELIB_MEMBER_STRING (ATTR_STYLES) ///< The available style names, separted by spaces.
+	ADD_TYPELIB_MEMBER_STRING (ATTR_PARAMETER) ///< Url of a parameter that selects on of the styles specified in "styles".
+END_TYPELIB_MEMBERS (StyleAliasElement)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -4677,14 +4874,17 @@ void StyleAliasElement::loadResources (SkinModel& model)
 // ColorElement
 //************************************************************************************************
 
-BEGIN_SKIN_ELEMENT_WITH_MEMBERS (ColorElement, Element, TAG_COLOR, DOC_GROUP_STYLES, 0)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_COLOR, TYPE_COLOR)
-END_SKIN_ELEMENT_WITH_MEMBERS (ColorElement)
-BEGIN_SKIN_ELEMENT_ATTRIBUTES (ColorElement)
-	ADD_SKIN_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_RESOURCES)
-	ADD_SKIN_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_STYLECHILDREN)
-	ADD_SKIN_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_THEMEELEMENTCHILDREN)
-END_SKIN_ELEMENT_ATTRIBUTES (ColorElement)
+DEFINE_CLASS_HIDDEN (ColorElement, Element)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (ColorElement, Element, TAG_COLOR, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (ColorElement, DOC_GROUP_STYLES)
+BEGIN_TYPELIB_MEMBERS (ColorElement)
+	ADD_TYPELIB_MEMBER_COLOR (ATTR_COLOR)
+END_TYPELIB_MEMBERS (ColorElement)
+BEGIN_TYPELIB_ATTRIBUTES (ColorElement)
+	ADD_TYPELIB_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_RESOURCES)
+	ADD_TYPELIB_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_STYLECHILDREN)
+	ADD_TYPELIB_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_THEMEELEMENTCHILDREN)
+END_TYPELIB_ATTRIBUTES (ColorElement)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -4707,13 +4907,16 @@ bool ColorElement::getAttributes (SkinAttributes& a) const
 // MetricElement
 //************************************************************************************************
 
-BEGIN_SKIN_ELEMENT_WITH_MEMBERS (MetricElement, Element, TAG_METRIC, DOC_GROUP_STYLES, 0)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_VALUE, TYPE_METRIC)
-END_SKIN_ELEMENT_WITH_MEMBERS (MetricElement)
-BEGIN_SKIN_ELEMENT_ATTRIBUTES (MetricElement)
-	ADD_SKIN_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_STYLECHILDREN)
-	ADD_SKIN_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_THEMEELEMENTCHILDREN)
-END_SKIN_ELEMENT_ATTRIBUTES (MetricElement)
+DEFINE_CLASS_HIDDEN (MetricElement, Element)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (MetricElement, Element, TAG_METRIC, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (MetricElement, DOC_GROUP_STYLES)
+BEGIN_TYPELIB_MEMBERS (MetricElement)
+	ADD_TYPELIB_MEMBER (ATTR_VALUE, TypeNames::kMetric)
+END_TYPELIB_MEMBERS (MetricElement)
+BEGIN_TYPELIB_ATTRIBUTES (MetricElement)
+	ADD_TYPELIB_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_STYLECHILDREN)
+	ADD_TYPELIB_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_THEMEELEMENTCHILDREN)
+END_TYPELIB_ATTRIBUTES (MetricElement)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -4742,12 +4945,15 @@ bool MetricElement::getAttributes (SkinAttributes& a) const
 // StringElement
 //************************************************************************************************
 
-BEGIN_SKIN_ELEMENT_WITH_MEMBERS (StringElement, Element, TAG_STRING, DOC_GROUP_STYLES, 0)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_VALUE, TYPE_STRING)
-END_SKIN_ELEMENT_WITH_MEMBERS (StringElement)
-BEGIN_SKIN_ELEMENT_ATTRIBUTES (StringElement)
-	ADD_SKIN_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_STYLECHILDREN)
-END_SKIN_ELEMENT_ATTRIBUTES (StringElement)
+DEFINE_CLASS_HIDDEN (StringElement, Element)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (StringElement, Element, TAG_STRING, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (StringElement, DOC_GROUP_STYLES)
+BEGIN_TYPELIB_MEMBERS (StringElement)
+	ADD_TYPELIB_MEMBER_STRING (ATTR_VALUE)
+END_TYPELIB_MEMBERS (StringElement)
+BEGIN_TYPELIB_ATTRIBUTES (StringElement)
+	ADD_TYPELIB_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_STYLECHILDREN)
+END_TYPELIB_ATTRIBUTES (StringElement)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -4770,13 +4976,16 @@ bool StringElement::getAttributes (SkinAttributes& a) const
 // OptionsElement
 //************************************************************************************************
 
-BEGIN_SKIN_ELEMENT_WITH_MEMBERS (OptionsElement, Element, TAG_OPTIONS, DOC_GROUP_STYLES, 0)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_TYPE, TYPE_STRING)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_VALUE, TYPE_ENUM) ///< enum or integer
-END_SKIN_ELEMENT_WITH_MEMBERS (OptionsElement)
-BEGIN_SKIN_ELEMENT_ATTRIBUTES (OptionsElement)
-	ADD_SKIN_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_STYLECHILDREN)
-END_SKIN_ELEMENT_ATTRIBUTES (OptionsElement)
+DEFINE_CLASS_HIDDEN (OptionsElement, Element)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (OptionsElement, Element, TAG_OPTIONS, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (OptionsElement, DOC_GROUP_STYLES)
+BEGIN_TYPELIB_MEMBERS (OptionsElement)
+	ADD_TYPELIB_MEMBER_STRING (ATTR_TYPE)
+	ADD_TYPELIB_MEMBER (ATTR_VALUE, TypeNames::kEnum) ///< enum or integer
+END_TYPELIB_MEMBERS (OptionsElement)
+BEGIN_TYPELIB_ATTRIBUTES (OptionsElement)
+	ADD_TYPELIB_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_STYLECHILDREN)
+END_TYPELIB_ATTRIBUTES (OptionsElement)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -4788,11 +4997,11 @@ OptionsElement::OptionsElement ()
 
 const StyleDef* OptionsElement::findStyleDef () const
 {
-	const StyleDef* styleDef = nullptr;	
+	const StyleDef* styleDef = nullptr;
 	if(!typeName.isEmpty ())
-		styleDef = Enumeration::getStyleDef (typeName);
+		styleDef = getTypeLibrary ().getStyleDef (typeName);
 	else if(!name.isEmpty ())
-		styleDef = Enumeration::getStyleDef (name, true); // allow partial matching with attribute name
+		styleDef = getTypeLibrary ().getStyleDef (name, true); // allow partial matching with attribute name
 	return styleDef;
 }
 
@@ -4853,10 +5062,13 @@ END_STYLEDEF
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-BEGIN_SKIN_ELEMENT_WITH_MEMBERS (AlignElement, OptionsElement, TAG_ALIGN, DOC_GROUP_STYLES, 0)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_ALIGN, TYPE_ENUM)
-END_SKIN_ELEMENT_WITH_MEMBERS (AlignElement)
-DEFINE_SKIN_ENUMERATION (TAG_ALIGN, ATTR_ALIGN, AlignElement::alignStyles)
+DEFINE_CLASS_HIDDEN (AlignElement, OptionsElement)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (AlignElement, OptionsElement, TAG_ALIGN, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (AlignElement, DOC_GROUP_STYLES)
+BEGIN_TYPELIB_MEMBERS (AlignElement)
+	ADD_TYPELIB_MEMBER (ATTR_ALIGN, TypeNames::kEnum)
+END_TYPELIB_MEMBERS (AlignElement)
+DEFINE_TYPELIB_ENUMERATION (TAG_ALIGN, ATTR_ALIGN, AlignElement::alignStyles, SKIN_TYPELIB)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -4903,21 +5115,25 @@ END_STYLEDEF
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-BEGIN_SKIN_ELEMENT_WITH_MEMBERS (FontElement, Element, TAG_FONT, DOC_GROUP_STYLES, Font)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_THEMEID, TYPE_STRING)  
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_SIZE, TYPE_METRIC)  
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_STYLE, TYPE_ENUM)  
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_FACE, TYPE_STRING)  
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_SMOOTHING, TYPE_ENUM)  
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_SPACING, TYPE_METRIC)  
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_LINESPACING, TYPE_METRIC)
-END_SKIN_ELEMENT_WITH_MEMBERS (FontElement)
-BEGIN_SKIN_ELEMENT_ATTRIBUTES (FontElement)
-	ADD_SKIN_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_STYLECHILDREN)
-	ADD_SKIN_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_THEMEELEMENTCHILDREN)
-END_SKIN_ELEMENT_ATTRIBUTES (FontElement)
-DEFINE_SKIN_ENUMERATION (TAG_FONT, ATTR_STYLE, FontElement::fontStyles)
-DEFINE_SKIN_ENUMERATION (TAG_FONT, ATTR_SMOOTHING, FontElement::smoothingModes)
+DEFINE_CLASS_HIDDEN (FontElement, Element)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (FontElement, Element, TAG_FONT, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (FontElement, DOC_GROUP_STYLES)
+DEFINE_TYPELIB_RELATED_CLASS (FontElement, Font)
+BEGIN_TYPELIB_MEMBERS (FontElement)
+	ADD_TYPELIB_MEMBER_STRING (ATTR_THEMEID)
+	ADD_TYPELIB_MEMBER (ATTR_SIZE, TypeNames::kMetric)
+	ADD_TYPELIB_MEMBER (ATTR_STYLE, TypeNames::kEnum)
+	ADD_TYPELIB_MEMBER_STRING (ATTR_FACE)
+	ADD_TYPELIB_MEMBER (ATTR_SMOOTHING, TypeNames::kEnum)
+	ADD_TYPELIB_MEMBER (ATTR_SPACING, TypeNames::kMetric)
+	ADD_TYPELIB_MEMBER (ATTR_LINESPACING, TypeNames::kMetric)
+END_TYPELIB_MEMBERS (FontElement)
+BEGIN_TYPELIB_ATTRIBUTES (FontElement)
+	ADD_TYPELIB_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_STYLECHILDREN)
+	ADD_TYPELIB_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_THEMEELEMENTCHILDREN)
+END_TYPELIB_ATTRIBUTES (FontElement)
+DEFINE_TYPELIB_ENUMERATION (TAG_FONT, ATTR_STYLE, FontElement::fontStyles, SKIN_TYPELIB)
+DEFINE_TYPELIB_ENUMERATION (TAG_FONT, ATTR_SMOOTHING, FontElement::smoothingModes, SKIN_TYPELIB)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -5000,9 +5216,12 @@ bool FontElement::getAttributes (SkinAttributes& a) const
 // ShapeColorMappingElement
 //************************************************************************************************
 
-BEGIN_SKIN_ELEMENT_WITH_MEMBERS (ShapeColorMappingElement, Element, TAG_SHAPECOLORMAPPING, DOC_GROUP_RESOURCES, 0)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_COLOR, TYPE_COLOR)	///< replacement string
-END_SKIN_ELEMENT_WITH_MEMBERS (ShapeColorMappingElement)
+DEFINE_CLASS_HIDDEN (ShapeColorMappingElement, Element)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (ShapeColorMappingElement, Element, TAG_SHAPECOLORMAPPING, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (ShapeColorMappingElement, DOC_GROUP_RESOURCES)
+BEGIN_TYPELIB_MEMBERS (ShapeColorMappingElement)
+	ADD_TYPELIB_MEMBER_COLOR (ATTR_COLOR)	///< replacement string
+END_TYPELIB_MEMBERS (ShapeColorMappingElement)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -5045,11 +5264,14 @@ bool ShapeColorMappingElement::getAttributes (SkinAttributes& a) const
 // ColorSchemeElement
 //************************************************************************************************
 
-DEFINE_SKIN_ELEMENT (ColorSchemeElement, Element, TAG_COLORSCHEME, DOC_GROUP_RESOURCES, ColorScheme)
-BEGIN_SKIN_ELEMENT_ATTRIBUTES (ColorSchemeElement)
-	ADD_SKIN_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_RESOURCES)
-	ADD_SKIN_CHILDGROUP_ATTRIBUTE (TAG_COLORSCHEMECOLOR)
-END_SKIN_ELEMENT_ATTRIBUTES (ColorSchemeElement)
+DEFINE_CLASS_HIDDEN (ColorSchemeElement, Element)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (ColorSchemeElement, Element, TAG_COLORSCHEME, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (ColorSchemeElement, DOC_GROUP_RESOURCES)
+DEFINE_TYPELIB_RELATED_CLASS (ColorSchemeElement, ColorScheme)
+BEGIN_TYPELIB_ATTRIBUTES (ColorSchemeElement)
+	ADD_TYPELIB_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_RESOURCES)
+	ADD_TYPELIB_CHILDGROUP_ATTRIBUTE (TAG_COLORSCHEMECOLOR)
+END_TYPELIB_ATTRIBUTES (ColorSchemeElement)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -5121,20 +5343,23 @@ void ColorSchemeElement::loadFinished ()
 // ColorSchemeColorElement
 //************************************************************************************************
 
-BEGIN_SKIN_ELEMENT_WITH_MEMBERS (ColorSchemeColorElement, ColorElement, TAG_COLORSCHEMECOLOR, DOC_GROUP_RESOURCES, 0)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_HUEFIXED, TYPE_BOOL)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_SATURATION, TYPE_STRING)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_LUMINANCE, TYPE_STRING)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_INVERTIBLE, TYPE_BOOL)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_CONTRAST, TYPE_STRING)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_INVERTEDVALUE, TYPE_INT)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_ALPHAVALUE, TYPE_INT)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_SLCOMBINED, TYPE_BOOL)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_INVERTEDCOLOR, TYPE_STRING)
-END_SKIN_ELEMENT_WITH_MEMBERS (ColorSchemeColorElement)
-BEGIN_SKIN_ELEMENT_ATTRIBUTES (ColorSchemeColorElement)
-	ADD_SKIN_SCHEMAGROUP_ATTRIBUTE ("") // remove inherited schema groups
-END_SKIN_ELEMENT_ATTRIBUTES (ColorSchemeColorElement)
+DEFINE_CLASS_HIDDEN (ColorSchemeColorElement, ColorElement)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (ColorSchemeColorElement, ColorElement, TAG_COLORSCHEMECOLOR, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (ColorSchemeColorElement, DOC_GROUP_RESOURCES)
+BEGIN_TYPELIB_MEMBERS (ColorSchemeColorElement)
+	ADD_TYPELIB_MEMBER (ATTR_HUEFIXED, TypeNames::kBool)
+	ADD_TYPELIB_MEMBER_STRING (ATTR_SATURATION)
+	ADD_TYPELIB_MEMBER_STRING (ATTR_LUMINANCE)
+	ADD_TYPELIB_MEMBER (ATTR_INVERTIBLE, TypeNames::kBool)
+	ADD_TYPELIB_MEMBER_STRING (ATTR_CONTRAST)
+	ADD_TYPELIB_MEMBER (ATTR_INVERTEDVALUE, TypeNames::kInt)
+	ADD_TYPELIB_MEMBER (ATTR_ALPHAVALUE, TypeNames::kInt)
+	ADD_TYPELIB_MEMBER (ATTR_SLCOMBINED, TypeNames::kBool)
+	ADD_TYPELIB_MEMBER_STRING (ATTR_INVERTEDCOLOR)
+END_TYPELIB_MEMBERS (ColorSchemeColorElement)
+BEGIN_TYPELIB_ATTRIBUTES (ColorSchemeColorElement)
+	ADD_TYPELIB_SCHEMAGROUP_ATTRIBUTE ("") // remove inherited schema groups
+END_TYPELIB_ATTRIBUTES (ColorSchemeColorElement)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 

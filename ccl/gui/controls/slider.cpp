@@ -225,7 +225,7 @@ public:
 		setXYDistance (xDistance, yDistance);
 		
 		Rect handleRect;
-		slider->getRenderer ()->getPartRect (slider, Slider::kPartHandle, handleRect);
+		slider->getRenderer ()->getPartRect (handleRect, Slider::kPartHandle);
 		clickOffset.x = handleRect.getWidth () / 2;
 		clickOffset.y = handleRect.getHeight () / 2;
 	}
@@ -345,8 +345,8 @@ public:
 						// recalc clickOffset (ignore distance moved between gesture begin (first touch pos) and first change)
 						Rect handleRect;
 						Rect trackRect;
-						slider->getRenderer ()->getPartRect (slider, Slider::kPartHandle, handleRect);
-						slider->getRenderer ()->getPartRect (slider, Slider::kPartTrack, trackRect);
+						slider->getRenderer ()->getPartRect (handleRect, Slider::kPartHandle);
+						slider->getRenderer ()->getPartRect (trackRect, Slider::kPartTrack);
 						clickOffset = where - handleRect.getLeftTop () + trackRect.getLeftTop ();
 					}                   
 					mustAdjustFirstPosition = false;
@@ -945,7 +945,7 @@ void CCL_API Slider::notify (ISubject* s, MessageRef msg)
 ThemeRenderer* Slider::getRenderer ()
 {
 	if(renderer == nullptr)
-		renderer = getTheme ().createRenderer (ThemePainter::kSliderRenderer, visualStyle);
+		renderer = getTheme ().createRenderer (ThemePainter::kSliderRenderer, visualStyle, this);
 	return renderer;
 }
 
@@ -1062,10 +1062,10 @@ MouseHandler* Slider::createMouseHandler (const MouseEvent& event)
 void Slider::getHandlerParams (const GUIEvent& event, const Point& where, int& mode, Point& clickOffset, int& max, bool& handleClicked)
 {	
 	Rect handleRect;
-	getRenderer ()->getPartRect (this, kPartHandle, handleRect);
+	getRenderer ()->getPartRect (handleRect, kPartHandle);
 	
 	Rect trackRect;
-	getRenderer ()->getPartRect (this, kPartTrack, trackRect);
+	getRenderer ()->getPartRect (trackRect, kPartTrack);
 	
 	max = getStyle ().isVertical () ? (trackRect.getHeight () - handleRect.getHeight ()) : (trackRect.getWidth  () - handleRect.getWidth ());
 
@@ -1106,7 +1106,7 @@ bool Slider::onMouseDown (const MouseEvent& event)
 	if(style.isCustomStyle (Styles::kSliderBehaviorSwipe) && event.keys.isSet(KeyState::kRButton))
 	{
 		Rect handleRect;
-		getRenderer ()->getPartRect (this, kPartHandle, handleRect);
+		getRenderer ()->getPartRect (handleRect, kPartHandle);
 		if(handleRect.pointInside (event.where) || handleRect.getWidth () < 5 || handleRect.getHeight () < 5)
 		{
 			MouseHandler* handler = NEW SliderSwipeMouseHandler (this);
@@ -1366,7 +1366,7 @@ bool RangeSlider::onMouseWheel (const MouseWheelEvent& event)
 ThemeRenderer* RangeSlider::getRenderer ()
 {
 	if(renderer == nullptr)
-		renderer = getTheme ().createRenderer (ThemePainter::kRangeSliderRenderer, visualStyle);
+		renderer = getTheme ().createRenderer (ThemePainter::kRangeSliderRenderer, visualStyle, this);
 	return renderer;
 }
 
@@ -1437,13 +1437,13 @@ RangeSlider::EditHandlerSetup RangeSlider::getEditHandlerSetup (const GUIEvent& 
 	EditHandlerSetup setup;
 	
 	Rect handleRect;
-	getRenderer ()->getPartRect (this, kFirstHandle, handleRect);
+	getRenderer ()->getPartRect (handleRect, kFirstHandle);
 	
 	Rect handleRect2;
-	getRenderer ()->getPartRect (this, kSecondHandle, handleRect2);
+	getRenderer ()->getPartRect (handleRect2, kSecondHandle);
 	
 	Rect trackRect;
-	getRenderer ()->getPartRect (this, kTrackBack, trackRect);
+	getRenderer ()->getPartRect (trackRect, kTrackBack);
 	
 	setup.useLimits = style.isCustomStyle (Styles::kRangeSliderBehaviorLimit);
 	setup.invertible = style.isCustomStyle (Styles::kRangeSliderBehaviorInvertible);

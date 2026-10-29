@@ -12,13 +12,14 @@
 // For more information, please visit ccl.dev.
 //
 // Filename    : ccl/gui/theme/renderer/backgroundrenderer.cpp
-// Description : Control Renderer
+// Description : Background Renderer
 //
 //************************************************************************************************
 
 #include "ccl/gui/theme/renderer/backgroundrenderer.h"
 
 #include "ccl/gui/windows/dialog.h"
+
 #include "ccl/public/gui/iparameter.h"
 
 using namespace CCL;
@@ -29,15 +30,16 @@ using namespace CCL;
 if no image is available, "backcolor" is used. */
 //************************************************************************************************
 
-BEGIN_VISUALSTYLE_CLASS (Background, VisualStyle, "WindowBackgroundStyle")
-	ADD_VISUALSTYLE_IMAGE  ("DialogBack")	///< used when window is a dialog
-	ADD_VISUALSTYLE_IMAGE  ("WindowBack")	///< used when window is not a dialog
-END_VISUALSTYLE_CLASS (Background)
+DEFINE_TYPELIB_ENTRY_WITH_PARENT (Background, VisualStyle, "WindowBackgroundStyle", VISUALSTYLES_TYPELIB)
+BEGIN_TYPELIB_MEMBERS (Background)
+	ADD_TYPELIB_MEMBER_IMAGE ("DialogBack") ///< used when window is a dialog
+	ADD_TYPELIB_MEMBER_IMAGE ("WindowBack") ///< used when window is not a dialog
+END_TYPELIB_MEMBERS (Background)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-BackgroundRenderer::BackgroundRenderer (VisualStyle* visualStyle)
-:	ThemeRenderer (visualStyle)
+BackgroundRenderer::BackgroundRenderer (VisualStyle* visualStyle, View* owner)
+: ThemeRenderer (visualStyle, owner)
 {
 	dialogImage = visualStyle->getImage ("DialogBack");
 	windowImage = visualStyle->getImage ("WindowBack");
@@ -46,17 +48,17 @@ BackgroundRenderer::BackgroundRenderer (VisualStyle* visualStyle)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void BackgroundRenderer::draw (View* view, const UpdateRgn& updateRgn)
+void BackgroundRenderer::draw (const UpdateRgn& updateRgn)
 {	
-	StyleRef style = view->getStyle ();
+	StyleRef style = owner->getStyle ();
 	if(style.isOpaque ())
 	{
-		GraphicsPort port (view);
+		GraphicsPort port (owner);
 		port.addClip (updateRgn.bounds);
 		Rect rect;
-		view->getClientRect (rect);
-		
-		Dialog* dialog = ccl_cast<Dialog> (view);
+		owner->getClientRect (rect);
+
+		Dialog* dialog = ccl_cast<Dialog> (owner);
 		if(dialogImage && dialog)
 			port.drawImage (dialogImage, Rect (0, 0, dialogImage->getWidth (), dialogImage->getHeight ()), rect);
 		else
@@ -71,14 +73,14 @@ void BackgroundRenderer::draw (View* view, const UpdateRgn& updateRgn)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-int BackgroundRenderer::hitTest (View* view, const Point& loc, Point* clickOffset)
+int BackgroundRenderer::hitTest (PointRef where, Point* clickOffset)
 {
 	return 0;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool BackgroundRenderer::getPartRect (const View* view, int partCode, CCL::Rect& rect)
+bool BackgroundRenderer::getPartRect (Rect& rect, int partCode)
 {
 	return false;
 }

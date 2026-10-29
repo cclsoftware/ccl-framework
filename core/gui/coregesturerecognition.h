@@ -109,7 +109,7 @@ public:
 	virtual void onTouchChanged (const TouchInfo& touchInfo);
 	virtual void onTouchEnded (const TouchInfo& touchInfo);
 	
-	tbool isRecognizing (const GestureInfo* gesture) const;
+	bool isRecognizing (const GestureInfo* gesture) const;
 	void startRecognizing (GestureInfo* gesture);
 	void stopRecognizing (GestureInfo* gesture);
 		

@@ -12,7 +12,7 @@
 // For more information, please visit ccl.dev.
 //
 // Filename    : ccl/gui/theme/renderer/dividerrenderer.cpp
-// Description : Control Renderer
+// Description : Divider Renderer
 //
 //************************************************************************************************
 
@@ -30,12 +30,13 @@ namespace CCL {
 class DividerRenderer: public ThemeRenderer
 {	
 public:
-	DividerRenderer (VisualStyle* visualStyle);
+	DividerRenderer (VisualStyle* visualStyle, View* owner);
 
-	void draw (View* view, const UpdateRgn& updateRgn) override;
-	bool needsRedraw (View* view, const Point& sizeDelta) override;
-	int hitTest (View* view, const Point& loc, Point* clickOffset) override;
-	bool getPartRect (const View* view, int partCode, CCL::Rect& rect) override;
+	// ThemeRenderer
+	void draw (const UpdateRgn& updateRgn) override;
+	bool needsRedraw (const Point& sizeDelta) override;
+	int hitTest (PointRef where, Point* clickOffset = nullptr) override;
+	bool getPartRect (Rect& rect, int partCode) override;
 
 protected:
 	SharedPtr<IImage> hImage;
@@ -44,7 +45,7 @@ protected:
 	SharedPtr<IImage> vGrip;
 };
 
-DECLARE_VISUALSTYLE_CLASS (Divider)
+DECLARE_TYPELIB_ENTRY (Divider)
 
 } // namespace CCL
 

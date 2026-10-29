@@ -96,7 +96,7 @@ PathParser::PathParser (IStream& stream, IGraphicsPath::FillMode fillMode)
 GraphicsPath* PathParser::parsePath (StringRef data, IGraphicsPath::FillMode fillMode)
 {
 	StringChars chars (data);
-	MemoryStream memstream ((void*)(const uchar*)chars, (data.length () + 1) * sizeof(uchar));
+	MemoryStream memstream ((void*)chars.str (), (data.length () + 1) * sizeof(uchar));
 	PathParser parser (memstream, fillMode);
 	return parser.parse ();
 }
@@ -106,7 +106,7 @@ GraphicsPath* PathParser::parsePath (StringRef data, IGraphicsPath::FillMode fil
 GraphicsPath* PathParser::parsePolyLine (StringRef points, IGraphicsPath::FillMode fillMode)
 {
 	StringChars chars (points);
-	MemoryStream memstream ((void*)(const uchar*)chars, (points.length () + 1) * sizeof(uchar));
+	MemoryStream memstream ((void*)chars.str (), (points.length () + 1) * sizeof(uchar));
 	TextParser parser (memstream);
 	parser.addWhitespace (',');
 

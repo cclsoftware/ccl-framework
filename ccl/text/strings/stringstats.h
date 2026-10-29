@@ -66,14 +66,14 @@ namespace CCL {
 template <typename CharType>
 struct StringStatistics
 {
-	const char* title;
+	CStringPtr title;
 	int stringCount;
-	int byteCount;	
+	int byteCount;
 	int maxStringCount;
 	int maxByteCount;
 	int maxLength;
 
-	StringStatistics (const char* title)
+	StringStatistics (CStringPtr title)
 	: title (title),
 	  stringCount (0),
 	  byteCount (0),

@@ -29,7 +29,9 @@
 
 #include "ccl/public/text/translation.h"
 #include "ccl/public/gui/framework/viewbox.h"
+#include "ccl/public/gui/framework/iclipboard.h"
 #include "ccl/public/gui/framework/itheme.h"
+#include "ccl/public/guiservices.h"
 #include "ccl/public/security/iauthorizationmanager.h"
 #include "ccl/public/system/ifileutilities.h"
 #include "ccl/public/system/inativefilesystem.h"
@@ -46,6 +48,7 @@ using namespace Install;
 BEGIN_XSTRINGS ("PackageActions")
 	// action titles
 	XSTRING (ClaimLicense, "Claim Product Key")
+	XSTRING (CopyKeyToClipboard, "Copy Product Key")
 
 	// composed titles
 	XSTRING (ClaimLicenses, "Claim %(1) Product Keys")
@@ -73,6 +76,7 @@ CCL_KERNEL_TERM_LEVEL (UnRegisterManifestPackageHandler, kSetupLevel)
 //************************************************************************************************
 
 DEFINE_STRINGID_MEMBER_ (ManifestPackageHandler, kClaimLicense, "claimLicense")
+DEFINE_STRINGID_MEMBER_ (ManifestPackageHandler, kCopyKey, "copyKey")
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -99,7 +103,10 @@ bool ManifestPackageHandler::canHandle (UnifiedPackage* package) const
 void ManifestPackageHandler::getActions (Container& actions, UnifiedPackage* package)
 {
 	if(canHandle (package))
+	{
 		actions.add (createAction (package, kClaimLicense));
+		actions.add (createAction (package, kCopyKey));
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -124,6 +131,9 @@ void ManifestPackageHandler::updateAction (UnifiedPackageAction& action)
 			}
 		}
 	}
+
+	if(action.getId () == kCopyKey && !package->getLicenseData ().isEmpty ())
+		action.setState (UnifiedPackageAction::kEnabled);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -135,6 +145,15 @@ bool ManifestPackageHandler::performAction (UnifiedPackageAction& action)
 		if(action.getPackage () == nullptr)
 			return false;
 		bool succeeded = claimLicenseData (*action.getPackage ());
+		copyLicenseKey (*action.getPackage ());
+		action.complete (succeeded);
+		return true;
+	}
+	else if(action.getId () == kCopyKey)
+	{
+		if(action.getPackage () == nullptr)
+			return false;
+		bool succeeded = copyLicenseKey (*action.getPackage ());
 		action.complete (succeeded);
 		return true;
 	}
@@ -185,9 +204,19 @@ bool ManifestPackageHandler::claimLicenseData (UnifiedPackage& package)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
+bool ManifestPackageHandler::copyLicenseKey (UnifiedPackage& package)
+{
+	if(package.getLicenseData ().isEmpty ())
+		return false;
+	return System::GetClipboard ().setText (package.getLicenseData ());
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
 StringRef ManifestPackageHandler::getActionTitle (StringID id) const
 {
 	if(id == kClaimLicense) return XSTR (ClaimLicense);
+	if(id == kCopyKey) return XSTR (CopyKeyToClipboard);
 	return UnifiedPackageHandler::getActionTitle (id);
 }
 
@@ -576,7 +605,7 @@ String ManifestPackageSource::getLicenseData (const File& file) const
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void CCL_API ManifestPackageSource::notify (ISubject* subject, CCL::MessageRef msg)
+void CCL_API ManifestPackageSource::notify (ISubject* subject, MessageRef msg)
 {
 	if(msg == Signals::kAuthorizationPolicyChanged)
 	{

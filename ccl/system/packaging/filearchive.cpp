@@ -123,10 +123,7 @@ FileArchive::FileArchive (UrlRef path)
 
 void FileArchive::destruct ()
 {
-	if(isOpen ())
-		close ();
-	else
-		closeFile ();
+	ensureClose ();
 
 	if(tempFolder)
 		tempFolder->release ();

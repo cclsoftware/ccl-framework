@@ -211,7 +211,7 @@ tresult CCL_API FileManager::setFileUsed (UrlRef url, tbool state)
 		ASSERT (item)
 		item->useCount++;
 		if(item->useCount == 1)
-			startUsing (url);
+			return startUsing (url);
 	}
 	else if(item)
 	{		
@@ -344,6 +344,21 @@ tbool CCL_API FileManager::getFileDisplayString (String& string, UrlRef url, int
 		return true;
 	}
 	return false;	
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+tbool CCL_API FileManager::getFileSystemRepresentation (char pathBuffer[], int bufferSize, UrlRef url) const
+{
+	StringRef path = url.getPath ();
+	if(url.isRelative () || path.at (0) == '/')
+		path.toCString (Text::kUTF8, pathBuffer, bufferSize);
+	else
+	{
+		*pathBuffer = '/';
+		path.toCString (Text::kUTF8, pathBuffer + 1, bufferSize - 1);
+	}
+	return !path.isEmpty ();
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////

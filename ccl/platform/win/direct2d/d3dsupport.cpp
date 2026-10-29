@@ -673,7 +673,7 @@ bool D3DShader::compile (const void* buffer, uint32 sizeOfBuffer)
 	{
 		if(errorBlob)
 		{
-			CStringPtr errorMessage = reinterpret_cast<const char*> (errorBlob->GetBufferPointer ());
+			CStringPtr errorMessage = reinterpret_cast<CStringPtr> (errorBlob->GetBufferPointer ());
 			CCL_WARN (errorMessage, 0)
 		}
 

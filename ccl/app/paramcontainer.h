@@ -23,8 +23,11 @@
 
 #include "ccl/public/gui/paramlist.h"
 #include "ccl/public/gui/icontroller.h"
+#include "ccl/public/gui/paramtypes.h"
 
 namespace CCL {
+
+interface IParameterDefinitionProvider;
 
 class Attributes;
 
@@ -57,6 +60,9 @@ public:
 	bool restoreValue (const Attributes& a, StringID name, bool update = false);
 	bool restoreValue (const Attributes& a, IParameter* p, bool update = false);
 
+	/** Add parameters from a definition provider. */
+	void addParameters (const IParameterDefinitionProvider& provider);
+	
 	/** Clone parameters from other container. */
 	void addParametersFrom (const ParamContainer& container);
 
@@ -88,6 +94,8 @@ public:
 	CLASS_INTERFACE (IController, Object)
 
 protected:
+	static UIDRef toParameterClass (ParameterType type);
+
 	// ParamList
 	IParameter* newParameter (UIDRef cid) const override;
 

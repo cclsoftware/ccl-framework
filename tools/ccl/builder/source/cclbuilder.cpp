@@ -1052,7 +1052,7 @@ bool Builder::prepare ()
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void Builder::prepareVendorID (CCL::String& vendorId)
+void Builder::prepareVendorID (String& vendorId)
 {
 	Logging::info ("Type a new vendor ID");
 	console.readLine (vendorId);

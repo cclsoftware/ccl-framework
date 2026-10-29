@@ -153,6 +153,9 @@ interface CCL_NOVTABLE IClassAllocator: IUnknown
 	virtual tresult CCL_API createInstance (UIDRef cid, UIDRef iid, void** obj) = 0;
 
 	DECLARE_IID (IClassAllocator)
+
+protected:
+	template <typename IFace, UIDRef cid> IFace* create ();
 };
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -171,5 +174,17 @@ UIDRef ccl_iid ()
 } // namespace CCL
 
 #include "ccl/public/base/smartptr.h" // include smart pointer classes
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+// IClassAllocator inline
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+template <typename IFace, CCL::UIDRef cid>
+IFace* CCL::IClassAllocator::create ()
+{
+	CCL::AutoPtr<IFace> instance;
+	createInstance (cid, CCL::ccl_iid<IFace> (), instance.as_ppv ());
+	return instance.detach ();
+}
 
 #endif // _ccl_iunknown_h

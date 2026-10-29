@@ -276,7 +276,7 @@ void VectorPad::paramChanged ()
 ThemeRenderer* VectorPad::getRenderer ()
 {
 	if(renderer == nullptr)
-		renderer = getTheme ().createRenderer (ThemePainter::kVectorPadRenderer, visualStyle);
+		renderer = getTheme ().createRenderer (ThemePainter::kVectorPadRenderer, visualStyle, this);
 	return renderer;
 }
 
@@ -312,7 +312,7 @@ MouseHandler* VectorPad::createMouseHandler (const MouseEvent& event)
 	}
 
 	Rect handleRect;
-	getRenderer ()->getPartRect (this, kPartHandle, handleRect);
+	getRenderer ()->getPartRect (handleRect, kPartHandle);
 	
 	const int mode = sliderMode.getValue ();
 

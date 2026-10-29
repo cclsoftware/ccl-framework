@@ -146,7 +146,7 @@ interface ISafetyManager: IUnknown
 	virtual tresult CCL_API checkStability () = 0;
 	
 	/** Report an exception. */
-	virtual void CCL_API reportException (void* exceptionInformation, const uchar* systemDumpFile) = 0;
+	virtual void CCL_API reportException (void* exceptionInformation, UStringPtr systemDumpFile) = 0;
 
 	/** Handle an exception. Call in a catch block. */
 	virtual tbool CCL_API handleException () = 0;

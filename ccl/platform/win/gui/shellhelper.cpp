@@ -42,7 +42,7 @@ void ShellHelper::initialize ()
 	String appID = getAppUserModelID ();
 	if(!appID.isEmpty ())
 	{
-		HRESULT hr = ::SetCurrentProcessExplicitAppUserModelID (StringChars (appID)); // requires Windows 7 or later!
+		HRESULT hr = ::SetCurrentProcessExplicitAppUserModelID (StringChars (appID));
 		ASSERT (SUCCEEDED (hr))
 	}
 }

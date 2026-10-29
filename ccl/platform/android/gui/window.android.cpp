@@ -330,7 +330,7 @@ void AndroidWindow::adjustSizeToScreen (FrameworkView& parentView)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void AndroidWindow::showWindow (bool state)
+void AndroidWindow::showWindow (bool state, bool _activate)
 {
 	CCL_PRINT ("AndroidWindow::showWindow")
 	ASSERT (frameworkView != FrameworkActivity::getCurrentActivity ()->getContentView ())
@@ -342,7 +342,11 @@ void AndroidWindow::showWindow (bool state)
 		adjustSizeToScreen (*parentView);
 
 		if(state)
+		{
 			parentView->addView (frameworkView);
+			if(_activate)
+				activate ();
+		}
 		else
 			parentView->removeView (frameworkView);
 	}

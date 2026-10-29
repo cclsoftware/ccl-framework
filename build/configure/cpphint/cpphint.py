@@ -173,6 +173,9 @@ def main() -> None:
 
     parser = MacroParser(scan_path=config_file_path, sources=config.sources, conditions=config.conditions)
     macros = parser.run()
+    if macros is None:
+        logging.error("aborted, fix the source paths in the config file")
+        sys.exit(1)
 
     outfile_path = config_file_path.joinpath(config.output_path)
     exporter = HintExporter(outfile_path)

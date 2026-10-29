@@ -20,7 +20,8 @@
 #define _ccl_textbox_h
 
 #include "ccl/gui/controls/control.h"
-#include "ccl/gui/graphics/markupsupport.h"
+#include "ccl/gui/controls/textmodel.h"
+
 #include "ccl/gui/theme/renderer/compositedrenderer.h"
 #include "ccl/gui/theme/textscaler.h"
 
@@ -60,7 +61,9 @@ If this background color is transparent "textcolor.transparent" will be used to 
 
 class TextBox: public Control,
 			   public ICommandHandler,
-			   public ITextParamProvider
+			   public ITextParamProvider,
+			   public ITextModelModifier
+
 {
 public:
 	DECLARE_CLASS (TextBox, Control)
@@ -91,13 +94,11 @@ public:
 
 	virtual Coord getDisplayWidth () const;
 	virtual Coord getDisplayHeight () const;
-	virtual ITextLayout* getTextLayout ();
-	virtual StringRef getText ();
+	virtual const ITextLayout* getTextLayout () const;
+	virtual void getText (String& text) const;
 	virtual bool isEditing () const;
 
 	PROPERTY_VARIABLE (int, textTrimMode, TextTrimMode)
-
-	Coord getDisplayOffset () { return isEditing () ? displayOffset : 0; }
 
 	static StringRef getPasswordReplacementString ();
 
@@ -120,15 +121,14 @@ public:
 	// ITextParamProvider
 	IParameter* getTextParameter () const override;
 
+	// ITextModelModifier
+	void modifyDisplayString (String& displayString) const override;
+	void modifyLayout (ITextLayout& textLayout) const override {}
+
 	CLASS_INTERFACE2 (ICommandHandler, ITextParamProvider, Control)
 
 protected:
-	AutoPtr<ITextLayout> textLayout;
 	IMutableTextModel* textModel;
-	TextScaler textScaler;
-	String displayedText; // possibly truncated to fit into the box and has the labelParam text prepended
-	String plainTextCache; // read-only cache that mirrors textModel.toDisplayString ()
-	bool changed;
 	IParameter* labelParam;
 	IParameter* colorParam;
 	mutable int showFullTextAsTooltip;
@@ -138,31 +138,29 @@ protected:
 	Alignment savedAlignment;
 	bool alignmentInitialized;
 	Coord explicitMaxWidth;
-	Coord displayOffset;
 
 	void setTextModel (IMutableTextModel* model);
 
 	void createTextModel ();
 	bool tryModelEditText (const MouseEvent& event);
-	void buildFullText (String& text) const;
-	void buildText (String& text) const;
-	virtual void buildTextLayout ();
-	void deferFitSizeCheck ();
 	void triggerFitSizeCheck ();
 	bool isHFitAndFitText () const;
 	virtual Coord getHFitWidth () const;
 	
 	bool onEditCopy (const CommandMsg&);
-	virtual void setChanged ();
 
 	void updatePadding ();
-	void updateTextScaler ();
-	void resizeLayout (RectRef size);
 	MouseCursor* getTextCursor () const;
 
 	// ICommandHandler
 	tbool CCL_API checkCommandCategory (CStringRef category) const override;
 	tbool CCL_API interpretCommand (const CommandMsg& msg) override;
+
+	enum PrivateFlags
+	{
+		kMeasuringFitWidth	= 1<<(kLastPrivateFlag + 1),	///< while set, modifyDisplayString () must not collapse the text (see getHFitWidth ())
+		kTextBoxLastPrivateFlag = kLastPrivateFlag + 1		///< derived classes must continue from here
+	};
 };
 
 } // namespace CCL

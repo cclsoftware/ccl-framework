@@ -4,7 +4,7 @@
 Colors
 ############
 
-Colors can be defined using HSV, HSB, or hexadecimal notation. For greater flexibility, you can also use :ref:`Colorscheme.Colors<colors_scheme>`, which adapt their color tones based on the user's settings.
+Colors can be defined using HSV, HSL, or hexadecimal notation. For greater flexibility, you can also use :ref:`Colorscheme.Colors<colors_scheme>`, which adapt their color tones based on the user's settings.
 
 .. code-block:: xml
 
@@ -12,7 +12,7 @@ Colors can be defined using HSV, HSB, or hexadecimal notation. For greater flexi
 
         <!-- colors -->
 
-        <Color name="ColorA" color="red"/><!-- standard colors (red, green, blue, yellow etc.) - use for prototyping purposese only -->
+        <Color name="ColorA" color="red"/><!-- standard colors (red, green, blue, yellow etc.) - use for prototyping purposes only -->
         <Color name="ColorB" color="#123456"/> <!-- hex -->
         <Color name="ColorB2" color="#123456ab"/> <!-- hex alpha -->
         <Color name="ColorC" color="hsl(120,100,50)"/>	<!-- hue [0-360], saturation [0-100], luminance [0-100] -->
@@ -40,11 +40,17 @@ You can find a list of these common ColorScheme.Colors in the sharedcolors.xml f
 			@Main.HighlightColor            - Primary highlight color
 			@Main.WindowBackgroundColor     - Window backcolor
 
+********
+Advanced
+********
+
+Plain colors (hex, HSL, HSV) cover most cases. The following is for colors that need to adapt automatically - to inversion, or to the user's color scheme settings.
+
 .. _colors_scheme:
 
-*************
+================
 Color Scheme
-*************
+================
 
 A |xml.class.colorscheme.color| supports color inversion, changes to hue, saturation and luminance, depending on the user settings in the app’s color scheme options.
 
@@ -57,11 +63,12 @@ Skin Attributes
 :invertedvalue: overrides luminance value of base and inverted color when inverted
 :saturation: defines how saturation value is affected when color scheme options are changed (value or curve)
 :luminance: defines how luminance value is affected when color scheme options are changed (value or curve)
-:contrast: defines how contrast values are affected when color scheme options are changed (value or curve) 
+:contrast: defines how contrast values are affected when color scheme options are changed (value or curve)
 :slcombined: increases the saturation with increasing luminance *(deprecated)*
 
 Value Curves
-############
+------------
+
 A value curve is linear in general. Each curve can define segments with different slopes.
 
 * there are 2 sections separated by a ``:`` - lower segments : upper segments
@@ -78,4 +85,4 @@ A value curve is linear in general. Each curve can define segments with differen
 .. image:: img/ColorScheme.drawio.png
   :width: 500
   :align: center
-  :alt: rough sketch of ColorSchemes (png inlcudes draw.io code)
+  :alt: rough sketch of ColorSchemes (png includes draw.io code)

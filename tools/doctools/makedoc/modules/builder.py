@@ -2,6 +2,8 @@
 """Makedoc builder module.
 """
 
+__copyright__ = "Copyright (c) 2026 CCL Software Licensing GmbH"
+
 import logging
 import os
 import pathlib
@@ -14,8 +16,6 @@ from modules.actions import ActionFactory, BuildActionException, IBuildAction
 from modules.template import SphinxConfigWriter, DoxyrestConfigWriter, DoxygenConfigWriter
 from modules.project import ProjectHandler, ProjectConfigInfo
 from modules.tools import SphinxTool, PdfTool
-
-__copyright__ = "Copyright (c) 2023 CCL Software Licensing GmbH"
 
 
 class BuildException(Exception):

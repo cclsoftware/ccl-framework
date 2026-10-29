@@ -39,7 +39,7 @@ protected:
 	
 	// SafetyManager
 	void enableCrashRecovery (bool state);
-	void CCL_API reportException (void* exceptionInformation, const uchar* systemDumpFile);
+	void CCL_API reportException (void* exceptionInformation, UStringPtr systemDumpFile);
 };
 
 } // namespace CCL
@@ -61,7 +61,7 @@ void CocoaSafetyManager::enableCrashRecovery (bool state)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void CCL_API CocoaSafetyManager::reportException (void* exceptionInformation, const uchar* systemDumpFile)
+void CCL_API CocoaSafetyManager::reportException (void* exceptionInformation, UStringPtr systemDumpFile)
 {
 	modulePath[0] = '\0';
 	

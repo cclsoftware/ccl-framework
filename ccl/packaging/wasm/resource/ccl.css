@@ -1,0 +1,106 @@
+body
+{
+	font-family: sans-serif;
+	font-size: 12px;
+}
+
+.window
+{
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
+	padding: 0;
+	margin: 0;
+	border: 0;
+	background: transparent;
+}
+.window:focus
+{
+	outline: none;
+}
+.window.dropShadow, .window.titleBar
+{
+	box-shadow: #00000033 0px 8px 24px;
+}
+.window.topmost
+{
+	z-index: 999;
+}
+
+.windowContent
+{
+	flex: 1 1 auto;
+	width: 100%;
+	height: 100%;
+	display: block;
+	background: transparent;
+}
+
+.window > .titleBar
+{
+	height: 24px;
+	flex: 0 0 24px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 0 10px;
+	background: hsl(212,0%,30%);
+	color: hsl(212,0%,90%);
+	user-select: none;
+}
+.window:focus > .titleBar
+{
+	background: hsl(212,0%,10%);
+}
+
+.window > .titleBar > .titleButtons
+{
+	display: flex;
+	gap: 4px;
+	height: 20px;
+}
+
+.window > .titleBar > .titleButtons > button
+{
+	width: 20px;
+	height: 20px;
+	position: relative;
+}
+
+.maximizeButton::before
+{
+	content: "";
+	position: absolute;
+	width: 10px;
+	height: 8px;
+	border: 2px solid hsl(212,0%,30%);
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	box-sizing: border-box;
+}
+
+.closeButton::before, .closeButton::after
+{
+	content: "";
+	position: absolute;
+	width: 14px;
+	height: 2px;
+	background: hsl(212,0%,30%);
+	left: 50%;
+	top: 50%;
+}
+.closeButton::before
+{
+	transform: translate(-50%, -50%) rotate(45deg);
+}
+.closeButton::after
+{
+	transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+#tooltip
+{
+	padding: 4px 8px;
+	border-radius: 4px;
+}

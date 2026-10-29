@@ -27,13 +27,20 @@
 
 class GestureRecognizerManager;
 
+namespace CCL {
+
+class IOSWindow;
+
+} // namespace CCL
+
+
 //************************************************************************************************
 // ContentView
 //************************************************************************************************
 
 @interface CCL_ISOLATED (ContentView): UIView<UIGestureRecognizerDelegate, UIPencilInteractionDelegate, CALayerDelegate>
 {
-    CCL::Window* window;
+    CCL::IOSWindow* window;
 	GestureRecognizerManager* recognizerManager;
 }
 

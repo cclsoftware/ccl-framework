@@ -47,6 +47,8 @@ list (APPEND cclgenerator_source_files
 	${CMAKE_CURRENT_LIST_DIR}/../source/cclgeneratormodel.h
 	${CMAKE_CURRENT_LIST_DIR}/../source/cclgeneratormodel.cpp
 	${CMAKE_CURRENT_LIST_DIR}/../source/cclgeneratormain.cpp
+	${CMAKE_CURRENT_LIST_DIR}/../source/stringtemplate.h
+	${CMAKE_CURRENT_LIST_DIR}/../source/stringtemplate.cpp
 	${CMAKE_CURRENT_LIST_DIR}/../source/appversion.h
 )
 

@@ -102,7 +102,15 @@ void ExtensionManagement::makePath (Url& path, const ExtensionDescription& e)
 void ExtensionManagement::makePath (Url& path, StringRef id, ExtensionTypeID type)
 {
 	getLocation (path, type);
+	makePath (path, path, id);
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+void ExtensionManagement::makePath (Url& path, UrlRef& base, StringRef id)
+{
 	LegalFileName folderName (id);
+	path.assign (base);
 	path.descend (folderName, Url::kFolder);
 }
 

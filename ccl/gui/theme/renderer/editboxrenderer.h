@@ -11,7 +11,7 @@
 // You must choose and comply with one of the above licensing options.
 // For more information, please visit ccl.dev.
 //
-// Filename    : ccl/gui/theme/renderer/editboxrenderer.cpp
+// Filename    : ccl/gui/theme/renderer/editboxrenderer.h
 // Description : Edit Box Renderer
 //
 //************************************************************************************************
@@ -30,28 +30,28 @@ namespace CCL {
 class EditBoxRenderer: public TextBoxRenderer
 {
 public:
-	EditBoxRenderer (VisualStyle* visualStyle);
+	DECLARE_CLASS_ABSTRACT (EditBoxRenderer, TextBoxRenderer)
+
+	EditBoxRenderer (VisualStyle* visualStyle, View* owner);
+	~EditBoxRenderer ();
 
 	// TextBoxRenderer
-	void draw (View* view, const UpdateRgn& updateRgn) override;
+	void draw (const UpdateRgn& updateRgn) override;
 
 protected:
-	bool colorsInitialized;
 	Rect nativePadding;
-	Color selectionColor;
-	Color placeholderColor;
-	Font placeholderFont;
-		
-	void initialize (StyleRef style) override;
-	void initializeColors (const View* view);
+	RenderAtom selectionAtom;
+	RenderAtom placeholderAtom;
+	IMutableTextModel* placeholderTextModel;
 	
 	// TextBoxRenderer
-	bool drawLayout (View* view, GraphicsPort& port, ITextLayout* layout, BrushRef textBrush) override;
-	bool getPartRect (const View* view, int partCode, Rect& rect) override;
-	bool isOpaque (const View* view) const override;
+	void applyVisualStyle (RenderAtomTransaction& transaction) override;
+	bool getPartRect (Rect& rect, int partCode) override;
+	void updateAtoms () override;
+	bool isOpaque () const override;
 };
 
-DECLARE_VISUALSTYLE_CLASS (EditBox)
+DECLARE_TYPELIB_ENTRY (EditBox)
 
 } // namespace CCL
 

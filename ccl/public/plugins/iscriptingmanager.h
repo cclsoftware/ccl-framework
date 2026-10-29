@@ -80,6 +80,9 @@ DEFINE_IID (IScriptingEnvironment, 0x2d3300fd, 0x9, 0x4bc9, 0xb7, 0x5b, 0x9c, 0x
 
 interface IScriptingManager: IScriptingEnvironment
 {
+	/** Global scripting host instance name. */
+	DECLARE_STRINGID_MEMBER (kHost)
+
 	/** Startup scripting. */
 	virtual void CCL_API startup (StringID moduleID, ModuleRef module, const ArgumentList* args = nullptr, tbool load = true) = 0;
 
@@ -109,6 +112,7 @@ interface IScriptingManager: IScriptingEnvironment
 };
 
 DEFINE_IID (IScriptingManager, 0x4254f92c, 0xcf21, 0x4583, 0x9e, 0xad, 0x24, 0xcc, 0xea, 0x19, 0xe8, 0x91)
+DEFINE_STRINGID_MEMBER (IScriptingManager, kHost, "Host")
 
 } // namespace CCL
 

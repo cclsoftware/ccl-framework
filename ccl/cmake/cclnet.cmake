@@ -16,6 +16,16 @@
 #
 #************************************************************************************************
 
+option (CCLNET_ENABLE_ASYNCDNSRESOLVER "Enable c-ares based asynchronous/bounded DNS resolution" ON)
+if (CCLNET_ENABLE_ASYNCDNSRESOLVER)
+	find_package (cares)
+	if (NOT cares_FOUND)
+		message (NOTICE "Disabling asynchronous DNS resolution. Missing dependency: c-ares.")
+		set (CCLNET_ENABLE_ASYNCDNSRESOLVER OFF CACHE BOOL "" Force)
+		set (CCLNET_ENABLE_ASYNCDNSRESOLVER OFF)
+	endif ()
+endif ()
+
 set (cclnet_exports
 	CCLModuleMain
 	${CCL_EXPORT_PREFIX}GetNetwork${CCL_EXPORT_POSTFIX}
@@ -88,17 +98,33 @@ ccl_list_append_once (cclnet_source_files
 	${CCL_DIR}/network/netstream.h
 	${CCL_DIR}/network/network.cpp
 	${CCL_DIR}/network/network.h
+)
 
-	${CCL_DIR}/network/web/http/client.cpp
-	${CCL_DIR}/network/web/http/client.h
-	${CCL_DIR}/network/web/http/request.cpp
-	${CCL_DIR}/network/web/http/request.h
-	${CCL_DIR}/network/web/http/server.cpp
-	${CCL_DIR}/network/web/http/server.h
+ccl_list_append_once (cclnet_asyncdnsresolver_sources
+	${CCL_DIR}/network/asyncdnsresolver.cpp
+	${CCL_DIR}/network/asyncdnsresolver.h
+)
+
+ccl_list_append_once (cclnet_internal_sources
+	${CCL_DIR}/network/web/internal/httpclient.cpp
+	${CCL_DIR}/network/web/internal/httpclient.h
+	${CCL_DIR}/network/web/internal/httprequest.cpp
+	${CCL_DIR}/network/web/internal/httprequest.h
+	${CCL_DIR}/network/web/internal/httpserver.cpp
+	${CCL_DIR}/network/web/internal/httpserver.h
+	${CCL_DIR}/network/web/internal/wsclient.cpp
+	${CCL_DIR}/network/web/internal/wsclient.h
+	${CCL_DIR}/network/web/internal/webengine.cpp
+)
+
+ccl_list_append_once (cclnet_source_files
+	${CCL_DIR}/network/web/webabstraction.cpp
+	${CCL_DIR}/network/web/webabstraction.h
 	${CCL_DIR}/network/web/localclient.cpp
 	${CCL_DIR}/network/web/localclient.h
 	${CCL_DIR}/network/web/webnewsreader.cpp
 	${CCL_DIR}/network/web/webnewsreader.h
+	${CCL_DIR}/network/web/webabstraction.h
 	${CCL_DIR}/network/web/webclient.cpp
 	${CCL_DIR}/network/web/webclient.h
 	${CCL_DIR}/network/web/webrequest.cpp
@@ -115,7 +141,7 @@ ccl_list_append_once (cclnet_source_files
 	${CCL_DIR}/network/web/xmlnewsreader.h
 	${CCL_DIR}/network/web/transfermanager.cpp
 	${CCL_DIR}/network/web/transfermanager.h
-	
+
 	${CCL_DIR}/network/webfs/webfilesearcher.cpp
 	${CCL_DIR}/network/webfs/webfilesearcher.h
 	${CCL_DIR}/network/webfs/webfileservice.cpp
@@ -130,7 +156,7 @@ ccl_list_append_once (cclnet_source_files
 if (NOT CMAKE_CURRENT_SOURCE_DIR STREQUAL cclnet_SOURCE_DIR)
 	source_group ("main" FILES ${cclnet_main_sources})
 	source_group (TREE ${CCL_DIR}/public PREFIX "public" FILES ${cclnet_public_source_files} ${cclnet_public_sources} ${cclnet_public_headers})
-	source_group (TREE ${CCL_DIR}/network PREFIX "source" FILES ${cclnet_source_files})
+	source_group (TREE ${CCL_DIR}/network PREFIX "source" FILES ${cclnet_source_files} ${cclnet_internal_sources} ${cclnet_asyncdnsresolver_sources})
 	source_group ("cmake" FILES ${CMAKE_CURRENT_LIST_FILE})
 	set (cclnet_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}")
 endif ()
@@ -148,6 +174,8 @@ endif ()
 # Add targets
 ccl_read_version (${cclnet} "${CCL_DIR}/public/cclversion.h" "CCLNET")
 if (NOT TARGET ${cclnet})
+	option (CCLNET_ENABLE_INTERNAL_WEBENGINE "Enable internal web engine" ON)
+
 	if (${CCL_STATIC_ONLY})
 		ccl_add_library (cclnet INTERFACE POSTFIX "${CCL_ISOLATION_POSTFIX}")
 	else ()
@@ -163,13 +191,29 @@ if (NOT TARGET ${cclnet})
 		${cclnet_source_files}
 	)
 
+	if (CCLNET_ENABLE_INTERNAL_WEBENGINE)
+		ccl_list_append_once (cclnet_sources
+			${cclnet_internal_sources}
+		)
+	endif ()
+
+	if (CCLNET_ENABLE_ASYNCDNSRESOLVER)
+		ccl_list_append_once (cclnet_sources
+			${cclnet_asyncdnsresolver_sources}
+		)
+	endif ()
+
 	if (NOT ${CCL_STATIC_ONLY})
 		target_sources (${cclnet} PRIVATE ${cclnet_sources} ${CMAKE_CURRENT_LIST_FILE})
 		ccl_target_headers (${cclnet} INSTALL ${CCL_SYSTEM_INSTALL} DESTINATION ${CCL_PUBLIC_HEADERS_DESTINATION} BASE_DIRS ${CCL_DIR} FILES ${cclnet_public_headers})
 
-		target_link_libraries (${cclnet} PUBLIC ${cclbase} ${cclsystem} ${ccltext} PRIVATE corelib)
+		target_link_libraries (${cclnet} PUBLIC ${cclsystem} ${ccltext} PRIVATE ${cclbase} ${cares_LIBRARIES})
 		target_include_directories (${cclnet} INTERFACE "$<INSTALL_INTERFACE:${VENDOR_PUBLIC_HEADERS_DESTINATION}>")
-		
+
+		if (CCLNET_ENABLE_ASYNCDNSRESOLVER)
+			target_compile_definitions (${cclnet} PRIVATE CCLNET_ASYNCDNSRESOLVER_ENABLED)
+		endif ()
+
 		ccl_export_symbols (${cclnet} ${cclnet_exports})
 		
 		ccl_add_resources (${cclnet} ${cclnet_resources})
@@ -202,6 +246,12 @@ elseif (NOT XCODE)
 endif ()
 
 ccl_list_append_once (CCL_STATIC_COMPILE_DEFINITIONS CCL_STATIC_ENABLE_NETWORK=1)
+
+if (CCLNET_ENABLE_ASYNCDNSRESOLVER)
+	ccl_list_append_once (CCL_STATIC_COMPILE_DEFINITIONS CCLNET_ASYNCDNSRESOLVER_ENABLED)
+	ccl_list_append_once (CCL_STATIC_LINK_LIBRARIES ${cares_LIBRARIES})
+	ccl_list_append_once (CCL_STATIC_INCLUDE_DIRS ${cares_INCLUDE_DIR})
+endif ()
 
 if (VENDOR_APPLICATION_RUNTIME_DIRECTORY AND NOT CCL_SYSTEM_INSTALL)
 	ccl_install_imported (${cclnet} LIBRARY DESTINATION "${VENDOR_APPLICATION_RUNTIME_DIRECTORY}"

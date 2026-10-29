@@ -49,15 +49,10 @@ public:
 	IWebNewsReader* CCL_API createReader () override;
 	IWebCredentials* CCL_API createCredentials () override;
 	IWebHeaderCollection* CCL_API createHeaderCollection () override;
-	tresult CCL_API downloadData (UrlRef remotePath, IStream& localStream, 
-					IWebCredentials* credentials = nullptr, IWebHeaderCollection* headers = nullptr, 
-					IProgressNotify* progress = nullptr, int* status = nullptr) override;
-	tresult CCL_API downloadInBackground (IObserver* observer, UrlRef remotePath, IStream& localStream,
-					IWebCredentials* credentials = nullptr, IWebHeaderCollection* headers = nullptr) override;
-	tresult CCL_API uploadData (UrlRef remotePath, IStream& localStream, IWebHeaderCollection* headers, IStream& response, 
-					StringID method = nullptr, IWebCredentials* credentials = nullptr, IProgressNotify* progress = nullptr, int* status = nullptr) override;
-	tresult CCL_API uploadInBackground (IObserver* observer, UrlRef remotePath, IStream& localStream, IWebHeaderCollection* headers,
-					StringID method = nullptr, IWebCredentials* credentials = nullptr, IStream* response = nullptr) override;
+	tresult CCL_API downloadData (const DownloadDataArgs& args) override;
+	tresult CCL_API downloadInBackground (const DownloadInBackgroundArgs& args) override;
+	tresult CCL_API uploadData (const UploadDataArgs& args) override;
+	tresult CCL_API uploadInBackground (const UploadInBackgroundArgs& args) override;
 	tresult CCL_API cancelOperation (IObserver* observer) override;
 	tresult CCL_API cancelOnExit () override;
 	tresult CCL_API setUserAgent (StringRef userAgent) override;

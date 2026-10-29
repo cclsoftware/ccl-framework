@@ -197,7 +197,7 @@ protected:
 	DECLARE_STRINGID_MEMBER (kRestartAction)
 
 	void removeAllComponents ();
-	CCL::IItemModel* getPackageModel ();
+	IItemModel* getPackageModel ();
 	
 	Url buildPackageUrl (StringRef id) const;
 	Url buildPackageUrl (PackageComponent& component) const;

@@ -16,6 +16,10 @@ ccl_list_append_once (cclsystem_linux_sources
 ccl_list_append_once (cclsystem_platform_sources
 	${CCL_DIR}/platform/shared/host/platformintegration.cpp
 	${CCL_DIR}/platform/shared/host/platformintegrationloader.cpp
+	${CCL_DIR}/platform/shared/host/frameworkresourceloader.cpp
+	${CCL_DIR}/platform/shared/host/frameworkresourceloader.h
+	${CCL_DIR}/platform/shared/posix/system/localemanager.posix.h
+	${CCL_DIR}/platform/shared/posix/system/localemanager.posix.cpp
 	${CCL_DIR}/platform/shared/posix/system/nativefilesystem.posix.h
 	${CCL_DIR}/platform/shared/posix/system/nativefilesystem.posix.cpp
 	${CCL_DIR}/platform/shared/posix/system/safetymanager.posix.cpp

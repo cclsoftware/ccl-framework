@@ -20,11 +20,10 @@
 #define _ccl_menubarrenderer_h
 
 #include "ccl/gui/theme/themerenderer.h"
+
 #include "ccl/gui/popup/menubarcontrol.h"
 
 namespace CCL {
-
-class MenuBarControl;
 
 //************************************************************************************************
 // MenuBarRenderer
@@ -33,12 +32,12 @@ class MenuBarControl;
 class MenuBarRenderer: public ThemeRenderer
 {	
 public:
-	MenuBarRenderer (VisualStyle* visualStyle);
+	MenuBarRenderer (VisualStyle* visualStyle, View* owner);
 
 	// ThemeRenderer
-	void draw (View* view, const UpdateRgn& updateRgn) override;
-	int hitTest (View* view, const Point& loc, Point* clickOffset) override;
-	bool getPartRect (const View* view, int partCode, Rect& rect) override;
+	void draw (const UpdateRgn& updateRgn) override;
+	int hitTest (PointRef where, Point* clickOffset = nullptr) override;
+	bool getPartRect (Rect& rect, int partCode) override;
 
 protected:
 	static const int kMenuHeight;
@@ -73,10 +72,10 @@ protected:
 
 	void drawLabel (GraphicsDevice& port, RectRef rect, StringRef text, FontRef font, BrushRef brush, IImage* icon, Coord iconSpacing);
 	void drawMenu (MenuDrawArgs& args, const Rect& menuRect, int index, bool active, StringRef label, IImage* icon);
-	int findMenu (MenuBarControl* menuBar, const Point& loc);
+	int findMenu (MenuBarControl* menuBar, PointRef where);
 };
 
-DECLARE_VISUALSTYLE_CLASS (MenuBarControl)
+DECLARE_TYPELIB_ENTRY (MenuBarControl)
 
 } // namespace CCL
 

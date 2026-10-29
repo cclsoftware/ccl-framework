@@ -80,7 +80,7 @@ public:
 	// MouseHandler
 	void onBegin () override;
 	bool onMove (int moveFlags) override;
-	void onRelease (bool canceled) override; ///< needs to be called from derived classes
+	void onRelease (bool canceled) override;
 	bool getHelp (IHelpInfoBuilder& helpInfo) override;
 
 protected:
@@ -104,7 +104,6 @@ public:
 	DECLARE_CLASS (NullEditHandler, EditHandler)
 
 	NullEditHandler (EditView* view = nullptr);
-	~NullEditHandler ();
 
 private:
 	SharedPtr<IView> viewHolder;
@@ -157,8 +156,8 @@ public:
 	void onRelease (bool canceled) override;
 
 private:
-	CCL::Point firstPos;
-	CCL::Point prevPos;
+	Point firstPos;
+	Point prevPos;
 	bool hasMoved;
 
 	using SuperClass = EditHandler;

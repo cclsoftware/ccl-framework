@@ -33,7 +33,7 @@ static const CString kTestString ("This is the crypto test string.");
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-static void printHex (const char* name, const uint8* data, int size)
+static void printHex (CStringPtr name, const uint8* data, int size)
 {
 	String string;
 	string << name;

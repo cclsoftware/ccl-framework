@@ -190,7 +190,7 @@ public:
 	StringRef getName () const { return tagName; }
 	virtual Shape* createShape (SvgParser& parser, const IStringDictionary& attributes) = 0;
 	virtual bool wantsCharacterData () const { return false; }
-	virtual void onCharacterData (SvgParser& parser, Shape* shape, const uchar* data, int length) {}
+	virtual void onCharacterData (SvgParser& parser, Shape* shape, UStringPtr data, int length) {}
 	virtual void onTagClose (SvgParser& parser, Shape* shape) {}
 
 protected:
@@ -262,7 +262,7 @@ public:
 		return true;
 	}
 
-	void onCharacterData (SvgParser& parser, Shape* shape, const uchar* data, int length) override
+	void onCharacterData (SvgParser& parser, Shape* shape, UStringPtr data, int length) override
 	{
 		MemoryStream memstream ((void*)data, length * sizeof(uchar));
 		StyleParser styleParser (memstream);
@@ -747,7 +747,7 @@ public:
 		return true;
 	}
 
-	void onCharacterData (SvgParser& parser, Shape* shape, const uchar* data, int length) override
+	void onCharacterData (SvgParser& parser, Shape* shape, UStringPtr data, int length) override
 	{
 		TextShapeF* textShape = ccl_cast<TextShapeF>(shape);
 		if(textShape)
@@ -1113,7 +1113,7 @@ tresult CCL_API SvgParser::endElement (StringRef name)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-tresult CCL_API SvgParser::characterData (const uchar* data, int length, tbool isCDATA)
+tresult CCL_API SvgParser::characterData (UStringPtr data, int length, tbool isCDATA)
 {
 	// can be multiple small chunks: collect data first, to feed handler in one call
 	if(state.tagHandler && state.tagHandler->wantsCharacterData ())
@@ -1171,7 +1171,7 @@ bool SvgParser::parseAttribute (StringRef _name, StringRef value)
 	else if(name == "style")
 	{
 		StringChars chars (value);
-		MemoryStream memstream ((void*)(const uchar*)chars, (value.length () + 1) * sizeof(uchar));
+		MemoryStream memstream ((void*)chars.str (), (value.length () + 1) * sizeof(uchar));
 
 		SVG::StyleParser styleParser (memstream);
 		styleParser.parseStyle (state.style);
@@ -1203,7 +1203,7 @@ bool SvgParser::parseAttribute (StringRef _name, StringRef value)
 void SvgParser::parseTransform (StringRef value)
 {
 	StringChars chars (value);
-	MemoryStream memstream ((void*)(const uchar*)chars, (value.length () + 1) * sizeof(uchar));
+	MemoryStream memstream ((void*)chars.str (), (value.length () + 1) * sizeof(uchar));
 	TextParser transParser (memstream);
 	transParser.addWhitespace (','); // hmm, actually only allowed inside the ()
 

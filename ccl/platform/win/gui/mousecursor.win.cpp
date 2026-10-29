@@ -212,7 +212,7 @@ MouseCursor* WindowsCursorFactory::createCursor (int themeCursorId)
 {
 	ASSERT (themeCursorId >= 0 && themeCursorId < ThemeElements::kNumCursors)
 
-	const uchar* platformId = nullptr;
+	UStringPtr platformId = nullptr;
 	switch(themeCursorId)
 	{
 	case ThemeElements::kArrowCursor :

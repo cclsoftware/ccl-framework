@@ -753,7 +753,7 @@ bool PresetComponent::askPresetInfo (PresetMetaAttributes& metaAttributes, const
 
 DEFINE_CLASS (PresetComponent, PresetManagementComponent)
 DEFINE_CLASS_UID (PresetComponent, 0x54467fa5, 0xa98d, 0x4edd, 0x9d, 0xe0, 0xc6, 0x35, 0x75, 0xd2, 0x8a, 0x7a)
-DEFINE_CLASS_NAMESPACE (PresetComponent, "Host")
+DEFINE_CLASS_CATEGORY (PresetComponent, PLUG_CATEGORY_HOST_)
 
 DEFINE_STRINGID_MEMBER_ (PresetComponent, kFilePreset,   CCL_MIME_TYPE "-preset")
 DEFINE_STRINGID_MEMBER_ (PresetComponent, kMemoryPreset, CCL_MIME_TYPE "-memorypreset")
@@ -1319,9 +1319,9 @@ IDragHandler* PresetComponent::createDragHandler (const DragEvent& event, IView*
 		title = (XSTR (Preset_));
 	}
 
-	PresetDragFilter filter (*this);
+	AutoPtr<PresetDragFilter> filter (NEW PresetDragFilter (*this));
 	AutoPtr<PresetDragHandler> dragHandler (NEW InsertPresetDragHandler (view, *this));
-	if(dragHandler->prepare (event.session.getItems (), &filter, title))
+	if(dragHandler->prepare (event.session.getItems (), filter, title))
 	{
 		event.session.setResult (dropResult);
 		dragHandler->retain ();
@@ -1347,9 +1347,9 @@ tbool CCL_API PresetComponent::canInsertData (const IUnknownList& data, IDragSes
 		title = (XSTR (Preset_));
 	}
 
-	PresetDragFilter filter (*this);
+	AutoPtr<PresetDragFilter> filter (NEW PresetDragFilter (*this));
 	AutoPtr<PresetDragHandler> dragHandler (NEW InsertPresetDragHandler (targetView, *this));
-	if(dragHandler->prepare (data, &filter, title))
+	if(dragHandler->prepare (data, filter, title))
 	{
 		if(session)
 		{

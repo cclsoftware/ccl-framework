@@ -131,6 +131,16 @@ msgstr "Arquivo Zip"
 
 #: localization/localeinfo.cpp
 msgctxt "Locales"
+msgid "%(1) Kilobytes per second"
+msgstr "%(1) Kilobytes por segundo"
+
+#: localization/localeinfo.cpp
+msgctxt "Locales"
+msgid "%(1) Megabytes per second"
+msgstr "%(1) Megabytes por segundo"
+
+#: localization/localeinfo.cpp
+msgctxt "Locales"
 msgid "%(1) days ago"
 msgstr "%(1) dias atrás"
 

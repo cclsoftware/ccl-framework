@@ -207,7 +207,7 @@ interface ISystemInformation: IUnknown
 
 	/** Search installed applications. Filter is a comma or semicolon separated list of search tokens. The tokens are not case sensitive
 		Result of async operation is IUnknownList with IAttributeList objects.
-		Attributes: kPackageName, kPackageVersion, kPackageVendor, kPackageExecutable */
+		Attributes: kPackageName, kPackageVersion, kPackageVendor, kPackageExecutable, kPackageID (optional) */
 	virtual IAsyncOperation* CCL_API searchApplications (StringRef filter) const = 0; 	
 
 	//////////////////////////////////////////////////////////////////////////////////////////////

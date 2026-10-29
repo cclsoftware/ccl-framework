@@ -2224,7 +2224,7 @@ bool Workspace::makeVisible (View& view)
 			}
 		}
 		else
-			window->show ();
+			window->show (WindowManager::instance ().shouldActivateWindows () && !Desktop.isPopupActive ());
 
 		if(View* focusView = FocusNavigator::instance ().getFirstExplicit (&view))
 			window->setFocusView (focusView);

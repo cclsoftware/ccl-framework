@@ -124,7 +124,7 @@ class UnicodeString: public Unknown,
 public:
 	static UnicodeString* newString (); ///< platform-specific!
 
-	virtual tresult makeConstant (const char* asciiString) = 0;
+	virtual tresult makeConstant (CStringPtr asciiString) = 0;
 	virtual void releaseInternal () = 0;
 
 	// IString
@@ -151,7 +151,7 @@ public:
 
 	static const int kTempStringSize = 256;
 	typedef char TempString[kTempStringSize];
-	static void makeFormatString (TempString format, const char* prefix, int value, const char* suffix);
+	static void makeFormatString (TempString format, CStringPtr prefix, int value, CStringPtr suffix);
 };
 
 //************************************************************************************************

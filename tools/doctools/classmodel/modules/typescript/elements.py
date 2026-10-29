@@ -3,11 +3,11 @@
 from abc import abstractmethod, ABC
 from typing import List, final, Optional
 
-from modules.typescript.classmodel import ClassModelDefs
+from modules.classmodel.xmldefs import XML
 from modules.typescript.formatter import *
 from modules.typescript.comment import *
 
-__copyright__ = "Copyright (c) 2023 CCL Software Licensing GmbH"
+__copyright__ = "Copyright (c) 2026 CCL Software Licensing GmbH"
 
 
 class Printable(ABC):
@@ -270,16 +270,30 @@ class TypeDef(Printable):
 
         # If type is "container", the types specified by type_names
         # are to be exported as an Array type with trailing "[]"
-        as_array = self.type == ClassModelDefs.TYPE_CONTAINER
+        as_array = self.type == XML.VALUE_TYPE_CONTAINER
         return TypeDef._type_names_to_string(self.type_names, as_array)
 
     def _convert_type_names(self, names) -> List[str]:
-        """ Split types from a combined string "bool | string", convert to TypeScript equivalents. """
+        """ Split types from a combined string "bool | string", convert to TypeScript equivalents.
+
+        A token may already carry a trailing "[]" (e.g. a single, non-union container-typed
+        argument such as "intervals: int[]", scanned into typeName="int[]"): strip it before
+        classifying the base type (so "int[]" still maps to TS "number", not passing through
+        unrecognized), then restore it. This keeps such a token's own "[]" intact so
+        TypeDef._type_names_to_string (which appends "[]" again when the overall coarse type is
+        "container") does not double it into e.g. "number[][]".
+        """
         if not names:
             return []
 
         classmodel_types_list = [PathFormatter.to_typescript_namespace(x.strip()) for x in names.split('|')]
-        return [self._classmodel_to_typescript_type(x) for x in classmodel_types_list]
+        result = []
+        for type_name in classmodel_types_list:
+            if type_name.endswith("[]"):
+                result.append(f"{self._classmodel_to_typescript_type(type_name[:-2])}[]")
+            else:
+                result.append(self._classmodel_to_typescript_type(type_name))
+        return result
 
     @abstractmethod
     def _map_void_type(self) -> str:
@@ -289,16 +303,21 @@ class TypeDef(Printable):
     def _classmodel_to_typescript_type(self, raw_type) -> str:
         """ Map classmodel provided types to TypeScript compatible types. """
 
-        if raw_type == ClassModelDefs.TYPE_VOID:
+        if raw_type == XML.VALUE_TYPE_VOID:
             return self._map_void_type()
-        if raw_type == ClassModelDefs.TYPE_BOOL:
+        if raw_type == XML.VALUE_TYPE_BOOL:
             return TypeDef.TS_TYPE_BOOLEAN
-        elif raw_type in ClassModelDefs.TYPE_NUMBERS:
+        elif TypeDef._is_numeric_type(raw_type):
             return TypeDef.TS_TYPE_NUMBER
-        elif raw_type == ClassModelDefs.TYPE_VARIANT:
+        elif raw_type == XML.VALUE_TYPE_VARIANT:
             return TypeDef.TS_TYPE_ANY
         else:
             return raw_type
+
+    @staticmethod
+    def _is_numeric_type(type_value: str) -> bool:
+        """ Classmodel types that collapse to a single TypeScript 'number' type. """
+        return type_value in (XML.VALUE_TYPE_FLOAT, XML.VALUE_TYPE_DOUBLE, XML.VALUE_TYPE_INT)
 
     @staticmethod
     def _check_unsupported(type_value: str, as_array: bool) -> None:
@@ -316,8 +335,9 @@ class TypeDef(Printable):
         for type_name in type_names:
             TypeDef._check_unsupported(type_name, as_array)
 
-        # append array brackets if needed
-        modified_types = [f"{t}[]" for t in type_names] if as_array else type_names
+        # append array brackets if needed (a token may already carry its own, see
+        # TypeDef._convert_type_names - don't double it into e.g. "number[][]")
+        modified_types = [t if t.endswith("[]") else f"{t}[]" for t in type_names] if as_array else type_names
         return " | ".join(modified_types)
 
 
@@ -385,6 +405,11 @@ class Param(Printable):
         if self.name in ["vargs", "..."]:
             return f"...vargs: {type_string}[]"  # variadic
         elif self.default_value:
+            # An object/container-typed argument has no representable default value other
+            # than a null reference (e.g. "target: Track = 0"), so the type must allow an
+            # explicit 'null' argument in addition to being omittable.
+            if self.type_def.type in (XML.VALUE_TYPE_OBJECT, XML.VALUE_TYPE_CONTAINER):
+                return f"{self.name}?: {type_string} | null"
             return f"{self.name}?: {type_string}"  # optional
         else:
             return f"{self.name}: {type_string}"  # regular

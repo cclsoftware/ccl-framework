@@ -25,13 +25,33 @@
 #include "testreporter.h"
 #include "junitreporter.h"
 
+#include "ccl/app/application.h"
+
 #include "ccl/extras/tools/argumentparser.h"
 
-#include "ccl/public/system/isysteminfo.h"
 #include "ccl/public/systemservices.h"
 
-#include "ccl/public/gui/framework/ialert.h"
-#include "ccl/public/guiservices.h"
+namespace CCL {
+
+//************************************************************************************************
+// TestRunnerApp
+/** Minimal application to provide identity to framework and component tree. */
+//************************************************************************************************
+
+class TestRunnerApp: public Application
+{
+public:
+	TestRunnerApp ()
+	: Application (APP_ID, APP_COMPANY, APP_NAME, APP_PACKAGE_ID, APP_VERSION)
+	{}
+
+	~TestRunnerApp ()
+	{
+		RootComponent::instance ().removeChild (this); // app instance lives on stack
+	}
+};
+
+} // namespace CCL
 
 using namespace CCL;
 
@@ -41,8 +61,7 @@ using namespace CCL;
 
 int ccl_main (ArgsRef args)
 {
-	System::GetSystem ().setApplicationName (nullptr, APP_NAME);
-	System::GetAlertService ().setTitle (APP_NAME);
+	TestRunnerApp app;
 
 	System::GetConsole ().writeLine (APP_FULL_NAME ", " APP_COPYRIGHT);
 
@@ -124,5 +143,5 @@ int ccl_main (ArgsRef args)
 	String filter = argumentParser.get ("filter");
 	testTool.run (filter);
 
-	return testReporter->allTestsPassed ()? 0 : 1;
+	return testReporter->allTestsPassed () ? 0 : 1;
 }

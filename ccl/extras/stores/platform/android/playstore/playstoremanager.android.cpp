@@ -155,7 +155,7 @@ CCL::PurchaseState PlayStoreManager::determinePurchaseState (BillingResult resul
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-CCL::LicenseVerificationResult PlayStoreManager::verifyLicense (jobject purchase) const
+LicenseVerificationResult PlayStoreManager::verifyLicense (jobject purchase) const
 {
 	Crypto::Material encryptedPublicKey;
 	Crypto::ICryptoKeyStore& store = System::GetCryptoKeyStore ();
@@ -208,7 +208,7 @@ void PlayStoreManager::shutdown ()
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-CCL::IAsyncOperation* PlayStoreManager::requestProducts (const ConstVector<String>& productIds)
+IAsyncOperation* PlayStoreManager::requestProducts (const ConstVector<String>& productIds)
 {
 	JniAccessor jni;
 	JniStringArray jProductIds (jni, productIds.count ());
@@ -227,7 +227,7 @@ CCL::IAsyncOperation* PlayStoreManager::requestProducts (const ConstVector<Strin
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-CCL::IAsyncOperation* PlayStoreManager::purchaseProduct (StringRef productId)
+IAsyncOperation* PlayStoreManager::purchaseProduct (StringRef productId)
 {
 	// the billing API supports only one purchase operation at a time
 	if(pendingPurchaseOperation != nullptr)
@@ -264,14 +264,14 @@ CCL::IAsyncOperation* PlayStoreManager::purchaseProduct (StringRef productId)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-CCL::IAsyncOperation* PlayStoreManager::getTransactions ()
+IAsyncOperation* PlayStoreManager::getTransactions ()
 {
 	return AsyncOperation::createCompleted (Variant (transactions->asUnknown (), true), true);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-CCL::IAsyncOperation* PlayStoreManager::getLocalLicenses ()
+IAsyncOperation* PlayStoreManager::getLocalLicenses ()
 {
 	AutoPtr<AsyncOperation> op = NEW AsyncOperation;
 	if(!PlayStoreContext.queryPurchases (context, JniCast<AsyncOperation>::toIntPtr (op)))

@@ -2092,7 +2092,7 @@ void DocumentBlocks::TreeModel::makeViews (bool state)
 							titleRect.top--;
 						else
 							titleRect.contract (6);
-						ControlBox editBox (CCL::ClassID::EditBox, param, titleRect, StyleFlags (Styles::kTransparent));
+						ControlBox editBox (ClassID::EditBox, param, titleRect, StyleFlags (Styles::kTransparent));
 						editBox.setVisualStyle (renameStyle);
 						titleView = editBox;
 					}

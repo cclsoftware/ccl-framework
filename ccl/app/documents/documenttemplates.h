@@ -259,7 +259,10 @@ public:
 protected:
 	Document& document;
 	AutoPtr<Url> pathToReplace;
+	String fileNameToReplace;
 
+	String getFileName () const;
+	bool shouldReplace () const;
 	void getTemplatePath (Url& path) const;
 	DocumentTemplate* createTemplate (UrlRef path);
 	

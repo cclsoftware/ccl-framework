@@ -1,0 +1,7 @@
+{% for constant in constants %}
+{% if constant.brief %}
+	/** {{ constant.brief | sentence }} */
+{% endif %}
+	public static final {{ constant.type || javatype}} {{ constant.name }} = {{ constant.value | javavalue }};
+
+{% endfor %}

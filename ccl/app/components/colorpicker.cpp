@@ -1304,8 +1304,9 @@ bool CustomColorPresets::restoreLastPreset (UrlRef presetPath)
 //************************************************************************************************
  
 DEFINE_CLASS (ColorPicker, Component)
+DEFINE_CLASS_NAMESPACE (ColorPicker, NAMESPACE_CCL)
 DEFINE_CLASS_UID (ColorPicker, 0x97A35F04, 0xA7AE, 0x4ACC, 0x88, 0xF9, 0xF4, 0x81, 0x4F, 0xDD, 0x78, 0x2A)
-DEFINE_CLASS_NAMESPACE (ColorPicker, "Host")
+DEFINE_CLASS_CATEGORY (ColorPicker, PLUG_CATEGORY_HOST_)
 bool ColorPicker::hslWheelMode = true;
 
 //////////////////////////////////////////////////////////////////////////////////////////////////

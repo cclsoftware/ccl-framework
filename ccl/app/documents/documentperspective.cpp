@@ -89,7 +89,7 @@ DocumentPerspective::~DocumentPerspective ()
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void DocumentPerspective::setPerspective (IPerspective* p, CCL::StringID viewID)
+void DocumentPerspective::setPerspective (IPerspective* p, StringID viewID)
 {
 	if(perspective)
 	{

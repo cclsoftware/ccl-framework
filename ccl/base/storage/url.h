@@ -92,10 +92,10 @@ public:
 	void CCL_API setFileType (const FileType& type, tbool replaceExtension = true) override;
 	tbool CCL_API isRootPath () const override;
 	tbool CCL_API isNativePath () const override;
-	tbool CCL_API toNativePath (uchar* pathBuffer, int bufferSize) const override;
-	tbool CCL_API fromNativePath (const uchar* pathBuffer, int type = kFile) override;
-	tbool CCL_API toPOSIXPath (char* pathBuffer, int bufferSize) const override;
-	tbool CCL_API fromPOSIXPath (const char* pathBuffer, int type = kFile) override;
+	tbool CCL_API toNativePath (uchar pathBuffer[], int bufferSize) const override;
+	tbool CCL_API fromNativePath (UStringPtr pathBuffer, int type = kFile) override;
+	tbool CCL_API toPOSIXPath (char pathBuffer[], int bufferSize) const override;
+	tbool CCL_API fromPOSIXPath (CStringPtr pathBuffer, int type = kFile) override;
 	tbool CCL_API toDisplayString (String& displayString, int which = kStringNativePath) const override;
 	tbool CCL_API fromDisplayString (StringRef displayString, int type = kFile) override;
 	tbool CCL_API isAbsolute () const override;
@@ -245,6 +245,8 @@ namespace UrlUtils
 	String stripSlashes (StringRef path); ///< strip leading and trailing slashes
 	String toParentPath (StringRef path); ///< get path to parent folder
 	String extractName (StringRef path); ///< extract file/folder name from path
+
+	bool isCanonicalAbsolutePath (StringRef path); ///< check if a path is absolute, i.e. starts at root or with a drive letter
 }
 
 //************************************************************************************************

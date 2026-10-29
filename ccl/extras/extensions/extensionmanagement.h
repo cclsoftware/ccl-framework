@@ -39,6 +39,7 @@ namespace ExtensionManagement
 	void getLocation (Url& path, ExtensionTypeID type);
 	void makePath (Url& path, const ExtensionDescription& e);
 	void makePath (Url& path, StringRef id, ExtensionTypeID type);
+	void makePath (Url& path, UrlRef& base, StringRef id);
 	
 	bool lockDirectory (ExtensionTypeID type, StringRef applicationName = nullptr);
 	bool unlockDirectory (ExtensionTypeID type);

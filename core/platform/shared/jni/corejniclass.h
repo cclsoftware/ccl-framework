@@ -230,7 +230,7 @@ protected:
 	void addClass (JniClass* jniClass);
 
 private:
-	Core::Vector<JniClass*> classes;
+	Vector<JniClass*> classes;
 };
 
 //////////////////////////////////////////////////////////////////////////////////////////////////

@@ -37,6 +37,7 @@ ccl_list_append_once (corelib_platform_sources
 	${corelib_DIR}/platform/shared/jni/corejniclass.cpp
 	${corelib_DIR}/platform/shared/jni/corejniclassdefs.cpp
 	${corelib_DIR}/platform/shared/jni/corejnihelper.cpp
+	${corelib_DIR}/platform/shared/coreplatformthread.cpp
 )
 
 ccl_list_append_once (corelib_android_sources

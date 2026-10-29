@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Model.ClassRepository xmlns:x="https://ccl.dev/xml" name="staticexport">
+	<List x:id="classes">
+		<Model.Class name="TestClass" namespace="TestNamespace" scriptable="1" parent="Object">
+			<List x:id="members">
+				<Model.Member name="foo" type="void"/>
+			</List>
+			<List x:id="methods">
+				<Model.Method name="doSomething">
+					<Model.ReturnValue x:id="retval" type="void"/>
+					<List x:id="args">
+						<Model.MethodArg name="value" type="int" typeName="int"/>
+					</List>
+				</Model.Method>
+			</List>
+		</Model.Class>
+	</List>
+</Model.ClassRepository>

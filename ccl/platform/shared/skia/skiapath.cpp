@@ -194,7 +194,9 @@ void CCL_API SkiaPath::addBezier (PointFRef p1, PointFRef c1, PointFRef c2, Poin
 	SkiaDevice::toSkPoint (sP1, p1);
 	SkPoint lastPoint;
 	path.getLastPt (&lastPoint);
-	if(lastPoint != sP1)
+	
+	constexpr float kPrecision = 1e-5;
+	if(!ccl_equals (lastPoint.fX, sP1.fX, kPrecision) || !ccl_equals (lastPoint.fY, sP1.fY, kPrecision)) 
 		path.moveTo (sP1);
 		
 	SkPoint sC1;

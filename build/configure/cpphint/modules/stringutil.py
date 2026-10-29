@@ -23,8 +23,9 @@ class StringParser:
             "FOO (BAR (a, b), c) -> "(BAR (a, b), c)"
         """
 
-        assert macro_name in search_string
-        part = search_string[search_string.index(macro_name):]
+        matches = StringParser._find_tokens(search_string, macro_name)
+        assert matches
+        part = search_string[matches[0].start():]
 
         bracket_count = 0
         result = ""
@@ -238,29 +239,89 @@ class StringParser:
         return False
 
     @staticmethod
+    def _token_pattern(search_string: str) -> str:
+        """Regular expression matching 'search_string' not preceded by an
+        identifier character, and, if it ends with an identifier character,
+        not followed by one either.
+        """
+
+        pattern = r"(?<![A-Za-z0-9_])" + re.escape(search_string)
+        if re.match(r"[A-Za-z0-9_]", search_string[-1:]):
+            pattern += r"(?![A-Za-z0-9_])"
+        return pattern
+
+    @staticmethod
+    def _mask_literals(string: str) -> str:
+        """Blank out the contents of string and character literals,
+        keeping all character positions intact.
+
+        Example:
+            'FOO ("BAR") BAR' -> 'FOO ("   ") BAR'
+        """
+
+        def mask(match: re.Match) -> str:
+            literal = match.group(0)
+            return literal[0] + " " * (len(literal) - 2) + literal[-1]
+
+        return re.sub(r'"(?:\\.|[^"\\])*"|\'(?:\\.|[^\'\\])*\'', mask, string)
+
+    @staticmethod
+    def _find_tokens(string: str, search_string: str) -> List[re.Match]:
+        """Find non-overlapping whole-word occurrences of 'search_string' in
+        'string'. The leading identifier of 'search_string' must not be part
+        of a string literal, while the remainder (e.g. call parameters) may
+        contain literals.
+        """
+
+        leading_identifier = re.match(r"[A-Za-z0-9_]*", search_string).group(0) or search_string
+        masked = StringParser._mask_literals(string)
+        full_pattern = re.compile(StringParser._token_pattern(search_string))
+
+        result: List[re.Match] = list()
+        end = 0
+        for candidate in re.finditer(StringParser._token_pattern(leading_identifier), masked):
+            if candidate.start() < end:
+                continue
+
+            match = full_pattern.match(string, candidate.start())
+            if match:
+                result.append(match)
+                end = match.end()
+
+        return result
+
+    @staticmethod
     def contains_token(string: str, search_string: str) -> bool:
-        """Check if 'search_string' contains 'string' as a whole
-        word which may not be separated by whitespaces.
+        """Check if 'string' contains 'search_string' as a whole word,
+        ignoring occurrences inside string literals.
 
         Examples:
             "FOO(a,b)" -> "FOO" is contained
             "FOO_(a,b,c)" -> "FOO" is not contained
             "BAR _FOO (a,b,c)" -> "FOO" is not contained
+            "BAR_FOO (a,b,c)" -> "FOO" is not contained
+            "_FOO (a) FOO (b)" -> "FOO" is contained
+            'printf ("FOO failed")' -> "FOO" is not contained
         """
 
-        if search_string not in string:
-            return False
+        return len(StringParser._find_tokens(string, search_string)) > 0
 
-        false_positives = [
-            f"_{search_string}",
-            f"{search_string}_"
-        ]
+    @staticmethod
+    def replace_token(string: str, search_string: str, replacement: str) -> str:
+        """Replace whole-word occurrences of 'search_string' in 'string',
+        leaving occurrences inside string literals untouched.
 
-        for candidate in false_positives:
-            if candidate in string:
-                return False
+        Example:
+            ("FOO (a) BAR_FOO (a)", "FOO (a)", "x") -> "x BAR_FOO (a)"
+        """
 
-        return True
+        result = ""
+        position = 0
+        for match in StringParser._find_tokens(string, search_string):
+            result += string[position:match.start()] + replacement
+            position = match.end()
+
+        return result + string[position:]
 
     @staticmethod
     def remove_trailing_comment(string: str) -> str:

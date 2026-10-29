@@ -165,6 +165,13 @@ void CCL_API AliasParam::setName (StringID name)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
+void CCL_API AliasParam::setTitle (StringRef title)
+{
+	this->title = title;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
 void CCL_API AliasParam::connect (IParamObserver* controller, int tag)
 {
 	this->tag = tag;
@@ -190,6 +197,19 @@ IUnknown* CCL_API AliasParam::getController () const
 int CCL_API AliasParam::getType () const
 {
 	return paramType != -1 ? paramType : param ? param->getType () : kToggle;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+tbool CCL_API AliasParam::getTitle (String& result, int flags) const
+{
+	if(!this->title.isEmpty ())
+	{
+		result = this->title;
+		return true;
+	}
+
+	return param ? param->getTitle (result, flags) : false;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -497,9 +517,36 @@ void CCL_API AliasParam::toString (String& string) const
 	if(param)
 	{
 		if(isHasExplicitFormatter () && ownFormatter)
-			getString (string, getValue ());	
+			getString (string, getValue ());
 		else
-			param->toString (string);		
+			param->toString (string);
+	}
+	else
+		string.empty ();
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+void CCL_API AliasParam::toAccessibleString (String& string) const
+{
+	if(param)
+	{
+		if(isHasExplicitFormatter () && ownFormatter)
+		{
+			if(UnknownPtr<IAccessibleFormatter> accessibleFormatter = ownFormatter)
+			{
+				Variant value = getValue ();
+				if(ownFormatter->isNormalized ())
+					value = getValueNormalized (value);
+
+				if(accessibleFormatter->printAccessibleString (string, value))
+					return;
+			}
+
+			toString (string);
+		}
+		else
+			param->toAccessibleString (string);
 	}
 	else
 		string.empty ();
@@ -566,6 +613,7 @@ BEGIN_PROPERTY_NAMES (AliasParam)
 	DEFINE_PROPERTY_TYPE ("min", ITypeInfo::kVariant)
 	DEFINE_PROPERTY_TYPE ("max", ITypeInfo::kVariant)
 	DEFINE_PROPERTY_TYPE ("name", ITypeInfo::kString)
+	DEFINE_PROPERTY_TYPE ("title", ITypeInfo::kString)
 	DEFINE_PROPERTY_TYPE ("string", ITypeInfo::kString)
 	DEFINE_PROPERTY_TYPE ("enabled", ITypeInfo::kBool)
 	DEFINE_PROPERTY_TYPE ("signalAlways", ITypeInfo::kBool)
@@ -591,9 +639,10 @@ tbool CCL_API AliasParam::setProperty (MemberID propertyId, const Variant& var)
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 BEGIN_METHOD_NAMES (AliasParam)
-	DEFINE_METHOD_ARGS ("setOriginal", "original: Parameter")
+	DEFINE_METHOD_ARGS ("setOriginal", "original: Parameter | null")
 	DEFINE_METHOD_ARGR ("hasOriginal", "", "bool")
 	DEFINE_METHOD_ARGS ("setFeedbackNeeded", "needed: bool")
+	DEFINE_METHOD_ARGS ("setValue", "value: variant, update: bool = false")
 END_METHOD_NAMES (AliasParam)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////

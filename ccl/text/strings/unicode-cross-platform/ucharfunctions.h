@@ -32,7 +32,7 @@ namespace CCL {
 class UCharSet
 {
 public:
-	UCharSet (const uchar* data, int count)
+	UCharSet (UStringPtr data, int count)
 	: vector (data, count)
 	{}
 
@@ -43,11 +43,11 @@ public:
 
 	int index (uchar c) const
 	{
-		const uchar* result = vector.search (c);
+		UStringPtr result = vector.search (c);
 		return result ? (int)(result - vector.getItems ()) : -1;
 	}
 
-	operator const uchar* () const
+	operator UStringPtr () const
 	{
 		return vector.getItems ();
 	}
@@ -176,7 +176,7 @@ namespace UCharFunctions
 		return index != -1 ? lowercaseCharacterSet[index] : c;
 	}
 
-	inline void toUppercase (uchar* s, int l)
+	inline void toUppercase (uchar s[], int l)
 	{
 		ASSERT (l >= 0)
 
@@ -187,7 +187,7 @@ namespace UCharFunctions
 		}
 	}
 
-	inline void toLowercase (uchar* s, int l)
+	inline void toLowercase (uchar s[], int l)
 	{
 		ASSERT (l >= 0)
 
@@ -198,7 +198,7 @@ namespace UCharFunctions
 		}
 	}
 
-	inline void capitalize (uchar* s, int l)
+	inline void capitalize (uchar s[], int l)
 	{
 		ASSERT (l >= 0)
 
@@ -217,7 +217,7 @@ namespace UCharFunctions
 	// Comparison
 	//////////////////////////////////////////////////////////////////////////////////////////////
 
-	inline int compareStrings (const uchar* s1, int l1, const uchar* s2, int l2, bool ignoreCase)
+	inline int compareStrings (UStringPtr s1, int l1, UStringPtr s2, int l2, bool ignoreCase)
 	{
 		ASSERT (l1 >= 0 && l2 >= 0)
 
@@ -241,14 +241,14 @@ namespace UCharFunctions
 		return 0;
 	}
 
-	int compareStringsNumerically (const uchar* a, const uchar* b, bool ignoreCase);
-	
-	inline const uchar* findString (const uchar* source, int sLength, const uchar* value, int vLength, bool ignoreCase)
+	int compareStringsNumerically (UStringPtr a, UStringPtr b, bool ignoreCase);
+
+	inline UStringPtr findString (UStringPtr source, int sLength, UStringPtr value, int vLength, bool ignoreCase)
 	{
 		ASSERT (sLength >= 0 && vLength >= 0)
 
 		int offset = 0;
-		for(const uchar* src = source; offset < sLength; src++, offset++)
+		for(UStringPtr src = source; offset < sLength; src++, offset++)
 		{
 			int count = sLength-offset;
 			if(vLength < count)
@@ -259,10 +259,10 @@ namespace UCharFunctions
 		return nullptr;
 	}
 
-	inline const uchar* findStringReverse (const uchar* source, int sLength, const uchar* value, int vLength, bool ignoreCase)
+	inline UStringPtr findStringReverse (UStringPtr source, int sLength, UStringPtr value, int vLength, bool ignoreCase)
 	{
-		const uchar* lastResult = nullptr;
-		const uchar* startInSource;
+		UStringPtr lastResult = nullptr;
+		UStringPtr startInSource;
 		while((startInSource = findString (source, sLength, value, vLength, ignoreCase)) != nullptr)
 		{
 			lastResult = startInSource;
@@ -280,7 +280,7 @@ namespace UCharFunctions
 	typedef uchar (*UCharFunction) (uchar c);
 
 	template <UCharFunction encode>
-	int encodeCString (char* cString, int cStringSize, const uchar* uString, int uStringLength)
+	int encodeCString (char cString[], int cStringSize, UStringPtr uString, int uStringLength)
 	{
 		ASSERT (uStringLength >= 0)
 
@@ -305,7 +305,7 @@ namespace UCharFunctions
 	}
 
 	template <UCharFunction decode>
-	int decodeCString (uchar* uString, int uStringSize, const char* cString, int cStringLength)
+	int decodeCString (uchar uString[], int uStringSize, CStringPtr cString, int cStringLength)
 	{
 		ASSERT (cStringLength >= 0)
 
@@ -341,12 +341,12 @@ namespace UCharFunctions
 		return c;
 	}
 
-	inline int encodeASCII (char* cString, int cStringSize, const uchar* uString, int uStringLength)
+	inline int encodeASCII (char cString[], int cStringSize, UStringPtr uString, int uStringLength)
 	{
 		return encodeCString<encodeASCII> (cString, cStringSize, uString, uStringLength);
 	}
 
-	inline int decodeASCII (uchar* uString, int uStringSize, const char* cString, int cStringLength)
+	inline int decodeASCII (uchar uString[], int uStringSize, CStringPtr cString, int cStringLength)
 	{
 		return decodeCString<decodeASCII> (uString, uStringSize, cString, cStringLength);
 	}
@@ -374,12 +374,12 @@ namespace UCharFunctions
 		return c;
 	}
 
-	inline int encodeISOLatin1 (char* cString, int cStringSize, const uchar* uString, int uStringLength)
+	inline int encodeISOLatin1 (char cString[], int cStringSize, UStringPtr uString, int uStringLength)
 	{
 		return encodeCString<encodeISOLatin1> (cString, cStringSize, uString, uStringLength);
 	}
 
-	inline int decodeISOLatin1 (uchar* uString, int uStringSize, const char* cString, int cStringLength)
+	inline int decodeISOLatin1 (uchar uString[], int uStringSize, CStringPtr cString, int cStringLength)
 	{
 		return decodeCString<decodeISOLatin1> (uString, uStringSize, cString, cStringLength);
 	}
@@ -416,12 +416,12 @@ namespace UCharFunctions
 		return '?';
 	}
 
-	inline int encodeDOSLatinUS (char* cString, int cStringSize, const uchar* uString, int uStringLength)
+	inline int encodeDOSLatinUS (char cString[], int cStringSize, UStringPtr uString, int uStringLength)
 	{
 		return encodeCString<encodeDOSLatinUS> (cString, cStringSize, uString, uStringLength);
 	}
 
-	inline int decodeDOSLatinUS (uchar* uString, int uStringSize, const char* cString, int cStringLength)
+	inline int decodeDOSLatinUS (uchar uString[], int uStringSize, CStringPtr cString, int cStringLength)
 	{
 		return decodeCString<decodeDOSLatinUS> (uString, uStringSize, cString, cStringLength);
 	}

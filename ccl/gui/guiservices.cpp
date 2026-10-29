@@ -143,7 +143,7 @@ CCL_KERNEL_INIT_LEVEL (GUIClasses, kFrameworkLevelFirst)
 								  UID (0xF227E81A, 0x200C, 0xC14F, 0x89, 0x91, 0x18, 0x3B, 0x30, 0x8B, 0x17, 0x67),
 								  InternalGUITests)
 
-	Kernel::instance ().registerPublicClasses (*classFactory);
+	Kernel::instance ().registerPublicClasses (*classFactory, NAMESPACE_CCL);
 	System::GetPlugInManager ().registerFactory (classFactory);
 	classFactory->release ();
 
@@ -158,7 +158,7 @@ CCL_KERNEL_INIT_LEVEL (GUIClasses, kFrameworkLevelFirst)
 	MetaClassRegistry& typeLib = Kernel::instance ().getClassRegistry ();
 	typeLib.setLibName (CCLGUI_FILE_DESCRIPTION);
 	System::GetTypeLibRegistry ().registerTypeLib (typeLib);
-	System::GetTypeLibRegistry ().registerTypeLib (SkinElements::MetaElement::getTypeLibrary ());
+	System::GetTypeLibRegistry ().registerTypeLib (SkinElements::getTypeLibrary ());
 	System::GetTypeLibRegistry ().registerTypeLib (VisualStyleClass::getTypeLibrary ());
 	System::GetTypeLibRegistry ().registerTypeLib (CoreSkinModel::getTypeLibrary ());
 
@@ -180,7 +180,7 @@ CCL_KERNEL_TERM_LEVEL (GUIClasses, kFrameworkLevelFirst)
 {
 	// unregister type libraries
 	System::GetTypeLibRegistry ().unregisterTypeLib (CoreSkinModel::getTypeLibrary ());
-	System::GetTypeLibRegistry ().unregisterTypeLib (SkinElements::MetaElement::getTypeLibrary ());
+	System::GetTypeLibRegistry ().unregisterTypeLib (SkinElements::getTypeLibrary ());
 	System::GetTypeLibRegistry ().unregisterTypeLib (VisualStyleClass::getTypeLibrary ());
 	System::GetTypeLibRegistry ().unregisterTypeLib (Kernel::instance ().getClassRegistry ());
 

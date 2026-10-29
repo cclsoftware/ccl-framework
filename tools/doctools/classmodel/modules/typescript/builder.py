@@ -17,11 +17,16 @@ class DtsElementFilter:
         self.allowed_classes = classes
         self.allowed_objects = objects
 
-    def match(self, element_kind: str, element_name: str) -> bool:
-        """ Check if kind/name combination should be discarded."""
+    def match(self, element_kind: str, element_name: str, element_namespace: str = "") -> bool:
+        """ Check if kind/name combination should be discarded.
+
+        Classes are matched by their full, namespace-qualified name (e.g. "CCL.Parameter",
+        "CCL.ScriptingHost.Console") since a bare class name is ambiguous across namespaces.
+        """
 
         if element_kind == Element.KIND_CLASS:
-            return self._match(element_name, self.allowed_classes)
+            full_name = PathFormatter.build_full_name(element_name, PathFormatter.to_typescript_namespace(element_namespace))
+            return self._match(full_name, self.allowed_classes)
         elif element_kind == Element.KIND_OBJECT:
             return self._match(element_name, self.allowed_objects)
 
@@ -31,6 +36,9 @@ class DtsElementFilter:
 
     @staticmethod
     def _match(name: str, container) -> bool:
+
+        # Reminder: valid 'allow all' expression in config
+        # needs to be '.*', not '*.*'.
         for c in container:
             if "*" in c:
                 if re.search(c, name):
@@ -42,14 +50,10 @@ class DtsElementFilter:
         return False
 
     def matching_objects(self, container: Dict) -> List:
-        return self._matching_items(Element.KIND_OBJECT, container)
+        return [c for c in container.values() if self.match(Element.KIND_OBJECT, c.name)]
 
     def matching_classes(self, container: Dict) -> List:
-        return self._matching_items(Element.KIND_CLASS, container)
-
-    def _matching_items(self, kind: str, container: Dict) -> List:
-        """ Filter list, return as list. """
-        return [c for c in container.values() if self.match(kind, c.name)]
+        return [c for c in container.values() if self.match(Element.KIND_CLASS, c.name, c.namespace)]
 
 
 class DeclarationBuilder:
@@ -80,15 +84,27 @@ class DeclarationBuilder:
 
             element.add_property(method_def)
 
-    def _lookup_class_namespace(self, class_name: str) -> Optional[str]:
+    def _lookup_class_element(self, class_name: str, scope: str = "") -> Optional[ClassElement]:
+        """ Lookup 'class_name' in the model safely, tolerating classmodel data that only
+        ever provides a bare, unqualified name (see Model.lookup_class).
+
+        :param scope: namespace of the referencing class, if any. A bare type name can be
+            ambiguous across namespaces (e.g. "Element" registered both globally and as
+            "CCL::Gui::Element", see Parser._register_class), so Model.lookup_class
+            prefers a class registered in the same namespace as 'scope'.
+        """
+
+        if not class_name:
+            return None
+
+        return self.model.lookup_class(class_name, scope)
+
+    def _lookup_class_namespace(self, class_name: str, scope: str = "") -> Optional[str]:
         """ Lookup namespace of 'class_name' safely.
         TODO: remove? namespace should always be provided (not for arg types though)
         """
 
-        if not class_name:
-            return ""
-
-        class_element = self.model.classes.get(class_name, None)
+        class_element = self._lookup_class_element(class_name, scope)
         return "" if class_element is None else class_element.namespace
 
     def _resolve_type_namespaces(self, scope: str, type_name: str) -> str:
@@ -99,9 +115,9 @@ class DeclarationBuilder:
         result = []
         type_name_tokens = [s.strip() for s in type_name.split("|")]
         for type_name in type_name_tokens:
-            namespace = self._lookup_class_namespace(type_name)
+            namespace = self._lookup_class_namespace(type_name, scope)
             if namespace and namespace != scope:
-                result.append(f"{namespace}.{type_name}")
+                result.append(f"{PathFormatter.to_typescript_namespace(namespace)}.{type_name}")
             else:
                 result.append(type_name)
 
@@ -129,15 +145,25 @@ class DeclarationBuilder:
         parent_class_name = class_element.parent_name
         if parent_class_name:
             parent_class_namespace = class_element.parent_namespace
-            # Ideally, this information is always provided by the classmodel file. Be tolerant
-            # here and look for a matching class in the model class repository. May yield
-            # false positive.
             if not parent_class_namespace:
-                logging.warning(
-                    f"missing parent namespace for class '{class_element.name}' parent '{parent_class_name}'")
-                parent_class_namespace = self._lookup_class_namespace(parent_class_name)
-                logging.error(
-                    f"parent class namespace not found for class '{class_element.name}' parent '{parent_class_name}'")
+                # Ideally, this information is always provided by the classmodel file. Be
+                # tolerant here and look for a matching class in the model class repository.
+                # May yield false positive.
+                parent_element = self._lookup_class_element(parent_class_name)
+                if parent_element is not None:
+                    parent_class_namespace = parent_element.namespace
+                else:
+                    # The parent isn't a class known to the model at all - e.g. it belongs to
+                    # a framework whose classmodel wasn't loaded alongside this one, or it's a
+                    # non-scriptable C++ implementation detail with no classmodel registration
+                    # of its own. Emitting "extends <name>" would reference a symbol that will
+                    # never exist in the generated output, so fall back to a flat class instead.
+                    logging.warning(
+                        f"missing parent namespace for class '{class_element.name}' parent '{parent_class_name}'")
+                    logging.error(
+                        f"parent class '{parent_class_name}' not found for class "
+                        f"'{class_element.name}' - omitting 'extends' clause")
+                    parent_class_name = ""
 
         # For nested classes, the nesting will already be included in the namespace
         # by the namespace so only use the class basename here.
@@ -216,7 +242,8 @@ class DeclarationBuilder:
         for class_element in self.element_filter.matching_classes(self.model.classes):
             # If the class name has a trailing nested class identifier such as "Foo.Bar",
             # always export the class as "Bar" but under the "Foo" namespace.
-            full_namespace = PathFormatter.build_full_class_namespace(class_element.name, class_element.namespace)
+            class_name = class_element.name
+            full_namespace = PathFormatter.build_full_class_namespace(class_name, class_element.namespace)
             target_namespace = self._get_or_create_namespace_bucket(namespace_bucket, full_namespace)
             class_def = self._build_class_def(class_element, self.build_comments, target_namespace)
             target_namespace.add_child(class_def)
@@ -247,7 +274,7 @@ class DeclarationBuilder:
         # Override or extend parent class properties for the new type. Two cases:
         # 1) the property does not exist in the base class (check name + type) -> add it
         # 2) the property exists, but it also uses a dynamic type -> override it by type
-        class_element: ClassElement = self.model.classes.get(object_element.class_name, None)
+        class_element: ClassElement = self.model.lookup_class(object_element.class_name, object_element.class_namespace)
         if class_element is None:
             logging.error(f"could not find class {object_element.class_name} for object {object_element.name}")
             return

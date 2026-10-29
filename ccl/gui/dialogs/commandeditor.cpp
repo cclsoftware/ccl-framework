@@ -83,7 +83,7 @@ public:
 	void draw (const UpdateRgn& updateRgn) override;
 
 	// TextBox
-	StringRef getText () override { return String::kEmpty; }
+	void getText (String& text) const override { text.empty (); }
 };
 
 //************************************************************************************************
@@ -888,4 +888,3 @@ tbool CommandEditor::onEditKeyColumn (CommandItem& item, const IItemModel::EditI
 	#endif
 	return false;
 }
-

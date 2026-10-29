@@ -52,6 +52,8 @@ list (APPEND makeguid_source_files
 
 list (APPEND makeguid_ccl_sources
 	${CCL_DIR}/main/cclconsolemain.cpp
+	${CCL_DIR}/extras/tools/argumentparser.cpp
+	${CCL_DIR}/extras/tools/argumentparser.h
 )
 
 source_group ("source" FILES ${makeguid_source_files})

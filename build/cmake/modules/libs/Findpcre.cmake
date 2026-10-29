@@ -44,3 +44,14 @@ if (NOT TARGET pcre)
 endif ()
 
 set (PCRE_LIBRARY pcre)
+
+if (PCRE_INCLUDE_DIR AND EXISTS "${PCRE_INCLUDE_DIR}/config.h.generic")
+    file (STRINGS "${PCRE_INCLUDE_DIR}/config.h.generic" line REGEX "^#define PACKAGE_VERSION \".*\"$")
+	string (REGEX REPLACE "^#define PACKAGE_VERSION \"(.*)\"$" "\\1" pcre_VERSION "${line}")
+endif ()
+
+include (FindPackageHandleStandardArgs)
+find_package_handle_standard_args (pcre
+	REQUIRED_VARS PCRE_LIBRARY
+	VERSION_VAR pcre_VERSION
+)

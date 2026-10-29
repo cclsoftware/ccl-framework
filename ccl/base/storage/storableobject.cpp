@@ -69,6 +69,7 @@ bool StorableObject::loadFromStream (Object& object, IStream& stream, int flags)
 //************************************************************************************************
 
 DEFINE_CLASS_HIDDEN (StorableObject, Object)
+DEFINE_CLASS_NAMESPACE (StorableObject, NAMESPACE_CCL)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 

@@ -51,7 +51,11 @@ DBusApplication::DBusApplication (IDBusSupport& dbusSupport, const std::string& 
 {
 	try
 	{
+		#if SDBUS_CPP_VERSION == 2
+		getObject ().getConnection ().requestName (sdbus::ServiceName (applicationId));
+		#else
 		getObject ().getConnection ().requestName (applicationId);
+		#endif
 	}
 	CATCH_DBUS_ERROR
 }

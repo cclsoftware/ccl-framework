@@ -38,6 +38,7 @@
 #include "ccl/public/gui/framework/itheme.h"
 #include "ccl/public/gui/framework/iworkspace.h"
 #include "ccl/public/gui/framework/iwindow.h"
+#include "ccl/public/gui/framework/iwindowmanager.h"
 #include "ccl/public/gui/framework/icommandtable.h"
 #include "ccl/public/gui/framework/imenu.h"
 #include "ccl/public/gui/framework/icolorscheme.h"
@@ -556,6 +557,18 @@ class AppTrackingHandler::ViewReportFilter: public Object,
 											public AbstractAnalyticsEventFilter
 {
 public:
+	ViewReportFilter ()
+	{
+		ISubject::addObserver (&System::GetWindowManager (), this);
+	}
+
+	~ViewReportFilter ()
+	{
+		ISubject::removeObserver (&System::GetWindowManager (), this);
+	}
+
+	PROPERTY_OBJECT (StringList, windowClassIds, WindowClassIds)
+
 	// IAnalyticsEventFilter
 	IAnalyticsEvent* CCL_API process (IAnalyticsEvent& e) override
 	{
@@ -612,6 +625,21 @@ public:
 			MutableCString context (kDiagnosticsPrefix);
 			context.append ("*");
 			System::GetDiagnosticStore ().clearData (context, CString::kEmpty);
+		}
+	}
+
+	// Object
+	void CCL_API notify (ISubject* subject, MessageRef msg) override
+	{
+		if(msg == IWindowManager::kWindowOpened)
+		{
+			String windowClassId (msg[0].asString ());
+			if(windowClassIds.contains (windowClassId))
+			{
+				Attributes data;
+				data.set (AnalyticsID::kViewName, windowClassId);
+				ccl_analytics_event (AnalyticsID::kViewOpened, &data);
+			}
 		}
 	}
 
@@ -1841,9 +1869,11 @@ void AppTrackingHandler::registerPageClosedEvent (const StringList& perspectiveI
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void AppTrackingHandler::registerViewOpenReport (int64 evaluationPeriod)
+void AppTrackingHandler::registerViewOpenReport (int64 evaluationPeriod, const StringList& windowClassIds)
 {
-	trackingPlan.addFilter (AnalyticsID::kViewOpened, AnalyticsID::KViewOpenReport, NEW ViewReportFilter, evaluationPeriod);
+	auto* filter = NEW ViewReportFilter;
+	filter->setWindowClassIds (windowClassIds);
+	trackingPlan.addFilter (AnalyticsID::kViewOpened, AnalyticsID::KViewOpenReport, filter, evaluationPeriod);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////

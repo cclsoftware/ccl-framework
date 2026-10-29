@@ -214,9 +214,15 @@ String PresetFilePrimitives::determineRelativeSubFolder (IPresetFileHandler& han
 
 String PresetFilePrimitives::determineRelativeSubFolder (IPresetFileHandler& handler, IAttributeList& metaInfo, StringRef subFolder)
 {
+	bool isDefaultHandler = &handler == &PresetPackageHandler::instance ();
+
 	String classPrefix;
 	if(!handler.getSubFolder (classPrefix, metaInfo))
-		PresetPackageHandler::instance ().getSubFolder (classPrefix, metaInfo); // fallback to default subfolder structure "Vendor/ClassName"
+	{
+		// fallback to default subfolder structure "Vendor/ClassName"; in this case we will also try an alternative subFolder below
+		if(PresetPackageHandler::instance ().getSubFolder (classPrefix, metaInfo))
+			isDefaultHandler = true;
+	}
 
 	static String userPresetsPrefix (String (SimplePresetHandler::getUserPresetFolderName ()) << Url::strPathChar);
 
@@ -244,7 +250,7 @@ String PresetFilePrimitives::determineRelativeSubFolder (IPresetFileHandler& han
 	{
 		return extractRemainder (subFolder, classPrefix);
 	}
-	else if(&handler == &PresetPackageHandler::instance ())
+	else if(isDefaultHandler)
 	{
 		// try alternative subFolder for class
 		String alternativeClassPrefix;

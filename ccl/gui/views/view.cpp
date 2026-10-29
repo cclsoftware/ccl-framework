@@ -143,16 +143,17 @@ END_STYLEDEF
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 // qualify with IView for documentation scan
-BEGIN_STYLEDEF (View::propertyNames)
-	{"mousestate", IView::kMouseState}, // keep most used on top!
-	{"style",		IView::kVisualStyle},
-	{"enabled",		IView::kInputEnabled},
-	{"name",		IView::kName},
-	{"title",		IView::kTitle},
-	{"tooltip",		IView::kTooltip},
-	{"theme",		IView::kTheme},
-	{"controller",	IView::kController},
-	// TODO: expose more view attributes via IObject...
+BEGIN_STYLEDEF (View::attributeNames)
+	{"mousestate",			IView::kMouseState}, // keep most used on top!
+	{"style",				IView::kVisualStyle},
+	{"enabled",				IView::kInputEnabled},
+	{"name",				IView::kName},
+	{"title",				IView::kTitle},
+	{"tooltip",				IView::kTooltip},
+	{"theme",				IView::kTheme},
+	{"controller",			IView::kController},
+	{"accessibilitytitle",	IView::kAccessibilityTitle},
+	// TODO: expose more IView attributes via IObject...
 END_STYLEDEF
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -181,6 +182,7 @@ bool View::isRendering ()
 
 DEFINE_CLASS (View, Linkable)
 DEFINE_CLASS_UID (View, 0xbc8b82de, 0x3695, 0x42b5, 0xa5, 0xd7, 0x84, 0xae, 0x9b, 0x35, 0x5d, 0xaf)
+DEFINE_STRINGID_MEMBER_ (View, kCheckFitSize, "checkFitSize")
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -227,6 +229,18 @@ void CCL_API View::addObserver (IObserver* observer)
 	privateFlags |= kWasObserved;
 
 	SuperClass::addObserver (observer);
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+void CCL_API View::notify (ISubject* subject, MessageRef msg)
+{
+	if(msg == kCheckFitSize)
+	{
+		checkFitSize ();
+	}
+	else
+		SuperClass::notify (subject, msg);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -633,6 +647,24 @@ void CCL_API View::setSize (RectRef newSize, tbool doInvalidate)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
+void View::setWidth (int newWidth)
+{
+	Rect newSize (getSize ());
+	newSize.setWidth (newWidth);
+	setSize (newSize);
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+void View::setHeight (int newHeight)
+{
+	Rect newSize (getSize ());
+	newSize.setHeight (newHeight);
+	setSize (newSize);
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
 void View::setPosition (const Point& pos)
 {
 	Rect r (0, 0, getWidth (), getHeight ());
@@ -882,6 +914,13 @@ void View::checkFitSize ()
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
+void View::deferCheckFitSize ()
+{
+	(NEW Message (kCheckFitSize))->post (this);	
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
 void View::constrainSize (Rect& rect) const
 {
 	// delegate if there is only one child that always fills the full client area
@@ -961,6 +1000,9 @@ void View::calcAutoSize (Rect& r)
 
 void CCL_API View::autoSize (tbool horizontal, tbool vertical)
 {
+	if(getRetainCount () == 0) // skip in destructor (guard the lifeGuard)
+		return;
+
 	Rect calculated;
 	calcAutoSize (calculated);
 
@@ -990,9 +1032,11 @@ void CCL_API View::autoSize (tbool horizontal, tbool vertical)
 				r.top = (parent->getHeight () - h) / 2;
 				r.setHeight (h);
 			}
-		}
-
+		}			
+		SharedPtr<View> lifeGuard (this);
 		setSize (r);
+		if(getRetainCount () == 1)
+			return;
 		disableSizeMode (false);
 	}
 }
@@ -1168,6 +1212,9 @@ void View::onVisualStyleChanged ()
 	// apply trigger
 	if(visualStyle && visualStyle->getTrigger ())
 		visualStyle->getTrigger ()->applyTrigger (this);
+
+	if(style.isTrigger ())
+		signal (Message ("onVisualStyleChanged"));
 	
 	// invalidate if not in draw event (can happen if controls call "setVisualStyle" in "getVisualStyle" during draw) 
 	if(Window* window = getWindow ())
@@ -1430,7 +1477,7 @@ IGraphicsLayer* View::addGraphicsSublayer (IUnknown* content)
 			{
 				mode |= IGraphicsLayer::kIgnoreAlpha;
 				const Color& color = getVisualStyle ().getColor (StyleID::kBackColor, Colors::kTransparentBlack);
-				if(color.getAlphaF () == 1)
+				if(color.isOpaque ())
 					subLayer->setBackColor (color);
 			}
 
@@ -1593,13 +1640,15 @@ void View::onColorSchemeChanged (const ColorSchemeEvent& event)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool View::setMouseState (int state)
+bool View::setMouseState (int state, bool _invalidate)
 {
 	if(state != mouseState)
 	{
 		mouseState = state;
 		propertyChanged ("mousestate");
-		invalidate ();
+		if(_invalidate)
+			invalidate ();
+
 		return true;
 	}
 	return false;
@@ -2201,6 +2250,10 @@ tbool CCL_API View::getViewAttribute (Variant& value, AttrID id) const
 		value = isAccessibilityEnabled ();
 		break;
 
+	case kAccessibilityTitle :
+		value = getAccessibilityTitle ();
+		break;
+
 	default :
 		result = false;
 	}
@@ -2256,7 +2309,7 @@ tbool CCL_API View::setViewAttribute (AttrID id, VariantRef value)
 		break;
 
 	case kMouseState :
-		mouseState = value; // do not invalidate!
+		setMouseState (value, false); // do not invalidate!
 		break;
 
 	case kThemeElementState :
@@ -2279,6 +2332,10 @@ tbool CCL_API View::setViewAttribute (AttrID id, VariantRef value)
 		setAccessibilityEnabled (value);
 		break;
 
+	case kAccessibilityTitle :
+		setAccessibilityTitle (value);
+		break;
+
 	default :
 		result = false;
 	}
@@ -2297,9 +2354,21 @@ void View::propertyChanged (StringID propertyId)
 
 tbool CCL_API View::getProperty (Variant& var, MemberID propertyId) const
 {
-	for(int i = 0; i < ARRAY_COUNT (propertyNames); i++)
-		if(propertyId == propertyNames[i].name)
-			return getViewAttribute (var, propertyNames[i].value);
+	if(propertyId == "width")
+	{
+		var = getWidth ();
+		return true;
+	}
+
+	if(propertyId == "height")
+	{
+		var = getHeight ();
+		return true;
+	}
+
+	for(int i = 0; i < ARRAY_COUNT (attributeNames); i++)
+		if(propertyId == attributeNames[i].name)
+			return getViewAttribute (var, attributeNames[i].value);
 
 	if(propertyId == "parent")
 	{
@@ -2330,12 +2399,6 @@ tbool CCL_API View::getProperty (Variant& var, MemberID propertyId) const
 		return true;
 	}
 
-	if(propertyId == "Host")
-	{
-		var = &System::GetScriptingManager ().getHost ();
-		return true;
-	}
-
 	if(propertyId.getBetween (arrayKey, "parent[", "]"))
 	{
 		// access parent of given class name
@@ -2353,6 +2416,12 @@ tbool CCL_API View::getProperty (Variant& var, MemberID propertyId) const
 		return true;
 	}
 
+	if(propertyId == IScriptingManager::kHost)
+	{
+		var = &System::GetScriptingManager ().getHost ();
+		return true;
+	}
+
 	return SuperClass::getProperty (var, propertyId);
 }
 
@@ -2360,9 +2429,21 @@ tbool CCL_API View::getProperty (Variant& var, MemberID propertyId) const
 
 tbool CCL_API View::setProperty (MemberID propertyId, const Variant& var)
 {
-	for(int i = 0; i < ARRAY_COUNT (propertyNames); i++)
-		if(propertyId == propertyNames[i].name)
-			return setViewAttribute (propertyNames[i].value, var);
+	if(propertyId == "width")
+	{
+		setWidth (var.asInt ());
+		return true;
+	}
+
+	if(propertyId == "height")
+	{
+		setHeight (var.asInt ());
+		return true;
+	}
+	
+	for(int i = 0; i < ARRAY_COUNT (attributeNames); i++)
+		if(propertyId == attributeNames[i].name)
+			return setViewAttribute (attributeNames[i].value, var);
 
 	if(graphicsLayer && propertyId == IGraphicsLayer::kOpacity)
 	{
@@ -2499,7 +2580,7 @@ tbool CCL_API View::delegateEvent (const GUIEvent& event)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 #if DEBUG
-void View::log (const char* indent, int direction)
+void View::log (CStringPtr indent, int direction)
 {
 	if(indent)
 		Debugger::print (indent);

@@ -108,6 +108,19 @@
 #include "ccl/public/devices/ideviceenumerator.h"
 #include "ccl/public/devices/iusbhidstatics.h"
 
+// Audio
+#define _CCL_AUDIO_IID_SYMBOLS_ENABLED_
+#include "ccl/public/audio/iaudiocallback.h"
+#include "ccl/public/audio/iaudiocomponent.h"
+#include "ccl/public/audio/iaudiograph.h"
+#include "ccl/public/audio/iaudiolayout.h"
+#include "ccl/public/audio/iaudiometer.h"
+#include "ccl/public/audio/iaudioprocessor.h"
+#include "ccl/public/audio/iaudioservice.h"
+#include "ccl/public/audio/iaudiosource.h"
+#include "ccl/public/audio/iaudiotransport.h"
+#undef _CCL_AUDIO_IID_SYMBOLS_ENABLED_
+
 // Plug-ins
 #include "ccl/public/plugins/iclassfactory.h"
 #include "ccl/public/plugins/icoderesource.h"

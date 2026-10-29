@@ -294,7 +294,7 @@ ItemView& ItemViewAccessibilityProvider::getItemView () const
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-tresult CCL_API ItemViewAccessibilityProvider::queryInterface (CCL::UIDRef iid, void** ptr)
+tresult CCL_API ItemViewAccessibilityProvider::queryInterface (UIDRef iid, void** ptr)
 {
 	if(iid == ccl_iid<IAccessibilityTableProvider> () && getItemView ().getColumnHeaders () != nullptr)
 		QUERY_INTERFACE (IAccessibilityTableProvider)

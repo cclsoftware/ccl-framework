@@ -42,6 +42,9 @@ public:
 	void addFrame (Image* image, StringID name = nullptr);
 	Image* getFrame (int frameIndex);
 
+	/** True if all frames have the same size. */
+	bool hasUniformFrameSize () const;
+
 	// Image
 	ImageType CCL_API getType () const override;
 	int CCL_API getFrameCount () const override;
@@ -75,21 +78,22 @@ struct ImageResolutionSelector
 	Rect srcRect;
 	Rect dstRect;
 
-	ImageResolutionSelector (Image* image, RectRef rect, int flags = 0, int frame = 0);
-
-	enum Flags
+	enum ScaleMode
 	{
-		kAllowStretch 	= 1<<0,	///< stretch a smaller image proportionally to fit (by default, it just gets centered)
-		kAllowZoom  	= 1<<1	///< zoom image to fill entire space, while preserving its aspect ratio (image will be clipped)
+		kFitShrink,		///< like kFitContain, but never enlarges: an image smaller than the target keeps its original size
+		kFitContain,	///< scales the image up or down to be entirely contained in the target
+		kFitCover		///< scales the image to cover the target completely (overlapping edges are cropped)
 	};
 
+	ImageResolutionSelector (Image* image, RectRef rect, ScaleMode mode = kFitShrink, int frame = 0);
+
 	/** Select the best matching frame of a MultiImage. */
-	static Image* selectImage (Image* image, PointRef destSize, int flags = 0);
-	static IImage* selectImage (IImage* image, PointRef destSize, int flags = 0);
+	static Image* selectImage (Image* image, PointRef destSize, ScaleMode mode = kFitShrink);
+	static IImage* selectImage (IImage* image, PointRef destSize, ScaleMode mode = kFitShrink);
 
 	/** Draw the best matching frame of a MultiImage. */
-	static void draw (IGraphics& port, Image* image, RectRef rect, int flags = 0, int frame = 0, const ImageMode* mode = nullptr);
-	static void draw (IGraphics& port, IImage* image, RectRef rect, int flags = 0, int frame = 0, const ImageMode* mode = nullptr);
+	static void draw (IGraphics& port, Image* image, RectRef rect, ScaleMode scaleMode = kFitShrink, int frame = 0, const ImageMode* mode = nullptr);
+	static void draw (IGraphics& port, IImage* image, RectRef rect, ScaleMode scaleMode = kFitShrink, int frame = 0, const ImageMode* mode = nullptr);
 };
 
 //************************************************************************************************

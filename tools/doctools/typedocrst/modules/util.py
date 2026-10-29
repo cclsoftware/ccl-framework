@@ -2,7 +2,7 @@
 
 from modules.typedocjson import *
 
-__copyright__ = "Copyright (c) 2023 CCL Software Licensing GmbH"
+__copyright__ = "Copyright (c) 2026 CCL Software Licensing GmbH"
 
 
 class TypeDocUtil:
@@ -11,7 +11,7 @@ class TypeDocUtil:
     def cleanup_comment_text(text: str) -> str:
         """
         Replace \r with \n, remove surrounding whitespaces.
-        Required for RstPrinter.code_block to return the correct output.
+        Required for the code_block filter to return the correct output.
         """
         result = text.replace("*", "")
         result = result.replace("\r", "\n").strip()

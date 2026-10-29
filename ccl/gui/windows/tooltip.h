@@ -143,6 +143,8 @@ protected:
 	- "key": translated, platform specific key name for given key idientifier
 	- "value": value of the control's parameter
 	- "property": resolves argument as property path, with the view as anchor
+	- "title": title of the view
+	- "tooltip": composed tooltip of the view, not valid on the tooltip itself
 
 	Examples:
 		tooltip="Save @cmd[File|Save]" 
@@ -151,6 +153,7 @@ protected:
 		tooltip="Volume (@value[])"
 		tooltip="Enable @property[parent.title]"
 		tooltip="Press @key[option] and @key[shift]"
+		accessibility.title="@tooltip[]"
 . */
 //************************************************************************************************
 
@@ -158,9 +161,11 @@ class ComposedTooltip: public String
 {
 public:
 	ComposedTooltip (View* view);
+	ComposedTooltip (View* view, StringRef text);	///< compose another text than the view's tooltip
 
 private:
 	View* view;
+	bool allowSelfReference;
 
 	void resolve (String& text);
 	String resolveVariable (StringRef identifier, StringRef argument);

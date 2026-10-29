@@ -2,14 +2,26 @@
 """Sphinx Documentation Build Tool.
 """
 
+__copyright__ = "Copyright (c) 2026 CCL Software Licensing GmbH"
+__version__ = "1.1.4"
+
 import argparse
 import logging
 import pathlib
 import platform
 import sys
+import importlib.util
 
-__copyright__ = "Copyright (c) 2025 CCL Software Licensing GmbH"
-__version__ = "1.1.3"
+# Ensure 'ccl_extras' is importable. If not installed in the active environment,
+# add the repository extras path to 'sys.path'. Needs to be done before importing any
+# module that depends on 'ccl_extras'.
+
+if importlib.util.find_spec("ccl_extras") is None:
+    extras_path = pathlib.Path(__file__).resolve().parents[3] / "ccl" / "extras" / "python"
+    extras_path_str = str(extras_path)
+    if extras_path.is_dir() and extras_path_str not in sys.path:
+        sys.path.insert(0, extras_path_str)
+
 
 from modules.buildenv import BuildEnvironment
 from modules.builder import ProjectBuilder, MetaProjectBuilder, BuildException

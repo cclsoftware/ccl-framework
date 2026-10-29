@@ -26,6 +26,7 @@ DEFINE_IID_ (IString, 0x75590d21, 0xd91f, 0x4dd0, 0xb8, 0x52, 0xed, 0xfe, 0xb3, 
 DEFINE_IID_ (IStringTokenizer, 0xebacb468, 0xb4c9, 0x4d98, 0x84, 0x14, 0x23, 0xf1, 0xf6, 0x1f, 0xc2, 0xc4)
 DEFINE_IID_ (IFormattedString, 0x2a761be7, 0xb704, 0x4fdf, 0xbe, 0xd0, 0x92, 0xeb, 0xc1, 0xce, 0x40, 0xde)
 DEFINE_IID_ (IUnicodeUtilities, 0x9f2ad0bf, 0x5c5b, 0x43f1, 0xbb, 0x4a, 0xf3, 0x29, 0xd6, 0x36, 0xd6, 0x98)
+DEFINE_IID_ (IGraphemeIterator, 0x68850f96, 0xed30, 0x44c2, 0x9a, 0x79, 0xed, 0xfc, 0xde, 0x5f, 0xc9, 0xe6)
 
 //************************************************************************************************
 // String
@@ -78,7 +79,7 @@ String::String (IString* string)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-String::String (const uchar* charBuffer)
+String::String (UStringPtr charBuffer)
 {
 	theString = &System::GetEmptyString ();
 
@@ -95,7 +96,7 @@ String::String (const uchar* charBuffer)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-String::String (const char* asciiString)
+String::String (CStringPtr asciiString)
 {
 	theString = &System::GetEmptyString ();
 
@@ -112,7 +113,7 @@ String::String (const char* asciiString)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-String::String (TextEncoding encoding, const char* cString)
+String::String (TextEncoding encoding, CStringPtr cString)
 {
 	theString = &System::GetEmptyString ();
 
@@ -187,28 +188,28 @@ uchar String::at (int index) const
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool String::copyTo (uchar* charBuffer, int bufferSize) const
+bool String::copyTo (uchar charBuffer[], int bufferSize) const
 {
 	return theString->copyTo (charBuffer, bufferSize) == kResultOk;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool String::toCString (TextEncoding encoding, char* cString, int cStringSize, int* bytesWritten) const
+bool String::toCString (TextEncoding encoding, char cString[], int cStringSize, int* bytesWritten) const
 {
 	return theString->toCString (encoding, cString, cStringSize, bytesWritten) == kResultOk;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool String::toPascalString (TextEncoding encoding, unsigned char* pString, int pStringSize) const
+bool String::toPascalString (TextEncoding encoding, unsigned char pString[], int pStringSize) const
 {
 	return theString->toPascalString (encoding, pString, pStringSize) == kResultOk;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool String::toASCII (char* asciiString, int asciiStringSize, int* bytesWritten) const
+bool String::toASCII (char asciiString[], int asciiStringSize, int* bytesWritten) const
 {
 	return toCString (Text::kASCII, asciiString, asciiStringSize, bytesWritten);
 }
@@ -222,7 +223,7 @@ bool String::equals (StringRef otherString) const
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool String::equalsChars (const uchar* charBuffer, int count) const
+bool String::equalsChars (UStringPtr charBuffer, int count) const
 {
 	return theString->equalsChars (charBuffer, count);
 }
@@ -243,7 +244,7 @@ int String::compareWithOptions (StringRef otherString, int flags) const
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-int String::compareChars (const uchar* charBuffer, int count) const
+int String::compareChars (UStringPtr charBuffer, int count) const
 {
 	return theString->compareChars (charBuffer, count);
 }
@@ -362,7 +363,7 @@ void String::empty ()
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-String& String::assign (const uchar* charBuffer, int count)
+String& String::assign (UStringPtr charBuffer, int count)
 {
 	writeEnable ();
 	theString->assignChars (charBuffer, count);
@@ -394,7 +395,7 @@ String& String::append (StringRef otherString, int count)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-String& String::append (const uchar* charBuffer, int count)
+String& String::append (UStringPtr charBuffer, int count)
 {
 	if(count == 0)
 		return *this;
@@ -414,7 +415,7 @@ String& String::append (uchar c)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool String::appendCString (TextEncoding encoding, const char* cString, int count)
+bool String::appendCString (TextEncoding encoding, CStringPtr cString, int count)
 {
 	writeEnable ();
 	return theString->appendCString (encoding, cString, count) == kResultOk;
@@ -422,7 +423,7 @@ bool String::appendCString (TextEncoding encoding, const char* cString, int coun
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool String::appendPascalString (TextEncoding encoding, const unsigned char* pString)
+bool String::appendPascalString (TextEncoding encoding, const unsigned char pString[])
 {
 	writeEnable ();
 	return theString->appendPascalString (encoding, pString) == kResultOk;
@@ -438,7 +439,7 @@ bool String::appendNativeString (const void* nativeString)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-String& String::appendASCII (const char* asciiString, int count)
+String& String::appendASCII (CStringPtr asciiString, int count)
 {
 	appendCString (Text::kASCII, asciiString, count);
 	return *this;

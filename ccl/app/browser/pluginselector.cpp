@@ -22,6 +22,7 @@
 #include "ccl/app/browser/searchresultlist.h"
 
 #include "ccl/app/components/searchcomponent.h"
+#include "ccl/app/controls/usercontrol.h"
 
 #include "ccl/base/storage/settings.h"
 #include "ccl/base/storage/storage.h"
@@ -100,6 +101,9 @@ class PlugInSelectorPopup: public Component,
 public:
 	PlugInSelectorPopup (PlugInSelector& selector);
 
+	void showPopup ();
+	void applyConfirmedResult ();
+
 	// PopupSelectorClient
 	IView* CCL_API createPopupView (SizeLimit& limits) override;
 	bool hasPopupResult () override;
@@ -147,10 +151,14 @@ public:
 		{
 			// close popup when Return / Enter pressed in search edit box and we have a result (otherwise the edit box would just give up focus)
 			if(event.vKey == VKey::kReturn || event.vKey == VKey::kEnter)
-				if(browser.getSelectedClassID ().isValid () && tryCloseWindowFromSearchBox (view))
+				if(browser.getSelectedClassID ().isValid ())
 				{
 					browser.setPopupResultConfirmed (true); // force accepting the result, even though there was no formal IPopupSelectorClient::kOkay via mouse/key event in PopupSelector
-					return true;
+
+					if(tryCloseWindowFromSearchBox (view))
+						return true;
+					else
+						browser.setPopupResultConfirmed (false);
 				}
 		}
 		else
@@ -181,15 +189,94 @@ private:
 
 	bool tryCloseWindowFromSearchBox (IView* view)
 	{
-		ViewBox vb (view);
-		if(view && (vb.getName () == "searchTerms" || vb.getName () == "editString"))
+		if(SearchComponent::isAcceptableEditView (view))
+		{
 			if(IWindow* window = view->getIWindow ())
 			{
 				window->close ();
 				return true; // event handled
 			}
+		}
 		return false;
 	}
+};
+
+//************************************************************************************************
+// PlugInSelector::MenuAdapterView
+// Forwards view events to PlugInSelector / popup client
+//************************************************************************************************
+
+class PlugInSelector::MenuAdapterView: public UserControl
+{
+public:
+	MenuAdapterView (PlugInSelector* selector, IPopupSelectorClient* popupClient)
+	: selector (selector),
+	  popupClient (popupClient)
+	{}
+
+	// UserControl
+	void attached (IView* parent) override
+	{
+		selector->signal (Message (PlugInSelector::kBeginSelection));
+		return UserControl::attached (parent);
+	}
+
+	void removed (IView* parent) override
+	{
+		if(PlugInSelectorPopup* client = selector->getPopupSelectorClient ())
+			client->applyConfirmedResult (); // check if result was confirmed via search field edit navigation
+
+		selector->signal (Message (PlugInSelector::kEndSelection));
+		return UserControl::removed (parent);
+	}
+
+	bool onMouseDown (const MouseEvent& event) override
+	{
+		if(IWindow* window = getWindow ())
+		{
+			PopupSelectorClient::Result result = popupClient->onMouseDown (event, *window);
+			if(result != IPopupSelectorClient::kIgnore)
+			{
+				popupClient->onPopupClosed (result);
+				window->close ();
+				return true;
+			}
+		}
+		return UserControl::onMouseDown (event);
+	}
+
+	bool onMouseUp (const MouseEvent& event) override
+	{
+		if(IWindow* window = getWindow ())
+		{
+			PopupSelectorClient::Result result = popupClient->onMouseUp (event, *window);
+			if(result != IPopupSelectorClient::kIgnore)
+				return true;
+		}
+		return UserControl::onMouseUp (event);
+	}
+
+	bool onKeyDown (const KeyEvent& event) override
+	{
+		PopupSelectorClient::Result result = popupClient->onKeyDown (event);
+
+		if(result != IPopupSelectorClient::kIgnore)
+		{
+			if(event.vKey == VKey::kEnter || event.vKey == VKey::kReturn)
+				if(IWindow* window = getWindow ())
+				{
+					popupClient->onPopupClosed (result);
+					window->close ();
+				}
+
+			return true;
+		}
+		return UserControl::onKeyDown (event);
+	}
+
+private:
+	SharedPtr<PlugInSelector> selector;
+	IPopupSelectorClient* popupClient;
 };
 
 } // namespace CCL
@@ -202,8 +289,9 @@ using namespace CCL;
 
 DEFINE_STRINGID_MEMBER_ (PlugInMenuParam, kListChanged, "listChanged")
 DEFINE_CLASS (PlugInMenuParam, MenuParam)
+DEFINE_CLASS_NAMESPACE (PlugInMenuParam, NAMESPACE_CCL)
 DEFINE_CLASS_UID (PlugInMenuParam, 0xf969e8ba, 0xcbf6, 0x4b0a, 0xbf, 0x79, 0x17, 0xba, 0x8a, 0xcb, 0xb7, 0x7c)
-DEFINE_CLASS_NAMESPACE (PlugInMenuParam, "Host")
+DEFINE_CLASS_CATEGORY (PlugInMenuParam, PLUG_CATEGORY_HOST_)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -714,8 +802,12 @@ void CCL_API PlugInCategoryParam::extendMenu (IMenu& menu, StringID name)
 //************************************************************************************************
 
 DEFINE_CLASS (PlugInSelector, Component)
+DEFINE_CLASS_NAMESPACE (PlugInSelector, NAMESPACE_CCL)
 DEFINE_CLASS_UID (PlugInSelector, 0xf7447d54, 0x73fa, 0x4930, 0x8e, 0x83, 0x96, 0x0e, 0x8f, 0xba, 0x8c, 0x2f)
-DEFINE_CLASS_NAMESPACE (PlugInSelector, "Host")
+DEFINE_CLASS_CATEGORY (PlugInSelector, PLUG_CATEGORY_HOST_)
+
+DEFINE_STRINGID_MEMBER_ (PlugInSelector, kBeginSelection, "beginSelection")
+DEFINE_STRINGID_MEMBER_ (PlugInSelector, kEndSelection, "endSelection")
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -751,15 +843,112 @@ PlugInSelector::PlugInSelector (StringRef classCategory1, StringRef classCategor
 IUnknown* CCL_API PlugInSelector::getObject (StringID name, UIDRef classID)
 {
 	if(name == "PlugInBrowser")
+		return getPopupSelectorClient ()->asUnknown ();
+
+	return nullptr;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+PlugInSelectorPopup* PlugInSelector::getPopupSelectorClient ()
+{
+	if(!plugInSelectorPopup)
 	{
-		if(!plugInSelectorPopup)
+		plugInSelectorPopup = NEW PlugInSelectorPopup (*this);
+		addComponent (plugInSelectorPopup);
+	}
+	return plugInSelectorPopup;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+IAsyncOperation* PlugInSelector::showPopup (PopupMode mode, const PopupSizeInfo& sizeInfo)
+{
+	AutoPtr<IPopupSelector> popupSelector (ccl_new<IPopupSelector> (ClassID::PopupSelector));
+	if(popupSelector)
+	{
+		popupSelector->setTheme (getTheme ());
+
+		int placementFlags = PopupSizeInfo::kHMouse | PopupSizeInfo::kVMouse;
+		PopupSizeInfo sizeInfo (nullptr, placementFlags);
+
+		switch(mode)
 		{
-			plugInSelectorPopup = NEW PlugInSelectorPopup (*this);
-			addComponent (plugInSelectorPopup);
+		case kPopupModeMenu :
+			return popupSelector->popupAsync (getPlugList (), sizeInfo); // parameter presented as menu
+
+		case kPopupModeBrowser :
+		default:
+			return popupSelector->popupAsync (getPopupSelectorClient (), sizeInfo); // plug-in browser
 		}
-		return ccl_as_unknown (plugInSelectorPopup);
 	}
 	return nullptr;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+IAsyncOperation* PlugInSelector::showPopup (const PopupSizeInfo& sizeInfo)
+{
+	auto mode = (PopupMode)paramList.byTag (Tag::kSelectorMode)->getValue ().asInt ();
+	return showPopup (mode, sizeInfo);
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+void PlugInSelector::embedInMenu (PopupMode mode, IMenu* menu, StringRef subMenuTitle)
+{
+	switch(mode)
+	{
+	case kPopupModeMenu :
+		{
+			// add as nested sub menu
+			AutoPtr<IParameterMenuBuilder> builder (ccl_new<IParameterMenuBuilder> (ClassID::ParameterMenuBuilder));
+			builder->construct (getPlugList ());
+			IMenu* subMenu = builder->buildIMenu ();
+			subMenu->setMenuAttribute (IMenu::kMenuTitle, subMenuTitle);
+			menu->addMenu (subMenu);
+		}
+		break;
+
+	case kPopupModeBrowser :
+		{
+			// sub menu with plug-in browser view
+			UnknownPtr<IExtendedMenu> extendedMenu (menu);
+			if(extendedMenu)
+			{
+				IMenu* subMenu = menu->createMenu ();
+				menu->addMenu (subMenu);
+				subMenu->setMenuAttribute (IMenu::kMenuTitle, subMenuTitle);
+				extendedMenu = subMenu;
+				if(extendedMenu)
+				{
+					SizeLimit limits;
+					limits.setUnlimited ();
+					IView* view = getPopupSelectorClient ()->createPopupView (limits);
+					if(view)
+					{
+						AutoPtr<IView> menuAdapter (*NEW MenuAdapterView (this, getPopupSelectorClient ()));
+						menuAdapter->getChildren ().add (view);
+						menuAdapter->autoSize ();
+
+						extendedMenu->addViewItem (menuAdapter);
+					}
+				}
+			}
+		}
+		break;
+
+	default:
+		break;
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+void PlugInSelector::embedInMenu (IMenu* menu, StringRef subMenuTitle)
+{
+	auto mode = (PopupMode)paramList.byTag (Tag::kSelectorMode)->getValue ().asInt ();
+	embedInMenu (mode, menu, subMenuTitle);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -882,6 +1071,14 @@ bool PlugInSelector::setSelected (UIDRef classID)
 		return plugList->selectClass (classID);
 	}
 	return true;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+void CCL_API PlugInSelector::paramEdit (IParameter* param, tbool begin)
+{
+	if(param == getPlugList ())
+		signal (Message (begin ? PlugInSelector::kBeginSelection : PlugInSelector::kEndSelection));
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1130,6 +1327,14 @@ IView* CCL_API PlugInSelectorPopup::createPopupView (SizeLimit& limits)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
+void PlugInSelectorPopup::applyConfirmedResult ()
+{
+	if(browser.isPopupResultConfirmed ())
+		onPopupClosed (kOkay);
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
 bool PlugInSelectorPopup::hasPopupResult ()
 {
 	return browser.getSelectedClassID ().isValid ();
@@ -1144,6 +1349,7 @@ void CCL_API PlugInSelectorPopup::onPopupClosed (Result result)
 		selector.setSelected (browser.getSelectedClassID ());
 		selector.signal (Message (kChanged));
 	}
+	browser.setPopupResultConfirmed (false);
 
 	browser.save (Storage (Settings::instance ().getAttributes (String ("PlugInSelectorBrowser/") << browser.getSelectorId ())));
 }
@@ -1189,7 +1395,7 @@ PopupSelectorClient::Result CCL_API PlugInSelectorPopup::onKeyDown (const KeyEve
 		{
 			// accept focus in tree view or search field - in all other cases give focus to tree view
 			IView* focusView = window->getFocusIView ();
-			if(!focusView || (focusView != treeView && ViewBox (focusView).getName () != "searchTerms" && ViewBox (focusView).getName () != "editString"))
+			if(!focusView || (focusView != treeView && !SearchComponent::isAcceptableEditView (focusView)))
 			{
 				treeView->takeFocus ();
 				result = kIgnore;
@@ -1251,10 +1457,10 @@ String PlugInSortMethods::getType (const IClassDescription& description)
 // PlugInSorterByFolder
 //************************************************************************************************
 
-class PlugInSorterByFolder: public CCL::NodeSorter
+class PlugInSorterByFolder: public NodeSorter
 {
 public:
-	bool getSortPath (String& path, const CCL::BrowserNode* node) override
+	bool getSortPath (String& path, const BrowserNode* node) override
 	{
 		if(const Browsable::PlugInClassNode* classNode = ccl_cast<Browsable::PlugInClassNode> (node))
 		{
@@ -1273,10 +1479,10 @@ public:
 // PlugInSorterByVendor
 //************************************************************************************************
 
-class PlugInSorterByVendor: public CCL::NodeSorter
+class PlugInSorterByVendor: public NodeSorter
 {
 public:
-	bool getSortPath (String& path, const CCL::BrowserNode* node) override
+	bool getSortPath (String& path, const BrowserNode* node) override
 	{
 		if(const Browsable::PlugInClassNode* classNode = ccl_cast<Browsable::PlugInClassNode> (node))
 		{
@@ -1291,10 +1497,10 @@ public:
 // PlugInSorterBySubCategory
 //************************************************************************************************
 
-class PlugInSorterBySubCategory: public CCL::NodeSorter
+class PlugInSorterBySubCategory: public NodeSorter
 {
 public:
-	bool getSortPath (String& path, const CCL::BrowserNode* node) override
+	bool getSortPath (String& path, const BrowserNode* node) override
 	{
 		if(const Browsable::PlugInClassNode* classNode = ccl_cast<Browsable::PlugInClassNode> (node))
 		{
@@ -1310,10 +1516,10 @@ public:
 // PlugInSorterByUserFolder
 //************************************************************************************************
 
-class PlugInSorterByUserFolder: public CCL::NodeSorter
+class PlugInSorterByUserFolder: public NodeSorter
 {
 public:
-	bool getSortPath (String& path, const CCL::BrowserNode* node) override
+	bool getSortPath (String& path, const BrowserNode* node) override
 	{
 		if(const Browsable::PlugInClassNode* classNode = ccl_cast<Browsable::PlugInClassNode> (node))
 		{
@@ -1328,10 +1534,10 @@ public:
 // PlugInSorterByType
 //************************************************************************************************
 
-class PlugInSorterByType: public CCL::NodeSorter
+class PlugInSorterByType: public NodeSorter
 {
 public:
-	bool getSortPath (String& path, const CCL::BrowserNode* node) override
+	bool getSortPath (String& path, const BrowserNode* node) override
 	{
 		if(const Browsable::PlugInClassNode* classNode = ccl_cast<Browsable::PlugInClassNode> (node))
 		{
@@ -1346,21 +1552,21 @@ public:
 // PlugInSorterComponent
 //************************************************************************************************
 
-CCL::NodeSorter* PlugInSorterComponent::createUserFolderSorter ()
+NodeSorter* PlugInSorterComponent::createUserFolderSorter ()
 {
 	return NEW PlugInSorterByUserFolder;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-CCL::NodeSorter* PlugInSorterComponent::createVendorSorter ()
+NodeSorter* PlugInSorterComponent::createVendorSorter ()
 {
 	return NEW PlugInSorterByVendor;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-CCL::NodeSorter* PlugInSorterComponent::createSubCategorySorter ()
+NodeSorter* PlugInSorterComponent::createSubCategorySorter ()
 {
 	return NEW PlugInSorterBySubCategory;
 }

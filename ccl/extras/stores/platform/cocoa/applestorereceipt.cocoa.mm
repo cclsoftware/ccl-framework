@@ -42,7 +42,7 @@
 namespace CCL {
 namespace MacUtils {
 
-io_service_t ioService (const char* name, BOOL wantBuiltIn)
+io_service_t ioService (CStringPtr name, BOOL wantBuiltIn)
 {
 	io_iterator_t iterator = IO_OBJECT_NULL;
 	mach_port_t default_port = kIOMasterPortDefault;

@@ -26,7 +26,9 @@
 #include "ccl/public/base/itrigger.h"
 #include "ccl/public/base/iarrayobject.h"
 #include "ccl/public/base/variant.h"
+
 #include "ccl/public/gui/framework/ivisualstyle.h"
+#include "ccl/public/gui/framework/ianimation.h"
 #include "ccl/public/gui/graphics/iimage.h"
 
 namespace CCL {
@@ -132,6 +134,7 @@ public:
 	// IVisualStyleData
 	StringID CCL_API getName () const override;
 	void CCL_API setName (StringID name) override;
+	tbool CCL_API hasReferences (IColorScheme& scheme) const override;
 	ColorRef CCL_API getColor (StringID name, ColorRef defaultColor = Colors::kBlack) const override;
 	tbool CCL_API getColor (Color& color, StringID name) const override;
 	void CCL_API setColor (StringID name, ColorRef color) override;
@@ -154,7 +157,8 @@ public:
 	void CCL_API setImage (StringID name, IImage* image) override;
 	IGradient* CCL_API getGradient (StringID name) const override;
 	void CCL_API setGradient (StringID name, IGradient* gradient) override;
-	tbool CCL_API hasReferences (IColorScheme& scheme) const override;
+	IAnimation* CCL_API getAnimation (StringID name) const override;
+	void CCL_API setAnimation (StringID name, IAnimation* animation) override;
 
 	// Object
 	void CCL_API notify (ISubject* subject, MessageRef msg) override;
@@ -271,6 +275,18 @@ protected:
 		operator Variant () const override { return static_cast<IGradient*> (gradient); }
 	};
 
+	class AnimationItem: public Item
+	{
+	public:
+		AnimationItem (StringID name, IAnimation* animation): Item (name), animation (animation) {}
+		AnimationItem () {}
+		void operator = (const AnimationItem& other) { name = other.name; animation = other.animation;}
+		bool operator == (const AnimationItem& other) const { return name == other.name; }
+
+		PROPERTY_SHARED_POINTER (IAnimation, animation, Animation)
+		operator Variant () const override { return static_cast<IAnimation*> (animation); }
+	};
+
 	template <class ItemType>
 	class ItemVector: public Object,
 					  public Vector<ItemType>,
@@ -316,6 +332,7 @@ protected:
 	ItemVector<OptionsItem> options;
 	ItemVector<ImageItem> images;
 	ItemVector<GradientItem> gradients;
+	ItemVector<AnimationItem> animations;
 
 	struct ColorStyleReference: ColorSchemeReference
 	{
@@ -396,6 +413,8 @@ public:
 	void CCL_API setImage (StringID name, IImage* image) override;
 	IGradient* CCL_API getGradient (StringID name) const override;
 	void CCL_API setGradient (StringID name, IGradient* gradient) override;
+	IAnimation* CCL_API getAnimation (StringID name) const override;
+	void CCL_API setAnimation (StringID name, IAnimation* animation) override;
 	tbool CCL_API hasReferences (IColorScheme& scheme) const override;
 	tbool CCL_API copyFrom (const IVisualStyle& other) override;
 	const IVisualStyle* CCL_API getInherited () const override;
@@ -410,7 +429,8 @@ public:
 	tbool CCL_API getOptions (Options& options, StringID name, IStyleConditionContext* context) const override;
 	IImage* CCL_API getImage (StringID name, IStyleConditionContext* context) const override;
 	IGradient* CCL_API getGradient (StringID name, IStyleConditionContext* context) const override;
-	
+	IAnimation* CCL_API getAnimation (StringID name, IStyleConditionContext* context) const override;
+
 	using IVisualStyle::getMetric;
 
 	CLASS_INTERFACE (IVisualStyle, VisualStyleData)

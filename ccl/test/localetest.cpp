@@ -78,9 +78,9 @@ CCL_TEST (LocaleTest, TestTranslationTable)
 	AutoPtr<ITranslationTable> t = System::CreateTranslationTable ();
 	t->addVariable ("APPNAME", "Test One");
 
-	const char* scopeName = "Menu";
-	const char* keyString = "$APPNAME Website";
-	const char* textUTF8 = "$APPNAME网站";
+	CStringPtr scopeName = "Menu";
+	CStringPtr keyString = "$APPNAME Website";
+	CStringPtr textUTF8 = "$APPNAME网站";
 
 	String text;
 	text.appendCString (Text::kUTF8, textUTF8);

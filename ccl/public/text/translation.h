@@ -55,7 +55,7 @@ interface ITranslationTable;
 	String stringToBeTranslated;
 	String translatedOnTheFly = TRANSLATE (stringToBeTranslated);
 	
-	const char* key = XSTR_REF(ThisIsATest).getKey ();
+	CStringPtr key = XSTR_REF(ThisIsATest).getKey ();
 
 	@endcode
 */
@@ -97,7 +97,7 @@ CCL::LocalString::translate (scope, string)
 class LocalString
 {
 public:
-	LocalString (const char* key);
+	LocalString (CStringPtr key);
 
 	static bool hasTable ();
 	static ITranslationTable* getTable ();
@@ -109,20 +109,20 @@ public:
 
 	struct EnglishCorrection
 	{
-		const char* scope;
-		const char* key;
-		const char* englishText;
+		CStringPtr scope;
+		CStringPtr key;
+		CStringPtr englishText;
 	};
 
 	static void addCorrections (const EnglishCorrection corrections[], int count);
 
-	const char* getKey () const;
+	CStringPtr getKey () const;
 	StringRef getText (const ITranslationTable* altTable = nullptr) const;
 	operator StringRef () const;
 
 	struct BeginScope
 	{
-		BeginScope (const char* name);
+		BeginScope (CStringPtr name);
 	};
 
 	struct EndScope
@@ -132,10 +132,10 @@ public:
 
 protected:
 	static ITranslationTable* theTable;
-	static const char* currentScope;
+	static CStringPtr currentScope;
 
-	const char* scope;
-	const char* key;
+	CStringPtr scope;
+	CStringPtr key;
 	mutable String text;
 };
 

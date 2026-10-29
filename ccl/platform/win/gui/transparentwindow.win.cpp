@@ -33,7 +33,7 @@ using namespace CCL;
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-static void ManageTransparentWindow (WindowsTransparentWindow& window, const char* where);
+static void ManageTransparentWindow (WindowsTransparentWindow& window, CStringPtr where);
 
 static const Win32::ScreenInformation& GetScreenForTransparentWindow (WindowsTransparentWindow& window)
 {
@@ -270,7 +270,7 @@ static HWND GetWindowAfter (HWND hwndThis)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-static void ManageTransparentWindow (WindowsTransparentWindow& window, const char* where)
+static void ManageTransparentWindow (WindowsTransparentWindow& window, CStringPtr where)
 {
 	if(window.isKeepOnTop ())
 		return;

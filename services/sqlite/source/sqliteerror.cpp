@@ -30,9 +30,9 @@ using namespace CCL;
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void Database::logError (sqlite3* connection, int code, const char* context)
+void Database::logError (sqlite3* connection, int code, CStringPtr context)
 {
-	const char* msg = nullptr;
+	CStringPtr msg = nullptr;
 	if(code >= 0)
 		msg = sqlite3_errstr (code);
 	else

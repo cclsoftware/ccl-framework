@@ -37,7 +37,7 @@ using Core::TRect;
 
 #if DEBUG
 /** Dump coordinates to debug output. */
-void dumpRect (const Rect& rect, const char* string = nullptr);
+void dumpRect (const Rect& rect, CStringPtr string = nullptr);
 #endif
 
 /** Convert float to integer rectangle. */

@@ -28,6 +28,7 @@ using namespace CCL;
 //************************************************************************************************
 
 DEFINE_CLASS (Preset, Object)
+DEFINE_CLASS_NAMESPACE (Preset, NAMESPACE_CCL)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -119,6 +120,13 @@ tbool CCL_API Preset::setUserData (IUnknown* _data)
 	setData (_data);
 	return true;
 }
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+BEGIN_PROPERTY_NAMES (Preset)
+	DEFINE_PROPERTY_TYPE ("presetName", ITypeInfo::kString)
+	DEFINE_PROPERTY_TYPE ("relativePath", ITypeInfo::kString)
+END_PROPERTY_NAMES (Preset)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 

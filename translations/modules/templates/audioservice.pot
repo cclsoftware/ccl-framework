@@ -1,0 +1,15 @@
+#: ./system/miniaudiocodec.cpp
+msgctxt "FileType"
+msgid "FLAC File"
+msgstr ""
+
+#: ./system/miniaudiocodec.cpp
+msgctxt "FileType"
+msgid "MP3 File"
+msgstr ""
+
+#: ./system/miniaudiocodec.cpp
+msgctxt "FileType"
+msgid "Wave File"
+msgstr ""
+

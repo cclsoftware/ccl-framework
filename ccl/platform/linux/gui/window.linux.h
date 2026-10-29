@@ -191,7 +191,7 @@ protected:
 	Linux::ActivationToken activationToken;
 	#endif
 	
-	void onDpiChanged (float dpiFactor);
+	bool onDpiChanged (float dpiFactor);
 	virtual void applySize (RectRef clientSize);
 	void applySizeInfo ();
 
@@ -205,7 +205,7 @@ protected:
 
 	// Window
 	void setWindowSize (Rect& size) override;
-	void showWindow (bool state = true) override;
+	void showWindow (bool state = true, bool activate = true) override;
 	void moveWindow () override;
 	void fromNativeWindow (void* nativeWindow) override;
 	void makeNativePopupWindow (IWindow* parent) override;
@@ -233,7 +233,7 @@ protected:
 	#endif
 	
 	// LinuxWindow
-	void showWindow (bool state = true) override;
+	void showWindow (bool state = true, bool activate = true) override;
 };
 
 } // namespace CCL

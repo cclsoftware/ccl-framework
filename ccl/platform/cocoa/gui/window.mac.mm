@@ -123,6 +123,7 @@ OSXWindow::OSXWindow (const Rect& size, StyleRef style, StringRef title)
   delegate (nil),
   nativeView (nil),
   suppressContextMenu (false),
+  suppressKeyEquivalents (false),
   fullscreen (false),
   activating (false),
   savedOpacity (1)
@@ -418,7 +419,7 @@ void OSXWindow::setWindowTitle (StringRef title)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void OSXWindow::showWindow (bool state)
+void OSXWindow::showWindow (bool state, bool activate)
 {
 	if(!handle || isChildWindow ())
 		return;
@@ -430,6 +431,9 @@ void OSXWindow::showWindow (bool state)
 		if(style.isCustomStyle (Styles::kWindowBehaviorTooltip))
 			[nsWindow setAlphaValue:savedOpacity];
 		[nsWindow orderFront:nil];
+
+		if(activate)
+			this->activate ();
 	}
 	else
 	{
@@ -966,7 +970,7 @@ void OSXWindow::updateBackgroundColor ()
 	else
 	{
 		[nsWindow setBackgroundColor:nsColor];
-		if(c.getAlphaF () < 1.f)
+		if(c.isTranslucent ())
 			[nsWindow setOpaque:NO];
 		
 		if(getNativeView () && getNativeView ()->getLayer ())

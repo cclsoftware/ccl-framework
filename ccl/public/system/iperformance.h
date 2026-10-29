@@ -39,9 +39,9 @@ interface IPerformanceMeter: IUnknown
 	/** Get performance (1.0 means 100 per cent). */
 	virtual double CCL_API getPerformance () = 0;
 
-	virtual tbool CCL_API isOverLoad () = 0;
+	virtual tbool CCL_API isOverload () = 0;
 
-	virtual void CCL_API setOverLoad (tbool state) = 0;
+	virtual void CCL_API setOverload (tbool state) = 0;
 
 	virtual void CCL_API reset () = 0;
 

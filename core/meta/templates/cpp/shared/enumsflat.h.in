@@ -8,9 +8,9 @@
 
 {% for enumerator in enum.enumerators %}
 {% if enumerator.brief %}
-static const {{ enumerator.type | cppvalue }} {{ enumerator.name }} = {{ enumerator.value | cppvalue }}; ///< {{ enumerator.brief }}
+inline constexpr {{ enumerator.type | cppvalue }} {{ enumerator.name }} = {{ enumerator.value | cppvalue }}; ///< {{ enumerator.brief }}
 {% else %}
-static const {{ enumerator.type | cppvalue }} {{ enumerator.name }} = {{ enumerator.value | cppvalue}};
+inline constexpr {{ enumerator.type | cppvalue }} {{ enumerator.name }} = {{ enumerator.value | cppvalue }};
 {% endif %}
 {% endfor %}
 

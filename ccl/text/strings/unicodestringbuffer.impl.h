@@ -16,7 +16,7 @@
 //
 //************************************************************************************************
 
-int Text::convertToCString (char* cString, int cStringSize, TextEncoding encoding, const uchar* uString, int uStringLength)
+int Text::convertToCString (char cString[], int cStringSize, TextEncoding encoding, UStringPtr uString, int uStringLength)
 {
 	if(uStringLength == -1)
 		uStringLength = getLength (uString);
@@ -40,7 +40,7 @@ int Text::convertToCString (char* cString, int cStringSize, TextEncoding encodin
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-int Text::convertToUnicode (uchar* uString, int uStringSize, TextEncoding encoding, const char* cString, int cStringLength)
+int Text::convertToUnicode (uchar uString[], int uStringSize, TextEncoding encoding, CStringPtr cString, int cStringLength)
 {
 	if(cStringLength == -1)
 		cStringLength = getLength (cString);
@@ -64,7 +64,7 @@ int Text::convertToUnicode (uchar* uString, int uStringSize, TextEncoding encodi
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-int Text::compareStrings (const uchar* s1, int l1, const uchar* s2, int l2, int flags)
+int Text::compareStrings (UStringPtr s1, int l1, UStringPtr s2, int l2, int flags)
 {
 	if(flags & kCompareNumerically)
 		return UCharFunctions::compareStringsNumerically (s1, s2, (flags & kIgnoreCase) != 0);
@@ -79,7 +79,7 @@ int Text::compareStrings (const uchar* s1, int l1, const uchar* s2, int l2, int 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-const uchar* Text::findString (const uchar* source, const uchar* value, int flags)
+UStringPtr Text::findString (UStringPtr source, UStringPtr value, int flags)
 {
 	int sourceLength = getLength (source);
 	int valueLength = getLength (value);
@@ -93,21 +93,21 @@ const uchar* Text::findString (const uchar* source, const uchar* value, int flag
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void Text::toUppercase (uchar* s)
+void Text::toUppercase (uchar s[])
 {
 	UCharFunctions::toUppercase (s, getLength (s));
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void Text::toLowercase (uchar* s)
+void Text::toLowercase (uchar s[])
 {
 	UCharFunctions::toLowercase (s, getLength (s));
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void Text::capitalize (uchar* s)
+void Text::capitalize (uchar s[])
 {
 	UCharFunctions::capitalize (s, getLength (s));
 }

@@ -127,16 +127,16 @@ interface IUrl: IUnknown
 	virtual tbool CCL_API isNativePath () const = 0;
 
 	/** Convert to native path string in UTF-16 enconding (e.g. "C:\folder\file.ext" or "Volumes/folder/file.ext"). */
-	virtual tbool CCL_API toNativePath (uchar* pathBuffer, int bufferSize) const = 0;
+	virtual tbool CCL_API toNativePath (uchar pathBuffer[], int bufferSize) const = 0;
 
 	/** Assign native path. On Windows a path string like "C:\..." will be mapped to "file:///C:/...". */
-	virtual tbool CCL_API fromNativePath (const uchar* pathBuffer, int type = kFile) = 0;
+	virtual tbool CCL_API fromNativePath (UStringPtr pathBuffer, int type = kFile) = 0;
 
 	/** Convert to POSIX-style path ('/' as separator) in UTF-8 encoding. */
-	virtual tbool CCL_API toPOSIXPath (char* pathBuffer, int bufferSize) const = 0;
+	virtual tbool CCL_API toPOSIXPath (char pathBuffer[], int bufferSize) const = 0;
 
 	/** Assign from POSIX-style path. */
-	virtual tbool CCL_API fromPOSIXPath (const char* pathBuffer, int type = kFile) = 0;
+	virtual tbool CCL_API fromPOSIXPath (CStringPtr pathBuffer, int type = kFile) = 0;
 	
 	/** Get beautified string for display respecting the platform conventions. */
 	virtual tbool CCL_API toDisplayString (String& displayString, int which = kStringNativePath) const = 0;
@@ -263,7 +263,7 @@ struct NativePath
 
 	bool isValid () const			{ return path[0] != 0; }
 	int size () const				{ return sizeof(path)/sizeof(uchar); }
-	operator const uchar* () const	{ return path; }
+	operator UStringPtr () const	{ return path; }
 	operator uchar* ()				{ return path; }
 };
 
@@ -285,7 +285,7 @@ struct POSIXPath
 
 	bool isValid () const			{ return path[0] != 0; }
 	int size () const				{ return sizeof(path); }
-	operator const char* () const	{ return path; }
+	operator CStringPtr () const	{ return path; }
 	operator char* ()				{ return path; }
 };
 

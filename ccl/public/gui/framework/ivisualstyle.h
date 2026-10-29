@@ -20,6 +20,7 @@
 #define _ccl_ivisualstyle_h
 
 #include "ccl/public/gui/framework/designsize.h"
+#include "ccl/public/gui/framework/styleids.h"
 #include "ccl/public/gui/graphics/types.h"
 
 #include "ccl/public/text/cstring.h"
@@ -29,6 +30,7 @@ namespace CCL {
 interface IContainer;
 interface IColorScheme;
 interface IStyleConditionContext;
+interface IAnimation;
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -59,6 +61,9 @@ interface IVisualStyleData: IUnknown
 
 	/** Set name of style data. */
 	virtual void CCL_API setName (StringID name) = 0;
+
+	/** Check if style data has references to given color scheme. */
+	virtual tbool CCL_API hasReferences (IColorScheme& scheme) const = 0;
 
 	/** Get color by name, returns default color if not found. */
 	virtual ColorRef CCL_API getColor (StringID name, ColorRef defaultColor = Colors::kBlack) const = 0;
@@ -117,17 +122,20 @@ interface IVisualStyleData: IUnknown
 	/** Get image by name. */
 	virtual IImage* CCL_API getImage (StringID name) const = 0;
 
-	/** Set image by name. */
+	/** Set image by name. Image is shared. */
 	virtual void CCL_API setImage (StringID name, IImage* image) = 0;
 
 	/** Get gradient by name. */
 	virtual IGradient* CCL_API getGradient (StringID name) const = 0;
 
-	/** Set gradient by name. */
+	/** Set gradient by name. Gradient is shared. */
 	virtual void CCL_API setGradient (StringID name, IGradient* gradient) = 0;
 
-	/** Check if style data has references to given color scheme. */
-	virtual tbool CCL_API hasReferences (IColorScheme& scheme) const = 0;
+	/** Get animation by name. */
+	virtual IAnimation* CCL_API getAnimation (StringID name) const = 0;
+
+	/** Set animation by name. Animation is shared. */
+	virtual void CCL_API setAnimation (StringID name, IAnimation* animation) = 0;
 
 	DECLARE_IID (IVisualStyleData)
 
@@ -142,6 +150,7 @@ interface IVisualStyleData: IUnknown
 	DECLARE_STRINGID_MEMBER (kOptions)		///< options [IArrayObject]
 	DECLARE_STRINGID_MEMBER (kImages)		///< images [IArrayObject]
 	DECLARE_STRINGID_MEMBER (kGradients)	///< gradients [IArrayObject]
+	DECLARE_STRINGID_MEMBER (kAnimations)	///< animations [IArrayObject]
 };
 
 DEFINE_IID (IVisualStyleData, 0x8600e5f1, 0xb98c, 0x444d, 0xa2, 0x5a, 0x71, 0x21, 0x2d, 0xdb, 0x3e, 0x90)
@@ -152,6 +161,7 @@ DEFINE_STRINGID_MEMBER (IVisualStyleData, kStrings, "strings")
 DEFINE_STRINGID_MEMBER (IVisualStyleData, kOptions, "options")
 DEFINE_STRINGID_MEMBER (IVisualStyleData, kImages, "images")
 DEFINE_STRINGID_MEMBER (IVisualStyleData, kGradients, "gradients")
+DEFINE_STRINGID_MEMBER (IVisualStyleData, kAnimations, "animations")
 
 //************************************************************************************************
 // StyleDataReader
@@ -166,7 +176,7 @@ public:
 
 	Color getForeColor () const;				///< Get foreground color
 	Color getBackColor () const;				///< Get background color
-	Color getHiliteColor () const;				///< Get hilite color
+	Color getHighlightColor () const;			///< Get highlight color
 	Color getTextColor () const;				///< Get text color
 	VisualStyleMetric getStrokeWidth () const;	///< Get stroke width
 	Pen getForePen () const;					///< Get foreground pen
@@ -180,6 +190,9 @@ public:
 	TextFormat getTextFormat () const;			///< Get text format
 	IImage* getBackgroundImage () const;		///< Get background image
 	void getPadding (Rect& padding) const;		///< Get padding
+
+	/** Get named brush (solid or gradient) */
+	Brush getBrush (StringID name, ColorRef defaultColor = Colors::kBlack) const;
 
 	template <typename T> T getMetric (StringID name, T defaultValue) const;
 
@@ -234,6 +247,9 @@ interface IVisualStyle: IVisualStyleData
 	/** Get gradient with conditon context. */
 	virtual IGradient* CCL_API getGradient (StringID name, IStyleConditionContext* context) const = 0;
 
+	/** Get animation with conditon context. */
+	virtual IAnimation* CCL_API getAnimation (StringID name, IStyleConditionContext* context) const = 0;
+
 	using IVisualStyleData::getColor;
 	using IVisualStyleData::getFont;
 	using IVisualStyleData::getMetric;
@@ -242,6 +258,7 @@ interface IVisualStyle: IVisualStyleData
 	using IVisualStyleData::getOptions;
 	using IVisualStyleData::getImage;
 	using IVisualStyleData::getGradient;
+	using IVisualStyleData::getAnimation;
 
 	DECLARE_IID (IVisualStyle)
 
@@ -251,7 +268,7 @@ interface IVisualStyle: IVisualStyleData
 
 	Color getForeColor () const;
 	Color getBackColor () const;
-	Color getHiliteColor () const;
+	Color getHighlightColor () const;
 	Color getTextColor () const;
 	Metric getStrokeWidth () const;
 	Pen getForePen () const;
@@ -265,6 +282,8 @@ interface IVisualStyle: IVisualStyleData
 	TextFormat getTextFormat () const;
 	IImage* getBackgroundImage () const;
 	void getPadding (Rect& padding) const;
+
+	Brush getBrush (StringID name, ColorRef defaultColor = Colors::kBlack) const;
 
 	template <typename T> T getMetric (StringID name, T defaultValue) const;
 };
@@ -308,28 +327,6 @@ interface IVisualStyleItem: IUnknown
 DEFINE_IID (IVisualStyleItem, 0x60E771DF, 0x299B, 0x4B4D, 0x88, 0x6C, 0x25, 0x4B, 0x5A, 0xB8, 0x7D, 0xCA)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
-// Common Style Attribute Identifier
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
-namespace StyleID
-{
-	DEFINE_STRINGID (kForeColor, "forecolor")
-	DEFINE_STRINGID (kHiliteColor, "hilitecolor")
-	DEFINE_STRINGID (kBackColor, "backcolor")
-	DEFINE_STRINGID (kTextColor, "textcolor")
-	DEFINE_STRINGID (kStrokeWidth, "strokewidth")
-	DEFINE_STRINGID (kTextFont, "textfont")
-	DEFINE_STRINGID (kTextAlign, "textalign")
-	DEFINE_STRINGID (kTextOptions, "textoptions")		
-	DEFINE_STRINGID (kBackground, "background")
-	DEFINE_STRINGID (kPadding, "padding")		
-	DEFINE_STRINGID (kPaddingLeft, "padding.left")		
-	DEFINE_STRINGID (kPaddingTop, "padding.top")		
-	DEFINE_STRINGID (kPaddingRight, "padding.right")		
-	DEFINE_STRINGID (kPaddingBottom, "padding.bottom")		
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////
 // StyleDataReader inline
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -340,8 +337,8 @@ inline StyleDataReader::StyleDataReader (const IVisualStyleData& data)
 inline Color StyleDataReader::getForeColor () const
 { return data.getColor (StyleID::kForeColor, Colors::kBlack); }
 
-inline Color StyleDataReader::getHiliteColor () const
-{ return data.getColor (StyleID::kHiliteColor, Colors::kGray); }
+inline Color StyleDataReader::getHighlightColor () const
+{ return data.getColor (StyleID::kHighlightColor, Colors::kGray); }
 
 inline Color StyleDataReader::getBackColor () const
 { return data.getColor (StyleID::kBackColor, Colors::kWhite); }
@@ -414,6 +411,14 @@ inline void StyleDataReader::getPadding (Rect& padding) const
 	padding.bottom = getMetric<Coord> (StyleID::kPaddingBottom, p);
 }
 
+inline Brush StyleDataReader::getBrush (StringID name, ColorRef defaultColor) const
+{
+	if(auto* gradient = data.getGradient (name))
+		return GradientBrush (gradient);
+	else	
+		return SolidBrush (data.getColor (name, defaultColor)); 
+}
+
 //////////////////////////////////////////////////////////////////////////////////////////////////
 // IVisualStyle inline
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -421,8 +426,8 @@ inline void StyleDataReader::getPadding (Rect& padding) const
 inline Color IVisualStyle::getForeColor () const
 { return StyleDataReader (*this).getForeColor (); }
 
-inline Color IVisualStyle::getHiliteColor () const
-{ return StyleDataReader (*this).getHiliteColor (); }
+inline Color IVisualStyle::getHighlightColor () const
+{ return StyleDataReader (*this).getHighlightColor (); }
 
 inline Color IVisualStyle::getBackColor () const
 { return StyleDataReader (*this).getBackColor (); }
@@ -469,6 +474,9 @@ T IVisualStyle::getMetric (StringID name, T defaultValue) const
 
 inline void IVisualStyle::getPadding (Rect& padding) const
 { StyleDataReader (*this).getPadding (padding); }
+
+inline Brush IVisualStyle::getBrush (StringID name, ColorRef defaultColor) const
+{ return StyleDataReader (*this).getBrush (name, defaultColor); }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 

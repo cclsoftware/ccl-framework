@@ -233,7 +233,7 @@ public:
 	bool matches (const UnifiedPackage& package) const override;
 
 private:
-	CCL::String packageId;
+	String packageId;
 	bool enabled;
 };
 

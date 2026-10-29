@@ -518,7 +518,7 @@ Border
 
 A Border is a decoration element that shows an image or a solid color.
 
-See also: [:ref:`BorderStyle <visual-styles-classmodel-class-BorderStyle>`] 
+See also: [:ref:`BorderStyle <visual-styles-classmodel-class-BorderStyle>`]
 
 **Attributes (21)**
 
@@ -574,7 +574,7 @@ By default this happens when the mouse button is released, which can be changed 
 The Button base class behaves like a push button: it momentarily sets the parameter value to it's maximum 
 value and then resets it afterwards to it's minimum. Derived classes like Toggle and MultiToggle behave differently.
 
-See also: [:ref:`Toggle <skin-elements-classmodel-class-Toggle>`] [:ref:`MultiToggle <skin-elements-classmodel-class-MultiToggle>`] [:ref:`ButtonStyle <visual-styles-classmodel-class-ButtonStyle>`] 
+See also: [:ref:`Toggle <skin-elements-classmodel-class-Toggle>`] [:ref:`MultiToggle <skin-elements-classmodel-class-MultiToggle>`] [:ref:`ButtonStyle <visual-styles-classmodel-class-ButtonStyle>`]
 
 **Attributes (27)**
 
@@ -639,7 +639,7 @@ A standard dialog control with a check/unchecked state.
 
 A Checkbox is a Toggle that can draw an additional title besides the image.
 
-See also: [:ref:`CheckBoxStyle <visual-styles-classmodel-class-CheckBoxStyle>`] 
+See also: [:ref:`CheckBoxStyle <visual-styles-classmodel-class-CheckBoxStyle>`]
 
 **Attributes (28)**
 
@@ -862,7 +862,7 @@ A combobox is a combination of a selectbox and a text edit field.
 A ComboBox allows to enter free text like an EditBox, and additionally 
 offers a popupmenu with values to choose from, like a SelectBox.
 
-See also: [:ref:`ComboBoxStyle <visual-styles-classmodel-class-ComboBoxStyle>`] 
+See also: [:ref:`ComboBoxStyle <visual-styles-classmodel-class-ComboBoxStyle>`]
 
 **Attributes (30)**
 
@@ -1276,7 +1276,7 @@ Inherited from [:ref:`Element <skin-elements-classmodel-class-Element>`]
 DialogGroup
 ===========
 
-See also: [:ref:`DialogGroupStyle <visual-styles-classmodel-class-DialogGroupStyle>`] 
+See also: [:ref:`DialogGroupStyle <visual-styles-classmodel-class-DialogGroupStyle>`]
 
 **Attributes (21)**
 
@@ -1328,7 +1328,7 @@ A view that can be dragged to divide screen space between two neighbour views.
 
 To be used inside a layout view
 
-See also: [:ref:`DividerStyle <visual-styles-classmodel-class-DividerStyle>`] 
+See also: [:ref:`DividerStyle <visual-styles-classmodel-class-DividerStyle>`]
 
 **Attributes (25)**
 
@@ -1457,7 +1457,7 @@ An edit box is a control for editing text based values and strings.
 
 An edit box displays text just like a TextBox, but the parameter value can also be changed by the user by editing text.
 
-See also: [:ref:`EditBoxStyle <visual-styles-classmodel-class-EditBoxStyle>`] 
+See also: [:ref:`EditBoxStyle <visual-styles-classmodel-class-EditBoxStyle>`]
 
 **Attributes (28)**
 
@@ -2400,7 +2400,7 @@ An optional parameter "selectname" can be used to chose the image frame to be di
 By default, the frame "nornal" is used when the parameter value is zero, otherwise "pressed".
 With option "framesbyname", the parameter value is interpreted as a frame name.
 
-See also: [:ref:`ImageViewStyle <visual-styles-classmodel-class-ImageViewStyle>`] 
+See also: [:ref:`ImageViewStyle <visual-styles-classmodel-class-ImageViewStyle>`]
 
 **Attributes (25)**
 
@@ -2679,7 +2679,7 @@ A completely different approach to display a knob can be taken with the "filmstr
 In this case the full knob area is filled with one frame of the "filmstrip" bitmap, 
 with the frame index being chosen based on the parameter value.
 
-See also: [:ref:`KnobStyle <visual-styles-classmodel-class-KnobStyle>`] 
+See also: [:ref:`KnobStyle <visual-styles-classmodel-class-KnobStyle>`]
 
 **Attributes (27)**
 
@@ -2751,7 +2751,7 @@ A Label draws a static text.
 
 The text can be arranged in a single line or broken into multiple lines (option "multiline").
 
-See also: [:ref:`LabelStyle <visual-styles-classmodel-class-LabelStyle>`] 
+See also: [:ref:`LabelStyle <visual-styles-classmodel-class-LabelStyle>`]
 
 **Attributes (21)**
 
@@ -3355,7 +3355,7 @@ A PageControl indicates the scroll position of a ScrollView.
 The PageControl must be used with a scroll parameter. 
 It draws a row of dots, with one dot per scroll page, where the current page is highlited.
 
-See also: [:ref:`PageControlStyle <visual-styles-classmodel-class-PageControlStyle>`] 
+See also: [:ref:`PageControlStyle <visual-styles-classmodel-class-PageControlStyle>`]
 
 **Attributes (23)**
 
@@ -3633,7 +3633,7 @@ Additionally, an optional "indicator" image can emphasize the boundary between t
 
 If the foreground image has more than 2 frames, it is used as a filmstrip that cycles through all frames.
 
-See also: [:ref:`ProgressBarStyle <visual-styles-classmodel-class-ProgressBarStyle>`] 
+See also: [:ref:`ProgressBarStyle <visual-styles-classmodel-class-ProgressBarStyle>`]
 
 **Attributes (25)**
 
@@ -3807,7 +3807,7 @@ The RangeSlider itself always ensures a positive range.
 The "validate" option ensures a positive range when values can be set externally.
 The "limit" option delimits the value ranges. Changing the upper value cannot change the lower value and vice versa.
 
-See also: [:ref:`RangeSliderStyle <visual-styles-classmodel-class-RangeSliderStyle>`] 
+See also: [:ref:`RangeSliderStyle <visual-styles-classmodel-class-RangeSliderStyle>`]
 
 **Attributes (27)**
 
@@ -4018,7 +4018,7 @@ Scrollbars are used in a ScrollView to indicate and manipulate the scrolling pos
 
 Note: A Scrollview can automatically create ScrollBars or ScrollButtons.
 
-See also: [:ref:`ScrollBarStyle <visual-styles-classmodel-class-ScrollBarStyle>`] 
+See also: [:ref:`ScrollBarStyle <visual-styles-classmodel-class-ScrollBarStyle>`]
 
 **Attributes (23)**
 
@@ -4080,7 +4080,7 @@ When connected to a scroll parameter, this button perfroms a single scroll step 
 The attribute "part" ("buttonup", "buttondown") specifies the scroll direction 
 (these 2 values are also used for a horizontal scrollview for the left / right direction).
 
-See also: [:ref:`ScrollButtonStyle <visual-styles-classmodel-class-ScrollButtonStyle>`] 
+See also: [:ref:`ScrollButtonStyle <visual-styles-classmodel-class-ScrollButtonStyle>`]
 
 **Attributes (24)**
 
@@ -4335,7 +4335,7 @@ A SelectBox is a TextBox with an additional popup menu.
 The SelectBox shows a button besides the text. 
 Clicking this button opens a popup menu that shows a list of possible parameter values for the user to choose from.
 
-See also: [:ref:`SelectBoxStyle <visual-styles-classmodel-class-SelectBoxStyle>`] 
+See also: [:ref:`SelectBoxStyle <visual-styles-classmodel-class-SelectBoxStyle>`]
 
 **Attributes (28)**
 
@@ -4677,7 +4677,7 @@ An optional "colorname" parameter can be used to dynamically colorize the handle
 Additionally to or instead of the handle, it can draw a bar graph (option "bargraph"), 
 which is a partially filled rectangle that represents the current parameter value (like a ValueBar).
 
-See also: [:ref:`SliderStyle <visual-styles-classmodel-class-SliderStyle>`] 
+See also: [:ref:`SliderStyle <visual-styles-classmodel-class-SliderStyle>`]
 
 **Attributes (26)**
 
@@ -5121,7 +5121,7 @@ If the tab view has child views, the child view that correspond to the active ta
 to the content area of the tab view (remaining height without tabs). This feature is optional, a tabview 
 can also be used only for tab buttons, controlling the parameter of a variant view that switches chhild view.
 
-See also: [:ref:`TabViewStyle <visual-styles-classmodel-class-TabViewStyle>`] 
+See also: [:ref:`TabViewStyle <visual-styles-classmodel-class-TabViewStyle>`]
 
 **Attributes (24)**
 
@@ -5315,7 +5315,7 @@ It is used to inform the TextBox about the background color. When the luminance 
 it switches the text color to the alternative "textcolor.bright" color.
 If this background color is transparent "textcolor.transparent" will be used to draw the text
 
-See also: [:ref:`TextBoxStyle <visual-styles-classmodel-class-TextBoxStyle>`] 
+See also: [:ref:`TextBoxStyle <visual-styles-classmodel-class-TextBoxStyle>`]
 
 **Attributes (26)**
 
@@ -5552,7 +5552,7 @@ The ToolButton behaves like a RadioButton, but can have an icon like the normal 
 A ToolButton can also have an an additional "mode parameter" that is used for tools with different modes. 
 But this feature is not available on skin level.
 
-See also: [:ref:`ToolButtonStyle <visual-styles-classmodel-class-ToolButtonStyle>`] 
+See also: [:ref:`ToolButtonStyle <visual-styles-classmodel-class-ToolButtonStyle>`]
 
 **Attributes (30)**
 
@@ -5692,7 +5692,7 @@ The summed-up value of these parameters is always 1.
  different sums and reset the parameters to the original values when the handle is moved back to the initial position. 
  (Alt/Option)+drag up-down can change the overall level in the "keeplevel" case
 
-See also: [:ref:`TriVectorPadStyle <visual-styles-classmodel-class-TriVectorPadStyle>`] 
+See also: [:ref:`TriVectorPadStyle <visual-styles-classmodel-class-TriVectorPadStyle>`]
 
 **Attributes (26)**
 
@@ -6011,7 +6011,7 @@ Increments or decrements a parameter.
 
 On each click the parameter is incremented (option "increment", the default) or decremented (option "decrement").
 
-See also: [:ref:`UpDownButtonStyle <visual-styles-classmodel-class-UpDownButtonStyle>`] 
+See also: [:ref:`UpDownButtonStyle <visual-styles-classmodel-class-UpDownButtonStyle>`]
 
 **Attributes (27)**
 
@@ -6083,7 +6083,7 @@ An optional "colorname" parameter can be used to dynamically colorize the hilite
 
 For biplolar parameters, the bar rectangle starts in the center of the view.
 
-See also: [:ref:`ValueBarStyle <visual-styles-classmodel-class-ValueBarStyle>`] 
+See also: [:ref:`ValueBarStyle <visual-styles-classmodel-class-ValueBarStyle>`]
 
 **Attributes (25)**
 
@@ -6151,7 +6151,7 @@ A ValueBox is an EditBox with a special mouse editing ability for numeric paramt
 In addition to an EditBox for displaying and editing the text representation of a parameter, 
 the ValueBox allows changing the value by dragging the mouse up and down, like a Knob does.
 
-See also: [:ref:`ValueBoxStyle <visual-styles-classmodel-class-ValueBoxStyle>`] 
+See also: [:ref:`ValueBoxStyle <visual-styles-classmodel-class-ValueBoxStyle>`]
 
 **Attributes (29)**
 
@@ -6358,7 +6358,7 @@ A Control with two parameters interpreted as coordinates of a handle.
 The values of the two parameters are interpreteted as x and y coordinates in the view area.
 A handle is displayed at the resulting point and can be moved using the mouse.
 
-See also: [:ref:`VectorPadStyle <visual-styles-classmodel-class-VectorPadStyle>`] 
+See also: [:ref:`VectorPadStyle <visual-styles-classmodel-class-VectorPadStyle>`]
 
 **Attributes (25)**
 

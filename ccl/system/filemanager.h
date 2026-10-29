@@ -54,6 +54,7 @@ public:
 	tresult CCL_API setFileWriting (UrlRef url, tbool state) override;
 	IAsyncOperation* CCL_API triggerFileUpdate (UrlRef url) override;
 	tbool CCL_API getFileDisplayString (String& string, UrlRef url, int type) const override;
+	tbool CCL_API getFileSystemRepresentation (char pathBuffer[], int bufferSize, UrlRef url) const override;
 	StringID CCL_API getFileLocationType (UrlRef url) const override;
 	void CCL_API terminate () override;
 

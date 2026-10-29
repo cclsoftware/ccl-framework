@@ -42,6 +42,7 @@ DECLARE_JNI_CLASS (FrameworkTextLayout, CCLGUI_CLASS_PREFIX "FrameworkTextLayout
 	DECLARE_JNI_METHOD (void, setLineSpacing, int, int, float)
 	DECLARE_JNI_METHOD (void, setBaselineOffset, int, int, float)
 	DECLARE_JNI_METHOD (void, setRelativeSize, int, int, float)
+	DECLARE_JNI_METHOD (void, clearFormatting, float, float)
 	DECLARE_JNI_METHOD (void, setTextColor, int, int, int)
 	DECLARE_JNI_METHOD (int, getLineForOffset, int)
 	DECLARE_JNI_METHOD (int, getLineStart, int)
@@ -54,6 +55,7 @@ DECLARE_JNI_CLASS (FrameworkTextLayout, CCLGUI_CLASS_PREFIX "FrameworkTextLayout
 	DECLARE_JNI_METHOD (void, getBounds, jobject)
 	DECLARE_JNI_METHOD (void, getBoundsF, jobject)
 	DECLARE_JNI_METHOD (void, getImageBounds, jobject)
+	DECLARE_JNI_METHOD (void, getCharacterBounds, jobject, int)
 	DECLARE_JNI_METHOD (void, getRangeBounds, jobject, int, int)
 	DECLARE_JNI_METHOD (int, getOffsetForPosition, float, float)
 	DECLARE_JNI_METHOD (void, draw, jobject, float, float, int, int)
@@ -69,6 +71,7 @@ DEFINE_JNI_CLASS (FrameworkTextLayout)
 	DEFINE_JNI_METHOD (setLineSpacing, "(IIF)V")
 	DEFINE_JNI_METHOD (setBaselineOffset, "(IIF)V")
 	DEFINE_JNI_METHOD (setRelativeSize, "(IIF)V")
+	DEFINE_JNI_METHOD (clearFormatting, "(FF)V")
 	DEFINE_JNI_METHOD (setTextColor, "(III)V")
 	DEFINE_JNI_METHOD (getLineForOffset, "(I)I")
 	DEFINE_JNI_METHOD (getLineStart, "(I)I")
@@ -81,6 +84,7 @@ DEFINE_JNI_CLASS (FrameworkTextLayout)
 	DEFINE_JNI_METHOD (getBounds, "(Landroid/graphics/Rect;)V")
 	DEFINE_JNI_METHOD (getBoundsF, "(Landroid/graphics/RectF;)V")
 	DEFINE_JNI_METHOD (getImageBounds, "(Landroid/graphics/RectF;)V")
+	DEFINE_JNI_METHOD (getCharacterBounds, "(Landroid/graphics/RectF;I)V")
 	DEFINE_JNI_METHOD (getRangeBounds, "(Landroid/graphics/RectF;II)V")
 	DEFINE_JNI_METHOD (getOffsetForPosition, "(FF)I")
 	DEFINE_JNI_METHOD (draw, "(L" CCLGUI_CLASS_PREFIX "FrameworkGraphics;FFII)V")
@@ -224,6 +228,17 @@ tresult CCL_API AndroidTextLayout::setBaselineOffset (const Range& range, float 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
+tresult CCL_API AndroidTextLayout::clearFormatting ()
+{
+	if(!layout)
+		return kResultUnexpected;
+
+	FrameworkTextLayout.clearFormatting (layout, font.getSize (), font.getLineSpacing ());
+	return kResultOk;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
 tresult CCL_API AndroidTextLayout::setSuperscript (const Range& range)
 {
 	if(!layout)
@@ -346,8 +361,7 @@ tresult CCL_API AndroidTextLayout::getCharacterBounds (RectF& offset, int textIn
 	JniObject androidRect;
 	androidRect.newObject (jni, AndroidRectF);
 
-	int nextIndex = FrameworkTextLayout.getOffsetToRightOf (layout, textIndex);
-	FrameworkTextLayout.getRangeBounds (layout, androidRect, textIndex, nextIndex);
+	FrameworkTextLayout.getCharacterBounds (layout, androidRect, textIndex);
 
 	RectF rect;
 	FrameworkGraphics::toCCLRect (rect, jni, androidRect);
@@ -387,14 +401,30 @@ tresult CCL_API AndroidTextLayout::getTextBounds (IMutableRegion& bounds, const 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-tresult CCL_API AndroidTextLayout::getLineRange (Range& range, int textIndex) const
+tresult CCL_API AndroidTextLayout::getLineRange (Range& range, int textIndex, tbool includeNewline) const
 {
 	if(!layout)
 		return kResultUnexpected;
 
+	if(textIndex < 0 || textIndex > text.length ())
+		return kResultInvalidArgument;
+
+	// the layout does not necessarily report a line for a trailing line break, but the caret can be behind it
+	if(isOnTrailingEmptyLine (textIndex))
+	{
+		range.start = textIndex;
+		range.length = 0;
+		return kResultOk;
+	}
+
+	// getLineForOffset clamps to the last line, which is what a caret behind the last character needs
 	int line = FrameworkTextLayout.getLineForOffset (layout, textIndex);
 	range.start = FrameworkTextLayout.getLineStart (layout, line);
 	range.length = FrameworkTextLayout.getLineEnd (layout, line) - range.start;
+
+	if(!includeNewline)
+		excludeLineBreak (range); // TODO: handle invisible space in wrapped lines
+
 	return kResultOk;
 }
 

@@ -12,7 +12,7 @@
 // For more information, please visit ccl.dev.
 //
 // Filename    : ccl/gui/theme/renderer/knobrenderer.cpp
-// Description : Control Renderer
+// Description : Knob Renderer
 //
 //************************************************************************************************
 
@@ -30,15 +30,14 @@ namespace CCL {
 class KnobRenderer: public CompositedRenderer
 {
 public:
-	KnobRenderer (VisualStyle* visualStyle);
+	KnobRenderer (VisualStyle* visualStyle, View* owner);
 
-	void draw (View* view, const UpdateRgn& updateRgn) override;
-	int hitTest (View* view, const Point& loc, Point* clickOffset) override;
-	bool getPartRect (const View* view, int partCode, CCL::Rect& rect) override;
+	// CompositedRenderer
+	void draw (const UpdateRgn& updateRgn) override;
+	int hitTest (PointRef where, Point* clickOffset = nullptr) override;
+	bool getPartRect (Rect& rect, int partCode) override;
 	
-protected:
-	double transformNormalized (double value);
-	
+protected:	
 	SharedPtr<IImage> image;
 	SharedPtr<IImage> overlay;
 	SharedPtr<IImage> topOverlay;
@@ -62,9 +61,11 @@ protected:
 	float logScaler;
 	bool allowstretch;
 	Rect padding;
+
+	double transformNormalized (double value);
 };
 
-DECLARE_VISUALSTYLE_CLASS (Knob)
+DECLARE_TYPELIB_ENTRY (Knob)
 
 } // namespace CCL
 

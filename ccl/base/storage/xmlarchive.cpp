@@ -76,7 +76,7 @@ public:
 	// XmlContentParser
 	tresult CCL_API startElement (StringRef name, const IStringDictionary& attributes) override; 
 	tresult CCL_API endElement (StringRef name) override;
-	tresult CCL_API characterData (const uchar* data, int length, tbool isCDATA) override;
+	tresult CCL_API characterData (UStringPtr data, int length, tbool isCDATA) override;
 	tresult CCL_API processingInstruction (StringRef target, StringRef data) override;
 
 protected:
@@ -490,7 +490,7 @@ tresult CCL_API XmlArchiveParser::endElement (StringRef name)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-tresult CCL_API XmlArchiveParser::characterData (const uchar* data, int length, tbool isCDATA)
+tresult CCL_API XmlArchiveParser::characterData (UStringPtr data, int length, tbool isCDATA)
 {
 	if(skipping)
 		return kResultOk;
@@ -538,7 +538,7 @@ tresult CCL_API XmlArchiveParser::processingInstruction (StringRef target, Strin
 void XmlArchiveUtils::setCharDataFromString (Attributes& a, StringRef string)
 {
 	StringChars stringChars (string);
-	const uchar* charBuffer = static_cast<const uchar*> (stringChars);
+	UStringPtr charBuffer = stringChars.str ();
 	int charBufferSize = string.length () * sizeof(uchar);
 
 	AutoPtr<MemoryStream> charData = NEW MemoryStream;
@@ -555,7 +555,7 @@ bool XmlArchiveUtils::getStringFromCharData (String& string, const Attributes& a
 	if(!charData.isValid ())
 		return false;
 
-	const uchar* charBuffer = reinterpret_cast<const uchar*> (charData->getMemoryAddress ());
+	UStringPtr charBuffer = reinterpret_cast<UStringPtr> (charData->getMemoryAddress ());
 	int charCount = static_cast<int> (charData->getBytesWritten () / sizeof(uchar));
 	string.append (charBuffer, charCount);
 	return true;

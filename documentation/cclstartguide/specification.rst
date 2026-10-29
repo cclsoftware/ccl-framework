@@ -9,15 +9,15 @@ Development and Target Platforms
 You can target the following platforms and architectures with CCL on the given development platforms:
 
 .. list-table::
-    :widths: 50 50 50
-	:header-rows: 1
+    :widths: 33 33 34
+    :header-rows: 1
 
     * - Development on Windows
-	  - Development on macOS
-	  - Development on Linux 
-    * - Target Windows (x86, x86-64, Arm64 and Arm64EC) and Android.
-	  - Target macOS (Intel and Arm), iOS/iPadOS, and Android.
-	  - Target Linux and Android.
+      - Development on macOS
+      - Development on Linux
+    * - Target Windows (x86, x86-64, Arm64 and Arm64EC), Android, and WebAssembly.
+      - Target macOS (Intel and Arm), iOS/iPadOS, Android, and WebAssembly.
+      - Target Linux, Android, and WebAssembly.
 
 For Android, the following architectures are supported: x86, x86-64, Armv7, and Arm64.
 
@@ -34,8 +34,10 @@ Applications based on CCL have the following minimum target system requirements:
 * macOS 12.4 (Monterey)
 * Ubuntu 22.04 LTS (or similar)
 * Ubuntu 24.04 LTS (or similar)
+* Ubuntu 26.04 LTS (or similar)
 * Android 8.0 (API level 26)
-* iOS/iPadOS 15
+* iOS/iPadOS 15.3
+* Web browser with WebAssembly support
 
 Linux platforms require Wayland session and Vulkan 1.1 or OpenGL ES 2 graphics driver. X11 is not supported.
 
@@ -62,28 +64,28 @@ Supported Compilers and IDEs
 ============================
 
 .. list-table::
-    :widths: 50 50 50 50
+    :widths: 25 25 25 25
     :header-rows: 1
 
     * - Host Systems
-	  - Target Platforms
-	  - Supported IDEs
-	  - Supported Compilers
+      - Target Platforms
+      - Supported IDEs
+      - Supported Compilers
     * - Windows
       - Windows
       - Visual Studio or Visual Studio Code
-	  - Microsoft C++ compiler
-	* - macOS
+      - Microsoft C++ compiler
+    * - macOS
       - macOS, iOS
-	  - XCode, Visual Studio Code
-	  - Clang
-	* - Linux
+      - Xcode, Visual Studio Code
+      - Clang
+    * - Linux
       - Linux
-	  - Various, including Visual Studio Code
-	  - Clang, GCC
-	* - Windows, macOS, Linux
+      - Various, including Visual Studio Code
+      - Clang, GCC
+    * - Windows, macOS, Linux
       - Android
-	  - Android Studio
-	  - Clang
+      - Android Studio
+      - Clang
 
 Build scripts are based on CMake (version 3.30 or later).

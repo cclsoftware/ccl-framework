@@ -62,7 +62,7 @@ private:
 // EraserTool
 //************************************************************************************************
 
-class EraserTool: public CCL::ActionTool
+class EraserTool: public ActionTool
 {
 public:
 	EraserTool ();
@@ -70,7 +70,6 @@ public:
 	// SelectTool
 	void findActions (ToolActionList& actions, EditView& editView, PointRef where, const GUIEvent& event) override;
 };
-
 
 namespace ToolActions {
 

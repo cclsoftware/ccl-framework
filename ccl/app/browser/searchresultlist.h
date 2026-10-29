@@ -107,7 +107,7 @@ protected:
 	void expandCategory (Browsable::ResultCategoryNode& node, bool state);
 	tbool onShowResultInContext (ItemIndexRef item, bool checkOnly);
 	
-	virtual Browsable::SearchResultNode* createSearchResultNode (CCL::IUrl* url);
+	virtual Browsable::SearchResultNode* createSearchResultNode (IUrl* url);
 };
 
 //////////////////////////////////////////////////////////////////////////////////////////////////

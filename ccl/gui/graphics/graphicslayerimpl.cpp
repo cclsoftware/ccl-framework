@@ -552,6 +552,7 @@ tresult CCL_API GraphicsLayer::addAnimation (StringID propertyId, const IAnimati
 		if(applyAnimation (id, animation))
 		{
 			engine.addAnimation (this, animation, id);
+			setFlushNeeded ();
 			return kResultOk;
 		}
 
@@ -567,7 +568,11 @@ tresult CCL_API GraphicsLayer::removeAnimation (StringID propertyId)
 	if(id == kAnimateNone)
 		return kResultInvalidArgument;
 
-	return engine.removeAnimation (this, id) ? kResultOk : kResultFalse;
+	if(!engine.removeAnimation (this, id))
+		return kResultFalse;
+
+	setFlushNeeded ();
+	return kResultOk;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////

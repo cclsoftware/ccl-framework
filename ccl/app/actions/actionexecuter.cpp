@@ -150,6 +150,7 @@ ActionExecuter* ActionExecuter::createInstance (IActionContext* context, UIDRef 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 DEFINE_CLASS_HIDDEN (ActionExecuter, Object)
+DEFINE_CLASS_NAMESPACE (ActionExecuter, NAMESPACE_CCL)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -379,6 +380,12 @@ void ActionExecuter::takeFlags (const ActionExecuter& from)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
+BEGIN_PROPERTY_NAMES (ActionExecuter)
+	DEFINE_PROPERTY_NAME ("executeImmediately")
+END_PROPERTY_NAMES (ActionExecuter)
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
 tbool CCL_API ActionExecuter::getProperty (Variant& var, MemberID propertyId) const
 {
 	if(propertyId == "executeImmediately")
@@ -404,10 +411,10 @@ tbool CCL_API ActionExecuter::setProperty (MemberID propertyId, const Variant& v
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 BEGIN_METHOD_NAMES (ActionExecuter)
-	DEFINE_METHOD_NAME ("beginMultiple")
-	DEFINE_METHOD_NAME ("endMultiple")
-	DEFINE_METHOD_NAME ("setJournalEnabled")
-	DEFINE_METHOD_NAME ("isJournalEnabled")
+	DEFINE_METHOD_ARGS ("beginMultiple", "description: string")
+	DEFINE_METHOD_ARGS ("endMultiple", "cancel: bool = false")
+	DEFINE_METHOD_ARGS ("setJournalEnabled", "enabled: bool = true")
+	DEFINE_METHOD_ARGR ("isJournalEnabled", "", "bool")
 END_METHOD_NAMES (ActionExecuter)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////

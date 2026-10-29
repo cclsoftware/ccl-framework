@@ -772,7 +772,7 @@ tbool CCL_API Url::isNativePath () const
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-tbool CCL_API Url::toNativePath (uchar* pathBuffer, int bufferSize) const
+tbool CCL_API Url::toNativePath (uchar pathBuffer[], int bufferSize) const
 {
 	#if CCL_PLATFORM_WINDOWS
 	String temp (path);
@@ -801,7 +801,7 @@ tbool CCL_API Url::toNativePath (uchar* pathBuffer, int bufferSize) const
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-tbool CCL_API Url::fromNativePath (const uchar* pathBuffer, int type)
+tbool CCL_API Url::fromNativePath (UStringPtr pathBuffer, int type)
 {
 	String pathString (pathBuffer);
 	return fromNativePath (pathString, type);
@@ -868,21 +868,14 @@ bool Url::fromNativePath (StringRef pathString, int _type)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-tbool CCL_API Url::toPOSIXPath (char* pathBuffer, int bufferSize) const
+tbool CCL_API Url::toPOSIXPath (char pathBuffer[], int bufferSize) const
 {
-	if(isRelative () || path.at(0) == '/')
-		path.toCString (POSIX_STRING_FORMAT, pathBuffer, bufferSize);
-	else
-	{
-		*pathBuffer = '/';
-		path.toCString (POSIX_STRING_FORMAT, pathBuffer + 1, bufferSize - 1);
-	}
-	return !path.isEmpty ();
+	return System::GetFileManager ().getFileSystemRepresentation (pathBuffer, bufferSize, *this);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-tbool CCL_API Url::fromPOSIXPath (const char* pathBuffer, int _type)
+tbool CCL_API Url::fromPOSIXPath (CStringPtr pathBuffer, int _type)
 {
 	protocol = strFileProtocol;
 	hostname.empty ();
@@ -1433,6 +1426,21 @@ String UrlUtils::extractName (StringRef _path)
 	String path = stripTrailingSlashes (_path);
 	int slashIndex = path.lastIndex (Url::strPathChar);
 	return path.subString (slashIndex+1);
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+bool UrlUtils::isCanonicalAbsolutePath (StringRef path)
+{
+	// Windows: check drive letter.
+	if(path.length () > 1 && Unicode::isAlpha (path[0]) && path[1] == ':')
+		return true;
+
+	// Unix: check start with slash.
+	if(path.startsWith (Url::strPathChar))
+		return true;
+
+	return false;
 }
 
 //************************************************************************************************

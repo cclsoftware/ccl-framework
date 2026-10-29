@@ -59,6 +59,7 @@ ccl_list_append_once (ccltest_test_sources
 	${CCL_DIR}/test/systemtest.cpp
 	${CCL_DIR}/test/textconverttest.cpp
 	${CCL_DIR}/test/textlayouttest.cpp
+	${CCL_DIR}/test/urltest.cpp
 	${CCL_DIR}/test/threadtest.cpp
 	${CCL_DIR}/test/zipfiletest.cpp
 )

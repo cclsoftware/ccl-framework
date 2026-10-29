@@ -34,6 +34,7 @@ class AsyncOperation;
 
 class SystemShell: public Object,
 				   public ISystemShell,
+				   public ISystemPermissionProvider,
 				   public ExternalSingleton<SystemShell>
 {
 public:
@@ -53,14 +54,22 @@ public:
 	tresult CCL_API openApplicationSettings () override;
 	IAsyncOperation* CCL_API startBrowserAuthentication (UrlRef url, StringRef scheme,
 														 IWindow* window = nullptr) override;
+	tresult CCL_API registerPermissionProvider (ISystemPermissionProvider* provider) override;
+	tresult CCL_API unregisterPermissionProvider (ISystemPermissionProvider* provider) override;
+	ISystemPermissionProvider& CCL_API getPermissions () override;
+
+	// ISystemPermissionProvider
+	PermissionState CCL_API getPermissionState (StringID permissionId) override;
+	IAsyncOperation* CCL_API requestPermission (StringID permissionId) override;
 
 	// Object
 	void CCL_API notify (ISubject* subject, MessageRef msg) override;
 
-	CLASS_INTERFACE (ISystemShell, Object)
+	CLASS_INTERFACE2 (ISystemShell, ISystemPermissionProvider, Object)
 
 protected:
 	ObjectArray pendingOperations;
+	Vector<ISystemPermissionProvider*> permissionProviderList;
 
 	// platform-specific:
 	virtual tresult openNativeUrl (UrlRef url, int flags);

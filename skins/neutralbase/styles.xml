@@ -65,8 +65,6 @@
 		<Style name="Standard.MenuBackcolorStyle"		inherit="Neutral.MenuBackcolorStyle" appstyle="true"/>
 		<Style name="Standard.ViewHighlights"			inherit="Neutral.ViewHighlights" appstyle="true"/>
 		<Style name="Standard.ProgressAnimationTrigger"	inherit="Neutral.ProgressAnimationTrigger" appstyle="true"/>
-		<Style name="Standard.ActionButton"				inherit="Neutral.ActionButton" appstyle="true"/>
-		<Style name="Standard.ActionButtonSecondary"	inherit="Neutral.ActionButtonSecondary" appstyle="true"/>
 	</Styles>
 	
 </Skin>

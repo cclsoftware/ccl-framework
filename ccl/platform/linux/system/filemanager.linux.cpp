@@ -186,8 +186,8 @@ bool LinuxFileSystemMonitorThread::startWatching (UrlRef url, int flags)
 	Url directory (url);
 	if(directory.isFile ())
 		directory.ascend ();
-	MutableCString pathString (UrlDisplayString (directory), Text::kSystemEncoding);
-	int wd = inotify_add_watch (handle, pathString.str (), IN_CREATE | IN_DELETE | IN_MODIFY | IN_MOVE);
+	POSIXPath pathString (directory);
+	int wd = inotify_add_watch (handle, pathString, IN_CREATE | IN_DELETE | IN_MODIFY | IN_MOVE);
 	
 	if(wd < 0)
 		return false;
@@ -280,12 +280,12 @@ bool LinuxFileSystemMonitorThread::waitForItemsChanged ()
 
 void LinuxFileSystemMonitorThread::scanFileChanges ()
 {
-	char buffer[STRING_STACK_SPACE_MAX];
+	char buffer[CORE_STRING_STACK_MAX];
 	Url oldUrl;
 	
 	while(true)
 	{
-		ssize_t length = ::read (handle, buffer, STRING_STACK_SPACE_MAX);
+		ssize_t length = ::read (handle, buffer, CORE_STRING_STACK_MAX);
 		if(length <= 0)
 			break;
 		
@@ -301,7 +301,7 @@ void LinuxFileSystemMonitorThread::scanFileChanges ()
 					Url fileUrl (item->url);
 					
 					if(fileUrl.isFolder ())
-						fileUrl.descend (String (Text::kSystemEncoding, event->name));
+						fileUrl.descend (String (Text::kUTF8, event->name));
 					
 					if(event->mask & IN_CREATE)
 						LinuxFileManager::instance ().signalFileCreated (fileUrl, true);

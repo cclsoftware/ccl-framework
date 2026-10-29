@@ -184,7 +184,7 @@ class ThreadStub: public IThread
 {
 public:
 	// IThread
-	bool open (Threads::ThreadID id) { return false; }
+	bool open (Threads::ThreadID id) { return id == 0; }
 	void start (const ThreadInfo& info) {}
 	bool join (uint32 milliseconds) { return false; }
 	void terminate () {}
@@ -194,6 +194,7 @@ public:
 	int getPlatformPriority () const { return 0; }
 	int64 getUserModeTime () const { return 0; }
 	Threads::ThreadID getID () const { return 0; }
+	int getErrors () const { return 0; }
 };
 
 const CStringPtr kThreadName = "Stub";

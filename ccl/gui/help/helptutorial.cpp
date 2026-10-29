@@ -78,6 +78,7 @@ bool HelpTutorialCollection::save (const Storage& storage) const
 //************************************************************************************************
 
 DEFINE_CLASS (HelpTutorial, Object)
+DEFINE_CLASS_NAMESPACE (HelpTutorial, NAMESPACE_CCL)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 

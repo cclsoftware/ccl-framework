@@ -105,7 +105,7 @@ protected:
 	ObjectArray customBackgrounds;
 };
 
-DECLARE_VISUALSTYLE_CLASS (ItemStyle)
+DECLARE_TYPELIB_ENTRY (ItemStyle)
 
 //************************************************************************************************
 // ItemView

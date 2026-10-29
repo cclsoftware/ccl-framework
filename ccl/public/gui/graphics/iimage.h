@@ -106,6 +106,19 @@ DEFINE_STRINGID_MEMBER (IImage, kIsTemplate, "isTemplate")
 DEFINE_STRINGID_MEMBER (IImage, kIsAdaptive, "isAdaptive")
 
 //************************************************************************************************
+// ImageInterpolationMode
+/** Image interpolation mode. 
+	\ingroup gui_graphics */
+//************************************************************************************************
+
+DEFINE_ENUM (ImageInterpolationMode)
+{
+	kImageInterpolationDefault = 0,	///< default interpolation mode
+	kImageInterpolationHighQuality,	///< high quality interpolation mode
+	kImageInterpolationPixelQuality	///< sharp interpolation mode
+};
+
+//************************************************************************************************
 // ImageMode
 /** Image mode definition. 
 	\ingroup gui_graphics */
@@ -114,26 +127,18 @@ DEFINE_STRINGID_MEMBER (IImage, kIsAdaptive, "isAdaptive")
 class ImageMode
 {
 public:
-	/** Interpolation mode. */
-	DEFINE_ENUM (InterpolationMode)
-	{
-		kInterpolationDefault = 0,	///< default interpolation mode
-		kInterpolationHighQuality,	///< high quality interpolation mode
-		kInterpolationPixelQuality	///< sharp interpolation mode
-	};
-
-	ImageMode (float alpha = 1.f, InterpolationMode interpolationMode = kInterpolationDefault)
+	ImageMode (float alpha = 1.f, ImageInterpolationMode interpolationMode = kImageInterpolationDefault)
 	: alpha (alpha),
 	  interpolationMode (interpolationMode)
 	{}
 
-	ImageMode (InterpolationMode interpolationMode)
+	ImageMode (ImageInterpolationMode interpolationMode)
 	: alpha (1.f),
 	  interpolationMode (interpolationMode)
 	{}
 
 	PROPERTY_VARIABLE (float, alpha, AlphaF)
-	PROPERTY_VARIABLE (InterpolationMode, interpolationMode, InterpolationMode)
+	PROPERTY_VARIABLE (ImageInterpolationMode, interpolationMode, InterpolationMode)
 };
 
 //************************************************************************************************

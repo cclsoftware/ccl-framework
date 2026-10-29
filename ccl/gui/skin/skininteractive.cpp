@@ -68,13 +68,16 @@ private:
 // AnchorElement
 //************************************************************************************************
 
-BEGIN_SKIN_ELEMENT_WITH_MEMBERS (AnchorElement, Element, TAG_ANCHOR, DOC_GROUP_GENERAL, 0)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_URL, TYPE_STRING) ///< The target url of a LinkView 
-END_SKIN_ELEMENT_WITH_MEMBERS (AnchorElement)
-BEGIN_SKIN_ELEMENT_ATTRIBUTES (AnchorElement)
-	ADD_SKIN_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_VIEWSSTATEMENTS)
-	ADD_SKIN_CHILDGROUP_ATTRIBUTE (SCHEMA_GROUP_VIEWSSTATEMENTS)
-END_SKIN_ELEMENT_ATTRIBUTES (AnchorElement)
+DEFINE_CLASS_HIDDEN (AnchorElement, Element)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (AnchorElement, Element, TAG_ANCHOR, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (AnchorElement, DOC_GROUP_GENERAL)
+BEGIN_TYPELIB_MEMBERS (AnchorElement)
+	ADD_TYPELIB_MEMBER_STRING (ATTR_URL) ///< The target url of a LinkView 
+END_TYPELIB_MEMBERS (AnchorElement)
+BEGIN_TYPELIB_ATTRIBUTES (AnchorElement)
+	ADD_TYPELIB_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_VIEWSSTATEMENTS)
+	ADD_TYPELIB_CHILDGROUP_ATTRIBUTE (SCHEMA_GROUP_VIEWSSTATEMENTS)
+END_TYPELIB_ATTRIBUTES (AnchorElement)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -96,8 +99,11 @@ bool AnchorElement::getAttributes (SkinAttributes& a) const
 // LinkElement
 //************************************************************************************************
 
-DEFINE_SKIN_ELEMENT (LinkElement, ControlElement, TAG_LINK, DOC_GROUP_GENERAL, LinkView)
-DEFINE_SKIN_ENUMERATION (TAG_LINK, ATTR_OPTIONS, LinkView::customStyles)
+DEFINE_CLASS_HIDDEN (LinkElement, ControlElement)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (LinkElement, ControlElement, TAG_LINK, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (LinkElement, DOC_GROUP_GENERAL)
+DEFINE_TYPELIB_RELATED_CLASS (LinkElement, LinkView)
+DEFINE_TYPELIB_ENUMERATION (TAG_LINK, ATTR_OPTIONS, LinkView::customStyles, SKIN_TYPELIB)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -146,11 +152,15 @@ View* LinkElement::createView (const CreateArgs& args, View* view)
 // TriggerViewElement
 //************************************************************************************************
 
-BEGIN_SKIN_ELEMENT_WITH_MEMBERS (TriggerViewElement, ViewElement, TAG_TRIGGERVIEW, DOC_GROUP_ANIMATION, TriggerView)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_GESTURE_PRIO, TYPE_ENUM)	///< priority in touch gesture handling
-END_SKIN_ELEMENT_WITH_MEMBERS (TriggerViewElement)
-DEFINE_SKIN_ENUMERATION (TAG_TRIGGERVIEW, ATTR_OPTIONS, TriggerView::customStyles)
-DEFINE_SKIN_ENUMERATION (TAG_TRIGGERVIEW, ATTR_GESTURE_PRIO, TriggerView::gesturePriorities)
+DEFINE_CLASS_HIDDEN (TriggerViewElement, ViewElement)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (TriggerViewElement, ViewElement, TAG_TRIGGERVIEW, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (TriggerViewElement, DOC_GROUP_ANIMATION)
+DEFINE_TYPELIB_RELATED_CLASS (TriggerViewElement, TriggerView)
+BEGIN_TYPELIB_MEMBERS (TriggerViewElement)
+	ADD_TYPELIB_MEMBER (ATTR_GESTURE_PRIO, TypeNames::kEnum) ///< priority in touch gesture handling
+END_TYPELIB_MEMBERS (TriggerViewElement)
+DEFINE_TYPELIB_ENUMERATION (TAG_TRIGGERVIEW, ATTR_OPTIONS, TriggerView::customStyles, SKIN_TYPELIB)
+DEFINE_TYPELIB_ENUMERATION (TAG_TRIGGERVIEW, ATTR_GESTURE_PRIO, TriggerView::gesturePriorities, SKIN_TYPELIB)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -200,14 +210,17 @@ View* TriggerViewElement::createView (const CreateArgs& args, View* view)
 // TriggerElement
 //************************************************************************************************
 
-BEGIN_SKIN_ELEMENT_WITH_MEMBERS (TriggerElement, Element, TAG_TRIGGER, DOC_GROUP_ANIMATION, 0)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_PROPERTY, TYPE_STRING)	///< name of a property, the trigger fires when the property changes to the given "value"
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_VALUE, TYPE_STRING)		///< valued of the property that fires the trigger
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_EVENT, TYPE_STRING)		///< name of messsage signaled by a view, that fires the trigger
-END_SKIN_ELEMENT_WITH_MEMBERS (TriggerElement)
-BEGIN_SKIN_ELEMENT_ATTRIBUTES (TriggerElement)
-	ADD_SKIN_CHILDGROUP_ATTRIBUTE (SCHEMA_GROUP_TRIGGERCHILDREN)
-END_SKIN_ELEMENT_ATTRIBUTES (TriggerElement)
+DEFINE_CLASS_HIDDEN (TriggerElement, Element)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (TriggerElement, Element, TAG_TRIGGER, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (TriggerElement, DOC_GROUP_ANIMATION)
+BEGIN_TYPELIB_MEMBERS (TriggerElement)
+	ADD_TYPELIB_MEMBER_STRING (ATTR_PROPERTY) ///< name of a property, the trigger fires when the property changes to the given "value"
+	ADD_TYPELIB_MEMBER_STRING (ATTR_VALUE) ///< valued of the property that fires the trigger
+	ADD_TYPELIB_MEMBER_STRING (ATTR_EVENT) ///< name of messsage signaled by a view, that fires the trigger
+END_TYPELIB_MEMBERS (TriggerElement)
+BEGIN_TYPELIB_ATTRIBUTES (TriggerElement)
+	ADD_TYPELIB_CHILDGROUP_ATTRIBUTE (SCHEMA_GROUP_TRIGGERCHILDREN)
+END_TYPELIB_ATTRIBUTES (TriggerElement)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -298,11 +311,13 @@ void CCL_API TriggerElement::applyTrigger (IObject* target)
 // TriggerListElement
 //************************************************************************************************
 
-DEFINE_SKIN_ELEMENT (TriggerListElement, Element, TAG_TRIGGERLIST, DOC_GROUP_ANIMATION, 0)
-BEGIN_SKIN_ELEMENT_ATTRIBUTES (TriggerListElement)
-	ADD_SKIN_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_STYLECHILDREN)
-	ADD_SKIN_CHILDGROUP_ATTRIBUTE (TAG_TRIGGER)
-END_SKIN_ELEMENT_ATTRIBUTES (TriggerListElement)
+DEFINE_CLASS_HIDDEN (TriggerListElement, Element)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (TriggerListElement, Element, TAG_TRIGGERLIST, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (TriggerListElement, DOC_GROUP_ANIMATION)
+BEGIN_TYPELIB_ATTRIBUTES (TriggerListElement)
+	ADD_TYPELIB_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_STYLECHILDREN)
+	ADD_TYPELIB_CHILDGROUP_ATTRIBUTE (TAG_TRIGGER)
+END_TYPELIB_ATTRIBUTES (TriggerListElement)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -410,14 +425,17 @@ void CCL_API ParameterSetter::execute (IObject* target)
 // SetterElement
 //************************************************************************************************
 
-BEGIN_SKIN_ELEMENT_WITH_MEMBERS (SetterElement, TriggerActionElement, TAG_SETTER, DOC_GROUP_ANIMATION, 0)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_PARAMETER, TYPE_STRING)	///< path to a parameter to be set
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_PROPERTY, TYPE_STRING)	///< path to a property to be set
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_VALUE, TYPE_STRING)		///< value to be assigned to the property or parameter
-END_SKIN_ELEMENT_WITH_MEMBERS (SetterElement)
-BEGIN_SKIN_ELEMENT_ATTRIBUTES (SetterElement)
-	ADD_SKIN_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_TRIGGERCHILDREN)
-END_SKIN_ELEMENT_ATTRIBUTES (SetterElement)
+DEFINE_CLASS_HIDDEN (SetterElement, TriggerActionElement)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (SetterElement, Element, TAG_SETTER, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (SetterElement, DOC_GROUP_ANIMATION)
+BEGIN_TYPELIB_MEMBERS (SetterElement)
+	ADD_TYPELIB_MEMBER_STRING (ATTR_PARAMETER) ///< path to a parameter to be set
+	ADD_TYPELIB_MEMBER_STRING (ATTR_PROPERTY) ///< path to a property to be set
+	ADD_TYPELIB_MEMBER_STRING (ATTR_VALUE) ///< value to be assigned to the property or parameter
+END_TYPELIB_MEMBERS (SetterElement)
+BEGIN_TYPELIB_ATTRIBUTES (SetterElement)
+	ADD_TYPELIB_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_TRIGGERCHILDREN)
+END_TYPELIB_ATTRIBUTES (SetterElement)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -494,15 +512,18 @@ bool SetterElement::getAttributes (SkinAttributes& a) const
 // InvokerElement
 //************************************************************************************************
 
-BEGIN_SKIN_ELEMENT_WITH_MEMBERS (InvokerElement, TriggerActionElement, TAG_INVOKER, DOC_GROUP_ANIMATION, 0)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_TARGET, TYPE_STRING)	///< property path to a target object whose method will be invoked
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_NAME, TYPE_STRING)	///< Method name to be invoked in the target
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_ARGUMENT1, TYPE_STRING)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_ARGUMENT2, TYPE_STRING)
-END_SKIN_ELEMENT_WITH_MEMBERS (InvokerElement)
-BEGIN_SKIN_ELEMENT_ATTRIBUTES (InvokerElement)
-	ADD_SKIN_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_TRIGGERCHILDREN)
-END_SKIN_ELEMENT_ATTRIBUTES (InvokerElement)
+DEFINE_CLASS_HIDDEN (InvokerElement, TriggerActionElement)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (InvokerElement, Element, TAG_INVOKER, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (InvokerElement, DOC_GROUP_ANIMATION)
+BEGIN_TYPELIB_MEMBERS (InvokerElement)
+	ADD_TYPELIB_MEMBER_STRING (ATTR_TARGET)	///< property path to a target object whose method will be invoked
+	ADD_TYPELIB_MEMBER_STRING (ATTR_NAME)	///< Method name to be invoked in the target
+	ADD_TYPELIB_MEMBER_STRING (ATTR_ARGUMENT1)
+	ADD_TYPELIB_MEMBER_STRING (ATTR_ARGUMENT2)
+END_TYPELIB_MEMBERS (InvokerElement)
+BEGIN_TYPELIB_ATTRIBUTES (InvokerElement)
+	ADD_TYPELIB_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_TRIGGERCHILDREN)
+END_TYPELIB_ATTRIBUTES (InvokerElement)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -562,11 +583,13 @@ bool InvokerElement::getAttributes (SkinAttributes& a) const
 // StartAnimationElement
 //************************************************************************************************
 
-DEFINE_SKIN_ELEMENT (StartAnimationElement, TriggerActionElement, TAG_STARTANIMATION, DOC_GROUP_ANIMATION, 0)
-BEGIN_SKIN_ELEMENT_ATTRIBUTES (StartAnimationElement)
-	ADD_SKIN_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_TRIGGERCHILDREN)
-	ADD_SKIN_CHILDGROUP_ATTRIBUTE (TAG_ANIMATION)
-END_SKIN_ELEMENT_ATTRIBUTES (StartAnimationElement)
+DEFINE_CLASS_HIDDEN (StartAnimationElement, TriggerActionElement)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (StartAnimationElement, Element, TAG_STARTANIMATION, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (StartAnimationElement, DOC_GROUP_ANIMATION)
+BEGIN_TYPELIB_ATTRIBUTES (StartAnimationElement)
+	ADD_TYPELIB_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_TRIGGERCHILDREN)
+	ADD_TYPELIB_CHILDGROUP_ATTRIBUTE (TAG_ANIMATION)
+END_TYPELIB_ATTRIBUTES (StartAnimationElement)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -590,12 +613,15 @@ void StartAnimationElement::loadFinished ()
 // StopAnimationElement
 //************************************************************************************************
 
-BEGIN_SKIN_ELEMENT_WITH_MEMBERS (StopAnimationElement, TriggerActionElement, TAG_STOPANIMATION, DOC_GROUP_ANIMATION, 0)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_PROPERTY, TYPE_STRING)	///< path to the property whose animation should stop
-END_SKIN_ELEMENT_WITH_MEMBERS (StopAnimationElement)
-BEGIN_SKIN_ELEMENT_ATTRIBUTES (StopAnimationElement)
-	ADD_SKIN_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_TRIGGERCHILDREN)
-END_SKIN_ELEMENT_ATTRIBUTES (StopAnimationElement)
+DEFINE_CLASS_HIDDEN (StopAnimationElement, TriggerActionElement)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (StopAnimationElement, Element, TAG_STOPANIMATION, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (StopAnimationElement, DOC_GROUP_ANIMATION)
+BEGIN_TYPELIB_MEMBERS (StopAnimationElement)
+	ADD_TYPELIB_MEMBER_STRING (ATTR_PROPERTY) ///< path to the property whose animation should stop
+END_TYPELIB_MEMBERS (StopAnimationElement)
+BEGIN_TYPELIB_ATTRIBUTES (StopAnimationElement)
+	ADD_TYPELIB_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_TRIGGERCHILDREN)
+END_TYPELIB_ATTRIBUTES (StopAnimationElement)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -648,20 +674,26 @@ END_STYLEDEF
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-BEGIN_SKIN_ELEMENT_WITH_MEMBERS (AnimationElement, Element, TAG_ANIMATION, DOC_GROUP_ANIMATION, 0)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_PROPERTY, TYPE_STRING)		///< Target property name
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_FROM, TYPE_FLOAT)				///< Start value of target property
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_TO, TYPE_FLOAT)				///< End value of target property
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_DURATION, TYPE_FLOAT)			///< Animation duration in seconds. An animation duration of one and a half second can either be expressed as "1500 ms" or "1.5".
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_REPEAT, TYPE_INT)			    ///< Number of repeats - or "forever" 
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_OPTIONS, TYPE_ENUM)			///< animation options like "autoreverse"
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_FUNCTION, TYPE_ENUM)			///< specifies the timing function of the animation: linear, ease-in-out, ...
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_RESET, TYPE_ENUM)				///< animations are reset by default (reset="backwards") - using reset="forwards" preserves the end value of the target property
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_GROUP, TYPE_STRING)			///< Animation group name (optional). Can be used to synchronize the timing of multiple animations.
-END_SKIN_ELEMENT_WITH_MEMBERS (AnimationElement)
-DEFINE_SKIN_ENUMERATION (TAG_ANIMATION, ATTR_OPTIONS, AnimationElement::animationOptions)
-DEFINE_SKIN_ENUMERATION (TAG_ANIMATION, ATTR_FUNCTION, AnimationElement::timingTypes)
-DEFINE_SKIN_ENUMERATION (TAG_ANIMATION, ATTR_RESET, AnimationElement::resetModes)
+DEFINE_CLASS_HIDDEN (AnimationElement, Element)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (AnimationElement, Element, TAG_ANIMATION, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (AnimationElement, DOC_GROUP_ANIMATION)
+BEGIN_TYPELIB_MEMBERS (AnimationElement)
+	ADD_TYPELIB_MEMBER_STRING (ATTR_PROPERTY)				///< Target property name
+	ADD_TYPELIB_MEMBER (ATTR_FROM, TypeNames::kFloat)		///< Start value of target property
+	ADD_TYPELIB_MEMBER (ATTR_TO, TypeNames::kFloat)			///< End value of target property
+	ADD_TYPELIB_MEMBER (ATTR_DURATION, TypeNames::kFloat)	///< Animation duration in seconds. An animation duration of one and a half second can either be expressed as "1500 ms" or "1.5".
+	ADD_TYPELIB_MEMBER (ATTR_REPEAT, TypeNames::kInt)		///< Number of repeats - or "forever" 
+	ADD_TYPELIB_MEMBER (ATTR_OPTIONS, TypeNames::kEnum)		///< animation options like "autoreverse"
+	ADD_TYPELIB_MEMBER (ATTR_FUNCTION, TypeNames::kEnum)	///< specifies the timing function of the animation: linear, ease-in-out, ...
+	ADD_TYPELIB_MEMBER (ATTR_RESET, TypeNames::kEnum)		///< animations are reset by default (reset="backwards") - using reset="forwards" preserves the end value of the target property
+	ADD_TYPELIB_MEMBER_STRING (ATTR_GROUP)					///< Animation group name (optional). Can be used to synchronize the timing of multiple animations.
+END_TYPELIB_MEMBERS (AnimationElement)
+DEFINE_TYPELIB_ENUMERATION (TAG_ANIMATION, ATTR_OPTIONS, AnimationElement::animationOptions, SKIN_TYPELIB)
+DEFINE_TYPELIB_ENUMERATION (TAG_ANIMATION, ATTR_FUNCTION, AnimationElement::timingTypes, SKIN_TYPELIB)
+DEFINE_TYPELIB_ENUMERATION (TAG_ANIMATION, ATTR_RESET, AnimationElement::resetModes, SKIN_TYPELIB)
+BEGIN_TYPELIB_ATTRIBUTES (AnimationElement)
+	ADD_TYPELIB_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_STYLECHILDREN)
+END_TYPELIB_ATTRIBUTES (AnimationElement)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 

@@ -42,12 +42,12 @@ set_target_properties (${cclspy_target} PROPERTIES USE_FOLDERS ON FOLDER "servic
 ccl_use_skin_packages (${cclspy_target} devtools)
 ccl_add_skin_package (${cclspy_target} ${CMAKE_CURRENT_LIST_DIR}/../skin)
 
-configure_file ("${CCL_CLASSMODELS_DIR}/Skin Elements.classModel" "${VENDOR_OUTPUT_DIRECTORY}/${VENDOR_PLATFORM}/${CMAKE_BUILD_TYPE}/rc/cclspy/models/skinelements.classModel" COPYONLY)
-configure_file ("${CCL_CLASSMODELS_DIR}/Visual Styles.classModel" "${VENDOR_OUTPUT_DIRECTORY}/${VENDOR_PLATFORM}/${CMAKE_BUILD_TYPE}/rc/cclspy/models/visualstyles.classModel" COPYONLY)
+configure_file ("${CCL_CLASSMODELS_DIR}/Skin Elements.classModel" "${CMAKE_BINARY_DIR}/rc/cclspy/models/skinelements.classModel" COPYONLY)
+configure_file ("${CCL_CLASSMODELS_DIR}/Visual Styles.classModel" "${CMAKE_BINARY_DIR}/rc/cclspy/models/visualstyles.classModel" COPYONLY)
 
 list (APPEND cclspy_resources
 	${CMAKE_CURRENT_LIST_DIR}/../resource/commands.xml
-	${VENDOR_OUTPUT_DIRECTORY}/${VENDOR_PLATFORM}/${CMAKE_BUILD_TYPE}/rc/cclspy/models
+	${CMAKE_BINARY_DIR}/rc/cclspy/models
 )
 
 list (APPEND cclspy_source_files

@@ -76,7 +76,7 @@ protected:
 	bool isDirectUpdateEnabled () const;
 	void handleError (CStringPtr message, HRESULT hr);
 	bool makeSwapChainBitmap (PointRef sizeInPixel);
-	void present (const DXGI_PRESENT_PARAMETERS* params = nullptr);
+	bool present (const DXGI_PRESENT_PARAMETERS* params = nullptr);
 	void render (GdiClipRegion& renderRegion);
 	void render3DContent ();
 };

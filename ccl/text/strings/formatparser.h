@@ -74,7 +74,7 @@ public:
 	virtual bool onFormat (const Text::FormatDef& def) = 0;
 
 	bool parse (const IString& format);
-	bool parse (const uchar* format, int length);
+	bool parse (UStringPtr format, int length);
 
 	static bool isValidChar (uchar c, Text::FormatType type)
 	{

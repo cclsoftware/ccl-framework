@@ -77,8 +77,14 @@ public:
 	virtual void updateHighlightItem (EditView& editView, PointRef where);
 	virtual void hideHighlight ();
 
+	static Object* createNullItem ();
+	static bool isNullItem (const Object* item);
+
 protected:
 	EditorComponent* component;
+
+private:
+	static Object nullItem;
 };
 
 } // namespace CCL

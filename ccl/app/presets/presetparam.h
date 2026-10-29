@@ -89,7 +89,7 @@ protected:
 	// IParameterMenuCustomize
 	StringID CCL_API getMenuType () const override;
 	tbool CCL_API buildMenu (IMenu& menu, IParameterMenuBuilder& builder) override;
-	tbool CCL_API onMenuKeyDown (const CCL::KeyEvent& event) override;
+	tbool CCL_API onMenuKeyDown (const KeyEvent& event) override;
 
 	// IObject
 	tbool CCL_API invokeMethod (Variant& returnValue, MessageRef msg) override;

@@ -77,9 +77,9 @@ void DialogGroup::onColorSchemeChanged (const ColorSchemeEvent& event)
 void DialogGroup::draw (const UpdateRgn& updateRgn)
 {
 	if(renderer == nullptr)
-		renderer = getTheme ().createRenderer (ThemePainter::kDialogGroupRenderer, visualStyle);
+		renderer = getTheme ().createRenderer (ThemePainter::kDialogGroupRenderer, visualStyle, this);
 	if(renderer)
-		renderer->draw (this, updateRgn);
+		renderer->draw (updateRgn);
 
 	View::draw (updateRgn);
 }

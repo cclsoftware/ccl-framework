@@ -4,6 +4,21 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+#: audio/audioformatter.cpp
+msgctxt "Audio"
+msgid "%(1) samples"
+msgstr "%(1) samples"
+
+#: audio/audioformatter.cpp
+msgctxt "Audio"
+msgid "Mono"
+msgstr "Mono"
+
+#: audio/audioformatter.cpp
+msgctxt "Audio"
+msgid "Stereo"
+msgstr "Stereo"
+
 #: extensions/backupmanager.cpp
 msgctxt "BackupManager"
 msgid "Backup"
@@ -313,6 +328,11 @@ msgstr "Richiesta %(1) Chiavi prodotto"
 msgctxt "PackageActions"
 msgid "Claim Product Key"
 msgstr "Richiedi Product Key"
+
+#: packages/installdatapackages.cpp
+msgctxt "PackageActions"
+msgid "Copy Product Key"
+msgstr "Copia chiave prodotto"
 
 #: packages/unifiedpackageaction.cpp
 msgctxt "PackageActions"

@@ -129,7 +129,8 @@ using namespace CCL;
 
 IOSWindow::IOSWindow (const Rect& size, StyleRef style, StringRef title)
 : Window (size, style, title),
-  nativeView (nil)
+  nativeView (nil),
+  suppressKeyEvents (false)
 {}
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -269,7 +270,7 @@ void IOSWindow::invalidate (RectRef rect)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void IOSWindow::showWindow (bool state)
+void IOSWindow::showWindow (bool state, bool activate)
 {
 	if(!handle)
 		return;
@@ -277,7 +278,12 @@ void IOSWindow::showWindow (bool state)
 	if(getStyle ().isCustomStyle (Styles::kWindowBehaviorSheetStyle))
 	{
 		if(state)
+		{
 			[VIEWCONTROLLER show];
+
+			if(activate)
+				this->activate ();
+		}
 		else
 			[VIEWCONTROLLER hide];
 	}

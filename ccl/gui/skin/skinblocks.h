@@ -31,14 +31,15 @@ namespace SkinElements {
 class BlockContentElement: public ResourceObjectElement
 {
 public:
-	DECLARE_SKIN_ELEMENT (BlockContentElement, ResourceObjectElement)
+	DECLARE_CLASS (BlockContentElement, ResourceObjectElement)
+	DECLARE_TYPELIB_CLASS (BlockContentElement)
 
 	PROPERTY_MUTABLE_CSTRING (contentType, ContentType)
 	PROPERTY_STRING (markupData, MarkupData)
 
 	// ResourceObjectElement
 	bool setAttributes (const SkinAttributes& a) override;
-	void appendCharacterData (const uchar* data, int length) override;
+	void appendCharacterData (UStringPtr data, int length) override;
 	bool loadObject (SkinModel& model) override;
 };
 
@@ -49,7 +50,8 @@ public:
 class BlockViewElement: public ViewElement
 {
 public:
-	DECLARE_SKIN_ELEMENT (BlockViewElement, ViewElement)
+	DECLARE_CLASS (BlockViewElement, ViewElement)
+	DECLARE_TYPELIB_CLASS (BlockViewElement)
 
 	PROPERTY_MUTABLE_CSTRING (verticalScrollName, VerticalScrollName)
 

@@ -568,7 +568,7 @@ void PackageVendorSignature::setGlobalAuthority (IPackageVendorSigningAuthority*
 
 DEFINE_CLASS (PackageVendorSignature, Object)
 DEFINE_CLASS_UID (PackageVendorSignature, 0xe8717da2, 0x8d11, 0x4928, 0xb7, 0x7d, 0xf2, 0x50, 0x23, 0x82, 0x4f, 0x83)
-DEFINE_CLASS_NAMESPACE (PackageVendorSignature, "Host") // class can be registered by host application
+DEFINE_CLASS_CATEGORY (PackageVendorSignature, PLUG_CATEGORY_HOST_) // class can be registered by host application
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 

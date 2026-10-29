@@ -53,79 +53,6 @@ CStringPtr CCL_API TypeInfo::getClassName () const
 	return name;
 }
 
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
-CStringPtr CCL_API TypeInfo::getClassNamespace () const
-{
-	return nullptr;
-}
-
-//************************************************************************************************
-// TypeInfoWithMembers::MemberDescriptionModifier
-//************************************************************************************************
-
-TypeInfoWithMembers::MemberDescriptionModifier::MemberDescriptionModifier (TypeInfoWithMembers& This, Model::MemberDescription members[])
-{
-	This.members = members;
-}
-
-//************************************************************************************************
-// TypeInfoWithMembers::AttributeModifier
-//************************************************************************************************
-
-TypeInfoWithMembers::AttributeModifier::AttributeModifier (TypeInfoWithMembers& This, Model::AttributeDescription attributes[])
-{
-	This.attributes = attributes;
-}
-
-//************************************************************************************************
-// TypeInfoWithMembers
-//************************************************************************************************
-
-DEFINE_CLASS_ABSTRACT_HIDDEN (TypeInfoWithMembers, TypeInfo)
-
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
-TypeInfoWithMembers::TypeInfoWithMembers (CStringPtr name, const TypeInfo* parentType)
-: TypeInfo (name, parentType),
-  members (nullptr),
-  attributes (nullptr)
-{}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
-bool TypeInfoWithMembers::getDetails (ITypeInfoDetails& details) const
-{
-	if(members)
-	{
-		for(Model::MemberDescription* m = members; !m->name.isEmpty (); m++)
-			details.addMember (*m);
-	}
-
-	if(attributes)
-	{
-		Attributes resultAttributes;
-		for(Model::AttributeDescription* a = attributes; !a->name.isEmpty (); a++)
-		{
-			Variant value (a->value);
-			if(value.isString () && resultAttributes.getAttribute (value, a->name))
-			{
-				String string = value.asString ().append (" ").append (a->value.asString ());
-				value = string;
-				value.share ();
-			}
-
-			resultAttributes.setAttribute (a->name, value);
-		}
-
-		ForEachAttribute (resultAttributes, name, value)
-			details.setAttribute (name, value);
-		EndFor
-	}
-
-	return true;
-}
-
 //************************************************************************************************
 // EnumTypeInfo
 //************************************************************************************************
@@ -331,4 +258,163 @@ tresult CCL_API TypeLibrary::getTypeDetails (ITypeInfoDetails& result, const ITy
 		return kResultInvalidArgument;
 
 	return ti->getDetails (result) ? kResultOk : kResultFalse;
+}
+
+//************************************************************************************************
+// TypeLibEntry::MemberDescriptionModifier
+//************************************************************************************************
+
+TypeLibEntry::MemberDescriptionModifier::MemberDescriptionModifier (TypeLibEntry& This, Model::MemberDescription members[])
+{
+	This.members = members;
+}
+
+//************************************************************************************************
+// TypeLibEntry::AttributeModifier
+//************************************************************************************************
+
+TypeLibEntry::AttributeModifier::AttributeModifier (TypeLibEntry& This, Model::AttributeDescription attributes[])
+{
+	This.attributes = attributes;
+}
+
+//************************************************************************************************
+// TypeLibEntry::DocGroupModifier
+//************************************************************************************************
+
+TypeLibEntry::DocGroupModifier::DocGroupModifier (TypeLibEntry& This, CStringPtr docGroup)
+{
+	This.docGroup = docGroup;
+};
+
+//************************************************************************************************
+// TypeLibEntry::RelatedClassModifier
+//************************************************************************************************
+
+TypeLibEntry::RelatedClassModifier::RelatedClassModifier (TypeLibEntry& This, CStringPtr relatedClass)
+{
+	This.relatedClass = relatedClass;
+};
+
+//************************************************************************************************
+// TypeLibEntry::AbstractModifier
+//************************************************************************************************
+
+TypeLibEntry::AbstractModifier::AbstractModifier (TypeLibEntry& This)
+{
+	This.abstract = true;
+}
+
+//************************************************************************************************
+// TypeLibEntry
+//************************************************************************************************
+
+DEFINE_CLASS_ABSTRACT_HIDDEN (TypeLibEntry, TypeInfo)
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+TypeLibEntry::TypeLibEntry (TypeLibrary& library, CStringPtr entryName, const TypeLibEntry* parentType)
+: TypeInfo (entryName, parentType),
+  docGroup (nullptr),
+  relatedClass (nullptr),
+  members (nullptr),
+  attributes (nullptr),
+  abstract (false)
+{
+	library.addType (this);
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+int CCL_API TypeLibEntry::getClassFlags () const
+{
+	return abstract ? kAbstract : 0;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+bool TypeLibEntry::getDetails (ITypeInfoDetails& details) const
+{
+	if(attributes)
+	{
+		Attributes resultAttributes;
+		for(Model::AttributeDescription* a = attributes; !a->name.isEmpty (); a++)
+		{
+			Variant value (a->value);
+			if(value.isString () && resultAttributes.getAttribute (value, a->name))
+			{
+				String string = value.asString ().append (" ").append (a->value.asString ());
+				value = string;
+				value.share ();
+			}
+
+			resultAttributes.setAttribute (a->name, value);
+		}
+
+		ForEachAttribute (resultAttributes, name, value)
+			details.setAttribute (name, value);
+		EndFor
+	}
+
+	if(docGroup)
+		details.setAttribute (Model::kClassDocGroup, docGroup);
+
+	if(members)
+	{
+		for(Model::MemberDescription* m = members; !m->name.isEmpty (); m++)
+			details.addMember (*m);
+	}
+
+	return true;
+}
+
+//************************************************************************************************
+// TypeLibClass
+//************************************************************************************************
+
+DEFINE_CLASS_ABSTRACT_HIDDEN (TypeLibClass, TypeLibEntry)
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+TypeLibClass::TypeLibClass (TypeLibrary& library, CStringPtr entryName, MetaClassRef _metaClass, const TypeLibEntry* parentType)
+: TypeLibEntry (library, entryName, parentType),
+  metaClass (_metaClass)
+{}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+MetaClassRef TypeLibClass::getMetaClass () const
+{
+	return this->metaClass;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+Object* TypeLibClass::createObject () const
+{
+	return metaClass.createObject ();
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+int CCL_API TypeLibClass::getClassFlags () const
+{
+	return TypeLibEntry::getClassFlags () | static_cast<const ITypeInfo&> (metaClass).getClassFlags ();
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+IUnknown* CCL_API TypeLibClass::createInstance () const
+{
+	return static_cast<const ITypeInfo&> (metaClass).createInstance ();
+}
+
+//************************************************************************************************
+// TypeLibEnumeration
+//************************************************************************************************
+
+TypeLibEnumeration::TypeLibEnumeration (TypeLibrary& library, CStringPtr canonicalName, const EnumInfo info[], CStringPtr parentName)
+: TEnumTypeInfo<EnumInfo> (canonicalName, info, info ? EnumInfo::getCount (info) : 0, parentName)
+{
+	library.addEnum (this);
 }

@@ -44,7 +44,7 @@ void linkSkinLayouts ()
 CCL_KERNEL_INIT_LEVEL (LayoutElement, kFrameworkLevelFirst)
 {
 	// register layout class enumeration
-	MetaElement::getTypeLibrary ().addEnum (&LayoutFactory::instance (), true);
+	getTypeLibrary ().addEnum (&LayoutFactory::instance (), true);
 	return true;
 }
 
@@ -52,7 +52,11 @@ CCL_KERNEL_INIT_LEVEL (LayoutElement, kFrameworkLevelFirst)
 // LayoutElement
 //************************************************************************************************
 
-DEFINE_SKIN_ELEMENT_ABSTRACT (LayoutElement, ViewElement, TAG_LAYOUT, DOC_GROUP_LAYOUT, LayoutView)
+DEFINE_CLASS_ABSTRACT_HIDDEN (LayoutElement, ViewElement)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (LayoutElement, ViewElement, TAG_LAYOUT, SKIN_TYPELIB)
+DEFINE_TYPELIB_ABSTRACT (LayoutElement)
+DEFINE_TYPELIB_DOCGROUP (LayoutElement, DOC_GROUP_LAYOUT)
+DEFINE_TYPELIB_RELATED_CLASS (LayoutElement, LayoutView)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -133,14 +137,18 @@ void LayoutElement::viewAdded (View* parent, View* child, ViewElement* childElem
 // AnchorLayoutElement
 //************************************************************************************************
 
-BEGIN_SKIN_ELEMENT_WITH_MEMBERS (AnchorLayoutElement, LayoutElement, TAG_BASICLAYOUT, DOC_GROUP_LAYOUT, AnchorLayoutView)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_SPACING, TYPE_METRIC)		   ///< spacing between views (in pixels)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_MARGIN, TYPE_METRIC)		   ///< outer margin (in pixels)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_LAYOUTCLASS, TYPE_STRING)	   ///< name of the layout class to be used
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_PERSISTENCE_ID, TYPE_STRING) ///< storage id used to store and restore the layout state
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_OPTIONS, TYPE_ENUM)		   ///< options specific to the selected layout class
-END_SKIN_ELEMENT_WITH_MEMBERS (AnchorLayoutElement)
-DEFINE_SKIN_ENUMERATION (TAG_BASICLAYOUT, ATTR_OPTIONS, BoxLayout::customStyles)
+DEFINE_CLASS_HIDDEN (AnchorLayoutElement, LayoutElement)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (AnchorLayoutElement, LayoutElement, TAG_BASICLAYOUT, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (AnchorLayoutElement, DOC_GROUP_LAYOUT)
+DEFINE_TYPELIB_RELATED_CLASS (AnchorLayoutElement, AnchorLayoutView)
+BEGIN_TYPELIB_MEMBERS (AnchorLayoutElement)
+	ADD_TYPELIB_MEMBER (ATTR_SPACING, TypeNames::kMetric) ///< spacing between views (in pixels)
+	ADD_TYPELIB_MEMBER (ATTR_MARGIN, TypeNames::kMetric) ///< outer margin (in pixels)
+	ADD_TYPELIB_MEMBER_STRING (ATTR_LAYOUTCLASS) ///< name of the layout class to be used
+	ADD_TYPELIB_MEMBER_STRING (ATTR_PERSISTENCE_ID) ///< storage id used to store and restore the layout state
+	ADD_TYPELIB_MEMBER (ATTR_OPTIONS, TypeNames::kEnum) ///< options specific to the selected layout class
+END_TYPELIB_MEMBERS (AnchorLayoutElement)
+DEFINE_TYPELIB_ENUMERATION (TAG_BASICLAYOUT, ATTR_OPTIONS, BoxLayout::customStyles, SKIN_TYPELIB)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -211,7 +219,9 @@ View* AnchorLayoutElement::createView (const CreateArgs& args, View* view)
 // HorizontalElement
 //************************************************************************************************
 
-DEFINE_SKIN_ELEMENT (HorizontalElement, AnchorLayoutElement, TAG_HORIZONTAL, DOC_GROUP_LAYOUT, 0)
+DEFINE_CLASS_HIDDEN (HorizontalElement, AnchorLayoutElement)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (HorizontalElement, AnchorLayoutElement, TAG_HORIZONTAL, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (HorizontalElement, DOC_GROUP_LAYOUT)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -249,7 +259,9 @@ Layout* HorizontalElement::createLayout () const
 // VerticalElement
 //************************************************************************************************
 
-DEFINE_SKIN_ELEMENT (VerticalElement, AnchorLayoutElement, TAG_VERTICAL, DOC_GROUP_LAYOUT, 0)
+DEFINE_CLASS_HIDDEN (VerticalElement, AnchorLayoutElement)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (VerticalElement, AnchorLayoutElement, TAG_VERTICAL, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (VerticalElement, DOC_GROUP_LAYOUT)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -287,12 +299,15 @@ Layout* VerticalElement::createLayout () const
 // TableElement
 //************************************************************************************************
 
-BEGIN_SKIN_ELEMENT_WITH_MEMBERS (TableElement, AnchorLayoutElement, TAG_TABLE, DOC_GROUP_LAYOUT, 0)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_ROWS, TYPE_INT)			///< number of rows (uses as many columns as required)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_COLUMNS, TYPE_INT)		///< number of columns (uses as many rows as required)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_CELLRATIO, TYPE_FLOAT)	///< aspect ratio for cell views (width/height, e\.g\. 1 for square views)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_MINCELLRATIO, TYPE_FLOAT) ///< optional minimum aspect ratio for cell views (width/height, e\.g\. 1 for square views)
-END_SKIN_ELEMENT_WITH_MEMBERS (TableElement)
+DEFINE_CLASS_HIDDEN (TableElement, AnchorLayoutElement)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (TableElement, AnchorLayoutElement, TAG_TABLE, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (TableElement, DOC_GROUP_LAYOUT)
+BEGIN_TYPELIB_MEMBERS (TableElement)
+	ADD_TYPELIB_MEMBER (ATTR_ROWS, TypeNames::kInt) ///< number of rows (uses as many columns as required)
+	ADD_TYPELIB_MEMBER (ATTR_COLUMNS, TypeNames::kInt) ///< number of columns (uses as many rows as required)
+	ADD_TYPELIB_MEMBER (ATTR_CELLRATIO, TypeNames::kFloat) ///< aspect ratio for cell views (width/height, e\.g\. 1 for square views)
+	ADD_TYPELIB_MEMBER (ATTR_MINCELLRATIO, TypeNames::kFloat) ///< optional minimum aspect ratio for cell views (width/height, e\.g\. 1 for square views)
+END_TYPELIB_MEMBERS (TableElement)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -305,7 +320,9 @@ Layout* TableElement::createLayout () const
 // SizeVariantElement
 //************************************************************************************************
 
-DEFINE_SKIN_ELEMENT (SizeVariantElement, AnchorLayoutElement, TAG_SIZEVARIANT, DOC_GROUP_LAYOUT, 0)
+DEFINE_CLASS_HIDDEN (SizeVariantElement, AnchorLayoutElement)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (SizeVariantElement, AnchorLayoutElement, TAG_SIZEVARIANT, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (SizeVariantElement, DOC_GROUP_LAYOUT)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -343,25 +360,28 @@ void SizeVariantElement::viewAdded (View* parent, View* child, ViewElement* chil
 // FlexboxElement
 //************************************************************************************************
 
-BEGIN_SKIN_ELEMENT_WITH_MEMBERS (FlexboxElement, LayoutElement, TAG_FLEXBOX, DOC_GROUP_LAYOUT, 0)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_FLEXDIRECTION, TYPE_ENUM) 		///< Defines the direction of the main axis, in which the children are layed out
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_FLEXWRAP, TYPE_ENUM)				///< If children should wrap automatically if there is not enough room on the main axis
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_FLEXJUSTIFY, TYPE_ENUM)			///< Justification of the children on the main axis
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_FLEXALIGN, TYPE_ENUM)				///< Alignment of the children on the cross axis
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_FLEXPADDING, TYPE_STRING)			///< Shorthand for individual padding, enter between one and four values which are interpreted as follows: "left=top=right=bottom", "left=right, top=bottom", "left, top, right, bottom=0", "left, top, right, bottom"
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_FLEXPADDINGTOP, TYPE_METRIC)		///< Space added to the top edge on the inside of the container
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_FLEXPADDINGRIGHT, TYPE_METRIC)	///< Space added to the right edge on the inside of the container
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_FLEXPADDINGBOTTOM, TYPE_METRIC)	///< Space added to the bottom edge on the inside of the container
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_FLEXPADDINGLEFT, TYPE_METRIC)		///< Space added to the left edge on the inside of the container
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_FLEXGAP, TYPE_STRING)				///< Shorthand for individual gaps, enter one or two values which are interpreted as follows: "row=column", "row, column"
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_FLEXGAPROW, TYPE_METRIC)			///< Space added between elements horizontally
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_FLEXGAPCOLUMN, TYPE_METRIC)		///< Space added between elements vertically
-END_SKIN_ELEMENT_WITH_MEMBERS (FlexboxElement)
+DEFINE_CLASS_HIDDEN (FlexboxElement, LayoutElement)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (FlexboxElement, LayoutElement, TAG_FLEXBOX, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (FlexboxElement, DOC_GROUP_LAYOUT)
+BEGIN_TYPELIB_MEMBERS (FlexboxElement)
+	ADD_TYPELIB_MEMBER (ATTR_FLEXDIRECTION, TypeNames::kEnum) 		///< Defines the direction of the main axis, in which the children are layed out
+	ADD_TYPELIB_MEMBER (ATTR_FLEXWRAP, TypeNames::kEnum)			///< If children should wrap automatically if there is not enough room on the main axis
+	ADD_TYPELIB_MEMBER (ATTR_FLEXJUSTIFY, TypeNames::kEnum)			///< Justification of the children on the main axis
+	ADD_TYPELIB_MEMBER (ATTR_FLEXALIGN, TypeNames::kEnum)			///< Alignment of the children on the cross axis
+	ADD_TYPELIB_MEMBER_STRING (ATTR_FLEXPADDING)					///< Shorthand for individual padding, enter between one and four values which are interpreted as follows: "left=top=right=bottom", "left=right, top=bottom", "left, top, right, bottom=0", "left, top, right, bottom"
+	ADD_TYPELIB_MEMBER (ATTR_FLEXPADDINGTOP, TypeNames::kMetric)	///< Space added to the top edge on the inside of the container
+	ADD_TYPELIB_MEMBER (ATTR_FLEXPADDINGRIGHT, TypeNames::kMetric)	///< Space added to the right edge on the inside of the container
+	ADD_TYPELIB_MEMBER (ATTR_FLEXPADDINGBOTTOM, TypeNames::kMetric)	///< Space added to the bottom edge on the inside of the container
+	ADD_TYPELIB_MEMBER (ATTR_FLEXPADDINGLEFT, TypeNames::kMetric)	///< Space added to the left edge on the inside of the container
+	ADD_TYPELIB_MEMBER_STRING (ATTR_FLEXGAP)						///< Shorthand for individual gaps, enter one or two values which are interpreted as follows: "row=column", "row, column"
+	ADD_TYPELIB_MEMBER (ATTR_FLEXGAPROW, TypeNames::kMetric)		///< Space added between elements horizontally
+	ADD_TYPELIB_MEMBER (ATTR_FLEXGAPCOLUMN, TypeNames::kMetric)		///< Space added between elements vertically
+END_TYPELIB_MEMBERS (FlexboxElement)
 
-DEFINE_SKIN_ENUMERATION (TAG_FLEXBOX, ATTR_FLEXDIRECTION, FlexShared::flexDirection)
-DEFINE_SKIN_ENUMERATION (TAG_FLEXBOX, ATTR_FLEXWRAP, FlexShared::flexWrap)
-DEFINE_SKIN_ENUMERATION (TAG_FLEXBOX, ATTR_FLEXJUSTIFY, FlexShared::flexJustify)
-DEFINE_SKIN_ENUMERATION (TAG_FLEXBOX, ATTR_FLEXALIGN, FlexShared::flexAlign)
+DEFINE_TYPELIB_ENUMERATION (TAG_FLEXBOX, ATTR_FLEXDIRECTION, FlexShared::flexDirection, SKIN_TYPELIB)
+DEFINE_TYPELIB_ENUMERATION (TAG_FLEXBOX, ATTR_FLEXWRAP, FlexShared::flexWrap, SKIN_TYPELIB)
+DEFINE_TYPELIB_ENUMERATION (TAG_FLEXBOX, ATTR_FLEXJUSTIFY, FlexShared::flexJustify, SKIN_TYPELIB)
+DEFINE_TYPELIB_ENUMERATION (TAG_FLEXBOX, ATTR_FLEXALIGN, FlexShared::flexAlign, SKIN_TYPELIB)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 

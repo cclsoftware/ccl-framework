@@ -24,7 +24,7 @@ Fundamentals
       **Initial reference count is 1**
 
   * - :cref:`Object<CCL::Object>`
-    - Object base class with RTTI, messages, storage
+    - Object base class with RTTI, messages, persistence
 
   * - :cref:`UID<CCL::UID>`, :cref:`UIDRef<CCL::UIDRef>`
     - 16-Byte Globally Unique Identifier.
@@ -36,7 +36,7 @@ Fundamentals
     - Smart pointer. Takes ownership on assignement of raw IUnknown/Object pointer
 
   * - :cref:`SharedPtr<CCL::SharedPtr>`
-    - Smart pointer. Similar to AutoPtr, calls addRef and release balanced
+    - Smart pointer. Similar to AutoPtr, calls retain and release balanced
 
   * - :cref:`UnknownPtr<CCL::UnknownPtr>`
     - Smart pointer + queryInterface
@@ -68,10 +68,10 @@ Using IUnknown
       .. code-block:: cpp
 
         AutoPtr<IProgressNotify> dialog;
-        dialog = ccl_new<IProgressNotify> (CCL::ClassID::ProgressDialog);
+        dialog = ccl_new<IProgressNotify> (ClassID::ProgressDialog);
 
   * - :cref:`ccl_release<CCL::ccl_release>`
-    - Instances  of 'real' plug-ins (dynamically loaded modules) must be released with ccl_release. This can be a little bit tricky, because ccl_release is not not supported by smart pointers.
+    - Instances of plug-ins from dynamically loaded modules must be released with ccl_release. This needs to be done manually, because ccl_release is not supported by smart pointers.
 
   * - :cref:`isEqualUnknown<CCL::isEqualUnknown>`
     - Test if interface pointers have the same implementation class instance
@@ -83,9 +83,9 @@ Using IUnknown
           return isEqualUnknown (subject, unknown);
         }
 
-      Pointers must not be compared directly !
+      Pointers must not be compared directly.
 
-  * - Cast interfaces:
+  * - Cast interfaces with
 
       :cref:`UnknownPtr<CCL::UnknownPtr>`
     - Example for casting one interface to another
@@ -120,7 +120,7 @@ The idea is that the code has the same binary output with any compiler on a plat
 **Per reference or pointer:**
 
 - String, Variant
-- struct (interface specific with no or inline methods)
+- struct (with public data types)
 - IUnknown and other interfaces but **no implementation classes**.
 
 
@@ -145,7 +145,7 @@ The idea is that the code has the same binary output with any compiler on a plat
         DEFINE_IID (INewInterface, 0xc5d8ffd1, 0xd7cd, ...)
 
   * - :cref:`CCL_API`
-    - Calling convention needed for every interface method
+    - Calling convention for interface methods
     - .. code-block:: cpp
 
         virtual tresult CCL_API interfaceMethod () = 0;
@@ -164,7 +164,7 @@ Object Details
     - Example
 
   * - :cref:`DECLARE_CLASS`, :cref:`DECLARE_CLASS_ABSTRACT`
-    - Header: Declare RTTI for Object (:cref:`CCL::MetaClass`)
+    - Header (.h): Declare RTTI for Object (:cref:`CCL::MetaClass`)
     - .. code-block:: cpp
 
         class MyClass: public CCL::Object
@@ -175,7 +175,7 @@ Object Details
         };
 
   * - :cref:`DEFINE_CLASS`, :cref:`DEFINE_CLASS_HIDDEN`, ...
-    - CPP: Define Meta Class
+    - Source (.cpp): Define meta class
     - .. code-block:: cpp
 
         DEFINE_CLASS_HIDDEN (MyClass, Object)
@@ -183,7 +183,7 @@ Object Details
       Hidden: Class is not added to the class registry.
 
   * - :cref:`CLASS_INTERFACE`, :cref:`CLASS_INTERFACE2` :cref:`CLASS_INTERFACES`
-    - Define Interfaces in an implementation class
+    - Define interfaces in an implementation class
     - .. code-block:: cpp
 
         class MyClass: public CCL::Object,
@@ -297,10 +297,10 @@ Container
 
 **Object Container**
 
-- \+ common abstract interfaces (Container, Iterator)
-- \+ provide reference counting (but not in 'remove')
-- \+ provide storage support
-- \- content type always unspecific (``ccl_cast`` is needed)
+- \+ support common abstract base classes (Container, Iterator)
+- \+ provide reference counting (while in container, not in 'remove')
+- \+ support serialization/de-serialization to archives
+- \- content type always unspecific (``ccl_cast`` or ``static_cast`` needed)
 - preferred for types derived from Object
 - combine with iterate_as<> in range-for loop
 - use when script access is needed
@@ -332,7 +332,7 @@ Strings
 
   * - :cref:`MutableCString<CCL::MutableCString>`
     - :cref:`CString<CCL::CString>`
-    - C-String, 8-Bit. CString is read only
+    - C-String, 8-Bit. CString is read-only
 
 
 ===================
@@ -351,7 +351,7 @@ Messages + Observer
     - :cref:`IMessage<CCL::IMessage>`
 
       :cref:`MessageRef<CCL::MessageRef>`
-    - Has Identifier + Parameter. Most messages are specific to a class, but there a some common messages:
+    - Has identifier and arguments. Most messages are specific to a class, but there a some common messages:
 
       - :cref:`kChanged<CCL::kChanged>`
       - :cref:`kPropertyChanged<CCL::kPropertyChanged>`
@@ -471,7 +471,7 @@ Object Persistence
     - Storage combines Archive and Attributes.
 
   * - :cref:`ArchiveHandler<CCL::ArchiveHandler>`
-    - Helper class to load/save objects from/to a structured storage (Zip-File). An Archive in this case reads/writes a sub-stream (file) of the structured file.
+    - Helper class to load/save objects from/to a structured storage (.zip file). An archive in this case reads/writes a sub-stream (file) of the structured file.
 
 
 =============
@@ -493,6 +493,7 @@ Miscellaneous
         class MyClass: public CCL::Object,
                        public CCL::Singleton<MyClass>
         {
+		public:
           void myMethod ();
         };
 

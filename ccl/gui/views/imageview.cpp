@@ -21,6 +21,7 @@
 #include "ccl/gui/views/viewanimation.h"
 
 #include "ccl/gui/theme/visualstyle.h"
+#include "ccl/gui/theme/legacystyleids.h"
 #include "ccl/gui/system/dragndrop.h"
 #include "ccl/gui/windows/window.h"
 #include "ccl/gui/touch/touchhandler.h"
@@ -108,7 +109,7 @@ ImageView::ModeSelector::ModeSelector (const ImageView& imageView)
 {
 	if(imageView.getStyle ().isCustomStyle (Styles::kImageViewAppearanceHighQuality))
 	{
-		mode.setInterpolationMode (ImageMode::kInterpolationHighQuality);
+		mode.setInterpolationMode (kImageInterpolationHighQuality);
 		modePtr = &mode;
 	}
 }
@@ -186,9 +187,8 @@ tbool CCL_API ImageView::InsertDataDragHandler::afterDrop (const DragEvent& even
 
 BEGIN_STYLEDEF (ImageView::customStyles)
 	{"colorize",         Styles::kImageViewAppearanceColorize},
-	{"fitimage",         Styles::kImageViewAppearanceFitImage},
-	{"allowstretch",     Styles::kImageViewAppearanceAllowStretch},
-	{"allowzoom",	     Styles::kImageViewAppearanceAllowZoom},
+	{"contentfit",       Styles::kImageViewAppearanceContentFit},
+	{"contentfill",      Styles::kImageViewAppearanceContentFill},
 	{"selectonclick",    Styles::kImageViewBehaviorSelectOnClick},
 	{"framesbyname",     Styles::kImageViewBehaviorFramesByName},
 	{"windowsizable",    Styles::kImageViewBehaviorWindowSizable},
@@ -202,26 +202,22 @@ BEGIN_STYLEDEF (ImageView::customStyles)
 	{"backgroundlayer",	 Styles::kImageViewBehaviorBackgroundLayer},
 	{"highquality",		 Styles::kImageViewAppearanceHighQuality},
 	{"hfitimagesize",	 Styles::kImageViewLayoutHFitImageSize},
-	{"centerimage",      Styles::kImageViewAppearanceCenterImage},
-	{"disable",          Styles::kImageViewBehaviorDisable},	
+	{"disable",          Styles::kImageViewBehaviorDisable},
+	#if LEGACY_STYLES_SUPPORTED
+	// replaced by kImageViewAppearanceContentFit and kImageViewAppearanceContentFill
+	{"fitimage",         Styles::kImageViewAppearanceFitImageLegacy},
+	{"allowstretch",     Styles::kImageViewAppearanceAllowStretchLegacy},
+	{"allowzoom",	     Styles::kImageViewAppearanceAllowZoomLegacy},
+	{"centerimage",      Styles::kImageViewAppearanceCenterImageLegacy},
+	#endif
 END_STYLEDEF
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-BEGIN_VISUALSTYLE_CLASS (ImageView, VisualStyle, "ImageViewStyle")
-	ADD_VISUALSTYLE_IMAGE ("background")				///< the image to be drawn
-	ADD_VISUALSTYLE_METRIC ("border")					///< (set automatically for tiled images) - used to optimize redraws when the ImageView is resized
-	ADD_VISUALSTYLE_METRIC ("fill.image")				///< image is resized to fill out the ImageView size (aspectratio is kept) value: ]0-1]
-	ADD_VISUALSTYLE_COLOR  ("backcolor")				///< fill the view when "selectname" is off (colorize option set) and no image is available
-	ADD_VISUALSTYLE_COLOR  ("forecolor")				///< fill the view when "selectname" is on (colorize option set) and no image is available
-	ADD_VISUALSTYLE_COLOR  ("imagecolor")				///< imagecolor is used to colorize the image (colorize option set)
-	ADD_VISUALSTYLE_COLOR  ("imagecolor.on")			///< imagecolor.on is used to colorize the image when the "selectname" is on (colorize option set)
-	ADD_VISUALSTYLE_COLOR  ("imagecolor.context")		///< imagecolor.context is used (colorize option NOT set) to modify the image automatically when supported - needs to be a template/monochrome image (colorize filter is used) or an adaptive image (lightadapt filter is used)
-	ADD_VISUALSTYLE_COLOR  ("imagecolor.transparent")	///< imagecolor.transparent is used (colorize option set) when current colorparam color is transparent
-	ADD_VISUALSTYLE_COLOR  ("imagecolor.alphablend")	///< the non-transparent "colorname" color will be alphablended with this color (using "color.alphablend" as fallback) and used as imagecolor
-	ADD_VISUALSTYLE_COLOR  ("imagecolor.bright")		///< imagecolor.bright is used when colorize option is set and the current luminance of the "colorname" color is below the "imagecolor.threshold"
-	ADD_VISUALSTYLE_METRIC ("imagecolor.threshold")		///< imagecolor.bright is used instead of "imagecolor" if the luminance threshold for the current "colorname" color is below this value - default is 0.35
-END_VISUALSTYLE_CLASS (ImageView)
+DEFINE_TYPELIB_ENTRY_WITH_PARENT (ImageView, VisualStyle, "ImageViewStyle", VISUALSTYLES_TYPELIB)
+BEGIN_TYPELIB_MEMBERS (ImageView)
+	ADD_TYPELIB_MEMBER_RENDERATOM (AtomName::kBackground)			///< draws the image - its "color" colorizes a template or an adaptive image, and fills the view when there is no image ("colorize" option)
+END_TYPELIB_MEMBERS (ImageView)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -233,17 +229,22 @@ DEFINE_CLASS_UID (ImageView, 0xb3973fca, 0x38a, 0x441c, 0xa3, 0xbd, 0x91, 0x3e, 
 ImageView::ImageView (IImage* _background, const Rect& size, StyleRef style, StringRef title)
 : View (size, style, title),
   background (nullptr),
+  backgroundAtom (AtomName::kBackground),
   frame (0),
   border (0),
   selectParam (nullptr),
   imageProvider (nullptr),
   transitionType (Styles::kTransitionNone),
-  imageFillSize (0.f),
-  brightColorThreshold (0.35f),
-  useModifiedImage (false),
-  drawAsTemplate (true),
   initialized (false)
+  #if LEGACY_STYLES_SUPPORTED
+  , imageColor (Colors::kTransparentBlack),
+  contextColor (Colors::kTransparentBlack),
+  useModifiedImage (false),
+  modifiedImageAllowed (false),
+  growImageAllowed (true)
+  #endif
 {
+	backgroundAtom.setClient (this);
 	setBackground (_background);
 }
 
@@ -326,7 +327,8 @@ void ImageView::setBackground (IImage* newBackground)
 	{
 		SharedPtr<IImage> oldBackground = background;
 		background = newBackground;
-		
+		hasBackgroundFromVisualStyle (false);
+
 		// adjust size
 		if(background && !getStyle ().isCustomStyle (Styles::kImageViewLayoutIgnoreImageSize) && (getSize ().isEmpty () || (style.isCustomStyle (Styles::kImageViewLayoutHFitImageSize))))
 		{
@@ -456,67 +458,166 @@ IGraphicsLayer* CCL_API ImageView::getParentLayer (Point& offset) const
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
+bool ImageView::isSelected () const
+{
+	return selectParam != nullptr && selectParam->getValue ().asBool ();
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+void ImageView::updateAtomStyle ()
+{
+	// a select parameter that is on is the "on" style condition, so that the atom properties can
+	// have an "on" variant
+	conditionContext.setCondition (ThemeNames::kOn, isSelected ());
+
+	RenderAtomTransaction transaction;
+	VisualStyle* visualStyle = getVisualStyleDirect ();
+	if(visualStyle)
+		backgroundAtom.updateFromVisualStyle (transaction, *visualStyle, conditionContext);
+	else
+		backgroundAtom.setBrush (SolidBrush (Colors::kTransparentBlack));
+
+	#if LEGACY_STYLES_SUPPORTED
+	BEGIN_LEGACY_STYLES_ENABLED_BLOCK
+	applyLegacyVisualStyle (); // needs the end values - finalizeVisualStyleUpdate () resets animated properties to their start
+	END_LEGACY_STYLES_ENABLED_BLOCK
+	#endif
+
+	if(visualStyle)
+		backgroundAtom.finalizeVisualStyleUpdate (transaction);
+
+	// "background.image" can have an "on" variant - an image from the style follows the atom
+	if(hasBackgroundFromVisualStyle ())
+		if(Image* atomImage = backgroundAtom.getImage ())
+			background = atomImage;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
 void ImageView::initialize ()
 {
 	const IVisualStyle& vs = getVisualStyle ();
 
+	updateAtomStyle ();
+
 	if(background == nullptr)
 	{
-		background = vs.getImage ("background");
-		hasBackgroundFromVisualStyle (true);
+		background = backgroundAtom.getImage (); // "background.image"
+		hasBackgroundFromVisualStyle (background != nullptr);
 	}
-	border = vs.getMetric<int> ("border", 0);
-	
-	imageFillSize = vs.getMetric<float> ("fill.image", 0.f);
-	
-	alphaBlendColor = vs.getColor ("imagecolor.alphablend", vs.getColor ("color.alphablend", Colors::kTransparentBlack));
-	imageColor = vs.getColor ("imagecolor", alphaBlendColor);
-	imageColorOn = vs.getColor ("imagecolor.on", imageColor);
-	imageContrastTransparentColor = vs.getColor ("imagecolor.transparent", imageColor);
-	imageContrastBrightColor = vs.getColor ("imagecolor.bright", Colors::kTransparentBlack);
-	imageContextColor = vs.getColor ("imagecolor.context", vs.getColor ("contextcolor", Colors::kTransparentBlack));
-		
-	brightColorThreshold = vs.getMetric<float> ("imagecolor.threshold", brightColorThreshold);
-	
-	bool colorizeImage = vs.getMetric<bool> ("colorize.image", style.isCustomStyle (Styles::kImageViewAppearanceColorize));
-	bool lightAdaptImage = vs.getMetric<bool> ("lightadapt.image", false);
-	drawAsTemplate = !lightAdaptImage;
-	
-	if(border == 0)
+
+	if(TiledImage* tiledImage = unknown_cast<TiledImage> (background))
 	{
-		if(TiledImage* tiledImage = unknown_cast<TiledImage> (background))
-		{
-			// if no border specified for a tiled image: use largest margin
-			Rect margins = tiledImage->getMargins ();
-			Coord b = ccl_max (margins.left, margins.right);
-			ccl_lower_limit (b, ccl_max (margins.top, margins.bottom));
-			border = b;
-		}
+		// use largest margin for border
+		Rect margins = tiledImage->getMargins ();
+		Coord b = ccl_max (margins.left, margins.right);
+		ccl_lower_limit (b, ccl_max (margins.top, margins.bottom));
+		border = b;
 	}
-		
+	else
+		border = 0;
+
 	if(selectParam)
 		determineFrameIndex ();
-	
-	// compatibility check: colorize when imagecolor is set or use colorparam color when no backcolor is set
-	
-	Color fillBackColor = vs.getColor (StyleID::kBackColor, Colors::kTransparentBlack);
-	if(colorizeImage || lightAdaptImage)
+
+	// The image is stretched over the whole view by default. "contentfit" scales it into the view
+	// preserving its aspect ratio, "contentfill" makes it cover the view, and both together crop it.
+	// Without either of them the image keeps its own size in the center of the view.
+	bool contentFit = style.isCustomStyle (Styles::kImageViewAppearanceContentFit);
+	bool contentFill = style.isCustomStyle (Styles::kImageViewAppearanceContentFill);
+
+	#if LEGACY_STYLES_SUPPORTED
+	BEGIN_LEGACY_STYLES_ENABLED_BLOCK
+	bool lightAdaptImage = vs.getMetric<bool> (LegacyStyleID::kLightAdaptImage, false);
+	if(lightAdaptImage || vs.getMetric<bool> (LegacyStyleID::kColorizeImage, false))
 	{
-		// compatibility check:
-		if(imageColor != Colors::kTransparentBlack)
+		if(Image* image = unknown_cast<Image> (background))
 		{
-			useModifiedImage = true;
-		}
-		else if(fillBackColor == Colors::kTransparentBlack)
-		{
-			if(UnknownPtr<IColorParam> colorParam = selectParam)
-				useModifiedImage = true;
+			image->setIsTemplate (!lightAdaptImage); // "lightadapt.image" wins
+			image->setIsAdaptive (lightAdaptImage);
 		}
 	}
-	
+
+	if(style.isCustomStyle (Styles::kImageViewAppearanceFitImageLegacy))
+	{
+		bool allowStretch = style.isCustomStyle (Styles::kImageViewAppearanceAllowStretchLegacy);
+		contentFit = true;
+		contentFill = style.isCustomStyle (Styles::kImageViewAppearanceAllowZoomLegacy) && !allowStretch;
+		growImageAllowed = contentFill || allowStretch;
+	}
+	else if(style.isCustomStyle (Styles::kImageViewAppearanceCenterImageLegacy))
+	{
+		contentFit = false;
+		contentFill = false;
+	}
+	else if(!contentFit && !contentFill)
+		contentFill = true;
+	END_LEGACY_STYLES_ENABLED_BLOCK
+	#endif // LEGACY_STYLES_SUPPORTED
+
+	backgroundAtom.isContentFit (contentFit);
+	backgroundAtom.isContentFill (contentFill);
+	backgroundAtom.setImageInterpolation (style.isCustomStyle (Styles::kImageViewAppearanceHighQuality) ?
+										  kImageInterpolationHighQuality : kImageInterpolationDefault);
+
 	initialized = true;
 }
 
+//////////////////////////////////////////////////////////////////////////////////////////////////
+#if LEGACY_STYLES_SUPPORTED
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+void ImageView::applyLegacyVisualStyle ()
+{
+	const IVisualStyle& vs = getVisualStyle ();
+
+	if(IImage* legacyBackground = vs.getBackgroundImage ())
+		backgroundAtom.setImage (unknown_cast<Image> (legacyBackground));
+
+	Color atomColor = backgroundAtom.getBrush ().getColor (); // "background.color"
+
+	RenderAtom::ColorContrastHelper& contrastHelper = backgroundAtom.getColorContrastHelper ();
+	Color alphaBlendColor = vs.getColor (LegacyStyleID::kImageColorAlphaBlend, vs.getColor (LegacyStyleID::kColorAlphaBlend, Colors::kTransparentBlack));
+	if(alphaBlendColor.isVisible ())
+		contrastHelper.setContrastColorAlphaBlend (alphaBlendColor);
+
+	Color baseImageColor (alphaBlendColor);
+	bool hasLegacyImageColor = vs.getColor (baseImageColor, LegacyStyleID::kImageColor) || alphaBlendColor.isVisible ();
+	if(!hasLegacyImageColor)
+		baseImageColor = atomColor;
+
+	imageColor = baseImageColor;
+	if(isSelected ())
+		vs.getColor (imageColor, LegacyStyleID::kImageColorOn);
+
+	contextColor = vs.getColor (LegacyStyleID::kImageColorContext, vs.getColor (LegacyStyleID::kContextColor, atomColor));
+
+	contrastHelper.setContrastColorBright (vs.getColor (LegacyStyleID::kImageColorBright, contrastHelper.getContrastColorBright ()));
+
+	// the dark and the transparent contrast color follow "imagecolor"
+	if(hasLegacyImageColor)
+		contrastHelper.setContrastColorDark (baseImageColor);
+
+	Color transparentColor (baseImageColor);
+	if(vs.getColor (transparentColor, LegacyStyleID::kImageColorTransparent) || hasLegacyImageColor)
+		contrastHelper.setContrastColorTransparent (transparentColor);
+
+	contrastHelper.setBrightColorThreshold (vs.getMetric<float> (LegacyStyleID::kImageColorThreshold, contrastHelper.getBrightColorThreshold ()));
+
+	modifiedImageAllowed = baseImageColor != Colors::kTransparentBlack;
+	if(!modifiedImageAllowed && vs.getColor (StyleID::kBackColor, Colors::kTransparentBlack) == Colors::kTransparentBlack)
+		modifiedImageAllowed = UnknownPtr<IColorParam> (selectParam).isValid ();
+
+	useModifiedImage = style.isCustomStyle (Styles::kImageViewAppearanceColorize) && modifiedImageAllowed;
+	if(vs.getMetric<bool> (LegacyStyleID::kColorizeImage, false) || vs.getMetric<bool> (LegacyStyleID::kLightAdaptImage, false))
+		useModifiedImage = modifiedImageAllowed;
+
+	backgroundAtom.setScale (vs.getMetric<float> (LegacyStyleID::kImageFillFactor, backgroundAtom.getScale ()));
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+#endif // LEGACY_STYLES_SUPPORTED
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 void ImageView::onVisualStyleChanged ()
@@ -554,20 +655,13 @@ IGraphicsLayerContent::LayerHint CCL_API ImageView::getLayerHint () const
 {
 	if(isEmpty () && !background)
 	{
-		if(!style.isCustomStyle (Styles::kImageViewAppearanceColorize))
-			return kGraphicsContentEmpty;
-			
-		if(selectParam && selectParam->getValue ())
-		{
-			if(getVisualStyle ().getForeColor ().isTranslucent ())
-				return kGraphicsContentTranslucent;
-		}
-		else
-		{
-			if(getVisualStyle ().getBackColor ().isTranslucent ())
-				return kGraphicsContentTranslucent;			
-		}
-		return kGraphicsContentOpaque;
+		// Until draw () has read the style again (see onVisualStyleChanged ()), what it draws is not known yet.
+		// An empty layer would not be drawn at all, so the style would never be read.
+		if(!initialized)
+			return kGraphicsContentTranslucent;
+
+		// the brush draw () fills the view with - the atom can still leave parts uncovered (radius, opacity, scale)
+		return getFillBrush ().isVisible () ? kGraphicsContentTranslucent : kGraphicsContentEmpty;
 	}
 	return kGraphicsContentHintDefault;
 }
@@ -585,78 +679,62 @@ void ImageView::draw (const UpdateRgn& updateRgn)
 	if(initialized == false)
 		initialize ();
 
-	if(background)
+	Image* image = unknown_cast<Image> (background);
+	backgroundAtom.setImage (image);
+
+	// The atom brush is "background.color" (an animation of it changes the brush directly), draw () only
+	// borrows the atom for the brush it actually draws with and gives it back afterwards.
+	Brush styleBrush (backgroundAtom.getBrush ());
+
+	// The atom color colorizes a template or an adaptive image (via the ModifiedImageCache in
+	// RenderAtom::draw ()). Without an image it would fill the whole view, which only "colorize" asks for.
+	Brush brush (image ? SolidBrush (getImageColor ()) : getFillBrush ());
+	backgroundAtom.setBrush (brush);
+
+	if(image || brush.isVisible ())
 	{
-		GraphicsPort port (this);
-		Rect src (0, 0, background->getWidth (), background->getHeight ());
+		if(image)
+			backgroundAtom.setImageFrame (frame);
+
 		Rect dst;
 		getClientRect (dst);
-		
-		ModeSelector selector (*this);
-		
-		IImage* modifiedBackground = background;
-		
-		if(style.isCustomStyle (Styles::kImageViewAppearanceFitImage))
+		RectF dstF (rectIntToF (dst));
+
+		#if LEGACY_STYLES_SUPPORTED
+		BEGIN_LEGACY_STYLES_ENABLED_BLOCK
+		if(image && !growImageAllowed && backgroundAtom.isContentFit ())
 		{
-			int flags = 0;
-			if(style.isCustomStyle (Styles::kImageViewAppearanceAllowStretch))
-				flags = ImageResolutionSelector::kAllowStretch;
-			else if(style.isCustomStyle (Styles::kImageViewAppearanceAllowZoom))
-				flags = ImageResolutionSelector::kAllowZoom;
-			
-			Image* drawable = unknown_cast<Image> (background);
-			
-			ImageResolutionSelector s (drawable, dst, flags, frame);
-			modifiedBackground = s.bestImage;
-			src = s.srcRect;
-			dst = s.dstRect;
-			
-			Point imageSize (src.getWidth (), src.getHeight ());
-			Point imagePos;
-						
-			if(imageFillSize > 0)
+			// if the image is not allowed to grow but the content size is larger than the image in both dimensions,
+			// set the atom size to the image size so that it can't grow
+			RectF imageSize (image->getSizeF ());
+			CoordF xSpace = dstF.getWidth () - imageSize.getWidth ();
+			CoordF ySpace = dstF.getHeight () - imageSize.getHeight ();
+			if(xSpace > 0.f && ySpace > 0.f)
 			{
-				float imageResize = imageFillSize * ccl_min (dst.getHeight (), dst.getWidth ());
-				float resizeRatio = (imageResize > 0.f) ? (imageResize / ccl_max (imageSize.x, imageSize.y)) : 1;
-				imageSize *= resizeRatio;
-				imagePos = dst.getLeftTop () + ((dst.getSize () - imageSize) * .5f);
-			
-				dst.setSize (imageSize);
-				dst.moveTo (imagePos);
+				dstF.setWidth (dstF.getWidth () - xSpace);
+				dstF.setHeight (dstF.getHeight () - ySpace);
+				dstF.offset (xSpace / 2.f, ySpace / 2.f);
 			}
 		}
-		else if(style.isCustomStyle (Styles::kImageViewAppearanceCenterImage))
-		{
-			modifiedBackground->setCurrentFrame (frame);
-			Point imageSize (modifiedBackground->getWidth (), modifiedBackground->getHeight ());
-			dst.moveTo (dst.getLeftTop () + ((dst.getSize () - imageSize) * .5f));
-			dst.setSize (imageSize);
-		}
-		else
-			background->setCurrentFrame (frame);
-		
-		if(modifiedBackground)
-		{
-			Color color;
-			if(hasModifyBackgroundColor (color))
-				modifiedBackground = ModifiedImageCache::instance ().lookup (modifiedBackground, color, drawAsTemplate);
-			
-			port.drawImage (modifiedBackground, src, dst, selector.modePtr);
-		}
-	}
-	else 
-	{
-		if(style.isCustomStyle (Styles::kImageViewAppearanceColorize) && !useModifiedImage)
-		{
-			GraphicsPort port (this);
-			if(selectParam && selectParam->getValue ())
-				port.fillRect (updateRgn.bounds, getVisualStyle ().getForeBrush ());
-			else
-				port.fillRect (updateRgn.bounds, getVisualStyle ().getBackBrush ());
-		}
+		END_LEGACY_STYLES_ENABLED_BLOCK
+		#endif // LEGACY_STYLES_SUPPORTED
+
+		backgroundAtom.setSize (dstF);
+
+		GraphicsPort port (this);
+		backgroundAtom.draw (port, updateRgn);
 	}
 
+	backgroundAtom.setBrush (styleBrush);
+
 	SuperClass::draw (updateRgn);
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+void ImageView::invalidate (const RenderAtom& atom)
+{
+	invalidate (rectFToEnclosingInt (atom.getSize ()));
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -668,50 +746,72 @@ tbool CCL_API ImageView::canDrawControlBackground () const
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool ImageView::hasModifyBackgroundColor (Color& color) const
+Color ImageView::getImageColor ()
 {
-	if(Image* drawable = unknown_cast<Image> (background))
+	#if LEGACY_STYLES_SUPPORTED
+	BEGIN_LEGACY_STYLES_ENABLED_BLOCK
+	// "imagecolor" needed the "colorize" option - an adaptive image was colorized without it
+	// (adaptive="true" at the resource, formerly the "lightadapt.image" metric)
+	Image* image = unknown_cast<Image> (background);
+	if(!useModifiedImage && !(modifiedImageAllowed && image && image->getIsAdaptive ()))
+		return contextColor;
+	END_LEGACY_STYLES_ENABLED_BLOCK
+	#endif
+
+	// a color parameter provides the color, kept readable on a dark background by the contrast colors
+	if(UnknownPtr<IColorParam> colorParam = selectParam)
 	{
-		if(useModifiedImage)
+		Color colorParamColor;
+		colorParam->getColor (colorParamColor);
+		return backgroundAtom.getColorContrastHelper ().getForegroundColor (colorParamColor);
+	}
+
+	#if LEGACY_STYLES_SUPPORTED
+	BEGIN_LEGACY_STYLES_ENABLED_BLOCK
+	return imageColor; // "imagecolor" / "imagecolor.on", falling back to the atom color
+	END_LEGACY_STYLES_ENABLED_BLOCK
+	#endif
+
+	return backgroundAtom.getBrush ().getColor ();
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+Brush ImageView::getFillBrush () const
+{
+	// Without an image the atom color fills the view, it colorizes an image otherwise.
+	if(!style.isCustomStyle (Styles::kImageViewAppearanceColorize))
+		return SolidBrush (Colors::kTransparentBlack);
+
+	#if LEGACY_STYLES_SUPPORTED
+	BEGIN_LEGACY_STYLES_ENABLED_BLOCK
+	// "backcolor" (or "forecolor" when the select parameter is on) used to fill the view - but only
+	// when its color is not meant for an image: a view that takes its image from a provider must not
+	// show a color while that image is missing, and neither must one that colorizes its image.
+	if(imageProvider == nullptr && !useModifiedImage)
+	{
+		const IVisualStyle& vs = getVisualStyle ();
+		CStringPtr colorName = StyleID::kBackColor;
+		if(isSelected ())
+			colorName = StyleID::kForeColor;
+
+		Color legacyColor;
+		bool hasLegacyColor = vs.getGradient (colorName) || vs.getColor (legacyColor, colorName);
+		if(hasLegacyColor || !backgroundAtom.getBrush ().isVisible ())
 		{
-			if(UnknownPtr<IColorParam> colorParam = selectParam)
-			{
-				colorParam->getColor (color);
-			
-				if(color.getAlphaF () == 0)
-				{
-					color = imageContrastTransparentColor;
-				}
-				else if(imageContrastBrightColor != Colors::kTransparentBlack)
-				{
-					if(color.getLuminance () < brightColorThreshold)
-						color = imageContrastBrightColor;
-					else
-						color = imageColor;
-				}
-				else if(alphaBlendColor.getAlphaF () != 0)
-				{
-					color.alphaBlend (alphaBlendColor, alphaBlendColor.getAlphaF ());
-				}
-			}
-			else
-			{
-				bool isOn = selectParam ? selectParam->getValue ().asBool () : false;
-				color = isOn ? imageColorOn : imageColor;
-			}
-			
-			return true;
-		}
-		else
-		{
-			color = imageContextColor;
-			if(color.getAlphaF () > 0)
-				if(drawable->getIsAdaptive () || drawable->getIsTemplate ())
-					return true;
+			if(isSelected ())
+				return vs.getForeBrush ();
+
+			return vs.getBackBrush ();
 		}
 	}
-		
-	return false;
+	END_LEGACY_STYLES_ENABLED_BLOCK
+	#endif
+
+	if(backgroundAtom.getBrush ().isVisible ())
+		return backgroundAtom.getBrush ();
+
+	return SolidBrush (Colors::kTransparentBlack);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -738,10 +838,11 @@ void CCL_API ImageView::drawControlBackground (IGraphics& graphics, RectRef src,
 			graphics.drawImage (background, src, dst, selector.modePtr);
 		}
 	}
-	else 
+	else
 	{
-		if(style.isCustomStyle (Styles::kImageViewAppearanceColorize))
-			graphics.fillRect (dst, getVisualStyle ().getBackBrush ());
+		Brush fillBrush (getFillBrush ());
+		if(fillBrush.isVisible ())
+			graphics.fillRect (dst, fillBrush);
 	}
 }
 	
@@ -753,6 +854,8 @@ void CCL_API ImageView::notify (ISubject* s, MessageRef msg)
 	{
 		if(selectParam && isEqualUnknown (selectParam, s))
 		{
+			if(initialized)
+				updateAtomStyle (); // the "on" style condition follows the select parameter
 			determineFrameIndex ();
 			if(backgroundLayer)
 			{
@@ -919,7 +1022,7 @@ tbool CCL_API ImageView::getProperty (Variant& var, MemberID propertyId) const
 		var = background;
 		return true;
 	}
-	if(propertyId == "dataTarget")
+	if(propertyId == kImageViewDataTarget)
 	{
 		var = dataTarget;
 		return true;
@@ -937,7 +1040,7 @@ tbool CCL_API ImageView::setProperty (MemberID propertyId, const Variant& var)
 		setBackground (image);
 		return true;
 	}
-	if(propertyId == "frame")
+	if(propertyId == kImageViewFrame)
 	{
 		frame = var.asInt ();
 		invalidate ();

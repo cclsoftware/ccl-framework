@@ -511,7 +511,7 @@ IAsyncOperation* ExtensionManagerPackageSource::checkUpdatesAsync (const Contain
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void CCL_API ExtensionManagerPackageSource::notify (CCL::ISubject* subject, CCL::MessageRef msg)
+void CCL_API ExtensionManagerPackageSource::notify (ISubject* subject, MessageRef msg)
 {
 	if(msg == Signals::kExtensionInstalled)
 	{

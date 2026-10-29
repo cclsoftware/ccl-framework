@@ -21,3 +21,14 @@ if (NOT TARGET yoga_library)
 endif ()
 
 set (yoga_LIBRARIES yoga_library)
+
+if (yoga_DIR AND EXISTS "${yoga_DIR}/Yoga.podspec")
+    file (STRINGS "${yoga_DIR}/Yoga.podspec" line REGEX ".*spec.version = '.*'.*")
+	string (REGEX REPLACE ".*spec.version = '(.*)'.*" "\\1" yoga_VERSION "${line}")
+endif ()
+
+include (FindPackageHandleStandardArgs)
+find_package_handle_standard_args (yoga
+	REQUIRED_VARS yoga_LIBRARIES
+	VERSION_VAR yoga_VERSION
+)

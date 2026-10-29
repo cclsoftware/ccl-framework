@@ -51,8 +51,8 @@ class PathList;
 //************************************************************************************************
 
 class DocumentBlocks: public Component,
-					  public CCL::AbstractDocumentEventHandler,
-					  public CCL::IWorkspaceEventHandler,
+					  public AbstractDocumentEventHandler,
+					  public IWorkspaceEventHandler,
 					  public CommandDispatcher<DocumentBlocks>
 {
 public:
@@ -172,7 +172,7 @@ protected:
 	void popupDocumentInfo (const DocumentDescription& description);
 
 	// IDocumentEventHandler
-	void CCL_API onDocumentEvent (CCL::IDocument& document, int eventCode) override;
+	void CCL_API onDocumentEvent (IDocument& document, int eventCode) override;
 	
 	Source* getSourceByID (StringID id) const;
 	void setActiveSource (Source* source);

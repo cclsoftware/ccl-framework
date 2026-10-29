@@ -69,13 +69,17 @@ ccl_list_append_once (cclgui_app_sources
 	${CCL_DIR}/app/paramcontainer.cpp
 	${CCL_DIR}/app/paramcontainer.h
 	${CCL_DIR}/app/params.cpp
+	${CCL_DIR}/app/paramcurve.cpp
 	${CCL_DIR}/app/params.h
+	${CCL_DIR}/app/paramcurve.h
 )
 
 ccl_list_append_once (cclgui_public_headers
 	${CCL_DIR}/public/gui/appanalytics.h
 	${CCL_DIR}/public/gui/commanddispatch.h
 	${CCL_DIR}/public/gui/paramlist.h
+	${CCL_DIR}/public/gui/paramtypes.h
+	${CCL_DIR}/public/gui/paramdefinition.h
 	${CCL_DIR}/public/gui/iapplication.h
 	${CCL_DIR}/public/gui/icommandhandler.h
 	${CCL_DIR}/public/gui/icontextmenu.h
@@ -83,7 +87,10 @@ ccl_list_append_once (cclgui_public_headers
 	${CCL_DIR}/public/gui/idatatarget.h
 	${CCL_DIR}/public/gui/inavigator.h
 	${CCL_DIR}/public/gui/iparameter.h
+	${CCL_DIR}/public/gui/iparamcurve.h
+	${CCL_DIR}/public/gui/iparamidentity.h
 	${CCL_DIR}/public/gui/iparamobserver.h
+	${CCL_DIR}/public/gui/iparamprovider.h
 	${CCL_DIR}/public/gui/ipluginview.h
 	${CCL_DIR}/public/gui/iuseroption.h
 	${CCL_DIR}/public/gui/iviewfactory.h
@@ -164,6 +171,7 @@ ccl_list_append_once (cclgui_public_headers
 	${CCL_DIR}/public/gui/framework/popupselectorclient.h
 	${CCL_DIR}/public/gui/framework/skinxmldefs.h
 	${CCL_DIR}/public/gui/framework/styleflags.h
+	${CCL_DIR}/public/gui/framework/styleids.h
 	${CCL_DIR}/public/gui/framework/themeelements.h
 	${CCL_DIR}/public/gui/framework/usercontrolbase.h
 	${CCL_DIR}/public/gui/framework/usertooltip.h
@@ -225,6 +233,7 @@ ccl_list_append_once (cclgui_generated_headers
 
 ccl_list_append_once (cclgui_public_source_files
 	${CCL_DIR}/public/gui/commanddispatch.cpp
+	${CCL_DIR}/public/gui/paramdefinition.cpp
 	${CCL_DIR}/public/gui/paramlist.cpp
 	
 	${CCL_DIR}/public/gui/framework/controlscalepainter.cpp
@@ -318,6 +327,8 @@ ccl_list_append_once (cclgui_source_files
 	${CCL_DIR}/gui/controls/textbox.h
 	${CCL_DIR}/gui/controls/texteditor.cpp
 	${CCL_DIR}/gui/controls/texteditor.h
+	${CCL_DIR}/gui/controls/textmodel.cpp
+	${CCL_DIR}/gui/controls/textmodel.h
 	${CCL_DIR}/gui/controls/updownbox.cpp
 	${CCL_DIR}/gui/controls/updownbox.h
 	${CCL_DIR}/gui/controls/usercontrolhost.cpp
@@ -431,6 +442,7 @@ ccl_list_append_once (cclgui_source_files
 	${CCL_DIR}/gui/guihelper.cpp
 	${CCL_DIR}/gui/guihelper.h
 	${CCL_DIR}/gui/guiservices.cpp
+	${CCL_DIR}/gui/guitypelib.h
 	${CCL_DIR}/gui/guistubs.cpp
 
 	${CCL_DIR}/gui/help/documentviewer.cpp
@@ -578,14 +590,16 @@ ccl_list_append_once (cclgui_source_files
 	${CCL_DIR}/gui/system/accessibility.h
 	${CCL_DIR}/gui/system/animation.cpp
 	${CCL_DIR}/gui/system/animation.h
-	${CCL_DIR}/gui/system/autofill.h
 	${CCL_DIR}/gui/system/autofill.cpp
+	${CCL_DIR}/gui/system/autofill.h
 	${CCL_DIR}/gui/system/clipboard.cpp
 	${CCL_DIR}/gui/system/clipboard.h
 	${CCL_DIR}/gui/system/dragndrop.cpp
 	${CCL_DIR}/gui/system/dragndrop.h
 	${CCL_DIR}/gui/system/fontresource.cpp
 	${CCL_DIR}/gui/system/fontresource.h
+	${CCL_DIR}/gui/system/inputmethod.cpp
+	${CCL_DIR}/gui/system/inputmethod.h
 	${CCL_DIR}/gui/system/mousecursor.cpp
 	${CCL_DIR}/gui/system/mousecursor.h
 	${CCL_DIR}/gui/system/notifyicon.cpp
@@ -603,9 +617,12 @@ ccl_list_append_once (cclgui_source_files
 	${CCL_DIR}/gui/test/flexboxtest.cpp
 	${CCL_DIR}/gui/test/layouttest.cpp
 
+	${CCL_DIR}/gui/theme/atomrenderer.cpp
+	${CCL_DIR}/gui/theme/atomrenderer.h
 	${CCL_DIR}/gui/theme/colorreference.h
 	${CCL_DIR}/gui/theme/colorscheme.cpp
 	${CCL_DIR}/gui/theme/colorscheme.h
+	${CCL_DIR}/gui/theme/legacystyleids.h
 	${CCL_DIR}/gui/theme/palette.cpp
 	${CCL_DIR}/gui/theme/palette.h
 	${CCL_DIR}/gui/theme/renderatom.cpp
@@ -615,6 +632,8 @@ ccl_list_append_once (cclgui_source_files
 	${CCL_DIR}/gui/theme/themerenderer.h
 	${CCL_DIR}/gui/theme/renderer/backgroundrenderer.cpp
 	${CCL_DIR}/gui/theme/renderer/backgroundrenderer.h
+	${CCL_DIR}/gui/theme/renderer/bivrenderer.cpp
+	${CCL_DIR}/gui/theme/renderer/bivrenderer.h
 	${CCL_DIR}/gui/theme/renderer/buttonrenderer.cpp
 	${CCL_DIR}/gui/theme/renderer/buttonrenderer.h
 	${CCL_DIR}/gui/theme/renderer/comboboxrenderer.cpp
@@ -754,9 +773,12 @@ if (CCL_ISOLATION_POSTFIX)
 	string (APPEND cclgui ".${CCL_ISOLATION_POSTFIX}")
 endif ()
 
+option (CCLGUI_ENABLE_LEGACY_STYLE_SUPPORT "Enable support for legacy visual style identifiers in renderers" OFF)
+
 # Add targets
 ccl_read_version (${cclgui} "${CCL_VERSION_FILE}" "CCLGUI")
 if (NOT TARGET ${cclgui})
+
 	if (${CCL_STATIC_ONLY})
 		ccl_add_library (cclgui INTERFACE POSTFIX "${CCL_ISOLATION_POSTFIX}")
 	else ()
@@ -777,9 +799,14 @@ if (NOT TARGET ${cclgui})
 		target_sources (${cclgui} PRIVATE ${cclgui_sources} ${CMAKE_CURRENT_LIST_FILE})
 		ccl_target_headers (${cclgui} INSTALL ${CCL_SYSTEM_INSTALL} DESTINATION ${CCL_PUBLIC_HEADERS_DESTINATION} BASE_DIRS ${CCL_DIR} FILES ${cclgui_public_headers} ${cclgui_generated_headers})
 
-		target_link_libraries (${cclgui} PUBLIC ${cclbase} ${cclsystem} ${ccltext} PRIVATE ${webp_LIBRARIES} ${yoga_LIBRARIES})
+		target_link_libraries (${cclgui} PUBLIC ${cclbase} ${cclsystem} ${ccltext})
+		target_link_libraries (${cclgui} PRIVATE ${yoga_LIBRARIES} ${webp_LIBRARIES})
+		
 		target_include_directories (${cclgui} INTERFACE "$<INSTALL_INTERFACE:${VENDOR_PUBLIC_HEADERS_DESTINATION}>")
 		target_compile_definitions (${cclgui} PUBLIC "CCLGUI_AVAILABLE=1")
+		if (CCLGUI_ENABLE_LEGACY_STYLE_SUPPORT)
+			target_compile_definitions (${cclgui} PRIVATE "CCLGUI_LEGACY_STYLES_SUPPORTED=1")
+		endif ()
 		
 		ccl_export_symbols (${cclgui} ${cclgui_exports})
 		
@@ -813,6 +840,9 @@ elseif (NOT XCODE)
 endif ()
 
 ccl_list_append_once (CCL_STATIC_COMPILE_DEFINITIONS CCL_STATIC_ENABLE_GUI=1)
+if (CCLGUI_ENABLE_LEGACY_STYLE_SUPPORT)
+	ccl_list_append_once (CCL_STATIC_COMPILE_DEFINITIONS CCLGUI_LEGACY_STYLES_SUPPORTED=1)
+endif ()
 
 if (VENDOR_APPLICATION_RUNTIME_DIRECTORY AND NOT CCL_SYSTEM_INSTALL)
 	ccl_install_imported (${cclgui} LIBRARY DESTINATION "${VENDOR_APPLICATION_RUNTIME_DIRECTORY}"

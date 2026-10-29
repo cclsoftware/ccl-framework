@@ -74,6 +74,7 @@ void NodeAddon::shutdown ()
 	auto& root = RootComponent::instance ();
 	root.unloadStrings ();
 	root.unloadTheme ();
+	root.terminate ();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

@@ -116,7 +116,7 @@ public:
 
 	// TutorialViewer
 	IAsyncOperation* runAsync () override;
-	CCL::tbool CCL_API getProperty (CCL::Variant& var, MemberID propertyId) const override;
+	tbool CCL_API getProperty (Variant& var, MemberID propertyId) const override;
 
 protected:
 	enum ExtendedParamTags

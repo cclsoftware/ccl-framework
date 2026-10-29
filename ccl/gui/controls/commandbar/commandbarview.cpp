@@ -484,10 +484,11 @@ tbool CCL_API CommandBarView::MenuEditor::openItem (ItemIndexRef index, int colu
 			editStyle->setOptions (StyleID::kTextAlign, Alignment::kLeftCenter);
 
 			Rect rect (info.rect);
-			rect.left += editStyle->getMetric<Coord> ("itemInset", 0) * depth;
+			rect.left = 0;
 			EditBox* editBox = NEW EditBox (rect);
-			StyleModifier (*editBox).setCommonStyle (Styles::kTransparent);
-			editBox->setVisualStyle (editStyle);			
+			Coord paddingLeft = info.rect.left + (editStyle->getMetric<Coord> ("itemInset", 0) * depth);
+			editStyle->setMetric (StyleID::kPaddingLeft, paddingLeft);
+			editBox->setVisualStyle (editStyle);
 
 			IParameter* nameParam = editBox->getParameter ();
 			nameParam->setName (MutableCString (item->getID ()));
@@ -957,7 +958,7 @@ CommandBarView::Builder::Builder (CommandBarView* commandBarView)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-tresult CCL_API CommandBarView::Builder::queryInterface (CCL::UIDRef iid, void** ptr)
+tresult CCL_API CommandBarView::Builder::queryInterface (UIDRef iid, void** ptr)
 {
 	QUERY_INTERFACE (IController)
 	QUERY_INTERFACE (ICommandHandler)
@@ -1269,8 +1270,6 @@ void CommandBarView::Builder::buildMenu (IMenu& menu, CommandBar::MenuGroupItem&
 {
 	menu.setMenuAttribute (IMenu::kMenuData, groupItem.asUnknown ());
 
-	UnknownPtr<IController> controller (commandBarView->getController ());
-
 	for(int i = 0, num = groupItem.countChilds (); i < num; i++)
 	{
 		CommandBar::Item* item = groupItem.getChild (i);
@@ -1280,17 +1279,9 @@ void CommandBarView::Builder::buildMenu (IMenu& menu, CommandBar::MenuGroupItem&
 			if(title.isEmpty ())
 				title = " ";
 
-			MutableCString cmdCategory (button->getCommandCategory ());
-			MutableCString cmdName (button->getCommandName ());
-			if(button->isExternalTarget () && controller)
-			{
-				// parameter of controller
-				if(UnknownPtr<ICommandParameter> param = controller->findParameter (button->getCommandName ()))
-				{
-					cmdCategory = param->getCommandCategory ();
-					cmdName = param->getCommandName ();
-				}
-			}		
+			MutableCString cmdCategory;
+			MutableCString cmdName;
+			commandBarView->getItemCommand (cmdCategory, cmdName, *button);
 
 			IMenuItem* menuItem = menu.addCommandItem (title, cmdCategory, cmdName, this);
 			menuItem->setItemAttribute (IMenuItem::kItemData, button->asUnknown ());
@@ -1905,13 +1896,34 @@ void CommandBarView::attached (View* parent)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
+void CommandBarView::getItemCommand (MutableCString& category, MutableCString& name, const CommandBar::ButtonItem& item) const
+{
+	category = item.getCommandCategory ();
+	name = item.getCommandName ();
+
+	if(item.isExternalTarget ())
+	{
+		// an external target has an empty category, use the category from of a corresponding command parameter instead
+		if(UnknownPtr<IController> controller = getController ())
+		{
+			UnknownPtr<ICommandParameter> param = controller->findParameter (item.getCommandName ());
+			if(param)
+			{
+				category = param->getCommandCategory ();
+				name = param->getCommandName ();
+			}
+		}
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
 bool CommandBarView::runCommandSelector (CommandBar::ButtonItem& item)
 {
 	AutoPtr<CommandSelector> selector = NEW CommandSelector ();
 
 	CommandDescription description;
-	description.category = item.getCommandCategory ();
-	description.name = item.getCommandName ();
+	getItemCommand (description.category, description.name, item);
 
 	if(selector->run (description) == kResultOk)
 	{

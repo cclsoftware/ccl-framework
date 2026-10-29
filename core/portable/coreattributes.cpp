@@ -299,7 +299,7 @@ Attribute* AttributeBufferAllocator::allocateAttribute (AttrID id, int flags)
 	{
 		// fall back to heap allocation (slow)
 		#if DEBUG
-		Core::DebugPrintf ("BufferAttributeAllocator: capacity %d exceeded!\n", capacity);
+		DebugPrintf ("BufferAttributeAllocator: capacity %d exceeded!\n", capacity);
 		#endif
 		return NEW Attribute (id, flags);
 	}

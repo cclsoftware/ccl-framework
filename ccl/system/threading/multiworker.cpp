@@ -46,8 +46,8 @@ public:
 
 private:
 	MultiWorker* master;
-	CCL::Threading::IThread* thread;
-	CCL::Threading::Signal workSignal;
+	Threading::IThread* thread;
+	Threading::Signal workSignal;
 	int cpuIndex;
 	ThreadPriority priority;
 
@@ -55,7 +55,8 @@ private:
 	static int CCL_API entry (void* param);
 };
 
-}}
+} // namespace Threading
+} // namespace CCL
 
 using namespace CCL;
 using namespace Threading;

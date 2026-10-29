@@ -53,12 +53,12 @@ DEFINE_STRINGID (kJavaScript, "application/javascript")
 
 struct CodePiece
 {
-	const uchar* code;		///< the actual script code
+	UStringPtr code;		///< the actual script code
 	int length;				///< length in characters
 	String fileName;		///< filename for debugging
 	int lineNumber;			///< line number for debugging
 
-	CodePiece (const uchar* code = nullptr, unsigned int length = 0,
+	CodePiece (UStringPtr code = nullptr, unsigned int length = 0,
 			   StringRef fileName = nullptr, int lineNumber = 0)
 	: code (code),
 	  length (length),
@@ -125,7 +125,7 @@ interface IContext: IUnknown
 	virtual IObject* CCL_API createObject (CStringRef className, const Variant args[] = nullptr, int argCount = 0) = 0;
 
 	/** Register object method as global function. */
-	virtual tresult CCL_API registerGlobalFunction (CStringRef methodName, CCL::IObject* nativeObject) = 0;
+	virtual tresult CCL_API registerGlobalFunction (CStringRef methodName, IObject* nativeObject) = 0;
 
 	/** Execute script directly. */
 	virtual tresult CCL_API executeScript (Variant& returnValue, const IScript& script) = 0;
@@ -163,13 +163,13 @@ DEFINE_STRINGID_MEMBER (IContext, kLogMemoryAllocations, "logMallocs")
 interface IStringValue: IUnknown
 {
 	/** Get string data as uchar. */
-	virtual const uchar* CCL_API getUCharData () const = 0;
+	virtual UStringPtr CCL_API getUCharData () const = 0;
 
 	/** Get string length. */
 	virtual int CCL_API getLength () const = 0;
 
 	/** Get string data as char. */
-	virtual const char* CCL_API getCharData () const = 0;
+	virtual CStringPtr CCL_API getCharData () const = 0;
 
 	/** Get character encoding. */
 	virtual TextEncoding CCL_API getEncoding () const = 0;

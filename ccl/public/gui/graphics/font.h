@@ -169,6 +169,9 @@ public:
 	static void measureText (Rect& size, Coord lineWidth, StringRef text, FontRef font, TextFormatRef format = TextFormat (Alignment::kLeftTop, TextFormat::kWordBreak));
 	static void measureText (RectF& size, CoordF lineWidth, StringRef text, FontRef font, TextFormatRef format = TextFormat (Alignment::kLeftTop, TextFormat::kWordBreak));
 
+	/** Get minimum line height to fit all common characters. */
+	static CoordF measureLineHeight (FontRef font);
+
 	/** Trim modes for collapseString(). */
 	enum TrimMode
 	{

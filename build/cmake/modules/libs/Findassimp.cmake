@@ -53,3 +53,14 @@ if (NOT TARGET assimp_library)
 endif ()
 
 set (assimp_LIBRARIES assimp_library)
+
+if (assimp_DIR AND EXISTS "${assimp_DIR}/CMakeLists.txt")
+    file (STRINGS "${assimp_DIR}/CMakeLists.txt" line REGEX ".*Assimp VERSION [0-9\.]+.*")
+	string (REGEX REPLACE ".*Assimp VERSION ([0-9\.]+).*" "\\1" assimp_VERSION "${line}")
+endif ()
+
+include (FindPackageHandleStandardArgs)
+find_package_handle_standard_args (assimp
+	REQUIRED_VARS assimp_LIBRARIES
+	VERSION_VAR assimp_VERSION
+)

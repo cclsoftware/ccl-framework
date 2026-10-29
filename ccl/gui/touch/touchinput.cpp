@@ -58,10 +58,10 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 #if DEBUG_LOG
-static void logGesture (const CCL::GestureEvent& event, CCL::CStringPtr viewName)
+static void logGesture (const GestureEvent& event, CStringPtr viewName)
 {
-	static CCL::GestureEvent lastEvent;
-	static CCL::MutableCString lastViewName;
+	static GestureEvent lastEvent;
+	static MutableCString lastViewName;
 	enum { kMinDist = 8 };
 
 	// swallow same messages when moved inside a tolerance
@@ -72,9 +72,9 @@ static void logGesture (const CCL::GestureEvent& event, CCL::CStringPtr viewName
 		|| ccl_abs (event.amountY - lastEvent.amountY) > 0.001
 		|| lastViewName != viewName)
 	{
-		CCL::MutableCString s;
-		s.appendFormat ("%sonGesture \"%s\" %f, %f", viewName, CCL::Gesture::getGestureName (event.getType () | event.getState ()), event.whereF.x, event.whereF.y);
-		if(event.getType() == CCL::GestureEvent::kZoom || event.getType () == CCL::GestureEvent::kRotate)
+		MutableCString s;
+		s.appendFormat ("%sonGesture \"%s\" %f, %f", viewName, Gesture::getGestureName (event.getType () | event.getState ()), event.whereF.x, event.whereF.y);
+		if(event.getType() == GestureEvent::kZoom || event.getType () == GestureEvent::kRotate)
 			s.appendFormat (" amount: %f, %f", event.amountX, event.amountY);
 
 		CCL_PRINTLN (s.str ())

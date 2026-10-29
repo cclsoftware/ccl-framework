@@ -713,9 +713,59 @@ tresult CCL_API NativeTextLayout::getWordRange (Range& range, int textIndex) con
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-tresult CCL_API NativeTextLayout::getLineRange (Range& range, int textIndex) const
+tresult CCL_API NativeTextLayout::getLineRange (Range& range, int textIndex, tbool includeNewline) const
 {
-	return getExplicitLineRange (range, textIndex);
+	tresult result = getExplicitLineRange (range, textIndex);
+	if(result == kResultOk && includeNewline)
+	{
+		StringRef text = getText ();
+		if(text.length () > range.start + range.length)
+		{
+			uchar character = text.at (range.start + range.length);
+			if(character == '\r')
+				range.length++;
+		}
+		if(text.length () > range.start + range.length)
+		{
+			uchar character = text.at (range.start + range.length);
+			if(character == '\n')
+				range.length++;
+		}
+	}
+	return result;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+void NativeTextLayout::excludeLineBreak (Range& range) const
+{
+	if(range.length <= 0)
+		return;
+
+	StringRef text = getText ();
+	uchar character = text.at (range.start + range.length - 1);
+	if(character == '\n')
+	{
+		range.length--;
+		if(range.length > 0 && text.at (range.start + range.length - 1) == '\r')
+			range.length--;
+	}
+	else if(character == '\r')
+		range.length--;
+
+	// note that trailing whitespace of a wrapped line is not removed here
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+bool NativeTextLayout::isOnTrailingEmptyLine (int textIndex) const
+{
+	StringRef text = getText ();
+	if(textIndex != text.length () || textIndex == 0)
+		return false;
+
+	uchar character = text.at (textIndex - 1);
+	return character == '\n' || character == '\r';
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -744,6 +794,9 @@ tresult NativeTextLayout::getWordOrLineRange (Range& range, RangeMode mode, bool
 
 	auto isSeparator = [mode, tryNonWord, &regExp] (uchar character)
 	{
+		if(character == '\r')
+			return true;
+
 		if(character == '\n')
 			return true;
 
@@ -910,6 +963,14 @@ tresult CCL_API SimpleTextLayout::setSubscript (const Range& range)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
+tresult CCL_API SimpleTextLayout::clearFormatting ()
+{
+	// range formatting is not supported
+	return kResultNotImplemented;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
 tresult CCL_API SimpleTextLayout::getBounds (Rect& bounds) const
 {
 	// provide a very rough estimate of the bounds
@@ -1011,13 +1072,6 @@ tresult CCL_API SimpleTextLayout::getCharacterBounds (RectF& offset, int textInd
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 tresult CCL_API SimpleTextLayout::getTextBounds (IMutableRegion& bounds, const Range& range) const
-{
-	return kResultNotImplemented;
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
-tresult CCL_API SimpleTextLayout::getLineRange (Range& range, int textIndex) const
 {
 	return kResultNotImplemented;
 }

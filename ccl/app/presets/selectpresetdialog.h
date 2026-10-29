@@ -34,7 +34,7 @@ class DialogBox;
 
 class SelectPresetDialog: public Browser
 {
-public:	
+public:
 	DECLARE_CLASS_ABSTRACT (SelectPresetDialog, Browser)
 
 	SelectPresetDialog (IAttributeList* metaInfo, StringRef name, StringRef title = 0);
@@ -47,6 +47,10 @@ public:
 
 	IPreset* runDialog (StringRef title);
 
+	IView* createView ();
+
+	IPreset* getSelectedPreset () const;
+
 protected:
 	FilePreviewComponent* filePreviewComponent;
 	SharedPtr<IPreset> selected;
@@ -55,7 +59,6 @@ protected:
 
 	class PresetInfoComponent;
 
-	IPreset* getSelectedPreset () const;
 	virtual void updateFileInfo ();
 	virtual void extendInfoComponent (Component& infoComponent){}
 

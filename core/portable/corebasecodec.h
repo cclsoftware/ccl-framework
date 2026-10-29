@@ -37,7 +37,7 @@ namespace Portable {
 class Base64Decoder
 {
 public:
-	int decodeBlock (char* outputBuffer, int outputBufferSize, const char inputBuffer[], int inputLength)
+	int decodeBlock (char outputBuffer[], int outputBufferSize, const char inputBuffer[], int inputLength)
 	{
 		ASSERT (outputBufferSize >= inputLength)
 		if(outputBufferSize < inputLength)

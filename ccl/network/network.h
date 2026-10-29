@@ -40,14 +40,17 @@ public:
 	// INetwork
 	tresult CCL_API getLocalHostname (String& hostname) override;
 	tresult CCL_API getLocalIPAddress (IPAddress& address) override;
-	tresult CCL_API getAddressByHost (SocketAddress& address, StringRef hostname) override;
+	tresult CCL_API getAddressByHost (SocketAddress& address, StringRef hostname,
+									  int timeout = kDefaultDnsTimeout, IProgressNotify* progress = nullptr) override;
 	tresult CCL_API getHostByAddress (String& hostname, const SocketAddress& address) override;
 	tresult CCL_API getAddressString (String& string, const SocketAddress& address) override;
 	tresult CCL_API getAddressFromString (SocketAddress& address, StringRef string) override;
 	ISocket* CCL_API createSocket (AddressFamily addressFamily, SocketType type, ProtocolType protocol) override;
-	IStream* CCL_API openStream (const SocketAddress& address, ProtocolType protocol) override;
+	IStream* CCL_API openStream (const SocketAddress& address, ProtocolType protocol,
+								 int timeout = kDefaultConnectTimeout, IProgressNotify* progress = nullptr) override;
 	tresult CCL_API selectSockets (IUnknownList* readList, IUnknownList* writeList, IUnknownList* errorList, int timeout) override;
-	IStream* CCL_API openSSLStream (const IPAddress& address, StringRef peerName, IProgressNotify* progress = nullptr) override;
+	IStream* CCL_API openSSLStream (const IPAddress& address, StringRef peerName,
+									int timeout = kDefaultConnectTimeout, IProgressNotify* progress = nullptr) override;
 
 	CLASS_INTERFACE (INetwork, Unknown)
 };

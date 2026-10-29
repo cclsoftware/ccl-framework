@@ -19,7 +19,7 @@
 #ifndef _ccl_xmlpihandler_h
 #define _ccl_xmlpihandler_h
 
-#include "ccl/public/base/platform.h"
+#include "ccl/public/collections/stack.h"
 
 namespace CCL {
 
@@ -38,15 +38,16 @@ public:
 
 	XmlProcessingInstructionHandler (int processingOptions = 0);
 
-	static const char* getPlatform ();
-	static const char* getPlatformArchitecture ();
-	static const char* getConfiguration (int processingOptions = 0);
+	static CStringPtr getPlatform ();
+	static CStringPtr getPlatformArchitecture ();
+	static CStringPtr getConfiguration (int processingOptions = 0);
 
 	void handleInstruction (StringRef target, StringRef data);
 
 protected:
 	int processingOptions;
 	bool skipping;
+	Stack<bool> skippingStack;
 
 	virtual bool isDefined (StringRef query) const;
 };

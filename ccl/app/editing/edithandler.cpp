@@ -44,6 +44,7 @@ DEFINE_IID_ (IEditHandlerHook, 0x926407db, 0x911c, 0x4a6d, 0x91, 0x28, 0xc9, 0x7
 //************************************************************************************************
 
 DEFINE_CLASS_HIDDEN (EditHandler, UserControl::MouseHandler)
+DEFINE_CLASS_NAMESPACE (EditHandler, NAMESPACE_CCL)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -54,7 +55,6 @@ EditHandler::EditHandler (EditView* view)
   tooltipUsed (false)
 {
 	canEscape (true);
-	view->editHandlerActive (true);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -134,6 +134,8 @@ bool EditHandler::getHelp (IHelpInfoBuilder& helpInfo)
 void EditHandler::onBegin ()
 {
 	SuperClass::onBegin ();
+
+	getEditView ()->editHandlerActive (true);
 
 	if(hook)
 		hook->onBegin (*getEditView ());
@@ -242,13 +244,6 @@ NullEditHandler::NullEditHandler (EditView* view)
   viewHolder (*view)
 {
 	isNullHandler (true);
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
-NullEditHandler::~NullEditHandler ()
-{
-	((EditView*)control)->editHandlerActive (false);
 }
 
 //************************************************************************************************

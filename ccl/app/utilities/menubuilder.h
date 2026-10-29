@@ -24,6 +24,7 @@
 namespace CCL {
 
 interface ITheme;
+interface IParameter;
 
 //************************************************************************************************
 // MenuBuilder
@@ -35,17 +36,21 @@ public:
 	MenuBuilder (IMenu& menu, IUnknown* controller = nullptr);
 
 	IMenu* addSubMenu (StringRef title);
-	void addSubMenuWithView (StringRef title, StringID formName);
-	void addViewItem (StringID formName);
+	IMenuItem* addSubMenuWithView (StringRef title, StringID formName, IAttributeList* arguments = nullptr);
+	IMenuItem* addViewItem (StringID formName, IAttributeList* arguments = nullptr);
 
 	void setItemIcon (IMenuItem* menuItem, StringID iconName);
+	void setItemValueFromParam (IMenuItem* item, IParameter* param, bool closeOnChange);
 
 	IMenu* operator -> () { return &menu; } // enable access to IMenu methods
 
 protected:
+	class ParamMenuItemObserver;
+
 	IMenu& menu;
 	IUnknown* controller;
 
+	void addSubMenuInternal (IMenu*& subMenu, IMenuItem*& subMenuItem, StringRef title);
 	ITheme* getTheme () const;
 };
 

@@ -18,14 +18,13 @@
 
 #include "ccl/extras/web/oauth2.h"
 
+#include "ccl/base/asyncoperation.h"
 #include "ccl/base/storage/attributes.h"
 #include "ccl/base/storage/jsonarchive.h"
-
 #include "ccl/base/security/cryptobox.h"
 #include "ccl/base/security/cryptomaterial.h"
 
 #include "ccl/public/base/datetime.h"
-
 #include "ccl/public/storage/iurl.h"
 #include "ccl/public/text/istringdict.h"
 #include "ccl/public/securityservices.h"
@@ -161,10 +160,8 @@ bool OAuth2Tokens::expiresSoon () const
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool OAuth2Tokens::storeARTokens (StringRef credentialName) const
+String OAuth2Tokens::toCredentialToken () const
 {
-	ASSERT (!credentialName.isEmpty ())
-
 	String password;
 	if(!accessToken.isEmpty ())
 		password = accessToken;
@@ -176,8 +173,57 @@ bool OAuth2Tokens::storeARTokens (StringRef credentialName) const
 			password << kSeparator;
 		password << kSeparator << tokenType;
 	}
+	return password;
+}
 
-	return System::GetCredentialManager ().addPassword (credentialName, kIdentifier, password) == kResultOk;
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+bool OAuth2Tokens::fromCredential (Security::ICredential& credential)
+{
+	String userName;
+	credential.getUserName (userName);
+	if(userName != kIdentifier)
+		return false;
+
+	String password;
+	credential.getPassword (password);
+	int index = password.index (kSeparator);
+	String accessToken = password.subString (0, index);
+	int secondIndex = password.lastIndex (kSeparator);
+	String refreshToken, type;
+	if(secondIndex != index)
+	{
+		refreshToken = password.subString (index + 1, secondIndex - index - 1);
+		type = password.subString (secondIndex + 1);
+	}
+	else
+		refreshToken = password.subString (index + 1);
+
+	if(accessToken.isEmpty () && refreshToken.isEmpty ())
+		return false;
+
+	setAccessToken (accessToken);
+	setRefreshToken (refreshToken);
+	setTokenType (MutableCString (type));
+	return true;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+bool OAuth2Tokens::storeARTokens (StringRef credentialName) const
+{
+	ASSERT (!credentialName.isEmpty ())
+
+	return System::GetCredentialManager ().addPassword (credentialName, kIdentifier, toCredentialToken ()) == kResultOk;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+IAsyncOperation* OAuth2Tokens::storeARTokensAsync (StringRef credentialName) const
+{
+	ASSERT (!credentialName.isEmpty ())
+
+	return System::GetCredentialManager ().addPasswordAsync (credentialName, kIdentifier, toCredentialToken ());
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -191,32 +237,25 @@ bool OAuth2Tokens::restoreARTokens (StringRef credentialName)
 	if(c == nullptr)
 		return false;
 
-	String userName;
-	c->getUserName (userName);
-	if(userName != kIdentifier)
-		return false;
-		
-	String password;
-	c->getPassword (password);
-	int index = password.index (kSeparator);
-	String accessToken = password.subString (0, index);
-	int secondIndex = password.lastIndex (kSeparator);
-	String refreshToken, type;
-	if(secondIndex != index)
-	{
-		refreshToken = password.subString (index + 1, secondIndex - index - 1);
-		type = password.subString (secondIndex + 1);
-	}
-	else
-		refreshToken = password.subString (index + 1);
-	
-	if(accessToken.isEmpty () && refreshToken.isEmpty ())
-		return false;
+	return fromCredential (*c);
+}
 
-	setAccessToken (accessToken);
-	setRefreshToken (refreshToken);
-	setTokenType (MutableCString (type));	
-	return true;
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+IAsyncOperation* OAuth2Tokens::restoreARTokensAsync (StringRef credentialName)
+{
+	ASSERT (!credentialName.isEmpty ())
+
+	OAuth2Tokens* This = this;
+	Promise p (System::GetCredentialManager ().getCredentialAsync (credentialName));
+	return return_shared<IAsyncOperation> (p.modifyState ([This] (const IAsyncOperation& operation)
+	{
+		UnknownPtr<Security::ICredential> c (operation.getResult ().asUnknown ());
+		if(!c.isValid ())
+			return IAsyncInfo::kFailed;
+
+		return This->fromCredential (*c) ? IAsyncInfo::kCompleted : IAsyncInfo::kFailed;
+	}));
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////

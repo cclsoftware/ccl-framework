@@ -141,7 +141,7 @@ protected:
 	void onDialogCompleted (IAsyncOperation&);
 };
 
-DECLARE_VISUALSTYLE_CLASS (DialogBuilder)
+DECLARE_TYPELIB_ENTRY (DialogBuilder)
 
 } // namespace CCL
 

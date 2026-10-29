@@ -40,6 +40,8 @@ DEFINE_STRINGID_MEMBER_ (GLSLShaderReflection, kAttrName, "name")
 DEFINE_STRINGID_MEMBER_ (GLSLShaderReflection, kAttrOffset, "offset")
 DEFINE_STRINGID_MEMBER_ (GLSLShaderReflection, kAttrArray, "array")
 DEFINE_STRINGID_MEMBER_ (GLSLShaderReflection, kAttrArrayStride, "array_stride")
+DEFINE_STRINGID_MEMBER_ (GLSLShaderReflection, kAttrInputs, "inputs")
+DEFINE_STRINGID_MEMBER_ (GLSLShaderReflection, kAttrLocation, "location")
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -148,3 +150,25 @@ void GLSLShaderReflection::getBufferTypeInfos (ObjectArray& bufferTypeInfos, Url
 	}
 };
 
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+void GLSLShaderReflection::getInputs (Vector<GLSLShaderInput>& inputs, UrlRef path)
+{
+	// load reflection info from a json file
+	Url reflectionPath (path);
+	reflectionPath.setFileType (FileTypes::Json ());
+	AutoPtr<IMemoryStream> stream = File::loadBinaryFile (reflectionPath);
+	if(stream)
+	{
+		JsonArchive archive (*stream);
+		Attributes a;
+		if(archive.loadAttributes (nullptr, a))
+		{
+			IterForEach (a.newQueueIterator (kAttrInputs, ccl_typeid<Attributes> ()), Attributes, input)
+				CString name = input->getCString (kAttrName);
+				uint32 location = input->getInt (kAttrLocation);
+				inputs.add ({name, location});
+			EndFor				
+		}
+	}
+}

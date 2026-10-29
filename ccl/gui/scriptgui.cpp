@@ -236,6 +236,14 @@ ScriptComponent::~ScriptComponent ()
 		child->release ();
 	EndFor
 
+	// disconnect script property parameters
+	for(auto* param : scriptPropertyParams)
+	{
+		if(param->getController () == static_cast<IParamObserver*> (this))
+			param->connect (nullptr, 0);
+		param->release ();
+	}
+
 	if(scriptObject)
 		scriptObject->release ();
 }
@@ -339,6 +347,9 @@ IParameter* CCL_API ScriptComponent::findParameter (StringID name) const
 		{
 			int tag = (int)name.getHashCode ();
 			param->connect (This, tag);
+
+			param->retain ();
+			This->scriptPropertyParams.add (param);
 		}
 
 		return param;
@@ -353,7 +364,7 @@ tbool CCL_API ScriptComponent::paramChanged (IParameter* param)
 	FunctionParam* functionParam = unknown_cast<FunctionParam> (param);
 	if(functionParam)
 	{
-		String methodId = (const char*)functionParam->getName ();
+		String methodId = (CStringPtr)functionParam->getName ();
 		while(methodId.lastChar () == '(' || methodId.lastChar () == ')' || methodId.lastChar () == ' ')
 			methodId.remove (methodId.length () - 1, 1);
 
@@ -544,7 +555,7 @@ ICodeResourceLoaderHook* ScriptGUIHost::getHook ()
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 BEGIN_METHOD_NAMES (ScriptGUIHost)
-	DEFINE_METHOD_NAME ("flushUpdates")
+	DEFINE_METHOD_ARGS ("flushUpdates", "wait: bool = true")
 	DEFINE_METHOD_ARGS ("alert", "text")
 	DEFINE_METHOD_ARGS ("ask", "text")
 	DEFINE_METHOD_ARGR ("runDialog", "theme: Object, formName: string, controller: Object = null, buttons: int = 0", "int") // TODO: replace 'Object' with derived types
@@ -663,7 +674,7 @@ tbool CCL_API ScriptGUIHost::invokeMethod (Variant& returnValue, MessageRef msg)
 
 BEGIN_PROPERTY_NAMES (ScriptGUIHost)
 	DEFINE_PROPERTY_NAME ("Constants")
-	DEFINE_PROPERTY_CLASS_ ("Commands", "CommandTable", CCL::ITypeInfo::kReadOnly)
+	DEFINE_PROPERTY_CLASS_ ("Commands", "CommandTable", ITypeInfo::kReadOnly)
 	DEFINE_PROPERTY_NAME ("Themes")
 	DEFINE_PROPERTY_NAME ("Desktop")
 	DEFINE_PROPERTY_NAME ("Help")

@@ -35,8 +35,11 @@ ccl_list_append_once (cclgui_cocoa_sources
 	${CCL_DIR}/platform/cocoa/gui/popoverbackgroundview.ios.mm
 	${CCL_DIR}/platform/cocoa/gui/autofill.ios.h
 	${CCL_DIR}/platform/cocoa/gui/autofill.ios.mm
+	${CCL_DIR}/platform/cocoa/gui/inputmethod.ios.mm
 	${CCL_DIR}/platform/cocoa/iosapp/appdelegate.mm
 	${CCL_DIR}/platform/cocoa/iosapp/appdelegate.h
+	${CCL_DIR}/platform/cocoa/iosapp/scenedelegate.mm
+	${CCL_DIR}/platform/cocoa/iosapp/scenedelegate.h
 	${CCL_DIR}/platform/cocoa/iosapp/appview.mm
 	${CCL_DIR}/platform/cocoa/iosapp/appview.h
 	${CCL_DIR}/platform/cocoa/iosapp/gesturerecognizer.h
@@ -86,6 +89,8 @@ ccl_list_append_once (cclgui_platform_sources
 	${CCL_DIR}/platform/shared/skia/skiadevice.cpp
 	${CCL_DIR}/platform/shared/skia/skiaengine.h
 	${CCL_DIR}/platform/shared/skia/skiaengine.cpp
+	${CCL_DIR}/platform/shared/skia/skiafontmanager.cpp
+	${CCL_DIR}/platform/shared/skia/skiafontmanager.h
 	${CCL_DIR}/platform/shared/skia/skiafonttable.h
 	${CCL_DIR}/platform/shared/skia/skiafonttable.cpp
 	${CCL_DIR}/platform/shared/skia/skiagradient.h

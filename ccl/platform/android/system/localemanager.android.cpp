@@ -63,29 +63,6 @@ protected:
 	void collectGeographicRegions (GeographicRegionList& list) const override;
 };
 
-namespace Android {
-
-//************************************************************************************************
-// java.util.Locale
-//************************************************************************************************
-
-DECLARE_JNI_CLASS (Locale, "java/util/Locale")
-	DECLARE_JNI_STATIC_METHOD (jobject, forLanguageTag, jstring)
-	DECLARE_JNI_STATIC_METHOD (jobjectArray, getAvailableLocales)
-	DECLARE_JNI_STATIC_METHOD (jobject, getDefault)
-	DECLARE_JNI_METHOD (jstring, getCountry)
-	DECLARE_JNI_METHOD (jstring, getDisplayCountry, jobject)
-END_DECLARE_JNI_CLASS (Locale)
-
-DEFINE_JNI_CLASS (Locale)
-	DEFINE_JNI_STATIC_METHOD (forLanguageTag, "(Ljava/lang/String;)Ljava/util/Locale;")
-	DEFINE_JNI_STATIC_METHOD (getAvailableLocales, "()[Ljava/util/Locale;")
-	DEFINE_JNI_STATIC_METHOD (getDefault, "()Ljava/util/Locale;")
-	DEFINE_JNI_METHOD (getCountry, "()Ljava/lang/String;")
-	DEFINE_JNI_METHOD (getDisplayCountry, "(Ljava/util/Locale;)Ljava/lang/String;")
-END_DEFINE_JNI_CLASS
-
-} // namespace Android
 } // namespace CCL
 
 using namespace CCL;

@@ -68,9 +68,9 @@ tresult CCL_API RegularExpression::construct (StringRef string, int options)
 
 	int errorCode = 0;
 	size_t errorOffset = 0;
-	rePartial = pcre2_compile ((PCRE2_SPTR)(const uchar*)StringChars (string), PCRE2_ZERO_TERMINATED, opt, &errorCode, &errorOffset, nullptr);
+	rePartial = pcre2_compile ((PCRE2_SPTR)StringChars (string).str (), PCRE2_ZERO_TERMINATED, opt, &errorCode, &errorOffset, nullptr);
 	if(rePartial)
-		reFull = pcre2_compile ((PCRE2_SPTR)(const uchar*)StringChars (String ("(?:").append (string).append (")\\z")), PCRE2_ZERO_TERMINATED, opt, &errorCode, &errorOffset, nullptr);
+		reFull = pcre2_compile ((PCRE2_SPTR)StringChars (String ("(?:").append (string).append (")\\z")).str (), PCRE2_ZERO_TERMINATED, opt, &errorCode, &errorOffset, nullptr);
 	else
 		return kResultFailed;
 	return kResultOk;
@@ -85,7 +85,7 @@ tbool CCL_API RegularExpression::isFullMatch (StringRef string) const
 		return false;
 
 	pcre2_match_data* matchData = pcre2_match_data_create_from_pattern ((pcre2_code*)reFull, nullptr);
-	int result = pcre2_match ((pcre2_code*)reFull, (PCRE2_SPTR)(const uchar*)StringChars (string), string.length (), 0, 0, matchData, nullptr);
+	int result = pcre2_match ((pcre2_code*)reFull, (PCRE2_SPTR)StringChars (string).str (), string.length (), 0, 0, matchData, nullptr);
 	pcre2_match_data_free (matchData);
 	if(result < 0)
 		return false;
@@ -101,7 +101,7 @@ tbool CCL_API RegularExpression::isPartialMatch (StringRef string) const
 		return false;
 
 	pcre2_match_data* matchData = pcre2_match_data_create_from_pattern ((pcre2_code*)rePartial, nullptr);
-	int result = pcre2_match ((pcre2_code*)rePartial, (PCRE2_SPTR)(const uchar*)StringChars (string), string.length (), 0, 0, matchData, nullptr);
+	int result = pcre2_match ((pcre2_code*)rePartial, (PCRE2_SPTR)StringChars (string).str (), string.length (), 0, 0, matchData, nullptr);
 	pcre2_match_data_free (matchData);
 	if(result < 0)
 		return false;
@@ -145,7 +145,7 @@ bool RegularExpression::replace (String& string, StringRef format, bool all) con
 	pcre2_match_data* matchData = pcre2_match_data_create_from_pattern ((pcre2_code*)rePartial, nullptr);
 	do
 	{
-		int result = pcre2_match ((pcre2_code*)rePartial, (PCRE2_SPTR)(const uchar*)StringChars (string), length, position, 0, matchData, nullptr);
+		int result = pcre2_match ((pcre2_code*)rePartial, (PCRE2_SPTR)StringChars (string).str (), length, position, 0, matchData, nullptr);
 		if(result < -1)
 		{
 			pcre2_match_data_free (matchData);

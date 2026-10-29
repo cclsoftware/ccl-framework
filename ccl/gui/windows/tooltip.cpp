@@ -45,7 +45,20 @@ using namespace CCL;
 
 ComposedTooltip::ComposedTooltip (View* view)
 : String (view->getTooltip ()),
-  view (view)
+  view (view),
+  allowSelfReference (false)
+{
+	resolve (*this);
+
+	trimWhitespace ();
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+ComposedTooltip::ComposedTooltip (View* view, StringRef text)
+: String (text),
+  view (view),
+  allowSelfReference (true)
 {
 	resolve (*this);
 
@@ -151,6 +164,14 @@ String ComposedTooltip::resolveVariable (StringRef identifier, StringRef argumen
 			var.toString (value);
 			return value;
 		}
+	}
+	else if(identifier == "title")
+		return view->getTitle ();
+	else if(identifier == "tooltip")
+	{
+		// avoid recursion for tooltip="@tooltip[]"
+		if(allowSelfReference)
+			return ComposedTooltip (view);
 	}
 	return String::kEmpty;
 }
@@ -406,6 +427,8 @@ void CCL_API TooltipWindow::show ()
 		AutoPtr<VisualStyle> visualStyle = NEW VisualStyle ();
 		visualStyle->setColor (StyleID::kTextColor, textColor);
 		visualStyle->setColor (StyleID::kBackColor, backColor);
+		visualStyle->setColor (RenderAtom::makeId (AtomName::kBackground, AtomPropertyID::kColor), backColor);
+
 		visualStyle->setOptions (StyleID::kTextAlign, Alignment::kLeftCenter);
 		visualStyle->setMetric (StyleID::kPaddingLeft, 4);
 		visualStyle->setMetric (StyleID::kPaddingRight, 4);

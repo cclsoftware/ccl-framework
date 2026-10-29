@@ -1,7 +1,7 @@
 //************************************************************************************************
 //
 // This file is part of Crystal Class Library (R)
-// Copyright (c) 2025 CCL Software Licensing GmbH.
+// Copyright (c) 2026 CCL Software Licensing GmbH.
 // All Rights Reserved.
 //
 // Licensed for use under either:
@@ -78,6 +78,7 @@ DECLARE_JNI_CLASS (FrameworkActivityClass, CCLGUI_CLASS_PREFIX "FrameworkActivit
 	DECLARE_JNI_METHOD (void, reportLaunchError, jstring)
 	DECLARE_JNI_STATIC_METHOD (jstring, getMainModuleID)
 	DECLARE_JNI_METHOD (jstring, getNativeLibraryDir)
+	DECLARE_JNI_METHOD (void, checkAndRequestPermissions, jobjectArray, JniIntPtr)
 END_DECLARE_JNI_CLASS (FrameworkActivityClass)
 
 DECLARE_JNI_CLASS (FrameworkActivityFileInfoClass, CCLGUI_CLASS_PREFIX "FrameworkActivity$FileInfo")
@@ -132,6 +133,7 @@ public:
 	tresult CCL_API relaunchActivity () const override;
 	void CCL_API getMainModuleID (String& id) const override;
 	void CCL_API getNativeLibraryDir (String& dir) const override;
+	IAsyncOperation* CCL_API checkAndRequestPermissions (const String permissions[], int permissionsCount) const override;
 
 	// UI configuration
 	float getDensityFactor ();

@@ -20,6 +20,7 @@
 #define _opengles3dsupport_h
 
 #include "ccl/platform/shared/opengles/openglesimage.h"
+#include "ccl/platform/shared/opengles/glslshaderreflection.h"
 #include "ccl/platform/shared/skia/skiaglue.h"
 
 #include "ccl/gui/graphics/3d/nativegraphics3d.h"
@@ -127,11 +128,14 @@ public:
 	PROPERTY_VARIABLE (uint32, shaderId, ShaderID)
 	
 	bool create (GraphicsShader3DType type, UrlRef path);
+	void bindLocations (uint32 programId);
 	
 	// Native3DGraphicsShader
 	ITypeInfo* CCL_API getBufferTypeInfo (int bufferIndex) override;
 	
 private:
+	Vector<GLSLShaderInput> inputs;
+
 	bool load ();
 	void reset ();
 };
@@ -272,6 +276,7 @@ protected:
 	uint32 sampleCount;
 	OpenGLESImage texture;
 	sk_sp<SkImage> textureImage;
+	GrRecordingContext* context;
 	GrBackendTexture backendTexture;
 	uint32 depthBufferId;
 	Rect viewPortRect;
@@ -288,7 +293,10 @@ class OpenGLES3DSupport: public INative3DSupport,
 					     public StaticSingleton<OpenGLES3DSupport>
 {
 public:
+	PROPERTY_MUTABLE_CSTRING (glExtensions, GLExtensions)
+
 	void shutdown3D ();
+	bool isGLExtensionSupported (CStringPtr extensionName) const;
 
 	// INative3DSupport
 	Native3DGraphicsFactory& get3DFactory () override;

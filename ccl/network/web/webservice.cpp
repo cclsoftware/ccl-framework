@@ -19,11 +19,10 @@
 #define DEBUG_LOG 1
 
 #include "ccl/network/web/webservice.h"
+#include "ccl/network/web/webabstraction.h"
+#include "ccl/network/web/webrequest.h"
 #include "ccl/network/web/xmlnewsreader.h"
 #include "ccl/network/web/localclient.h"
-
-#include "ccl/network/web/http/client.h"
-#include "ccl/network/web/http/server.h"
 #include "ccl/network/web/xmlhttprequest.h"
 #include "ccl/network/web/websocket.h"
 
@@ -156,10 +155,10 @@ WebService::~WebService ()
 IWebClient* CCL_API WebService::createClient (StringID protocol)
 {
 	if(protocol.compare (Meta::kHTTP, false) == 0)
-		return NEW HTTP::Client;
+		return WebEngine::instance ().createHTTPClient (false);
 
 	if(protocol.compare (Meta::kHTTPS, false) == 0)
-		return NEW HTTP::Client (true);
+		return WebEngine::instance ().createHTTPClient (true);
 
 	if(LocalClient* client = LocalClient::create (protocol))
 		return client;
@@ -178,7 +177,7 @@ IWebClient* CCL_API WebService::createClient (StringID protocol)
 IWebServer* CCL_API WebService::createServer (StringID protocol)
 {
 	if(protocol.compare (Meta::kHTTP, false) == 0)
-		return NEW HTTP::Server;
+		return WebEngine::instance ().createHTTPServer ();
 
 	CCL_DEBUGGER ("Unknown Server Protocol!")
 	return nullptr;
@@ -207,26 +206,24 @@ IWebHeaderCollection* CCL_API WebService::createHeaderCollection ()
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-tresult CCL_API WebService::downloadData (UrlRef remotePath, IStream& localStream, 
-										  IWebCredentials* credentials, IWebHeaderCollection* headers,
-										  IProgressNotify* progress, int* status)
+tresult CCL_API WebService::downloadData (const DownloadDataArgs& args)
 {
-	if(status)
-		*status = 0;
+	if(args.status)
+		*args.status = 0;
 
 	tresult result = kResultFailed;
-	AutoPtr<IWebClient> client = createClient (MutableCString (remotePath.getProtocol ()));
+	AutoPtr<IWebClient> client = createClient (MutableCString (args.remotePath.getProtocol ()));
 	if(client)
 	{
-		client->setCredentials (credentials);
-		result = client->connect (remotePath.getHostName ());
+		client->setCredentials (args.credentials);
+		result = client->connect (args.remotePath.getHostName (), args.progress);
 		if(result == kResultOk)
 		{
-			String path = UrlUtils::toResourcePath (remotePath);
+			String path = UrlUtils::toResourcePath (args.remotePath);
 
-			result = client->downloadData (path, localStream, headers, progress);
-			if(status)
-				*status = client->getLastStatus ();
+			result = client->downloadData (path, args.localStream, args.headers, args.progress);
+			if(args.status)
+				*args.status = client->getLastStatus ();
 		}
 	}
 	return result;
@@ -234,38 +231,36 @@ tresult CCL_API WebService::downloadData (UrlRef remotePath, IStream& localStrea
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-tresult CCL_API WebService::downloadInBackground (IObserver* observer, UrlRef remotePath, IStream& localStream,
-												  IWebCredentials* credentials, IWebHeaderCollection* headers)
+tresult CCL_API WebService::downloadInBackground (const DownloadInBackgroundArgs& args)
 {
-	ASSERT (observer != nullptr)
-	if(!observer)
+	ASSERT (args.observer != nullptr)
+	if(!args.observer)
 		return kResultInvalidArgument;
 
-	System::GetThreadPool ().scheduleWork (NEW DownloadWork (observer, remotePath, localStream, credentials, headers));
+	System::GetThreadPool ().scheduleWork (NEW DownloadWork (args.observer, args.remotePath, args.localStream, args.credentials, args.headers));
 	return kResultOk;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-tresult CCL_API WebService::uploadData (UrlRef remotePath, IStream& localStream, IWebHeaderCollection* headers, IStream& response, 
-										StringID method, IWebCredentials* credentials, IProgressNotify* progress, int* status)
+tresult CCL_API WebService::uploadData (const UploadDataArgs& args)
 {
-	if(status)
-		*status = 0;
+	if(args.status)
+		*args.status = 0;
 
 	tresult result = kResultFailed;
-	AutoPtr<IWebClient> client = createClient (MutableCString (remotePath.getProtocol ()));
+	AutoPtr<IWebClient> client = createClient (MutableCString (args.remotePath.getProtocol ()));
 	if(client)
 	{
-		client->setCredentials (credentials);
-		result = client->connect (remotePath.getHostName ());
+		client->setCredentials (args.credentials);
+		result = client->connect (args.remotePath.getHostName (), args.progress);
 		if(result == kResultOk)
 		{
-			String path = UrlUtils::toResourcePath (remotePath);
+			String path = UrlUtils::toResourcePath (args.remotePath);
 
-			result = client->uploadData (headers, localStream, path, response, method, progress);
-			if(status)
-				*status = client->getLastStatus ();
+			result = client->uploadData (args.headers, args.data, path, args.response, args.method, args.progress);
+			if(args.status)
+				*args.status = client->getLastStatus ();
 		}
 	}
 	return result;
@@ -273,15 +268,14 @@ tresult CCL_API WebService::uploadData (UrlRef remotePath, IStream& localStream,
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-tresult CCL_API WebService::uploadInBackground (IObserver* observer, UrlRef remotePath, IStream& localStream, 
-												IWebHeaderCollection* headers,
-												StringID method, IWebCredentials* credentials, IStream* response)
+tresult CCL_API WebService::uploadInBackground (const UploadInBackgroundArgs& args)
 {
-	ASSERT (observer != nullptr)
-	if(!observer)
+	ASSERT (args.observer != nullptr)
+	if(!args.observer)
 		return kResultInvalidArgument;
 
-	System::GetThreadPool ().scheduleWork (NEW UploadWork (observer, remotePath, localStream, headers, method, credentials, response));
+	System::GetThreadPool ().scheduleWork (NEW UploadWork (args.observer, args.remotePath, args.localStream,
+														   args.headers, args.method, args.credentials, args.response));
 	return kResultOk;
 }
 
@@ -310,12 +304,7 @@ tresult CCL_API WebService::cancelOnExit ()
 
 tresult CCL_API WebService::setUserAgent (StringRef userAgent)
 {
-	ASSERT (HTTP::Client::getUserAgent (false).isEmpty ())
-	if(!HTTP::Client::getUserAgent (false).isEmpty ()) // must be called only once!
-		return kResultFailed;
-
-	HTTP::Client::setUserAgent (MutableCString (userAgent, Text::kUTF8));
-	return kResultOk;
+	return WebEngine::instance ().setUserAgent (userAgent);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -479,8 +468,7 @@ void CCL_API DownloadWork::work ()
 	sendInitialNotification (); // let observer know we are about to start now
 
 	int status = 0;
-	tresult result = WebService::instance ().downloadData (*remotePath, *localStream, credentials, 
-														   headers, this, &status);
+	tresult result = WebService::instance ().downloadData ({*remotePath, *localStream, credentials, headers, this, &status});
 	if(!canceled)
 	{
 		localStream.release (); // ensure local stream is closed before notification!
@@ -514,8 +502,8 @@ void CCL_API UploadWork::work ()
 	sendInitialNotification (); // let observer know we are about to start now
 
 	int status = 0;
-	tresult result = WebService::instance ().uploadData (*remotePath, *localStream, headers, *responseStream, 
-														  method, credentials, this, &status);
+	tresult result = WebService::instance ().uploadData ({*remotePath, *localStream, headers, *responseStream, 
+														  method, credentials, this, &status});
 	if(!canceled)
 	{
 		localStream.release (); // ensure local stream is closed before notification!

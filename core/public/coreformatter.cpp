@@ -107,7 +107,7 @@ const Formatter* FormatterRegistry::find (CStringPtr _name)
 	ConstString name (_name);
 	if(!name.isEmpty ())
 		VectorForEach (list, Formatter*, formatter)
-			if(name == formatter->getName ())
+			if(name.compare (formatter->getName (), false) == 0)
 				return formatter;
 		EndFor
 	
@@ -254,6 +254,24 @@ bool IntFormatter::scan (Data& d) const
 // FloatFormatter
 //************************************************************************************************
 
+void FloatFormatter::makeFormatString (FormatString formatString, int numDecimalDigits, CStringPtr label)
+{
+	::strcpy (formatString, "%.0f");
+	if(numDecimalDigits > 0)
+	{
+		ASSERT (numDecimalDigits < 10)
+		formatString[2] = '0' + (char)numDecimalDigits;
+	}
+	if(label)
+	{
+		::strcat (formatString, " ");
+		ASSERT (::strlen (formatString) + ::strlen (label) < kFormatSize)
+		::strcat (formatString, label);
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
 bool FloatFormatter::getFloatValue (float& value, CStringPtr _string)
 {
 	CString128 string (_string);
@@ -265,26 +283,24 @@ bool FloatFormatter::getFloatValue (float& value, CStringPtr _string)
 
 const Formatter& FloatFormatter::instance ()
 {
-	static FloatFormatter theFormatter;
+	static const FloatFormatter theFormatter;
 	return theFormatter;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-FloatFormatter::FloatFormatter (CStringPtr name, CStringPtr label)
-: Formatter (name),
-  label (label)
-{}
+FloatFormatter::FloatFormatter (CStringPtr name, int numDecimalDigits, CStringPtr label)
+: Formatter (name)
+{
+	makeFormatString (formatString, numDecimalDigits, label);
+}
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 void FloatFormatter::print (Data& d) const
 {
 	CString128 buffer;
-	if(label != nullptr)
-		buffer.appendFormat ("%.2f %s", d.value, label);
-	else
-		buffer.appendFormat ("%.2f", d.value);
+	buffer.appendFormat (formatString, d.value);
 	buffer.copyTo (d.string, d.size);
 }
 
@@ -320,17 +336,14 @@ const Formatter& PercentFormatter::instance (int numDecimalDigits)
 PercentFormatter::PercentFormatter (CStringPtr name, int numDecimalDigits)
 : Formatter (name)
 {
-	::strcpy (formatString, "%.0f %%");
-
-	if(numDecimalDigits > 0)
-		formatString[2] = '0' + (char)numDecimalDigits;
+	FloatFormatter::makeFormatString (formatString, numDecimalDigits, "%%");
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 void PercentFormatter::print (Data& d) const
 {
-	::snprintf (d.string, d.size, formatString, int (1e3f * d.value + ((d.value < 0) ? -0.5f : 0.5f)) * 0.1f);
+	::snprintf (d.string, d.size, formatString, int(1e3f * d.value + ((d.value < 0) ? -0.5f : 0.5f)) * 0.1f);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////

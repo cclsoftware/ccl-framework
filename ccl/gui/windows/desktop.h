@@ -90,6 +90,7 @@ public:
 
 	tbool CCL_API closePopupAndDeferCommand (ICommandHandler* handler, const CommandMsg& cmd) override;
 	tbool CCL_API closeModalWindows () override;
+	tbool CCL_API closeModalWindowsAndDeferCommand (ICommandHandler* handler, const CommandMsg& cmd) override;
 	tbool CCL_API closeTopModal (int dialogResult) override;
 	void CCL_API flushUpdatesWithProgressWindows (IView* caller = nullptr) override;
 	tbool CCL_API isInMode (int modeFlags) const override;

@@ -74,6 +74,7 @@ public:
 	PROPERTY_POINTER (zwp_pointer_constraints_v1, pointerConstraints, PointerConstraints)
 	PROPERTY_POINTER (zwp_relative_pointer_manager_v1, relativePointerManager, RelativePointerManager)
 	PROPERTY_POINTER (zwp_linux_dmabuf_v1, dmaBuffer, DmaBuffer)
+	PROPERTY_POINTER (wp_cursor_shape_manager_v1, cursorShapeManager, CursorShapeManager)
 	
 	PROPERTY_VARIABLE (uint32_t, seatCapabilities, SeatCapabilities)
 	PROPERTY_MUTABLE_CSTRING (seatName, SeatName)

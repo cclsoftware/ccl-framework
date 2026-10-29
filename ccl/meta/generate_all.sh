@@ -38,6 +38,16 @@ ${gentool} -g -input "${metamodeldir}/gui-constants.json" \
 -output "${generateddir}/cpp/gui-constants-generated.h" \
 -template "${templatedir}/cpp/gui-constants.h.in"
 
+# gui-constants-generated.ts
+${gentool} -g -input "${metamodeldir}/gui-constants.json" \
+-output "${generateddir}/typescript/gui-constants-generated.ts" \
+-template "${templatedir}/typescript/gui-constants.ts.in"
+
+# gui-constants-generated.js
+${gentool} -g -input "${metamodeldir}/gui-constants.json" \
+-output "${generateddir}/javascript/gui-constants-generated.js" \
+-template "${templatedir}/javascript/gui-constants.js.in"
+
 # GuiConstants.java
 ${gentool} -g \
 -input "${metamodeldir}/gui-constants.json" \
@@ -61,3 +71,27 @@ ${gentool} -g \
 -input "${metamodeldir}/skinxmldefs.json" \
 -output "${generateddir}/typescript/skinxmldefs-generated.ts" \
 -template "${templatedir}/typescript/skinxmldefs.ts.in"
+
+# skinenums_generated.py
+${gentool} -g \
+-input "${classmodeldir}/Skin Elements.classModel" \
+-output "${generateddir}/python/skinenums_generated.py" \
+-template "${templatedir}/python/skinenums.py.in"
+
+# skinxmldefs_generated.py
+${gentool} -g \
+-input "${metamodeldir}/skinxmldefs.json" \
+-output "${generateddir}/python/skinxmldefs_generated.py" \
+-template "${templatedir}/python/skinxmldefs.py.in"
+
+# xmlinstructions-generated.h
+${gentool} -g \
+-input "${metamodeldir}/xmlinstructions.json" \
+-output "${generateddir}/cpp/xmlinstructions-generated.h" \
+-template "${templatedir}/cpp/xmlinstructions.h.in"
+
+# xmlinstructions-generated.ts
+${gentool} -g \
+-input "${metamodeldir}/xmlinstructions.json" \
+-output "${generateddir}/typescript/xmlinstructions-generated.ts" \
+-template "${templatedir}/typescript/xmlinstructions.ts.in"

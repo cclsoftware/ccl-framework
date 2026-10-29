@@ -84,7 +84,7 @@ interface IExtensionProductHandler: IUnknown
 class ExtensionNativePluginHandler: public ExtensionHandler
 {
 public:
-	static CCL::IUrlFilter* createPluginFilter (UrlRef path);
+	static IUrlFilter* createPluginFilter (UrlRef path);
 	
 	// ExtensionHandler
 	int startupExtension (ExtensionDescription& description) override;

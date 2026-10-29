@@ -32,7 +32,7 @@ interface IFileSystem;
 
 //************************************************************************************************
 // MemoryPreset
-/** Stores preset data of an CCL::Object as attributes using Object::save/load. */
+/** Stores preset data of an Object as attributes using Object::save/load(). */
 //************************************************************************************************
 
 class MemoryPreset: public Preset

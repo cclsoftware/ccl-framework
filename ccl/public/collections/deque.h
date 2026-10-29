@@ -19,6 +19,8 @@
 #ifndef _ccl_deque_h
 #define _ccl_deque_h
 
+#include "ccl/public/base/platform.h"
+
 #include "core/public/coredeque.h"
 
 namespace CCL {

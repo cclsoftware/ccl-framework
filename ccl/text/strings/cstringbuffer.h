@@ -47,7 +47,7 @@ class CStringBuffer: public Unknown,
 					 public ICString
 {
 public:
-	CStringBuffer (const char* text = nullptr);
+	CStringBuffer (CStringPtr text = nullptr);
 	CStringBuffer (const CStringBuffer&);
 	~CStringBuffer ();
 
@@ -65,7 +65,7 @@ protected:
 	CStringBuffer& operator = (const CStringBuffer&)
 	{ ASSERT (0) return *this; }
 
-	bool assign (const char* text);
+	bool assign (CStringPtr text);
 };
 
 } // namespace CCL

@@ -3,9 +3,9 @@
 
 import argparse
 import logging
-from modules.classmodel.converter import ClassModelConverter
+from modules.restructuredtext.generator import RstGenerator
 
-__copyright__ = "Copyright (c) 2023 CCL Software Licensing GmbH"
+__copyright__ = "Copyright (c) 2026 CCL Software Licensing GmbH"
 __version__ = "1.0.0"
 
 
@@ -17,7 +17,7 @@ def main() -> None:
     parser.add_argument('config', metavar='CONFIGURATION', help='configuration file')
     args = parser.parse_args()
 
-    ClassModelConverter.run_config(args.config)
+    RstGenerator.run_config(args.config)
 
 
 if __name__ == "__main__":

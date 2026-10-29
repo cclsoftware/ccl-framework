@@ -306,30 +306,6 @@ tresult MacFileManager::stopWatching (UrlRef url)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-tresult MacFileManager::startUsing (UrlRef url)
-{
-	NSURL* nsurl = [NSURL alloc];
-	MacUtils::urlToNSUrl (url, nsurl);
-	BOOL success = [nsurl startAccessingSecurityScopedResource];
-	if(success == NO)
-		return kResultFailed;
-	
-	return kResultOk;
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
-tresult MacFileManager::stopUsing (UrlRef url)
-{
-	NSURL* nsurl = [NSURL alloc];
-	MacUtils::urlToNSUrl (url, nsurl);
-	[nsurl stopAccessingSecurityScopedResource];
-	
-	return kResultOk;
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
 tbool CCL_API MacFileManager::getFileDisplayString (String& string, UrlRef url, int type) const
 {
 	if(type == Url::kStringDisplayPath)

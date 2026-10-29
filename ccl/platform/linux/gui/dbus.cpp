@@ -108,7 +108,13 @@ void DBusConnection::startEventLoop ()
 {
 	UnknownPtr<IEventLoop> eventLoop (GUI.asUnknown ());
 	if(eventLoop.isValid ())
-		eventLoop->addEventHandler (this, connection->getEventLoopPollData ().fd);
+	{
+		sdbus::IConnection::PollData pollData = connection->getEventLoopPollData ();
+		eventLoop->addEventHandler (this, pollData.fd);
+		#if SDBUS_CPP_VERSION == 2
+		eventLoop->addEventHandler (this, pollData.eventFd);
+		#endif
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -117,13 +123,24 @@ void DBusConnection::stopEventLoop ()
 {
 	UnknownPtr<IEventLoop> eventLoop (GUI.asUnknown ());
 	if(eventLoop.isValid ())
+	{
 		eventLoop->removeEventHandler (this);
+		#if SDBUS_CPP_VERSION == 2
+		eventLoop->removeEventHandler (this);
+		#endif
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 void CCL_API DBusConnection::onEvent (int eventFd)
 {
-	if(eventFd == connection->getEventLoopPollData ().fd)
-		while (connection->processPendingRequest ());
+	sdbus::IConnection::PollData pollData = connection->getEventLoopPollData ();
+	#if SDBUS_CPP_VERSION == 2
+	if(eventFd == pollData.fd || eventFd == pollData.eventFd) // processPendingEvent () also clears the eventFd
+		while(connection->processPendingEvent ());
+	#else
+	if(eventFd == pollData.fd)
+		while(connection->processPendingRequest ());
+	#endif
 }

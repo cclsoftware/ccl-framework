@@ -98,7 +98,7 @@ bool SqlStatement::create (SqlConnection& c, StringRef sql)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool SqlStatement::create (SqlConnection& c, const char* sql)
+bool SqlStatement::create (SqlConnection& c, CStringPtr sql)
 {
 	safe_release (statement);
 	statement = c.isOpen () ? c->createStatement (sql) : nullptr;

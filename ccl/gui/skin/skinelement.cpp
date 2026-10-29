@@ -23,6 +23,7 @@
 #include "ccl/gui/skin/skinmodel.h"
 
 #include "ccl/base/singleton.h"
+#include "ccl/base/initterm.h"
 #include "ccl/base/storage/url.h"
 #include "ccl/base/storage/configuration.h"
 #include "ccl/base/collections/objectlist.h"
@@ -36,27 +37,16 @@
 #include "ccl/public/systemservices.h"
 #include "ccl/public/cclversion.h"
 
-namespace CCL {
-namespace SkinElements {
-
-//************************************************************************************************
-// SkinElementLibrary
-//************************************************************************************************
-
-class SkinElementLibrary: public TypeLibrary,
-						  public Singleton<SkinElementLibrary>
-{
-public:
-	SkinElementLibrary ();
-
-	const StyleDef* getStyleDef (CStringRef name, bool partialMatching = false) const;
-};
-
-} // namespace SkinElements
-} // namespace CCL
-
 using namespace CCL;
 using namespace SkinElements;
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+CCL_KERNEL_INIT_LEVEL (SkinElementLibrary, kFirstRun)
+{
+	getTypeLibrary ().init ();
+	return true;
+}
 
 //************************************************************************************************
 // Skin Warnings
@@ -116,12 +106,50 @@ SkinElementLibrary::SkinElementLibrary ()
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
+void SkinElementLibrary::init ()
+{
+#if DEBUG
+	// parent relations are now declared explicitly via DEFINE_TYPELIB_CLASS_WITH_PARENT; verify they
+	// agree with the metaclass-derived hierarchy (nearest registered ancestor still under Element)
+	ForEach (types, TypeLibEntry, entry)
+		if(TypeLibClass* tlc = ccl_cast<TypeLibClass> (entry))
+		{
+			const TypeLibClass* expectedParent = nullptr;
+			const MetaClass* metaClass = tlc->getMetaClass ().getParentClass ();
+			while(metaClass && metaClass->canCast (ccl_typeid<Element> ()))
+			{
+				const TypeLibClass* parent = findByMetaClass (*metaClass);
+				if(parent)
+				{
+					expectedParent = parent;
+					break;
+				}
+				metaClass = metaClass->getParentClass ();
+			}
+			ASSERT (tlc->getParentType () == expectedParent)
+		}
+	EndFor
+#endif
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+Element* SkinElementLibrary::createElement (CStringRef name) const
+{
+	const TypeLibClass* tlc = ccl_cast<TypeLibClass> (findType (name, kTagsCaseSensitive));
+	if(tlc)
+		return static_cast<Element*> (tlc->createObject ());
+	return nullptr;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
 const StyleDef* SkinElementLibrary::getStyleDef (CStringRef name, bool partialMatching) const
 {
-	const Enumeration* result = nullptr;
+	const TypeLibEnumeration* result = nullptr;
 	if(partialMatching == true)
 	{
-		for(auto* e : iterate_as<Enumeration> (enums))
+		for(auto* e : iterate_as<TypeLibEnumeration> (enums))
 			if(CString (e->getName ()).contains (name))
 			{
 				result = e;
@@ -130,153 +158,36 @@ const StyleDef* SkinElementLibrary::getStyleDef (CStringRef name, bool partialMa
 	}
 	else
 	{
-		result = static_cast<const Enumeration*> (findEnum (name));
+		result = static_cast<const TypeLibEnumeration*> (findEnum (name));
 	}
-	 
-	return result ? result->def : nullptr;
-}
 
-//************************************************************************************************
-// MetaElement
-//************************************************************************************************
-
-TypeLibrary& MetaElement::getTypeLibrary ()
-{
-	return SkinElementLibrary::instance ();
+	return result ? result->getEnumInfo () : nullptr;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-Element* MetaElement::createElement (CStringRef name)
+const TypeLibClass* SkinElementLibrary::findByMetaClass (MetaClassRef metaClass) const
 {
-	const MetaElement* me = static_cast<const MetaElement*> (SkinElementLibrary::instance ().findType (name, kTagsCaseSensitive));
-	if(me)
-		return me->createElement ();
+	ForEach (types, TypeLibEntry, entry)
+		if(TypeLibClass* tlc = ccl_cast<TypeLibClass> (entry))
+			if(tlc->getMetaClass () == metaClass)
+				return tlc;
+	EndFor
 	return nullptr;
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
-MetaElement::MetaElement (CStringPtr name, Object* (*creator)(), const MetaElement* parentClass,
-						  bool isAbstract, CStringPtr groupName)
-: TypeInfoWithMembers (name, parentClass),
-  creator (creator),
-  isAbstract (isAbstract),
-  groupName (groupName)
-{
-	SkinElementLibrary::instance ().addType (this);
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
-Element* MetaElement::createElement () const
-{
-	return (Element*)(*creator) ();
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
-int CCL_API MetaElement::getClassFlags () const
-{
-	return isAbstract ? kAbstract : 0;
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
-bool MetaElement::getDetails (ITypeInfoDetails& details) const
-{
-	TypeInfoWithMembers::getDetails (details);
-
-	if(members == nullptr)
-	{
-		AutoPtr<Element> element = createElement ();
-		ASSERT (element)
-		if(!element)
-			return false;
-
-		MutableSkinAttributes attr;
-		attr.setVerbose (true);
-		element->getAttributes (attr);
-
-		ForEachAttribute (attr.getAttributes (), name, value)
-			DataType dt = ITypeInfo::kVoid;
-			switch(value.getType ())
-			{
-			case Variant::kInt : dt = ITypeInfo::kInt; break;
-			case Variant::kFloat : dt = ITypeInfo::kFloat; break;
-			case Variant::kString : dt = ITypeInfo::kString; break;
-			case Variant::kObject : dt = ITypeInfo::kObject; break;
-			}
-			details.addMember (Model::MemberDescription (name, dt));
-		EndFor
-	}
-
-	if(groupName)
-		details.setAttribute (Model::kClassDocGroup, groupName);
-
-	return true;
-}
-
-//************************************************************************************************
-// Enumeration
-//************************************************************************************************
-
-const StyleDef* Enumeration::getStyleDef (CStringRef name, bool partialMatching)
-{
-	return SkinElementLibrary::instance ().getStyleDef (name, partialMatching);
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
-Enumeration::Enumeration (CStringPtr name, CStringPtr parentName, const StyleDef* def)
-: EnumTypeInfo (name, parentName),
-  def (def),
-  count (-1)
-{
-	SkinElementLibrary::instance ().addEnum (this);
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
-int CCL_API Enumeration::getEnumeratorCount () const
-{
-	if(count == -1)
-	{
-		count = 0;
-		if(const StyleDef* ptr = def)
-		{
-			while(ptr->name)
-			{
-				count++;
-				ptr++;
-			}
-		}
-	}
-
-	return count;
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
-tbool CCL_API Enumeration::getEnumerator (MutableCString& name, Variant& value, int index) const
-{
-	ASSERT (index >= 0 && index < getEnumeratorCount ())
-	if(index < 0 || index >= getEnumeratorCount ())
-		return false;
-
-	name = def[index].name;
-	value = def[index].value;
-	return true;
 }
 
 //************************************************************************************************
 // Element
 //************************************************************************************************
 
-BEGIN_SKIN_ELEMENT_BASE_WITH_MEMBERS (Element, ObjectArray, TAG_ELEMENT, DOC_GROUP_GENERAL)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_NAME, TYPE_STRING) ///< The name of an element plays different roles, depending on the class of the element. 
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_COMMENT, TYPE_STRING) ///< Optional comment for developers and tool support
-END_SKIN_ELEMENT_WITH_MEMBERS (Element)
+DEFINE_CLASS_ABSTRACT_HIDDEN (Element, ObjectArray)
+DEFINE_TYPELIB_CLASS (Element, TAG_ELEMENT, SKIN_TYPELIB)
+DEFINE_TYPELIB_ABSTRACT (Element)
+DEFINE_TYPELIB_DOCGROUP (Element, DOC_GROUP_GENERAL)
+BEGIN_TYPELIB_MEMBERS (Element)
+	ADD_TYPELIB_MEMBER_STRING (ATTR_NAME) ///< The name of an element plays different roles, depending on the class of the element.
+	ADD_TYPELIB_MEMBER_STRING (ATTR_COMMENT) ///< Optional comment for developers and tool support
+END_TYPELIB_MEMBERS (Element)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -307,6 +218,12 @@ Element::Element (CStringRef name)
 	lineNumber = 0;
 	#endif
 }
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+// SortedElement
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+DEFINE_CLASS_ABSTRACT_HIDDEN (SortedElement, Element)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -592,7 +509,7 @@ void Element::loadFinished ()
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void Element::appendCharacterData (const uchar* data, int length)
+void Element::appendCharacterData (UStringPtr data, int length)
 {}
 
 //////////////////////////////////////////////////////////////////////////////////////////////////

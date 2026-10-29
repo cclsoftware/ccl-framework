@@ -92,6 +92,7 @@ SelectFunctions* SelectFunctions::createInstance (EditorComponent& editor, IUnkn
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 DEFINE_CLASS_ABSTRACT_HIDDEN (SelectFunctions, ActionExecuter)
+DEFINE_CLASS_NAMESPACE (SelectFunctions, NAMESPACE_CCL)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -279,6 +280,14 @@ void SelectFunctions::focusFirstSelected (EditView* view)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
+BEGIN_PROPERTY_NAMES (SelectFunctions)
+	DEFINE_PROPERTY_TYPE ("selectExclusive", ITypeInfo::kBool)
+	DEFINE_PROPERTY_TYPE ("makeItemsVisible", ITypeInfo::kBool)
+	DEFINE_PROPERTY_CLASS ("focusItem", "Object")
+END_PROPERTY_NAMES (SelectFunctions)
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
 tbool CCL_API SelectFunctions::getProperty (Variant& var, MemberID propertyId) const
 {
 	if(propertyId == "selectExclusive")
@@ -320,10 +329,10 @@ tbool CCL_API SelectFunctions::setProperty (MemberID propertyId, const Variant& 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 BEGIN_METHOD_NAMES (SelectFunctions)
-	DEFINE_METHOD_NAME ("select")
-	DEFINE_METHOD_NAME ("selectMultiple")
-	DEFINE_METHOD_NAME ("saveSelection")
-	DEFINE_METHOD_NAME ("takeSnapshot")
+	DEFINE_METHOD_ARGR ("select", "item: Object", "bool")
+	DEFINE_METHOD_ARGR ("selectMultiple", "items: Container | Object[]", "bool")
+	DEFINE_METHOD_ARGR ("saveSelection", "", "bool")
+	DEFINE_METHOD_ARGR ("takeSnapshot", "", "bool")
 END_METHOD_NAMES (SelectFunctions)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////

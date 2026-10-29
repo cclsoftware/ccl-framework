@@ -75,6 +75,30 @@ Alternatively, you can use Gradle to build on the command line. Run the followin
 
     gradle assembleArm8Release
 
+================================
+Building WebAsembly Applications
+================================
+
+From the root directory of the Emscripten SDK, run
+
+.. code-block:: bash
+
+    source emsdk_env.sh
+
+Then generate your application's CMake project as usual using the ``wasm-debug`` or ``wasm-release`` presets.
+
+Build artifacts include .js, .wasm, and .html files for your application's main executable.
+
+Start a web server in the root directory of your repository:
+
+.. code-block:: bash
+
+    python -m http.server 8080
+
+Then open ``localhost:8080`` in a web browser and navigate to your application's html document.
+
+See :ref:`wasm-platform` for details.
+
 ==========================
 Cross-compilation on Linux
 ==========================

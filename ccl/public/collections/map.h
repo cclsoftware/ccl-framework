@@ -19,12 +19,15 @@
 #ifndef _ccl_map_h
 #define _ccl_map_h
 
+#include "ccl/public/base/platform.h"
+
 #include "core/public/coremap.h"
 
 namespace CCL {
 
 using Core::KeyValue;
 using Core::ConstMap;
+using Core::Map;
 
 } // namespace CCL
 

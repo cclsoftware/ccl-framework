@@ -250,7 +250,7 @@ void WindowsDragSession::convertNativeItems ()
 				if(!obj)
 				{
 					Boxed::String* string = NEW Boxed::String;
-					string->appendCString (Text::kSystemEncoding, (const char*)text, (unsigned)size);
+					string->appendCString (Text::kSystemEncoding, (CStringPtr)text, (unsigned)size);
 					obj = ccl_as_unknown (string);
 				}
 

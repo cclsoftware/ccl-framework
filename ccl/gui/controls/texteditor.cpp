@@ -54,7 +54,6 @@ private:
 
 	// EditBox
 	void updateCaretRect () override;
-	void setChanged () override;
 	void calculateNativeControlSize (Rect& size) override;
 };
 
@@ -259,6 +258,9 @@ void TextEditorEditBox::onMove (const Point& delta)
 {
 	// don't kill focus
 	View::onMove (delta);
+
+	if(inputMethod.isValid ())
+		inputMethod->visibleRectChanged ();
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -282,10 +284,7 @@ bool TextEditorEditBox::onFocus (const FocusEvent& event)
 	SuperClass::onFocus (event);
 
 	if(event.eventType == FocusEvent::kKillFocus)
-	{
-		setChanged ();
 		(NEW Message (kUpdateScrollPosition))->post (this);
-	}
 
 	return true;
 }
@@ -320,16 +319,6 @@ bool TextEditorEditBox::onMouseDown (const MouseEvent& event)
 		return makeNativeControl ();
 	}
 	return SuperClass::onMouseDown (event);
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
-void TextEditorEditBox::setChanged ()
-{
-	EditBox::setChanged ();
-
-	if(!inUpdateTargetSizeMessage)
-		(NEW Message (kUpdateScrollTargetSize))->post (this);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////

@@ -85,14 +85,13 @@ public:
 	virtual bool addHelp (IHelpInfoBuilder& helpInfo); // returns false to ignore following actions
 
 	static KeyState getKeys (const GUIEvent& event);
+	static PointerEvent::InputDevice getInputDevice (const GUIEvent& event);
 
 protected:
 	static IThemeStatics& getThemeStatics ();
 
 	void selectItem (EditView& view, bool exclusive = true);
 	MouseEvent makeMouseEvent (const GUIEvent& event, PointRef where); ///< utility e.g. to feed EditModel methods
-
-	static PointerEvent::InputDevice getInputDevice (const GUIEvent& event);
 };
 
 //************************************************************************************************

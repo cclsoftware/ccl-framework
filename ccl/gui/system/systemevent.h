@@ -70,6 +70,22 @@ struct SystemEvent: GUIEvent
 	: GUIEvent (kSystemEvent, type)
 	{}
 
+	#elif CCL_PLATFORM_WASM
+	CStringRef eventId;
+	VariantRef arg1;
+	VariantRef arg2;
+	VariantRef arg3;
+	Variant& result;
+
+	SystemEvent (Variant& result, CStringRef eventId, VariantRef arg1, VariantRef arg2, VariantRef arg3)
+	: GUIEvent (kSystemEvent, 0),
+	  eventId (eventId),
+	  arg1 (arg1),
+	  arg2 (arg2),
+	  arg3 (arg3),
+	  result (result)
+	{}
+
 	#endif
 };
 

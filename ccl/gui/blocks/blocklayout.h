@@ -140,6 +140,7 @@ public:
 
 private:
 	mutable RenderAtom background;
+	StyleConditionContext conditionContext;
 };
 
 //************************************************************************************************
@@ -166,7 +167,7 @@ public:
 private:
 	CoordF currentWidth;
 	CoordF currentHeight;
-	CoordF textMargin;
+	CoordF textPadding;
 	CoordF textMaxWidth;
 	Brush textBrush;
 };
@@ -196,7 +197,7 @@ public:
 private:
 	CoordF currentWidth;
 	CoordF currentHeight;
-	CoordF imageMargin;
+	CoordF imagePadding;
 	int currentImageFrame;
 	bool animationStarted;
 
@@ -227,7 +228,7 @@ public:
 private:
 	CoordF indent;		///< left indent (of marker) from parent block
 	CoordF spacing;		///< between marker and child content
-	CoordF textMargin;	///< top margin (for drawing marker)
+	CoordF textPadding;	///< top padding (for drawing marker)
 	CoordF markerWidth;
 	Brush textBrush;
 	AutoPtr<ITextLayout> markerTextLayout;

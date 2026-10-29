@@ -121,7 +121,7 @@ void SamsungStoreManager::shutdown ()
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-CCL::IAsyncOperation* SamsungStoreManager::requestProducts (const ConstVector<String>& productIds)
+IAsyncOperation* SamsungStoreManager::requestProducts (const ConstVector<String>& productIds)
 {
 	if(productIds.isEmpty ())
 	{
@@ -144,14 +144,14 @@ CCL::IAsyncOperation* SamsungStoreManager::requestProducts (const ConstVector<St
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-CCL::IAsyncOperation* SamsungStoreManager::purchaseProduct (StringRef productId)
+IAsyncOperation* SamsungStoreManager::purchaseProduct (StringRef productId)
 {
 	static int nextTransactionId = 0;
 
 	StoreTransaction* transaction = NEW StoreTransaction;
 	transaction->setTransactionID (String (productId).append ("-").appendIntValue (nextTransactionId++));
 	transaction->setProductID (productId);
-	transaction->setState (CCL::PurchaseState::kInProgress);
+	transaction->setState (PurchaseState::kInProgress);
 
 	transactions->add (transaction);
 	deferSignal (NEW Message (kTransactionsChanged));
@@ -170,14 +170,14 @@ CCL::IAsyncOperation* SamsungStoreManager::purchaseProduct (StringRef productId)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-CCL::IAsyncOperation* SamsungStoreManager::getTransactions ()
+IAsyncOperation* SamsungStoreManager::getTransactions ()
 {
 	return AsyncOperation::createCompleted (Variant (transactions->asUnknown (), true), true);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-CCL::IAsyncOperation* SamsungStoreManager::getLocalLicenses ()
+IAsyncOperation* SamsungStoreManager::getLocalLicenses ()
 {
 	AutoPtr<AsyncOperation> op = NEW AsyncOperation;
 	if(!SamsungStoreContext.queryPurchases (context, JniCast<AsyncOperation>::toIntPtr (op)))

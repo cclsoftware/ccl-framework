@@ -40,7 +40,9 @@ namespace ClassID
 
 interface IImageCache: IUnknown
 {
-	virtual IImage* CCL_API lookup (IImage* image, ColorRef color, tbool drawAsTemplate = false) = 0;
+	/** Returns a cached, modified image for the given color:
+		template images are colorized, adaptive images are run through the lightadapt filter; all others are returned unchanged. */
+	virtual IImage* CCL_API lookup (IImage* image, ColorRef color) = 0;
 
 	DECLARE_IID (IImageCache)
 };

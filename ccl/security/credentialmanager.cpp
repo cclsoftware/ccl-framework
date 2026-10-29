@@ -20,6 +20,8 @@
 
 #include "ccl/security/credentialmanager.h"
 
+#include "ccl/base/asyncoperation.h"
+
 #include "ccl/public/securityservices.h"
 
 using namespace CCL;
@@ -109,6 +111,36 @@ tresult CCL_API Credential::getPassword (String& password) const
 //************************************************************************************************
 
 DEFINE_CLASS_ABSTRACT_HIDDEN (CredentialStore, Object)
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+IAsyncOperation* CredentialStore::addAsync (Credential& credential)
+{
+	tresult result = add (credential);
+	if(result != kResultOk)
+		return AsyncOperation::createFailed ();
+	return AsyncOperation::createCompleted ();
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+IAsyncOperation* CredentialStore::getAsync (StringRef targetName, StringRef groupName)
+{
+	AutoPtr<Credential> credential = get (targetName, groupName);
+	if(!credential)
+		return AsyncOperation::createFailed ();
+	return AsyncOperation::createCompleted (Variant (credential->asUnknown (), true));
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+IAsyncOperation* CredentialStore::removeAsync (StringRef targetName)
+{
+	tresult result = remove (targetName);
+	if(result != kResultOk)
+		return AsyncOperation::createFailed ();
+	return AsyncOperation::createCompleted ();
+}
 
 //************************************************************************************************
 // SimpleCredentialStore
@@ -287,4 +319,73 @@ String CCL_API CredentialManager::resolveName (StringRef name) const
 void CCL_API CredentialManager::setGlobalGroupName (StringRef _groupName)
 {
 	globalGroupName = _groupName;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+IAsyncOperation* CCL_API CredentialManager::addCredentialAsync (StringRef targetName, StringRef userName, const Crypto::Block& data, StringRef groupName)
+{
+	ASSERT (!targetName.isEmpty ())
+	if(targetName.isEmpty ())
+		return AsyncOperation::createFailed ();
+
+	AutoPtr<Credential> c = NEW Credential (targetName, userName, data, groupName);
+	c->setTargetName (resolveName (targetName));
+	return store->addAsync (*c);
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+IAsyncOperation* CCL_API CredentialManager::addPasswordAsync (StringRef targetName, StringRef userName, StringRef _password, StringRef _groupName)
+{
+	ASSERT (!targetName.isEmpty ())
+	if(targetName.isEmpty ())
+		return AsyncOperation::createFailed ();
+
+	String usedGroupName = _groupName;
+	if(_groupName.isEmpty ())
+		usedGroupName = globalGroupName;
+
+	MutableCString password (_password, Text::kUTF8);
+	Crypto::Block dataBlock (password.str (), password.length ());
+	return addCredentialAsync (targetName, userName, dataBlock, usedGroupName);
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+IAsyncOperation* CCL_API CredentialManager::getCredentialAsync (StringRef _targetName, StringRef groupName)
+{
+	String targetName = resolveName (_targetName);
+	ASSERT (!targetName.isEmpty ())
+	if(targetName.isEmpty ())
+		return AsyncOperation::createFailed ();
+
+	String outerName = _targetName;
+	Promise promise (store->getAsync (targetName, groupName));
+	return return_shared<IAsyncOperation> (promise.then ([outerName] (IAsyncOperation& operation)
+	{
+		UnknownPtr<ICredential> fetched (operation.getResult ().asUnknown ());
+		if(fetched.isValid ())
+		{
+			String userName, groupName;
+			Crypto::Block data;
+			fetched->getUserName (userName);
+			fetched->getGroupName (groupName);
+			fetched->getDataReference (data);
+
+			AutoPtr<Credential> renamed = NEW Credential (outerName, userName, data, groupName); // assign outer name
+			operation.setResult (Variant (renamed->asUnknown (), true));
+		}
+	}));
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+IAsyncOperation* CCL_API CredentialManager::removeCredentialAsync (StringRef _targetName)
+{
+	String targetName = resolveName (_targetName);
+	ASSERT (!targetName.isEmpty ())
+	if(targetName.isEmpty ())
+		return AsyncOperation::createFailed ();
+	return store->removeAsync (targetName);
 }

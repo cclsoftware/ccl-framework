@@ -297,6 +297,6 @@ void PopupSlider::overridePosition (IWindow& parent)
 Point PopupSlider::getHandleCenter (Slider* slider)
 {
 	Rect handleRect;
-	slider->getRenderer ()->getPartRect (slider, Slider::kPartHandle, handleRect);
+	slider->getRenderer ()->getPartRect (handleRect, Slider::kPartHandle);
 	return handleRect.getCenter ();
 }

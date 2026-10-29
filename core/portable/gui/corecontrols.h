@@ -231,6 +231,7 @@ public:
 	DECLARE_CORE_VIEWCLASS (ViewClasses::kButton)
 
 	Button (RectRef size = Rect (), Parameter* p = nullptr);
+	~Button ();
 
 	PROPERTY_VARIABLE (BitmapReference, image, Image)
 	PROPERTY_VARIABLE (BitmapReference, icon, Icon)
@@ -245,12 +246,17 @@ public:
 	bool onTouchInput (const TouchEvent& e) override;
 	bool onGestureInput (const GestureEvent& e) override;
 	void getHandledGestures (GestureVector& gestures, PointRef where) override;
+	void paramChanged (Parameter* p, int msg) override;
 	
 protected:
+	Parameter* titleParam;
 	bool down;
 
 	virtual bool isOn () const;
-	virtual void push ();	
+	virtual void push ();
+
+	void setTitleParam (Parameter* p);
+	void updateTitle ();
 };
 
 //************************************************************************************************

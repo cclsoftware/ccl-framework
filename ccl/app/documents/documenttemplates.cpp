@@ -169,6 +169,7 @@ DocumentTemplate* DocumentTemplate::loadTemplate (UrlRef path, StringRef package
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 DEFINE_CLASS_HIDDEN (DocumentTemplate, StorableObject)
+DEFINE_CLASS_NAMESPACE (DocumentTemplate, NAMESPACE_CCL)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -349,10 +350,12 @@ bool DocumentTemplate::save (const Storage& storage) const
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 BEGIN_PROPERTY_NAMES (DocumentTemplate)
-	DEFINE_PROPERTY_NAME ("title")
-	DEFINE_PROPERTY_NAME ("subTitle")
-	DEFINE_PROPERTY_NAME ("description")
-	DEFINE_PROPERTY_NAME ("additionalData")
+	DEFINE_PROPERTY_TYPE ("title", ITypeInfo::kString | ITypeInfo::kReadOnly)
+	DEFINE_PROPERTY_TYPE ("subTitle", ITypeInfo::kString | ITypeInfo::kReadOnly)
+	DEFINE_PROPERTY_TYPE ("description", ITypeInfo::kString | ITypeInfo::kReadOnly)
+	DEFINE_PROPERTY_TYPE ("additionalData", ITypeInfo::kString | ITypeInfo::kReadOnly)
+	DEFINE_PROPERTY_TYPE ("tutorialId", ITypeInfo::kString | ITypeInfo::kReadOnly)
+	DEFINE_PROPERTY_CLASS_ ("icon", "Image", ITypeInfo::kReadOnly)
 END_PROPERTY_NAMES (DocumentTemplate)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -491,6 +494,7 @@ void DocumentTemplateList::addAdditionalLocation (UrlRef path)
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 DEFINE_CLASS_HIDDEN (DocumentTemplateList, Object)
+DEFINE_CLASS_NAMESPACE (DocumentTemplateList, NAMESPACE_CCL)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1099,7 +1103,7 @@ tbool CCL_API DocumentTemplateListModel::drawCell (ItemIndexRef index, int colum
 	
 	// draw bottom separator
 	Color separatorColor (vs.getColor ("separatorcolor", Colors::kTransparentBlack));
-	if(separatorColor.getAlphaF () != 0)
+	if(separatorColor.isVisible ())
 	{
 		Coord y = info.rect.bottom - 1;
 		info.graphics.drawLine (Point (info.rect.left, y), Point (info.rect.right, y), Pen (separatorColor));
@@ -1205,7 +1209,7 @@ bool DocumentTemplateSaveDialog::run ()
 			return false;
 
 		getTemplatePath (path);
-		if(pathToReplace == nullptr && System::GetFileSystem ().fileExists (path))
+		if(!shouldReplace () && System::GetFileSystem ().fileExists (path))
 		{
 			String fileName;
 			path.getName (fileName);
@@ -1259,18 +1263,34 @@ void DocumentTemplateSaveDialog::onAsyncDialogResult (IAsyncOperation& op)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
+String DocumentTemplateSaveDialog::getFileName () const
+{
+	String fileName;
+	paramList.byTag (Tag::kTemplateTitle)->toString (fileName);
+	fileName = LegalFileName (fileName);
+	fileName.trimWhitespace ();
+	return fileName;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+bool DocumentTemplateSaveDialog::shouldReplace () const
+{
+	// don't replace if title was changed in the dialog after choosing the path to be replaced
+	return pathToReplace && getFileName () == fileNameToReplace;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
 void DocumentTemplateSaveDialog::getTemplatePath (Url& path) const
 {
-	if(pathToReplace)
+	if(shouldReplace ())
 		path = *pathToReplace;
 	else
 	{
 		path = location;
 
-		String fileName;
-		paramList.byTag (Tag::kTemplateTitle)->toString (fileName);
-		fileName = LegalFileName (fileName);
-		fileName.trimWhitespace ();
+		String fileName (getFileName ());
 
 		path.descend (fileName);
 		path.setExtension (fileType.getExtension (), false); // name may contain a dot
@@ -1348,6 +1368,7 @@ tbool CCL_API DocumentTemplateSaveDialog::paramChanged (IParameter* param)
 
 				setProperties (*t);
 				pathToReplace = NEW Url (path);
+				fileNameToReplace = getFileName ();
 			}
 		}
 		return true;

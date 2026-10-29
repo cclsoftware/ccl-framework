@@ -1,6 +1,8 @@
 #!/usr/bin/python
 """Makedoc actions module."""
 
+__copyright__ = "Copyright (c) 2026 CCL Software Licensing GmbH"
+
 import pathlib
 import shutil
 import subprocess
@@ -10,8 +12,6 @@ from typing import Optional, List
 from modules.buildenv import BuildEnvironment
 from modules.project import BuildActionConfig
 from modules.tools import Tools
-
-__copyright__ = "Copyright (c) 2024 CCL Software Licensing GmbH"
 
 
 class BuildActionException(Exception):

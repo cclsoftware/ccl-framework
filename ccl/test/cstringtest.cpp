@@ -26,7 +26,7 @@ using namespace CCL;
 
 CCL_TEST (CStringTest, testCopyOnWrite)
 {
-	static const char* theCString = "Hello World!";
+	static CStringPtr theCString = "Hello World!";
 
 	MutableCString s1 = theCString;
 	CCL_TEST_ASSERT (s1.str () != theCString); // address must be different!
@@ -61,4 +61,35 @@ CCL_TEST (CStringTest, testSubString)
 	const CString str1 = CSTR ("Hello World!");
 	MutableCString str2 = str1.subString (1, 4);
 	CCL_TEST_ASSERT (str2 == "ello");
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+CCL_TEST (CStringTest, testTrimWhitespace)
+{
+	MutableCString s1 = "  Hello World!  ";
+	s1.trimWhitespace ();
+	CCL_TEST_ASSERT (s1 == "Hello World!");
+
+	MutableCString s2 = "Hello World!";
+	s2.trimWhitespace ();
+	CCL_TEST_ASSERT (s2 == "Hello World!");
+
+	MutableCString s3 = "   ";
+	s3.trimWhitespace ();
+	CCL_TEST_ASSERT (s3 == "");
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+CCL_TEST (CStringTest, testTrimWhitespaceSharedBuffer)
+{
+	// s1 and s2 share the same underlying (copy-on-write) buffer until one of them is mutated.
+	MutableCString s1 = "  Hello World!  ";
+	MutableCString s2 = s1;
+	CCL_TEST_ASSERT (s1.str () == s2.str ()); // address must be equal!
+
+	s1.trimWhitespace (); // must clone before writing, never mutate the buffer s2 still shares
+	CCL_TEST_ASSERT (s1 == "Hello World!");
+	CCL_TEST_ASSERT (s2 == "  Hello World!  ");
 }

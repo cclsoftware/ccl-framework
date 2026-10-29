@@ -39,7 +39,7 @@ interface IConsole: Alert::IReporter
 	virtual tbool CCL_API writeLine (StringRef text) = 0;
 		
 	/** Write ASCII-encoded C-String. */
-	virtual tbool CCL_API writeLine (const char* text) = 0;
+	virtual tbool CCL_API writeLine (CStringPtr text) = 0;
 
 	/** Read Unicode String. */
 	virtual tbool CCL_API readLine (String& text) = 0;

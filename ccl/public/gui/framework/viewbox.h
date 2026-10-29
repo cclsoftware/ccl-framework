@@ -127,11 +127,14 @@ public:
 	bool isAccessibilityEnabled () const;
 	void setAccessibilityEnabled (bool state);
 
+	void setAccessibilityTitle (StringRef title);
+	String getAccessibilityTitle () const;
+
 	/** Get view-specific attribute via IObject. */
-	bool getAttribute (Variant& value, const char* id) const;
+	bool getAttribute (Variant& value, CStringPtr id) const;
 
 	/** Set view-specific attribute via IObject. */
-	bool setAttribute (const char* id, VariantRef value);
+	bool setAttribute (CStringPtr id, VariantRef value);
 
 	bool setHelpIdentifier (StringRef id);
 

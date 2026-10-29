@@ -144,7 +144,7 @@ IAsyncOperation* ItemSelectorPopup::run ()
 				selectCandidate (lastCandidate);
 	}
 
-	popupSelector = ccl_new<IPopupSelector> (CCL::ClassID::PopupSelector);
+	popupSelector = ccl_new<IPopupSelector> (ClassID::PopupSelector);
 	if(popupSelector)
 	{
 		PopupSizeInfo sizeInfo (nullptr, PopupSizeInfo::kHCenter|PopupSizeInfo::kVCenter);
@@ -371,27 +371,37 @@ PopupSelectorClient::Result ItemSelectorPopup::checkTypedString (bool acceptFirs
 	typedStringParam->fromString (typedString);
 
 	collectCandidates ();
-	selectedItem = !candidates.isEmpty () ? candidates[0] : nullptr;
 
-	if(!getPersistenceID ().isEmpty ())
+	// prefer an exact match if search string was provided programmatically
+	IUnknown* selectedItem = nullptr;
+	if(!startString.isEmpty ())
+		selectedItem = findCandidate (typedString);
+
+	if(!selectedItem)
 	{
-		// prefer recently chosen items (titles in recentChoices)
-		selectedItem = nullptr;
-		int selectedRecentIndex = NumericLimits::kMaxInt;
+		if(!candidates.isEmpty ())
+			selectedItem = candidates[0];
 
-		for(auto item : candidates)
+		if(!getPersistenceID ().isEmpty ())
 		{
-			String title (itemsProvider->getUnknownTitle (item));
-			int recentIndex = recentChoices.index (title);
-			if(recentIndex < 0)
-				recentIndex = NumericLimits::kMaxInt;
+			// prefer recently chosen items (titles in recentChoices)
+			selectedItem = nullptr;
+			int selectedRecentIndex = NumericLimits::kMaxInt;
 
-			if(!selectedItem || recentIndex < selectedRecentIndex)
+			for(auto item : candidates)
 			{
-				selectedItem = item;
-				selectedRecentIndex = recentIndex;
-				if(recentIndex == 0)
-					break;
+				String title (itemsProvider->getUnknownTitle (item));
+				int recentIndex = recentChoices.index (title);
+				if(recentIndex < 0)
+					recentIndex = NumericLimits::kMaxInt;
+
+				if(!selectedItem || recentIndex < selectedRecentIndex)
+				{
+					selectedItem = item;
+					selectedRecentIndex = recentIndex;
+					if(recentIndex == 0)
+						break;
+				}
 			}
 		}
 	}

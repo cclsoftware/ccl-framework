@@ -66,17 +66,17 @@ public:
 	friend class StringChars;
 	friend struct Variant;
 	
-	String (nullptr_t unused = nullptr);                    ///< default ctor, allows StringRef s = nullptr
-	String (int unused);                                    ///< deprecated: allows StringRef s = 0
-	String (IString* string);								///< IString* is shared!
-	String (const uchar* charBuffer);						///< characters are copied!
-	String (const char* asciiString);						///< construct from ASCII string
-	String (TextEncoding encoding, const char* cString);	///< construct from C string
-	String (StringRef string, int count);					///< construct with string repetition
-	String (const String&);									///< copy ctor
-	~String ();												///< dtor must not be virtual!
+	String (nullptr_t unused = nullptr);				///< default ctor, allows StringRef s = nullptr
+	String (int unused);								///< deprecated: allows StringRef s = 0
+	String (IString* string);							///< IString* is shared!
+	String (UStringPtr charBuffer);						///< characters are copied!
+	String (CStringPtr asciiString);					///< construct from ASCII string
+	String (TextEncoding encoding, CStringPtr cString);	///< construct from C string
+	String (StringRef string, int count);				///< construct with string repetition
+	String (const String&);								///< copy ctor
+	~String ();											///< dtor must not be virtual!
 	
-	String& operator = (const String&);						///< string content is shared!
+	String& operator = (const String&);					///< string content is shared!
 
 	static const String kEmpty;
 	static StringRef getLineEnd (TextLineFormat lineFormat = Text::kSystemLineFormat);
@@ -90,17 +90,17 @@ public:
 
 	uchar operator [] (int index) const;
 
-	bool copyTo (uchar* charBuffer, int bufferSize) const;
-	bool toCString (TextEncoding encoding, char* cString, int cStringSize, int* bytesWritten = nullptr) const;
-	bool toPascalString (TextEncoding encoding, unsigned char* pString, int pStringSize) const;
-	bool toASCII (char* asciiString, int asciiStringSize, int* bytesWritten = nullptr) const;
+	bool copyTo (uchar charBuffer[], int bufferSize) const;
+	bool toCString (TextEncoding encoding, char cString[], int cStringSize, int* bytesWritten = nullptr) const;
+	bool toPascalString (TextEncoding encoding, unsigned char pString[], int pStringSize) const;
+	bool toASCII (char asciiString[], int asciiStringSize, int* bytesWritten = nullptr) const;
 
 	bool equals (StringRef otherString) const;
-	bool equalsChars (const uchar* charBuffer, int count = -1) const;
+	bool equalsChars (UStringPtr charBuffer, int count = -1) const;
 
 	int compare (StringRef otherString, bool caseSensitive = true) const;
 	int compareWithOptions (StringRef otherString, int flags) const;
-	int compareChars (const uchar* charBuffer, int count = -1) const;
+	int compareChars (UStringPtr charBuffer, int count = -1) const;
 
 	bool operator == (StringRef s) const;
 	bool operator != (StringRef s) const;
@@ -140,19 +140,19 @@ public:
 	void writeEnable ();
 	void empty ();
 
-	String& assign (const uchar* charBuffer, int count = -1);
-	String& operator = (const uchar* charBuffer);
+	String& assign (UStringPtr charBuffer, int count = -1);
+	String& operator = (UStringPtr charBuffer);
 
 	String& append (StringRef otherString);
 	String& append (StringRef otherString, int count);
-	String& append (const uchar* charBuffer, int count = -1);
+	String& append (UStringPtr charBuffer, int count = -1);
 	String& append (uchar uc);
 
-	bool appendCString (TextEncoding encoding, const char* cString, int count = -1);
-	bool appendPascalString (TextEncoding encoding, const unsigned char* pString);
+	bool appendCString (TextEncoding encoding, CStringPtr cString, int count = -1);
+	bool appendPascalString (TextEncoding encoding, const unsigned char pString[]);
 	bool appendNativeString (const void* nativeString);
 
-	String& appendASCII (const char* asciiString, int count = -1);
+	String& appendASCII (CStringPtr asciiString, int count = -1);
 
 	String& appendFormat (StringRef format, Variant args[], int count);
 	String& appendFormat (StringRef format, VariantRef arg1);
@@ -172,8 +172,8 @@ public:
 	String& operator << (float v);
 	String& operator << (double v);
 	String& operator << (StringRef s);
-	String& operator << (const uchar* charBuffer);
-	String& operator << (const char* asciiString);
+	String& operator << (UStringPtr charBuffer);
+	String& operator << (CStringPtr asciiString);
 
 	String& insert (int index, StringRef otherString);
 	String& prepend (StringRef otherString);
@@ -212,10 +212,15 @@ public:
 		string.theString->releaseChars (data);
 	}
 
-	operator const uchar* () const
+	UStringPtr str () const
 	{
 		static uchar emptyText[1] = {0};
 		return data.text ? data.text : emptyText;
+	}
+
+	operator UStringPtr () const
+	{
+		return str ();
 	}
 
 protected:
@@ -275,29 +280,18 @@ public:
 		return *this;
 	}
 
-	StringWriter& append (const wchar_t* s, int charCount = -1)
+	template <typename CharType>
+	StringWriter& append (const CharType s[], int charCount = -1)
 	{
 		if(charCount >= 0)
 		{			
 			for(int i = 0; i < charCount; i++)
-			{
-				#if CCL_UCHAR_COMPATIBLE_WITH_WCHAR_T
-				append (s[i]);
-				#else
 				append (uchar(s[i]));
-				#endif
-			}
 		}
 		else if(s) // null-terminated
 		{
 			for(int i = 0; s[i] != '\0'; i++)
-			{
-				#if CCL_UCHAR_COMPATIBLE_WITH_WCHAR_T
-				append (s[i]);
-				#else
 				append (uchar(s[i]));
-				#endif
-			}
 		}
 		return *this;
 	}
@@ -312,7 +306,7 @@ public:
 		return *this;
 	}
 
-	static String fromWideChars (const wchar_t* s, int charCount = -1)
+	static String fromWideChars (const wchar_t s[], int charCount = -1)
 	{
 		String string;
 		#if CCL_UCHAR_COMPATIBLE_WITH_WCHAR_T
@@ -408,7 +402,7 @@ void String::releaseNativeString (Type nativeString)
 inline String& String::prepend (StringRef otherString)
 { return insert (0, otherString); }
 
-inline String& String::operator = (const uchar* charBuffer)
+inline String& String::operator = (UStringPtr charBuffer)
 { return assign (charBuffer); }
 
 inline String& String::operator << (int v)
@@ -426,10 +420,10 @@ inline String& String::operator << (double v)
 inline String& String::operator << (StringRef s)
 { return append (s); }
 
-inline String& String::operator << (const uchar* charBuffer)
+inline String& String::operator << (UStringPtr charBuffer)
 { return append (charBuffer); }
 
-inline String& String::operator << (const char* asciiString)
+inline String& String::operator << (CStringPtr asciiString)
 { return appendASCII (asciiString); }
 
 inline float String::scanFloat (float fallback) const

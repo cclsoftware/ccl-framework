@@ -164,7 +164,7 @@ IPersistentStore& DataStore::getStore ()
 	{
 		Threading::ScopedLock scopedLock (lock);
 
-		store = ccl_new<IPersistentStore> (CCL::ClassID::PersistentStore);
+		store = ccl_new<IPersistentStore> (ClassID::PersistentStore);
 		ASSERT (store)
 		if(store)
 		{
@@ -244,7 +244,7 @@ void DataStore::registerClass (MetaClassRef metaClass)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void DataStore::setMemberFlags (MetaClassRef metaClass, const char* memberName, int flags)
+void DataStore::setMemberFlags (MetaClassRef metaClass, CStringPtr memberName, int flags)
 {
 	Threading::ScopedLock scopedLock (lock);
 
@@ -293,7 +293,7 @@ Iterator* DataStore::query (MetaClassRef metaClass, IExpression* condition)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void DataStore::collectValues (IMutableArray& values, MetaClassRef metaClass, const char* memberName, IExpression* condition)
+void DataStore::collectValues (IMutableArray& values, MetaClassRef metaClass, CStringPtr memberName, IExpression* condition)
 {
 	Threading::ScopedLock scopedLock (lock);
 

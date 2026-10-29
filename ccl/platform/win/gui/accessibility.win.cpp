@@ -229,7 +229,7 @@ HRESULT STDMETHODCALLTYPE UIAutomationElementProvider::GetPatternProvider (PATTE
 		break;
 	
 	case UIA_InvokePatternId :
-		if(getEffectiveProvider ().hasInterface<CCL::IAccessibilityActionProvider> () || getEffectiveProvider ().getElementRole () == AccessibilityElementRole::kButton)
+		if(getEffectiveProvider ().hasInterface<CCL::IAccessibilityActionProvider> ())
 		{
 			*pRetVal = static_cast<IInvokeProvider*> (this);
 			retain ();
@@ -290,8 +290,11 @@ HRESULT STDMETHODCALLTYPE UIAutomationElementProvider::GetPatternProvider (PATTE
 		break;
 
 	case UIA_ExpandCollapsePatternId :
-		*pRetVal = static_cast<IExpandCollapseProvider*> (this);
-		retain ();
+		if(getEffectiveProvider ().hasInterface<CCL::IAccessibilityExpandCollapseProvider> ())
+		{
+			*pRetVal = static_cast<IExpandCollapseProvider*> (this);
+			retain ();
+		}
 		break;
 
 	//case UIA_TextPatternId :
@@ -331,7 +334,7 @@ HRESULT STDMETHODCALLTYPE UIAutomationElementProvider::GetPropertyValue (PROPERT
 		break;
 
 	case UIA_IsControlElementPropertyId :
-		ComVariant::convert (*pRetVal, !disconnected);
+		ComVariant::fromBool (*pRetVal, !disconnected);
 		break;
 	}
 
@@ -342,7 +345,7 @@ HRESULT STDMETHODCALLTYPE UIAutomationElementProvider::GetPropertyValue (PROPERT
 	switch(propertyId)
 	{
 	case UIA_IsContentElementPropertyId :
-		ComVariant::convert (*pRetVal, isContentElement (getEffectiveProvider ()));
+		ComVariant::fromBool (*pRetVal, isContentElement (getEffectiveProvider ()));
 		break;
 
 	case UIA_ControlTypePropertyId :
@@ -374,43 +377,43 @@ HRESULT STDMETHODCALLTYPE UIAutomationElementProvider::GetPropertyValue (PROPERT
 		break;
 
 	case UIA_IsValuePatternAvailablePropertyId :
-		ComVariant::convert (*pRetVal, getValueProvider ().hasInterface<CCL::IAccessibilityValueProvider> ());
+		ComVariant::fromBool (*pRetVal, getValueProvider ().hasInterface<CCL::IAccessibilityValueProvider> ());
 		break;
 		
 	case UIA_IsInvokePatternAvailablePropertyId :
-		ComVariant::convert (*pRetVal, getEffectiveProvider ().hasInterface<CCL::IAccessibilityActionProvider> ());
+		ComVariant::fromBool (*pRetVal, getEffectiveProvider ().hasInterface<CCL::IAccessibilityActionProvider> ());
 		break;
 
 	case UIA_IsTogglePatternAvailablePropertyId :
-		ComVariant::convert (*pRetVal, getEffectiveProvider ().hasInterface<CCL::IAccessibilityToggleProvider> ());
+		ComVariant::fromBool (*pRetVal, getEffectiveProvider ().hasInterface<CCL::IAccessibilityToggleProvider> ());
 		break;
 
 	case UIA_IsTablePatternAvailablePropertyId :
-		ComVariant::convert (*pRetVal, getEffectiveProvider ().hasInterface<CCL::IAccessibilityTableProvider> ());
+		ComVariant::fromBool (*pRetVal, getEffectiveProvider ().hasInterface<CCL::IAccessibilityTableProvider> ());
 		break;
 		
 	case UIA_IsTableItemPatternAvailablePropertyId :
-		ComVariant::convert (*pRetVal, getEffectiveProvider ().getElementRole () == AccessibilityElementRole::kDataItem);
+		ComVariant::fromBool (*pRetVal, getEffectiveProvider ().getElementRole () == AccessibilityElementRole::kDataItem);
 		break;
 		
 	case UIA_IsSelectionPatternAvailablePropertyId :
-		ComVariant::convert (*pRetVal, getEffectiveProvider ().hasInterface<CCL::IAccessibilitySelectionContainerProvider> ());
+		ComVariant::fromBool (*pRetVal, getEffectiveProvider ().hasInterface<CCL::IAccessibilitySelectionContainerProvider> ());
 		break;
 		
 	case UIA_IsSelectionItemPatternAvailablePropertyId :
-		ComVariant::convert (*pRetVal, getEffectiveProvider ().hasInterface<CCL::IAccessibilitySelectionProvider> ());
+		ComVariant::fromBool (*pRetVal, getEffectiveProvider ().hasInterface<CCL::IAccessibilitySelectionProvider> ());
 		break;
 		
 	case UIA_IsScrollPatternAvailablePropertyId :
-		ComVariant::convert (*pRetVal, getEffectiveProvider ().hasInterface<CCL::IAccessibilityScrollProvider> ());
+		ComVariant::fromBool (*pRetVal, getEffectiveProvider ().hasInterface<CCL::IAccessibilityScrollProvider> ());
 		break;
 		
 	case UIA_IsScrollItemPatternAvailablePropertyId :
-		ComVariant::convert (*pRetVal, true);
+		ComVariant::fromBool (*pRetVal, true);
 		break;
 		
 	case UIA_IsExpandCollapsePatternAvailablePropertyId :
-		ComVariant::convert (*pRetVal, getEffectiveProvider ().hasInterface<CCL::IAccessibilityExpandCollapseProvider> ());
+		ComVariant::fromBool (*pRetVal, getEffectiveProvider ().hasInterface<CCL::IAccessibilityExpandCollapseProvider> ());
 		break;
 		
 	case UIA_BoundingRectanglePropertyId :
@@ -461,19 +464,19 @@ HRESULT STDMETHODCALLTYPE UIAutomationElementProvider::GetPropertyValue (PROPERT
 		break;
 
 	case UIA_HasKeyboardFocusPropertyId :
-		ComVariant::convert (*pRetVal, get_flag (getEffectiveProvider ().getElementState (), AccessibilityElementState::kHasFocus));
+		ComVariant::fromBool (*pRetVal, get_flag (getEffectiveProvider ().getElementState (), AccessibilityElementState::kHasFocus));
 		break;
 
 	case UIA_IsKeyboardFocusablePropertyId :
-		ComVariant::convert (*pRetVal, get_flag (getEffectiveProvider ().getElementState (), AccessibilityElementState::kCanFocus));
+		ComVariant::fromBool (*pRetVal, get_flag (getEffectiveProvider ().getElementState (), AccessibilityElementState::kCanFocus));
 		break;
 
 	case UIA_IsEnabledPropertyId :
-		ComVariant::convert (*pRetVal, get_flag (getEffectiveProvider ().getElementState (), AccessibilityElementState::kEnabled));
+		ComVariant::fromBool (*pRetVal, get_flag (getEffectiveProvider ().getElementState (), AccessibilityElementState::kEnabled));
 		break;
 
 	case UIA_IsPasswordPropertyId :
-		ComVariant::convert (*pRetVal, get_flag (getEffectiveProvider ().getElementState (), AccessibilityElementState::kIsPassword));
+		ComVariant::fromBool (*pRetVal, get_flag (getEffectiveProvider ().getElementState (), AccessibilityElementState::kIsPassword));
 		break;
 
 	case UIA_FrameworkIdPropertyId :
@@ -491,7 +494,7 @@ HRESULT STDMETHODCALLTYPE UIAutomationElementProvider::GetPropertyValue (PROPERT
 
 	case UIA_ValueIsReadOnlyPropertyId :
 		if(UnknownPtr<CCL::IAccessibilityValueProvider> valueProvider = getValueProvider ().asUnknown ())
-			ComVariant::convert (*pRetVal, valueProvider->isReadOnly ());
+			ComVariant::fromBool (*pRetVal, valueProvider->isReadOnly ());
 		break;
 
 	case UIA_PositionInSetPropertyId : CCL_FALLTHROUGH

@@ -121,7 +121,7 @@ protected:
 	void invalidatePackageCache ();
 
 	void announcePackage (UnifiedPackage* package) const;
-	void reportEvent (const CCL::Alert::Event& e);
+	void reportEvent (const Alert::Event& e);
 	void requestUpdate (int updateFlags = IUnifiedPackageSink::kRescan);
 };
 

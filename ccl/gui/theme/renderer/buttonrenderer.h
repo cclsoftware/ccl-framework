@@ -12,97 +12,57 @@
 // For more information, please visit ccl.dev.
 //
 // Filename    : ccl/gui/theme/renderer/buttonrenderer.cpp
-// Description : Control Renderer
+// Description : Button Renderer
 //
 //************************************************************************************************
 
 #ifndef _ccl_buttonrenderer_h
 #define _ccl_buttonrenderer_h
 
-#include "ccl/gui/theme/theme.h"
-#include "ccl/gui/theme/renderer/compositedrenderer.h"
-#include "ccl/gui/theme/textscaler.h"
+#include "ccl/gui/theme/renderer/bivrenderer.h"
 
-#include "ccl/public/gui/framework/styleflags.h"
+#include "ccl/public/gui/framework/themeelements.h"
 
 namespace CCL {
-
-class Button;
-class CheckBox;
-interface IColorParam;
 
 //************************************************************************************************
 // ButtonRenderer
 //************************************************************************************************
 
-class ButtonRenderer: public CompositedRenderer
+class ButtonRenderer: public BIVRenderer
 {
 public:
-	ButtonRenderer (VisualStyle* visualStyle);
-	
-	// CompositedRenderer
-	void draw (View* view, const UpdateRgn& updateRgn) override;
-	int hitTest (View* view, const Point& loc, Point* clickOffset) override;
-	bool getPartRect (const View* view, int partCode, CCL::Rect& rect) override;
-	
+	DECLARE_CLASS_ABSTRACT (ButtonRenderer, BIVRenderer)
+
+	ButtonRenderer (VisualStyle* visualStyle, View* owner);
+
+	// BIVRenderer
+	void applyVisualStyle (RenderAtomTransaction& transaction) override;
+	void draw (const UpdateRgn& updateRgn) override;
+	void updateAtoms () override;
+	RectF getSize () const override;
+
 protected:
 	typedef Vector<int> IntVector;
-	
-	TextScaler textScaler;
-	SharedPtr<IImage> image;
-	int lastButtonValue;
+
+	bool initialized;
+	Image* backgroundImage;
 	IntVector frameIndex;
 	IntVector iconFrameIndex;
-	int phaseFrameIndex;
-	int phaseIconFrameIndex;
-	Color textColor;
-	Color textColorOn;
-	Color textColorPressed;
-	Color textColorPressedOn;
-	Color textColorMouseOver;
-	Color textColorMouseOverOn;
-	Color textColorDisabled;
-	Color textColorDisabledOn;
-	Color textColorPhaseOn;
-	Color iconColor;
-	Color iconColorOn;
-	Color iconColorDisabled;
-	Color iconMouseoverColor;
-	Color iconMouseoverColorOn;
-	Color iconPressedColor;
-	Color iconPressedColorOn;
-	
-	Color textContrastBrightColor;
-	Color textContrastBrightColorOn;
-	Color textContrastDarkColor;
-	Color textContrastDarkColorOn;
-	Color textContrastTransparentColor;
-	Color textContrastTransparentColorOn;
-	Color textColorAlphaBlend;
-	Color iconContrastBrightColor;
-	Color iconContrastBrightColorOn;
-	Color iconContrastDarkColor;
-	Color iconContrastDarkColorOn;
-	Color iconContrastTransparentColor;
-	Color iconContrastTransparentColorOn;
-	Color iconColorAlphaBlend;
-	mutable Color colorParamColor;
-	
-	Rect padding;
-	Coord backcolorRadius;
-	Coord iconSpacing;
-	float iconFillSize;
-	bool leadingIcon;
-	bool trailingIcon;
-	bool useModifiedIcon;
-	bool drawAsTemplate;
-	bool textShiftDownMode;
-	float brightColorThreshold;
-	bool initialized;
-		
-	SharedPtr<IImage> animationFilmstrip;
-	float phaseForPendingAnimation;
 
+	virtual void initialize ();
+	virtual void initFrames (IntVector& index, IImage& image);
+
+	void updateIconFrames (Image& icon);
+	bool getColorParamColor (Color& color) const;
+	void applyColorParam ();
+
+	#if LEGACY_STYLES_SUPPORTED
+	Image* animationFilmstrip;
+	int lastButtonValue;
+	int phaseIconFrameIndex;
+	float phaseForPendingAnimation;
+	
 	enum AnimationState
 	{
 		kAnimationStopped = 0,
@@ -110,19 +70,16 @@ protected:
 		kAnimationRunning = 2
 	} animationState;
 
-	void updateAnimationState (const Button* button);
+	void updateAnimationState ();
 	bool isAnimationPending () const { return animationState == kAnimationPending; }
 	bool isAnimationRunning () const { return animationState == kAnimationRunning; }
-	
-	void setImage (IImage* image);
-	virtual void initialize (StyleRef style, View* view);
+	#endif
 
-	virtual void initFrames (IntVector& index, IImage& image);
-	ColorRef getIconColor (IColorParam* colorParam, bool isOn, bool pressed, bool mouseover) const;
-	ColorRef getTextColor (IColorParam* colorParam, bool isOn, bool pressed, bool mouseover) const;
+	// BIVRenderer
+	Image* getIcon () const override { return const_cast<RenderAtom*> (&iconAtom)->getImage (); }
 };
 
-DECLARE_VISUALSTYLE_CLASS (Button)
+DECLARE_TYPELIB_ENTRY (Button)
 
 //************************************************************************************************
 // MultiToggleRenderer
@@ -131,7 +88,9 @@ DECLARE_VISUALSTYLE_CLASS (Button)
 class MultiToggleRenderer: public ButtonRenderer
 {
 public:
-	MultiToggleRenderer (VisualStyle* visualStyle);
+	DECLARE_CLASS_ABSTRACT (MultiToggleRenderer, ButtonRenderer)
+
+	MultiToggleRenderer (VisualStyle* visualStyle, View* owner);
 
 protected:
 	// ButtonRenderer
@@ -145,22 +104,24 @@ protected:
 class CheckBoxRenderer: public ButtonRenderer
 {
 public:
-	CheckBoxRenderer (VisualStyle* visualStyle);
+	DECLARE_CLASS_ABSTRACT (CheckBoxRenderer, ButtonRenderer)
+
+	CheckBoxRenderer (VisualStyle* visualStyle, View* owner);
 	
 	// ButtonRenderer
-	void draw (View* view, const UpdateRgn& updateRgn) override;
-	void initialize (StyleRef style, View* view) override;
-	
+	void applyVisualStyle (RenderAtomTransaction& transaction) override;
+
 protected:
 	IntVector mixedIconFrameIndex;
+	Image* mixedIcon;
 
-	bool useButtonStyle;
-	bool checkBoxRightSide;
+	ThemeElementID getThemeId () const;
 
-	ThemeElementID getThemeId (CheckBox* checkBox) const;
+	// ButtonRenderer
+	void initialize () override;
 };
 
-DECLARE_VISUALSTYLE_CLASS (CheckBox)
+DECLARE_TYPELIB_ENTRY (CheckBox)
 
 //************************************************************************************************
 // ButtonRenderer
@@ -169,7 +130,9 @@ DECLARE_VISUALSTYLE_CLASS (CheckBox)
 class RadioButtonRenderer: public CheckBoxRenderer
 {
 public:
-	RadioButtonRenderer (VisualStyle* visualStyle);
+	DECLARE_CLASS_ABSTRACT (RadioButtonRenderer, CheckBoxRenderer)
+
+	using CheckBoxRenderer::CheckBoxRenderer;
 };
 
 } // namespace CCL

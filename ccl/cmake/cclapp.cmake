@@ -125,6 +125,7 @@ ccl_list_append_once (cclapp_api_headers
 
 	${CCL_DIR}/app/components/asynchandler.h
 	${CCL_DIR}/app/components/colorpicker.h
+	${CCL_DIR}/app/components/bindingcomponent.h
 	${CCL_DIR}/app/components/breadcrumbscomponent.h
 	${CCL_DIR}/app/components/consolecomponent.h
 	${CCL_DIR}/app/components/eulacomponent.h
@@ -263,6 +264,7 @@ ccl_list_append_once (cclapp_api_headers
 	${CCL_DIR}/app/paramalias.h
 	${CCL_DIR}/app/paramcontainer.h
 	${CCL_DIR}/app/params.h
+	${CCL_DIR}/app/paramcurve.h
 
 	${CCL_DIR}/app/presets/memorypreset.h
 	${CCL_DIR}/app/presets/objectpreset.h
@@ -318,6 +320,7 @@ ccl_list_append_once (cclapp_public_source_files
 	${CCL_DIR}/public/gui/graphics/3d/transform3d.cpp
 	${CCL_DIR}/public/gui/graphics/3d/itransformconstraints3d.cpp
 	${CCL_DIR}/public/gui/graphics/3d/modelfactory3d.cpp
+	${CCL_DIR}/public/gui/paramdefinition.cpp
 	${CCL_DIR}/public/gui/paramlist.cpp
 	
 	${CCL_DIR}/public/plugins/stubobject.cpp
@@ -352,6 +355,7 @@ ccl_list_append_once (cclapp_source_files
 
 	${CCL_DIR}/app/components/asynchandler.cpp
 	${CCL_DIR}/app/components/colorpicker.cpp
+	${CCL_DIR}/app/components/bindingcomponent.cpp
 	${CCL_DIR}/app/components/breadcrumbscomponent.cpp
 	${CCL_DIR}/app/components/consolecomponent.cpp
 	${CCL_DIR}/app/components/eulacomponent.cpp
@@ -483,6 +487,7 @@ ccl_list_append_once (cclapp_source_files
 	${CCL_DIR}/app/paramalias.cpp
 	${CCL_DIR}/app/paramcontainer.cpp
 	${CCL_DIR}/app/params.cpp
+	${CCL_DIR}/app/paramcurve.cpp
 
 	${CCL_DIR}/app/presets/memorypreset.cpp
 	${CCL_DIR}/app/presets/objectpreset.cpp

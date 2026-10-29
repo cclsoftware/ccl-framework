@@ -29,19 +29,19 @@ namespace {
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-template<IExpression::Type type> inline const char* getOperatorLiteral ()			{ return nullptr; }
-template<>inline const char* getOperatorLiteral<IExpression::kAnd> ()				{ return " AND "; }
-template<>inline const char* getOperatorLiteral<IExpression::kOr> ()				{ return " OR "; }
-template<>inline const char* getOperatorLiteral<IExpression::kNot> ()				{ return " NOT "; }
-template<>inline const char* getOperatorLiteral<IExpression::kEquals> ()			{ return "="; }
-template<>inline const char* getOperatorLiteral<IExpression::kNonEquals> ()			{ return "!="; }
-template<>inline const char* getOperatorLiteral<IExpression::kGreaterThan> ()		{ return ">"; }
-template<>inline const char* getOperatorLiteral<IExpression::kGreaterOrEqual> ()	{ return ">="; }
-template<>inline const char* getOperatorLiteral<IExpression::kLessThan> ()			{ return "<"; }
-template<>inline const char* getOperatorLiteral<IExpression::kLessOrEqual> ()		{ return "<="; }
-template<>inline const char* getOperatorLiteral<IExpression::kLike> ()				{ return " LIKE "; }
-template<>inline const char* getOperatorLiteral<IExpression::kContains> ()			{ return " LIKE "; }
-template<>inline const char* getOperatorLiteral<IExpression::kIn> ()				{ return " IN("; }
+template<IExpression::Type type> inline CStringPtr getOperatorLiteral ()			{ return nullptr; }
+template<>inline CStringPtr getOperatorLiteral<IExpression::kAnd> ()				{ return " AND "; }
+template<>inline CStringPtr getOperatorLiteral<IExpression::kOr> ()				{ return " OR "; }
+template<>inline CStringPtr getOperatorLiteral<IExpression::kNot> ()				{ return " NOT "; }
+template<>inline CStringPtr getOperatorLiteral<IExpression::kEquals> ()			{ return "="; }
+template<>inline CStringPtr getOperatorLiteral<IExpression::kNonEquals> ()			{ return "!="; }
+template<>inline CStringPtr getOperatorLiteral<IExpression::kGreaterThan> ()		{ return ">"; }
+template<>inline CStringPtr getOperatorLiteral<IExpression::kGreaterOrEqual> ()	{ return ">="; }
+template<>inline CStringPtr getOperatorLiteral<IExpression::kLessThan> ()			{ return "<"; }
+template<>inline CStringPtr getOperatorLiteral<IExpression::kLessOrEqual> ()		{ return "<="; }
+template<>inline CStringPtr getOperatorLiteral<IExpression::kLike> ()				{ return " LIKE "; }
+template<>inline CStringPtr getOperatorLiteral<IExpression::kContains> ()			{ return " LIKE "; }
+template<>inline CStringPtr getOperatorLiteral<IExpression::kIn> ()				{ return " IN("; }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -146,7 +146,7 @@ SqlWriter& SqlWriter::writeStringLiteral (StringRef string)
 		MutableCString utf8 (string, Text::kUTF8);
 
 		// replace ' by ''
-		if(const char* ptr = utf8.str ())
+		if(CStringPtr ptr = utf8.str ())
 		{
 			CStringWriter<128> writer (sql, false);
 			while(*ptr)

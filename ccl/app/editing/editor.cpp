@@ -220,8 +220,8 @@ public:
 // EditorComponent
 //************************************************************************************************
 
-CCL::Configuration::BoolValue EditorComponent::contextMenuSelectAll	("Editing", "contextMenu.selectAll", true);
-CCL::Configuration::BoolValue EditorComponent::contextMenuUndo		("Editing", "contextMenu.undo", true);
+Configuration::BoolValue EditorComponent::contextMenuSelectAll ("Editing", "contextMenu.selectAll", true);
+Configuration::BoolValue EditorComponent::contextMenuUndo ("Editing", "contextMenu.undo", true);
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -479,9 +479,9 @@ tbool CCL_API EditorComponent::checkCommandCategory (CStringRef category) const
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-CCL::tbool CCL_API EditorComponent::interpretCommand (const CCL::CommandMsg& msg)
+tbool CCL_API EditorComponent::interpretCommand (const CommandMsg& msg)
 {
-	if(CCL::CommandDispatcher<EditorComponent>::dispatchCommand (msg))
+	if(CommandDispatcher<EditorComponent>::dispatchCommand (msg))
 		return true; 
 
 	if(model)

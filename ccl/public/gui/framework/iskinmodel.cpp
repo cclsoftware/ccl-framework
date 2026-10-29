@@ -18,6 +18,7 @@
 
 #include "ccl/public/gui/framework/iskinmodel.h"
 
+#include "ccl/public/base/itypelib.h"
 #include "ccl/public/base/iobject.h"
 #include "ccl/public/collections/iunknownlist.h"
 
@@ -30,17 +31,20 @@ using namespace CCL;
 ISkinElement* SkinModelAccessor::find (IContainer* c, StringID name, StringID typeName)
 {
 	if(c) ForEachUnknown (*c, unk)
-		if(UnknownPtr<ISkinElement> e = unk)
+		if(UnknownPtr<ISkinElement> skinElement = unk)
 		{
-			if(e->getName () == name)
+			if(skinElement->getName () == name)
 			{
 				if(!typeName.isEmpty ())
 				{
-					if(auto typeInfo = e->getElementClass ())
-						if(typeName != typeInfo->getClassName ())
-							continue;
+					if(UnknownPtr<ITypeLibReference> typeLibElement = skinElement)
+					{
+						if(const ITypeInfo* typeInfo = typeLibElement->getReferencedType ())
+							if(typeName != typeInfo->getClassName ())
+								continue;
+					}
 				}
-				return e;
+				return skinElement;
 			}
 		}
 	EndFor

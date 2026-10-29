@@ -275,6 +275,7 @@ void CCL_API BreadcrumbsComponent::notify (ISubject* subject, MessageRef msg)
 			{
 				StringRef title = subFolder->getTitle ();
 				StringRef displayTitle (title.isEmpty () ? subFolder->getName () : title);
+				String subFolderName (subFolder->getName ().isEmpty () ? title : subFolder->getName ());
 
 				IMenuItem* menuItem = menu->addCommandItem (displayTitle, CSTR ("Edit"), CSTR ("SubFolder"),
 					makeCommandDelegate ([this, segment] (const CommandMsg& msg, VariantRef data)
@@ -291,7 +292,7 @@ void CCL_API BreadcrumbsComponent::notify (ISubject* subject, MessageRef msg)
 							}
 						}
 						return true;
-					}, String (title)));
+					}, subFolderName));
 
 				if(menuItem)
 				{

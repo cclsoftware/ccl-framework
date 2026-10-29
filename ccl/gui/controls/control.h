@@ -59,16 +59,20 @@ public:
 	static bool isResetClick (const MouseEvent& event);
 	static bool handleMouseWheel (const MouseWheelEvent& event, IParameter* param, bool inverse = false);
 
+	virtual void getStyleConditions (StyleConditionContext& conditions) const;
+
 	template <class T> class PhaseProperty;
 	
 	// IControl
 	IParameter* CCL_API getParameter () const override;
 	void CCL_API setParameter (IParameter* param) override;
-		
+
 	// View
 	const IVisualStyle& CCL_API getVisualStyle () const override;
+	void attached (View* parent) override;
 	void onVisualStyleChanged () override;
 	void onColorSchemeChanged (const ColorSchemeEvent& event) override;
+	void onDisplayPropertiesChanged (const DisplayChangedEvent& event) override;
 	void draw (const UpdateRgn& updateRgn) override;
 	void updateClient () override;
 	bool onMouseWheel (const MouseWheelEvent& event) override;
@@ -80,7 +84,9 @@ public:
 	void CCL_API notify (ISubject* subject, MessageRef msg) override;
 	bool setHelpIdentifier (StringRef id) override;
 	StringRef getHelpIdentifier () const override;
-			
+	void enable (bool state) override;
+	bool setMouseState (int state, bool invalidate = true) override;
+
 	CLASS_INTERFACE (IControl, View)
 
 protected:

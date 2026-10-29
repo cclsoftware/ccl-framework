@@ -299,17 +299,12 @@
 						<String x:id="brief" text="the non-transparent &quot;colorname&quot; color will be alphablended with this color (using &quot;color.alphablend&quot; as fallback) and used as iconcolor"/>
 					</Model.Documentation>
 				</Model.Member>
-				<Model.Member name="useButtonMinSize" type="float" typeName="metric">
-					<Model.Documentation x:id="doc">
-						<String x:id="brief" text="use minimal button size (uses theme size as default)"/>
-					</Model.Documentation>
-				</Model.Member>
-				<Model.Member name="buttonMinWidth" type="float" typeName="metric">
+				<Model.Member name="minwidth" type="float" typeName="metric">
 					<Model.Documentation x:id="doc">
 						<String x:id="brief" text="use minimal button width"/>
 					</Model.Documentation>
 				</Model.Member>
-				<Model.Member name="buttonMinHeight" type="float" typeName="metric">
+				<Model.Member name="minheight" type="float" typeName="metric">
 					<Model.Documentation x:id="doc">
 						<String x:id="brief" text="use minimal button height"/>
 					</Model.Documentation>

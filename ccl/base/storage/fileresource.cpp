@@ -167,6 +167,18 @@ FileResource::~FileResource ()
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
+void FileResource::ensureClose ()
+{
+	// In case someone simply calls release(), that's okay if it's the only client,
+	// otherwise we close the file and throw an assertion.
+	if(openCount == 1)
+		close ();
+	else
+		closeFile ();
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
 tbool CCL_API FileResource::setPath (UrlRef _path)
 {
 	//ASSERT (path.isEmpty () != 0)
@@ -266,6 +278,11 @@ tbool CCL_API FileResource::deletePhysical (int mode)
 //************************************************************************************************
 // FileStreamResource
 //************************************************************************************************
+
+DEFINE_CLASS_ABSTRACT (FileStreamResource, Object)
+DEFINE_CLASS_NAMESPACE (FileStreamResource, NAMESPACE_CCL)
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
 
 FileStreamResource::FileStreamResource ()
 : file (nullptr),

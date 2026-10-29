@@ -40,8 +40,9 @@ class Hint(ABC):
         pass
 
     @abstractmethod
-    def replace_in_caller(self, call_text: str) -> str:
-        """Replace call of this hint in call_text."""
+    def replace_in_caller(self, call_text: str, caller_params: List[str]) -> str:
+        """Replace call of this hint in call_text. 'caller_params' are the
+        parameter names of the calling macro."""
         pass
 
     @abstractmethod
@@ -81,13 +82,13 @@ class NonParameterizedHint(Hint):
         # Get the implementation part by removing the "#define MACRO_NAME" substring.
         self.impl = macro_text.replace(f"#define {self.name}", "").strip()
 
-    def replace_in_caller(self, call_text: str) -> str:
+    def replace_in_caller(self, call_text: str, caller_params: List[str]) -> str:
         """Replace call of this macro with the macro implementation.
         Since there are no parameters, simply replace the name with
         the implementation.
         """
 
-        return call_text.replace(self.name, self.impl)
+        return StringParser.replace_token(call_text, self.name, self.impl)
 
     def to_export_string(self):
         return f"#define {self.name} {self.impl}".strip()
@@ -117,7 +118,7 @@ class ParameterizedHint(Hint):
             # Index lookup may fail.
             raise HintLoadException()
 
-    def replace_in_caller(self, call_text: str) -> str:
+    def replace_in_caller(self, call_text: str, caller_params: List[str]) -> str:
         """ In the 'hint' implementation, the macro placeholder must be
          replaced with the called macro's implementation. Important:
          parameter names may change between call and original macro
@@ -141,34 +142,85 @@ class ParameterizedHint(Hint):
             temp = self.impl
             temp = temp.replace(ParameterizedHint.VARIADIC_ARGS, call_params_stripped)
 
-            replace_str = f"{self.name} {call_params}"
-            assert replace_str in call_text
-
-            return call_text.replace(replace_str, temp)
+            return self._replace_call(call_text, call_params, temp)
 
         else:
 
-            # Group parameters into tuples of (renamed, original)
+            # Map original parameter names to called parameters.
             call_params_list = StringParser.listify_params(call_params)
             self_params_list = StringParser.listify_params(self.params)
             assert len(call_params_list) == len(self_params_list)
-            pairs = zip(call_params_list, self_params_list)
+            params_map = dict(zip(self_params_list, call_params_list))
 
-            # In the called macro implementation, replace the parameter
-            # names with the called parameter names
+            # In the called macro implementation, replace the parameter names
+            # with the called parameters. Match whole words only (e.g. parameter
+            # 'a' must not match inside 'typename') and in a single pass so that
+            # replaced text is not substituted again. A stringized parameter
+            # ('#param', but not '##param') is matched including its '#'.
             temp = self.impl
-            for renamed_param, original_param in pairs:
-                temp = temp.replace(original_param, renamed_param)
+            if params_map:
+                pattern = (r"(?P<stringize>(?<!#)#(?!#)\s*)?(?<![A-Za-z0-9_])(?P<param>"
+                           + "|".join(re.escape(param) for param in params_map)
+                           + r")(?![A-Za-z0-9_])")
 
-            # Insert the final string into the implementation for
-            # 'hint', replacing the nested macro call. The macro
-            # may have a whitespace between name and param lists.
-            replace_str = f"{self.name} {call_params}"
-            if replace_str not in call_text:
-                replace_str = f"{self.name}{call_params}"
-                assert replace_str in call_text
+                def substitute(match: re.Match) -> str:
+                    argument = params_map[match.group("param")]
+                    if match.group("stringize"):
+                        return ParameterizedHint._stringize(argument, caller_params)
+                    return argument
 
-            return call_text.replace(replace_str, temp)
+                temp = re.sub(pattern, substitute, temp)
+
+            return self._replace_call(call_text, call_params, temp)
+
+    @staticmethod
+    def _stringize(argument: str, caller_params: List[str]) -> str:
+        """Apply the '#' operator to a call argument.
+
+        Parameters of the calling macro within the argument must stay
+        stringized parameters of the caller, the remaining text becomes
+        string literals. Adjacent literals are concatenated by the compiler.
+        Token pasting ('##') within the argument is applied.
+
+        Examples:
+            'condition' (caller parameter) -> '#condition'
+            'CCL_TEST_ASSERT' -> '"CCL_TEST_ASSERT"'
+            'Class<Type>' (caller parameters) -> '#Class "<" #Type ">"'
+            'Class##Register' (caller parameter) -> '#Class "Register"'
+        """
+
+        def quote(text: str) -> str:
+            escaped = text.replace("\\", "\\\\").replace('"', '\\"')
+            return f'"{escaped}"'
+
+        parts: List[str] = list()
+        literal = ""
+        for token in re.split(r"([A-Za-z_][A-Za-z0-9_]*)", argument):
+            if token in caller_params:
+                if literal:
+                    parts.append(quote(literal))
+                    literal = ""
+                parts.append(f"#{token}")
+            else:
+                literal += re.sub(r"\s*##\s*", "", token)
+
+        if literal or not parts:
+            parts.append(quote(literal))
+
+        return " ".join(parts)
+
+    def _replace_call(self, call_text: str, call_params: str, expanded: str) -> str:
+        """Insert the expanded implementation into the implementation for
+        'hint', replacing the nested macro call. The macro may have a
+        whitespace between name and param lists.
+        """
+
+        replace_str = f"{self.name} {call_params}"
+        if not StringParser.contains_token(call_text, replace_str):
+            replace_str = f"{self.name}{call_params}"
+            assert StringParser.contains_token(call_text, replace_str)
+
+        return StringParser.replace_token(call_text, replace_str, expanded)
 
     def to_export_string(self) -> str:
         return f"#define {self.name}{self.params} {self.impl}"
@@ -187,6 +239,7 @@ class HintExporter:
         """Convert macros into hints, generate output file."""
 
         hints: List[Hint] = self._create_hints(macros)
+        hints = self._remove_duplicates(hints)
         self._replace_cascaded_calls(hints)
         hints_to_export = self._filter_hints(hints)
 
@@ -243,26 +296,12 @@ class HintExporter:
         return result
 
     @staticmethod
-    def _used_as_literal(impl: str, macro: str) -> bool:
-        """ Attempt to detect whether the occurrence of 'macro'
-        is an actual call or not. Counter example from 'debug.h':
-
-        #define ASSERT(e) \
-            { if(!(e)) CCL::Debugger::assertFailed (#e, __FILE__, __LINE__); }
+    def _used_as_call(impl: str, macro: str) -> bool:
+        """Check if 'impl' invokes 'macro'. Occurrences in string literals
+        are not calls, counter example from 'debug.h':
 
         #define SOFT_ASSERT(e,s) \
             { if(!(e)) CCL::Debugger::printf ("ASSERT FAILED: \"%s\"  "#e"\n", s); }
-
-        Here, the macro ASSERT is used by SOFT_ASSERT as a literal, not a call.
-
-        Test strategy: check if enclosed in quotes.
-        """
-
-        return StringParser.is_literal_in(string=impl, search_string=macro)
-
-    @staticmethod
-    def _used_as_call(impl: str, macro: str) -> bool:
-        """Check if 'impl' invokes 'macro'.
 
         Examples:
             "CCL_TEST (a,b)" uses "CCL_TEST"
@@ -280,6 +319,10 @@ class HintExporter:
         if hint.name in processed_hints:
             return
 
+        caller_params: List[str] = list()
+        if isinstance(hint, ParameterizedHint):
+            caller_params = StringParser.listify_params(hint.params)
+
         for macro_name in known_hint_names:
 
             # Do not check self.
@@ -287,9 +330,6 @@ class HintExporter:
                 continue
 
             if not HintExporter._used_as_call(impl=hint.impl, macro=macro_name):
-                continue
-
-            if HintExporter._used_as_literal(impl=hint.impl, macro=macro_name):
                 continue
 
             # Lookup the dependent macro that is called by hint.
@@ -303,12 +343,12 @@ class HintExporter:
                 logging.warning(f"called macro '{macro_name}' from '{path}' has empty implementation")
 
             # Same macro can occur multiple times, example: "QUERY_INTERFACE" in "CLASS_INTERFACE2"
-            while macro_name in hint.impl:
+            while StringParser.contains_token(hint.impl, macro_name):
                 # Recursion: called macro may in turn require resolving, resolve first.
                 if called_hint.name not in processed_hints:
                     HintExporter._replace_call_recursive(called_hint, known_hint_names, known_hints, processed_hints)
 
-                hint.impl = called_hint.replace_in_caller(hint.impl)
+                hint.impl = called_hint.replace_in_caller(hint.impl, caller_params)
 
             logging.debug(f"replaced uses of '{macro_name}' in '{hint.name}'")
 
@@ -316,8 +356,36 @@ class HintExporter:
         processed_hints.append(hint.name)
 
     @staticmethod
+    def _resolve_aliases(hints: List[Hint]) -> None:
+        """Convert non-parameterized aliases of parameterized macros
+        into parameterized hints.
+
+        Example:
+            '#define FOO_BOOL FOO_INT' with '#define FOO_INT(a, b) impl...'
+            -> '#define FOO_BOOL(a, b) FOO_INT(a, b)'
+        """
+
+        hints_dict = {hint.name: hint for hint in hints}
+        for index, hint in enumerate(hints):
+            if not isinstance(hint, NonParameterizedHint):
+                continue
+
+            target = hints_dict.get(hint.impl, None)
+            if not isinstance(target, ParameterizedHint):
+                continue
+
+            alias = ParameterizedHint(hint.macro)
+            alias.name = hint.name
+            alias.params = target.params
+            alias.impl = f"{target.name}{target.params}"
+            hints[index] = alias
+            logging.debug(f"resolved alias '{hint.name}' of '{target.name}'")
+
+    @staticmethod
     def _replace_cascaded_calls(hints: List[Hint]) -> None:
         """Resolve cascading macro implementations."""
+
+        HintExporter._resolve_aliases(hints)
 
         # Create hint-by-name lookup dictionary.
         hints_dict = {hint.name: hint for hint in hints}
@@ -333,29 +401,64 @@ class HintExporter:
             HintExporter._replace_call_recursive(hint, hint_names_sorted, hints_dict, processed_hints)
 
     @staticmethod
+    def _remove_duplicates(hints: List[Hint]) -> List[Hint]:
+        """Keep a single definition per macro name. Duplicates typically stem
+        from '#if/#else' branches (e.g. debug vs. release variants) which are
+        all scanned unless a condition is configured.
+
+        The first definition that passes the pattern filters is kept, which is
+        usually the '#if' branch. Definitions excluded by pattern filters are
+        only kept if there is no other definition.
+        """
+
+        selected: Dict[str, Hint] = dict()
+        for hint in hints:
+            existing = selected.get(hint.name, None)
+            if existing is None:
+                selected[hint.name] = hint
+                continue
+
+            kept = existing
+            existing_exported = HintExporter._is_exported(existing)
+            hint_exported = HintExporter._is_exported(hint)
+            if not existing_exported and hint_exported:
+                kept = hint
+                selected[hint.name] = hint
+
+            # Only definitions exported from different files are a real conflict,
+            # others typically are '#if/#else' branches of the same file.
+            message = (f"duplicate macro '{hint.name}' in '{hint.macro.source.path}' and "
+                       f"'{existing.macro.source.path}', keeping definition from '{kept.macro.source.path}'")
+            if existing_exported and hint_exported and hint.macro.source.path != existing.macro.source.path:
+                logging.warning(message)
+            else:
+                logging.debug(message)
+
+        return [hint for hint in hints if selected[hint.name] is hint]
+
+    @staticmethod
+    def _is_exported(hint: Hint) -> bool:
+        """Check hint against the include and exclude patterns of its source."""
+
+        include_patterns = hint.macro.source.include_patterns
+        if include_patterns:
+            if not HintExporter._match_any_regex(include_patterns, hint.name):
+                logging.debug(f"skipped macro '{hint.name}' due to include pattern filter")
+                return False
+
+        exclude_patterns = hint.macro.source.exclude_patterns
+        if exclude_patterns:
+            if HintExporter._match_any_regex(exclude_patterns, hint.name):
+                logging.debug(f"skipped macro '{hint.name}' due to exclude pattern filter")
+                return False
+
+        return True
+
+    @staticmethod
     def _filter_hints(hints: List[Hint]) -> List[Hint]:
         """Filter hints by hint individual patterns."""
 
-        result: List[Hint] = list()
-
-        for hint in hints:
-            hint_name = hint.name
-
-            include_patterns = hint.macro.source.include_patterns
-            if include_patterns:
-                if not HintExporter._match_any_regex(include_patterns, hint_name):
-                    logging.debug(f"skipped macro '{hint_name}' due to include pattern filter")
-                    continue
-
-            exclude_patterns = hint.macro.source.exclude_patterns
-            if exclude_patterns:
-                if HintExporter._match_any_regex(exclude_patterns, hint_name):
-                    logging.debug(f"skipped macro '{hint_name}' due to exclude pattern filter")
-                    continue
-
-            result.append(hint)
-
-        return result
+        return [hint for hint in hints if HintExporter._is_exported(hint)]
 
     def _write_output_file(self, hints: List[Hint]) -> None:
 

@@ -82,7 +82,7 @@ interface IString: IUnknown
 	/** String character data. */
 	struct CharData
 	{
-		const uchar* text;		///< read-only address of string characters
+		UStringPtr text;		///< read-only address of string characters
 		int reserved;			///< for internal use
 
 		CharData ()
@@ -111,25 +111,25 @@ interface IString: IUnknown
 	virtual tresult CCL_API releaseChars (CharData& data) const = 0;
 
 	/** Copy string to external character buffer, size is in characters (uchar, not bytes). */
-	virtual tresult CCL_API copyTo (uchar* charBuffer, int bufferSize) const = 0;
+	virtual tresult CCL_API copyTo (uchar charBuffer[], int bufferSize) const = 0;
 
 	/** Convert to C-String in specified encoding, size includes 0 termination byte. */
-	virtual tresult CCL_API toCString (TextEncoding encoding, char* cString, int cStringSize, int* bytesWritten = nullptr) const = 0;
+	virtual tresult CCL_API toCString (TextEncoding encoding, char cString[], int cStringSize, int* bytesWritten = nullptr) const = 0;
 
 	/** Convert to Pascal string (with length byte) in specified encoding, size includes length byte. */
-	virtual tresult CCL_API toPascalString (TextEncoding encoding, unsigned char* pString, int pStringSize) const = 0;
+	virtual tresult CCL_API toPascalString (TextEncoding encoding, unsigned char pString[], int pStringSize) const = 0;
 
 	/** Compare this with other string, returns CompareResult. */
 	virtual int CCL_API compare (const IString* otherString, int flags = 0) const = 0;
 
 	/** Compare this with given Unicode text, returns CompareResult. */
-	virtual int CCL_API compareChars (const uchar* charBuffer, int count = -1) const = 0;
+	virtual int CCL_API compareChars (UStringPtr charBuffer, int count = -1) const = 0;
 
 	/** Compare for equality with other string (usually faster than full comparison). */
 	virtual tbool CCL_API equals (const IString* otherString) const = 0;
 
 	/** Compare for equality with given Unicode text (usually faster than full comparison). */
-	virtual tbool CCL_API equalsChars (const uchar* charBuffer, int count = -1) const = 0;
+	virtual tbool CCL_API equalsChars (UStringPtr charBuffer, int count = -1) const = 0;
 
 	/** Returns code unit index of substring occurance in this string, or -1 if not found. */
 	virtual int CCL_API findSubString (const IString* otherString, int flags = 0) const = 0;
@@ -146,8 +146,8 @@ interface IString: IUnknown
 	/**	Create an OS-specific representation of this string
 		Windows: BSTR
 		macOS/iOS: CFStringRef
-		Android: jstring 
-		Linux: 8 bit characters in system encoding */
+		Android: jstring
+		Linux/Wasm: 8 bit characters in system encoding */
 	virtual void* CCL_API createNativeString () const = 0;
 
 	/** Release OS-specific string representation created via createNativeString(). */
@@ -167,16 +167,16 @@ interface IString: IUnknown
 	//////////////////////////////////////////////////////////////////////////////////////////////
 
 	/** Assign a piece of Unicode text. */
-	virtual tresult CCL_API assignChars (const uchar* charBuffer, int count = -1) = 0;
+	virtual tresult CCL_API assignChars (UStringPtr charBuffer, int count = -1) = 0;
 
 	/** Append C-String in specified encoding. */
-	virtual tresult CCL_API appendCString (TextEncoding encoding, const char* cString, int count = -1) = 0;
+	virtual tresult CCL_API appendCString (TextEncoding encoding, CStringPtr cString, int count = -1) = 0;
 
 	/** Append Pascal string (with length byte) in specified encoding. */
-	virtual tresult CCL_API appendPascalString (TextEncoding encoding, const unsigned char* pString) = 0;
+	virtual tresult CCL_API appendPascalString (TextEncoding encoding, const unsigned char pString[]) = 0;
 
 	/** Append a piece of Unicode text. */
-	virtual tresult CCL_API appendChars (const uchar* charBuffer, int count = -1) = 0;
+	virtual tresult CCL_API appendChars (UStringPtr charBuffer, int count = -1) = 0;
 
 	/** Append another string's text. */
 	virtual tresult CCL_API appendString (const IString* otherString) = 0;
@@ -184,7 +184,9 @@ interface IString: IUnknown
 	/** Appends count repetitions of a string. */
 	virtual tresult CCL_API appendRepeated (const IString* otherString, int count) = 0;
 
-	/** Append text from native string, see createNativeString() for OS-specific types. */
+	/** Append text from native string, see createNativeString() for OS-specific types.
+		Note: treats the native string as null-terminated, i.e. any embedded null characters
+		(legal e.g. in a Windows BSTR) truncate the appended text at that point. */
 	virtual tresult CCL_API appendNativeString (const void* nativeString) = 0;
 
 	/** Insert string at specified position. */
@@ -309,12 +311,16 @@ interface IFormattedString: IUnknown
 
 //************************************************************************************************
 // IUnicodeUtilities
-/** Character classification and conversion for 2-Byte UTF-16 characters.
+/** Unicode utilities for 16 bit code units in UTF-16 encoding.
 	\ingroup text_string */
 //************************************************************************************************
 
 interface IUnicodeUtilities: IUnknown
 {
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	// Character classification and conversion (BMP only)
+	//////////////////////////////////////////////////////////////////////////////////////////////
+
 	/** Returns true if c is an alphabetic character. */
 	virtual tbool CCL_API isAlpha (uchar c) const = 0;
 
@@ -349,6 +355,30 @@ interface IUnicodeUtilities: IUnknown
 	virtual uchar CCL_API toUppercase (uchar c) const = 0;
 
 	DECLARE_IID (IUnicodeUtilities)
+};
+
+//************************************************************************************************
+// IGraphemeIterator
+/**	Grapheme cluster navigation (UAX #29). Created with System::CreateGraphemeIterator.
+	Treats emoji with modifiers, ZWJ sequences, flags, and combining marks as atomic units.
+	\ingroup text_string */
+//************************************************************************************************
+
+interface IGraphemeIterator: IUnknown
+{
+	/** Get current position (in UTF-16 code units). */
+	virtual int CCL_API getPosition () const = 0;
+	
+	/** Set current position (in UTF-16 code units). */
+	virtual void CCL_API setPosition (int position) = 0;
+
+	/** Move to the next boundary and return the new position. */
+	virtual int CCL_API next () = 0;
+
+	/** Move to the previous boundary and return the new position. */
+	virtual int CCL_API previous () = 0;
+
+	DECLARE_IID (IGraphemeIterator)
 };
 
 } // namespace CCL

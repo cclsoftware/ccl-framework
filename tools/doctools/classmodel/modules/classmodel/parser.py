@@ -5,14 +5,13 @@ from typing import List, Dict, Optional
 
 from modules.classmodel.elements import TypeElement, MemberElement, EnumeratorElement, MethodArgumentElement, \
     MethodElement, PropertyElement, ClassElement, EnumerationElement, ObjectElement
-from modules.classmodel.environment import DocEnv
 from modules.classmodel.model import Model
 import logging
 
 from modules.classmodel.elementfilter import ElementFilter
 from modules.classmodel.xmldefs import XML
 
-__copyright__ = "Copyright (c) 2023 CCL Software Licensing GmbH"
+__copyright__ = "Copyright (c) 2026 CCL Software Licensing GmbH"
 
 
 class Parser:
@@ -20,9 +19,8 @@ class Parser:
     ClassModel XML parser.
     """
 
-    def __init__(self, ref_prefix: str, external_files_path: str, model: Model, element_filter: ElementFilter) -> None:
+    def __init__(self, model: Model, element_filter: ElementFilter) -> None:
         self.model = model
-        self.env = DocEnv(ref_prefix, external_files_path)
         self.xml_ns = ""
         self.element_filter = element_filter
 
@@ -131,8 +129,7 @@ class Parser:
                                          type_element,
                                          child.attrib.get(XML.ATTR_READ_ONLY, False),
                                          self._get_brief(child),
-                                         self._get_detailed(child),
-                                         self.env))
+                                         self._get_detailed(child)))
 
             unique_member_names.add(member_name)
 
@@ -161,8 +158,7 @@ class Parser:
             enumerators.append(EnumeratorElement(child.attrib[XML.ATTR_NAME],
                                                  child.attrib[XML.ATTR_VALUE],
                                                  self._get_brief(child),
-                                                 self._get_detailed(child),
-                                                 self.env
+                                                 self._get_detailed(child)
                                                  ))
 
         return enumerators
@@ -203,9 +199,8 @@ class Parser:
                         arguments.append(
                             MethodArgumentElement(arg_element.attrib[XML.ATTR_NAME],
                                                   Parser._parse_type_element(arg_element),
-                                                  arg_element.attrib.get(XML.ATTR_DEFAULT_VALUE, ""),
-                                                  self.env))
-            methods.append(MethodElement(child.attrib[XML.ATTR_NAME], return_type, arguments, self.env))
+                                                  arg_element.attrib.get(XML.ATTR_DEFAULT_VALUE, "")))
+            methods.append(MethodElement(child.attrib[XML.ATTR_NAME], return_type, arguments))
 
         return methods
 
@@ -251,7 +246,7 @@ class Parser:
         for child in element.findall(XML.ELEMENT_MODEL_PROPERTY):
             type_element = Parser._parse_type_element(child)
             properties.append(
-                PropertyElement(child.get(XML.ATTR_NAME, ""), type_element, self.env))
+                PropertyElement(child.get(XML.ATTR_NAME, ""), type_element))
 
         return properties
 
@@ -310,7 +305,7 @@ class Parser:
         """
 
         class_name = element.attrib.get(XML.ATTR_NAME, "")
-        class_result = ClassElement(name=class_name, attributes=element.attrib, env=self.env)
+        class_result = ClassElement(name=class_name, attributes=element.attrib)
 
         for child in element:
             if child.tag == XML.ELEMENT_MODEL_DOCUMENTATION:
@@ -376,7 +371,7 @@ class Parser:
             return None
 
         enum_name = element.attrib.get(XML.ATTR_NAME, "")
-        enum_result = EnumerationElement(name=enum_name, attributes=element.attrib, env=self.env)
+        enum_result = EnumerationElement(name=enum_name, attributes=element.attrib)
 
         for child in element:
             # Documentation: brief and details if available
@@ -416,7 +411,7 @@ class Parser:
         """
 
         object_name = element.attrib.get(XML.ATTR_NAME, "")
-        object_result = ObjectElement(name=object_name, attributes=element.attrib, env=self.env)
+        object_result = ObjectElement(name=object_name, attributes=element.attrib)
 
         # parse <List> elements that are direct children of root
         for list_element in element.findall(XML.ELEMENT_LIST):
@@ -437,10 +432,13 @@ class Parser:
 
     def _build_class_hierarchy(self, xml_root) -> Dict[str, str]:
         """
-        Build a dictionary of class->parent tuples. Registers 'None' as parent if a class has no parent set.
+        Build a dictionary of class->parent tuples, keyed by namespace-qualified name (see
+        ClassElement.qualified_name) so that classes sharing a bare name across different
+        namespaces get distinct hierarchy entries. Registers 'None' as parent if a class has
+        no parent set.
 
         :param: xml_root class model XML file root node
-        :return: a dictionary of class:parent tuples
+        :return: a dictionary of qualified class:parent tuples
         """
         cache = dict()
 
@@ -449,20 +447,53 @@ class Parser:
             if self.element_filter.skip(element_type="class", element_name=class_name):
                 logging.debug(
                     "skipped class hierarchy reference for element '%s.%s'" % ("class", class_name))
-            else:
-                cache[class_name] = class_element.attrib.get(XML.ATTR_PARENT, None)
+                continue
+
+            class_namespace = class_element.attrib.get(XML.ATTR_NAMESPACE, "")
+            qualified_name = f"{class_namespace}::{class_name}" if class_namespace else class_name
+
+            parent_name = class_element.attrib.get(XML.ATTR_PARENT, None)
+            if parent_name:
+                parent_namespace = class_element.attrib.get(XML.ATTR_PARENT_NAMESPACE, "")
+                parent_name = f"{parent_namespace}::{parent_name}" if parent_namespace else parent_name
+
+            cache[qualified_name] = parent_name
 
         return cache
 
-    def _register_element(self, target_dict, element) -> None:
+    def _register_element(self, target_dict, element, key: Optional[str] = None) -> None:
         """
         Add an element to 'target_dict' if the element is not to be excluded.
+
+        :param key: dict key to store the element under, defaults to 'element.name'.
         """
 
         if self.element_filter.skip(element_type=element.kind, element_name=element.name):
             logging.debug("skipped registration for element '%s.%s'" % (element.kind, element.name))
         else:
-            target_dict[element.name] = element
+            target_dict[key if key is not None else element.name] = element
+
+    def _register_class(self, class_element: ClassElement) -> None:
+        """
+        Register a parsed class under its namespace-qualified name (see
+        ClassElement.qualified_name), so classes are always identified by the combination of
+        name and namespace. Classmodel files may legitimately reuse the same bare class name
+        in different namespaces (e.g. a generic global "Element" alongside
+        "CCL::Gui::Element"); qualifying the key means those coexist instead of the
+        second one being silently dropped. A genuine redefinition (same name *and* namespace)
+        is still treated as redundant and skipped.
+
+        Bare-name lookups (member/argument/return types, "\\see" links, dynamic object types
+        - none of which carry namespace information) go through Model.lookup_class() instead
+        of a direct dict access.
+        """
+
+        key = class_element.qualified_name
+        if key in self.model.classes:
+            logging.warning("skipped redundant class definition '%s'" % key)
+            return
+
+        self._register_element(self.model.classes, class_element, key=key)
 
     @staticmethod
     def _extract_x_namespace_value(input_file: str) -> str:
@@ -521,10 +552,7 @@ class Parser:
             if list_type == XML.VALUE_CLASSES:
                 for child in list_element.findall(XML.ELEMENT_MODEL_CLASS):
                     class_element = self._parse_class(child)
-                    if class_element.name in self.model.classes:
-                        logging.warning("skipped redundant class definition '%s'" % class_element.name)
-                        continue
-                    self._register_element(self.model.classes, class_element)
+                    self._register_class(class_element)
             elif list_type == XML.VALUE_ENUMS:
                 for child in list_element.findall(XML.ELEMENT_MODEL_ENUM):
                     enumeration_element = self._parse_enumeration(child)
@@ -541,4 +569,4 @@ class Parser:
                 logging.warning("found unexpected element while parsing file %s" % filename)
 
         # Enrich data.
-        self.model.post_process(self.env)
+        self.model.post_process()

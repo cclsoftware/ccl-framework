@@ -40,6 +40,7 @@ using namespace Install;
 //************************************************************************************************
 
 DEFINE_CLASS_PERSISTENT (Item, Object, "InstallItem")
+DEFINE_CLASS_NAMESPACE (Item, NAMESPACE_CCL)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -86,6 +87,7 @@ bool Item::save (const Storage& storage) const
 //************************************************************************************************
 
 DEFINE_CLASS_HIDDEN (ContainerItem, Item)
+DEFINE_CLASS_NAMESPACE (ContainerItem, NAMESPACE_CCL)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 

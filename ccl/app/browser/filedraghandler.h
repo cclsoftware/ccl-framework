@@ -104,7 +104,7 @@ public:
 	void finishPrepare () override;
 	tbool CCL_API dragOver (const DragEvent& event) override;
 	tbool CCL_API afterDrop (const DragEvent& event) override;
-	bool getHelp (CCL::IHelpInfoBuilder& helpInfo) override;
+	bool getHelp (IHelpInfoBuilder& helpInfo) override;
 
 private:
 	PathList forbiddenTargetFolders;		///< can't drag into these folders

@@ -19,6 +19,8 @@
 #ifndef _ccl_treeset_h
 #define _ccl_treeset_h
 
+#include "ccl/public/base/platform.h"
+
 #include "core/public/coretreeset.h"
 
 namespace CCL {

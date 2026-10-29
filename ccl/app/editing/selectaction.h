@@ -34,11 +34,12 @@ class EditorComponent;
 // SelectFunctions
 //************************************************************************************************
 
-class SelectFunctions: public CCL::ActionExecuter
+class SelectFunctions: public ActionExecuter
 {
 public:
 	DECLARE_CLASS_ABSTRACT (SelectFunctions, ActionExecuter)
 	DECLARE_METHOD_NAMES (SelectFunctions)
+	DECLARE_PROPERTY_NAMES (SelectFunctions)
 
 	SelectFunctions (EditorComponent& editor, IActionContext* context, bool exclusive = false);
 	SelectFunctions (EditorComponent& editor, const ActionExecuter& otherExecuter, bool exclusive = false);

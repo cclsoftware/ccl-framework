@@ -45,7 +45,7 @@ namespace CCL {
 // DummyView
 //************************************************************************************************
 
-class DummyView: public CCL::View
+class DummyView: public View
 {
 public:
 	DECLARE_CLASS_ABSTRACT (DummyView, View)
@@ -79,11 +79,12 @@ DEFINE_CLASS_ABSTRACT_HIDDEN (DummyView, View)
 //************************************************************************************************
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-BEGIN_VISUALSTYLE_CLASS (DropBoxStyle, VisualStyle, "DropBoxStyle")
-	ADD_VISUALSTYLE_METRIC ("noSnap")		///< don't snap to views size
-	ADD_VISUALSTYLE_METRIC ("spacing")		///< spacing between items
-	ADD_VISUALSTYLE_METRIC ("freespace")	///< free space after last item 
-END_VISUALSTYLE_CLASS (DropBoxStyle)
+DEFINE_TYPELIB_ENTRY_WITH_PARENT (DropBoxStyle, VisualStyle, "DropBoxStyle", VISUALSTYLES_TYPELIB)
+BEGIN_TYPELIB_MEMBERS (DropBoxStyle)
+	ADD_TYPELIB_MEMBER_METRIC ("noSnap") ///< don't snap to views size
+	ADD_TYPELIB_MEMBER_METRIC ("spacing") ///< spacing between items
+	ADD_TYPELIB_MEMBER_METRIC ("freespace") ///< free space after last item 
+END_TYPELIB_MEMBERS (DropBoxStyle)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 

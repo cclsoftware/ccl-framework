@@ -67,7 +67,11 @@ class DBusProxy: public sdbus::ProxyInterfaces<DBusInterface>
 public:
 	DBusProxy (IDBusSupport& dbusSupport, std::string destination, std::string objectPath, bool useSystemBus = false)
 	: sdbus::ProxyInterfaces<DBusInterface> (useSystemBus ? dbusSupport.openSystemBusConnection () : dbusSupport.openSessionBusConnection (),
+	#if SDBUS_CPP_VERSION == 2
+	  										 sdbus::ServiceName (std::move (destination)), sdbus::ObjectPath (std::move (objectPath))),
+	#else
 	  										 std::move (destination), std::move (objectPath)),
+	#endif
 	  dbusSupport (dbusSupport),
 	  useSystemBus (useSystemBus)
 	{
@@ -98,7 +102,11 @@ class DBusAdapter: public sdbus::AdaptorInterfaces<DBusInterface>
 {
 public:
 	DBusAdapter (IDBusSupport& dbusSupport, std::string objectPath)
+	#if SDBUS_CPP_VERSION == 2
+	: sdbus::AdaptorInterfaces<DBusInterface> (dbusSupport.openSessionBusConnection (), sdbus::ObjectPath (std::move (objectPath))),
+	#else
 	: sdbus::AdaptorInterfaces<DBusInterface> (dbusSupport.openSessionBusConnection (), std::move (objectPath)),
+	#endif
 	  dbusSupport (dbusSupport)
 	{
 		this->registerAdaptor ();

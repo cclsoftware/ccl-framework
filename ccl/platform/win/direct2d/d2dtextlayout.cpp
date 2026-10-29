@@ -134,6 +134,18 @@ tresult CCL_API D2DTextLayout::setBaselineOffset (const Range& range, float offs
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
+tresult CCL_API D2DTextLayout::clearFormatting ()
+{
+	tresult result = DWTextLayout::clearFormatting ();
+	if(result != kResultOk)
+		return result;
+
+	DWRITE_TEXT_RANGE fullRange = {0, uint32 (text.length ())};
+	return static_cast<tresult> (layout->SetDrawingEffect (nullptr, fullRange));
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
 tresult D2DTextLayout::setSuperscript (const Range& range, float sizeFactor, float baselineFactor)
 {
 	ASSERT (layout != 0)

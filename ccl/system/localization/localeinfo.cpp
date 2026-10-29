@@ -65,6 +65,9 @@ BEGIN_XSTRINGS ("Locales")
 
 	XSTRING (MBPerSecond, "MB/sec")
 	XSTRING (KBPerSecond, "KB/sec")
+
+	XSTRING (MBPerSecondAccessible, "%(1) Megabytes per second")
+	XSTRING (KBPerSecondAccessible, "%(1) Kilobytes per second")
 END_XSTRINGS
 
 //************************************************************************************************
@@ -251,7 +254,7 @@ struct DurationUnit
 {
 	ILocaleInfo::TimeUnit unit;
 	const LocalString& unitString;
-	const char* format;
+	CStringPtr format;
 	int maxSegments;
 	int seconds;
 };
@@ -580,21 +583,25 @@ tresult CCL_API LocaleInfoBase::printByteSize (String& result, double bytes, int
 tresult CCL_API LocaleInfoBase::printBytesPerSecond (String& result, double speed, int flags) const
 {
 	double base = (flags & kSIByteUnit) ? 1000. : 1024.;
+	bool accessible = (flags & kAccessibleByteUnit) != 0;
 
-	String unit;
 	double unitsPerSecond = speed / (base * base); // try MB/sec first
-	if(unitsPerSecond >= 1.)
-		unit = XSTR (MBPerSecond);
-	else
-	{
-		unit = XSTR (KBPerSecond);
+	bool useMegabytes = unitsPerSecond >= 1.;
+	if(!useMegabytes)
 		unitsPerSecond = speed / base;
-	}
+
+	String value;
+	value.appendFloatValue (unitsPerSecond, 2);
 
 	result.empty ();
-	result.appendFloatValue (unitsPerSecond, 2);
-	result << " ";
-	result << unit;
+	if(accessible)
+		result.appendFormat (useMegabytes ? XSTR (MBPerSecondAccessible) : XSTR (KBPerSecondAccessible), value);
+	else
+	{
+		result << value;
+		result << " ";
+		result << (useMegabytes ? XSTR (MBPerSecond) : XSTR (KBPerSecond));
+	}
 	return kResultOk;
 }
 

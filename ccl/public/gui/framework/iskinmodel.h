@@ -142,11 +142,6 @@ interface ISkinElement: IUnknown
 	/** Remove element attribute. */
 	virtual tbool CCL_API removeAttribute (StringID name, int* oldIndex = nullptr) = 0;
 
-	/**	Get element class.
-		Note that this is different from the type information returned via IObject
-		as it corresponds to the public XML or JSON skin type. */
-	virtual const ITypeInfo* CCL_API getElementClass () const = 0;
-
 	/** Clone element. */
 	virtual void CCL_API clone (ISkinElement*& element) const = 0;
 

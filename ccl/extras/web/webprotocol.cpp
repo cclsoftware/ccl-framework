@@ -93,7 +93,7 @@ void CCL_API WebClient::setCredentials (IWebCredentials* credentials)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-tresult CCL_API WebClient::connect (StringRef hostname)
+tresult CCL_API WebClient::connect (StringRef hostname, IProgressNotify* progress)
 {
 	lastStatus = 0;
 	connected = true;

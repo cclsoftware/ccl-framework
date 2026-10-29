@@ -128,7 +128,7 @@ void MenuItemBase::setHandler (ICommandHandler* _handler)
 // MenuItem
 //************************************************************************************************
 
-BEGIN_STYLEDEF (MenuItem::propertyNames)
+BEGIN_STYLEDEF (MenuItem::attributeNames)
 	{"name", MenuItem::kItemName},
 	{"title", MenuItem::kItemTitle},
 	{"category", MenuItem::kItemCategory},
@@ -141,12 +141,14 @@ BEGIN_STYLEDEF (MenuItem::propertyNames)
 	{"helpid", MenuItem::kItemHelpId},
 	{"description", MenuItem::kDescription},
 	{"tooltip", MenuItem::kTooltip},
+	{"value", MenuItem::kItemValue},
 	{"splitmenu", MenuItem::kSplitMenu},
 END_STYLEDEF
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 DEFINE_CLASS (MenuItem, MenuItemBase)
+DEFINE_CLASS_NAMESPACE (MenuItem, NAMESPACE_CCL)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -456,6 +458,7 @@ tbool CCL_API MenuItem::getItemAttribute (Variant& value, ItemAttribute id) cons
 	case kItemHelpId : value = getHelpIdentifier (); break;
 	case kDescription : value = getDescription (); break;
 	case kTooltip : value = getTooltip (); break;
+	case kItemValue : value = getValue (); break;
 	case kSplitMenu : value = static_cast<IMenu*> (splitMenu); break;
 	default :
 		return false;
@@ -481,6 +484,7 @@ tbool CCL_API MenuItem::setItemAttribute (ItemAttribute id, VariantRef value)
 	case kItemHelpId : setHelpIdentifier (value.asString ()); break;
 	case kDescription : setDescription (value.asString ()); break;
 	case kTooltip : setTooltip (value.asString ()); break;
+	case kItemValue : setValue (value.asString ()); break;
 	case kSplitMenu : setSplitMenu (unknown_cast<Menu> (value.asUnknown ())); break;
 	default :
 		return false;
@@ -492,9 +496,9 @@ tbool CCL_API MenuItem::setItemAttribute (ItemAttribute id, VariantRef value)
 
 tbool CCL_API MenuItem::setProperty (MemberID propertyId, const Variant& var)
 {
-	for(int i = 0; i < ARRAY_COUNT (propertyNames); i++)
-		if(propertyId == propertyNames[i].name)
-			return setItemAttribute (propertyNames[i].value, var);
+	for(int i = 0; i < ARRAY_COUNT (attributeNames); i++)
+		if(propertyId == attributeNames[i].name)
+			return setItemAttribute (attributeNames[i].value, var);
 
 	return SuperClass::setProperty (propertyId, var);
 }
@@ -503,9 +507,9 @@ tbool CCL_API MenuItem::setProperty (MemberID propertyId, const Variant& var)
 
 tbool CCL_API MenuItem::getProperty (Variant& var, MemberID propertyId) const
 {
-	for(int i = 0; i < ARRAY_COUNT (propertyNames); i++)
-		if(propertyId == propertyNames[i].name)
-			return getItemAttribute (var, propertyNames[i].value);
+	for(int i = 0; i < ARRAY_COUNT (attributeNames); i++)
+		if(propertyId == attributeNames[i].name)
+			return getItemAttribute (var, attributeNames[i].value);
 
 	return SuperClass::getProperty (var, propertyId);
 }
@@ -545,7 +549,7 @@ void MenuItem::setSplitMenu (Menu* menu)
 // Menu
 //************************************************************************************************
 
-BEGIN_STYLEDEF (Menu::propertyNames)
+BEGIN_STYLEDEF (Menu::attributeNames)
 	{"name",    Menu::kMenuName},
 	{"title",   Menu::kMenuTitle},
 	{"icon",    Menu::kMenuIcon},
@@ -566,6 +570,7 @@ Menu::Menu (StringRef _name, StringRef _title, ICommandHandler* handler)
   title (_title),
   menuIDs (nullptr),
   icon (nullptr),
+  menuControl (nullptr),
   insertPosition (-1),
   separatorNeeded (false),
   scaleFactor (0.f) // 0 means not set
@@ -603,6 +608,24 @@ MenuItemIDSet& Menu::getIDSet () const
 void Menu::setIDSet (MenuItemIDSet* ids)
 {
 	take_shared<MenuItemIDSet> (menuIDs, ids);
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+void Menu::getFullTitle (String& fullTitle, bool skipRoot) const
+{
+	if(title.isEmpty () == false)
+	{
+		if(Menu* parentMenu = ccl_cast<Menu> (parent))
+		{
+			parentMenu->getFullTitle (fullTitle);
+			if(fullTitle.isEmpty () == false)
+				fullTitle.append (CCLSTR (" - "));
+			fullTitle.append (title);
+		}
+		else if(skipRoot == false)
+			fullTitle = title;
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1141,6 +1164,7 @@ tbool CCL_API Menu::getMenuAttribute (Variant& value, MenuAttribute id) const
 	case kMenuData : value = getMenuData (); break;
 	case kMenuVariant : value = getVariant (); break;
 	case kMenuScaleFactor : value = getScaleFactorRecursive (); break;
+	case kMenuControl : value = getMenuControl (); break;
 	default :
 		return false;
 	}
@@ -1159,6 +1183,7 @@ tbool CCL_API Menu::setMenuAttribute (MenuAttribute id, VariantRef value)
 	case kMenuData : setMenuData (value); break;
 	case kMenuVariant : setVariant (value); break;
 	case kMenuScaleFactor : setScaleFactor (value.asFloat ()); break;
+	case kMenuControl : setMenuControl (UnknownPtr<IView> (value.asUnknown ())); break;
 	default :
 		return false;
 	}
@@ -1169,9 +1194,9 @@ tbool CCL_API Menu::setMenuAttribute (MenuAttribute id, VariantRef value)
 
 tbool CCL_API Menu::setProperty (MemberID propertyId, const Variant& var)
 {
-	for(int i = 0; i < ARRAY_COUNT (propertyNames); i++)
-		if(propertyId == propertyNames[i].name)
-			return setMenuAttribute (propertyNames[i].value, var);
+	for(int i = 0; i < ARRAY_COUNT (attributeNames); i++)
+		if(propertyId == attributeNames[i].name)
+			return setMenuAttribute (attributeNames[i].value, var);
 
 	if(propertyId == "insertPosition")
 	{
@@ -1186,9 +1211,9 @@ tbool CCL_API Menu::setProperty (MemberID propertyId, const Variant& var)
 
 tbool CCL_API Menu::getProperty (Variant& var, MemberID propertyId) const
 {
-	for(int i = 0; i < ARRAY_COUNT (propertyNames); i++)
-		if(propertyId == propertyNames[i].name)
-			return getMenuAttribute (var, propertyNames[i].value);
+	for(int i = 0; i < ARRAY_COUNT (attributeNames); i++)
+		if(propertyId == attributeNames[i].name)
+			return getMenuAttribute (var, attributeNames[i].value);
 
 	return SuperClass::getProperty (var, propertyId);
 }

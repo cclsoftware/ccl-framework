@@ -48,16 +48,21 @@ END_STYLEDEF
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-BEGIN_SKIN_ELEMENT_ABSTRACT_WITH_MEMBERS (ShapeElement, Element, TAG_BASESHAPE, DOC_GROUP_SHAPES, Shape)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_BRUSHCOLOR, TYPE_COLOR)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_BRUSHGRADIENT, TYPE_STRING)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_PENCOLOR, TYPE_COLOR)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_PENWIDTH, TYPE_FLOAT)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_SHAPEREF, TYPE_STRING)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_SIZE, TYPE_SIZE)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_STYLE, TYPE_ENUM)
-END_SKIN_ELEMENT_WITH_MEMBERS (ShapeElement)
-DEFINE_SKIN_ENUMERATION (TAG_BASESHAPE, ATTR_STYLE, ShapeElement::shapeStyles)
+DEFINE_CLASS_ABSTRACT_HIDDEN (ShapeElement, Element)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (ShapeElement, Element, TAG_BASESHAPE, SKIN_TYPELIB)
+DEFINE_TYPELIB_ABSTRACT (ShapeElement)
+DEFINE_TYPELIB_DOCGROUP (ShapeElement, DOC_GROUP_SHAPES)
+DEFINE_TYPELIB_RELATED_CLASS (ShapeElement, Shape)
+BEGIN_TYPELIB_MEMBERS (ShapeElement)
+	ADD_TYPELIB_MEMBER_COLOR (ATTR_BRUSHCOLOR)
+	ADD_TYPELIB_MEMBER_STRING (ATTR_BRUSHGRADIENT)
+	ADD_TYPELIB_MEMBER_COLOR (ATTR_PENCOLOR)
+	ADD_TYPELIB_MEMBER (ATTR_PENWIDTH, TypeNames::kFloat)
+	ADD_TYPELIB_MEMBER_STRING (ATTR_SHAPEREF)
+	ADD_TYPELIB_MEMBER (ATTR_SIZE, TypeNames::kSize)
+	ADD_TYPELIB_MEMBER (ATTR_STYLE, TypeNames::kEnum)
+END_TYPELIB_MEMBERS (ShapeElement)
+DEFINE_TYPELIB_ENUMERATION (TAG_BASESHAPE, ATTR_STYLE, ShapeElement::shapeStyles, SKIN_TYPELIB)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -181,11 +186,14 @@ bool ShapeElement::resolveShapeReference ()
 // ComplexShapeElement
 //************************************************************************************************
 
-DEFINE_SKIN_ELEMENT (ComplexShapeElement, ShapeElement, TAG_SHAPE, DOC_GROUP_SHAPES, ComplexShape)
-BEGIN_SKIN_ELEMENT_ATTRIBUTES (ComplexShapeElement)
-	ADD_SKIN_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_SHAPES)
-	ADD_SKIN_CHILDGROUP_ATTRIBUTE (SCHEMA_GROUP_SHAPES)
-END_SKIN_ELEMENT_ATTRIBUTES (ComplexShapeElement)
+DEFINE_CLASS_HIDDEN (ComplexShapeElement, ShapeElement)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (ComplexShapeElement, ShapeElement, TAG_SHAPE, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (ComplexShapeElement, DOC_GROUP_SHAPES)
+DEFINE_TYPELIB_RELATED_CLASS (ComplexShapeElement, ComplexShape)
+BEGIN_TYPELIB_ATTRIBUTES (ComplexShapeElement)
+	ADD_TYPELIB_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_SHAPES)
+	ADD_TYPELIB_CHILDGROUP_ATTRIBUTE (SCHEMA_GROUP_SHAPES)
+END_TYPELIB_ATTRIBUTES (ComplexShapeElement)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -303,15 +311,19 @@ BEGIN_STYLEDEF (LineShapeElement::scaleAlignment)
 	{"bottom", 	LineShape::kBottomAligned},
 END_STYLEDEF
 
-BEGIN_SKIN_ELEMENT_WITH_MEMBERS (LineShapeElement, ShapeElement, TAG_LINE, DOC_GROUP_SHAPES, LineShape)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_START, TYPE_POINT)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_END, TYPE_POINT)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_LINESCALEALIGN, TYPE_ENUM)
-END_SKIN_ELEMENT_WITH_MEMBERS (LineShapeElement)
-BEGIN_SKIN_ELEMENT_ATTRIBUTES (LineShapeElement)
-	ADD_SKIN_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_SHAPES)
-END_SKIN_ELEMENT_ATTRIBUTES (LineShapeElement)
-DEFINE_SKIN_ENUMERATION (TAG_LINE, ATTR_LINESCALEALIGN, LineShapeElement::scaleAlignment)
+DEFINE_CLASS_HIDDEN (LineShapeElement, ShapeElement)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (LineShapeElement, ShapeElement, TAG_LINE, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (LineShapeElement, DOC_GROUP_SHAPES)
+DEFINE_TYPELIB_RELATED_CLASS (LineShapeElement, LineShape)
+BEGIN_TYPELIB_MEMBERS (LineShapeElement)
+	ADD_TYPELIB_MEMBER (ATTR_START, TypeNames::kPoint)
+	ADD_TYPELIB_MEMBER (ATTR_END, TypeNames::kPoint)
+	ADD_TYPELIB_MEMBER (ATTR_LINESCALEALIGN, TypeNames::kEnum)
+END_TYPELIB_MEMBERS (LineShapeElement)
+BEGIN_TYPELIB_ATTRIBUTES (LineShapeElement)
+	ADD_TYPELIB_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_SHAPES)
+END_TYPELIB_ATTRIBUTES (LineShapeElement)
+DEFINE_TYPELIB_ENUMERATION (TAG_LINE, ATTR_LINESCALEALIGN, LineShapeElement::scaleAlignment, SKIN_TYPELIB)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -354,13 +366,17 @@ bool LineShapeElement::getAttributes (SkinAttributes& a) const
 // RectShapeElement
 //************************************************************************************************
 
-BEGIN_SKIN_ELEMENT_WITH_MEMBERS (RectShapeElement, ShapeElement, TAG_RECTSHAPE, DOC_GROUP_SHAPES, RectShape)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_RADIUS, TYPE_INT)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_RECT, TYPE_RECT)
-END_SKIN_ELEMENT_WITH_MEMBERS (RectShapeElement)
-BEGIN_SKIN_ELEMENT_ATTRIBUTES (RectShapeElement)
-	ADD_SKIN_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_SHAPES)
-END_SKIN_ELEMENT_ATTRIBUTES (RectShapeElement)
+DEFINE_CLASS_HIDDEN (RectShapeElement, ShapeElement)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (RectShapeElement, ShapeElement, TAG_RECTSHAPE, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (RectShapeElement, DOC_GROUP_SHAPES)
+DEFINE_TYPELIB_RELATED_CLASS (RectShapeElement, RectShape)
+BEGIN_TYPELIB_MEMBERS (RectShapeElement)
+	ADD_TYPELIB_MEMBER (ATTR_RADIUS, TypeNames::kInt)
+	ADD_TYPELIB_MEMBER (ATTR_RECT, TypeNames::kRect)
+END_TYPELIB_MEMBERS (RectShapeElement)
+BEGIN_TYPELIB_ATTRIBUTES (RectShapeElement)
+	ADD_TYPELIB_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_SHAPES)
+END_TYPELIB_ATTRIBUTES (RectShapeElement)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -397,7 +413,10 @@ bool RectShapeElement::getAttributes (SkinAttributes& a) const
 // EllipseShapeElement
 //************************************************************************************************
 
-DEFINE_SKIN_ELEMENT (EllipseShapeElement, RectShapeElement, TAG_ELLIPSE, DOC_GROUP_SHAPES, EllipseShape)
+DEFINE_CLASS_HIDDEN (EllipseShapeElement, RectShapeElement)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (EllipseShapeElement, RectShapeElement, TAG_ELLIPSE, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (EllipseShapeElement, DOC_GROUP_SHAPES)
+DEFINE_TYPELIB_RELATED_CLASS (EllipseShapeElement, EllipseShape)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -410,14 +429,18 @@ Shape* EllipseShapeElement::newShape () const
 // TriangleShapeElement
 //************************************************************************************************
 
-BEGIN_SKIN_ELEMENT_WITH_MEMBERS (TriangleShapeElement, ShapeElement, TAG_TRIANGLE, DOC_GROUP_SHAPES, TriangleShape)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_POINT1, TYPE_POINT)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_POINT2, TYPE_POINT)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_POINT3, TYPE_POINT)
-END_SKIN_ELEMENT_WITH_MEMBERS (TriangleShapeElement)
-BEGIN_SKIN_ELEMENT_ATTRIBUTES (TriangleShapeElement)
-	ADD_SKIN_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_SHAPES)
-END_SKIN_ELEMENT_ATTRIBUTES (TriangleShapeElement)
+DEFINE_CLASS_HIDDEN (TriangleShapeElement, ShapeElement)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (TriangleShapeElement, ShapeElement, TAG_TRIANGLE, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (TriangleShapeElement, DOC_GROUP_SHAPES)
+DEFINE_TYPELIB_RELATED_CLASS (TriangleShapeElement, TriangleShape)
+BEGIN_TYPELIB_MEMBERS (TriangleShapeElement)
+	ADD_TYPELIB_MEMBER (ATTR_POINT1, TypeNames::kPoint)
+	ADD_TYPELIB_MEMBER (ATTR_POINT2, TypeNames::kPoint)
+	ADD_TYPELIB_MEMBER (ATTR_POINT3, TypeNames::kPoint)
+END_TYPELIB_MEMBERS (TriangleShapeElement)
+BEGIN_TYPELIB_ATTRIBUTES (TriangleShapeElement)
+	ADD_TYPELIB_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_SHAPES)
+END_TYPELIB_ATTRIBUTES (TriangleShapeElement)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -458,10 +481,17 @@ bool TriangleShapeElement::getAttributes (SkinAttributes& a) const
 // EmbeddedImageShapeElement
 //************************************************************************************************
 
-BEGIN_SKIN_ELEMENT_WITH_MEMBERS (EmbeddedImageShapeElement, ShapeElement, TAG_GRAPHIC, DOC_GROUP_SHAPES, ImageShape)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_IMAGE, TYPE_STRING) ///< name of image to embed (from resources section)
-	ADD_SKIN_ELEMENT_MEMBER (ATTR_SOURCE, TYPE_RECT) ///< image source rectangle
-END_SKIN_ELEMENT_WITH_MEMBERS (EmbeddedImageShapeElement)
+DEFINE_CLASS_HIDDEN (EmbeddedImageShapeElement, ShapeElement)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (EmbeddedImageShapeElement, ShapeElement, TAG_GRAPHIC, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (EmbeddedImageShapeElement, DOC_GROUP_SHAPES)
+DEFINE_TYPELIB_RELATED_CLASS (EmbeddedImageShapeElement, ImageShape)
+BEGIN_TYPELIB_MEMBERS (EmbeddedImageShapeElement)
+	ADD_TYPELIB_MEMBER_STRING (ATTR_IMAGE) ///< name of image to embed (from resources section)
+	ADD_TYPELIB_MEMBER (ATTR_SOURCE, TypeNames::kRect) ///< image source rectangle
+END_TYPELIB_MEMBERS (EmbeddedImageShapeElement)
+BEGIN_TYPELIB_ATTRIBUTES (EmbeddedImageShapeElement)
+	ADD_TYPELIB_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_SHAPES)
+END_TYPELIB_ATTRIBUTES (EmbeddedImageShapeElement)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -479,11 +509,11 @@ bool EmbeddedImageShapeElement::setAttributes (const SkinAttributes& a)
 	imageName = a.getString (ATTR_IMAGE);
 
 	Rect srcRect;
-	a.getRect (srcRect, ATTR_SOURCE);
+	a.getSize (srcRect, ATTR_SOURCE);
 	imageShape.setSrcRect (srcRect);
 
 	Rect dstRect;
-	a.getRect (dstRect, ATTR_SIZE);
+	a.getSize (dstRect, ATTR_SIZE);
 	imageShape.setDstRect (dstRect);
 
 	return ShapeElement::setAttributes (a);
@@ -496,8 +526,8 @@ bool EmbeddedImageShapeElement::getAttributes (SkinAttributes& a) const
 	ImageShape& imageShape = (ImageShape&)getShape ();
 
 	a.setString (ATTR_IMAGE, imageName);
-	a.setRect (ATTR_SOURCE, imageShape.getSrcRect ());
-	a.setRect (ATTR_SIZE, imageShape.getDstRect ());
+	a.setSize (ATTR_SOURCE, imageShape.getSrcRect ());
+	a.setSize (ATTR_SIZE, imageShape.getDstRect ());
 
 	return ShapeElement::getAttributes (a);
 }
@@ -506,12 +536,15 @@ bool EmbeddedImageShapeElement::getAttributes (SkinAttributes& a) const
 // ShapeImageElement
 //************************************************************************************************
 
-DEFINE_SKIN_ELEMENT (ShapeImageElement, ImageElement, TAG_SHAPEIMAGE, DOC_GROUP_SHAPES, ShapeImage)
-BEGIN_SKIN_ELEMENT_ATTRIBUTES (ShapeImageElement)
-	ADD_SKIN_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_IMAGECHILDREN)
-	ADD_SKIN_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_RESOURCES)
-	ADD_SKIN_CHILDGROUP_ATTRIBUTE (TAG_SHAPECOLORMAPPING)
-END_SKIN_ELEMENT_ATTRIBUTES (ShapeImageElement)
+DEFINE_CLASS_HIDDEN (ShapeImageElement, ImageElement)
+DEFINE_TYPELIB_CLASS_WITH_PARENT (ShapeImageElement, ImageElement, TAG_SHAPEIMAGE, SKIN_TYPELIB)
+DEFINE_TYPELIB_DOCGROUP (ShapeImageElement, DOC_GROUP_SHAPES)
+DEFINE_TYPELIB_RELATED_CLASS (ShapeImageElement, ShapeImage)
+BEGIN_TYPELIB_ATTRIBUTES (ShapeImageElement)
+	ADD_TYPELIB_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_IMAGECHILDREN)
+	ADD_TYPELIB_SCHEMAGROUP_ATTRIBUTE (SCHEMA_GROUP_RESOURCES)
+	ADD_TYPELIB_CHILDGROUP_ATTRIBUTE (TAG_SHAPECOLORMAPPING)
+END_TYPELIB_ATTRIBUTES (ShapeImageElement)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 

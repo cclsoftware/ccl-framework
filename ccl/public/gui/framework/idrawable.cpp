@@ -109,7 +109,7 @@ void CCL_API BorderDrawable::draw (const IDrawable::DrawArgs& args)
 		else
 			args.graphics.fillRect (rect, fillBrush);
 
-		if(borderPen.getColor ().getAlphaF () > 0.f)
+		if(borderPen.isVisible ())
 		{
 			if(radius > 0)
 				args.graphics.drawRoundRect (rect, radius, radius, borderPen);

@@ -12,7 +12,7 @@
 // For more information, please visit ccl.dev.
 //
 // Filename    : ccl/gui/theme/renderer/scrollpickerrenderer.h
-// Description : Scroll Picker Renderer
+// Description : ScrollPicker Renderer
 //
 //************************************************************************************************
 
@@ -34,8 +34,8 @@ using namespace CCL;
 // ScrollPickerRenderer
 //************************************************************************************************
 
-ScrollPickerRenderer::ScrollPickerRenderer (VisualStyle* visualStyle)
-: ThemeRenderer (visualStyle),
+ScrollPickerRenderer::ScrollPickerRenderer (VisualStyle* visualStyle, View* owner)
+: ThemeRenderer (visualStyle, owner),
   centerSize (-1),
   centerOffset (-1),
   itemSize (20),
@@ -54,19 +54,18 @@ ScrollPickerRenderer::ScrollPickerRenderer (VisualStyle* visualStyle)
   vertical (true),
   flatBarrel (false),
   initDone (false)
-{
-}
+{}
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-int ScrollPickerRenderer::hitTest (View* view, const Point& loc, Point* clickOffset)
+int ScrollPickerRenderer::hitTest (PointRef where, Point* clickOffset)
 {
 	Rect centerRect (calcCenterLensViewRect ());
 	
-	if(centerRect.pointInside (loc))
+	if(centerRect.pointInside (where))
 		return ScrollPicker::kPartCenter;
 	
-	if((loc.y < centerRect.top) || (loc.x < centerRect.left))
+	if((where.y < centerRect.top) || (where.x < centerRect.left))
 	   return ScrollPicker::kPartUpperLeft;
 	else
    		return ScrollPicker::kPartLowerRight;
@@ -74,7 +73,7 @@ int ScrollPickerRenderer::hitTest (View* view, const Point& loc, Point* clickOff
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool ScrollPickerRenderer::getPartRect (const View* view, int partCode, CCL::Rect& rect)
+bool ScrollPickerRenderer::getPartRect (Rect& rect, int partCode)
 {
 	switch(partCode)
 	{
@@ -104,9 +103,9 @@ bool ScrollPickerRenderer::getPartRect (const View* view, int partCode, CCL::Rec
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void ScrollPickerRenderer::draw (View* view, const UpdateRgn& updateRgn)
+void ScrollPickerRenderer::draw (const UpdateRgn& updateRgn)
 {
-	ScrollPicker* scrollPicker = static_cast<ScrollPicker*> (view);
+	ScrollPicker* scrollPicker = static_cast<ScrollPicker*> (owner);
 	init (scrollPicker);
 
 	GraphicsPort port (scrollPicker);
@@ -199,7 +198,7 @@ void ScrollPickerRenderer::drawBarrel (GraphicsPort& port, int scrollPosition)
 
 		Direction::getEndCoord (targetRect) = drawOffset;
 
-		ImageMode mode (1.f, ImageMode::kInterpolationHighQuality);
+		ImageMode mode (1.f, kImageInterpolationHighQuality);
 		port.drawImage (barrelImage, imageRect, targetRect, &mode);
 
 		Direction::offset (imageRect, itemSize);
@@ -261,7 +260,7 @@ void ScrollPickerRenderer::drawCarousel (GraphicsPort& port, int scrollPosition,
 {
 	typedef DirectionTraits<direction> Direction;
 	
-	ImageMode mode (1.f, ImageMode::kInterpolationHighQuality);
+	ImageMode mode (1.f, kImageInterpolationHighQuality);
 
 	// getImageIndices
 	Coord clientEnd = Direction::getEndCoord (scrollPickerSize);

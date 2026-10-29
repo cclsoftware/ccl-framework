@@ -130,7 +130,7 @@ private:
 	};
 
 	class ObjectState;
-	typedef Vector<const char*> MemberNames;
+	typedef Vector<CStringPtr> MemberNames;
 	MemberNames memberNames;
 
 	typedef Database::IStatement* (TableEntry::*GetStatementFunc) () const;

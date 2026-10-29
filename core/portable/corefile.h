@@ -117,7 +117,7 @@ public:
 	static bool	renameFile (CStringPtr oldname, CStringPtr newname);
 	
 	/** Truncate file to given length. */
-	static bool	truncate (CStringPtr filename, Core::int64 length);
+	static bool	truncate (CStringPtr filename, int64 length);
 
 	/** Load file contents into new memory stream instance owned by the caller. */
 	static IO::MemoryStream* loadFile (CStringPtr filename);
@@ -489,7 +489,7 @@ inline bool FileUtils::removeDirectory (CStringPtr dirname)
 inline bool	FileUtils::renameFile (CStringPtr oldname, CStringPtr newname)
 { return Platform::FileSystem::instance ().renameFile (oldname, newname); }
 
-inline bool	FileUtils::truncate (CStringPtr filename, Core::int64 length)
+inline bool	FileUtils::truncate (CStringPtr filename, int64 length)
 { return Platform::FileSystem::instance ().truncate (filename, length); }
 
 inline bool FileUtils::touchFile (CStringPtr filename)

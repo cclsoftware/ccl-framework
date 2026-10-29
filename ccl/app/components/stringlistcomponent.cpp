@@ -30,6 +30,7 @@
 #include "ccl/public/gui/framework/iform.h"
 #include "ccl/public/gui/framework/iwindow.h"
 #include "ccl/public/gui/framework/guievent.h"
+#include "ccl/public/gui/framework/ipopupselector.h"
 #include "ccl/public/gui/idatatarget.h"
 #include "ccl/public/system/isignalhandler.h"
 #include "ccl/public/systemservices.h"
@@ -60,8 +61,8 @@ namespace Tag
 // TextCompletionComponent::CompletionsParam
 //************************************************************************************************
 
-class TextCompletionComponent::CompletionsParam: public CCL::ListParam,
-												 public CCL::IParameterMenuCustomize
+class TextCompletionComponent::CompletionsParam: public ListParam,
+												 public IParameterMenuCustomize
 {
 public:
 	CompletionsParam (StringID name, TextCompletionComponent* component)
@@ -75,7 +76,7 @@ protected:
 
 	// IParameterMenuCustomize
 	StringID CCL_API getMenuType () const override { return MenuPresentation::kTree; }
-	tbool CCL_API buildMenu (CCL::IMenu& menu, CCL::IParameterMenuBuilder& builder) override { return false; }
+	tbool CCL_API buildMenu (IMenu& menu, IParameterMenuBuilder& builder) override { return false; }
 
 	tbool CCL_API onMenuKeyDown (const KeyEvent& event) override
 	{
@@ -107,9 +108,11 @@ DEFINE_CLASS_ABSTRACT_HIDDEN (TextCompletionComponent, Component)
 
 TextCompletionComponent::TextCompletionComponent (StringRef name)
 : Component (name),
-  autoCompleteSuspended (false)
+  autoCompleteSuspended (false),
+  navigatingCompletions (false),
+  completionsOpen (false)
 {
-	paramList.addString (CSTR ("editString"), Tag::kEditString);
+	paramList.addString (CSTR (kEditStringName), Tag::kEditString);
 	paramList.addParam (CSTR ("clear"), Tag::kClear);
 
 	completionList = NEW CompletionsParam (CSTR ("completions"), this);
@@ -142,7 +145,14 @@ String TextCompletionComponent::getEditString () const
 bool TextCompletionComponent::hasEditFocus () const
 {
 	IWindow* activeWindow = System::GetDesktop ().getDialogParentWindow ();
-	UnknownPtr<IControl> control (activeWindow ? activeWindow->getFocusIView () : nullptr);
+	return isEditStringView (activeWindow ? activeWindow->getFocusIView () : nullptr);
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+bool TextCompletionComponent::isEditStringView (IView* view) const
+{
+	UnknownPtr<IControl> control (view);
 	return control && control->getParameter () == paramList.byTag (Tag::kEditString);
 }
 
@@ -176,11 +186,53 @@ void TextCompletionComponent::updateEditCursor ()
 
 void TextCompletionComponent::closeCompletionList ()
 {
+	completionsOpen = false;
+
 	UnknownPtr<ISubject> listSubject (ccl_as_unknown (completionList));
 	if(listSubject)
 		listSubject->signal (Message (IParameter::kReleaseFocus));
 
 	System::GetSignalHandler ().flush ();
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+bool TextCompletionComponent::hasOpenCompletions () const
+{
+	return completionsOpen;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+void TextCompletionComponent::navigateCompletions (bool forward)
+{
+	ScopedVar<bool> guard (navigatingCompletions, true);
+
+	completionList->beginEdit ();
+	if(forward)
+		completionList->increment ();
+	else
+		completionList->decrement ();
+
+	completionList->endEdit ();
+
+	System::GetSignalHandler ().flush ();
+
+	// the popup only redraws its highlight in reaction to kUpdateMenu, not to the value change itself
+	UnknownPtr<ISubject> listSubject (completionList->asUnknown ());
+	if(listSubject)
+		listSubject->signal (Message (IParameter::kUpdateMenu));
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+void TextCompletionComponent::acceptCompletion ()
+{
+	if(!completionsOpen || completionList->isEmpty () || navigatingCompletions)
+		return;
+
+	onCompletionSelected (completionList->getSelectedValue ().asString ());
+	focusEdit ();
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -238,6 +290,8 @@ void TextCompletionComponent::onTextEdited (StringRef inputString)
 			if(foundIndex >= 0)
 			{
 				completionList->setValue (foundIndex);
+
+				completionsOpen = true;
 
 				// open popup
 				UnknownPtr<ISubject> listSubject (completionList->asUnknown ());
@@ -308,8 +362,7 @@ tbool CCL_API TextCompletionComponent::paramChanged (IParameter* param)
 		return true;
 
 	case Tag::kCompletions :
-		onCompletionSelected (completionList->getSelectedValue ().asString ());
-		focusEdit ();
+		acceptCompletion ();
 		return true;
 
 	case Tag::kClear:
@@ -324,6 +377,14 @@ tbool CCL_API TextCompletionComponent::paramChanged (IParameter* param)
 
 void CCL_API TextCompletionComponent::notify (ISubject* subject, MessageRef msg)
 {
+	if(msg == IPopupSelector::kPopupClosed && isEqualUnknown (subject, completionList->asUnknown ()) && completionsOpen)
+	{
+		completionsOpen = false;
+
+		if(!completionList->isEmpty ())
+			completionList->removeAll ();
+	}
+
 	SuperClass::notify (subject, msg);
 }
 
@@ -331,14 +392,14 @@ void CCL_API TextCompletionComponent::notify (ISubject* subject, MessageRef msg)
 // StringListComponent::StringItemModel
 //************************************************************************************************
 
-class StringListComponent::StringItemModel: public CCL::Component,
-											public CCL::AbstractItemModel
+class StringListComponent::StringItemModel: public Component,
+											public AbstractItemModel
 {
 public:
 	StringItemModel (StringListComponent& component);
 
 	// IItemModel
-	tbool CCL_API getSubItems (CCL::IUnknownList& items, CCL::ItemIndexRef index) override;
+	tbool CCL_API getSubItems (IUnknownList& items, ItemIndexRef index) override;
 	tbool CCL_API onItemFocused (ItemIndexRef index) override;
 	IUnknown* CCL_API createDragSessionData (ItemIndexRef index) override;
 	tbool CCL_API canInsertData (ItemIndexRef index, int column, const IUnknownList& data, IDragSession* session, IView* targetView = nullptr) override;
@@ -564,10 +625,33 @@ void StringListComponent::onClear ()
 
 tbool CCL_API StringListComponent::onEditNavigation (const KeyEvent& event, IView* control)
 {
+	if(hasOpenCompletions ())
+	{
+		switch(event.vKey)
+		{
+		case VKey::kUp :
+			navigateCompletions (false);
+			return true;
+
+		case VKey::kDown :
+			navigateCompletions (true);
+			return true;
+
+		case VKey::kEscape :
+			closeCompletionList ();
+			return true;
+
+		case VKey::kEnter :
+		case VKey::kReturn :
+			acceptCompletion ();
+			return true;
+		}
+	}
+
 	switch(event.vKey)
 	{
-		case VKey::kEnter:
-		case VKey::kReturn:
+	case VKey::kEnter :
+	case VKey::kReturn :
 		{
 			// move edit string to list
 			String editString (getEditString ());
@@ -580,18 +664,18 @@ tbool CCL_API StringListComponent::onEditNavigation (const KeyEvent& event, IVie
 		}
 		return true;
 
-		case VKey::kBackspace:
-			if(getEditString ().isEmpty ())
+	case VKey::kBackspace :
+		if(getEditString ().isEmpty ())
+		{
+			// backspace in empty edit removes previous string
+			StringList newList (stringList);
+			if(newList.removeLast ())
 			{
-				// backspace in empty edit removes previous string
-				StringList newList (stringList);
-				if(newList.removeLast ())
-				{
-					onListEdited (newList);
-					focusEdit ();
-				}
-				return true;
+				onListEdited (newList);
+				focusEdit ();
 			}
+			return true;
+		}
 	}
 	return false;
 }

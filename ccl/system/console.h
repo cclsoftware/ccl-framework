@@ -38,7 +38,7 @@ public:
 	// System::IConsole
 	tbool CCL_API redirect (IConsole* console) override;
 	tbool CCL_API writeLine (StringRef text) override;
-	tbool CCL_API writeLine (const char* text) override;
+	tbool CCL_API writeLine (CStringPtr text) override;
 	tbool CCL_API readLine (String& text) override;
 
 	// Alert::IReporter

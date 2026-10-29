@@ -27,15 +27,15 @@ Here is an example *skin.xml* file. Its basic structure consists of a |xml.class
 
       <Styles>
         <Style name="MyStyle">
-            <Color name="backcolor" color="black"/>
+          <Color name="backcolor" color="black"/>
         </Style>
       </Styles>
 
       <Forms>
         <Form name="ApplicationWindow">
-            <Button name="quit" title="Quit"/>
-        </Form>	
-      </Forms>		
+          <Button name="quit" title="Quit"/>
+        </Form>
+      </Forms>
     </Skin>
 
 .. _neutralbase_and_neutraldesign:
@@ -51,18 +51,17 @@ While *neutraldesign* defines the basic "Neutral" styles, *neutralbase* is used 
 .. code-block:: xml
 
     <Skin>
-      <Imports>		
-		<!-- neutralbase: colors and fonts for style definitions in neutraldesign 
-			defining "Standard" styles inheriting from these "Natural" styles -->
-		<Import name="@neutralbase"/>
-		<!-- neutraldesign: "Natural" parent style definitions using basecolors and fonts -->
+      <Imports>
+        <!-- neutralbase: colors and fonts for style definitions in neutraldesign
+             defining "Standard" styles inheriting from these "Natural" styles -->
+        <Import name="@neutralbase"/>
+        <!-- neutraldesign: "Natural" parent style definitions using basecolors and fonts -->
         <Import name="@neutraldesign"/>
       </Imports>
-    
-        ...
+
+      ...
 
     </Skin>
-
 
 When building a new app, it is good practice to import these two packages to ensure that all controls receive a consistent default appearance. The default styles are applied to controls that do not have an explicitly assigned style.
 
@@ -71,6 +70,6 @@ For example, if a customized default style for buttons is required, the default 
 
 .. code-block:: xml
 
-		<Style name="Standard.Button" inherit="Neutral.Button" appstyle="true" override="true">
-			<Color name="textcolor" color="green"/>
-		</Style>
+    <Style name="Standard.Button" inherit="Neutral.Button" appstyle="true" override="true">
+      <Color name="textcolor" color="green"/>
+    </Style>

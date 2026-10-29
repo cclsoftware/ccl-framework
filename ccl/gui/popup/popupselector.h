@@ -66,7 +66,6 @@ public:
 	~PopupSelector ();
 
 	DECLARE_STYLEDEF (popupStyles)
-	DECLARE_STRINGID_MEMBER (kPopupClosed)
 
 	PROPERTY_BOOL (menuMode, MenuMode)
 	PROPERTY_BOOL (nonModal, NonModal)
@@ -131,7 +130,7 @@ private:
 	int32 behavior;
 };
 
-DECLARE_VISUALSTYLE_CLASS (PopupSelector)
+DECLARE_TYPELIB_ENTRY (PopupSelector)
 
 //************************************************************************************************
 // PopupSelectorWindow (modal)

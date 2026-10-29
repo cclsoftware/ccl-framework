@@ -64,6 +64,7 @@ static const String kWinPlatform (CCL_PLATFORM_ID_WIN);
 static const String kIOSPlatform (CCL_PLATFORM_ID_IOS);
 static const String kAndroidPlatform (CCL_PLATFORM_ID_ANDROID);
 static const String kLinuxPlatform (CCL_PLATFORM_ID_LINUX);
+static const String kWasmPlatform (CCL_PLATFORM_ID_WASM);
 static const String kPlatformPrefix ("platform-"); // prefix for special platforms
 
 static const String kPlatformPlaceholder ("$platform");
@@ -121,6 +122,8 @@ StringRef ExtensionDescription::getPlatformName ()
 	return kAndroidPlatform;
 	#elif CCL_PLATFORM_LINUX
 	return kLinuxPlatform;
+	#elif CCL_PLATFORM_WASM
+	return kWasmPlatform;
 	#else
 		#error Set platform here!
 	#endif
@@ -149,6 +152,8 @@ String ExtensionDescription::extractPlatform (StringRef id)
 			platform = kWinPlatform;
 		else if(lastPart == kLinuxPlatform)
 			platform = kLinuxPlatform;
+		else if(lastPart == kWasmPlatform)
+			platform = kWasmPlatform;
 		else if(lastPart.startsWith (kPlatformPrefix))
 			platform = lastPart;
 	}

@@ -64,11 +64,10 @@ PopupSelectorClient::Result CCL_API PopupSelectorClient::onMouseDown (const Mous
 	if(acceptOnMouseDown () && hasPopupResult () && event.keys.isSet (KeyState::kRButton) == false)
 		return kOkay;
 
-	if(acceptOnDoubleClick () && acceptOnMouseUp ())
-	{
-		// we received a mouse down, that means that the user did not "drag" into the menu; in this case we want the popup to stay open
+	// We received a mouse down, that means that the user did not "drag" into the menu; in this case we want the popup to stay open. A popup that never
+	// activated (e.g. one opened while typing) had no such gesture, so treat this as a normal click.
+	if(popupWindow.isActive () && acceptOnDoubleClick () && acceptOnMouseUp ())
 		flags |= kIgnoreMouseUp;
-	}
 
 	return kIgnore;
 }

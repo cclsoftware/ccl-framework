@@ -78,7 +78,7 @@ CCL_KERNEL_INIT_LEVEL (PresetPackageHandler, kSetupLevel)
 DEFINE_SINGLETON (PresetPackageHandler)
 const String PresetPackageHandler::kPresetFolder (CCLSTR ("Presets"));
 const LocalString& PresetPackageHandler::getPlural () { return XSTR_REF (Presets); }
-const CCL::UID PresetPackageHandler::catListId (0x5c75b5d8, 0xd2cd, 0x4f40, 0xb1, 0x3d, 0x38, 0x9e, 0x7b, 0x10, 0xcf, 0xb4);
+const UID PresetPackageHandler::catListId (0x5c75b5d8, 0xd2cd, 0x4f40, 0xb1, 0x3d, 0x38, 0x9e, 0x7b, 0x10, 0xcf, 0xb4);
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 

@@ -187,10 +187,6 @@ bool TLS::release (TLSRef slot)
 // PosixThread
 //************************************************************************************************
 
-ThreadPriorityHandler* ThreadPriorityHandler::customHandler = nullptr;
-
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
 static void* ThreadEntry (void* param)
 {
 	PosixThread* thread = static_cast<PosixThread*> (param);

@@ -200,7 +200,7 @@ public:
 
 	// Object
 	tbool CCL_API getProperty (Variant& var, MemberID propertyId) const override;
-	CCL::tbool CCL_API invokeMethod (CCL::Variant& returnValue, CCL::MessageRef msg) override;
+	tbool CCL_API invokeMethod (Variant& returnValue, MessageRef msg) override;
 
 protected:
 	EditorComponent* component;

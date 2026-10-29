@@ -105,7 +105,8 @@ CCL_TEST_F (NativeFileSystemTest, CreateNewFile)
 	IStream* stream = fs->openStream (tempFile, IStream::kCreateMode);
 	CCL_TEST_ASSERT (stream != nullptr);
 	CCL_TEST_ASSERT (fs->fileExists (tempFile));
-	stream->release ();
+	if(stream)
+		stream->release ();
 	tempFile.ascend ();
 	fs->removeFolder (tempFile);
 }
@@ -122,22 +123,26 @@ CCL_TEST_F (NativeFileSystemTest, WriteReadFile)
 	tempFile.descend ("dummy.temp", IUrl::kFile);
 	Logging::debug ("Writing to file: %(1)", tempFile.getPath ());
 	IStream* stream = fs->openStream (tempFile, IStream::kCreateMode);
-	const unsigned int blockSize = 1024 * 120;
-	Logging::debugf ("%d bytes ", blockSize);
-	char buffer[blockSize];
-	for(int i = 0; i < blockSize; i++)
-		buffer[i] = (i % CHAR_MAX);
-	stream->write (buffer, blockSize);
-	stream->release ();
+	CCL_TEST_ASSERT (stream != nullptr);
+	if(stream)
+	{
+		const unsigned int blockSize = 1024 * 120;
+		Logging::debugf ("%d bytes ", blockSize);
+		char buffer[blockSize];
+		for(int i = 0; i < blockSize; i++)
+			buffer[i] = (i % CHAR_MAX);
+		stream->write (buffer, blockSize);
+		stream->release ();
 
-	Logging::debug ("Reading from file: %(1)", tempFile.getPath ());
-	Logging::debugf ("%d bytes ", blockSize);
-	stream = fs->openStream (tempFile, IStream::kReadMode);
-	stream->read (buffer, blockSize);
-	for(int i = 0; i < blockSize; i++)
-		CCL_TEST_ASSERT (buffer[i] == (i % CHAR_MAX));
+		Logging::debug ("Reading from file: %(1)", tempFile.getPath ());
+		Logging::debugf ("%d bytes ", blockSize);
+		stream = fs->openStream (tempFile, IStream::kReadMode);
+		stream->read (buffer, blockSize);
+		for(int i = 0; i < blockSize; i++)
+			CCL_TEST_ASSERT (buffer[i] == (i % CHAR_MAX));
 
-	stream->release ();
+		stream->release ();
+	}
 	tempFile.ascend ();
 	fs->removeFolder (tempFile);
 }
@@ -154,29 +159,33 @@ CCL_TEST_F (NativeFileSystemTest, SeekFile)
 	tempFile.descend ("dummy.temp", IUrl::kFile);
 	Logging::debug ("Writing to file: %(1)", tempFile.getPath ());
 	IStream* stream = fs->openStream (tempFile, IStream::kCreateMode);
-	const unsigned int blockSize = 1024 * 120;
-	int blocks = 100;
-	Logging::debugf ("%d blocks a %d bytes ", blocks, blockSize);
-	char buffer[blockSize];
-	for(int i = 0; i < blockSize; i++)
-		buffer[i] = (i % CHAR_MAX);
-	for(int i = 0; i < blocks; i++)
-		stream->write (buffer, blockSize);
-	stream->release ();
-
-	Logging::debug ("Seeking in file: %(1)", tempFile.getPath ());
-	stream = fs->openStream (tempFile, IStream::kReadMode);
-
-	for(int i = 0; i < 100; i++)
+	CCL_TEST_ASSERT (stream != nullptr);
+	if(stream)
 	{
-		int64 position = random () % (blockSize * blocks);
-		Logging::debugf ("offset %lld", position);
-		CCL_TEST_ASSERT (stream->seek (position, IStream::kSeekSet) != -1);
-		stream->read (buffer, 1);
-		CCL_TEST_ASSERT (buffer[0] == ((position % blockSize) % CHAR_MAX));
-	}
+		const unsigned int blockSize = 1024 * 120;
+		int blocks = 100;
+		Logging::debugf ("%d blocks a %d bytes ", blocks, blockSize);
+		char buffer[blockSize];
+		for(int i = 0; i < blockSize; i++)
+			buffer[i] = (i % CHAR_MAX);
+		for(int i = 0; i < blocks; i++)
+			stream->write (buffer, blockSize);
+		stream->release ();
 
-	stream->release ();
+		Logging::debug ("Seeking in file: %(1)", tempFile.getPath ());
+		stream = fs->openStream (tempFile, IStream::kReadMode);
+
+		for(int i = 0; i < 100; i++)
+		{
+			int64 position = random () % (blockSize * blocks);
+			Logging::debugf ("offset %lld", position);
+			CCL_TEST_ASSERT (stream->seek (position, IStream::kSeekSet) != -1);
+			stream->read (buffer, 1);
+			CCL_TEST_ASSERT (buffer[0] == ((position % blockSize) % CHAR_MAX));
+		}
+
+		stream->release ();
+	}
 	tempFile.ascend ();
 	fs->removeFolder (tempFile);
 }
@@ -209,7 +218,9 @@ CCL_TEST_F (NativeFileSystemTest, RenameFile)
 	fs->createFolder (tempFile);
 	tempFile.descend ("dummy.temp", IUrl::kFile);
 	IStream* stream = fs->openStream (tempFile, IStream::kCreateMode);
-	stream->release ();
+	CCL_TEST_ASSERT (stream != nullptr);
+	if(stream)
+		stream->release ();
 	fs->renameFile (tempFile, "fresh.temp");
 	Logging::debug ("Rename file: %(1)", tempFile.getPath ());
 	CCL_TEST_ASSERT (!fs->fileExists (tempFile));
@@ -231,7 +242,9 @@ CCL_TEST_F (NativeFileSystemTest, CopyFile)
 	fs->createFolder (tempFile1);
 	tempFile1.descend ("dummy.temp", IUrl::kFile);
 	IStream* stream = fs->openStream (tempFile1, IStream::kCreateMode);
-	stream->release ();
+	CCL_TEST_ASSERT (stream != nullptr);
+	if(stream)
+		stream->release ();
 
 	Url tempFile2;
 	System::GetSystem ().getLocation (tempFile2, System::kTempFolder);
@@ -262,7 +275,9 @@ CCL_TEST_F (NativeFileSystemTest, MoveFile)
 	fs->createFolder (tempFile1);
 	tempFile1.descend ("dummy.temp", IUrl::kFile);
 	IStream* stream = fs->openStream (tempFile1, IStream::kCreateMode);
-	stream->release ();
+	CCL_TEST_ASSERT (stream != nullptr);
+	if(stream)
+		stream->release ();
 
 	Url tempFile2;
 	System::GetSystem ().getLocation (tempFile2, System::kTempFolder);
@@ -317,6 +332,7 @@ CCL_TEST_F (NativeFileSystemTest, MoveFileAcrossVolumes)
 
 CCL_TEST_F (NativeFileSystemTest, GetFileInfo)
 {
+	const unsigned int blockSize = 1024 * 120;
 	Url tempFile;
 	System::GetSystem ().getLocation (tempFile, System::kTempFolder);
 	String folderName = UIDString::generate ();
@@ -324,12 +340,15 @@ CCL_TEST_F (NativeFileSystemTest, GetFileInfo)
 	fs->createFolder (tempFile);
 	tempFile.descend ("dummy.temp", IUrl::kFile);
 	IStream* stream = fs->openStream (tempFile, IStream::kCreateMode);
-	const unsigned int blockSize = 1024 * 120;
-	char buffer[blockSize];
-	for(int i = 0; i < blockSize; i++)
-		buffer[i] = (i % CHAR_MAX);
-	stream->write (buffer, blockSize);
-	stream->release ();
+	CCL_TEST_ASSERT (stream != nullptr);
+	if(stream)
+	{
+		char buffer[blockSize];
+		for(int i = 0; i < blockSize; i++)
+			buffer[i] = (i % CHAR_MAX);
+		stream->write (buffer, blockSize);
+		stream->release ();
+	}
 	Logging::debug ("File info of file: %(1)", tempFile.getPath ());
 	FileInfo fileInfo;
 	CCL_TEST_ASSERT (fs->getFileInfo (fileInfo, tempFile));
@@ -343,6 +362,7 @@ CCL_TEST_F (NativeFileSystemTest, GetFileInfo)
 
 CCL_TEST_F (NativeFileSystemTest, WriteReadLargeFile)
 {
+	const unsigned int blockSize = 1024 * 120;
 	Url tempFile;
 	System::GetSystem ().getLocation (tempFile, System::kTempFolder);
 	String folderName = UIDString::generate ();
@@ -351,21 +371,24 @@ CCL_TEST_F (NativeFileSystemTest, WriteReadLargeFile)
 	tempFile.descend ("dummy.temp", IUrl::kFile);
 	Logging::debug ("Writing to file: %(1)", tempFile.getPath ());
 	IStream* stream = fs->openStream (tempFile, IStream::kCreateMode);
-	const unsigned int blockSize = 1024 * 120;
-	int blocks = uint64(2) * 1024 * 1024 * 1024 / blockSize;
-	Logging::debugf ("Writing %d MB", blocks * blockSize / 1024 / 1024);
-	char buffer[blockSize];
-	for(int i = 0; i < blockSize; i++)
-		buffer[i] = (i % CHAR_MAX);
-	for(int i = 0; i < blocks; i++)
-		stream->write (buffer, blockSize);
-	stream->release ();
+	CCL_TEST_ASSERT (stream != nullptr);
+	if(stream)
+	{
+		int blocks = uint64(2) * 1024 * 1024 * 1024 / blockSize;
+		Logging::debugf ("Writing %d MB", blocks * blockSize / 1024 / 1024);
+		char buffer[blockSize];
+		for(int i = 0; i < blockSize; i++)
+			buffer[i] = (i % CHAR_MAX);
+		for(int i = 0; i < blocks; i++)
+			stream->write (buffer, blockSize);
+		stream->release ();
 
-	Logging::debug ("Reading from file: %(1)", tempFile.getPath ());
-	stream = fs->openStream (tempFile, IStream::kReadMode);
-	for(int i = 0; i < blocks; i++)
-		stream->read (buffer, blockSize);
-	stream->release ();
+		Logging::debug ("Reading from file: %(1)", tempFile.getPath ());
+		stream = fs->openStream (tempFile, IStream::kReadMode);
+		for(int i = 0; i < blocks; i++)
+			stream->read (buffer, blockSize);
+		stream->release ();
+	}
 
 	tempFile.ascend ();
 	fs->removeFolder (tempFile);
@@ -378,6 +401,10 @@ CCL_TEST_F (NativeFileSystemTest, WriteReadLargeFileUncached)
 	Logging::debug ("This test does not work...");
 	return;
 
+	const unsigned int blockSize = 1024 * 120;
+	int blocks = uint64(2) * 1024 * 1024 * 1024 / blockSize;
+	char buffer[blockSize];
+
 	Url tempFile;
 	System::GetSystem ().getLocation (tempFile, System::kTempFolder);
 	String folderName = UIDString::generate ();
@@ -386,21 +413,26 @@ CCL_TEST_F (NativeFileSystemTest, WriteReadLargeFileUncached)
 	tempFile.descend ("dummy.temp", IUrl::kFile);
 	Logging::debug ("Writing to file: %(1)", tempFile.getPath ());
 	IStream* stream = fs->openStream (tempFile, IStream::kCreateMode | INativeFileStream::kWriteThru);
-	const unsigned int blockSize = 1024 * 120;
-	int blocks = uint64(2) * 1024 * 1024 * 1024 / blockSize;
-	Logging::debugf ("Writing %d MB", blocks * blockSize / 1024 / 1024);
-	char buffer[blockSize];
-	for(int i = 0; i < blockSize; i++)
-		buffer[i] = (i % CHAR_MAX);
-	for(int i = 0; i < blocks; i++)
-		stream->write (buffer, blockSize);
-	stream->release ();
+	CCL_TEST_ASSERT (stream != nullptr);
+	if(stream)
+	{
+		Logging::debugf ("Writing %d MB", blocks * blockSize / 1024 / 1024);
+		for(int i = 0; i < blockSize; i++)
+			buffer[i] = (i % CHAR_MAX);
+		for(int i = 0; i < blocks; i++)
+			stream->write (buffer, blockSize);
+		stream->release ();
+	}
 
 	Logging::debug ("Reading from file: %(1)", tempFile.getPath ());
 	stream = fs->openStream (tempFile, IStream::kReadMode | INativeFileStream::kReadNonBuffered);
-	for(int i = 0; i < blocks; i++)
-		stream->read (buffer, blockSize);
-	stream->release ();
+	CCL_TEST_ASSERT (stream != nullptr);
+	if(stream)
+	{
+		for(int i = 0; i < blocks; i++)
+			stream->read (buffer, blockSize);
+		stream->release ();
+	}
 
 	tempFile.ascend ();
 	fs->removeFolder (tempFile);

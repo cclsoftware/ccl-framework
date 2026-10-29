@@ -101,7 +101,7 @@ protected:
 	void updateMenuBar () override;
 	void updateBackgroundColor () override;
 	void setWindowSize (Rect& size) override;
-	void showWindow (bool state = true) override;
+	void showWindow (bool state = true, bool activate = true) override;
 	void fromNativeWindow (void* nativeWindow) override;
 	void makeNativePopupWindow (IWindow* parent) override;
 	void makeNativeChildWindow (void* nativeParent) override;

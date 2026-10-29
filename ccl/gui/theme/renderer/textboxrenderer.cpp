@@ -12,7 +12,7 @@
 // For more information, please visit ccl.dev.
 //
 // Filename    : ccl/gui/theme/renderer/textboxrenderer.cpp
-// Description : Control Renderer
+// Description : Text Box Renderer
 //
 //************************************************************************************************
 
@@ -26,235 +26,289 @@
 
 using namespace CCL;
 
-extern const char* ButtonStateNames[]; // buttonrenderer.cpp
+extern CStringPtr ButtonStateNames[]; // buttonrenderer.cpp
 
 //************************************************************************************************
 // TextBoxRenderer
-/** If option "transparent" is not set, a TextBox draws a background image. 
-When no image is specified, it is filled in "backcolor", and a rectangular frame in color "forecolor" can be drawn with option "border".
-
+/** If option "transparent" is not set, a TextBox draws a background image.
+When no image is specified, it is filled with the background color.
+A frame around it is defined by "background.bordercolor" and "background.borderwidth", rounded by the
+four "background.border[left,right,top,bottom]radius" metrics - the radii also clip the background
 The text is drawn with an optional "padding". */
 //************************************************************************************************
 
-BEGIN_VISUALSTYLE_CLASS (TextBox, VisualStyle, "TextBoxStyle")
-	ADD_VISUALSTYLE_COLOR  ("textcolor")			///< textcolor for the displayed string
-	ADD_VISUALSTYLE_COLOR  ("textcolor.transparent")///< used instead of "textcolor" if the TextBox's option "transparent" is set or "colorname" color is transparent
-	ADD_VISUALSTYLE_COLOR  ("textcolor.bright")		///< used instead of "textcolor" if the current luminance of the "colorname" color is below the "textcolor.threshold"
-	ADD_VISUALSTYLE_COLOR  ("textcolor.dark")		///< used when the current luminance of the "colorname" color is above the "textcolor.threshold" (using "textcolor" as fallback, needs definition of textcolor.bright)
-	ADD_VISUALSTYLE_COLOR  ("textcolor.alphablend")	///< the non-transparent "colorname" color will be alphablended with this color (using "color.alphablend" as fallback) and used as textcolor
-	ADD_VISUALSTYLE_METRIC ("textcolor.threshold")	///< "textcolor.bright" is used instead of "textcolor" if the luminance threshold for the current "colorname" color is below this value - default is 0.35
-	ADD_VISUALSTYLE_COLOR  ("textcolor.disabled")	///< text color used (instead of "textcolor") when control is disabled
-	ADD_VISUALSTYLE_METRIC ("padding.left")			///< left padding for the text
-	ADD_VISUALSTYLE_METRIC ("padding.top")			///< top padding for the text
-	ADD_VISUALSTYLE_METRIC ("padding.right")		///< right padding for the text
-	ADD_VISUALSTYLE_METRIC ("padding.bottom")		///< bottom padding for the text
-	ADD_VISUALSTYLE_METRIC ("padding")				///< padding for the text, used if one of the paddings for left, top, right, bottom is not specified
-	ADD_VISUALSTYLE_METRIC ("scaletext.maxfont")	///< explicit maximal fontsize when scaletext option is set	
-	ADD_VISUALSTYLE_METRIC ("scaletext.minfont")	///< explicit minimal fontsize when scaletext option is set
-END_VISUALSTYLE_CLASS (TextBox)
+DEFINE_TYPELIB_ENTRY_WITH_PARENT (TextBox, VisualStyle, "TextBoxStyle", VISUALSTYLES_TYPELIB)
+BEGIN_TYPELIB_MEMBERS (TextBox)
+	ADD_TYPELIB_MEMBER_RENDERATOM (AtomName::kBackground)	///< the background image and the frame around it
+	ADD_TYPELIB_MEMBER_RENDERATOM (AtomName::kText)			///< the displayed string
+	ADD_TYPELIB_MEMBER_STRING (StyleID::kPadding)			///< combined padding (left, right, top, bottom) 
+	ADD_TYPELIB_MEMBER_METRIC (StyleID::kPaddingLeft)		///< left padding
+	ADD_TYPELIB_MEMBER_METRIC (StyleID::kPaddingTop)		///< top padding
+	ADD_TYPELIB_MEMBER_METRIC (StyleID::kPaddingRight)		///< right padding
+	ADD_TYPELIB_MEMBER_METRIC (StyleID::kPaddingBottom)		///< bottom padding
+END_TYPELIB_MEMBERS (TextBox)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-TextBoxRenderer::TextBoxRenderer (VisualStyle* visualStyle)
-: CompositedRenderer (visualStyle),
-  brightColorThreshold (0.35f),
-  initialized (false)
-{}
+DEFINE_CLASS_ABSTRACT (TextBoxRenderer, ControlRenderer)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void TextBoxRenderer::initialize (StyleRef style)
+TextBoxRenderer::TextBoxRenderer (VisualStyle* visualStyle, View* owner)
+: ControlRenderer (visualStyle, owner),
+  observedTextModel (nullptr),
+  backgroundAtom (AtomName::kBackground, TextBox::kPartContentArea),
+  textAtom (AtomName::kText, TextBox::kPartTextExtent)
 {
-	if(visualStyle == nullptr)
-		return;
-	
-	textColorOpaque = visualStyle->getColor ("textcolor");
-	textContrastDarkColor = visualStyle->getColor ("textcolor.dark", textColorOpaque);
-	textContrastTransparentColor = visualStyle->getColor ("textcolor.transparent", visualStyle->getColor ("transparentcolor", textColorOpaque));
-	textContrastBrightColor = visualStyle->getColor ("textcolor.bright", Colors::kTransparentBlack);
-	alphaBlendColor = visualStyle->getColor ("textcolor.alphablend", visualStyle->getColor ("color.alphablend", Colors::kTransparentBlack));
-	
-	Color disabledFallbackColor = textColorOpaque;
-	disabledFallbackColor.alphaBlend (visualStyle->getBackColor (), 0.5f);
-	disabledTextColor = visualStyle->getColor ("textcolor.disabled", disabledFallbackColor);
-	
-	borderPenColor = visualStyle->getColor ("bordercolor", visualStyle->getForeColor ());
-	background = visualStyle->getImage ("background");
-	
-	brightColorThreshold = visualStyle->getMetric<float> ("textcolor.threshold", brightColorThreshold);
-	
-	// set default textColor
-	textBrush.setColor (style.isOpaque () ? textColorOpaque : textContrastTransparentColor);
-	
-	visualStyle->getPadding (padding);
-	
-	initialized = true;
+	addAtom (backgroundAtom);
+	addAtom (textAtom);
+	backgroundAtom.isContentFill (true);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void TextBoxRenderer::draw (View* view, const UpdateRgn& updateRgn)
+TextBoxRenderer::~TextBoxRenderer ()
 {
-	StyleRef style = view->getStyle ();
-	if(initialized == false)
-		initialize (style);
+	if(observedTextModel)
+		share_and_observe_unknown<ITextModel> (this, observedTextModel, nullptr);
+}
 
-	TextBox* textBox = static_cast<TextBox*> (view);
-	GraphicsPort port (textBox);
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+void TextBoxRenderer::updateAtoms ()
+{
+	SuperClass::updateAtoms ();
+
+	if(owner == nullptr)
+		return;
+
+	TextBox* textBox = static_cast<TextBox*> (owner);
+
 	Rect r;
 	textBox->getClientRect (r);
 
-	if(isOpaque (view))
+	ITextModel* textModel = textBox->getTextModel ();
+	if(observedTextModel != textModel)
+		share_and_observe_unknown<ITextModel> (this, observedTextModel, textModel);
+
+	backgroundAtom.setSize (rectIntToF (r));
+	if(IImage* background = backgroundAtom.getImage ())
 	{
-		if(background)
+		int frameIndex = 0;
+		if(textBox->isFocused ())
 		{
-			int frameIndex = 0;
-			if(textBox->isFocused ())
-			{
-				frameIndex = background->getFrameIndex (ButtonStateNames[ThemeElements::kFocused]);
-				if(frameIndex < 0)
-					frameIndex = background->getFrameIndex (ButtonStateNames[ThemeElements::kNormal]); // fallback
-			}
-			else
-				frameIndex = background->getFrameIndex (ButtonStateNames[ThemeElements::kNormal]);
-			
+			frameIndex = background->getFrameIndex (ButtonStateNames[ThemeElements::kFocused]);
 			if(frameIndex < 0)
-				frameIndex = 0;
-
-			background->setCurrentFrame (frameIndex);
-			port.drawImage (background, Rect (0, 0, background->getWidth (), background->getHeight ()), r);
-		}
-		else 
-		{
-			port.fillRect (updateRgn.bounds, visualStyle->getBackBrush ());
-			if(style.isBorder ())
-				port.drawRect (r, borderPenColor);
-		}
-	}
-
-	// setup text color
-	UnknownPtr<IColorParam> colorParam = textBox->getColorParam ();
-	SolidBrush currentBrush (view->isEnabled () ? getTextColor (colorParam) : disabledTextColor);
-	
-	ITextLayout* textLayout = textBox->getTextLayout ();
-	if(textLayout != nullptr)
-		drawLayout (view, port, textLayout, currentBrush);
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
-ColorRef TextBoxRenderer::getTextColor (IColorParam* colorParam) const
-{
-	// textColor is dependent on colorParam when this parameter is used
-	if(colorParam != nullptr)
-	{
-		colorParamColor = Colors::kTransparentBlack;
-		colorParam->getColor (colorParamColor);
-		
-		if(colorParamColor.getAlphaF () == 0.f)
-		{
-			colorParamColor = textContrastTransparentColor;
-		}
-		else if(textContrastBrightColor != Colors::kTransparentBlack)
-		{
-			if(colorParamColor.getLuminance () < brightColorThreshold)
-				colorParamColor = textContrastBrightColor;
-			else
-				colorParamColor = textContrastDarkColor;
-		}
-		else if(alphaBlendColor.getAlphaF () != 0)
-		{
-			colorParamColor.alphaBlend (alphaBlendColor, alphaBlendColor.getAlphaF ());
-		}
-	}
-	else
-	{
-		colorParamColor = textBrush.getColor ();
-	}
-	
-	return colorParamColor;
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
-bool TextBoxRenderer::drawLayout (View* view, GraphicsPort& port, ITextLayout* layout, BrushRef textBrush)
-{
-	auto textBox = static_cast<TextBox*> (view);
-	Rect r (textBox->getSize ());
-	r.moveTo (Point (0, 0));
-
-	port.saveState ();
-	port.addClip (r);
-	Transform t;
-	t.translate (-textBox->getDisplayOffset (), 0);
-	port.addTransform (t);
-
-	UnknownPtr<ITextBackgroundRenderer> backgroundRenderer (textBox->getTextModel ());
-	if(backgroundRenderer.isValid ())
-		backgroundRenderer->drawTextBackground (port, *layout, rectIntToF (r));
-
-	bool succeeded = port.drawTextLayout (textBox->getTextRect ().getLeftTop (), layout, textBrush) == kResultOk;
-	port.restoreState ();
-	return succeeded;
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
-int TextBoxRenderer::hitTest (View* view, const CCL::Point& loc, CCL::Point* clickOffset)
-{
-	CCL::Rect r;
-
-	getPartRect (view, TextBox::kPartContentArea, r);
-	if(r.pointInside (loc))
-	{
-		if(clickOffset)
-		{
-			clickOffset->x = loc.x - r.left;
-			clickOffset->y = loc.y - r.top;
-		}
-		return TextBox::kPartContentArea;
-	}
-	return TextBox::kPartNone;
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
-bool TextBoxRenderer::getPartRect (const View* view, int partCode, CCL::Rect& r)
-{
-	StyleRef style = view->getStyle ();
-	if(initialized == false)
-		initialize (style);
-		
-	view->getClientRect (r);
-
-	if(partCode == TextBox::kPartContentArea)
-		return true;
-	else if(partCode == TextBox::kPartTextExtent)
-	{
-		TextBox* textBox = (TextBox*)view;
-		Rect rect = textBox->getTextRect ();
-		ITextLayout* textLayout = textBox->getTextLayout ();
-		if(textLayout == nullptr)
-		{
-			if(view->getStyle ().isCustomStyle (Styles::kTextBoxAppearanceMultiLine))
-				return true;
-
-			rect.setSize (Point ());
-			r = rect;
+				frameIndex = background->getFrameIndex (ButtonStateNames[ThemeElements::kNormal]); // fallback
 		}
 		else
-			textLayout->getBounds (rect);
+			frameIndex = background->getFrameIndex (ButtonStateNames[ThemeElements::kNormal]);
+		
+		if(frameIndex < 0)
+			frameIndex = 0;
 
-		return true;
+		backgroundAtom.setImageFrame (frameIndex);
 	}
+
+	r = textBox->getTextRect (r);
+
+	textAtom.setSize (rectIntToF (r));
+	textAtom.setTextModel (textModel);
+	textAtom.updateTextLayout (); // create text layout if necessary
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+void TextBoxRenderer::applyVisualStyle (RenderAtomTransaction& transaction)
+{
+	if(visualStyle == nullptr || owner == nullptr)
+		return;
+
+	SuperClass::applyVisualStyle (transaction);
+
+	textAtom.isTextMultiline (owner->getStyle ().isCustomStyle (Styles::kTextBoxAppearanceMultiLine));
+	textAtom.isContentFill (owner->getStyle ().isCustomStyle (Styles::kTextBoxAppearanceScaleText));
+	// TextFit is handled manually by text box. Don't let the atom also collapse the string.
+
+	// The border is defined by the style, as "background.bordercolor" and "background.borderwidth"
+	// SuperClass::applyVisualStyle () has already read those into the atom, so start from them.
+	Pen borderPen (backgroundAtom.getBorderPen ());
+	#if LEGACY_STYLES_SUPPORTED
+	BEGIN_LEGACY_STYLES_ENABLED_BLOCK
+	// With the "border" option, "bordercolor" frames the text box. A border color of the atom takes its place,
+	// a transparent one switches the border off. A style that defines neither frames it in "forecolor".
+	if(owner->getStyle ().isBorder ())
+	{
+		Color borderColor;
+		if(visualStyle->getColor (borderColor, LegacyStyleID::kBorderColor))
+			borderPen.setColor (borderColor);
+		else if(!backgroundAtom.getStyleColor (borderColor, *visualStyle, AtomPropertyID::kBorderColor, &conditionContext))
+			borderPen.setColor (visualStyle->getForeColor ());
+	}
+
+	if(!owner->getStyle ().isCommonStyle (Styles::kTransparent))
+	{
+		Color legacyBackColor;
+		bool hasLegacyBackColor = visualStyle->getGradient (StyleID::kBackColor) || visualStyle->getColor (legacyBackColor, StyleID::kBackColor);
+		if(hasLegacyBackColor || !backgroundAtom.getBrush ().isVisible ())
+			backgroundAtom.setBrush (visualStyle->getBackBrush ());
+	}
+	END_LEGACY_STYLES_ENABLED_BLOCK
+	#endif
+	
+	// a transparent text box has no background, otherwise "background" is an alias of "background.image"
+	if(!isOpaque ())
+	{
+		backgroundAtom.setImage (nullptr);
+		backgroundAtom.setBrush (SolidBrush (Colors::kTransparentBlack));
+	}
+	else if(Image* styleImage = unknown_cast<Image> (visualStyle->getImage (StyleID::kBackground)))
+		backgroundAtom.setImage (styleImage);
+
+	if(backgroundAtom.getImage () || borderPen.getColor ().isVisible ())
+		backgroundAtom.setBorderPen (borderPen);
+
+	#if LEGACY_STYLES_SUPPORTED
+	BEGIN_LEGACY_STYLES_ENABLED_BLOCK
+	RenderAtom::ColorContrastHelper& helper = textAtom.getColorContrastHelper ();
+
+	Color textColor (Colors::kBlack);
+	bool useLegacyTextColor = visualStyle->getColor (textColor, StyleID::kTextColor) || !textAtom.getBrush ().isVisible ();
+	if(useLegacyTextColor)
+		helper.setDefaultColor (textColor);
+
+	static const LegacyStyleID::ContrastColorIDs kTextContrastColors = {LegacyStyleID::kTextColorBright, LegacyStyleID::kTextColorDark,
+		LegacyStyleID::kTextColorTransparent, LegacyStyleID::kTransparentColor, LegacyStyleID::kTextColorAlphaBlend};
+	applyLegacyContrastColors (textAtom, kTextContrastColors);
+
+	if(!isOpaque ())
+		helper.setDefaultColor (helper.getContrastColorTransparent ());
+
+	helper.setBrightColorThreshold (visualStyle->getMetric<float> (LegacyStyleID::kTextColorThreshold, 0.f));
+
+	if(useLegacyTextColor)
+	{
+		Brush textBrush (textAtom.getBrush ());
+		textBrush.setColor (helper.getDefaultColor ());
+		textAtom.setBrush (textBrush);
+	}
+
+	if(!owner->isEnabled ())
+	{
+		Color disabledTextColor (textColor);
+		disabledTextColor.alphaBlend (visualStyle->getBackColor (), 0.5f);
+		if(visualStyle->getColor (disabledTextColor, LegacyStyleID::kTextColorDisabled) || useLegacyTextColor)
+			textAtom.setBrush (SolidBrush (disabledTextColor));
+	}
+
+	textAtom.setMinFontSize (visualStyle->getMetric<float> (LegacyStyleID::kScaleTextMinFont, 6));
+	textAtom.setMaxFontSize (visualStyle->getMetric<float> (LegacyStyleID::kScaleTextMaxFont, 100));
+	END_LEGACY_STYLES_ENABLED_BLOCK
+	#endif
+
+	BEGIN_LEGACY_STYLES_DISABLED_BLOCK
+	// fall back to "textcolor"
+	if(!textAtom.getBrush ().isVisible ())
+	{
+		Color textColor;
+		if(visualStyle->getColor (textColor, StyleID::kTextColor, &conditionContext))
+		{
+			textAtom.setBrush (SolidBrush (textColor));
+			textAtom.getColorContrastHelper ().setDefaultColor (textColor);
+		}
+	}
+	END_LEGACY_STYLES_DISABLED_BLOCK
+
+	textAtom.setTextFont (visualStyle->getTextFont ());
+
+	// setup text color
+	TextBox* textBox = static_cast<TextBox*> (owner);
+
+	if(owner->isEnabled ())
+	{
+		Color foregroundColor = textAtom.getColorContrastHelper ().getDefaultColor ();
+		if(UnknownPtr<IColorParam> colorParam = textBox->getColorParam ())
+		{
+			colorParam->getColor (foregroundColor);
+			foregroundColor = textAtom.getColorContrastHelper ().getForegroundColor (foregroundColor);
+		}
+		textAtom.setBrush (SolidBrush (foregroundColor));
+	}
+
+	textAtom.setTextFormat (visualStyle->getTextFormat ());
+
+	textAtom.needsTextLayoutRebuild (true);
+
+	visualStyle->getPadding (padding);
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+bool TextBoxRenderer::onTextInteraction (const IMutableTextModel::InteractionInfo& info)
+{
+	UnknownPtr<IMutableTextModel> model (textAtom.getTextModel ());
+	if(model && textAtom.getTextLayout ())
+		return model->onTextInteraction (*textAtom.getTextLayout (), info);
 
 	return false;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool TextBoxRenderer::isOpaque (const View* view) const
+const ITextLayout* TextBoxRenderer::getTextLayout () const
 {
-	StyleRef style = view->getStyle ();
+	return textAtom.getTextLayout ();
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+bool TextBoxRenderer::getPartRect (Rect& rect, int partCode)
+{
+	if(partCode == TextBox::kPartTextExtent)
+	{
+		// the text atom spans the whole text rect, report the bounds of the actual text instead
+		if(const ITextLayout* textLayout = textAtom.getTextLayout ())
+		{
+			RectF bounds;
+			textLayout->getBounds (bounds);
+			bounds.offset (textAtom.getSize ().getLeftTop ());
+			rect = rectFToEnclosingInt (bounds);
+			return true;
+		}
+	}
+	return SuperClass::getPartRect (rect, partCode);
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+void TextBoxRenderer::setSize (RectFRef size)
+{
+	textAtom.setSize (size);
+	backgroundAtom.setSize (size);
+
+	// textAtom doesn't have textFit set because textbox handles text collapsing, so we need to trigger the rebuild manually.
+	StyleRef style = owner->getStyle ();
+	if(!style.isCustomStyle (Styles::kTextBoxAppearanceMultiLine) && style.isCustomStyle (Styles::kTextBoxAppearanceFitText))
+		textAtom.needsTextLayoutRebuild (true);
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+bool TextBoxRenderer::isOpaque () const
+{
+	if(owner == nullptr)
+		return false;
+
+	StyleRef style = owner->getStyle ();
 	return style.isOpaque ();
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+void CCL_API TextBoxRenderer::notify (ISubject* subject, MessageRef msg)
+{
+	if(msg == kChanged && isEqualUnknown (subject, observedTextModel))
+		textAtom.needsTextLayoutRebuild (true);
+	else if(msg == ITextModel::kRequestLayoutUpdate && isEqualUnknown (subject, observedTextModel))
+		textAtom.needsTextLayoutUpdate (true);
 }

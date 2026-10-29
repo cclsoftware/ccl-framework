@@ -56,6 +56,34 @@ namespace UTFCodec
 
 	typedef int (*DecodeFunction) (uchar32& c, const unsigned char* sourceBuffer, int sourceSize);
 	typedef int (*EncodeFunction) (uchar32 c, unsigned char* destBuffer, int destSize);
+
+	// Grapheme cluster boundary detection (UAX #29)
+	enum GraphemeBreakClass
+	{
+		kGraphemeBreak_Other,
+		kGraphemeBreak_CR,
+		kGraphemeBreak_LF,
+		kGraphemeBreak_Control,
+		kGraphemeBreak_Extend,
+		kGraphemeBreak_ZWJ,
+		kGraphemeBreak_RegionalIndicator,
+		kGraphemeBreak_Prepend,
+		kGraphemeBreak_SpacingMark,
+		kGraphemeBreak_L,
+		kGraphemeBreak_V,
+		kGraphemeBreak_T,
+		kGraphemeBreak_LV,
+		kGraphemeBreak_LVT,
+		kGraphemeBreak_ExtendedPictographic
+	};
+
+	GraphemeBreakClass getGraphemeBreakClass (uchar32 codepoint);
+	bool isCombiningMark (uchar32 codepoint);
+	bool isEmojiModifier (uchar32 codepoint);
+	bool isVariationSelector (uchar32 codepoint);
+	bool isRegionalIndicator (uchar32 codepoint);
+	bool isExtendedPictographic (uchar32 codepoint);
+	bool isHangulSyllable (uchar32 codepoint, int& type);  // type: 0=L, 1=V, 2=T, 3=LV, 4=LVT
 }
 
 //************************************************************************************************
@@ -102,7 +130,8 @@ struct UTFWriter
 	UTFWriter (unsigned char* dest, int maxBytes)
 	: dest (dest),
 	  maxBytes (maxBytes),
-	  numBytes (0)
+	  numBytes (0),
+	  output {}
 	{}
 	
 	bool writeNext (uchar32 c)
@@ -148,7 +177,7 @@ struct UTF8Reader: UTFReader<UTFCodec::decodeUTF8>
 
 struct UTF8Writer: UTFWriter<UTFCodec::encodeUTF8, 6>
 {
-	UTF8Writer (char* dest, int maxDestLength)
+	UTF8Writer (char dest[], int maxDestLength)
 	: UTFWriter<UTFCodec::encodeUTF8, 6> ((unsigned char*)dest, maxDestLength)
 	{}
 	
@@ -172,7 +201,7 @@ struct UTF8Writer: UTFWriter<UTFCodec::encodeUTF8, 6>
 
 struct UTF16Reader: UTFReader<UTFCodec::decodeUTF16>
 {
-	UTF16Reader (const uchar* string, int length)
+	UTF16Reader (UStringPtr string, int length)
 	: UTFReader<UTFCodec::decodeUTF16> ((const unsigned char*)string, length << 1)
 	{}
 };
@@ -183,7 +212,7 @@ struct UTF16Reader: UTFReader<UTFCodec::decodeUTF16>
 
 struct UTF16Writer: UTFWriter<UTFCodec::encodeUTF16, 4>
 {
-	UTF16Writer (uchar* dest, int maxDestLength)
+	UTF16Writer (uchar dest[], int maxDestLength)
 	: UTFWriter<UTFCodec::encodeUTF16, 4> ((unsigned char*)dest, maxDestLength << 1)
 	{}
 	
@@ -202,13 +231,100 @@ struct UTF16Writer: UTFWriter<UTFCodec::encodeUTF16, 4>
 };
 
 //************************************************************************************************
+// UTF16CodepointIterator
+/** Bidirectional iterator over the codepoints of a UTF-16 string.
+	The position is given in UTF-16 code units and lies between codepoints.
+	Unpaired surrogates are returned as individual codepoints. */
+//************************************************************************************************
+
+class UTF16CodepointIterator
+{
+public:
+	UTF16CodepointIterator (UStringPtr text, int length, int position = 0)
+	: text (text),
+	  length (length),
+	  position (position)
+	{}
+
+	int getLength () const { return length; }
+	int getPosition () const { return position; }
+	void setPosition (int newPosition) { position = newPosition; }
+	bool isStart () const { return position <= 0; }
+	bool isEnd () const { return position >= length; }
+
+	/** Get codepoint after current position without advancing, 0 at end. */
+	uchar32 peekNext () const
+	{
+		int consumed = 0;
+		return decodeNext (consumed);
+	}
+
+	/** Get codepoint before current position without moving back, 0 at start. */
+	uchar32 peekPrevious () const
+	{
+		UTF16CodepointIterator iterator (*this);
+		return iterator.previous ();
+	}
+
+	/** Get codepoint after current position and advance behind it, 0 at end. */
+	uchar32 next ()
+	{
+		int consumed = 0;
+		uchar32 c = decodeNext (consumed);
+		position += consumed;
+		return c;
+	}
+
+	/** Move back one codepoint and return it, 0 at start. */
+	uchar32 previous ()
+	{
+		if(position > length)
+			position = length;
+		if(isStart ())
+			return 0;
+
+		position--;
+		if(position > 0 && UTFCodec::isLowSurrogateUTF16 (text[position]) && UTFCodec::isHighSurrogateUTF16 (text[position - 1]))
+			position--;
+
+		return peekNext ();
+	}
+
+protected:
+	UStringPtr text;
+	int length;
+	int position;
+
+	uchar32 decodeNext (int& consumed) const
+	{
+		consumed = 0;
+		if(isEnd ())
+			return 0;
+
+		uchar first = text[position];
+		consumed = 1;
+
+		if(UTFCodec::isHighSurrogateUTF16 (first) && position + 1 < length)
+		{
+			uchar second = text[position + 1];
+			if(UTFCodec::isLowSurrogateUTF16 (second))
+			{
+				consumed = 2;
+				return UTFCodec::makeSurrogatePairUTF16 (first, second);
+			}
+		}
+		return first;
+	}
+};
+
+//************************************************************************************************
 // UTFFunctions
 //************************************************************************************************
 
 namespace UTFFunctions
 {
 	/** Decode UTF-8 string to UTF-16. */
-	inline int decodeUTF8String (uchar* uString, int uStringSize, const char* cString, int cStringLength)
+	inline int decodeUTF8String (uchar uString[], int uStringSize, CStringPtr cString, int cStringLength)
 	{
 		ASSERT (cStringLength >= 0)
 
@@ -225,7 +341,7 @@ namespace UTFFunctions
 	}
 
 	/** Encode UTF-16 to UTF-8. */
-	inline int encodeUTF8String (char* cString, int cStringSize, const uchar* uString, int uStringLength)
+	inline int encodeUTF8String (char cString[], int cStringSize, UStringPtr uString, int uStringLength)
 	{
 		ASSERT (uStringLength >= 0)
 

@@ -156,7 +156,7 @@ ContextPopupMenu::ContextPopupMenu (StringID menuType)
 
 ContextPopupMenu::ContextPopupMenu (Menu* menu)
 : menu (menu),
-  controlSink (CCL::Signals::kControls)
+  controlSink (Signals::kControls)
 {
 	ASSERT (menu)
 	menu->retain ();

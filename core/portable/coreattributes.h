@@ -131,7 +131,7 @@ public:
 	const ConstString& getID () const;
 
 protected:
-	CString32 idBuffer;
+	CStringBuffer<CORE_ATTRIBUTE_ID_LENGTH> idBuffer;
 	ConstString id;
 
 private:

@@ -27,7 +27,7 @@ using namespace CCL;
 //************************************************************************************************
 
 ITranslationTable* LocalString::theTable = nullptr;
-const char* LocalString::currentScope = nullptr;
+CStringPtr LocalString::currentScope = nullptr;
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -98,7 +98,7 @@ String LocalString::translate (StringID scope, StringID keyString)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-LocalString::BeginScope::BeginScope (const char* name)
+LocalString::BeginScope::BeginScope (CStringPtr name)
 {
 	currentScope = name;
 }
@@ -112,7 +112,7 @@ LocalString::EndScope::EndScope ()
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-LocalString::LocalString (const char* key)
+LocalString::LocalString (CStringPtr key)
 : key (key),
   scope (currentScope)
 {}
@@ -148,7 +148,7 @@ LocalString::operator StringRef () const
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-const char* LocalString::getKey () const
+CStringPtr LocalString::getKey () const
 {
 	return key; 
 }

@@ -426,8 +426,6 @@ IImage* CCL_API ToolModePalette::createIcon (int index, int width, int height, c
 {
 	if(IImage* icon = modeParam->getIconAt (index))
 	{
-		//TODO: set isTemplate attribute at shapeImage resources directly
-		UnknownPtr<IObject> (icon)->setProperty (IImage::kIsTemplate, true);
 		icon->retain ();
 		return icon;
 	}
@@ -558,10 +556,10 @@ IParameter* ToolBar::createModeParameter (const String modeStrings[], CStringPtr
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-static CCL::Configuration::BoolValue toolMenuIconsEnabled ("Editing", "toolMenuIconsEnabled", true);
-
 DEFINE_CLASS (ToolBar, Component)
 DEFINE_STRINGID_MEMBER_ (ToolBar, kSetExtraTool, "SetExtraTool")
+
+static Configuration::BoolValue toolMenuIconsEnabled ("Editing", "toolMenuIconsEnabled", true);
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 

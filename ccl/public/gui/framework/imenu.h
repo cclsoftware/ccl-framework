@@ -133,7 +133,8 @@ interface IMenu: IUnknown
 		kMenuIcon,			///< menu icon	[IImage]
 		kMenuData,			///< menu data	[Variant]
 		kMenuVariant,		///< menu variant [String]
-		kMenuScaleFactor	///< content scale factor [float]
+		kMenuScaleFactor,	///< content scale factor [float]
+		kMenuControl	    ///< menu control [IView]
 	};
 
 	static const String strSeparator;		///< menu separator
@@ -260,7 +261,8 @@ interface IMenuItem: IUnknown
 		kTooltip,		///< item tooltip*	[String]
 		kSplitMenu,		///< split menu*	[IMenu]
 		kItemCategory,	///< item category	[String]
-		kItemHandler	///< item handler	[ICommandHandler]
+		kItemHandler,	///< item handler	[ICommandHandler]
+		kItemValue		///< item value		[String]
 	};
 
 	enum Metrics
@@ -287,6 +289,23 @@ interface IMenuItem: IUnknown
 };
 
 DEFINE_IID (IMenuItem, 0xd9d1cb64, 0x1c0f, 0x4c16, 0xb6, 0x2f, 0x80, 0xd6, 0xd6, 0xfa, 0x14, 0x9c)
+
+
+//************************************************************************************************
+// ICompactMenuControl
+/** Compact menu control interface. Is set as IMenu::kMenuControl when compact control is created
+	\ingroup gui_menu */
+//************************************************************************************************
+
+interface ICompactMenuControl: IUnknown
+{
+	/** Go back one level. */
+	virtual tbool CCL_API closeDeepestMenu () = 0;
+
+	DECLARE_IID (ICompactMenuControl)
+};
+
+DEFINE_IID (ICompactMenuControl, 0xb20727e5, 0x4dd5, 0x48c5, 0xb0, 0x29, 0xef, 0xbf, 0xc8, 0xdf, 0xfb, 0x68)
 
 //************************************************************************************************
 // MenuPosition

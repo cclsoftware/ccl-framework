@@ -29,6 +29,8 @@
 	#include "core/platform/shared/posix/corenetwork.posix.h"
 #elif CORE_NETWORK_IMPLEMENTATION == CORE_FEATURE_IMPLEMENTATION_LWIP
 	#include "core/platform/shared/lwip/corenetwork.lwip.h"
+#elif CORE_NETWORK_IMPLEMENTATION == CORE_FEATURE_UNIMPLEMENTED
+	#include "core/platform/shared/coreplatformnetwork.h"
 #endif
 
 #include "core/public/coresocketaddress.h"

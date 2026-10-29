@@ -54,7 +54,7 @@ IString* CCL_API AndroidUnicodeString::cloneString () const
 void* CCL_API AndroidUnicodeString::createNativeString () const
 {
 	JNIEnv* env = Core::Java::Jni::getEnvironment ();
-	const uchar* string = text ? text : kEmpty;
+	UStringPtr string = text ? text : kEmpty;
 	int length = Text::getLength (string);		
 	jstring javaString = env->NewString (string, length);
 	#if USE_GLOBAL_JSTRING

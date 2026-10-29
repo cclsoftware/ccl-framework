@@ -49,7 +49,7 @@ protected:
 
 	void initApp (StringID appID, StringRef companyName, StringRef appName, StringRef appVersion, int versionInt);
 
-	void getPlatformPluginsFolder (CCL::IUrl& url) const;
+	void getPlatformPluginsFolder (IUrl& url) const;
 
 private:
 	static NodeAddon* theInstance;

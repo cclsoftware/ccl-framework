@@ -499,6 +499,11 @@ msgctxt "Command"
 msgid "Keyboard Shortcuts"
 msgstr "Klavye Kısayolları"
 
+#: application.cpp
+msgctxt "Command"
+msgid "Legal Information"
+msgstr ""
+
 #: presets/presettrader.cpp
 msgctxt "Command"
 msgid "Load Preset File"

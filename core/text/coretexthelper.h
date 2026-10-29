@@ -26,7 +26,7 @@
 namespace Core {
 namespace Text {
 
-static const int kTextBufferSize = STRING_STACK_SPACE_MAX;
+static const int kTextBufferSize = CORE_STRING_STACK_MAX;
 
 //************************************************************************************************
 // BufferedTextInput

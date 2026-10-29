@@ -240,7 +240,9 @@ void CCL_API QuartzPath::addBezier (PointRef p1, PointRef c1, PointRef c2, Point
 		started = true;
 	else
 		p = ::CGPathGetCurrentPoint (path);
-	if(p.x != p1.x || p.y != p1.y)
+
+	constexpr float kPrecision = 1e-5;
+	if(!ccl_equals<float> (p.x, p1.x, kPrecision) || !ccl_equals<float> (p.y, p1.y, kPrecision))
 		::CGPathMoveToPoint (path, 0, p1.x, p1.y);
 
 	::CGPathAddCurveToPoint (path, 0, c1.x, c1.y, c2.x, c2.y, p2.x, p2.y);
@@ -255,7 +257,9 @@ void CCL_API QuartzPath::addBezier (PointFRef p1, PointFRef c1, PointFRef c2, Po
 		started = true;
 	else
 		p = ::CGPathGetCurrentPoint (path);
-	if(p.x != p1.x || p.y != p1.y)
+
+	constexpr float kPrecision = 1e-5;
+	if(!ccl_equals<float> (p.x, p1.x, kPrecision) || !ccl_equals<float> (p.y, p1.y, kPrecision))
 		::CGPathMoveToPoint (path, 0, p1.x, p1.y);
 
 	::CGPathAddCurveToPoint (path, 0, c1.x, c1.y, c2.x, c2.y, p2.x, p2.y);

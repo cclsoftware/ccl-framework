@@ -22,6 +22,31 @@
 using namespace CCL;
 
 //************************************************************************************************
+// IGradient
+//************************************************************************************************
+
+Color IGradient::interpolateStops (const IGradient::Stop stops[], int stopCount, float t)
+{
+	if(stopCount <= 0)
+		return Color ();
+	if(t <= stops[0].position)
+		return stops[0].color;
+	if(t >= stops[stopCount - 1].position)
+		return stops[stopCount - 1].color;
+
+	for(int i = 1; i < stopCount; ++i)
+	{
+		if(t <= stops[i].position)
+		{
+			float span = stops[i].position - stops[i - 1].position;
+			float u = (span > 0.f) ? (t - stops[i - 1].position) / span : 0.f;
+			return Color::linearGradient (stops[i - 1].color, stops[i].color, u);
+		}
+	}
+	return stops[stopCount - 1].color;
+}
+
+//************************************************************************************************
 // LinearGradientBrush
 //************************************************************************************************
 

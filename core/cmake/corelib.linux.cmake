@@ -24,6 +24,7 @@ ccl_list_append_once (corelib_platform_shared_sources
 	${corelib_DIR}/platform/shared/posix/corenetwork.posix.cpp
 	${corelib_DIR}/platform/shared/posix/coresocket.posix.cpp
 	${corelib_DIR}/platform/shared/posix/corethread.posix.cpp
+	${corelib_DIR}/platform/shared/coreplatformthread.cpp
 )
 
 ccl_list_append_once (corelib_platform_linux_sources
@@ -46,7 +47,9 @@ if (NOT imported)
 	if (${OPENSSL_FOUND})
 		target_compile_definitions (corelib PUBLIC -DCORE_USE_OPENSSL=1)
 		target_include_directories (corelib PRIVATE ${OPENSSL_INCLUDE_DIR})
-		target_link_libraries (corelib PRIVATE ${OPENSSL_LIBRARIES})
+		foreach (openssl_library IN ITEMS ${OPENSSL_LIBRARIES})
+			target_link_libraries (corelib PRIVATE $<BUILD_INTERFACE:${openssl_library}> $<INSTALL_INTERFACE:$<PATH:GET_FILENAME,${openssl_library}>>)
+		endforeach ()
 		list (APPEND corelib_network_sources
 			${corelib_DIR}/platform/shared/openssl/coresslcontext.openssl.cpp
 		)

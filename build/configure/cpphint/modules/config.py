@@ -54,7 +54,7 @@ class ConfigHandler:
         logging.info(f"loading config '{config_file}")
 
         try:
-            with config_file.open(mode='r') as f:
+            with config_file.open(mode='r', encoding='utf-8') as f:
                 data = json.load(f)
 
                 self.description = data.get(CppHintConfig.ATTR_DESCRIPTION, "")
@@ -127,7 +127,7 @@ class ConfigHandler:
 
         config_file = including_file.parent.joinpath(included_file).resolve()
         try:
-            with config_file.open(mode='r') as f:
+            with config_file.open(mode='r', encoding='utf-8') as f:
                 data = json.load(f)
                 extends = data.get(CppHintConfig.ATTR_EXTENDS, list())
                 extended_sources = data.get(CppHintConfig.ATTR_SOURCES, list())

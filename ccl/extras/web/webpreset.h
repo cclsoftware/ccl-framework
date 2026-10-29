@@ -113,9 +113,9 @@ private:
 // PresetTransferHandler
 //************************************************************************************************
 
-class PresetTransferHandler: public CCL::Object,
-							 public CCL::IdleClient,
-							 public CCL::Singleton<PresetTransferHandler>
+class PresetTransferHandler: public Object,
+							 public IdleClient,
+							 public Singleton<PresetTransferHandler>
 {
 public:
 	DECLARE_CLASS (PresetTransferHandler, Object)
@@ -149,8 +149,8 @@ protected:
 // PresetTransferHandler::Finalizer
 //************************************************************************************************
 
-class PresetTransferHandler::Finalizer: public CCL::Object,
-										public CCL::ITriggerAction
+class PresetTransferHandler::Finalizer: public Object,
+										public ITriggerAction
 {
 public:
 	Finalizer (WebPreset* webPreset);
@@ -158,7 +158,7 @@ public:
 	PROPERTY_SHARED_AUTO (WebPreset, webPreset, WebPreset)
 
 	// ITriggerAction
-	void CCL_API execute (CCL::IObject* target) override;
+	void CCL_API execute (IObject* target) override;
 
 	CLASS_INTERFACE (ITriggerAction, Object)
 };

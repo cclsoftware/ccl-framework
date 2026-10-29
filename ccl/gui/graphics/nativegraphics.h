@@ -372,8 +372,6 @@ public:
 
 	CLASS_INTERFACE (IGradient, Object)
 
-	static constexpr int kMaxStopCount = 10; ///< internal maximum stop count
-
 	static NativeGradient* resolve (IGradient* gradient);
 
 	template <class T>
@@ -436,7 +434,7 @@ public:
 
 	// ITextLayout
 	tresult CCL_API getWordRange (Range& range, int textIndex) const override;
-	tresult CCL_API getLineRange (Range& range, int textIndex) const override;
+	tresult CCL_API getLineRange (Range& range, int textIndex, tbool includeNewline = true) const override;
 	tresult CCL_API getExplicitLineRange (Range& range, int textIndex) const override;
 	FontRef CCL_API getFont () const override;
 
@@ -444,6 +442,9 @@ public:
 
 protected:
 	Font font;
+
+	void excludeLineBreak (Range& range) const; ///< strip the trailing line break from a line range, see ITextLayout::getLineRange
+	bool isOnTrailingEmptyLine (int textIndex) const; ///< true if the caret is behind a line break at the very end of the text
 
 	static constexpr float kSubscriptSizeFactor = .62;
 	static constexpr float kSubscriptBaselineFactor = .16;
@@ -494,6 +495,7 @@ public:
 	tresult CCL_API setSuperscript (const Range& range) override;
 	tresult CCL_API setSubscript (const Range& range) override;
 	tresult CCL_API setTextColor (const Range& range, Color color) override;
+	tresult CCL_API clearFormatting () override;
 	tresult CCL_API getBounds (Rect& bounds) const override;
 	tresult CCL_API getBounds (RectF& bounds) const override;
 	tresult CCL_API getImageBounds (RectF& bounds) const override;
@@ -501,7 +503,6 @@ public:
 	tresult CCL_API hitTest (int& textIndex, PointF& position) const override;
 	tresult CCL_API getCharacterBounds (RectF& bounds, int textIndex) const override;
 	tresult CCL_API getTextBounds (IMutableRegion& bounds, const Range& range) const override;
-	tresult CCL_API getLineRange (Range& range, int textIndex) const override;
 
 private:
 	String text;

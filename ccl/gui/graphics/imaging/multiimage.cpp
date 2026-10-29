@@ -310,6 +310,23 @@ Image* MultiImage::getFrame (int frameIndex)
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
+bool MultiImage::hasUniformFrameSize () const
+{
+	Image* firstImage = nullptr;
+	ArrayForEachFast (frames, FrameEntry, entry)
+		if(Image* image = entry->getImage ())
+		{
+			if(firstImage == nullptr)
+				firstImage = image;
+			else if(image->getSize () != firstImage->getSize ())
+				return false;
+		}
+	EndFor
+	return true;
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
 Image::ImageType CCL_API MultiImage::getType () const
 { 
 	return kMultiple;
@@ -425,14 +442,14 @@ inline int compareOtherSize (PointRef size1, PointRef size2) {	return size1.x - 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-IImage* ImageResolutionSelector::selectImage (IImage* image, PointRef destSize, int flags)
+IImage* ImageResolutionSelector::selectImage (IImage* image, PointRef destSize, ScaleMode scaleMode)
 {
-	return selectImage (unknown_cast<Image> (image), destSize, flags);
+	return selectImage (unknown_cast<Image> (image), destSize, scaleMode);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-Image* ImageResolutionSelector::selectImage (Image* image, PointRef destSize, int flags)
+Image* ImageResolutionSelector::selectImage (Image* image, PointRef destSize, ScaleMode scaleMode)
 {
 	MultiImage* multiImage = ccl_cast<MultiImage> (image);
 	if(multiImage)
@@ -481,7 +498,7 @@ Image* ImageResolutionSelector::selectImage (Image* image, PointRef destSize, in
 			}
 		}
 
-		if(bestLarger && (!bestSmaller || (largerDiff < smallerDiff) || (flags & kAllowZoom)))
+		if(bestLarger && (!bestSmaller || (largerDiff < smallerDiff) || scaleMode == kFitCover))
 			return bestLarger;
 		else
 			return bestSmaller;
@@ -492,28 +509,28 @@ Image* ImageResolutionSelector::selectImage (Image* image, PointRef destSize, in
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void ImageResolutionSelector::draw (IGraphics& port, IImage* image, RectRef rect, int flags, int frame, const ImageMode* mode)
+void ImageResolutionSelector::draw (IGraphics& port, IImage* image, RectRef rect, ScaleMode scaleMode, int frame, const ImageMode* mode)
 {
-	draw (port, unknown_cast<Image> (image), rect, flags, frame, mode);
+	draw (port, unknown_cast<Image> (image), rect, scaleMode, frame, mode);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void ImageResolutionSelector::draw (IGraphics& port, Image* image, RectRef rect, int flags, int frameToDraw, const ImageMode* mode)
+void ImageResolutionSelector::draw (IGraphics& port, Image* image, RectRef rect, ScaleMode scaleMode, int frameToDraw, const ImageMode* mode)
 {
-	ImageResolutionSelector s (image, rect, flags, frameToDraw);
+	ImageResolutionSelector s (image, rect, scaleMode, frameToDraw);
 	if(s.bestImage)
 		port.drawImage (s.bestImage, s.srcRect, s.dstRect, mode);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-ImageResolutionSelector::ImageResolutionSelector (Image* image, RectRef rect, int flags, int frameToDraw)
+ImageResolutionSelector::ImageResolutionSelector (Image* image, RectRef rect, ScaleMode scaleMode, int frameToDraw)
 : bestImage (nullptr)
 {
 	Point destSize (rect.getWidth (), rect.getHeight ());
 
-	if(Image* best = selectImage (image, destSize, flags))
+	if(Image* best = selectImage (image, destSize, scaleMode))
 	{
 		best->setCurrentFrame (frameToDraw);
 
@@ -522,7 +539,7 @@ ImageResolutionSelector::ImageResolutionSelector (Image* image, RectRef rect, in
 		best->getSize (src);
 		Rect dst (src);
 
-		if(flags & kAllowZoom)
+		if(scaleMode == kFitCover)
 		{
 			float imageRatio = src.getWidth () / (float)src.getHeight ();
 			float rectRatio = rect.getWidth () / (float)rect.getHeight ();
@@ -541,12 +558,12 @@ ImageResolutionSelector::ImageResolutionSelector (Image* image, RectRef rect, in
 			}
 			dst = destRect;
 		}
-		else if(src.right > destSize.x || src.bottom > destSize.y || (flags & kAllowStretch))
+		else if(scaleMode == kFitContain || src.right > destSize.x || src.bottom > destSize.y)
 		{
 			dst.fitProportionally (destRect);
 			dst.center (destRect);
 		}
-		else
+		else // kFitShrink
 		{
 			dst.center (destRect);
 		}

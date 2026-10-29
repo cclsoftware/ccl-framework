@@ -237,7 +237,7 @@ protected:
 	bool tooltipWasHidden;
 	bool tooltipSuspended;
 
-	CCL::LinkedList<IUIEventHandler*> handlers;
+	LinkedList<IUIEventHandler*> handlers;
 	IApplicationProvider* appProvider;
 	ApplicationType applicationType;
 	Styles::ButtonOrder buttonOrder;

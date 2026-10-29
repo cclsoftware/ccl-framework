@@ -24,6 +24,7 @@
 #include "ccl/gui/views/sprite.h"
 #include "ccl/gui/graphics/mutableregion.h"
 #include "ccl/gui/system/autofill.h"
+#include "ccl/gui/system/inputmethod.h"
 #include "ccl/gui/gui.h"
 
 #include "ccl/base/storage/configuration.h"
@@ -35,6 +36,7 @@
 namespace CCL {
 
 class NativeTextControl;
+class EditBoxRenderer;
 
 //************************************************************************************************
 // EditBox
@@ -45,7 +47,8 @@ An edit box displays text just like a TextBox, but the parameter value can also 
 class EditBox: public TextBox,
 			   public IdleClient,
 			   public IEditBox,
-			   public IAutofillClient
+			   public IAutofillClient,
+			   public ITextInputClient
 {
 public:
 	DECLARE_CLASS (EditBox, TextBox)
@@ -55,6 +58,7 @@ public:
 	~EditBox ();
 
 	static bool isAnyEditing ();
+	static bool isEditNavigationKey (const KeyEvent& event); ///< keys passed to IEditControlHost::onEditNavigation
 
 	enum EditBoxParts
 	{
@@ -72,9 +76,10 @@ public:
 	bool shouldUseNativeControl () const;
 	void closeNativeTextControl ();
 
-	void getCaretRect (Rect& rect) const;
-	const ConstVector<Rect>& getSelection () const;
+	const ConstVector<Rect>& getSelection ();
 	bool moveCaretTo (const Point& position, bool clearSelection = false);
+
+	Coord getDisplayOffset () const { return isEditing () ? displayOffset : 0; }
 
 	// IEditBox
 	void CCL_API insertText (StringRef text) override;
@@ -85,6 +90,22 @@ public:
 	int getAutofillClientType () const override;
 	View* getAutofillClientView () override;
 	void receiveAutofillText (StringRef text) override;
+
+	// ITextInputClient
+	const IView* CCL_API getInputView () const override;
+	int CCL_API getTextLength () const override;
+	tresult CCL_API getText (String& result, int start = 0, int length = -1) const override;
+	void CCL_API getSelection (int& caret, int& selection, SelectionDomain selectionDomain = kSelectionOriginal) const override;
+	void CCL_API setSelection (int caret, int selection) override;
+	tresult CCL_API getCaretRect (Rect& caretRect) const override;
+	int CCL_API getInputType () const override;
+	int CCL_API getInputFlags () const override;
+	void CCL_API getPreeditText (String& text) const override;
+	void CCL_API setPreeditText (StringRef text) override;
+	void CCL_API applyText (StringRef text) override;
+	void CCL_API deleteText (int beforeLength, int afterLength) override;
+	void CCL_API replaceText (StringRef text, int start, int length) override;
+	void CCL_API getTextBounds (IMutableRegion& bounds, int start, int length) override;
 
 	// IdleClient
 	void onIdleTimer () override;
@@ -112,8 +133,15 @@ public:
 	void onVisualStyleChanged () override;
 	bool isEditing () const override;
 	AccessibilityProvider* getAccessibilityProvider () override;
+	void modifyDisplayString (String& displayString) const override;
+	void modifyLayout (ITextLayout& textLayout) const override;
 
-	CLASS_INTERFACE3 (IEditBox, ITimerTask, IAutofillClient, TextBox)
+	BEGIN_CLASS_INTERFACES
+		QUERY_INTERFACE (IEditBox)
+		QUERY_INTERFACE (ITimerTask)
+		QUERY_INTERFACE (IAutofillClient)
+		QUERY_INTERFACE (ITextInputClient)
+	END_CLASS_INTERFACES (TextBox)
 
 protected:
 	class TextDragHandler;
@@ -129,13 +157,20 @@ protected:
 	class EditBoxMouseHandler;
 	friend class EditBoxMouseHandler;
 
+	friend class EditBoxRenderer;
+
 	static const int kCaretShift = 5;
 
 	NativeTextControl* nativeControl;
 	bool wantReopen; // reopen when regaining focus
 	bool forceOpen;
+	bool selectionUpdateNeeded;
 	static bool inKeyDown;
 	static int editCount;
+
+	Coord displayOffset;
+
+	String plainTextCache; // read-only cache that mirrors textModel.toDisplayString ()
 
 	AutoPtr<ISprite> caret;
 	int caretTextPosition; // caret position in UTF16 text
@@ -154,29 +189,43 @@ protected:
 	IDragHandler* currentDragHandler;
 	ITextLayout::Range dragSelectionRange;
 
+	AutoPtr<IInputMethod> inputMethod;
+	String preeditText;
+	int preeditCaretOffset;
+	int preeditSelectionOffset;
+
 	enum PrivateFlags
 	{
-		kInCreateNativeControl = 1 << (kLastPrivateFlag + 1)
+		kInCreateNativeControl = 1 << (kTextBoxLastPrivateFlag + 1),
+		kTextModified = 1 << (kTextBoxLastPrivateFlag + 2),	///< text model was edited since it was last synchronized with the parameter
+		kInitialSelectionPending = 1 << (kTextBoxLastPrivateFlag + 3)
 	};
 
 	PROPERTY_FLAG (privateFlags, kInCreateNativeControl, inCreateNativeControl)
+	PROPERTY_FLAG (privateFlags, kTextModified, textModified)
+	PROPERTY_FLAG (privateFlags, kInitialSelectionPending, initialSelectionPending)
+
+	static bool isWordModifier (const KeyEvent& event);
 
 	bool handleClick (const MouseEvent& event);
 	bool handleKeyDown (const KeyEvent& keyEvent);
 	bool tryEdit (const KeyEvent& keyEvent);
 	void takeEditFocusInternal (bool state, bool directed = true);
+	void startEditing ();
 	void insertTextInternal (StringRef text, int actionID);
 	int removeTextInternal (int textPosition, int length, int actionID);
 	bool acceptClick (const MouseEvent& event);
 	void paramFocused (bool state);
-	void submit (bool check = false);
+	void submit (bool check = false, const KeyState& keys = KeyState ());
 	void setNativeControl (NativeTextControl* toSet);
 	NativeTextControl* createNativeControl ();
 	virtual void calculateNativeControlSize (Rect& size);
 	IEditControlHost* getEditControlHost ();
 	void setCaretPosition (int textPosition, bool implicit = false);
 	void setSelectionPosition (int textPosition);
+	void updateDisplayOffset ();
 	virtual void updateCaretRect ();
+	void setCaretColor (ColorRef color);
 	void updateSelection ();
 	String getSelectedText (bool plainText) const;
 	void dragSelection ();
@@ -195,9 +244,16 @@ protected:
 	void resetTimer ();
 	int getEffectiveKeyboardType () const;
 
+	int getNextGraphemePosition (int textPosition) const;
+	int getPreviousGraphemePosition (int textPosition) const;
+	int getNextWordPosition (int textPosition) const;
+	int getPreviousWordPosition (int textPosition) const;
+	int snapToGraphemeBoundary (int textPosition) const;  // Snap position to nearest grapheme cluster boundary
+	int snapToGraphemeBoundary (int textPosition, PointF position) const;  // Snap based on mouse position within character
+	bool moveCaretToCoord (CoordF layoutY, bool shiftDown);
+
 	// TextBox
 	void paramChanged () override;
-	void buildTextLayout () override;
 	tbool CCL_API interpretCommand (const CommandMsg& msg) override;
 };
 
@@ -228,8 +284,9 @@ public:
 	bool isCanceled ();										///< true if Escape was pressed
 	virtual void updateText ();								///< IParameter changed, update text control
 	virtual void submitText ();								///< text control changed, update IParameter
-	virtual void getControlText (String& string);			///< get current text from control
-	virtual void setSelection (int start, int length);		///< select length characters from start. length = -1: until end; start = -1: select none
+	virtual void getControlText (String& string) const;		///< get current text from control
+	virtual int getControlTextLength () const;				///< get length of current text in control
+	virtual void setSelection (int start, int length);		///< select length (may be negative) characters from start
 	virtual void setScrollPosition (PointRef where);		///< scroll to given position
 	virtual Point getScrollPosition () const;				///< get current scroll position
 	virtual bool handleKeyDown (const KeyEvent& keyEvent);	///< handle keyboard input
@@ -248,6 +305,9 @@ protected:
 	bool inSubmitText;
 
 	NativeTextControl (Control& owner, int returnKeyType, int keyboardType);
+
+	void getSelectionPositions (int& caret, int& anchor, int start, int length) const;
+	void selectAll ();
 };
 
 //////////////////////////////////////////////////////////////////////////////////////////////////

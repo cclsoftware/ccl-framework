@@ -74,6 +74,8 @@ option (ENABLE_ASAN "Enable Address Sanitizer" OFF)
 option (ENABLE_HWASAN "Enable HWAddress Sanitizer (64 bit, Android 14 or newer)" OFF)
 
 if (${ENABLE_ASAN})
+	list (APPEND CCL_NESTED_CMAKE_ARGS "-DENABLE_ASAN=ON")
+
 	add_compile_options (
 		"-fno-omit-frame-pointer"
 		"-fsanitize=address"
@@ -82,15 +84,19 @@ if (${ENABLE_ASAN})
 		"-fno-omit-frame-pointer"
 		"-fsanitize=address"
 	)
-elseif (${ENABLE_HWASAN} AND "${VENDOR_TARGET_ARCHITECTURE}" MATCHES "(x86_64)|(arm64)")
-	add_compile_options (
-		"-fno-omit-frame-pointer"
-		"-fsanitize=hwaddress"
-	)
-	add_link_options (
-		"-fno-omit-frame-pointer"
-		"-fsanitize=hwaddress"
-	)
+elseif (${ENABLE_HWASAN})
+	list (APPEND CCL_NESTED_CMAKE_ARGS "-DENABLE_HWASAN=ON")
+
+	if ("${VENDOR_TARGET_ARCHITECTURE}" MATCHES "(x86_64)|(arm64)")
+		add_compile_options (
+			"-fno-omit-frame-pointer"
+			"-fsanitize=hwaddress"
+		)
+		add_link_options (
+			"-fno-omit-frame-pointer"
+			"-fsanitize=hwaddress"
+		)
+	endif ()
 endif ()
 
 set (CMAKE_POSITION_INDEPENDENT_CODE ON CACHE BOOL "" FORCE)

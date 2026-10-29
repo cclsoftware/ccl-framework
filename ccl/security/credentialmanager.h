@@ -81,6 +81,12 @@ public:
 
 	virtual tresult remove (StringRef targetName) = 0;
 
+	virtual IAsyncOperation* addAsync (Credential& credential);
+
+	virtual IAsyncOperation* getAsync (StringRef targetName, StringRef groupName = nullptr);
+
+	virtual IAsyncOperation* removeAsync (StringRef targetName);
+
 protected:
 	bool silent;
 };
@@ -118,14 +124,18 @@ public:
 	~CredentialManager ();
 
 	// ICredentialManager
+	void CCL_API setGlobalGroupName (StringRef groupName) override;
+	tbool CCL_API setSilentMode (tbool state) override;
 	tresult CCL_API addCredential (StringRef targetName, StringRef userName, const Crypto::Block& data, StringRef groupName = nullptr) override;
 	tresult CCL_API addPassword (StringRef targetName, StringRef userName, StringRef password, StringRef groupName = nullptr) override;
 	tresult CCL_API addCredentialAlias (StringRef aliasName, StringRef targetName) override;
+	String CCL_API resolveName (StringRef name) const override;
 	tresult CCL_API getCredential (ICredential*& credential, StringRef targetName, StringRef groupName = nullptr) override;
 	tresult CCL_API removeCredential (StringRef targetName) override;
-	tbool CCL_API setSilentMode (tbool state) override;
-	String CCL_API resolveName (StringRef name) const override;
-	void CCL_API setGlobalGroupName (StringRef groupName) override;
+	IAsyncOperation* CCL_API addCredentialAsync (StringRef targetName, StringRef userName, const Crypto::Block& data, StringRef groupName = nullptr) override;
+	IAsyncOperation* CCL_API addPasswordAsync (StringRef targetName, StringRef userName, StringRef password, StringRef groupName = nullptr) override;
+	IAsyncOperation* CCL_API getCredentialAsync (StringRef targetName, StringRef groupName = nullptr) override;
+	IAsyncOperation* CCL_API removeCredentialAsync (StringRef targetName) override;
 
 	CLASS_INTERFACE (ICredentialManager, Object)
 

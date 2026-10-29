@@ -159,20 +159,6 @@ public class TextControl extends EditText
 		return editable.toString ();
 	}
 
-	public void setSelectionRange (int start, int length)
-	{
-		if(start == -1)
-			setSelected (false);
-		else
-		{
-			int end = Math.min (start + length, length ());
-			if(length == -1)
-				end = length ();
-
-			setSelection (start, end);
-		}
-	}
-
 	public void setSize (int left, int top, int width, int height)
 	{
 		this.width = width;

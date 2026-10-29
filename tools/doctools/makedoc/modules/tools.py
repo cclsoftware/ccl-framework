@@ -2,19 +2,16 @@
 """Makedoc tools module.
 """
 
+__copyright__ = "Copyright (c) 2026 CCL Software Licensing GmbH"
+
 import datetime
 import logging
-import os
 import pathlib
 import subprocess
-import sys
-from typing import Optional, List, Dict
+from typing import Optional, Dict
 
-__copyright__ = "Copyright (c) 2024 CCL Software Licensing GmbH"
-
-sys.path.append(os.path.abspath(os.path.dirname(os.path.abspath(__file__)) + "../../../../../ccl/extras/python"))
-from tools.findtool import find_binary_tool, find_python_tool, FindToolException
-from tools.repoinfo import RepositoryInfo
+from ccl_extras.findtool import find_binary_tool, find_python_tool, FindToolException
+from ccl_extras.repoinfo import RepositoryInfo
 
 
 class SphinxTool:

@@ -113,7 +113,7 @@ public:
 	
 	// ContainerView
 	void draw (const DrawEvent& e) override;
-	void setSize (Core::RectRef newSize) override;
+	void setSize (RectRef newSize) override;
 	void setAttributes (const Attributes& a) override;
 	bool onTouchInput (const TouchEvent& e) override;
 	CStringPtr getConnectionType () const override;

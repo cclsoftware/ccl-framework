@@ -1118,7 +1118,7 @@ void AppSafetyManager::PluginOptionsProvider::getBlockPluginOptionId (MutableCSt
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void CCL::AppSafetyManager::PluginOptionsProvider::applyOptions ()
+void AppSafetyManager::PluginOptionsProvider::applyOptions ()
 {
 	bool wantBlocklistEnabled = System::GetPlugInManager ().enableBlocklist (true);
 	MutableCString optionId;

@@ -27,6 +27,7 @@ namespace Android {
 
 DEFINE_JNI_CLASS (Context)
 	DEFINE_JNI_METHOD (getSystemService, "(Ljava/lang/String;)Ljava/lang/Object;")
+	DEFINE_JNI_METHOD (getApplicationContext, "()Landroid/content/Context;")
 	DEFINE_JNI_METHOD (getPackageResourcePath, "()Ljava/lang/String;")
 	DEFINE_JNI_METHOD (getCacheDir, "()Ljava/io/File;")
 	DEFINE_JNI_METHOD (getNoBackupFilesDir, "()Ljava/io/File;")
@@ -34,6 +35,7 @@ DEFINE_JNI_CLASS (Context)
 	DEFINE_JNI_METHOD (getFilesDir, "()Ljava/io/File;")
 	DEFINE_JNI_METHOD (getExternalFilesDir, "(Ljava/lang/String;)Ljava/io/File;")
 	DEFINE_JNI_METHOD (getSharedPreferences, "(Ljava/lang/String;I)Landroid/content/SharedPreferences;")
+	DEFINE_JNI_METHOD (checkSelfPermission, "(Ljava/lang/String;)I")
 END_DEFINE_JNI_CLASS
 
 //************************************************************************************************

@@ -186,7 +186,7 @@ private:
 	void write (const ModelNode& node);
 };
 
-} // JUnit
-} // CCL
+} // namespace JUnit
+} // namespace CCL
 
-#endif
+#endif // _ccl_junitreporter_h

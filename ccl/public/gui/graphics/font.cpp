@@ -86,6 +86,16 @@ void Font::measureText (RectF& size, CoordF lineWidth, StringRef text, FontRef f
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
+CoordF Font::measureLineHeight (FontRef font)
+{
+	RectF size;
+	static StringRef kTallString = CCLSTR ("Xgjpq"); // add any taller character you know
+	measureString (size, kTallString, font); 
+	return size.getHeight ();
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
 void Font::collapseString (String& string, Coord maxWidth, FontRef font, int trimMode, bool exact)
 {
 	System::GetGraphicsHelper ().Font_collapseString (string, CoordF (maxWidth), font, trimMode, exact);

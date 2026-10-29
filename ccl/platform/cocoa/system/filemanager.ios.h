@@ -19,7 +19,7 @@
 #ifndef _ccl_filemanager_ios_h
 #define _ccl_filemanager_ios_h
 
-#include "ccl/system/filemanager.h"
+#include "ccl/platform/cocoa/system/filemanager.cocoa.h"
 
 namespace CCL {
 
@@ -27,25 +27,23 @@ namespace CCL {
 // IOSFileManager
 //************************************************************************************************
 
-class IOSFileManager: public FileManager
+class IOSFileManager: public CocoaFileManager
 {
 public:
-	DECLARE_CLASS (IOSFileManager, FileManager)
+	DECLARE_CLASS (IOSFileManager, CocoaFileManager)
 
 	IOSFileManager ();
 	~IOSFileManager ();
 
-    // FileManager
+    // CocoaFileManager
 	IAsyncOperation* CCL_API triggerFileUpdate (UrlRef url) override;
 	tbool CCL_API getFileDisplayString (String& string, UrlRef url, int type) const override;
-	StringID CCL_API getFileLocationType (UrlRef url) const override; 
+	StringID CCL_API getFileLocationType (UrlRef url) const override;
 
 protected:
-	// FileManager
+	// CocoaFileManager
 	tresult startWatching (UrlRef url, int flags) override;
 	tresult stopWatching (UrlRef url) override;
-	tresult startUsing (UrlRef url) override;
-	tresult stopUsing (UrlRef url) override;
 	void setWriting (UrlRef url, bool state) override;
 };
 

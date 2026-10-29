@@ -1,7 +1,7 @@
 //************************************************************************************************
 //
 // This file is part of Crystal Class Library (R)
-// Copyright (c) 2025 CCL Software Licensing GmbH.
+// Copyright (c) 2026 CCL Software Licensing GmbH.
 // All Rights Reserved.
 //
 // Licensed for use under either:
@@ -21,13 +21,44 @@
 
 #include "ccl/public/base/iunknown.h"
 
+#include "ccl/public/text/cclstring.h"
+
 #include <jni.h>
 
 namespace CCL {
 
+interface IAsyncOperation;
+
 struct FileInfo;
 
 namespace Android {
+
+//************************************************************************************************
+// IPermissionRequestResults
+//************************************************************************************************
+
+interface IPermissionRequestResults: IUnknown
+{
+	DEFINE_ENUM (GrantedState)
+	{
+		kPermissionGranted = 0,
+		kPermissionDenied = -1
+	};
+
+	struct Result
+	{
+		String permission;
+		GrantedState state;
+	};
+
+	virtual int CCL_API getCount () const = 0;
+
+	virtual tbool CCL_API getResult (Result& result, int index) const = 0;
+
+	DECLARE_IID (IPermissionRequestResults)
+};
+
+DEFINE_IID (IPermissionRequestResults, 0x07ccebd7, 0xd877, 0x4108, 0xbc, 0x82, 0x4d, 0xc9, 0x75, 0xab, 0x84, 0x47)
 
 //************************************************************************************************
 // IFrameworkActivity
@@ -61,6 +92,8 @@ interface IFrameworkActivity: IUnknown
 	virtual void CCL_API getMainModuleID (String& id) const = 0;
 
 	virtual void CCL_API getNativeLibraryDir (String& dir) const = 0;
+
+	virtual IAsyncOperation* CCL_API checkAndRequestPermissions (const String permissions[], int permissionsCount) const = 0;
 
 	DECLARE_IID (IFrameworkActivity)
 };

@@ -73,7 +73,8 @@ using namespace CCL;
 
 bool BackgroundService::startPlatformService ()
 {
-	const uchar* serviceName = StringChars (name);
+	StringChars chars (name);
+	UStringPtr serviceName = chars;
 
 	SERVICE_TABLE_ENTRY serviceTable[] =
     {
@@ -194,7 +195,7 @@ bool BackgroundService::install (bool state)
 			if(description.isEmpty () == false)
 			{
 				SERVICE_DESCRIPTION desc = {0};
-				desc.lpDescription = (LPWSTR)(LPCWSTR)StringChars (description);
+				desc.lpDescription = (LPWSTR)StringChars (description).str ();
 				::ChangeServiceConfig2 (serviceHandle, SERVICE_CONFIG_DESCRIPTION, &desc);
 			}
 

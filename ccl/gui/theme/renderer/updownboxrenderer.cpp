@@ -12,7 +12,7 @@
 // For more information, please visit ccl.dev.
 //
 // Filename    : ccl/gui/theme/renderer/updownboxrenderer.cpp
-// Description : Control Renderer
+// Description : UpDownButton Renderer
 //
 //************************************************************************************************
 
@@ -27,46 +27,46 @@ using namespace CCL;
 // UpDownButtonRenderer
 //************************************************************************************************
 
-BEGIN_VISUALSTYLE_CLASS (UpDownButton, VisualStyle, "UpDownButtonStyle")
-END_VISUALSTYLE_CLASS (UpDownButton)
+DEFINE_TYPELIB_ENTRY_WITH_PARENT (UpDownButton, VisualStyle, "UpDownButtonStyle", VISUALSTYLES_TYPELIB)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-UpDownButtonRenderer::UpDownButtonRenderer (VisualStyle* visualStyle)
-: ThemeRenderer (visualStyle)
+UpDownButtonRenderer::UpDownButtonRenderer (VisualStyle* visualStyle, View* owner)
+: ThemeRenderer (visualStyle, owner)
 {}
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void UpDownButtonRenderer::draw (View* view, const UpdateRgn& updateRgn)
+void UpDownButtonRenderer::draw (const UpdateRgn& updateRgn)
 {
 	Rect rect;
-	view->getClientRect (rect);
-	int mouseState = view->getMouseState ();
+	owner->getClientRect (rect);
+	int mouseState = owner->getMouseState ();
 
-	GraphicsPort port (view);
+	GraphicsPort port (owner);
 
 	// background
-	view->getTheme ().getPainter ().drawElement (port, rect, ThemeElements::kPushButton, mouseState);
+	owner->getTheme ().getPainter ().drawElement (port, rect, ThemeElements::kPushButton, mouseState);
 
 	// triangle
-	bool horizontal = view->getStyle ().isHorizontal ();
-	int orientation = view->getStyle ().isCustomStyle (Styles::kUpDownButtonBehaviorIncrement)
+	bool horizontal = owner->getStyle ().isHorizontal ();
+	int orientation = owner->getStyle ().isCustomStyle (Styles::kUpDownButtonBehaviorIncrement)
 		? (horizontal ? Alignment::kRight : Alignment::kTop)
 		: (horizontal ? Alignment::kLeft : Alignment::kBottom);
 
 	ScrollButtonRenderer::drawTriangleIcon (port, rect, orientation);
 }
+
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-int UpDownButtonRenderer::hitTest (View* view, const Point& loc, Point* clickOffset)
+int UpDownButtonRenderer::hitTest (PointRef where, Point* clickOffset)
 {
 	return 0;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool UpDownButtonRenderer::getPartRect (const View* view, int partCode, CCL::Rect& rect)
+bool UpDownButtonRenderer::getPartRect (Rect& rect, int partCode)
 {
 	return false;
 }

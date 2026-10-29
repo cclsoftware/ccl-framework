@@ -144,7 +144,7 @@ private:
 	StringDictionary alternativeVendors;
 	SignalSink& systemSink;
 	Threading::CriticalSection lock;
-	static const CCL::UID catListId;
+	static const UID catListId;
 
 	static void removeTrailingDot (String& name);
 	void finishPath (IUrl& url, IAttributeList* metaInfo);

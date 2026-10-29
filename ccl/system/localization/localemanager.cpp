@@ -58,7 +58,7 @@ public:
 	PROPERTY_BOOL (main, Main)
 
 	// IObject
-	tbool CCL_API invokeMethod (CCL::Variant& returnValue, MessageRef msg) override;
+	tbool CCL_API invokeMethod (Variant& returnValue, MessageRef msg) override;
 };
 
 } // namespace CCL
@@ -494,7 +494,7 @@ const FileType& CCL_API LocaleManager::getLanguagePackFileType () const
 
 void CCL_API LocaleManager::getLanguagesFolder (IUrl& url) const
 {
-	System::GetSystem ().getLocation (url, CCL::System::kAppSupportFolder);
+	System::GetSystem ().getLocation (url, System::kAppSupportFolder);
 	url.descend (CCLSTR ("Languages"), Url::kFolder);
 }
 
@@ -576,7 +576,7 @@ StringID CCL_API LocaleManager::getMeasureSystem () const
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 BEGIN_METHOD_NAMES (LocaleManager)
-	DEFINE_METHOD_ARGR ("getStrings", "tableId", "LocaleManager.TranslationTable")
+	DEFINE_METHOD_ARGR ("getStrings", "tableId", "TranslationTable")
 END_METHOD_NAMES (LocaleManager)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -598,7 +598,7 @@ tbool CCL_API LocaleManager::invokeMethod (Variant& returnValue, MessageRef msg)
 // LocaleManager::TranslationTable
 //************************************************************************************************
 
-DEFINE_CLASS (LocaleManager::TranslationTable, Object)
+DEFINE_CLASS_PERSISTENT (LocaleManager::TranslationTable, Object, "TranslationTable")
 DEFINE_CLASS_NAMESPACE (LocaleManager::TranslationTable, NAMESPACE_CCL)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -619,11 +619,11 @@ END_METHOD_NAMES (LocaleManager::TranslationTable)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-tbool CCL_API LocaleManager::TranslationTable::invokeMethod (CCL::Variant& returnValue, MessageRef msg)
+tbool CCL_API LocaleManager::TranslationTable::invokeMethod (Variant& returnValue, MessageRef msg)
 {
 	if(msg == "getString")
 	{
-		CCL::String translated;
+		String translated;
 		switch(msg.getArgCount ())
 		{
 		case 1 : 

@@ -68,8 +68,8 @@ public:
 	tresult CCL_API refresh () override;
 	
 	// IViewStateHandler
-	tbool CCL_API saveViewState (StringID viewID, StringID viewName, IAttributeList& attributes, const CCL::IViewState* state) const override;
-	tbool CCL_API loadViewState (StringID viewID, StringID viewName, const IAttributeList& attributes, CCL::IViewState* state) override;
+	tbool CCL_API saveViewState (StringID viewID, StringID viewName, IAttributeList& attributes, const IViewState* state) const override;
+	tbool CCL_API loadViewState (StringID viewID, StringID viewName, const IAttributeList& attributes, IViewState* state) override;
 
 	// Component
 	tresult CCL_API initialize (IUnknown* context) override;

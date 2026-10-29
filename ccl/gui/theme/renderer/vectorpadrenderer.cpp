@@ -27,24 +27,25 @@ using namespace CCL;
 // VectorPadRenderer
 //************************************************************************************************
 
-BEGIN_VISUALSTYLE_CLASS (VectorPad, VisualStyle, "VectorPadStyle")
-	ADD_VISUALSTYLE_IMAGE  ("background")		///< background image
-	ADD_VISUALSTYLE_IMAGE  ("handle")			///< handle
-	ADD_VISUALSTYLE_METRIC ("handlesize")		///< size where handle can be clicked (in pixels) when handle is drawn as a circle (no "handle" image)
-	ADD_VISUALSTYLE_METRIC ("handlethickness")	///< width of line in pixels) when handle is drawn as a circle (no "handle" image)
-	ADD_VISUALSTYLE_METRIC ("drawlabels")		///< draws labels with min / max values for both parameters
-	ADD_VISUALSTYLE_COLOR  ("backcolor")		///< used when "back" image is not available
-	ADD_VISUALSTYLE_COLOR  ("handlecolor")		///< used when "handle" image is not available
-	ADD_VISUALSTYLE_COLOR  ("textcolor")		///< used for "drawlabels"
-	ADD_VISUALSTYLE_COLOR  ("crosshair")		///< draw crosshair
-	ADD_VISUALSTYLE_COLOR  ("crosshair.color")	///< color for crosshair
-	ADD_VISUALSTYLE_COLOR  ("reference.color")	///< used to draw the second frame of the "background" image, when the luminacnce of this "reference.color" is > 0.5f
-END_VISUALSTYLE_CLASS (VectorPad)
+DEFINE_TYPELIB_ENTRY_WITH_PARENT (VectorPad, VisualStyle, "VectorPadStyle", VISUALSTYLES_TYPELIB)
+BEGIN_TYPELIB_MEMBERS (VectorPad)
+	ADD_TYPELIB_MEMBER_IMAGE ("background")			///< background image
+	ADD_TYPELIB_MEMBER_IMAGE ("handle")				///< handle
+	ADD_TYPELIB_MEMBER_METRIC ("handlesize")		///< size where handle can be clicked (in pixels) when handle is drawn as a circle (no "handle" image)
+	ADD_TYPELIB_MEMBER_METRIC ("handlethickness")	///< width of line in pixels) when handle is drawn as a circle (no "handle" image)
+	ADD_TYPELIB_MEMBER_METRIC ("drawlabels")		///< draws labels with min / max values for both parameters
+	ADD_TYPELIB_MEMBER_COLOR ("backcolor")			///< used when "back" image is not available
+	ADD_TYPELIB_MEMBER_COLOR ("handlecolor")		///< used when "handle" image is not available
+	ADD_TYPELIB_MEMBER_COLOR ("textcolor")			///< used for "drawlabels"
+	ADD_TYPELIB_MEMBER_COLOR ("crosshair")			///< draw crosshair
+	ADD_TYPELIB_MEMBER_COLOR ("crosshair.color")	///< color for crosshair
+	ADD_TYPELIB_MEMBER_COLOR ("reference.color")	///< used to draw the second frame of the "background" image, when the luminacnce of this "reference.color" is > 0.5f
+END_TYPELIB_MEMBERS (VectorPad)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-VectorPadRenderer::VectorPadRenderer (VisualStyle* visualStyle)
-: ThemeRenderer (visualStyle)
+VectorPadRenderer::VectorPadRenderer (VisualStyle* visualStyle, View* owner)
+: ThemeRenderer (visualStyle, owner)
 {
 	back = visualStyle->getImage ("background");
 	if(!back)
@@ -78,7 +79,7 @@ void VectorPadRenderer::selectBackgroundFrame ()
 {
 	if(back->getFrameCount () > 1)
 	{
-		if(referenceBackcolor.getAlphaF () != 0.f && referenceBackcolor.getLuminance () > 0.5f)
+		if(referenceBackcolor.isVisible () && referenceBackcolor.getLuminance () > 0.5f)
 			back->setCurrentFrame (1);
 		else
 			back->setCurrentFrame (0);
@@ -87,16 +88,16 @@ void VectorPadRenderer::selectBackgroundFrame ()
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void VectorPadRenderer::draw (View* view, const UpdateRgn& updateRgn)
+void VectorPadRenderer::draw (const UpdateRgn& updateRgn)
 {
-	GraphicsPort port (view);
+	GraphicsPort port (owner);
 	
 	//background
 
 	Rect dst;
-	view->getClientRect (dst);
+	owner->getClientRect (dst);
 	Rect crosshairBounds (dst);
-	
+
 	if(back)
 	{
 		selectBackgroundFrame ();
@@ -116,11 +117,11 @@ void VectorPadRenderer::draw (View* view, const UpdateRgn& updateRgn)
 		int fontSize = (int)(font.getSize () + 0.5f);
 		String label;
 
-		IParameter* param = ((VectorPad*)view)->getParameter ();
+		IParameter* param = ((VectorPad*)owner)->getParameter ();
 		param->getString (label, param->getMin ());
 		int textWidth = port.getStringWidth (label, font);
 		Rect textRect (0, 0, textWidth + 1, fontSize);
-		textRect.offset (1, int (0.5f * (view->getHeight () - fontSize)));
+		textRect.offset (1, int (0.5f * (owner->getHeight () - fontSize)));
 		port.drawText (textRect, label, font, textBrush);
 	
 		crosshairBounds.left = textRect.right + 2;
@@ -128,17 +129,17 @@ void VectorPadRenderer::draw (View* view, const UpdateRgn& updateRgn)
 		param->getString (label, param->getMax ());
 		textWidth = port.getStringWidth (label, font);
 		textRect.setWidth (textWidth + 1);
-		int xOffset = - textRect.left + view->getWidth () - textWidth - 1;
+		int xOffset = - textRect.left + owner->getWidth () - textWidth - 1;
 		textRect.offset (xOffset, 0);
 		port.drawText (textRect, label, font, textBrush);
 
 		crosshairBounds.right = textRect.left - 2;
 		
-		param = ((VectorPad*)view)->getYParameter ();
+		param = (static_cast<VectorPad*> (owner))->getYParameter ();
 		param->getString (label, param->getMax ());
 		textWidth = port.getStringWidth (label, font);
 		textRect.setWidth (textWidth + 1);
-		xOffset = - textRect.left + int (0.5f * (view->getWidth () - textWidth));
+		xOffset = - textRect.left + int (0.5f * (owner->getWidth () - textWidth));
 		int yOffset = - (textRect.top - 2);
 		textRect.offset (xOffset, yOffset);
 		port.drawText (textRect, label, font, textBrush);
@@ -146,10 +147,10 @@ void VectorPadRenderer::draw (View* view, const UpdateRgn& updateRgn)
 		crosshairBounds.top = textRect.bottom + ((textWidth > 10) ? 2 : -3);
 		
 		param->getString (label, param->getMin ());
-		textWidth = port.getStringWidth (label, font);	
+		textWidth = port.getStringWidth (label, font);
 		textRect.setWidth (textWidth + 1);
-		xOffset = - textRect.left + int (0.5f * (view->getWidth () - textWidth));
-		yOffset = - textRect.top + view->getHeight () - fontSize - 1;
+		xOffset = - textRect.left + int (0.5f * (owner->getWidth () - textWidth));
+		yOffset = - textRect.top + owner->getHeight () - fontSize - 1;
 		textRect.offset (xOffset, yOffset);
 		port.drawText (textRect, label, font, textBrush);
 		
@@ -170,11 +171,11 @@ void VectorPadRenderer::draw (View* view, const UpdateRgn& updateRgn)
 
 	//handle
 	Rect handleRect;
-	if(getHandleRect (view, handleRect))
+	if(getHandleRect (handleRect))
 	{
 		if(handle)
 		{
-			StringID frame = view->isMouseDown () ? ThemeNames::kPressed : ThemeNames::kNormal;
+			StringID frame = owner->isMouseDown () ? ThemeNames::kPressed : ThemeNames::kNormal;
 			handle->setCurrentFrame (handle->getFrameIndex (frame));
 
 			Rect src (0, 0, handle->getWidth (), handle->getHeight ());
@@ -187,33 +188,33 @@ void VectorPadRenderer::draw (View* view, const UpdateRgn& updateRgn)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-int VectorPadRenderer::hitTest (View* view, const Point& loc, Point* clickOffset)
+int VectorPadRenderer::hitTest (PointRef where, Point* clickOffset)
 {
 	return 0;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool VectorPadRenderer::getPartRect (const View* view, int partCode, Rect& rect)
+bool VectorPadRenderer::getPartRect (Rect& rect, int partCode)
 {
 	if(partCode == VectorPad::kPartHandle)
-		return getHandleRect (view, rect);
+		return getHandleRect (rect);
 
 	return false;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool VectorPadRenderer::getHandleRect (const View* view, Rect& rect)
+bool VectorPadRenderer::getHandleRect (Rect& rect)
 {
-	if(view->isEnabled () == false)
+	if(owner->isEnabled () == false)
 		return false;
 	
-	float x = ((VectorPad*)view)->getXValue ();
-	float y = ((VectorPad*)view)->getYValue ();
+	float x = (static_cast<VectorPad*> (owner))->getXValue ();
+	float y = (static_cast<VectorPad*> (owner))->getYValue ();
 
 	Rect clientRect;
-	view->getClientRect (clientRect);
+	owner->getClientRect (clientRect);
 	
 	Point hotspot (Coord (x * clientRect.getWidth ()), Coord (y * clientRect.getHeight ()));
 
@@ -230,5 +231,6 @@ bool VectorPadRenderer::getHandleRect (const View* view, Rect& rect)
 		rect.top = rect.bottom = hotspot.y;
 		rect.expand (int (handleSize * 0.5f + 0.5f));
 	}
+
 	return true;
 }

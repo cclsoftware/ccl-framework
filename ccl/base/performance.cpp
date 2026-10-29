@@ -75,7 +75,7 @@ PerformanceMeter::PerformanceMeter ()
   performance (0.),
   overAccumulated (0.),
   decay (0.),
-  overLoad (false)
+  overload (false)
 {}
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -131,12 +131,12 @@ void PerformanceMeter::setPerformance (double p)
 	{
 		overAccumulated += over;		
 		if(overAccumulated > 0.75)
-			setOverLoad (true);
+			setOverload (true);
 	}
 	else
 		overAccumulated = 0.0;
 
-	if(overLoad)
+	if(overload)
 		performance = 1.0;
 	else
 	{
@@ -151,7 +151,7 @@ void PerformanceMeter::setPerformance (double p)
 			performance = ccl_max (0.0, performance + performanceDiff);
 		}
 		if(performance >= 1.0)
-			setOverLoad (true);
+			setOverload (true);
 	}
 }
 
@@ -167,23 +167,23 @@ double CCL_API PerformanceMeter::getPerformance ()
 void CCL_API PerformanceMeter::reset ()
 {
 	performance = 0.;
-	overLoad = false;
+	overload = false;
 	overAccumulated = 0;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void CCL_API PerformanceMeter::setOverLoad (tbool state)
+void CCL_API PerformanceMeter::setOverload (tbool state)
 {
-	overLoad = state != 0;
+	overload = state != 0;
 	overAccumulated = 0;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-tbool CCL_API PerformanceMeter::isOverLoad ()
+tbool CCL_API PerformanceMeter::isOverload ()
 {
-	return overLoad;
+	return overload;
 }
 
 //************************************************************************************************
@@ -211,7 +211,7 @@ double CCL_API ProcessMemoryMeter::getPerformance ()
 		memoryTotal = (double)memoryInfo.processMemoryTotal;
 		memoryUsed = memoryTotal - (double)memoryInfo.processMemoryAvailable;
 		performance = memoryUsed / memoryTotal;
-		overLoad = performance >= 0.9; // indicate overload >= 90%
+		overload = performance >= 0.9; // indicate overload >= 90%
 	}
 	return performance;
 }

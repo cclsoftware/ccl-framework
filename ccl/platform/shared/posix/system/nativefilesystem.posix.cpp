@@ -38,7 +38,7 @@
 #include <sys/mount.h>
 #endif
 
-#if CCL_PLATFORM_ANDROID || CCL_PLATFORM_LINUX
+#if CCL_PLATFORM_ANDROID || CCL_PLATFORM_LINUX || CCL_PLATFORM_WASM
 #include <sys/vfs.h>
 #endif
 
@@ -51,8 +51,8 @@ using namespace CCL;
 void PosixNativeFileSystem::translateMode (int mode, int& oflag)
 {
 	oflag = 0;
-	bool wantRead = mode & CCL::IStream::kReadMode;
-	bool wantWrite = mode & CCL::IStream::kWriteMode;
+	bool wantRead = mode & IStream::kReadMode;
+	bool wantWrite = mode & IStream::kWriteMode;
 	if(wantRead && !wantWrite)
 		oflag |= O_RDONLY;
 	if(!wantRead && wantWrite)
@@ -157,8 +157,8 @@ tbool CCL_API PosixNativeFileSystem::fileExists (UrlRef url)
 		return false;
 	
 	struct stat pathStat;
-    ::stat (path, &pathStat);
-    bool isFile = S_ISREG (pathStat.st_mode);
+	::stat (path, &pathStat);
+	bool isFile = S_ISREG (pathStat.st_mode);
 	
 	return url.isFile () == isFile;
 }
@@ -337,7 +337,7 @@ tbool CCL_API PosixNativeFileSystem::beginTransaction ()
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-tbool CCL_API PosixNativeFileSystem::endTransaction (int mode, CCL::IProgressNotify* progress)
+tbool CCL_API PosixNativeFileSystem::endTransaction (int mode, IProgressNotify* progress)
 {
 	// not implemented
 	return false;
@@ -386,7 +386,7 @@ int CCL_API PosixFileStream::write (const void* buffer, int size)
 	ssize_t bytesWritten = ::write (fileHandle, buffer, size);
 	if(bytesWritten == -1)
 		onNativeError (errno, nullptr);
-	if(options & CCL::INativeFileStream::kWriteThru)
+	if(options & INativeFileStream::kWriteThru)
 		::fsync (fileHandle);
 	return (int)bytesWritten;
 }
@@ -475,11 +475,13 @@ const IUrl* CCL_API PosixFileIterator::next ()
 		if(name.startsWith (".") && !wantHidden)
 			continue;
 
+		String fileName (Text::kUTF8, findData->d_name);
+
 		int type = IUrl::kFile;
 		if(findData->d_type == DT_DIR)
 			type = IUrl::kFolder;
 		else if(findData->d_type == DT_LNK || findData->d_type == DT_UNKNOWN)
-			NativeFileSystem::instance ().getPathType (type, *baseUrl, findData->d_name);
+			NativeFileSystem::instance ().getPathType (type, *baseUrl, fileName);
 
 		if(type == IUrl::kFolder && !wantFolders)
 			continue;
@@ -487,7 +489,7 @@ const IUrl* CCL_API PosixFileIterator::next ()
 			continue;
 
 		current->assign (*baseUrl);
-		current->descend (findData->d_name, type);
+		current->descend (fileName, type);
 
 		return current;
 	}

@@ -112,6 +112,8 @@ CTFontRef FontCache::createFont (FontRef font, float& ascent, float& descent, fl
 		   [attributes setObject:[fontStyleName.createNativeString<NSString*> () autorelease] forKey:FONT_FACE_ATTR];
 
 	   fontDescriptor = [FONT_DESCRIPTOR_CLASS fontDescriptorWithFontAttributes:attributes];
+	   if([[fontDescriptor matchingFontDescriptorsWithMandatoryKeys:[NSSet setWithObject:FONT_FAMILY_ATTR]] count] == 0)
+		   fontDescriptor = nil;
    }
 
 	FONT_TRAITS_CLASS symbolicTraits = 0;
@@ -121,7 +123,7 @@ CTFontRef FontCache::createFont (FontRef font, float& ascent, float& descent, fl
 		fontDescriptor = [fontDescriptor fontDescriptorWithSymbolicTraits:symbolicTraits];
 
 	CCL_PRINTF ("creating font: %s - %s %f %d\n", MutableCString (fontFamilyName).str () , MutableCString (fontStyleName).str (), font.getSize (), font.getMode ())
-	CTFontRef fontRef = (CTFontRef)[FONT_CLASS fontWithDescriptor:fontDescriptor size:font.getSize ()];
+	CTFontRef fontRef = fontDescriptor ? (CTFontRef)[FONT_CLASS fontWithDescriptor:fontDescriptor size:font.getSize ()] : NULL;
 	if(fontRef == NULL)
 	{
 		NSString* fullName = nil;

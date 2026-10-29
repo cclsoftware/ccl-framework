@@ -24,6 +24,7 @@
 namespace CCL {
 
 class AnchorLayoutView;
+class ScrollView;
 
 //************************************************************************************************
 // Divider
@@ -83,6 +84,10 @@ private:
 	Coord valueToPosition (int value) const;
 	
 	void jump (int direction, bool canInvert);
+	bool jumpToScrollContentFit ();
+	template<class Direction> bool jumpToScrollContentFit ();
+	template<class Direction> Coord calcScrollContentFitDelta (ScrollView& scrollView);
+	static ScrollView* findScrollView (View& view);
 };
 
 } // namespace CCL

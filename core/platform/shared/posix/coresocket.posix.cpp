@@ -423,6 +423,16 @@ bool PosixSocket::isAnyError (int timeout) const
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
+int PosixSocket::getConnectStatus (int timeout) const
+{
+	// a non-blocking connect() completes by becoming writable; checkState() already reads
+	// SO_ERROR exactly once (via checkForError()) right after the select() that unblocks it,
+	// so success/failure/still-pending can be told apart without a racy follow-up query.
+	return checkState (kWritable, timeout);
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
 int PosixSocket::send (const void* buffer, int size, int flags)
 {
 	int result = (int)::send (static_cast<SOCKET> (socket), (const char*)buffer, size, flags | kDefaultSendFlags);
@@ -535,20 +545,21 @@ bool PosixSocket::wouldBlockOperation (bool writeDirection) const
 
 int PosixSocket::checkState (CheckHint hint, int timeout) const
 {
-	SocketIDSet *readArg = nullptr, *writeArg = nullptr, *errorArg = nullptr;
+	SocketIDSet* readArg = nullptr;
+	SocketIDSet* writeArg = nullptr;
+	SocketIDSet* errorArg = nullptr;
 	
-	fd_set readFd, writeFd, errorFd;
-	::memset (&readFd, 0, sizeof(readFd));
-	::memset (&writeFd, 0, sizeof(writeFd));
-	::memset (&errorFd, 0, sizeof(errorFd));
+	fd_set readFd = {};
+	fd_set writeFd = {};
+	fd_set errorFd = {};
 
 	SocketIDSet readList (readFd), writeList (writeFd), errorList (errorFd);
 	
 	switch(hint)
 	{
-	case kReadable: readList.set (socket); readArg = &readList; break;
-	case kWritable: writeList.set (socket); writeArg = &writeList; break;
-	case kAnyError: errorList.set (socket); errorArg = &errorList; break;
+	case kReadable : readList.set (socket); readArg = &readList; break;
+	case kWritable : writeList.set (socket); writeArg = &writeList; break;
+	case kAnyError : errorList.set (socket); errorArg = &errorList; break;
 	}
 
 	int result = SocketSets::select (socket, readArg, writeArg, errorArg, timeout);
@@ -560,9 +571,9 @@ int PosixSocket::checkState (CheckHint hint, int timeout) const
 
 	switch(hint)
 	{
-	case kReadable: if(readList.isSet (socket)) return 1; break;
-	case kWritable: if(writeList.isSet (socket)) return 1; break;
-	case kAnyError: if(errorList.isSet (socket)) return 1; break;
+	case kReadable : if(readList.isSet (socket)) return 1; break;
+	case kWritable : if(writeList.isSet (socket)) return 1; break;
+	case kAnyError : if(errorList.isSet (socket)) return 1; break;
 	}
 	
 	return 0;

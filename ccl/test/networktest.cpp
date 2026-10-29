@@ -22,6 +22,7 @@
 
 #include "ccl/public/text/cstring.h"
 #include "ccl/public/base/memorystream.h"
+#include "ccl/public/base/iprogress.h"
 #include "ccl/public/system/logging.h"
 #include "ccl/public/systemservices.h"
 
@@ -39,6 +40,28 @@ using namespace Web;
 
 static const String testServerName = CCLSTR ("pkware.com");
 static const String testFileName = CCLSTR ("/documents/casestudies/APPNOTE.TXT");
+
+//************************************************************************************************
+// TestCancelProgress
+//************************************************************************************************
+
+class TestCancelProgress: public Unknown,
+ 						  public AbstractProgressNotify
+{
+public:
+	TestCancelProgress (bool canceledImmediately)
+	: canceled (canceledImmediately)
+	{}
+
+	// AbstractProgressNotify
+	tbool CCL_API isCanceled () override
+	{ return canceled; }
+
+	CLASS_INTERFACE (IProgressNotify, Unknown)
+
+private:
+	bool canceled;
+};
 
 //************************************************************************************************
 // WebSuite
@@ -115,7 +138,7 @@ CCL_TEST (WebSuite, TestSSL)
 		return;
 
 	Url url ("https://ccl.dev");
-	CCL_TEST_ASSERT (System::GetWebService ().downloadData (url, *tempStream) == kResultOk);
+	CCL_TEST_ASSERT (System::GetWebService ().downloadData ({url, *tempStream}) == kResultOk);
 }
 
 //************************************************************************************************
@@ -162,6 +185,89 @@ CCL_TEST (NetworkSuite, TestNetworkStream)
 
 	AutoPtr<CCL::IStream> netStream = network.openStream (address, kTCP);
 	CCL_TEST_ASSERT (netStream != nullptr);
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+CCL_TEST (NetworkSuite, TestConnectTimeout)
+{
+	INetwork& network = System::GetNetwork ();
+
+	// 192.0.2.1 is TEST-NET-1 (RFC 5737): reserved, unrouted on virtually any real network, so a
+	// SYN sent to it is silently dropped.
+	IPAddress address (kInternet);
+	CCL_TEST_ASSERT (network.getAddressFromString (address, CCLSTR ("192.0.2.1")) == kResultOk);
+	address.port = 81;
+
+	static const int kTestTimeout = 2000;
+	int64 start = System::GetSystemTicks ();
+	AutoPtr<CCL::IStream> netStream = network.openStream (address, kTCP, kTestTimeout);
+	int64 elapsed = System::GetSystemTicks () - start;
+
+	CCL_TEST_ASSERT (netStream == nullptr); // an unreachable/black-holed peer must fail, not succeed
+	CCL_TEST_ASSERT (elapsed < int64 (kTestTimeout) * 3);
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+CCL_TEST (NetworkSuite, TestConnectCancel)
+{
+	INetwork& network = System::GetNetwork ();
+
+	IPAddress address (kInternet);
+	CCL_TEST_ASSERT (network.getAddressFromString (address, CCLSTR ("192.0.2.1")) == kResultOk);
+	address.port = 81;
+
+	TestCancelProgress alreadyCanceled (true);
+
+	// a generous connect timeout, to prove cancellation
+	static const int kGenerousTimeout = 30000;
+	int64 start = System::GetSystemTicks ();
+	AutoPtr<CCL::IStream> netStream = network.openStream (address, kTCP, kGenerousTimeout, &alreadyCanceled);
+	int64 elapsed = System::GetSystemTicks () - start;
+
+	CCL_TEST_ASSERT (netStream == nullptr);
+	CCL_TEST_ASSERT (elapsed < 5000); // must return promptly on cancel, nowhere near the 30s timeout budget
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+// Dedicated hostnames for the timeout/cancel tests below, distinct from testServerName.
+// ".invalid" is reserved by RFC 2606 to never resolve.
+static const String testTimeoutHostName = CCLSTR ("networktest-timeout.invalid");
+static const String testCancelHostName = CCLSTR ("networktest-cancel.invalid");
+
+CCL_TEST (NetworkSuite, TestDnsResolveTimeout)
+{
+	// A 1ms timeout is shorter than any real DNS round trip, so this deterministically exercises
+	// the bounded-wait path, proving getAddressByHost() returns promptly instead of blocking for
+	// however long the underlying resolver call would otherwise take.
+	INetwork& network = System::GetNetwork ();
+
+	IPAddress address;
+	int64 start = System::GetSystemTicks ();
+	network.getAddressByHost (address, testTimeoutHostName, 1, nullptr);
+	int64 elapsed = System::GetSystemTicks () - start;
+
+	CCL_TEST_ASSERT (elapsed < 5000); // bounded regardless of outcome (success/failure/aborted)
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+CCL_TEST (NetworkSuite, TestDnsResolveCancel)
+{
+	INetwork& network = System::GetNetwork ();
+
+	IPAddress address;
+	TestCancelProgress alreadyCanceled (true);
+
+	static const uint32 kGenerousTimeout = 30000;
+	int64 start = System::GetSystemTicks ();
+	tresult result = network.getAddressByHost (address, testCancelHostName, kGenerousTimeout, &alreadyCanceled);
+	int64 elapsed = System::GetSystemTicks () - start;
+
+	CCL_TEST_ASSERT (result == kResultAborted || result == kResultFailed);
+	CCL_TEST_ASSERT (elapsed < 5000); // must return promptly on cancel, nowhere near the 30s timeout budget
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////

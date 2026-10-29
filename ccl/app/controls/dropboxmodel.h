@@ -34,8 +34,8 @@ class Attributes;
 /** Base class for implementing item model to be used with a DropBox. */
 //************************************************************************************************
 
-class DropBoxModel: public CCL::ItemModel,
-					public CCL::IViewFactory
+class DropBoxModel: public ItemModel,
+					public IViewFactory
 {
 public:
 	DropBoxModel (Component* owner, StringID modelName);
@@ -50,7 +50,7 @@ public:
 	Object* getFocusItem () const;
 
 	// IItemModel
-	tbool CCL_API getSubItems (CCL::IUnknownList& items, CCL::ItemIndexRef index) override;
+	tbool CCL_API getSubItems (IUnknownList& items, ItemIndexRef index) override;
 	tbool CCL_API onItemFocused (ItemIndexRef index) override;
 	IUnknown* CCL_API createDragSessionData (ItemIndexRef index) override;
 

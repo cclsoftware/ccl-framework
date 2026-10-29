@@ -39,20 +39,21 @@ BEGIN_STYLEDEF (ScrollPicker::customStyles)
 	{"hideimage",	Styles::kScrollPickerAppearanceHideImage},
 END_STYLEDEF
 
-BEGIN_VISUALSTYLE_CLASS (ScrollPickerStyle, VisualStyle, "ScrollPickerStyle")
-	ADD_VISUALSTYLE_METRIC ("itemSize")				///< optional explicit item size (height/width in vertical/horizontal case)
-	ADD_VISUALSTYLE_COLOR ("backcolor")				///< backcolor for the control
-	ADD_VISUALSTYLE_COLOR ("centerBackcolor")		///< backcolor for the center view
-	ADD_VISUALSTYLE_METRIC ("centerSize")			///< optional height/width of the vertical/horizontal center view, where the current value is displayed
-	ADD_VISUALSTYLE_METRIC ("minimalEditWidth")		///< optional minimal width for the horizontal scrollpicker edit control
-	ADD_VISUALSTYLE_METRIC ("centerOffset")			///< optional vertical/horizontal offset of the center view - default is (clientSize - centerSize) / 2
-	ADD_VISUALSTYLE_METRIC ("gradientThickness")	///< thickness of the fade-out area at the border of the barrel
-	ADD_VISUALSTYLE_COLOR ("centerTextColor")		///< textcolor for the center view
-	ADD_VISUALSTYLE_COLOR ("barrelTextColor")		///< textcolor for the neighboring unselected values on the barrel
-	ADD_VISUALSTYLE_FONT ("centerTextFont")			///< center view font
-	ADD_VISUALSTYLE_FONT ("barrelTextFont")			///< barrel font
-	ADD_VISUALSTYLE_IMAGE ("centerOverlayImage")	///< additional optional overlay for the center view
-END_VISUALSTYLE_CLASS (ScrollPickerStyle)
+DEFINE_TYPELIB_ENTRY_WITH_PARENT (ScrollPickerStyle, VisualStyle, "ScrollPickerStyle", VISUALSTYLES_TYPELIB)
+BEGIN_TYPELIB_MEMBERS (ScrollPickerStyle)
+	ADD_TYPELIB_MEMBER_METRIC ("itemSize")			///< optional explicit item size (height/width in vertical/horizontal case)
+	ADD_TYPELIB_MEMBER_COLOR ("backcolor")			///< backcolor for the control
+	ADD_TYPELIB_MEMBER_COLOR ("centerBackcolor")	///< backcolor for the center view
+	ADD_TYPELIB_MEMBER_METRIC ("centerSize")		///< optional height/width of the vertical/horizontal center view, where the current value is displayed
+	ADD_TYPELIB_MEMBER_METRIC ("minimalEditWidth")	///< optional minimal width for the horizontal scrollpicker edit control
+	ADD_TYPELIB_MEMBER_METRIC ("centerOffset")		///< optional vertical/horizontal offset of the center view - default is (clientSize - centerSize) / 2
+	ADD_TYPELIB_MEMBER_METRIC ("gradientThickness")	///< thickness of the fade-out area at the border of the barrel
+	ADD_TYPELIB_MEMBER_COLOR ("centerTextColor")	///< textcolor for the center view
+	ADD_TYPELIB_MEMBER_COLOR ("barrelTextColor")	///< textcolor for the neighboring unselected values on the barrel
+	ADD_TYPELIB_MEMBER_FONT ("centerTextFont")		///< center view font
+	ADD_TYPELIB_MEMBER_FONT ("barrelTextFont")		///< barrel font
+	ADD_TYPELIB_MEMBER_IMAGE ("centerOverlayImage")	///< additional optional overlay for the center view
+END_TYPELIB_MEMBERS (ScrollPickerStyle)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -257,7 +258,7 @@ IParameter* ScrollPicker::getTextParameter () const
 ThemeRenderer* ScrollPicker::getRenderer ()
 {
 	if(renderer == nullptr)
-		renderer = getTheme ().createRenderer (ThemePainter::kScrollPickerRenderer, visualStyle);
+		renderer = getTheme ().createRenderer (ThemePainter::kScrollPickerRenderer, visualStyle, this);
 	return renderer;
 }
 
@@ -272,7 +273,7 @@ void ScrollPicker::attached (View* parent)
 	{
 		static_cast<ScrollPickerRenderer*> (getRenderer ())->init (this);
 		Rect r;
-		getRenderer ()->getPartRect (this, kPartCenter, r);
+		getRenderer ()->getPartRect (r, kPartCenter);
 		
 		if(getStyle ().isVertical () == false)
 		{
@@ -285,7 +286,7 @@ void ScrollPicker::attached (View* parent)
 		
 		StyleFlags editBoxStyle (getStyle ());
 		editBoxStyle.setCommonStyle (Styles::kTransparent);
-		editBoxStyle.setCustomStyle (Styles::kEditBoxAppearanceHideText);
+		editBoxStyle.setCustomStyle (Styles::kTextBoxAppearanceHideText);
 		editBoxStyle.setCustomStyle (Styles::kTextBoxAppearanceMultiLine, false);
 
 		editBox = NEW EditBox (r, param, editBoxStyle);
@@ -401,7 +402,7 @@ bool ScrollPicker::canCreateHandler ()
 ClickAction* ScrollPicker::createClickAction (PointRef where)
 {
 	Point clickOffset;
-	int partCode = getRenderer ()->hitTest (this, where, &clickOffset);
+	int partCode = getRenderer ()->hitTest (where, &clickOffset);
 	
 	switch(partCode)
 	{

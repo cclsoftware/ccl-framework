@@ -37,15 +37,15 @@ public:
 	SqlWriter ();
 
 	// write
-	SqlWriter& operator<< (const char* utf8);
-	SqlWriter& write (const char* utf8);
+	SqlWriter& operator<< (CStringPtr utf8);
+	SqlWriter& write (CStringPtr utf8);
 	SqlWriter& writeLiteral (VariantRef value);
 	SqlWriter& writeStringLiteral (StringRef string);
 	SqlWriter& writeExpression (IExpression* expression, ClassInfo& classInfo);
 
 	// get result
 	CStringRef getSQL () const    { return sql; }
-	operator const char* () const { return sql; }
+	operator CStringPtr () const { return sql; }
 
 	SqlWriter& clear ();
 
@@ -62,8 +62,8 @@ private:
 // inline
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-inline SqlWriter& SqlWriter::operator<< (const char* utf8)	{ sql.append (utf8); return *this; }
-inline SqlWriter& SqlWriter::write (const char* utf8)		{ sql.append (utf8); return *this; }
+inline SqlWriter& SqlWriter::operator<< (CStringPtr utf8)	{ sql.append (utf8); return *this; }
+inline SqlWriter& SqlWriter::write (CStringPtr utf8)		{ sql.append (utf8); return *this; }
 inline SqlWriter& SqlWriter::clear ()						{ sql.empty (); return* this; }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////

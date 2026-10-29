@@ -7,5 +7,6 @@ package dev.ccl.cclgui;
  */
 public class GuiConstants
 {
+{% include ../../../../core/meta/templates/java/shared/constants.java.in %}
 {% include ../../../../core/meta/templates/java/shared/enumsflat.java.in %}
 }

@@ -3,7 +3,7 @@
 
 	<Styles>
 		<Style name="TuioThisButton" inherit="Standard.Button">
-			<Metric name="buttonMinWidth" value="60"/>
+			<Metric name="minwidth" value="60"/>
 		</Style>
 		
 	</Styles>
@@ -35,4 +35,3 @@
 		
 	</Forms>
 </Skin>
-

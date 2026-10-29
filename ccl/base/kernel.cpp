@@ -489,7 +489,8 @@ namespace KernelHelper
 		}
 		else
 		{
-			category = CCLSTR ("CCL");
+			// fallback for framework-internal classes without explicit category or namespace assignment
+			category = CCLSTR (NAMESPACE_CCL); 
 			subCategory.empty ();
 		}
 	}
@@ -504,12 +505,17 @@ namespace KernelHelper
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool Kernel::registerPublicClasses (ClassFactory& factory, CStringPtr categoryName, ClassFilter* filter)
+bool Kernel::registerPublicClasses (ClassFactory& factory, CStringPtr _categoryName, ClassFilter* filter)
 {
+	CString categoryName (_categoryName);
+	ASSERT (!categoryName.isEmpty ())
+	if(categoryName.isEmpty ())
+		return false;
+
 	// assign attribute provider
 	KernelHelper::assignAttributeProvider (factory);
 
-	String inputCategory (categoryName ? CCLSTR (categoryName) : CCLSTR (NAMESPACE_CCL));
+	StringRef inputCategory = CCLSTR (categoryName);
 
 	int count = 0;
 	ListForEach (classes.getClasses (), MetaClass*, mc)
@@ -525,6 +531,8 @@ bool Kernel::registerPublicClasses (ClassFactory& factory, CStringPtr categoryNa
 				if(filter && !filter->matches (description))
 					continue;
 
+				CCL_PRINTF ("Registering public class '%s' (category '%s')\n", mc->getPersistentName (), MutableCString (category).str ())
+
 				factory.registerClass (description, MetaClass::createInstance, mc);
 				count++;
 			}
@@ -535,16 +543,18 @@ bool Kernel::registerPublicClasses (ClassFactory& factory, CStringPtr categoryNa
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void Kernel::registerClass (ClassFactory& factory, MetaClassRef mc)
+void Kernel::registerPublicClass (ClassFactory& factory, MetaClassRef mc)
 {
+	ASSERT (mc.getClassID ().isValid ())
+
 	// assign attribute provider
 	KernelHelper::assignAttributeProvider (factory);
-
-	ASSERT (mc.getClassID ().isValid ())
 
 	String category;
 	String subCategory;
 	KernelHelper::getMetaClassCategories (category, subCategory, mc);
+	ASSERT (!category.isEmpty ())
+
 	int flags = mc.isSingleton () ? ClassDesc::kSingleton : 0;
 	ClassDesc description (mc.getClassID (), category, mc.getPersistentName (), subCategory, mc.getDescription (), flags);
 

@@ -43,6 +43,18 @@ DECLARE_JNI_CLASS (List, "java/util/List")
 END_DECLARE_JNI_CLASS (List)
 
 //************************************************************************************************
+// java.util.Locale
+//************************************************************************************************
+
+DECLARE_JNI_CLASS (Locale, "java/util/Locale")
+	DECLARE_JNI_STATIC_METHOD (jobject, forLanguageTag, jstring)
+	DECLARE_JNI_STATIC_METHOD (jobjectArray, getAvailableLocales)
+	DECLARE_JNI_STATIC_METHOD (jobject, getDefault)
+	DECLARE_JNI_METHOD (jstring, getCountry)
+	DECLARE_JNI_METHOD (jstring, getDisplayCountry, jobject)
+END_DECLARE_JNI_CLASS (Locale)
+
+//************************************************************************************************
 // java.util.Map
 //************************************************************************************************
 

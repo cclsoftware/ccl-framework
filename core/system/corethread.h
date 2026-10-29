@@ -290,6 +290,25 @@ struct TScopedLock
 typedef TScopedLock<Lock> ScopedLock;
 
 //************************************************************************************************
+// ScopedTryLock
+/** Helper to try lock/unlock within scope, check 'success' after ctor. 
+	\ingroup core_thread */
+//************************************************************************************************
+
+template<class TLock>
+struct TScopedTryLock
+{
+	TScopedTryLock (TLock& _lock);
+	TScopedTryLock (TLock* lock);
+	~TScopedTryLock ();	
+	
+	TLock* lock;
+	bool success;
+};
+
+typedef TScopedTryLock<Lock> ScopedTryLock;
+
+//************************************************************************************************
 // PriorityScope
 /** Helper to set/reset priority within scope.
 	\ingroup core_thread */
@@ -482,6 +501,38 @@ template<class TLock>
 inline TScopedLock<TLock>::~TScopedLock ()
 {
 	if(lock)
+		lock->unlock ();
+}
+
+//************************************************************************************************
+// TScopedTryLock implementation
+//************************************************************************************************
+
+template<class TLock>
+inline TScopedTryLock<TLock>::TScopedTryLock (TLock& _lock)
+: lock (&_lock),
+  success (false)
+{
+	success = lock->tryLock ();
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+template<class TLock>
+inline TScopedTryLock<TLock>::TScopedTryLock (TLock* lock)
+: lock (lock),
+  success (false)
+{
+	if(lock) 
+		success = lock->tryLock ();
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+template<class TLock>
+inline TScopedTryLock<TLock>::~TScopedTryLock ()
+{
+	if(lock && success)
 		lock->unlock ();
 }
 

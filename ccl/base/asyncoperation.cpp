@@ -29,7 +29,7 @@ using namespace CCL;
 // AsyncSequenceOperation
 //************************************************************************************************
 
-class AsyncSequenceOperation: public CCL::AsyncOperation
+class AsyncSequenceOperation: public AsyncOperation
 {
 public:
 	AsyncSequenceOperation (AsyncSequence* sequence)

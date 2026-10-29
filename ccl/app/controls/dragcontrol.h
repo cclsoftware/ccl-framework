@@ -73,7 +73,7 @@ protected:
 	bool retriggerTooltip;
 	int paddingX;
 	int paddingY;
-	SharedPtr<CCL::IImage> backgroundImage;
+	SharedPtr<IImage> backgroundImage;
 };
 
 } // namespace CCL

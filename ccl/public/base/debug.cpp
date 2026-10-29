@@ -25,7 +25,7 @@
 namespace CCL 
 { 
 	static Core::CString256 debugIndent; 
-	static const int kPrintfBufferSize = STRING_STACK_SPACE_MAX;
+	static const int kPrintfBufferSize = CORE_STRING_STACK_MAX;
 }
 
 using namespace CCL;

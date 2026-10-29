@@ -1,7 +1,7 @@
 //************************************************************************************************
 //
 // This file is part of Crystal Class Library (R)
-// Copyright (c) 2025 CCL Software Licensing GmbH.
+// Copyright (c) 2026 CCL Software Licensing GmbH.
 // All Rights Reserved.
 //
 // Licensed for use under either:
@@ -11,813 +11,820 @@
 // You must choose and comply with one of the above licensing options.
 // For more information, please visit ccl.dev.
 //
-// Filename    : ccl/extras/javascript/ccl_native.d.ts
-// Description : Script type declarations for native types.
+// Filename    : ccl_native.d.ts
+// Description : CCL framework native type information
 //
 //************************************************************************************************
 
+//////////////////////////////////////////////////////////////////////////////////////////////////
+// Global functions
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+/**
+ * Runtime include a JavaScript file from a relative or resource path.
+ *
+ * ```
+ * // Relative include example:
+ * include_file ("path/file.js")
+ *
+ * // Resource based include example:
+ * include_file ("resource://com.vendor.app/file.js")
+ * ```
+ *
+ * @param string  path to file to include, relative or as absolute resource.
+ */
 declare var include_file: (path: string) => void;
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+// Forward declared namespaces (for TypeDoc)
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+declare namespace CCL {}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+// Type aliases
+//////////////////////////////////////////////////////////////////////////////////////////////////
 
 declare namespace CCL
 {
 
 export type Coord = number; // mask Core type
 export type Color = number; // mask Core type
-
-////////////////////////////////////////////////////////////
-// app
-////////////////////////////////////////////////////////////
-
-export class AliasParam extends Object
-{
-	private CCL_AliasParam: never;
-
-	setOriginal: (param: Parameter) => void;
-}
-
-export class Application extends Component
-{
-	private CCL_Application: never;
-	readonly Configuration: Configuration.Registry;
-}
-
-export class ColorParam extends Parameter
-{
-	private CCL_ColorParam: never;
-	palette: PaletteBase<Color>;
-}
-
-export class FloatParam extends Parameter
-{
-	private CCL_FloatParam: never;
-}
-
-export class IntParam extends Parameter
-{
-	private CCL_IntParam: never;
-}
-
-export class StringParam extends Parameter
-{
-	private CCL_StringParam: never;
-}
-
-export class ImageProvider extends Parameter
-{
-	private CCL_ImageProvider: never;
-	setImage: (image: Object, update?: boolean) => void;
-}
-
-export class ListParam extends Parameter
-{
-	private CCL_ListParam: never;
-
-	appendString: (value: string) => void;
-	appendValue: (value: number) => void;
-	removeAll: () => void;
-	getValueAt: (index: number) => Variant;
-	getSelectedValue: () => number;
-	selectValue: (value: number, update?: boolean) => void;
-}
-
-export class MenuParam extends ListParam
-{
-	private CCL_MenuParam: never;
-}
-
-export class Component extends ObjectNode
-{
-	private CCL_Component: never;
-
-	readonly name: string;
-	readonly title: string;
-	readonly parent: ObjectNode;
-	readonly self: Component;
-	readonly children: { [id: string]: ObjectNode };
-	readonly hasChild: { [id: string]: ObjectNode };
-	readonly numChildren: number;
-	readonly hasParam: { [id: string]: Parameter };
-	readonly paramValue: { [id: string]: Variant };
-	readonly paramEnabled: { [id: string]: boolean };
-	readonly paramEditable: { [id: string]: boolean };
-	readonly hasObject: { [id: string]: Component | null };
-
-	findParameter: (name: string) => Parameter;
-	interpretCommand: (category: string, name: string, checkOnly?: boolean, invoker?: Object) => boolean;
-}
-
-export class PaletteParam extends ListParam
-{
-	private CCL_PaletteParam: never;
-}
-
-export class ParamContainer
-{
-	private CCL_ParamContainer: never;
-
-	add: (param: Parameter) => Parameter;
-	addParam: (name: string) => Parameter;
-	addFloat: (rangeFrom: number, rangeTo: number, name: string) => FloatParam;
-	addInteger: (rangeFrom: number, rangeTo: number, name: string) => IntParam;
-	addString: (name: string) => StringParam;
-	addList: (name: string) => ListParam;
-	addMenu: (name: string) => ListParam;
-	addCommand: (commandCategory: string, commandName: string, name: string) => Parameter;
-	addColor: (name: string) => ColorParam;
-	addAlias: (name: string) => AliasParam;
-	addImage: (name: string) => ImageProvider;
-	remove: (name: string) => boolean;
-	lookup: (name: string) => Parameter | null;
-}
-
-export class Parameter extends Object
-{
-  private CCL_Parameter: never;
-  type: number;
-  value: any;
-  min: any;
-  max: any;
-  default: any;
-  name: string;
-  string: string;
-  enabled: boolean;
-  signalAlways: boolean;
-  reverse: boolean;
-
-  setValue: (value: any, update?: boolean) => void;
-  fromString: (str: string, update?: boolean) => void;
-  setNormalized: (value: number, upate?: boolean) => void;
-  getNormalized: () => number;
-  setFormatter: (formatter: Formatter) => void;
-  setCurve: (curve: string) => void;
-  isType: (type: string) => boolean;
-  setSignalAlways: (state?: boolean) => void;
-}
-
-export class Preset extends Object
-{
-	private CCL_Preset: never;
-	readonly presetName: string;
-	readonly relativePath: string;
-}
-
-export class RuntimeEnvironment extends Component
-{
-	private CCL_RuntimeEnvironment: never;
-}
-
-export class ScrollParam extends IntParam
-{
-	private CCL_ScrollParam: never;
-	readonly numPages: number;
-	readonly currentPage: number;
-}
-
-////////////////////////////////////////////////////////////
-// app/actions
-////////////////////////////////////////////////////////////
-
-export class ActionExecuter extends Object
-{
-	private CCL_ActionExecuter: never;
-	executeImmediately: boolean;
-
-	beginMultiple: (description: string) => void;
-	endMultiple: (cancel?: boolean) => void;
-	isJournalEnabled: () => boolean;
-	setJournalEnabled: (enabled: boolean) => void;
-}
-
-////////////////////////////////////////////////////////////
-// app/browser
-////////////////////////////////////////////////////////////
-
-export class PlugInMenuParam extends Parameter
-{
-	private CCL_PlugInMenuParam: never;
-
-	getSelectedClass: () => string;
-	selectClass: (cid: UID | string) => boolean;
-	setCategory: (category: string) => void;
-	setDisplaySorted: (state: boolean) => void;
-}
-
-export class PlugInSelector extends Component
-{
-	private CCL_PlugInSelector: never;
-
-	setCategories: (classCategory1: string, classCategory2: string) => void;
-	getSelected: () => string;
-}
-
-////////////////////////////////////////////////////////////
-// app/components
-////////////////////////////////////////////////////////////
-
-export class ColorPicker extends Object
-{
-	private CCL_ColorPicker: never;
-
-	construct: (color: ColorParam, applyPresetPalette?: boolean) => void;
-	popup: (popupStyle?: any, useMousePos?: boolean) => boolean;
-}
-
-////////////////////////////////////////////////////////////
-// app/documents
-////////////////////////////////////////////////////////////
-
-export class Document
-{
-	private CCL_Document: never;
-	readonly title: string;
-	readonly path: Url;
-}
-
-export class DocumentClass
-{
-	private CCL_DocumentClass: never;
-	isNative(): boolean;
-	isPrivate(): boolean;
-	getFileType(): FileType
-}
-
-export class DocumentTemplate
-{
-	private CCL_DocumentTemplate: never;
-	readonly icon: CCL.Image;
-	readonly title: string; // localized
-	readonly subTitle: string; // localized
-	readonly description: string; // localized
-	readonly additionalData: string;
-	readonly tutorialId: string;
-}
-
-export class DocumentTemplateList
-{
-	private CCL_DocumentTemplateList: never;
-	getTemplateCount (): number;
-	getTemplate (index: number): DocumentTemplate;
-}
-
-export class NewDocumentAssistant extends Component
-{
-	private CCL_DocumentTemplateList: never;
-	loadSecondaryTemplates (url: string): DocumentTemplateList;
-	selectSecondaryTemplate (index: number): void;
-	setDropFileTypes (fileTypes: Container<FileType> | Array<FileType>): void;
-	getClassIcon (className: string): CCL.Image;
-	setExclusiveDropFileTypes (fileTypes: Container<FileType> | Array<FileType>): void;
-	getClassIcon (className: string): Object;
-	setDropImportFile (path: Url, temporaryDocument?: boolean): void;
-	setConfirmEnabled (state: boolean): void;
-	closeDialog (apply?: boolean): void;	
-}
-
-////////////////////////////////////////////////////////////
-// app/editing
-////////////////////////////////////////////////////////////
-
-export class EditTask extends Object
-{
-	private CCL_EditTask: never;
-	readonly formName: string;
-	readonly themeID: string;
-}
-
-export class EditHandlerHook extends Object
-{
-	private CCL_EditHandlerHook: never;
-}
-
-export class EditHandler
-{
-	private CCL_EditHandler: never;
-
-	setEditTooltip: (tooltip: string) => void;
-}
-
-export class EditTaskContext extends Attributes
-{
-	private CCL_EditTaskContext: never;
-	parameters: ParamContainer;
-	isArgumentDialog?: boolean;
-
-	isSilentMode: () => boolean;
-	restore: (force?: boolean) => boolean;
-	getArguments: () => Attributes;
-	runDialog: (name?: string, themeID?: string) => tresult;
-}
-
-export class EditView<T extends Object> extends Object
-{
-	private CCL_EditView: T;
-	readonly selection: Selection;
-
-	findItem: (loc: Point) => Object;
-	findItemPart: (obj: Object, loc: Point) => Object;
-	findItemDeep: (loc: Point) => Object
-	isSameItem: (obj1: Object, obj2: Object) => boolean;
-	getItemType: (obj: Object) => string;
-	getEditArea: (loc: Point) => string;
-	getSelectionSize: () => Rect;
-	setFocusItem: (obj: Object) => void;
-	setAnchorItem: (obj: Object) => void;
-	select: (obj: Object) => void;
-	unselect: (obj: Object) => void;
-	dragSelection: (event: MouseEvent) => void;
-	drawSelection: (event: MouseEvent, hook: EditHandlerHook, hint: string) => EditHandler;
-	dragEraser: (event: MouseEvent) => EditHandler;
-	deleteSelected: () => void;
-	deleteItem: (obj: Object) => void;
-	editItem: (obj: Object) => void;
-	createEditHandler: (obj: Object, event: MouseEvent) => EditHandler;
-	getItemSize: (obj: Object) => Rect;
-	detectDrag: (event: MouseEvent) => boolean;
-	detectDoubleClick: (event: MouseEvent) => boolean;
-	takeFocus: () => boolean;
-	createSelectFunctions: (functions: ActionExecuter) => SelectFunctions<T>;
-	showSelection: (show: boolean, redraw: boolean) => void;
-	setCursor: (cursorName: string) => void;
-	moveCrossCursor: (position: Point) => void;
-}
-
-export class SelectFunctions<T extends Object> extends ActionExecuter
-{
-	private CCL_SelectFunctions: T;
-	selectExclusive: boolean;
-	makeItemsVisible: boolean;
-	focusItem: T;
-
-	select: (event: T) => void;
-	selectMultiple: (events: T[]) => void;
-	saveSelection: () => void;
-	takeSnapshot: () => boolean;
-}
-
-export class SelectionContainer extends Object
-{
-	private CCL_SelectionContainer: never;
-}
-
-export class Selection extends SelectionContainer
-{
-	private CCL_Selection: never;
-	unselectAll: () => boolean;
-}
-
-////////////////////////////////////////////////////////////
-// app/gui
-////////////////////////////////////////////////////////////
-
-export class HelpTutorial
-{
-	private CCL_HelpTutorial: never;
-	getID (): string;
-	getTitle (): string;
-}
-
-////////////////////////////////////////////////////////////
-// app/presets
-////////////////////////////////////////////////////////////
-
-export class PresetManager
-{
-	private CCL_PresetManager: never;
-	presetExists (metaInfo: Attributes, presetName: string, fileType?: FileType): boolean;
-}
-
-export class PresetParam extends MenuParam
-{
-	private CCL_PresetParam: never;
-	enabled: boolean;
-
-	setMetaInfo: (metaInfo: Attributes) => void;
-	shouldShowFolders: (state: boolean) => void;
-	selectRelativePath: (path: string) => void;
-}
-
-////////////////////////////////////////////////////////////
-// app/utilities
-////////////////////////////////////////////////////////////
-
-// Boxed::Point
-export class Point extends Object
-{
-	private CCL_Point: never;
-	x: number;
-	y: number;
-
-	equals: (obj: Object) => boolean;
-}
-
-// Boxed::Rect
-export class Rect extends Object
-{
-	private CCL_Rect: never;
-	left: number;
-	top: number;
-	right: number;
-	bottom: number;
-
-	equals: (obj: Object) => boolean;
-	pointInside: (point: Point) => boolean;
-	clone: () => Rect;
-}
-
-// Boxed::MouseEvent
-export class MouseEvent extends Object
-{
-	private CCL_MouseEvent: never;
-}
-
-// Boxed::DateTime
-export class DateTime extends Object
-{
-	private CCL_DateTime: never;
-	year: number;
-	month: number;
-	day: number;
-	hour: number;
-	minute: number;
-	second: number;
-	ms: number;
-
-	toSeconds: () => number;
-}
-
-////////////////////////////////////////////////////////////
-// base
-////////////////////////////////////////////////////////////
-
 export type tresult = number; // bool incomatible!
 export type Variant = boolean | number | string | Object;
 
-export class Formatter extends Object
-{
-	private CCL_Formatter: never;
-
-	print: (value: number) => string;
-	scan: (input: string) => number;
-}
-
-export class Message
-{
-	private CCL_Message: never;
-	readonly id: string;
-
-	getArgCount (): number;
-	getArg (index: number): any;
-}
-
-export class Object
-{
-	private CCL_Object: never;
-}
-
-export class ObjectNode extends Object
-{
-	private CCL_ObjectNode: never;
-	find: (path: string) => ObjectNode | null;
-}
-
-// Boxed::UID
-export class UID extends Object
-{
-	private CCL_UID: never;
-
-	equals: (obj: Object | string) => boolean;
-}
-
-////////////////////////////////////////////////////////////
-// base/collections
-////////////////////////////////////////////////////////////
-
-export class Container<T> extends Object
-{
-	private CCL_Container: T;
-	readonly count: number;
-
-	at: (index: number) => T;
-	findEqual: (key: T | string) => T;
-	newIterator: () => Iterator<T>;
-}
-
-export class Iterator<T> extends Object
-{
-	private CCL_Iterator: T;
-
-	done: () => boolean;
-	first: () => void;
-	last: () => void;
-	next: () => T;
-	previous: () => T;
-}
-
-export class Linkable extends Object
-{
-	private CCL_Linkable: never;
-}
-
-////////////////////////////////////////////////////////////
-// base/storage
-////////////////////////////////////////////////////////////
-
-export class Attributes extends Object
-{
-	private CCL_Attributes: never;
-
-	countAttributes: () => number;
-	getAttributeName: (index: number) => string;
-	getAttributeValue: (index: number) => Variant;
-	getAttribute: (id: string) => Variant;
-	setAttribute: (id: string, value: Variant) => boolean;
-	newQueueIterator: (id: string) => CCL.Iterator<Object>;
-	queueAttribute: (id: string, value: Variant) => boolean;
-	contains: (id: string) => boolean;
-}
-
-export class File extends Object
-{
-	private CCL_File: never;
-	path: Url;
-
-	exists: () => boolean;
-	remove: (deleteToTrashBin?: boolean, deleteRecursively?: boolean) => boolean;
-	rename: (newName: string) => boolean;
-	moveTo: (destination: Url) => boolean;
-	copyTo: (destination: Url) => boolean;
-}
-
-export class TextFile extends Object
-{
-	private CCL_TextFile: never;
-	readonly endOfStream: boolean;
-
-	readLine: () => string;
-	writeLine: (line: string) => boolean;
-	close: () => void;
-}
-
-export class Url extends Object
-{
-	private CCL_Url: never;
-	readonly name: string;
-	readonly url: string;
-	readonly extension: string;
-
-	ascend: () => boolean;
-	descend: (name: string, isFolder?: boolean) => boolean;
-	makeUnique: (forceSuffix?: boolean) => void;
-}
-
-export namespace Configuration
-{
-	export class Registry extends Object
-	{
-		private CCL_Configuration_Registry: never;
-
-		getValue: (section: string, key: string) => Variant;
-	}
-}
-
-////////////////////////////////////////////////////////////
-// extras/packages
-////////////////////////////////////////////////////////////
-
-export class ContentPackageManager
-{
-	private CCL_ContentPackageManager: never;
-	finishStartup (deferred?: boolean): void;
-	findPackage (packageId: string): UnifiedPackage;
-	canInstall (packageId: string): boolean;
-	isInstalled (packageId: string): boolean;
-}
-
-export class UnifiedPackage extends Object
-{
-	private CCL_UnifiedPackage: never;
-	isLocalPackage: () => boolean;
-}
-
-////////////////////////////////////////////////////////////
-// gui
-////////////////////////////////////////////////////////////
-
-export class PaletteBase<T = Variant>
-{
-	private CCL_PaletteBase: never;
-	readonly count: number;
-
-	getAt: (index: number) => T;
-	getNext: () => T;
-}
-
-export class FileSelector extends Object
-{
-	private CCL_FileSelector: never;
-	fileName: string;
-
-	addFilter: (fileType: FileType) => void;
-	runOpen: (title?: string) => boolean;
-	runSave: (title?: string) => boolean;
-	setFileName: (name?: string) => void;
-	countPaths: () => number;
-	getPath: (index?: number) => Url;
-}
-
-export class Image extends Object
-{
-	private CCL_Image: never;
-	readonly width: number;
-	readonly height: number;
-	readonly frameCount: number;
-	currentFrame: number;
-	isTemplate: boolean;
-	isAdaptive: boolean;
-}
-
-export class ProgressStep extends Object
-{
-	private CCL_ProgressStep: never;
-	text: string;
-	readonly canceled: boolean;
-	readonly detailCount: number;
-	value: number;
-	title: string;
-	cancelEnabled: boolean;
-
-	beginProgress: () => void;
-	endProgress: () => void;
-	updateAnimated: (text?: string) => void;
-}
-
-export class ProgressDialog extends ProgressStep
-{
-	private CCL_ProgressDialog: never;
-	readonly isCancelEnabled: boolean;
-}
-
-export class CommandTable extends Object
-{
-	private CCL_CommandTable: never;
-
-	interpretCommand: (category: string, name: string, checkOnly?: boolean, invoker?: Object) => boolean;
-}
-
-export class ScriptGUIHost extends Object
-{
-	private CCL_ScriptGUIHost: never;
-	readonly Configuration: Configuration.Registry;
-	readonly Commands: CommandTable;
-
-	flushUpdates: (wait?: boolean) => void;
-	alert: (text: string) => void;
-	ask: (text: string) => tresult;
-	openUrl: (url: Url) => tresult;
-	showFile: (url: Url) => tresult;
-	keyStateToString: (keyState: number) => string;
-}
-
-export class WindowManager extends Object
-{
-	isWindowOpen: (classID: string) => boolean;
-	openWindow: (classID: string, toggle?: boolean) => boolean;
-	closeWindow: (classID: string) => boolean;
-	centerWindow: (classID: string) => boolean;
-	findParameter: (name: string) => Parameter;
-}
-
-////////////////////////////////////////////////////////////
-// io
-////////////////////////////////////////////////////////////
-
-// Boxed::FileType
-export class FileType extends Object
-{
-	private CCL_FileType: never;
-
-	readonly description: string;
-	readonly extension: string;
-	readonly mimetype: string;
-}
-
-////////////////////////////////////////////////////////////
-// system/localization
-////////////////////////////////////////////////////////////
-
-export class LocaleManager extends Object
-{
-	private CCL_ScriptGUIHost_LocaleManager: never;
-	getStrings: (tableID: string) => TranslationTable;
-}
-
-export class TranslationTable extends Object
-{
-	private CCL_ScriptGUIHost_TranslationTable: never;
-
-	getString: (keyOrScope: string, key?: string) => string;
-}
-
-////////////////////////////////////////////////////////////
-// system/plugins
-////////////////////////////////////////////////////////////
-
-export class PlugInManager extends Object
-{
-	private CCL_PlugInManager: never;
-
-	createInstance: (className: string) => Object;
-	newIterator: (category: string) => Object;
-}
-
-export namespace ScriptingHost
-{
-	export class Console extends Object
-	{
-		private CCL_ScriptingHost_Console: never;
-
-		writeLine: (text: string) => void;
-	}
-
-	export class InterfaceList extends Object
-	{
-		private CCL_ScriptingHost_InterfaceList: never;
-		IUnknown: UID;
-		IComponent: UID;
-		IObjectNode: UID;
-		IEditTask: UID;
-		IPersistentEditTask: UID;
-		IParamObserver: UID;
-		IToolAction: UID;
-		IEditHandler: UID;
-		IToolConfiguration: UID;
-		IEditHandlerHook: UID;
-		IToolHelp: UID;
-		ICommandHandler: UID;
-		IToolMode: UID;
-		IToolSet: UID;
-		IClassFactory: UID;
-		IPortFilter: UID;
-		IObserver: UID;
-		ITimerTask: UID;
-		IController: UID;
-		IScriptComponent: UID;
-		IPresetMediator: UID;
-		IPersistEditTask: UID;
-		IBrowserExtension: UID;
-		IPersistAttributes: UID;
-		IDocumentTemplateHandler: UID;
-		IDocumentEventHandler: UID;
-		IHelpTutorialHandler: UID;
-	}
-
-	export class Signals extends Object
-	{
-		private CCL_ScriptingHost_Signals: never;
-
-		advise: (subject_or_atom: Object | string, observer: Object) => void;
-		unadvise: (subject_or_atom: Object | string, observer: Object) => void;
-		signal: (subject_or_atom: Object | string, messageId: string, arg0?: string, arg1?: string) => void;
-		flush: () => void;
-		postMessage: (observer: Object, delay: number, messageId: string, arg1?: string, arg2?: string, arg3?: string) => void;
-	}
-
-	export class ResultsList extends Object
-	{
-		private CCL_ScriptingHost_ResultsList: never;
-		kResultOk: tresult;
-		kResultTrue: tresult;
-		kResultFalse: tresult;
-		kResultNotImplemented: tresult;
-		kResultNoInterface: tresult;
-		kResultInvalidPointer: tresult;
-		kResultFailed: tresult;
-		kResultUnexpected: tresult;
-		kResultClassNotFound: tresult;
-		kResultOutOfMemory: tresult;
-		kResultInvalidArgument: tresult;
-		kResultWrongThread: tresult;
-	}
-}
-
-export class ScriptingHost extends Object
-{
-	private CCL_ScriptingHost: never;
-	readonly Interfaces: ScriptingHost.InterfaceList;
-	readonly Results: ScriptingHost.ResultsList;
-	readonly Classes: PlugInManager;
-	readonly Console: ScriptingHost.Console;
-	readonly Locales: LocaleManager;
-	readonly GUI: ScriptGUIHost;
-	readonly Signals: ScriptingHost.Signals;
-	// Engine: Engine.EngineHost added in app derived ScriptingHost
-
-	UID: (uid: string) => UID;
-	Url: (inputUrl: Url | string, isFolder: boolean) => Url;
-	Attributes: (attributes?: any[]) => Attributes;
-	DateTime: (time?: string) => DateTime;
-	getPlatform: () => string;
-	sleep: (millis: number) => void;
-}
-
 } // namespace CCL
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+// Generated type information
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+declare namespace CCL
+{
+  export class ActionExecuter extends Object
+  {
+    private CCL_ActionExecuter: never;
+    executeImmediately: any;
+    beginMultiple: (description: string) => void;
+    endMultiple: (cancel?: boolean) => void;
+    setJournalEnabled: (enabled?: boolean) => void;
+    isJournalEnabled: () => boolean;
+  }
+  export class AliasParam extends Object
+  {
+    private CCL_AliasParam: never;
+    value: any;
+    default: any;
+    type: number;
+    min: any;
+    max: any;
+    name: string;
+    string: string;
+    enabled: boolean;
+    signalAlways: boolean;
+    reverse: boolean;
+    setOriginal: (original: Parameter | null) => void;
+    hasOriginal: () => boolean;
+    setFeedbackNeeded: (needed: boolean) => void;
+    setValue: (value: any, update?: boolean) => void;
+  }
+  export class Application extends Component
+  {
+    private CCL_Application: never;
+    readonly Configuration: Registry;
+  }
+  export class Attributes extends Object
+  {
+    private CCL_Attributes: never;
+    countAttributes: () => number;
+    getAttributeName: (index: number) => string;
+    getAttributeValue: (index: number) => any;
+    getAttribute: (name: string) => any;
+    setAttribute: (name: string, value: any) => boolean;
+    queueAttribute: (id: string, value: any) => boolean;
+    newQueueIterator: (id: string) => Iterator;
+    contains: (id: string) => boolean;
+  }
+  export class BitmapFilter extends Object
+  {
+    private CCL_BitmapFilter: never;
+  }
+  export class ClassDescription extends Object
+  {
+    private CCL_ClassDescription: never;
+    getClassAttribute: () => void;
+  }
+  export class ColorParam extends Parameter
+  {
+    private CCL_ColorParam: never;
+    palette: PaletteBase;
+  }
+  export class ColorPicker extends Component
+  {
+    private CCL_ColorPicker: never;
+    construct: (colorParam: Parameter, applyPresetPalette?: boolean) => void;
+    popup: (popupStyle?: VisualStyle | null, useMousePos?: boolean) => boolean;
+  }
+  export class Command extends Object
+  {
+    private CCL_Command: never;
+  }
+  export class CommandParam extends Parameter
+  {
+    private CCL_CommandParam: never;
+  }
+  export class CommandTable extends Object
+  {
+    private CCL_CommandTable: never;
+    interpretCommand: (category: string, name: string, checkOnly?: boolean, invoker?: Object | null) => boolean;
+    deferCommand: (category: string, name: string, checkOnly?: boolean, invoker?: Object | null) => boolean;
+    addHandler: (ICommandHandler: any) => void;
+    removeHandler: (ICommandHandler: any) => void;
+    findCommand: (category: string, name: string) => Object;
+    registerCommand: (category: string, name: string, displayCategory: string, displayName: string, englishName: string, arguments?: string) => void;
+    unregisterCommand: (category: string, name: string) => void;
+    newCommandIterator: () => void;
+    newCategoryIterator: () => void;
+    lookupBindings: (command: any) => Object;
+    lookupKeyEvent: (command: Command, layoutSensitive?: boolean) => KeyEvent;
+    assignKey: (command: any, key: any) => void;
+    beginTransaction: () => void;
+    endTransaction: () => void;
+  }
+  export class Component extends ObjectNode
+  {
+    private CCL_Component: never;
+    readonly name: string;
+    readonly title: string;
+    readonly parent: Component;
+    findParameter: (name: string) => Parameter;
+    interpretCommand: (category: string, name: string, checkOnly?: boolean, invoker?: Object | null) => boolean;
+  }
+  export class Container extends Object
+  {
+    private CCL_Container: never;
+    readonly count: number;
+    at: (index: number) => Object;
+    findEqual: (object_or_string: Object | string) => Object;
+    newIterator: () => Iterator;
+  }
+  export class ContentPackageManager extends PackageManager
+  {
+    private CCL_ContentPackageManager: never;
+    finishStartup: (deferred?: boolean) => void;
+    findPackage: (packageId: string) => UnifiedPackage;
+    canInstall: (packageId: string) => boolean;
+    isInstalled: (packageId: string) => boolean;
+  }
+  export class DateTime extends Object
+  {
+    private CCL_DateTime: never;
+    toOrdinal: () => void;
+  }
+  export class Document extends Object
+  {
+    private CCL_Document: never;
+    title: any;
+    path: any;
+  }
+  export class DocumentClass extends Object
+  {
+    private CCL_DocumentClass: never;
+    isNative: () => boolean;
+    isPrivate: () => boolean;
+    getFileType: () => FileType;
+  }
+  export class DocumentTemplate extends StorableObject
+  {
+    private CCL_DocumentTemplate: never;
+    readonly title: string;
+    readonly subTitle: string;
+    readonly description: string;
+    readonly additionalData: string;
+    readonly tutorialId: string;
+    readonly icon: Image;
+  }
+  export class DocumentTemplateList extends Object
+  {
+    private CCL_DocumentTemplateList: never;
+    getTemplateCount: () => number;
+    getTemplate: (index: number) => DocumentTemplate;
+  }
+  export class EditEnvironment extends Component
+  {
+    private CCL_EditEnvironment: never;
+    mainEditor: any;
+    activeEditor: any;
+    actionSelection: any;
+    focusItem: any;
+    focusItemPropertyEditor: any;
+    runEditTask: () => void;
+  }
+  export class EditHandler extends UserControl.MouseHandler
+  {
+    private CCL_EditHandler: never;
+    setEditTooltip: () => void;
+  }
+  export class EditModel extends Object
+  {
+    private CCL_EditModel: never;
+    updateHighlightItem: (editView: EditView, where: Point) => void;
+    hideHighlight: () => void;
+    setDocumentDirty: () => void;
+  }
+  export class EditTaskContext extends Attributes
+  {
+    private CCL_EditTaskContext: never;
+    parameters: ParamContainer;
+    editor: Object;
+    isArgumentDialog: boolean;
+    restore: (force?: boolean) => void;
+    runDialog: (formName: string, themeID?: string) => tresult;
+    isSilentMode: () => boolean;
+    getArguments: () => Attributes;
+  }
+  export class EditView extends UserControl
+  {
+    private CCL_EditView: never;
+    readonly selection: Selection;
+    readonly model: EditModel;
+    readonly environment: EditEnvironment;
+    findItem: (loc: Point) => Object;
+    findItemPart: (item: Object, loc: Point) => Object;
+    findItemDeep: (loc: Point) => Object;
+    isSameItem: (item1: Object, item2: Object) => boolean;
+    getItemType: (item: Object) => string;
+    getEditArea: (loc: Point) => string;
+    getSelectionSize: () => Rect;
+    setFocusItem: (item: Object) => void;
+    setAnchorItem: (item: Object) => void;
+    select: (item: Object) => void;
+    unselect: (item: Object) => void;
+    canSelect: (item: Object) => boolean;
+    dragSelection: (event: MouseEvent) => void;
+    drawSelection: (event: MouseEvent, hook?: Object | null, hint?: string) => EditHandler;
+    dragEraser: (event: MouseEvent) => EditHandler;
+    deleteSelected: () => void;
+    deleteItem: (item: Object) => void;
+    editItem: (item: Object) => boolean;
+    createEditHandler: (itemPart: Object, event: MouseEvent) => EditHandler;
+    getItemSize: (item: Object) => Rect;
+    detectDoubleClick: (event: MouseEvent) => boolean;
+    detectDrag: (event: MouseEvent) => boolean;
+    takeFocus: () => boolean;
+    createSelectFunctions: (functions: Object) => SelectFunctions;
+    showSelection: (show?: boolean, redraw?: boolean) => void;
+    setCursor: (name: string) => void;
+    moveCrossCursor: (position: Point) => void;
+  }
+  export class FileArchive extends FileStreamResource
+  {
+    private CCL_FileArchive: never;
+    setOption: () => void;
+    create: () => void;
+    embedd: () => void;
+    extract: () => void;
+    extractAll: () => void;
+    flush: () => void;
+    close: () => void;
+  }
+  export class FileResource extends Object
+  {
+    private CCL_FileResource: never;
+  }
+  export class FileStreamResource extends Object
+  {
+    private CCL_FileStreamResource: never;
+  }
+  export class FileType extends Object
+  {
+    private CCL_FileType: never;
+    description: string;
+    extension: string;
+    mimetype: string;
+  }
+  export class FileTypeRegistry extends Object
+  {
+    private CCL_FileTypeRegistry: never;
+    registerFileType: (fileType: Object | string) => tresult;
+    getFileTypeByExtension: (extension: string) => Object;
+    getFileTypeByMimeType: (mimetype: string) => Object;
+    registerHandler: (fileType: Object | string, location: Url, observer: Object) => tresult;
+    unregisterHandler: (fileType: Object | string) => tresult;
+  }
+  export class FloatParam extends Parameter
+  {
+    private CCL_FloatParam: never;
+  }
+  export class Formatter extends Object
+  {
+    private CCL_Formatter: never;
+    print: (value: any) => string;
+    scan: (value: string) => any;
+  }
+  export class GraphicsHelper extends Object
+  {
+    private CCL_GraphicsHelper: never;
+    loadImage: (path: any) => Image;
+    saveImage: (path: any, image: any, encoderOptions?: any) => void;
+    createBitmap: (width: any, height: any) => Image;
+    createFilmstrip: (image: any, frames: any) => Image;
+    createImagePart: (image: any, left: any, top: any, width: any, height: any) => Image;
+    copyBitmap: (dstBitmap: any, srcBitmap: any, offsetX: any, offsetY: any) => void;
+    createBitmapFilter: (name: any) => BitmapFilter;
+    processBitmap: (bitmap: any, filter: any, inplace?: any) => Image;
+  }
+  export class HelpTutorial extends Object
+  {
+    private CCL_HelpTutorial: never;
+    getID: () => string;
+    getTitle: () => string;
+    getCategory: () => string;
+  }
+  export class Image extends Object
+  {
+    private CCL_Image: never;
+  }
+  export class ImageProvider extends Parameter
+  {
+    private CCL_ImageProvider: never;
+    setImage: (image: Object, update?: boolean) => void;
+  }
+  export class IntParam extends Parameter
+  {
+    private CCL_IntParam: never;
+  }
+  export class Iterator extends Object
+  {
+    private CCL_Iterator: never;
+    done: () => boolean;
+    first: () => void;
+    last: () => void;
+    next: () => Object;
+    previous: () => Object;
+  }
+  export class Key extends KeyEvent
+  {
+    private CCL_Key: never;
+  }
+  export class KeyEvent extends Object
+  {
+    private CCL_KeyEvent: never;
+    toString: (translated?: boolean) => String;
+  }
+  export class Linkable extends Object
+  {
+    private CCL_Linkable: never;
+  }
+  export class ListParam extends IntParam
+  {
+    private CCL_ListParam: never;
+    appendString: (str: string) => void;
+    appendValue: (value: any) => void;
+    removeAll: () => void;
+    getValueAt: (index: number) => any;
+    getSelectedValue: () => any;
+    selectValue: (value: any, update?: boolean) => void;
+  }
+  export class LocaleManager extends Object
+  {
+    private CCL_LocaleManager: never;
+    getStrings: (tableId: any) => TranslationTable;
+  }
+  export class MenuParam extends ListParam
+  {
+    private CCL_MenuParam: never;
+  }
+  export class Message extends Object
+  {
+    private CCL_Message: never;
+    id: string;
+    readonly argCount: number;
+    getArg: (index: number) => any;
+    getArgCount: () => number;
+  }
+  export class MouseEvent extends Object
+  {
+    private CCL_MouseEvent: never;
+  }
+  export class NewDocumentAssistant extends Component
+  {
+    private CCL_NewDocumentAssistant: never;
+    loadSecondaryTemplates: (path: Url) => DocumentTemplateList;
+    selectSecondaryTemplate: (index: number) => void;
+    setDropFileTypes: (fileTypes: Container | FileType[]) => void;
+    setExclusiveDropFileTypes: (fileTypes: Container | FileType[]) => void;
+    getClassIcon: (className: string) => Object;
+    setDropImportFile: (path: Url, temporaryDocument?: boolean) => void;
+    setConfirmEnabled: (state: boolean) => void;
+    closeDialog: (apply?: boolean) => void;
+  }
+  export class Object
+  {
+    private CCL_Object: never;
+  }
+  export class ObjectNode extends Object
+  {
+    private CCL_ObjectNode: never;
+    find: (childName: string) => ObjectNode;
+  }
+  export class ObjectTable extends Object
+  {
+    private CCL_ObjectTable: never;
+    registerObject: (obj: any, name: any) => tresult;
+    unregisterObject: (obj: any) => tresult;
+    getObjectByName: (name: any) => Object;
+    getObjectByID: (uidString: any) => Object;
+    getObjectByUrl: (url: any, optional: any) => Object;
+  }
+  export class PackageDocument extends Document
+  {
+    private CCL_PackageDocument: never;
+  }
+  export class PackageFile extends FileArchive
+  {
+    private CCL_PackageFile: never;
+  }
+  export class PackageManager extends Component
+  {
+    private CCL_PackageManager: never;
+  }
+  export class PaletteBase extends Object
+  {
+    private CCL_PaletteBase: never;
+    count: any;
+    getAt: () => void;
+    getNext: () => void;
+  }
+  export class PaletteParam extends ListParam
+  {
+    private CCL_PaletteParam: never;
+  }
+  export class ParamContainer extends Object
+  {
+    private CCL_ParamContainer: never;
+    add: (param: Parameter) => Parameter;
+    addParam: (name: string) => Parameter;
+    addFloat: (min: number, max: number, name: string) => FloatParam;
+    addInteger: (min: number, max: number, name: string) => IntParam;
+    addString: (name: string) => StringParam;
+    addList: (name: string) => ListParam;
+    addMenu: (name: string) => MenuParam;
+    addCommand: (commandCategory: string, commandName: string, name: string) => CommandParam;
+    addColor: (name: string) => ColorParam;
+    addAlias: (name: string) => AliasParam;
+    addImage: (name: string) => ImageProvider;
+    remove: (name: string) => Parameter;
+    lookup: (name: string) => Parameter;
+    findParameter: (name: string) => Parameter;
+  }
+  export class Parameter extends Object
+  {
+    private CCL_Parameter: never;
+    type: number;
+    value: any;
+    min: any;
+    max: any;
+    default: any;
+    name: string;
+    string: string;
+    enabled: boolean;
+    signalAlways: boolean;
+    reverse: boolean;
+    setValue: (value: any, update?: boolean) => void;
+    fromString: (str: string, update?: boolean) => void;
+    setNormalized: (value: number, upate?: boolean) => void;
+    getNormalized: () => number;
+    setFormatter: (formatter: Formatter) => void;
+    setCurve: (curve: string) => void;
+    isType: (type: string) => boolean;
+    setSignalAlways: (state?: boolean) => void;
+  }
+  export class PlugInCollection extends Object
+  {
+    private CCL_PlugInCollection: never;
+  }
+  export class PlugInManager extends PlugInCollection
+  {
+    private CCL_PlugInManager: never;
+    createInstance: (className_or_cid: UID | string) => Object;
+    getClassDescription: (className_or_cid: UID | string) => ClassDescription;
+    newIterator: (category: any) => Iterator;
+  }
+  export class PlugInMenuParam extends MenuParam
+  {
+    private CCL_PlugInMenuParam: never;
+    setCategory: (category: string) => void;
+    setCategory2: (category: string) => void;
+    setDisplaySorted: (state: boolean) => void;
+    setDisplayUnselectItem: (state: boolean) => void;
+    getSelectedClass: () => string;
+    selectClass: (cid: UID | string) => boolean;
+  }
+  export class PlugInSelector extends Component
+  {
+    private CCL_PlugInSelector: never;
+    setCategories: (classCategory1: string, classCategory2: string) => void;
+    getSelected: () => string;
+  }
+  export class Point extends Object
+  {
+    private CCL_Point: never;
+    equals: () => void;
+  }
+  export class Preset extends Object
+  {
+    private CCL_Preset: never;
+    presetName: string;
+    relativePath: string;
+  }
+  export class PresetManager extends Component
+  {
+    private CCL_PresetManager: never;
+    presetExists: (metaInfo: Attributes, presetName: string, fileType?: FileType | null) => boolean;
+  }
+  export class PresetParam extends MenuParam
+  {
+    private CCL_PresetParam: never;
+    setMetaInfo: (metaInfo: Attributes) => void;
+    shouldShowFolders: (state: boolean) => void;
+    selectRelativePath: (path: string) => void;
+  }
+  export class ProgressStep extends Object
+  {
+    private CCL_ProgressStep: never;
+    canceled: boolean;
+    detailCount: number;
+    value: number;
+    text: string;
+    title: string;
+    cancelEnabled: boolean;
+    updateAnimated: () => void;
+    beginProgress: () => void;
+    endProgress: () => void;
+  }
+  export class Rect extends Object
+  {
+    private CCL_Rect: never;
+    equals: () => void;
+    pointInside: () => void;
+    clone: () => void;
+  }
+  export class Registry extends Object
+  {
+    private CCL_Registry: never;
+    getValue: (section: string, key: string) => any;
+  }
+  export class ScriptGUIHost extends Object
+  {
+    private CCL_ScriptGUIHost: never;
+    Constants: any;
+    readonly Commands: CommandTable;
+    Themes: any;
+    Desktop: any;
+    Help: any;
+    Configuration: any;
+    Clipboard: any;
+    Alerts: any;
+    flushUpdates: (wait?: boolean) => void;
+    alert: (text: any) => void;
+    ask: (text: any) => void;
+    runDialog: (theme: Object, formName: string, controller?: Object | null, buttons?: number) => number;
+    runDialogWithParameters: (paramList: any, title: any) => number;
+    addIdleTask: () => void;
+    removeIdleTask: () => void;
+    openUrl: () => void;
+    showFile: () => void;
+    keyStateToString: () => void;
+  }
+  export class ScriptingHost extends Object
+  {
+    private CCL_ScriptingHost: never;
+    readonly Interfaces: ScriptingHost.InterfaceList;
+    readonly Results: ScriptingHost.ResultsList;
+    readonly Classes: PlugInManager;
+    readonly Objects: ObjectTable;
+    readonly Services: ServiceManager;
+    readonly Console: ScriptingHost.Console;
+    readonly Signals: ScriptingHost.Signals;
+    readonly Locales: LocaleManager;
+    readonly SystemInfo: SystemInformation;
+    readonly IO: ScriptingHost.ScriptIO;
+    readonly FileTypes: FileTypeRegistry;
+    retain: (obj: any) => void;
+    release: (obj: any) => void;
+    UID: () => UID;
+    Url: (url: Url | string) => Url;
+    Attributes: (...vargs: any[]) => any;
+    DateTime: () => DateTime;
+    getPlatform: () => string;
+    sleep: (ms: number) => void;
+  }
+  export namespace ScriptingHost
+  {
+    export class Console extends Object
+    {
+      private CCL_ScriptingHost_Console: never;
+      writeLine: (string: any) => void;
+    }
+    export class InterfaceList extends Object
+    {
+      private CCL_ScriptingHost_InterfaceList: never;
+      readonly IUnknown: UID;
+      readonly IBrowserExtension: UID;
+      readonly IDocumentTemplateHandler: UID;
+      readonly IDocumentEventHandler: UID;
+      readonly IEditTask: UID;
+      readonly IToolConfiguration: UID;
+      readonly IToolMode: UID;
+      readonly IToolHelp: UID;
+      readonly IToolSet: UID;
+      readonly IToolAction: UID;
+      readonly IEditHandlerHook: UID;
+      readonly IEditHandler: UID;
+      readonly IPresetMediator: UID;
+      readonly IExtensionHandler: UID;
+      readonly ICommandHandler: UID;
+      readonly IContextMenuHandler: UID;
+      readonly IParamObserver: UID;
+      readonly IViewStateHandler: UID;
+      readonly ITimerTask: UID;
+      readonly IHelpTutorialHandler: UID;
+      readonly IController: UID;
+      readonly IScriptComponent: UID;
+      readonly IClassFactory: UID;
+      readonly IComponent: UID;
+      readonly IObjectNode: UID;
+      readonly IObserver: UID;
+      readonly IPersistAttributes: UID;
+    }
+    export class ResultsList extends Object
+    {
+      private CCL_ScriptingHost_ResultsList: never;
+      kResultOk: tresult;
+      kResultTrue: tresult;
+      kResultFalse: tresult;
+      kResultNotImplemented: tresult;
+      kResultNoInterface: tresult;
+      kResultInvalidPointer: tresult;
+      kResultFailed: tresult;
+      kResultUnexpected: tresult;
+      kResultClassNotFound: tresult;
+      kResultOutOfMemory: tresult;
+      kResultInvalidArgument: tresult;
+      kResultWrongThread: tresult;
+    }
+    export class ScriptIO extends Object
+    {
+      private CCL_ScriptingHost_ScriptIO: never;
+      File: () => void;
+      findFiles: (startPoint: any, searchPattern: any) => Iterator;
+      openTextFile: (path: any, [encoding]: any) => TextFile;
+      createTextFile: (path: any, [encoding]: any) => TextFile;
+      loadJsonFile: (path: Url) => Attributes;
+      XmlTree: () => void;
+      toBase64: (string: any, [encoding]: any) => string;
+      fromBase64: (string: any, [encoding]: any) => string;
+      openPackage: (path: any) => PackageFile;
+      createPackage: (path: any, [mimeType]: any) => PackageFile;
+      getDevelopmentFileLocation: (root: string, relativePath: string) => Url;
+    }
+    export class Signals extends Object
+    {
+      private CCL_ScriptingHost_Signals: never;
+      signal: (subject_or_atom: Object | string, messageId: string, arg0?: string, arg1?: string) => void;
+      flush: () => void;
+      advise: (subject_or_atom: Object | string, observer: Object) => void;
+      unadvise: (subject_or_atom: Object | string, observer: Object) => void;
+      postMessage: (observer: Object, delay: number, messageId: string, arg1?: any, arg2?: any, arg3?: any) => void;
+    }
+  }
+  export class SecurityHost extends Object
+  {
+    private CCL_SecurityHost: never;
+    checkAccess: (resourceSid: any, itemSid: any) => boolean;
+  }
+  export class SelectFunctions extends ActionExecuter
+  {
+    private CCL_SelectFunctions: never;
+    selectExclusive: boolean;
+    makeItemsVisible: boolean;
+    focusItem: Object;
+    select: (item: Object) => boolean;
+    selectMultiple: (items: Container | Object[]) => boolean;
+    saveSelection: () => boolean;
+    takeSnapshot: () => boolean;
+  }
+  export class Selection extends SelectionContainer
+  {
+    private CCL_Selection: never;
+    isSelected: () => void;
+    isEmpty: () => void;
+    isMultiple: () => void;
+    newIterator: () => void;
+    unselectAll: () => void;
+    unselectType: () => void;
+    ignoreChanges: () => void;
+  }
+  export class SelectionContainer extends Object
+  {
+    private CCL_SelectionContainer: never;
+  }
+  export class ServiceManager extends Object
+  {
+    private CCL_ServiceManager: never;
+    getInstance: (cid: any) => void;
+  }
+  export class Settings extends Object
+  {
+    private CCL_Settings: never;
+    getAttributes: (Attributes: any) => string;
+  }
+  export class StorableObject extends Object
+  {
+    private CCL_StorableObject: never;
+    saveToFile: (path: any) => boolean;
+    loadFromFile: (path: any) => boolean;
+  }
+  export class StringParam extends Parameter
+  {
+    private CCL_StringParam: never;
+  }
+  export class SystemInformation extends Object
+  {
+    private CCL_SystemInformation: never;
+    getLocalTime: () => DateTime;
+  }
+  export class TextFile extends Object
+  {
+    private CCL_TextFile: never;
+    endOfStream: any;
+    readLine: () => void;
+    writeLine: () => void;
+    writeString: () => void;
+    close: () => void;
+  }
+  export class TranslationTable extends Object
+  {
+    private CCL_TranslationTable: never;
+    getString: () => void;
+  }
+  export class UID extends Object
+  {
+    private CCL_UID: never;
+    equals: (id: UID | string) => boolean;
+  }
+  export class UnifiedPackage extends Object
+  {
+    private CCL_UnifiedPackage: never;
+    isLocalPackage: () => boolean;
+  }
+  export class Url extends Object
+  {
+    private CCL_Url: never;
+    name: any;
+    url: any;
+    extension: any;
+    protocol: any;
+    hostname: any;
+    ascend: () => void;
+    descend: (name: any, folder?: any) => void;
+    makeUnique: (forceSuffix?: any) => void;
+    toDisplayString: () => string;
+    fromDisplayString: (string: any, folder?: any) => void;
+    contains: (childUrl: Url) => void;
+    getName: (withExtension?: boolean) => string;
+  }
+  export class UserControl extends Object
+  {
+    private CCL_UserControl: never;
+  }
+  export namespace UserControl
+  {
+    export class MouseHandler extends Object
+    {
+      private CCL_UserControl_MouseHandler: never;
+    }
+  }
+  export class VisualStyle extends VisualStyleData
+  {
+    private CCL_VisualStyle: never;
+  }
+  export class VisualStyleData extends Object
+  {
+    private CCL_VisualStyleData: never;
+  }
+  export class WindowManager extends Object
+  {
+    private CCL_WindowManager: never;
+    isWindowOpen: (classID: string) => boolean;
+    openWindow: (classID: string, toggle?: boolean) => boolean;
+    closeWindow: (classID: string) => boolean;
+    centerWindow: (classID: string) => boolean;
+    findParameter: (name: string) => Parameter;
+  }
+  export class XmlSettings extends Settings
+  {
+    private CCL_XmlSettings: never;
+  }
+}

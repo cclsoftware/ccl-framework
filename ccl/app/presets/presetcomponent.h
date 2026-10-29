@@ -122,9 +122,9 @@ public:
 
 protected:
 	Url currentPresetUrl;
-	CCL::int64 restoreDeadTimeTicks;
+	int64 restoreDeadTimeTicks;
 
-	static constexpr CCL::int64 kRestoreDeadTime = 1000;
+	static constexpr int64 kRestoreDeadTime = 1000;
 
 private:
 	bool dirty;

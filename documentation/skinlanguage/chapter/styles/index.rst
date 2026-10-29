@@ -6,10 +6,18 @@
 Styles
 ######
 
-A key element defining the appearance of controls is a visual style. This concept borrows some aspects from CSS used in HTML rendering. A visual style is defined once and can be shared among multiple controls. When no specific style is given a default "Standard" style is used.
-(I.e. A button without an explicit style will use the "Standard.Button" style)
+A visual style is the key element defining the appearance of controls. This concept borrows some aspects from CSS used in HTML rendering. A visual style is defined once and can be shared among multiple controls. When no specific style is given a default "Standard" style is used.
+(e.g. a button without an explicit style will use the "Standard.Button" style)
+
+A style is a named collection of properties such as colors, fonts, and metrics, declared as child elements (e.g. ``<Color name="textcolor" .../>``). See :doc:`../colors/index` for the color value syntax.
 
 Instead of defining standard styles for every app - basic design packages can be imported. For a neutral cross-platform design these packages are :ref:`neutralbase and neutraldesign<neutralbase_and_neutraldesign>`.
+
+********
+Advanced
+********
+
+Most styles are just a single named collection of properties, referenced directly by name - the following only matters once styles start combining or overriding each other.
 
 ================
 Composite Styles

@@ -406,7 +406,7 @@ tbool CCL_API ListViewModelBase::drawCell (ItemIndexRef index, int column, const
 					rect.setWidth (rect.getHeight ());
 					rect.contract (2);
 
-					if(color.getAlphaF () == 0.f)
+					if(!color.isVisible ())
 						color.setAlphaF (1.f);
 
 					info.graphics.fillRect (rect, SolidBrush (color));
@@ -689,7 +689,7 @@ DEFINE_STRINGID_MEMBER_ (ListViewModel, kItemFocused, "itemFocused")
 
 DEFINE_CLASS (ListViewModel, ListViewModelBase)
 DEFINE_CLASS_UID (ListViewModel, 0xe647e233, 0xe915, 0x4a6a, 0x88, 0xd1, 0xc1, 0x1c, 0x8a, 0x2a, 0x2, 0xe7)
-DEFINE_CLASS_NAMESPACE (ListViewModel, "Host")
+DEFINE_CLASS_CATEGORY (ListViewModel, PLUG_CATEGORY_HOST_)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 

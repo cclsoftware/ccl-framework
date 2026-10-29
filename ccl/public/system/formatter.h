@@ -35,7 +35,22 @@ namespace Format {
 // Formatter Names
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
+const CStringPtr kDuration = "System.Duration";
+const CStringPtr kByteSize = "System.ByteSize";
+const CStringPtr kSIByteSize = "System.SIByteSize";
+const CStringPtr kBytesPerSecond = "System.BytesPerSecond";
+const CStringPtr kSIBytesPerSecond = "System.SIBytesPerSecond";
 const CStringPtr kPercent = "System.Percent";
+const CStringPtr kPercentFloat = "System.PercentFloat";
+const CStringPtr kPercentInt = "System.PercentInt";
+const CStringPtr kInt = "System.Int";
+const CStringPtr kFloat = "System.Float";
+const CStringPtr kDateTime = "System.DateTime";
+const CStringPtr kPortableDateTime = "System.PortableDateTime";
+const CStringPtr kISODateTime = "System.ISODateTime";
+const CStringPtr kTimeAgo = "System.TimeAgo";
+const CStringPtr kTimeAhead = "System.TimeAhead";
+const CStringPtr kOffset1 = "System.PlusOne";
 
 //************************************************************************************************
 // Format::Duration
@@ -43,7 +58,7 @@ const CStringPtr kPercent = "System.Percent";
 	\ingroup gui_param */
 //************************************************************************************************
 
-class Duration: public CCL::Formatter
+class Duration: public Formatter
 {
 public:
 	DECLARE_FORMATTER_FACTORY (Duration)
@@ -66,7 +81,7 @@ public:
 	\ingroup gui_param	*/
 //************************************************************************************************
 
-class ByteSize: public CCL::Formatter
+class ByteSize: public Formatter
 {
 public:
 	DECLARE_FORMATTER_FACTORY (ByteSize)
@@ -84,10 +99,10 @@ public:
 	\ingroup gui_param	*/
 //************************************************************************************************
 
-class SIByteSize: public CCL::Formatter
+class SIByteSize: public Formatter
 {
 public:
-	DECLARE_FORMATTER_FACTORY (ByteSize)
+	DECLARE_FORMATTER_FACTORY (SIByteSize)
 
 	static String print (VariantRef bytes);
 	static bool scan (Variant& value, StringRef string);
@@ -101,15 +116,18 @@ public:
 	\ingroup gui_param	*/
 //************************************************************************************************
 
-class BytesPerSecond: public CCL::Formatter
+class BytesPerSecond: public Formatter,
+					  public IAccessibleFormatter
 {
 public:
 	DECLARE_FORMATTER_FACTORY (BytesPerSecond)
 
 	static String print (VariantRef bytes);
 	static bool scan (Variant& value, StringRef string);
+	static String printAccessible (VariantRef bytes);
 
 	DEFINE_FORMATTER_METHODS
+	DEFINE_ACCESSIBLE_FORMATTER_METHODS (Formatter)
 };
 
 //************************************************************************************************
@@ -118,7 +136,7 @@ public:
 	\ingroup gui_param	*/
 //************************************************************************************************
 
-class SIBytesPerSecond: public CCL::Formatter
+class SIBytesPerSecond: public Formatter
 {
 public:
 	DECLARE_FORMATTER_FACTORY (SIBytesPerSecond)
@@ -173,7 +191,7 @@ public:
 	\ingroup gui_param */
 //************************************************************************************************
 
-class DateTime: public CCL::Formatter,
+class DateTime: public Formatter,
 				public DateTimeVariant<DateTime>
 {
 public:
@@ -204,7 +222,7 @@ public:
 	\ingroup gui_param */
 //************************************************************************************************
 
-class PortableDateTime: public CCL::Formatter,
+class PortableDateTime: public Formatter,
 						public DateTimeVariant<PortableDateTime>
 {
 public:
@@ -228,7 +246,7 @@ protected:
 	\ingroup gui_param */
 //************************************************************************************************
 
-class ISODateTime: public CCL::Formatter,
+class ISODateTime: public Formatter,
 				   public DateTimeVariant<ISODateTime>
 {
 public:
@@ -252,7 +270,7 @@ protected:
 	\ingroup gui_param */
 //************************************************************************************************
 
-class TimeAgo: public CCL::Formatter
+class TimeAgo: public Formatter
 {
 public:
 	DECLARE_FORMATTER_FACTORY (TimeAgo)
@@ -270,7 +288,7 @@ public:
 	\ingroup gui_param */
 //************************************************************************************************
 
-class TimeAhead: public CCL::Formatter
+class TimeAhead: public Formatter
 {
 public:
 	DECLARE_FORMATTER_FACTORY (TimeAhead)
@@ -288,7 +306,7 @@ public:
 	\ingroup gui_param */
 //************************************************************************************************
 
-class Percent: public CCL::Formatter
+class Percent: public Formatter
 {
 public:
 	DECLARE_FORMATTER_FACTORY (Percent)
@@ -322,7 +340,7 @@ public:
 	\ingroup gui_param */
 //************************************************************************************************
 
-class PercentInt: public CCL::Formatter
+class PercentInt: public Formatter
 {
 public:
 	DECLARE_FORMATTER_FACTORY (PercentInt)
@@ -340,12 +358,16 @@ public:
 	\ingroup gui_param */
 //************************************************************************************************
 
-class Int: public CCL::Formatter
+class Int: public Formatter
 {
 public:
 	DECLARE_FORMATTER_FACTORY (Int)
 
-	static String print (VariantRef value);
+	Int (StringRef label = nullptr);
+
+	PROPERTY_STRING (label, Label)
+
+	static String print (VariantRef value, StringRef label = nullptr);
 	static bool scan (Variant& value, StringRef string);
 
 	// Formatter
@@ -353,11 +375,37 @@ public:
 };
 
 //************************************************************************************************
+// Format::Float
+/** Format float value as string (like "-60.00").
+	\ingroup gui_param */
+//************************************************************************************************
+
+class Float: public Formatter
+{
+public:
+	DECLARE_FORMATTER_FACTORY (Float)
+
+	static constexpr int kDefaultDigits = 2;
+
+	Float (int numDecimalDigits = kDefaultDigits, StringRef label = nullptr);
+
+	PROPERTY_VARIABLE (int, numDecimalDigits, Digits)
+	PROPERTY_STRING (label, Label)
+
+	static String print (VariantRef value, int numDecimalDigits = kDefaultDigits, StringRef label = nullptr);
+	static bool scan (Variant& value, StringRef string);
+
+	// Formatter
+	tbool CCL_API printString (String& string, VariantRef value) const override;
+	tbool CCL_API scanString (Variant& value, StringRef string) const override;
+};
+
+//************************************************************************************************
 // Fromat::FourCharID
 /** Formats an int32 value as 4 characters \ingroup core_format */
 //************************************************************************************************
 
-class FourCharID: public CCL::Formatter
+class FourCharID: public Formatter
 {
 public:
 	static String print (VariantRef value);
@@ -373,7 +421,7 @@ public:
 	\ingroup gui_param */
 //************************************************************************************************
 
-class Normalized: public CCL::Formatter
+class Normalized: public Formatter
 {
 public:
 	Normalized (IFormatter* formatter, Core::Interpolator* interpolator, bool ownsInterpolator = true);	///< takes ownership
@@ -397,7 +445,7 @@ private:
 	\ingroup gui_param */
 //************************************************************************************************
 
-class Linear: public CCL::Formatter
+class Linear: public Formatter
 {
 public:
 	Linear (IFormatter* formatter, double factor = 1, double offset = 0);	///< takes ownership

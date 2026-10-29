@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Model.ClassRepository xmlns:x="https://ccl.dev/xml" name="Type Lib Elements">
+	<List x:id="classes">
+		<Model.Class name="TestItem">
+			<List x:id="members">
+				<Model.Member name="name" type="void"/>
+			</List>
+		</Model.Class>
+		<Model.Class name="TestGroup">
+			<List x:id="members">
+				<Model.Member name="label" type="void"/>
+				<Model.Member name="icon" type="void"/>
+			</List>
+		</Model.Class>
+	</List>
+	<List x:id="enums">
+		<Model.Enumeration name="TestItem.Mode">
+			<List x:id="enumerators">
+				<Model.Enumerator name="normal"/>
+				<Model.Enumerator name="advanced"/>
+			</List>
+		</Model.Enumeration>
+	</List>
+</Model.ClassRepository>

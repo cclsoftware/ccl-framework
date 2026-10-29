@@ -45,6 +45,7 @@ class ObservedList: public Object
 {
 public:
 	ObservedList ();
+	~ObservedList ();
 
 	bool isEmpty () const;
 	int count () const;
@@ -94,6 +95,17 @@ public:
 template <class T>
 ObservedList<T>::ObservedList ()
 {}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+template <class T>
+ObservedList<T>::~ObservedList ()
+{
+	ListForEach (list, SubjectEntry, entry)
+		if(entry.subject)
+			entry.subject->removeObserver (this);
+	EndFor
+}
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 

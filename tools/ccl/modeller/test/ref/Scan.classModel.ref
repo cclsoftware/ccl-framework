@@ -3,10 +3,90 @@
 	<List x:id="classes">
 		<Model.Class name="AnotherTestElement">
 		</Model.Class>
+		<Model.Class name="DocClass">
+			<List x:id="members">
+				<Model.Member name="fooProperty" type="void"/>
+			</List>
+		</Model.Class>
+		<Model.Class name="DocStringIdClass">
+			<List x:id="members">
+				<Model.Member name="resolvedName" type="void"/>
+			</List>
+		</Model.Class>
+		<Model.Class name="MacroElement">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text="MacroView Description"/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="MultiLineElement">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text="MultiLineElement Description&#10;&#9;spanning&#10;&#9;multiple lines"/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="QualifiedNestedOuterElement">
+		</Model.Class>
+		<Model.Class name="RelatedDocElement">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text="RelatedDocView Description"/>
+			</Model.Documentation>
+		</Model.Class>
+		<Model.Class name="ScopedElement">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text="ScopedView Description"/>
+			</Model.Documentation>
+		</Model.Class>
 		<Model.Class name="TestElement">
 			<Model.Documentation x:id="doc">
 				<String x:id="brief" text="TestElement Description"/>
 			</Model.Documentation>
+			<List x:id="members">
+				<Model.Member name="rowHeight" type="void">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="Row height in pixels"/>
+					</Model.Documentation>
+				</Model.Member>
+				<Model.Member name="rowLabel" type="void">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="Optional label text shown for the row"/>
+						<String x:id="detailed" text="Spans multiple lines - a leading comment before an ADD_TYPELIB_MEMBER_* shortcut macro, unlike the&#10;trailing comment above, exercises a separate code path in the scanner."/>
+					</Model.Documentation>
+				</Model.Member>
+			</List>
 		</Model.Class>
+		<Model.Class name="UsingScopedElement">
+			<Model.Documentation x:id="doc">
+				<String x:id="brief" text="ScopedView Description"/>
+			</Model.Documentation>
+		</Model.Class>
+	</List>
+	<List x:id="enums">
+		<Model.Enumeration name="AliasElement.Type">
+			<List x:id="enumerators">
+				<Model.Enumerator name="int">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="integer alias value"/>
+					</Model.Documentation>
+				</Model.Enumerator>
+				<Model.Enumerator name="string">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="string alias value"/>
+					</Model.Documentation>
+				</Model.Enumerator>
+			</List>
+		</Model.Enumeration>
+		<Model.Enumeration name="TestElement.Style">
+			<List x:id="enumerators">
+				<Model.Enumerator name="Normal">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="Normal, unselected row style"/>
+					</Model.Documentation>
+				</Model.Enumerator>
+				<Model.Enumerator name="Highlighted">
+					<Model.Documentation x:id="doc">
+						<String x:id="brief" text="Highlighted, selected row style"/>
+					</Model.Documentation>
+				</Model.Enumerator>
+			</List>
+		</Model.Enumeration>
 	</List>
 </Model.ClassRepository>

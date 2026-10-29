@@ -114,3 +114,15 @@
 	path = submodules/cmark
 	url = git@github.com:cclsoftware/cmark.git
 	branch = master
+[submodule "submodules/quickjs"]
+	path = submodules/quickjs
+	url = git@github.com:quickjs-ng/quickjs.git
+	branch = master
+[submodule "submodules/cares"]
+	path = submodules/cares
+	url = git@github.com:c-ares/c-ares.git
+	branch = main
+[submodule "submodules/miniaudio"]
+	path = submodules/miniaudio
+	url = git@github.com:mackron/miniaudio.git
+	branch = master

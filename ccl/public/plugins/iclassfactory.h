@@ -201,7 +201,7 @@ namespace Meta
 	\ingroup base_plug  */
 //************************************************************************************************
 
-interface IPluginMetaClass: CCL::IUnknown
+interface IPluginMetaClass: IUnknown
 {
 	/** Get location of associated resource. */
 	virtual tresult CCL_API getResourceLocation (IUrl& url, StringID id, StringID language) = 0;

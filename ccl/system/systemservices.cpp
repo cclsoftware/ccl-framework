@@ -104,7 +104,7 @@ CCL_KERNEL_INIT_LEVEL (SystemClasses, kFrameworkLevelFirst)
 	classFactory->setVersion (version);
 
 	// classes exported from cclsystem must have category "System"
-	Kernel::instance ().registerPublicClasses (*classFactory, "System");
+	Kernel::instance ().registerPublicClasses (*classFactory, PLUG_CATEGORY_SYSTEM_);
 
 	System::GetPlugInManager ().registerFactory (classFactory);
 	classFactory->release ();

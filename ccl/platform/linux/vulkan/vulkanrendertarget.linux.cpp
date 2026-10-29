@@ -196,6 +196,7 @@ bool VulkanWindowRenderTarget::isTranslucent () const
 
 void VulkanWindowRenderTarget::onRender ()
 {
+	invalidateRegion.setUpdatesSuspended (true);
 	if(!invalidateRegion.getRects ().isEmpty ())
 	{
 		AutoPtr<NativeGraphicsDevice> nativeDevice = ensureGraphicsDevice (NativeGraphicsEngine::instance ().createWindowDevice (&window));
@@ -211,7 +212,7 @@ void VulkanWindowRenderTarget::onRender ()
 				continue;
 			RectRef surfaceRect = surface->getSize ();
 			if(invalidateRegion.rectVisible (surfaceRect))
-				invalidateRegion.addRect (surfaceRect, false);
+				invalidateRegion.addRect (surfaceRect);
 		}
 		
 		for(int i = 0; i < invalidateRegion.getRects ().count (); i++)
@@ -265,6 +266,7 @@ void VulkanWindowRenderTarget::onRender ()
 		
 		CCL_PROFILE_STOP (draw)
 	}
+	invalidateRegion.setUpdatesSuspended (false);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////

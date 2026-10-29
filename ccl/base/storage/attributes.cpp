@@ -78,7 +78,7 @@ tbool CCL_API AttributeFilter::matches (StringID id) const
 DEFINE_CLASS (AttributeQueue, AttributeContainer)
 DEFINE_CLASS_UID (AttributeQueue, 0xa0303add, 0x0e4f, 0x4557, 0x8c, 0xa4, 0xae, 0x3e, 0xcc, 0x42, 0xc4, 0x93)
 DEFINE_CLASS_NAMESPACE (AttributeQueue, NAMESPACE_CCL)
-DEFINE_CLASS_CATEGORY (AttributeQueue, "System")
+DEFINE_CLASS_CATEGORY (AttributeQueue, PLUG_CATEGORY_SYSTEM_)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -246,7 +246,7 @@ bool Attribute::save (const Storage& storage) const
 DEFINE_CLASS (Attributes, Object)
 DEFINE_CLASS_UID (Attributes, 0x138ed4e7, 0x1786, 0x4a9d, 0xa0, 0xef, 0xd7, 0x6f, 0xba, 0x49, 0xb4, 0xda)
 DEFINE_CLASS_NAMESPACE (Attributes, NAMESPACE_CCL)
-DEFINE_CLASS_CATEGORY (Attributes, "System")
+DEFINE_CLASS_CATEGORY (Attributes, PLUG_CATEGORY_SYSTEM_)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -951,7 +951,7 @@ void Attributes::dump (const Container& list, int inset) const
 DEFINE_CLASS (PersistentAttributes, Attributes)
 DEFINE_CLASS_UID (PersistentAttributes, 0x9b8aa2e3, 0x36fd, 0x4fcb, 0xb1, 0xdf, 0xde, 0x71, 0xe1, 0xa5, 0x46, 0xb3)
 DEFINE_CLASS_NAMESPACE (PersistentAttributes, NAMESPACE_CCL)
-DEFINE_CLASS_CATEGORY (PersistentAttributes, "System")
+DEFINE_CLASS_CATEGORY (PersistentAttributes, PLUG_CATEGORY_SYSTEM_)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 

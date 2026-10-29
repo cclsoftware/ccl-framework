@@ -74,7 +74,8 @@ interface IView: IUnknown
 		kTooltipTrackingEnabled,///< [boolean]
 		kLayerBackingEnabled,	///< [boolean]
 		kGraphicsLayer,			///< [IGraphicsLayer]
-		kAccessibilityEnabled	///< [boolean]
+		kAccessibilityEnabled,	///< [boolean]
+		kAccessibilityTitle		///< [String]
 	};
 
 	/** Size modes. */

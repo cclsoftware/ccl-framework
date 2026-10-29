@@ -63,7 +63,8 @@ class SkinModel: public SkinElements::Element,
 				 public ISkinModel
 {
 public:
-	DECLARE_SKIN_ELEMENT (SkinModel, Element)
+	DECLARE_CLASS (SkinModel, Element)
+	DECLARE_TYPELIB_CLASS (SkinModel)
 
 	SkinModel (ISkinContext* context = nullptr);
 
@@ -136,36 +137,86 @@ protected:
 
 namespace SkinElements {
 
-/** Enclosing tag for all Resources in a skin xml file. Resources are Cursor, FontResource, IconSet, Image, ImagesPart, Color
+/** Enclosing tag for all Resources in a Skin XML file. Resources are Cursor, FontResource, IconSet, Image, ImagesPart, Color
     \see Cursor \see FontResourceElement \see IconSetElement \see ImageElement \see ImagePartElement \see ColorElement */
-DECLARE_SKIN_ELEMENT_CLASS (Resources, Element)
+class Resources: public SortedElement
+{
+public:
+	DECLARE_CLASS (Resources, SortedElement)
+	DECLARE_TYPELIB_CLASS (Resources)
+};
 
-/** Enclosing tag for all Forms in a skin xml file. \see FormElement */
-DECLARE_SKIN_ELEMENT_CLASS (Forms, Element)
+/** Enclosing tag for all Forms in a Skin XML file. \see FormElement */
+class Forms: public SortedElement
+{
+public:
+	DECLARE_CLASS (Forms, SortedElement)
+	DECLARE_TYPELIB_CLASS (Forms)
+};
 
-/** Enclosing tag for all Includes in a skin xml file. \see IncludeElement */
-DECLARE_SKIN_ELEMENT_CLASS (Includes, Element)
+/** Enclosing tag for all Includes in a Skin XML file. \see IncludeElement */
+class Includes: public SortedElement
+{
+public:
+	DECLARE_CLASS (Includes, SortedElement)
+	DECLARE_TYPELIB_CLASS (Includes)
+};
 
-/** Enclosing tag for all Imports in a skin xml file. \see ImportElement */
-DECLARE_SKIN_ELEMENT_CLASS (Imports, Element)
+/** Enclosing tag for all Imports in a Skin XML file. \see ImportElement */
+class Imports: public SortedElement
+{
+public:
+	DECLARE_CLASS (Imports, SortedElement)
+	DECLARE_TYPELIB_CLASS (Imports)
+};
 
-/** Enclosing tag for all Externals in a skin xml file. \see ExternalElement */
-DECLARE_SKIN_ELEMENT_CLASS (Externals, Element)
+/** Enclosing tag for all Externals in a Skin XML file. \see ExternalElement */
+class Externals: public SortedElement
+{
+public:
+	DECLARE_CLASS (Externals, SortedElement)
+	DECLARE_TYPELIB_CLASS (Externals)
+};
 
-/** Enclosing tag for all Overlays in a skin xml file. \see OverlayElement */
-DECLARE_SKIN_ELEMENT_CLASS (Overlays, Element)
+/** Enclosing tag for all Overlays in a Skin XML file. \see OverlayElement */
+class Overlays: public SortedElement
+{
+public:
+	DECLARE_CLASS (Overlays, SortedElement)
+	DECLARE_TYPELIB_CLASS (Overlays)
+};
 
-/** Enclosing tag for all Shapes in a skin xml file. \see ShapeElement */
-DECLARE_SKIN_ELEMENT_CLASS (Shapes, Element)
+/** Enclosing tag for all Shapes in a Skin XML file. \see ShapeElement */
+class Shapes: public SortedElement
+{
+public:
+	DECLARE_CLASS (Shapes, SortedElement)
+	DECLARE_TYPELIB_CLASS (Shapes)
+};
 
-/** Enclosing tag for all Styles in a skin xml file. \see StyleElement */
-DECLARE_SKIN_ELEMENT_CLASS (StylesElement, Element)
+/** Enclosing tag for all Styles in a Skin XML file. \see StyleElement */
+class StylesElement: public SortedElement
+{
+public:
+	DECLARE_CLASS (StylesElement, SortedElement)
+	DECLARE_TYPELIB_CLASS (StylesElement)
+};
 
-/** Enclosing tag for all WindowClasses in a skin xml file. \see WindowClassElement */
-DECLARE_SKIN_ELEMENT_CLASS (WindowClassesElement, Element)
+/** Enclosing tag for all WindowClasses in a Skin XML file. \see WindowClassElement */
+class WindowClassesElement: public SortedElement
+{
+public:
+	DECLARE_CLASS (WindowClassesElement, SortedElement)
+	DECLARE_TYPELIB_CLASS (WindowClassesElement)
+};
 
-/** Enclosing tag for all Workspaces in a skin xml file. \see WorkspaceElement */
-DECLARE_SKIN_ELEMENT_CLASS (WorkspacesElement, Element)
+/** Enclosing tag for all Workspaces in a Skin XML file. \see WorkspaceElement */
+class WorkspacesElement: public SortedElement
+{
+public:
+	DECLARE_CLASS (WorkspacesElement, SortedElement)
+	DECLARE_TYPELIB_CLASS (WorkspacesElement)
+};
 
 //************************************************************************************************
 // OverlayElement
@@ -175,7 +226,8 @@ DECLARE_SKIN_ELEMENT_CLASS (WorkspacesElement, Element)
 class OverlayElement: public Element
 {
 public:
-	DECLARE_SKIN_ELEMENT (OverlayElement, Element)
+	DECLARE_CLASS (OverlayElement, Element)
+	DECLARE_TYPELIB_CLASS (OverlayElement)
 
 	OverlayElement ();
 	~OverlayElement ();
@@ -206,7 +258,8 @@ protected:
 class ResourceElement: public Element
 {
 public:
-	DECLARE_SKIN_ELEMENT (ResourceElement, Element)
+	DECLARE_CLASS (ResourceElement, Element)
+	DECLARE_TYPELIB_CLASS (ResourceElement)
 
 	PROPERTY_STRING (url, Url)
 
@@ -217,11 +270,16 @@ public:
 
 //************************************************************************************************
 // IncludeElement
-/** Includes the content of another Skin xml file.
+/** Includes the content of another Skin XML file.
 The content of the included file is merged into the containing model. */
 //************************************************************************************************
 
-DECLARE_SKIN_ELEMENT_CLASS (IncludeElement, ResourceElement)
+class IncludeElement: public ResourceElement
+{
+public:
+	DECLARE_CLASS (IncludeElement, ResourceElement)
+	DECLARE_TYPELIB_CLASS (IncludeElement)
+};
 
 //************************************************************************************************
 // ImportElement
@@ -232,7 +290,8 @@ The content of the imported skin is merged into the containing model. */
 class ImportElement: public ResourceElement
 {
 public:
-	DECLARE_SKIN_ELEMENT (ImportElement, ResourceElement)
+	DECLARE_CLASS (ImportElement, ResourceElement)
+	DECLARE_TYPELIB_CLASS (ImportElement)
 
 	PROPERTY_STRING (definitions, Definitions)
 
@@ -246,7 +305,12 @@ public:
 /** Declares a name that has to be defined outside the skin pack. */
 //************************************************************************************************
 
-DECLARE_SKIN_ELEMENT_CLASS (ExternalElement, Element)
+class ExternalElement: public Element
+{
+public:
+	DECLARE_CLASS (ExternalElement, Element)
+	DECLARE_TYPELIB_CLASS (ExternalElement)
+};
 
 //************************************************************************************************
 // ResourceObjectElement
@@ -255,7 +319,8 @@ DECLARE_SKIN_ELEMENT_CLASS (ExternalElement, Element)
 class ResourceObjectElement: public ResourceElement
 {
 public:
-	DECLARE_SKIN_ELEMENT_ABSTRACT (ResourceObjectElement, ResourceElement)
+	DECLARE_CLASS_ABSTRACT (ResourceObjectElement, ResourceElement)
+	DECLARE_TYPELIB_CLASS (ResourceObjectElement)
 
 	PROPERTY_SHARED_AUTO (Object, object, Object)
 
@@ -287,7 +352,8 @@ class ImageElement: public ResourceElement,
 					public ISkinImageElement
 {
 public:
-	DECLARE_SKIN_ELEMENT (ImageElement, ResourceElement)
+	DECLARE_CLASS (ImageElement, ResourceElement)
+	DECLARE_TYPELIB_CLASS (ImageElement)
 
 	ImageElement ();
 	~ImageElement ();
@@ -331,7 +397,7 @@ protected:
 
 //************************************************************************************************
 // ImagePartElement
-/** An ImagePart defines a excerpt of an image as a new image resource.
+/** An ImagePart defines an excerpt of an image as a new image resource.
 \code{.xml}
 <ImagePart name="MyPart" image="MyImage" size="0,3,7,1" />
 \endcode
@@ -341,7 +407,8 @@ protected:
 class ImagePartElement: public ImageElement
 {
 public:
-	DECLARE_SKIN_ELEMENT (ImagePartElement, ImageElement)
+	DECLARE_CLASS (ImagePartElement, ImageElement)
+	DECLARE_TYPELIB_CLASS (ImagePartElement)
 
 	// ImageElement
 	bool setAttributes (const SkinAttributes& a) override;
@@ -360,7 +427,7 @@ protected:
 The url specifies a folder. The image files in that folder must have the format "icon_SxS.png" with S being the size (same width and height) of the image.
 
 Depending on the "frames" attribute, different sets of image file names are searched for in that folder:
-If frames has the value "all", the sizes 16, 32, 48, 64, 128, 256, 512. Otherwise only 16 and 32 used.
+If frames has the value "all", the sizes 16, 32, 48, 64, 128, 256, 512 are used. Otherwise only 16 and 32 are used.
 
 \code{.xml}
 <IconSet name="FileIcon:song" url="icons/song_doc.iconset"/>
@@ -371,7 +438,8 @@ If frames has the value "all", the sizes 16, 32, 48, 64, 128, 256, 512. Otherwis
 class IconSetElement: public ImageElement
 {
 public:
-	DECLARE_SKIN_ELEMENT (IconSetElement, ImageElement)
+	DECLARE_CLASS (IconSetElement, ImageElement)
+	DECLARE_TYPELIB_CLASS (IconSetElement)
 
 	// ImageElement
 	bool loadImage (SkinModel& model) override;
@@ -385,7 +453,8 @@ public:
 class ImageFilterElement: public Element
 {
 public:
-	DECLARE_SKIN_ELEMENT (ImageFilterElement, Element)
+	DECLARE_CLASS (ImageFilterElement, Element)
+	DECLARE_TYPELIB_CLASS (ImageFilterElement)
 
 	ImageFilterElement ();
 
@@ -409,13 +478,14 @@ public:
 //************************************************************************************************
 // CursorElement
 /** Defines a Cursor resource.
-A cursor is defined with an image resource and an hotspot, which is the active point in the image. */
+A cursor is defined with an image resource and a hotspot, which is the active point in the image. */
 //************************************************************************************************
 
 class CursorElement: public Element
 {
 public:
-	DECLARE_SKIN_ELEMENT (CursorElement, Element)
+	DECLARE_CLASS (CursorElement, Element)
+	DECLARE_TYPELIB_CLASS (CursorElement)
 
 	CursorElement ();
 	~CursorElement ();
@@ -441,7 +511,8 @@ protected:
 class GradientStopElement: public Element
 {
 public:
-	DECLARE_SKIN_ELEMENT (GradientStopElement, Element)
+	DECLARE_CLASS (GradientStopElement, Element)
+	DECLARE_TYPELIB_CLASS (GradientStopElement)
 
 	GradientStopElement ();
 
@@ -461,7 +532,8 @@ public:
 class GradientElement: public Element
 {
 public:
-	DECLARE_SKIN_ELEMENT_ABSTRACT (GradientElement, Element)
+	DECLARE_CLASS_ABSTRACT (GradientElement, Element)
+	DECLARE_TYPELIB_CLASS (GradientElement)
 
 	virtual IGradient* getGradient () = 0;
 	
@@ -483,7 +555,8 @@ protected:
 class LinearGradientElement: public GradientElement
 {
 public:
-	DECLARE_SKIN_ELEMENT (LinearGradientElement, GradientElement)
+	DECLARE_CLASS (LinearGradientElement, GradientElement)
+	DECLARE_TYPELIB_CLASS (LinearGradientElement)
 
 	PROPERTY_OBJECT (PointF, startPoint, StartPoint)
 	PROPERTY_OBJECT (PointF, endPoint, EndPoint)
@@ -502,7 +575,8 @@ public:
 class RadialGradientElement: public GradientElement
 {
 public:
-	DECLARE_SKIN_ELEMENT (RadialGradientElement, GradientElement)
+	DECLARE_CLASS (RadialGradientElement, GradientElement)
+	DECLARE_TYPELIB_CLASS (RadialGradientElement)
 
 	RadialGradientElement ();
 
@@ -527,7 +601,8 @@ public:
 class FontResourceElement: public ResourceElement
 {
 public:
-	DECLARE_SKIN_ELEMENT (FontResourceElement, ResourceElement)
+	DECLARE_CLASS (FontResourceElement, ResourceElement)
+	DECLARE_TYPELIB_CLASS (FontResourceElement)
 
 	FontResourceElement ();
 	~FontResourceElement ();
@@ -553,7 +628,8 @@ Statements don't produce views directly. They are used to express conditions, lo
 class ControlStatement: public Element
 {
 public:
-	DECLARE_SKIN_ELEMENT (ControlStatement, Element)
+	DECLARE_CLASS (ControlStatement, Element)
+	DECLARE_TYPELIB_CLASS (ControlStatement)
 };
 
 //************************************************************************************************
@@ -566,7 +642,7 @@ Apart from simple assignments of constant literals or variable values, some extr
 
 \code{.xml}
 <define keyName="productKey" listName="productKeyList">
-<define number="@property:number" left="@eval:$number % 2" permission="aux$number">
+<define number="@property:number" left="@eval:$number % 2" permission="item$number">
 
 <!-- Additional directives:
 @property:propertyPath:
@@ -576,7 +652,7 @@ resolve the value of a property (starting with current controller)
 select a string from a list, indexed by a given variable
 
 @eval:
-evaluate an arithmetic expresssion, with operators
+evaluate an arithmetic expression, with operators
 + - * / %, parenthesis, constant literals and variable values ($)
 -->
 \endcode
@@ -586,7 +662,8 @@ evaluate an arithmetic expresssion, with operators
 class DefineStatement: public ControlStatement
 {
 public:
-	DECLARE_SKIN_ELEMENT (DefineStatement, ControlStatement)
+	DECLARE_CLASS (DefineStatement, ControlStatement)
+	DECLARE_TYPELIB_CLASS (DefineStatement)
 
 	DefineStatement ();
 
@@ -613,7 +690,8 @@ Inside the using tag, this new controller will be the current controller that is
 class UsingStatement: public ControlStatement
 {
 public:
-	DECLARE_SKIN_ELEMENT (UsingStatement, ControlStatement)
+	DECLARE_CLASS (UsingStatement, ControlStatement)
+	DECLARE_TYPELIB_CLASS (UsingStatement)
 
 	enum Type
 	{
@@ -645,7 +723,7 @@ public:
  </case>
  <default>
   <!-- ... -->
- </defautl>
+ </default>
 </switch>
 \endcode
 */
@@ -654,7 +732,8 @@ public:
 class SwitchStatement: public ControlStatement
 {
 public:
-	DECLARE_SKIN_ELEMENT (SwitchStatement, ControlStatement)
+	DECLARE_CLASS (SwitchStatement, ControlStatement)
+	DECLARE_TYPELIB_CLASS (SwitchStatement)
 
 	SwitchStatement ();
 
@@ -680,7 +759,8 @@ The contained elements are used if the variable or property has the given value.
 class CaseStatement: public ControlStatement
 {
 public:
-	DECLARE_SKIN_ELEMENT (CaseStatement, ControlStatement)
+	DECLARE_CLASS (CaseStatement, ControlStatement)
+	DECLARE_TYPELIB_CLASS (CaseStatement)
 
 	// Element
 	bool setAttributes (const SkinAttributes& a) override;
@@ -701,7 +781,8 @@ The contained elements are used if none of the case statements applies.*/
 class DefaultStatement: public ControlStatement
 {
 public:
-	DECLARE_SKIN_ELEMENT (DefaultStatement, ControlStatement)
+	DECLARE_CLASS (DefaultStatement, ControlStatement)
+	DECLARE_TYPELIB_CLASS (DefaultStatement)
 
 	DefaultStatement () {}
 
@@ -719,7 +800,8 @@ public:
 class IfStatement: public SwitchStatement
 {
 public:
-	DECLARE_SKIN_ELEMENT (IfStatement, SwitchStatement)
+	DECLARE_CLASS (IfStatement, SwitchStatement)
+	DECLARE_TYPELIB_CLASS (IfStatement)
 
 	PROPERTY_STRING (value, Value)
 
@@ -737,8 +819,8 @@ protected:
 /** Describes a loop that repeats the contained elements.
 There are two ways to use a for statement:
 
-1. Using an integer variable that starts at "start" and is incremented after each pass, until "count" passes hae been performed:
-2. Using a string variable that iterates the string token in "in" (separeted by spaces):
+1. Using an integer variable that starts at "start" and is incremented after each pass, until "count" passes have been performed:
+2. Using a string variable that iterates the string tokens in "in" (separated by spaces):
 
 \code{.xml}
 <!-- Example 1 -->
@@ -753,7 +835,8 @@ There are two ways to use a for statement:
 class ForEachStatement: public ControlStatement
 {
 public:
-	DECLARE_SKIN_ELEMENT (ForEachStatement, ControlStatement)
+	DECLARE_CLASS (ForEachStatement, ControlStatement)
+	DECLARE_TYPELIB_CLASS (ForEachStatement)
 
 	PROPERTY_STRING (countString, CountString)
 	PROPERTY_STRING (startString, StartString)
@@ -780,7 +863,8 @@ public:
 class ZoomStatement: public ControlStatement
 {
 public:
-	DECLARE_SKIN_ELEMENT (ZoomStatement, ControlStatement)
+	DECLARE_CLASS (ZoomStatement, ControlStatement)
+	DECLARE_TYPELIB_CLASS (ZoomStatement)
 
 	ZoomStatement ();
 
@@ -819,7 +903,8 @@ The active style is selected via a numeric parameter as index (specified as "nam
 class VisualStyleSelectorElement: public ControlStatement
 {
 public:
-	DECLARE_SKIN_ELEMENT (VisualStyleSelectorElement, ControlStatement)
+	DECLARE_CLASS (VisualStyleSelectorElement, ControlStatement)
+	DECLARE_TYPELIB_CLASS (VisualStyleSelectorElement)
 
 	PROPERTY_MUTABLE_CSTRING (variableName, VariableName)
 	PROPERTY_MUTABLE_CSTRING (propertyId, PropertyId)
@@ -887,8 +972,7 @@ protected:
 
 //************************************************************************************************
 // ViewElement
-/** The basic view class.
-The View class is the general view class that all other view classes inherit from.
+/** The base view class that all other view classes inherit from.
 It has a size and some more general properties. Not all of these properties have a meaning in all derived view classes.
 When views are nested, the "attach" attribute specifies some basic layout behavior.
 Defines can be used for style and inside size, width and height attributes:
@@ -907,7 +991,8 @@ class ViewElement: public Element,
 				   public ISkinViewElement
 {
 public:
-	DECLARE_SKIN_ELEMENT (ViewElement, Element)
+	DECLARE_CLASS (ViewElement, Element)
+	DECLARE_TYPELIB_CLASS (ViewElement)
 
 	ViewElement ();
 	~ViewElement ();
@@ -978,7 +1063,7 @@ public:
 	VisualStyle* determineVisualStyle (const CreateArgs& args);
 	virtual View* createView (const CreateArgs& args, View* view = nullptr);
 
-	virtual void viewCreated (View* view);	///< when view has been created (after all childs have been added)
+	virtual void viewCreated (View* view);	///< when view has been created (after all children have been added)
 	virtual void viewAdded (View* parent, View* child, ViewElement* childElement, SkinWizard& wizard);	///< when view has been added
 
 	virtual bool appendOptions (String& optionsString) const;
@@ -1003,8 +1088,9 @@ protected:
 		MutableCString proxyId;
 		MutableCString labelProviderId;
 		MutableCString valueProviderId;
+		String elementTitle;
 
-		bool isEmpty () const { return id.isEmpty () && proxyId.isEmpty () && labelProviderId.isEmpty () && valueProviderId.isEmpty (); }
+		bool hasRelations () const { return !id.isEmpty () || !proxyId.isEmpty () || !labelProviderId.isEmpty () || !valueProviderId.isEmpty (); }
 	};
 	AccessibilityInfo* accessibilityInfo;
 	AccessibilityInfo& getAccessibilityInfo ();
@@ -1016,8 +1102,9 @@ protected:
 		kResolveTip = kLastSizeParserFlag << 3,
 		kResolveSizeMode = kLastSizeParserFlag << 4,
 		kResolveSizeLimits = kLastSizeParserFlag << 5,
+		kResolveAccessibilityTitle = kLastSizeParserFlag << 6,
 
-		kLastViewElementFlag = kResolveSizeLimits
+		kLastViewElementFlag = kResolveAccessibilityTitle
 	};
 
 	PROPERTY_FLAG (parseFlags, kResolveName, mustResolveName)
@@ -1025,6 +1112,7 @@ protected:
 	PROPERTY_FLAG (parseFlags, kResolveTip, mustResolveTip)
 	PROPERTY_FLAG (parseFlags, kResolveSizeMode, mustResolveSizeMode)
 	PROPERTY_FLAG (parseFlags, kResolveSizeLimits, mustResolveSizeLimits)
+	PROPERTY_FLAG (parseFlags, kResolveAccessibilityTitle, mustResolveAccessibilityTitle)
 	
 	void calculateViewSize (Rect& r, View* view) const;
 	void applyZoomFactor (Rect& r, View* view, const CreateArgs& args) const;
@@ -1044,15 +1132,16 @@ An ImageView can draw
 
 The image will be resized to the view area.
 
-An optional parameter "selectname" can be used to chose the image frame to be displayed:
-By default, the frame "nornal" is used when the parameter value is zero, otherwise "pressed".
+An optional parameter "selectname" can be used to choose the image frame to be displayed:
+By default, the frame "normal" is used when the parameter value is zero, otherwise "pressed".
 With option "framesbyname", the parameter value is interpreted as a frame name. */
 //************************************************************************************************
 
 class ImageViewElement: public ViewElement
 {
 public:
-	DECLARE_SKIN_ELEMENT (ImageViewElement, ViewElement)
+	DECLARE_CLASS (ImageViewElement, ViewElement)
+	DECLARE_TYPELIB_CLASS (ImageViewElement)
 
 	ImageViewElement ();
 
@@ -1080,13 +1169,14 @@ There are two main use cases for forms:
 2. A form can by instantiated from another form using the <View> tag.
 This allows structuring large view hierarchies into smaller forms, and reusing the same form in different places.
 
-As an ImageView, a Form can also have a backgoround image or color. */
+As an ImageView, a Form can also have a background image or color. */
 //************************************************************************************************
 
 class FormElement: public ImageViewElement
 {
 public:
-	DECLARE_SKIN_ELEMENT (FormElement, ImageViewElement)
+	DECLARE_CLASS (FormElement, ImageViewElement)
+	DECLARE_TYPELIB_CLASS (FormElement)
 
 	FormElement ();
 
@@ -1106,12 +1196,12 @@ public:
 // FormDelegateElement
 /** Dynamically creates a content view.
 Every time the Delegate gets attached, it creates a new child view using the given form name and controller.
-When the delegagte gets removed, the child view is destroyed.
+When the Delegate gets removed, the child view is destroyed.
 
 The controller attribute is optional, default is the current controller.
 
 A popular usage scenario is a <Delegate> inside a <Variant> controlled by a property.
-Everytime the property change is triggered by the application, the content gets recreated (see code example).
+Every time the property change is triggered by the application, the content gets recreated (see code example).
 
 \code{.xml}
 <!-- the option "selectalways" here ensures that the view
@@ -1126,7 +1216,8 @@ is recreated although the property value did not really change -->
 class FormDelegateElement: public ViewElement
 {
 public:
-	DECLARE_SKIN_ELEMENT (FormDelegateElement, ViewElement)
+	DECLARE_CLASS (FormDelegateElement, ViewElement)
+	DECLARE_TYPELIB_CLASS (FormDelegateElement)
 
 	PROPERTY_MUTABLE_CSTRING (formName, FormName)
 	PROPERTY_MUTABLE_CSTRING (controllerName, ControllerName)
@@ -1152,7 +1243,8 @@ public:
 class ZoomableViewElement: public ViewElement
 {
 public:
-	DECLARE_SKIN_ELEMENT (ZoomableViewElement, ViewElement)
+	DECLARE_CLASS (ZoomableViewElement, ViewElement)
+	DECLARE_TYPELIB_CLASS (ZoomableViewElement)
 
 	PROPERTY_MUTABLE_CSTRING (formName, FormName)
 
@@ -1174,7 +1266,8 @@ While the mouse is over the CursorView, the mouse cursor changes to the specifie
 class CursorViewElement: public ViewElement
 {
 public:
-	DECLARE_SKIN_ELEMENT (CursorViewElement, ViewElement)
+	DECLARE_CLASS (CursorViewElement, ViewElement)
+	DECLARE_TYPELIB_CLASS (CursorViewElement)
 
 	PROPERTY_MUTABLE_CSTRING (cursorName, CursorName)
 
@@ -1192,7 +1285,8 @@ public:
 class HelpAnchorElement: public ViewElement
 {
 public:
-	DECLARE_SKIN_ELEMENT (HelpAnchorElement, ViewElement)
+	DECLARE_CLASS (HelpAnchorElement, ViewElement)
+	DECLARE_TYPELIB_CLASS (HelpAnchorElement)
 
 	PROPERTY_STRING (helpIdentifier, HelpIdentifier)
 
@@ -1205,7 +1299,7 @@ public:
 //************************************************************************************************
 // WindowClassElement
 /** A WindowClass describes a potential screen content.
-A WindowClass is identified by it's "name".
+A WindowClass is identified by its "name".
 The most important attributes are "form.name" and "controller", which are used to create a view.
 A Command catgegory and name can be specified, that will open or close the window class.
 
@@ -1226,7 +1320,8 @@ In this case, the "group" attribute specifies in which workspace frames the wind
 class WindowClassElement: public Element
 {
 public:
-	DECLARE_SKIN_ELEMENT (WindowClassElement, Element)
+	DECLARE_CLASS (WindowClassElement, Element)
+	DECLARE_TYPELIB_CLASS (WindowClassElement)
 
 	WindowClassElement ();
 	~WindowClassElement ();
@@ -1261,7 +1356,8 @@ The view tree created by each perspective will be inserted into the PerspectiveC
 class WorkspaceElement: public Element
 {
 public:
-	DECLARE_SKIN_ELEMENT (WorkspaceElement, Element)
+	DECLARE_CLASS (WorkspaceElement, Element)
+	DECLARE_TYPELIB_CLASS (WorkspaceElement)
 
 	WorkspaceElement ();
 	~WorkspaceElement ();
@@ -1288,14 +1384,15 @@ protected:
 
 //************************************************************************************************
 // PerspectiveElement
-/** A perspective defines an arrangement of nested frames, that can each house a window class.
-\see PerspectiveElement*/
+/** A perspective defines an arrangement of nested frames that can each house a window class.
+\see FrameElement*/
 //************************************************************************************************
 
 class PerspectiveElement: public Element
 {
 public:
-	DECLARE_SKIN_ELEMENT (PerspectiveElement, Element)
+	DECLARE_CLASS (PerspectiveElement, Element)
+	DECLARE_TYPELIB_CLASS (PerspectiveElement)
 
 	PerspectiveElement ();
 
@@ -1340,7 +1437,8 @@ Complex arrangements can be built with horizontal or vertical frame groups, whic
 class FrameElement: public Element
 {
 public:
-	DECLARE_SKIN_ELEMENT (FrameElement, Element)
+	DECLARE_CLASS (FrameElement, Element)
+	DECLARE_TYPELIB_CLASS (FrameElement)
 
 	FrameElement ();
 
@@ -1371,7 +1469,7 @@ protected:
 The EmbeddedFrame element must appear in two places: placed inside the form of a "parent" window class
 and placed in the root frame of a perspective with the same name and a parent class. It defines a separate subtree of frames.
 
-When a window class is about to be opened, the workspace system ensures that the parent class, whose view contains the EmbeddeFrame view gets opened first.
+When a window class is about to be opened, the workspace system ensures that the parent class, whose view contains the EmbeddedFrame view, gets opened first.
 
 \code{.xml}
 <!-- inside form of parent window -->
@@ -1394,7 +1492,8 @@ When a window class is about to be opened, the workspace system ensures that the
 class EmbeddedFrameElement: public ViewElement
 {
 public:
-	DECLARE_SKIN_ELEMENT (EmbeddedFrameElement, ViewElement)
+	DECLARE_CLASS (EmbeddedFrameElement, ViewElement)
+	DECLARE_TYPELIB_CLASS (EmbeddedFrameElement)
 
 	EmbeddedFrameElement ();
 
@@ -1429,7 +1528,8 @@ These parameters can be defined inside a <Perspective> element. In a form descri
 class ParameterElement: public Element
 {
 public:
-	DECLARE_SKIN_ELEMENT (ParameterElement, Element)
+	DECLARE_CLASS (ParameterElement, Element)
+	DECLARE_TYPELIB_CLASS (ParameterElement)
 
 	DECLARE_STYLEDEF (types)
 	DECLARE_STYLEDEF (options)
@@ -1450,15 +1550,16 @@ public:
 
 //************************************************************************************************
 // SpaceElement
-/** An view with the initial predefined size "Spacing".
-A Space view  gets the width and height "Spacing" from the theme, if it has no or an empty specified size.
+/** A view with the initial predefined size "Spacing".
+A Space view gets the width and height "Spacing" from the theme if it has no size, or an empty size, specified.
 Apart from that it behaves the same as a view.*/
 //************************************************************************************************
 
 class SpaceElement: public ViewElement
 {
 public:
-	DECLARE_SKIN_ELEMENT (SpaceElement, ViewElement)
+	DECLARE_CLASS (SpaceElement, ViewElement)
+	DECLARE_TYPELIB_CLASS (SpaceElement)
 
 	// ViewElement
 	View* createView (const CreateArgs& args, View* view) override;
@@ -1475,7 +1576,8 @@ It behaves the same as a view. */
 class NullSpaceElement: public SpaceElement
 {
 public:
-	DECLARE_SKIN_ELEMENT (NullSpaceElement, SpaceElement)
+	DECLARE_CLASS (NullSpaceElement, SpaceElement)
+	DECLARE_TYPELIB_CLASS (NullSpaceElement)
 
 	// ViewElement
 	View* createView (const CreateArgs& args, View* view) override;
@@ -1488,7 +1590,8 @@ public:
 class StyleDataElement: public Element
 {
 public:
-	DECLARE_SKIN_ELEMENT (StyleDataElement, Element)
+	DECLARE_CLASS (StyleDataElement, Element)
+	DECLARE_TYPELIB_CLASS (StyleDataElement)
 
 	StyleDataElement ();
 	~StyleDataElement ();
@@ -1533,14 +1636,15 @@ Subelement in a visual style to define attributes specific to a certain named co
 class StyleConditionElement: public StyleDataElement
 {
 public:
-	DECLARE_SKIN_ELEMENT (StyleConditionElement, StyleDataElement)
+	DECLARE_CLASS (StyleConditionElement, StyleDataElement)
+	DECLARE_TYPELIB_CLASS (StyleConditionElement)
 };
 
 //************************************************************************************************
 // StyleElement
 /** Visual Style definition.
-A Style defines the visual appearance of a view. It is collection of definitions for images, colors, metrics and fonts.
-It can be assigned to a view element via it's "style" attribute.
+A Style defines the visual appearance of a view. It is a collection of definitions for images, colors, metrics and fonts.
+It can be assigned to a view element via its "style" attribute.
 Styles with the attribute "appstyle" can also be accessed directly by the application for specific purposes.
 
 \code{.xml}
@@ -1560,7 +1664,8 @@ Styles with the attribute "appstyle" can also be accessed directly by the applic
 class StyleElement: public StyleDataElement
 {
 public:
-	DECLARE_SKIN_ELEMENT (StyleElement, StyleDataElement)
+	DECLARE_CLASS (StyleElement, StyleDataElement)
+	DECLARE_TYPELIB_CLASS (StyleElement)
 
 	StyleElement ();
 	~StyleElement ();
@@ -1595,7 +1700,8 @@ protected:
 class ThemeStyleElement: public StyleElement
 {
 public:
-	DECLARE_SKIN_ELEMENT (ThemeStyleElement, StyleElement)
+	DECLARE_CLASS (ThemeStyleElement, StyleElement)
+	DECLARE_TYPELIB_CLASS (ThemeStyleElement)
 
 	// StyleElement
 	bool setAttributes (const SkinAttributes& a) override;
@@ -1606,7 +1712,7 @@ public:
 //************************************************************************************************
 // StyleAliasElement
 /** Visual Style Alias definition.
-A visual style that dynamically delegates to one of the listed styles based on a paramter value.
+A visual style that dynamically delegates to one of the listed styles based on a parameter value.
 The parameter must be globally accessible. The value of the parameter is interpreted as an index in the list of available styles.
 
 \code{.xml}
@@ -1621,7 +1727,8 @@ The parameter must be globally accessible. The value of the parameter is interpr
 class StyleAliasElement: public StyleElement
 {
 public:
-	DECLARE_SKIN_ELEMENT (StyleAliasElement, StyleElement)
+	DECLARE_CLASS (StyleAliasElement, StyleElement)
+	DECLARE_TYPELIB_CLASS (StyleAliasElement)
 
 	StyleAliasElement ();
 
@@ -1644,7 +1751,8 @@ private:
 class ColorElement: public Element
 {
 public:
-	DECLARE_SKIN_ELEMENT (ColorElement, Element)
+	DECLARE_CLASS (ColorElement, Element)
+	DECLARE_TYPELIB_CLASS (ColorElement)
 
 	PROPERTY_MUTABLE_CSTRING (color, Color)
 
@@ -1662,7 +1770,8 @@ public:
 class MetricElement: public Element
 {
 public:
-	DECLARE_SKIN_ELEMENT (MetricElement, Element)
+	DECLARE_CLASS (MetricElement, Element)
+	DECLARE_TYPELIB_CLASS (MetricElement)
 
 	MetricElement ();
 
@@ -1682,7 +1791,8 @@ public:
 class StringElement: public Element
 {
 public:
-	DECLARE_SKIN_ELEMENT (StringElement, Element)
+	DECLARE_CLASS (StringElement, Element)
+	DECLARE_TYPELIB_CLASS (StringElement)
 
 	PROPERTY_MUTABLE_CSTRING (value, Value)
 
@@ -1700,7 +1810,8 @@ public:
 class FontElement: public Element
 {
 public:
-	DECLARE_SKIN_ELEMENT (FontElement, Element)
+	DECLARE_CLASS (FontElement, Element)
+	DECLARE_TYPELIB_CLASS (FontElement)
 
 	DECLARE_STYLEDEF (fontStyles)
 	DECLARE_STYLEDEF (smoothingModes)
@@ -1726,7 +1837,8 @@ public:
 class OptionsElement: public Element
 {
 public:
-	DECLARE_SKIN_ELEMENT (OptionsElement, Element)
+	DECLARE_CLASS (OptionsElement, Element)
+	DECLARE_TYPELIB_CLASS (OptionsElement)
 
 	OptionsElement ();
 
@@ -1750,7 +1862,8 @@ protected:
 class AlignElement: public OptionsElement
 {
 public:
-	DECLARE_SKIN_ELEMENT (AlignElement, OptionsElement)
+	DECLARE_CLASS (AlignElement, OptionsElement)
+	DECLARE_TYPELIB_CLASS (AlignElement)
 
 	DECLARE_STYLEDEF (alignStyles)
 
@@ -1766,7 +1879,8 @@ public:
 class ShapeColorMappingElement: public Element
 {
 public:
-	DECLARE_SKIN_ELEMENT (ShapeColorMappingElement, Element)
+	DECLARE_CLASS (ShapeColorMappingElement, Element)
+	DECLARE_TYPELIB_CLASS (ShapeColorMappingElement)
 
 	ShapeColorMappingElement ();
 
@@ -1787,7 +1901,8 @@ public:
 class ColorSchemeElement: public Element
 {
 public:
-	DECLARE_SKIN_ELEMENT (ColorSchemeElement, Element)
+	DECLARE_CLASS (ColorSchemeElement, Element)
+	DECLARE_TYPELIB_CLASS (ColorSchemeElement)
 
 	// Element
 	bool mergeElements (Element& other) override;
@@ -1801,7 +1916,8 @@ public:
 class ColorSchemeColorElement: public ColorElement
 {
 public:
-	DECLARE_SKIN_ELEMENT (ColorSchemeColorElement, ColorElement)
+	DECLARE_CLASS (ColorSchemeColorElement, ColorElement)
+	DECLARE_TYPELIB_CLASS (ColorSchemeColorElement)
 
 	ColorSchemeColorElement ();
 

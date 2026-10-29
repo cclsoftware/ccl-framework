@@ -22,6 +22,9 @@
 #include "ccl/public/base/istream.h"
 
 namespace CCL {
+
+interface IAsyncOperation;
+
 namespace Security {
 
 namespace Crypto {
@@ -61,6 +64,22 @@ DEFINE_IID (ICredential, 0x52a29848, 0xcc87, 0x42b6, 0x93, 0xc5, 0x2a, 0x55, 0xb
 
 interface ICredentialManager: IUnknown
 {
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	// Settings
+	//////////////////////////////////////////////////////////////////////////////////////////////
+
+	/** Set global group name. */
+	virtual void CCL_API setGlobalGroupName (StringRef groupName) = 0;
+
+	struct SilentMode;
+
+	/** Suppress any user interaction, silently fail on errors. Returns old state. */
+	virtual tbool CCL_API setSilentMode (tbool state) = 0;
+
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	// Synchronous Access
+	//////////////////////////////////////////////////////////////////////////////////////////////
+
 	/** Add credential with data block, overrides existing. */
 	virtual tresult CCL_API addCredential (StringRef targetName, StringRef userName, const Crypto::Block& data, StringRef groupName = nullptr) = 0;
 
@@ -70,39 +89,53 @@ interface ICredentialManager: IUnknown
 	/** Add alias for target name. */
 	virtual tresult CCL_API addCredentialAlias (StringRef aliasName, StringRef targetName) = 0;
 
+	/** Resolve alias to target name. */
+	virtual String CCL_API resolveName (StringRef name) const = 0;
+
 	/** Get credential by target name, has to be released by caller. */
 	virtual tresult CCL_API getCredential (ICredential*& credential, StringRef targetName, StringRef groupName = nullptr) = 0;
 
 	/** Remove credential with given target name. */
 	virtual tresult CCL_API removeCredential (StringRef targetName) = 0;
 
-	/** Suppress any user interaction, silently fail on errors. Returns old state. */
-	virtual tbool CCL_API setSilentMode (tbool state) = 0;
-
-	/** Resolve alias to target name. */
-	virtual String CCL_API resolveName (StringRef name) const = 0;
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	// Asynchronous Access
+	//////////////////////////////////////////////////////////////////////////////////////////////
 	
-	/** Set global group name. */
-	virtual void CCL_API setGlobalGroupName (StringRef groupName) = 0;
+	/** Add credential with data block asynchronously, overrides existing. */
+	virtual IAsyncOperation* CCL_API addCredentialAsync (StringRef targetName, StringRef userName, const Crypto::Block& data, StringRef groupName = nullptr) = 0;
 
-	struct SilentMode
-	{
-		ICredentialManager& manager;
-		tbool oldState;
+	/** Add credential with password string asynchronously, overrides existing. */
+	virtual IAsyncOperation* CCL_API addPasswordAsync (StringRef targetName, StringRef userName, StringRef password, StringRef groupName = nullptr) = 0;
 
-		SilentMode (ICredentialManager& manager, bool state)
-		: manager (manager),
-		  oldState (manager.setSilentMode (state))
-		{}
+	/** Get credential by target name asynchronously; result holds the ICredential, has to be released by caller. */
+	virtual IAsyncOperation* CCL_API getCredentialAsync (StringRef targetName, StringRef groupName = nullptr) = 0;
 
-		~SilentMode ()
-		{ manager.setSilentMode (oldState); }
-	};
+	/** Remove credential with given target name asynchronously. */
+	virtual IAsyncOperation* CCL_API removeCredentialAsync (StringRef targetName) = 0;
 
 	DECLARE_IID (ICredentialManager)
 };
 
 DEFINE_IID (ICredentialManager, 0xb38a0d51, 0x7ad, 0x4d3c, 0xa9, 0x49, 0xd, 0xff, 0x43, 0x15, 0xee, 0x8d)
+
+//************************************************************************************************
+// ICredentialManager::SilentMode
+//************************************************************************************************
+
+struct ICredentialManager::SilentMode
+{
+	ICredentialManager& manager;
+	tbool oldState;
+
+	SilentMode (ICredentialManager& manager, bool state)
+	: manager (manager),
+		oldState (manager.setSilentMode (state))
+	{}
+
+	~SilentMode ()
+	{ manager.setSilentMode (oldState); }
+};
 
 } // namespace Security
 } // namespace CCL

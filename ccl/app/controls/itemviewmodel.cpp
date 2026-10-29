@@ -363,7 +363,7 @@ void ItemModelPainter::drawHorizontalBar (IGraphics& graphics, RectRef _rect, fl
 //************************************************************************************************
 
 class ItemModel::EditControlOperation: public AsyncOperation,
-									   public CCL::IParamObserver					  
+									   public IParamObserver					  
 {
 public:
 	EditControlOperation (IParameter* param, IView* _view)
@@ -380,7 +380,7 @@ public:
 	}
 
 	// IParamObserver
-	tbool CCL_API paramChanged (CCL::IParameter* param) override
+	tbool CCL_API paramChanged (IParameter* param) override
 	{
 		if(param == this->param)
 		{
@@ -584,7 +584,7 @@ void ItemModel::updateColumns ()
 
 bool ItemModel::doPopup (IParameter* param, const EditInfo& info, IVisualStyle* visualStyle)
 {
-	AutoPtr<IPopupSelector> selector = ccl_new<IPopupSelector> (CCL::ClassID::PopupSelector);
+	AutoPtr<IPopupSelector> selector = ccl_new<IPopupSelector> (ClassID::PopupSelector);
 	ASSERT (selector != nullptr)
 	if(selector)
 	{
@@ -600,7 +600,7 @@ bool ItemModel::doPopup (IParameter* param, const EditInfo& info, IVisualStyle* 
 
 bool ItemModel::doPopupSlider (IParameter* param, const EditInfo& info, PointRef position, bool horizontal, StringID popupSliderDecorForm)
 {
-	AutoPtr<IPopupSelector> selector = ccl_new<IPopupSelector> (CCL::ClassID::PopupSelector);
+	AutoPtr<IPopupSelector> selector = ccl_new<IPopupSelector> (ClassID::PopupSelector);
 	ASSERT (selector != nullptr)
 	if(selector)
 	{
@@ -668,7 +668,7 @@ IVisualStyle* ItemModel::createEditStyle ()
 	AutoPtr<IVisualStyle> editStyle;
 	const IVisualStyle& itemViewStyle (ViewBox (getItemView ()).getVisualStyle ());
 
-	editStyle = ccl_new<IVisualStyle> (CCL::ClassID::VisualStyle);
+	editStyle = ccl_new<IVisualStyle> (ClassID::VisualStyle);
 	editStyle->setFont (StyleID::kTextFont, itemViewStyle.getTextFont ());
 	editStyle->setOptions (StyleID::kTextAlign, itemViewStyle.getTextAlignment ().align);
 	editStyle->setColor (StyleID::kTextColor, itemViewStyle.getTextColor ());
@@ -703,7 +703,7 @@ IAsyncOperation* ItemModel::editString (StringRef initialValue, RectRef rect, co
 	AutoPtr<IParameter> param (NEW StringParam);
 	param->setValue (initialValue);
 
-	ControlBox editBox (CCL::ClassID::EditBox, param, rect, StyleFlags (0, CCL::Styles::kBorder));
+	ControlBox editBox (ClassID::EditBox, param, rect, StyleFlags (0, CCL::Styles::kBorder));
 
 	return startEditOperation (param, editBox, info, itemView, visualStyle);
 }
@@ -712,11 +712,11 @@ IAsyncOperation* ItemModel::editString (StringRef initialValue, RectRef rect, co
 
 IAsyncOperation* ItemModel::editValue (IParameter* param, const EditInfo& info, IVisualStyle* visualStyle)
 {
-	const UIDBytes* controllClassID = &CCL::ClassID::ValueBox;
+	const UIDBytes* controllClassID = &ClassID::ValueBox;
 	if(param->getType () != IParameter::Type::kInteger && param->getType () != IParameter::Type::kFloat)
-		controllClassID = &CCL::ClassID::EditBox;
+		controllClassID = &ClassID::EditBox;
 
-	ControlBox editBox (*controllClassID, param, info.rect, StyleFlags (0, CCL::Styles::kBorder));
+	ControlBox editBox (*controllClassID, param, info.rect, StyleFlags (0, Styles::kBorder));
 
 	return startEditOperation (param, editBox, &info, nullptr, visualStyle);
 }

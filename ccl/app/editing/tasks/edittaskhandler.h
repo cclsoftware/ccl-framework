@@ -40,6 +40,7 @@ class EditTaskContext: public Attributes
 public:
 	DECLARE_CLASS (EditTaskContext, Attributes)
 	DECLARE_METHOD_NAMES (EditTaskContext)
+	DECLARE_PROPERTY_NAMES (EditTaskContext)
 
 	EditTaskContext (EditTaskHandler* handler = nullptr);
 

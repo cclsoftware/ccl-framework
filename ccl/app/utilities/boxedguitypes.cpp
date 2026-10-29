@@ -27,7 +27,10 @@ using namespace CCL;
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 DEFINE_CLASS_PERSISTENT (Boxed::Point, Object, "Point")
+DEFINE_CLASS_NAMESPACE (Boxed::Point, NAMESPACE_CCL)
+
 DEFINE_CLASS_PERSISTENT (Boxed::Rect, Object, "Rect")
+DEFINE_CLASS_NAMESPACE (Boxed::Rect, NAMESPACE_CCL)
 
 namespace CCL
 {
@@ -243,6 +246,7 @@ tbool CCL_API Boxed::Rect::invokeMethod (CCL::Variant& returnValue, MessageRef m
 //************************************************************************************************
 
 DEFINE_CLASS_PERSISTENT (Boxed::MouseEvent, Object, "MouseEvent")
+DEFINE_CLASS_NAMESPACE (Boxed::MouseEvent, NAMESPACE_CCL)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 

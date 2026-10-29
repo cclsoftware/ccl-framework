@@ -42,7 +42,7 @@ class ErrorContextDialog: public Component
 public:
 	ErrorContextDialog ();
 
-	bool run (CCL::IErrorContext* errorContext, StringRef headerText, StringRef question = nullptr, bool deep = false);
+	bool run (IErrorContext* errorContext, StringRef headerText, StringRef question = nullptr, bool deep = false);
 
 	// IObject
 	tbool CCL_API getProperty (Variant& var, MemberID propertyId) const override;

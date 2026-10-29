@@ -17,7 +17,7 @@
 			]
 		},
 		{
-			"path": "core/public/corepropertymacros.h"
+			"path": "core/public/coreclassmacros.h"
 		},
 		{
 			"path": "core/public/coreenumdef.h"
@@ -35,7 +35,31 @@
 			"path": "core/public/coreuid.h"
 		},
 		{
-			"path": "core/portable/coresingleton.h"
+			"path": "core/public/corecontainer.h"
+		},
+		{
+			"path": "core/public/coreobserver.h",
+			"include_patterns":
+			[
+				"DEFINE_OBSERVER"
+			]
+		},
+		{
+			"path": "core/public/coreplugin.h"
+		},
+		{
+			"path": "core/public/corestringtraits.h"
+		},
+		{
+			"path": "core/public/gui/corerectlist.h"
+		},
+		{
+			"path": "core/portable/coresingleton.h",
+			"comment": "DEFINE_SINGLETON clashes with ccl/base/singleton.h",
+			"exclude_patterns":
+			[
+				"^DEFINE_SINGLETON$"
+			]
 		},
 		{
 			"path": "core/portable/coretypeinfo.h"
@@ -61,6 +85,9 @@
 			"path": "ccl/app/component.h"
 		},
 		{
+			"path": "ccl/app/actions/action.h"
+		},
+		{
 			"path": "ccl/app/actions/sideeffect.h"
 		},
 		{
@@ -76,13 +103,16 @@
 			"path": "ccl/base/singleton.h"
 		},
 		{
+			"path": "ccl/base/typelibmacros.h"
+		},
+		{
 			"path": "ccl/base/unittest.h"
 		},
 		{
 			"path": "ccl/base/collections/container.h"
 		},
 		{
-			"path": "ccl/base/collections/linkable.h"
+			"path": "ccl/base/collections/linkablelist.h"
 		},
 		{
 			"path": "ccl/base/collections/objectarray.h"
@@ -91,7 +121,16 @@
 			"path": "ccl/base/collections/objectlist.h"
 		},
 		{
+			"path": "ccl/base/collections/observedlist.h"
+		},
+		{
+			"path": "ccl/gui/guitypelib.h"
+		},
+		{
 			"path": "ccl/gui/graphics/3d/scene/scene3d.h"
+		},
+		{
+			"path": "ccl/gui/skin/skinattributes.h"
 		},
 		{
 			"path": "ccl/gui/skin/skinelement.h"
@@ -160,10 +199,13 @@
 			"path": "ccl/public/gui/paramlist.h"
 		},
 		{
-			"path": "ccl/public/io/ifilesystem.h"
+			"path": "ccl/public/system/ifilesystem.h"
 		},
 		{
-			"path": "ccl/public/io/iattributelist.h"
+			"path": "ccl/public/storage/iattributelist.h"
+		},
+		{
+			"path": "ccl/public/storage/metainfo.h"
 		},
 		{
 			"path": "ccl/public/plugins/stubobject.h"

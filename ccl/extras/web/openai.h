@@ -45,6 +45,7 @@ namespace OpenAI
 	class ResponseFormatJsonSchema;
 	class StructuredResponse;
 	class ResponseStream;
+	struct ResponseInputItem;
 
 	//////////////////////////////////////////////////////////////////////////////////////////////
 	// Constants
@@ -161,6 +162,21 @@ protected:
 };
 
 //************************************************************************************************
+// OpenAI::ResponseInputItem
+//************************************************************************************************
+
+struct OpenAI::ResponseInputItem
+{
+	String role;
+	String content;
+
+	ResponseInputItem (StringRef _role = nullptr, StringRef _content = nullptr)
+	: role (_role), 
+	  content (_content) 
+	{}
+};
+
+//************************************************************************************************
 // OpenAI::ResponseCreateParams
 //************************************************************************************************
 
@@ -178,6 +194,7 @@ public:
 	void setTextVerbosity (StringRef verbosity);
 	void setPreviousResponseId (StringRef previousResposeId);
 	void addInput (StringRef role, StringRef content);
+	void addInputItems (const Vector<ResponseInputItem>& items);
 	void setTextJsonSchema (StringID name, const ResponseFormatJsonSchema& schema);
 	void addFileSearchTool (const StringList& vectorStores);
 	void addWebSearchTool (const StringList& searchLinks);

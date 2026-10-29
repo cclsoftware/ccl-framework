@@ -38,10 +38,10 @@ namespace VKey
 	int toSystemKey (VirtualKey key);
 
 	/** Get key name. */
-	const char* getKeyName (VirtualKey key);
+	CStringPtr getKeyName (VirtualKey key);
 
 	/** Get key by name. */
-	VirtualKey getKeyByName (const char* name);
+	VirtualKey getKeyByName (CStringPtr name);
 
 	/** Get localized key name. */
 	String getLocalizedKeyName (VirtualKey key);

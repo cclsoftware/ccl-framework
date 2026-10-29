@@ -32,43 +32,43 @@ DEFINE_CLASS_ABSTRACT_HIDDEN (CompositedRenderer, ThemeRenderer)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-CompositedRenderer::CompositedRenderer (VisualStyle* visualStyle)
-: ThemeRenderer (visualStyle),
+CompositedRenderer::CompositedRenderer (VisualStyle* visualStyle, View* owner)
+: ThemeRenderer (visualStyle, owner),
   backgroundView (nullptr)
 {}
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void CompositedRenderer::update (View* view, const UpdateInfo& info)
+void CompositedRenderer::update (const UpdateInfo& info)
 {
-	if(view->getStyle ().isDirectUpdate ())
+	if(owner->getStyle ().isDirectUpdate ())
 	{
-		GraphicsPort port (view);
+		GraphicsPort port (owner);
 		RectRef updateRect = port.getVisibleRect ();
 		if(updateRect.isEmpty ())
 			return;
 
-		if(view->getStyle ().isComposited ())
-			drawCompositedBackground (port, view, updateRect);
+		if(owner->getStyle ().isComposited ())
+			drawCompositedBackground (port, updateRect);
 
-		draw (view, UpdateRgn (updateRect));
+		draw (UpdateRgn (updateRect));
 
 		info.windowInfo->addDirtyRect (updateRect);
 	}
 	else
-		ThemeRenderer::update (view, info);
+		ThemeRenderer::update (info);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void CompositedRenderer::drawCompositedBackground (IGraphics& graphics, View* view, RectRef rect)
+void CompositedRenderer::drawCompositedBackground (IGraphics& graphics, RectRef rect)
 {
-	ASSERT (view->getStyle ().isComposited ())
+	ASSERT (owner->getStyle ().isComposited ())
 
 	if(backgroundView == nullptr)
 	{
-		position = Point (view->getSize ().getLeftTop ());
-		for(View* v = view->getParent (); v != nullptr; v = v->getParent ())
+		position = Point (owner->getSize ().getLeftTop ());
+		for(View* v = owner->getParent (); v != nullptr; v = v->getParent ())
 		{
 			UnknownPtr<IBackgroundView> bgView (v->asUnknown ());
 			if(bgView && bgView->canDrawControlBackground ())

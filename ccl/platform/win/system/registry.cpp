@@ -140,7 +140,7 @@ bool Accessor::writeString (StringRef string, StringRef subPath, StringRef name)
 						 KEY_ALL_ACCESS | theAccessFlags [access], nullptr/*security*/, &hKey, nullptr/*disposition*/) == ERROR_SUCCESS)
 	{
 		StringChars chars (string);
-		const BYTE* data = (const BYTE*)(const uchar*)chars;
+		const BYTE* data = (const BYTE*)(UStringPtr)chars;
 		DWORD size = (string.length () + 1) * sizeof(uchar);
 
 		LONG result = ::RegSetValueExW (hKey, StringChars (name), 0, REG_SZ, data, size);

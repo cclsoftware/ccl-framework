@@ -120,7 +120,7 @@ public:
 	tbool CCL_API setCollectSizeUpdates (tbool state) override;
 	float CCL_API getContentScaleFactor () const override;
 	tbool CCL_API setContentScaleFactor (float factor) override;
-	void CCL_API show () override;
+	void CCL_API show (tbool activate = true) override;
 	void CCL_API hide () override;
 	void CCL_API maximize (tbool state) override;
 	tbool CCL_API isMaximized () const override;
@@ -194,13 +194,14 @@ public:
 	void addTransparentWindow (TransparentWindow* w);
 	void removeTransparentWindow (TransparentWindow* w);
 	TransparentWindow* getFirstTransparentWindow () const;
-	CCL::Iterator* getTransparentWindows () const;
+	Iterator* getTransparentWindows () const;
 
 	int getZIndex () const; ///< returns the index of this window in the Z-order of all windows: topmost window has largest index
 	WindowLayer getLayer () const;
 
 	void redrawView (View* view);
 	void redrawView (View* view, RectRef rect);
+	bool checkChildSizeLimits (); ///< apply size limits of the single child view, returns true if the window was resized
 	void finishScroll (RectRef rect, PointRef delta);
 	NativeWindowRenderTarget* getRenderTarget ();
 	TouchInputState& getTouchInputState ();
@@ -323,7 +324,7 @@ protected:
 	// platform-specific methods:
 	virtual void updateMenuBar ();
 	virtual void setWindowSize (Rect& size); // size may be adjusted
-	virtual void showWindow (bool state = true);
+	virtual void showWindow (bool state = true, bool activate = true);
 	virtual void beforeMouseDown (const MouseEvent& event);
 	virtual void updateBackgroundColor ();
 	virtual void fromNativeWindow (void* nativeWindow);

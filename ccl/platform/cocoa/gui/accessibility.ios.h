@@ -47,12 +47,12 @@ public:
 	CGRect getFrame () const;
 	NSArray* getChildren () const;
 	UIAccessibilityElement* getElement () const;
+	void disconnectFromParent (AccessibilityProvider* childProvider);
 
 	// PlatformAccessibilityProvider
 	void disconnect () override;
 	void sendPlatformEvent (AccessibilityEvent e) override;
 	void onChildProviderAdded (AccessibilityProvider* childProvider) override;
-	void onChildProviderRemoved (AccessibilityProvider* childProvider) override;
 
 private:
 	NSObj<CCL_ISOLATED (AccessibilityElement)> element;

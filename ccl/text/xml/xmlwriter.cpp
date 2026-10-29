@@ -36,7 +36,7 @@ tresult CCL_API XmlWriter::beginDocument (IStream& stream, TextEncoding encoding
 	if(encoding == Text::kUnknownEncoding)
 		encoding = Text::kUTF16;
 
-	const char* xmlEncoding = XmlEncodings::getEncoding (encoding);
+	CStringPtr xmlEncoding = XmlEncodings::getEncoding (encoding);
 	ASSERT (xmlEncoding != nullptr)
 	if(xmlEncoding == nullptr)
 		return kResultInvalidArgument; // encoding not supported!

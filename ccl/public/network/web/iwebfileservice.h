@@ -87,7 +87,7 @@ interface IRemoteSession;
 
 interface IWebFileService: IUnknown
 {
-	static const CCL::String kProtocol; ///< Web File Service URL protocol
+	static const String kProtocol; ///< Web File Service URL protocol
 
 	//////////////////////////////////////////////////////////////////////////////////////////////
 	// Volumes
@@ -125,7 +125,7 @@ interface IWebFileService: IUnknown
 	virtual tresult CCL_API openHandler (UrlRef webfsUrl, UIDRef iid, void** object) = 0;
 
 	template <class Interface> Interface* openHandler (UrlRef webfsUrl)
-	{ Interface* iface = nullptr; openHandler (webfsUrl, CCL::ccl_iid<Interface> (), (void**)&iface); return iface; }
+	{ Interface* iface = nullptr; openHandler (webfsUrl, ccl_iid<Interface> (), (void**)&iface); return iface; }
 
 	/** Open file descriptor for given location (can be null, must be released otherwise). */
 	virtual IFileDescriptor* CCL_API openFileItem (UrlRef webfsUrl) = 0;

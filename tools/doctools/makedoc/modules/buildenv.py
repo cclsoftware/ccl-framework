@@ -1,20 +1,16 @@
 #!/usr/bin/python
 """Makedoc build environment module.
 """
+
+__copyright__ = "Copyright (c) 2026 CCL Software Licensing GmbH"
+
 import logging
 import pathlib
-import os
 import platform
-import sys
 from typing import Optional
 
 from modules.tools import ToolHelper
-
-sys.path.append(os.path.abspath(os.path.dirname(os.path.abspath(__file__)) + "../../../../../ccl/extras/python"))
-
-from tools.repoinfo import RepositoryInfo
-
-__copyright__ = "Copyright (c) 2023 CCL Software Licensing GmbH"
+from ccl_extras.repoinfo import RepositoryInfo, RepositoryContext
 
 
 class BuildEnvironment:
@@ -39,10 +35,10 @@ class BuildEnvironment:
         implies this script is run in context of a meta repository.
         """
 
-        repo_info = RepositoryInfo()
-        if not repo_info.load(self.makedoc_folder):
-            logging.info("repo.json file not found")
-            return None
+        repo_info = RepositoryInfo.load_from(self.makedoc_folder)
+        if repo_info.get_context () == RepositoryContext.META:
+            logging.info(f"using meta repo '{repo_info.get_meta_root_path()}' context")
+        else:
+            logging.info(f"using framework repo '{repo_info.get_framework_root_path()}' context")
 
-        logging.info(f"found repo.json file in path '{repo_info.get_file_path()}'")
         return repo_info

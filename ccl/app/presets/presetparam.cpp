@@ -250,8 +250,9 @@ void PresetParam::registerClass () // force linkage
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 DEFINE_CLASS (PresetParam, MenuParam)
+DEFINE_CLASS_NAMESPACE (PresetParam, NAMESPACE_CCL)
 DEFINE_CLASS_UID (PresetParam, 0x827d9a8e, 0xe871, 0x4681, 0x80, 0x39, 0xed, 0xdf, 0x8f, 0xf5, 0x32, 0x30)
-DEFINE_CLASS_NAMESPACE (PresetParam, "Host")
+DEFINE_CLASS_CATEGORY (PresetParam, PLUG_CATEGORY_HOST_)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 

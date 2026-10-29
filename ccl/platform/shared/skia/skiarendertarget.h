@@ -91,8 +91,8 @@ protected:
 		Writer (IStream& _stream) : stream (_stream) {}
 		
 		// SkWStream
-		bool write (const void* buffer, size_t size) { return stream.write (buffer, static_cast<int> (size)) == size; }
-		size_t bytesWritten () const { return stream.tell (); }
+		bool write (const void* buffer, size_t size) { return stream.write (buffer, int(size)) == size; }
+		size_t bytesWritten () const { return size_t(stream.tell ()); }
 
 	protected:
 		IStream& stream;

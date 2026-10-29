@@ -32,7 +32,7 @@ interface IClassDescription;
 
 //************************************************************************************************
 // ObjectPreset
-/** Transfers preset data between two objects that implement IStorable or are CCL::Objects. */
+/** Transfers preset data between two objects that implement IStorable or are Objects. */
 //************************************************************************************************
 
 class ObjectPreset: public Preset

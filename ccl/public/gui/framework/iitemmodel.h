@@ -44,8 +44,8 @@ interface IItemDragVerifier;
 
 namespace ClassID
 {
-	DEFINE_CID (ColumnHeaderList, 0xE0C5B54B, 0xBAA3, 0x4DAA, 0xBE, 0x2D, 0xE1, 0x4C, 0xB5, 0x0D, 0x56, 0x13);
-	DEFINE_CID (ItemListSelection, 0x7764797A, 0xB532, 0x48E3, 0x98, 0x1A, 0x22, 0x74, 0x91, 0x70, 0x0C, 0x61);
+	DEFINE_CID (ColumnHeaderList, 0xE0C5B54B, 0xBAA3, 0x4DAA, 0xBE, 0x2D, 0xE1, 0x4C, 0xB5, 0x0D, 0x56, 0x13)
+	DEFINE_CID (ItemListSelection, 0x7764797A, 0xB532, 0x48E3, 0x98, 0x1A, 0x22, 0x74, 0x91, 0x70, 0x0C, 0x61)
 };
 
 //************************************************************************************************
@@ -428,7 +428,7 @@ DEFINE_STRINGID_MEMBER (IItemModel, kUpdateColumns, "updateColumns")
 	\ingroup gui_item */
 //************************************************************************************************
 
-interface IItemDragTarget: CCL::IUnknown
+interface IItemDragTarget: IUnknown
 {
 	/** Flags for drag handler. */
 	enum ItemDragFlags
@@ -532,7 +532,7 @@ DEFINE_STRINGID_MEMBER (IItemView, kDragSessionDone,  "itemDragDone")
 	\ingroup gui_data */
 //************************************************************************************************
 
-interface IItemViewDragHandler: CCL::IUnknown
+interface IItemViewDragHandler: IUnknown
 {
 	/** Get target item and relation. */
 	virtual tbool CCL_API getTarget (ItemIndex& item, int& relation) = 0;
@@ -558,7 +558,7 @@ DEFINE_IID (IItemViewDragHandler, 0x89328FC9, 0xAF8E, 0x4258, 0xBF, 0xD0, 0x95, 
 	\ingroup gui_data */
 //************************************************************************************************
 
-interface IItemDragVerifier: CCL::IUnknown
+interface IItemDragVerifier: IUnknown
 {
 	/** Verify if the given target is accepted. Can adjust item and relation. */
 	virtual tbool CCL_API verifyTargetItem (ItemIndex& item, int& relation) = 0;

@@ -54,47 +54,105 @@ struct KeyValue
 	\ingroup base_collect */
 //************************************************************************************************
 
-template <typename TKey, typename TValue>
+template <typename TKey, typename TValue, typename TEntries = ConstVector<KeyValue<TKey, TValue>>>
 class ConstMap
 {
 public:
-	ConstMap (KeyValue<TKey, TValue>* data, int length)
+	typedef KeyValue<TKey, TValue> Entry;
+	typedef RangeIterator<TEntries, VectorIterator<Entry>, Entry&> Iterator;
+
+	ConstMap (Entry* data, int length)
 	: entries (data, length)
 	{}
+
+	/** Get number of entries. */
+	int count () const
+	{
+		return entries.count ();
+	}
+
+	/** Check if container is empty. */
+	bool isEmpty () const
+	{
+		return entries.isEmpty ();
+	}
 
 	/** Get value by key (operator). */
 	TValue& operator [] (const TKey& key) const
 	{
-		return at (key);
+		return getValue (key);
 	}
 
 	/** Get value by key. */
-	TValue& at (const TKey& key) const
+	TValue& getValue (const TKey& key) const
 	{
-		KeyValue<TKey, TValue>* result = entries.findIf ([&key] (const KeyValue<TKey, TValue>& entry) { return entry.key == key; });
+		Entry* result = entries.findIf ([&key] (const Entry& entry) { return entry.key == key; });
 		return checked (result)->value;
 	}
-	
-	/** Find key by value. */
-	TKey& findKey (const TValue& value) const
+
+	/** Get value by key, returns false if key is not contained. */
+	bool getValue (TValue& result, const TKey& key) const
 	{
-		KeyValue<TKey, TValue>* result = entries.findIf ([&value] (const KeyValue<TKey, TValue>& entry) { return entry.value == value; });
+		Entry* found = entries.findIf ([&key] (const Entry& entry) { return entry.key == key; });
+		if(found == nullptr)
+			return false;
+
+		result = found->value;
+		return true;
+	}
+	
+	/** Get key by value. */
+	TKey& getKey (const TValue& value) const
+	{
+		Entry* result = entries.findIf ([&value] (const Entry& entry) { return entry.value == value; });
 		return checked (result)->key;
+	}
+
+	/** Get key by value, returns false if value is not contained. */
+	bool getKey (TKey& result, const TValue& value) const
+	{
+		Entry* found = entries.findIf ([&value] (const Entry& entry) { return entry.value == value; });
+		if(found == nullptr)
+			return false;
+
+		result = found->key;
+		return true;
 	}
 	
 	/** Check if container holds given key. */
 	bool contains (const TKey& key) const
 	{
-		KeyValue<TKey, TValue>* result = entries.findIf ([&key] (const KeyValue<TKey, TValue>& entry) { return entry.key == key; });
+		Entry* result = entries.findIf ([&key] (const Entry& entry) { return entry.key == key; });
 		return result != nullptr;
 	}
 	
-private:
-	ConstVector<KeyValue<TKey, TValue>> entries;
-	
-	static KeyValue<TKey, TValue> error;
-	
-	KeyValue<TKey, TValue>* checked (KeyValue<TKey, TValue>* result) const
+	/** Check if container holds any key for given value. */
+	bool containsValue (const TValue& value) const
+	{
+		Entry* result = entries.findIf ([&value] (const Entry& entry) { return entry.value == value; });
+		return result != nullptr;
+	}
+
+	/** Iterate entries (range-for). */
+	Iterator begin () const
+	{
+		return entries.begin ();
+	}
+
+	Iterator end () const
+	{
+		return entries.end ();
+	}
+
+protected:
+	TEntries entries;
+
+	ConstMap ()
+	{}
+
+	static Entry error;
+
+	Entry* checked (Entry* result) const
 	{
 		ASSERT (result != nullptr)
 		if(result == nullptr)
@@ -104,9 +162,60 @@ private:
 	}
 };
 
+//************************************************************************************************
+// Map
+/** Mutable map container class.
+    \ingroup core_collect
+	\ingroup base_collect */
+//************************************************************************************************
+
+template <typename TKey, typename TValue>
+class Map: public ConstMap<TKey, TValue, Vector<KeyValue<TKey, TValue>>>
+{
+public:
+	using typename ConstMap<TKey, TValue, Vector<KeyValue<TKey, TValue>>>::Entry;
+
+	/** Construct with initial capacity and delta. */
+	Map (int capacity = 0, int delta = 5)
+	{
+		this->entries.resize (capacity);
+		this->entries.setDelta (delta);
+	}
+
+	/** Construct with initializer list. */
+	Map (const InitializerList<Entry>& list)
+	: Map ()
+	{
+		for(const Entry& entry : list)
+			setValue (entry.key, entry.value);
+	}
+
+	/** Set value for key, replaces existing entry or appends a new one. */
+	void setValue (const TKey& key, const TValue& value)
+	{
+		Entry* existing = this->entries.findIf ([&key] (const Entry& entry) { return entry.key == key; });
+		if(existing)
+			existing->value = value;
+		else
+			this->entries.add (Entry (key, value));
+	}
+
+	/** Remove entry by key. */
+	bool remove (const TKey& key)
+	{
+		return this->entries.removeIf ([&key] (const Entry& entry) { return entry.key == key; }) > 0;
+	}
+
+	/** Remove all entries. */
+	void removeAll ()
+	{
+		this->entries.removeAll ();
+	}
+};
+
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-template <typename TKey, typename TValue> KeyValue<TKey, TValue> ConstMap<TKey, TValue>::error ({}, {});
+template <typename TKey, typename TValue, typename TEntries> typename ConstMap<TKey, TValue, TEntries>::Entry ConstMap<TKey, TValue, TEntries>::error ({}, {});
 
 } // namespace Core
 

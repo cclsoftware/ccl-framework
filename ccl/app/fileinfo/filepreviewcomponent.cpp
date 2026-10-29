@@ -56,7 +56,7 @@ DEFINE_CLASS_HIDDEN (FilePreviewComponent, Component)
 FilePreviewComponent::FilePreviewComponent (StringRef name, StringID _skinNamespace)
 : Component (name),
   skinNamespace (_skinNamespace),
-  fileSystemSink (CCL::Signals::kFileSystem),
+  fileSystemSink (Signals::kFileSystem),
   infoView (nullptr),
   usedInFileSelector (false),
   currentInfoComponent (nullptr)
@@ -192,9 +192,19 @@ void FilePreviewComponent::updateView (bool isNewFile)
 			ASSERT (childView != nullptr)
 			if(childView)
 			{
-				Rect size (view->getSize ());
-				size.moveTo (Point ());
-				childView->setSize (size);
+				if(ViewBox (childView).getSizeMode () & IView::kVFitSize)
+				{
+					Rect childSize (childView->getSize ());
+					childSize.left = 0;
+					childSize.setWidth (view->getSize ().getWidth ());
+					childView->setSize (childSize);
+				}
+				else
+				{
+					Rect size (view->getSize ());
+					size.moveTo (Point ());
+					childView->setSize (size);
+				}
 
 				view.getChildren ().add (childView);
 			}

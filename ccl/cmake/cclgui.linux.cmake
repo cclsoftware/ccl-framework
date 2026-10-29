@@ -73,6 +73,7 @@ ccl_list_append_once (cclgui_linux_sources
 	${CCL_DIR}/platform/linux/gui/fileselector.linux.cpp
 	${CCL_DIR}/platform/linux/gui/fontresource.linux.cpp
 	${CCL_DIR}/platform/linux/gui/gui.linux.cpp
+	${CCL_DIR}/platform/linux/gui/inputmethod.linux.cpp
 	${CCL_DIR}/platform/linux/gui/keyevent.linux.cpp
 	${CCL_DIR}/platform/linux/gui/mousecursor.linux.cpp
 	${CCL_DIR}/platform/linux/gui/nativegraphics.linux.cpp
@@ -82,7 +83,6 @@ ccl_list_append_once (cclgui_linux_sources
 	${CCL_DIR}/platform/linux/gui/printservice.linux.h
 	${CCL_DIR}/platform/linux/gui/systemshell.linux.cpp
 	${CCL_DIR}/platform/linux/gui/textbox.linux.cpp
-	${CCL_DIR}/platform/linux/gui/textbox.linux.h
 	${CCL_DIR}/platform/linux/gui/tooltip.linux.cpp
 	${CCL_DIR}/platform/linux/gui/transparentwindow.linux.cpp
 	${CCL_DIR}/platform/linux/gui/transparentwindow.linux.h
@@ -144,6 +144,7 @@ endif ()
 
 ccl_list_append_once (cclgui_platform_sources
 	${CCL_DIR}/platform/shared/host/frameworkalert.cpp
+	${CCL_DIR}/platform/shared/host/frameworkalert.h
 	${CCL_DIR}/platform/shared/host/frameworkwindowdecoration.cpp
 	${CCL_DIR}/platform/shared/host/platformalertbase.cpp
 	${CCL_DIR}/platform/shared/host/platformfileselectorbase.cpp
@@ -160,13 +161,20 @@ ccl_list_append_once (cclgui_platform_sources
 	${CCL_DIR}/platform/shared/skia/skiadevice.h
 	${CCL_DIR}/platform/shared/skia/skiaengine.cpp
 	${CCL_DIR}/platform/shared/skia/skiaengine.h
+	${CCL_DIR}/platform/shared/skia/skiafontmanager.cpp
+	${CCL_DIR}/platform/shared/skia/skiafontmanager.h
+	${CCL_DIR}/platform/shared/skia/skiafontresource.cpp
 	${CCL_DIR}/platform/shared/skia/skiafonttable.cpp
 	${CCL_DIR}/platform/shared/skia/skiafonttable.h
 	${CCL_DIR}/platform/shared/skia/skiaglue.h
 	${CCL_DIR}/platform/shared/skia/skiagradient.cpp
 	${CCL_DIR}/platform/shared/skia/skiagradient.h
+	${CCL_DIR}/platform/shared/skia/skialayer.cpp
+	${CCL_DIR}/platform/shared/skia/skialayer.h
 	${CCL_DIR}/platform/shared/skia/skiapath.cpp
 	${CCL_DIR}/platform/shared/skia/skiapath.h
+	${CCL_DIR}/platform/shared/skia/skiaprintservice.cpp
+	${CCL_DIR}/platform/shared/skia/skiaprintservice.h
 	${CCL_DIR}/platform/shared/skia/skiarendertarget.cpp
 	${CCL_DIR}/platform/shared/skia/skiarendertarget.h
 	${CCL_DIR}/platform/shared/skia/skiastream.cpp
@@ -202,6 +210,8 @@ if (CCL_ENABLE_OPENGLES2)
 		${CCL_DIR}/platform/shared/opengles/openglesimage.h
 		${CCL_DIR}/platform/shared/opengles/openglesrendertarget.cpp
 		${CCL_DIR}/platform/shared/opengles/openglesrendertarget.h
+		${CCL_DIR}/platform/shared/opengles/eglopenglesrendertarget.cpp
+		${CCL_DIR}/platform/shared/opengles/eglopenglesrendertarget.h
 		${CCL_DIR}/platform/shared/opengles/opengles3dsupport.cpp
 		${CCL_DIR}/platform/shared/opengles/opengles3dsupport.h
 	)
@@ -223,8 +233,10 @@ source_group (TREE ${CCL_DIR}/platform/linux PREFIX "source" FILES ${cclgui_linu
 source_group (TREE ${CCL_DIR}/platform/shared PREFIX "source" FILES ${cclgui_platform_sources})
 
 ccl_list_append_once (WAYLAND_PROTOCOLS
+	"stable/tablet/tablet-v2.xml"
 	"staging/xdg-activation/xdg-activation-v1.xml"
 	"staging/xdg-dialog/xdg-dialog-v1.xml"
+	"staging/cursor-shape/cursor-shape-v1.xml"
 	"unstable/xdg-output/xdg-output-unstable-v1.xml"
 	"unstable/xdg-decoration/xdg-decoration-unstable-v1.xml"
 	"unstable/xdg-foreign/xdg-foreign-unstable-v1.xml"
@@ -277,10 +289,10 @@ if (NOT imported)
 	if (NOT ${CCL_STATIC_ONLY})
 		target_link_libraries (${cclgui} PRIVATE m wayland-server-delegate ${WAYLAND_LIBRARIES} ${XKB_LIBRARIES} ${cclgui_graphics_libraries} SDBusCpp::sdbus-c++ ${Fontconfig_LIBRARIES} ${SKIA_LIBRARIES} ${skia_dependencies})
 		target_include_directories (${cclgui} PRIVATE ${XKB_INCLUDE_PATH} ${FREETYPE_INCLUDE_DIRS} ${Fontconfig_INCLUDE_DIRS} ${cclgui_graphics_includes})
-		target_compile_definitions (${cclgui} PRIVATE ${cclgui_graphics_definitions} SK_FONTCONFIG=1)
+		target_compile_definitions (${cclgui} PRIVATE ${cclgui_graphics_definitions} SK_FONTCONFIG=1 SDBUS_CPP_VERSION=${SDBUS_CPP_VERSION})
 	endif ()
 	ccl_list_append_once (CCL_STATIC_LINK_LIBRARIES wayland-server-delegate ${WAYLAND_LIBRARIES} ${XKB_LIBRARIES} ${cclgui_graphics_libraries} SDBusCpp::sdbus-c++ ${Fontconfig_LIBRARIES} ${SKIA_LIBRARIES} ${skia_dependencies})
-	ccl_list_append_once (CCL_STATIC_COMPILE_DEFINITIONS ${cclgui_graphics_definitions} SK_FONTCONFIG=1)
+	ccl_list_append_once (CCL_STATIC_COMPILE_DEFINITIONS ${cclgui_graphics_definitions} SK_FONTCONFIG=1 SDBUS_CPP_VERSION=${SDBUS_CPP_VERSION})
 	ccl_list_append_once (CCL_STATIC_INCLUDE_DIRS ${XKB_INCLUDE_PATH} ${FREETYPE_INCLUDE_DIRS} ${Fontconfig_INCLUDE_DIRS} ${cclgui_graphics_includes})
 
 	ccl_add_shader_resource (${cclgui} ${CCL_DIR}/gui/graphics/3d/shader/glsl/vertexshaderPN.vert PATH shaders)

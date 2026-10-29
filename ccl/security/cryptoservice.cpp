@@ -176,7 +176,7 @@ public:
 	tresult CCL_API toCString (MutableCString& string, int base = 16) const override
 	{
 		// TODO: determine required size...
-		char buffer[STRING_STACK_SPACE_MAX] {};
+		char buffer[CORE_STRING_STACK_MAX] {};
 		StringResult result (buffer, sizeof(buffer));
 
 		__BEGIN_CRYPTOPP_CALL__

@@ -31,7 +31,7 @@ using namespace CCL;
 
 namespace
 {
-	const char* originalText = "0123456789abcdefghijklmnopqrstuvwxyz";
+	CStringPtr originalText = "0123456789abcdefghijklmnopqrstuvwxyz";
 }
 
 #define FOR_BUFFER_PARAMS \
@@ -157,7 +157,7 @@ CCL_TEST_F (BufferedStreamTest, TestWrite)
 		writeChars (originalText, bufferedStream, pos, portionSize, (int)strlen (originalText) + 1);
 
 		bufferedStream.release (); // to force flush...
-		CString resultStr ((const char*)targetStream->getMemoryAddress ());
+		CString resultStr ((CStringPtr)targetStream->getMemoryAddress ());
 
 		char msg[4096];
 		snprintf (msg, 2096, "  bufferSize %d, portionSize %d:  %s", bufferSize, portionSize, resultStr.str ());
@@ -190,7 +190,7 @@ CCL_TEST_F (BufferedStreamTest, TestWriteSeek)
 		writeChars (originalText, bufferedStream, pos, portionSize, 27);
 
 		bufferedStream.release (); // to force flush...
-		CString resultStr ((const char*)targetStream->getMemoryAddress ());
+		CString resultStr ((CStringPtr)targetStream->getMemoryAddress ());
 
 		char msg[4096];
 		snprintf (msg, 2096, "  bufferSize %d, portionSize %d:  %s", bufferSize, portionSize, resultStr.str ());
@@ -233,7 +233,7 @@ CCL_TEST_F (BufferedStreamTest, TestReadWrite)
 		writeChars ("KLMNO", bufferedStream, pos, portionSize, 5);
 
 		bufferedStream.release (); // to force flush...
-		CString resultStr ((const char*)targetStream->getMemoryAddress ());
+		CString resultStr ((CStringPtr)targetStream->getMemoryAddress ());
 
 		char msg[4096];
 		snprintf (msg, 2096, "  bufferSize %d, portionSize %d:  %s", bufferSize, portionSize, resultStr.str ());

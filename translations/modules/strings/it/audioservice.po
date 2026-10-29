@@ -1,0 +1,21 @@
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ./system/miniaudiocodec.cpp
+msgctxt "FileType"
+msgid "FLAC File"
+msgstr "File FLAC"
+
+#: ./system/miniaudiocodec.cpp
+msgctxt "FileType"
+msgid "MP3 File"
+msgstr "File MP3"
+
+#: ./system/miniaudiocodec.cpp
+msgctxt "FileType"
+msgid "Wave File"
+msgstr "File Wave"
+

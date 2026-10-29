@@ -35,9 +35,9 @@ namespace Security {
 // FileFingerprint::FingerprintCalculator
 //************************************************************************************************
 
-class FileFingerprint::FingerprintCalculator: public CCL::Unknown,
+class FileFingerprint::FingerprintCalculator: public Unknown,
 											  public Threading::UserThread,
-											  public CCL::AbstractProgressNotify
+											  public AbstractProgressNotify
 {
 public:
 	FingerprintCalculator (FileFingerprint& fingerprint);

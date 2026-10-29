@@ -46,7 +46,23 @@ AccessibilityElementRole CCL_API ViewAccessibilityProvider::getElementRole () co
 
 void CCL_API ViewAccessibilityProvider::getElementName (String& name) const
 {
+	StringRef accessibilityTitle = view.getAccessibilityTitle ();
+	if(!accessibilityTitle.isEmpty ())
+	{
+		name = ComposedTooltip (&view, accessibilityTitle);
+		if(!name.isEmpty ())
+			return;
+	}
+
+	getDefaultElementName (name);
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+void ViewAccessibilityProvider::getDefaultElementName (String& name) const
+{
 	name = view.getTitle ();
+	name.trimWhitespace ();
 	if(name.isEmpty ())
 	{
 		ComposedTooltip tooltip (&view);

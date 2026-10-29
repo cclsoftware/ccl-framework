@@ -86,7 +86,7 @@ create_output_folder ()
 cleanup_output ()
 {
 	# Cleanup output folder.
-	rm "./output/*.*" 2> /dev/null
+	rm -f ./output/*.* 2> /dev/null
 }
 
 # ///////////////////////////////////////////////////////////////////////////
@@ -134,6 +134,29 @@ run_test ()
 		let failed=failed+1
 		log "Test '$testcase': FAIL [modeller error]"
 	fi
+}
+
+# ///////////////////////////////////////////////////////////////////////////
+
+run_test_expect_failure ()
+{
+	# Run modeller tool with command line arguments, for a testcase where a non-zero
+	# exit code is the CORRECT/expected result (e.g. an intentional scan error). Unlike
+	# run_test(), does not itself count a non-zero exit as a failure - the actual pass/fail
+	# determination is left to a subsequent verify_contains() check against the console log.
+	#
+	# $1 - modeller scan mode
+	# $2 - modeller file 1 argument
+	# $3 - modeller file 2 argument
+	# $4... - optional additional modeller arguments
+	#
+
+	mode=$1
+	file1=$2
+	file2=$3
+	shift 3
+
+	${modeller} ${mode} "${file1}" "${file2}" "$@" > "$console_log"
 }
 
 # ///////////////////////////////////////////////////////////////////////////
@@ -192,7 +215,7 @@ verify_contains ()
 	file_to_check=$1
 	search_string=$2
 
-	if grep -q "${search_string}" "${file_to_check}"
+	if grep -qF "${search_string}" "${file_to_check}"
 	then
 		log "Test '$testcase': OK"
 		let succeeded=succeeded+1
@@ -232,12 +255,91 @@ main ()
 	# test must use a copy.
 	############################################
 
-	# Scan skin element documentation from source file.
+	# Scan skin element documentation from source file (GuiDocuScanner, "skin"-titled model).
+	# Covers DEFINE_TYPELIB_CLASS, BEGIN_TYPELIB_MEMBERS/ADD_TYPELIB_MEMBER,
+	# DEFINE_TYPELIB_ENUMERATION and BEGIN_STYLEDEF/END_STYLEDEF.
 	testcase="scan_source_no_options"
 	cleanup_output
 	copy_input "Skin.classModel" "Scan.classModel"
 	run_test "-scan" "./input/" "./output/Scan.classModel"
 	verify_equal "Scan.classModel.ref" "Scan.classModel"
+
+	# Scan visual style documentation from source file (GuiDocuScanner, "visual"-titled model).
+	# Covers DEFINE_TYPELIB_ENTRY/BEGIN_TYPELIB_MEMBERS and ADD_TYPELIB_MEMBER_COLOR.
+	testcase="scan_visualstyle_no_options"
+	cleanup_output
+	copy_input "VisualStyles.classModel" "VisualStyles.classModel"
+	run_test "-scan" "./input/" "./output/VisualStyles.classModel"
+	verify_equal "VisualStyles.classModel.ref" "VisualStyles.classModel"
+
+	# Scan typelib-element documentation from source file via the generic fallback scanner
+	# (TypeLibDocuScanner, registered for any class model title "skin"/"visual" doesn't claim).
+	# Covers DEFINE_TYPELIB_CLASS, DEFINE_TYPELIB_ENTRY,
+	# BEGIN_TYPELIB_MEMBERS/ADD_TYPELIB_MEMBER(_STRING), and
+	# DEFINE_TYPELIB_ENUMERATION resolved
+	# directly against a BEGIN_ENUMINFO block (no StyleDef involved - Skin's own enrichment on top
+	# of the generic path).
+	testcase="scan_typelib_no_options"
+	cleanup_output
+	copy_input "TypeLibElements.classModel" "TypeLibElements.classModel"
+	run_test "-scan" "./input/" "./output/TypeLibElements.classModel"
+	verify_equal "TypeLibElements.classModel.ref" "TypeLibElements.classModel"
+
+	############################################
+	# Action: -staticexport
+	############################################
+
+	# Build a classmodel by statically scanning source code, without
+	# compiling or running it.
+	testcase="staticexport_source_no_options"
+	cleanup_output
+	run_test "-staticexport" "./input/staticexport" "./output/StaticExport.classModel"
+	verify_equal "StaticExport.classModel.ref" "StaticExport.classModel"
+
+	# Extended coverage: nested-paren macro arguments (DEFINE_PROPERTY_METACLASS),
+	# REGISTER_STUB_CLASS synthesis onto InterfaceList, cross-file #define resolution, and
+	# DEFINE_CLASS_PERSISTENT's storage name (exported as the class name, and referenced by
+	# name in a subclass's "parent" attribute).
+	testcase="staticexport_extended_no_options"
+	cleanup_output
+	run_test "-staticexport" "./input/staticexport_extended" "./output/StaticExportExtended.classModel"
+	verify_equal "StaticExportExtended.classModel.ref" "StaticExportExtended.classModel"
+
+	# Ambiguous same-named classes declared in different files must fail the scan with a
+	# clear error, rather than silently picking one.
+	testcase="staticexport_ambiguous_no_options"
+	cleanup_output
+	run_test_expect_failure "-staticexport" "./input/staticexport_ambiguous" "./output/StaticExportAmbiguous.classModel"
+	verify_contains "$console_log" "ambiguous BEGIN_METHOD_NAMES for 'Widget'"
+
+	# A cyclic #define chain must be detected and fail the scan, rather than looping forever.
+	testcase="staticexport_cyclic_no_options"
+	cleanup_output
+	run_test_expect_failure "-staticexport" "./input/staticexport_cyclic" "./output/StaticExportCyclic.classModel"
+	verify_contains "$console_log" "macro expansion too deep while resolving 'kCycleA'"
+
+	# Build a classmodel for one type library by statically scanning source code, covering the
+	# typelibmacros.h family broadly. A second, unrelated type library in the same folder (with a
+	# deliberately unresolvable member) proves the library filter excludes it.
+	testcase="staticexport_typelib_no_options"
+	cleanup_output
+	run_test "-staticexport" "./input/staticexport_typelib" "./output/StaticExportTypeLib.classModel" "typelib=PANEL_TYPELIB"
+	verify_equal "StaticExportTypeLib.classModel.ref" "StaticExportTypeLib.classModel"
+
+	# An unknown typelib= token must fail with a clear error listing the tokens actually found,
+	# rather than silently producing an empty class model.
+	testcase="staticexport_typelib_unknown_token"
+	cleanup_output
+	run_test_expect_failure "-staticexport" "./input/staticexport_typelib" "./output/StaticExportTypeLibUnknown.classModel" "typelib=BOGUS_TYPELIB"
+	verify_contains "$console_log" "no type library entries found for 'BOGUS_TYPELIB'; found: [MARKER_TYPELIB, PANEL_TYPELIB]"
+
+	# A qualified reference to a const CStringPtr constant (e.g. "Inner::kName", reached via
+	# "using namespace Outer;") must resolve to that specific namespace's constant, not be treated
+	# as ambiguous with an unrelated same-named constant declared in a different namespace.
+	testcase="staticexport_typelib_namespace_qualified_constant"
+	cleanup_output
+	run_test "-staticexport" "./input/staticexport_typelib_namespace" "./output/StaticExportTypeLibNamespace.classModel" "typelib=DISAMBIGUATE_TYPELIB"
+	verify_contains "./output/StaticExportTypeLibNamespace.classModel" 'name="inner.value"'
 
 	############################################
 	# Action: -export

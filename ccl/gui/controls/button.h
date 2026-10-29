@@ -28,6 +28,7 @@ namespace CCL {
 
 class Image;
 class PopupSelector;
+interface ITextModel;
 
 //************************************************************************************************
 // Button
@@ -50,7 +51,7 @@ public:
 
 	Button (const Rect& size = Rect (), IParameter* param = nullptr, StyleRef style = 0, StringRef title = nullptr);
 	~Button ();
-	
+
 	void CCL_API push () override; ///< IButton
 	virtual void preview ();
 	virtual int getCurrentFrame () const;
@@ -58,6 +59,8 @@ public:
 	virtual bool isOn () const;
 
 	void setTitleParam (IParameter* p);
+	ITextModel* getTextModel () const { return textModel; }
+	const ITextLayout* getTextLayout () const;
 
 	IImage* getIcon () const;
 	void setIcon (IImage* icon);
@@ -88,6 +91,8 @@ public:
 	tbool CCL_API invokeMethod (Variant& returnValue, MessageRef msg) override;
 	void CCL_API notify (ISubject* subject, MessageRef msg) override;
 	AccessibilityProvider* getAccessibilityProvider () override;
+	void getStyleConditions (StyleConditionContext& conditions) const override;
+	void setTitle (StringRef title) override;
 
 	CLASS_INTERFACE (IButton, Control)
 
@@ -95,6 +100,7 @@ protected:
 	SharedPtr<IImage> icon;
 	IParameter* titleParam;
 	IParameter* colorParam;
+	ITextModel* textModel;
 
 	enum PrivateFlags
 	{
@@ -117,6 +123,9 @@ public:
 
 	Toggle (const Rect& size = Rect (), IParameter* param = nullptr, StyleRef style = 0, StringRef title = nullptr);
 
+	/** Expose this toggle to accessibility tools as a plain button. */
+	PROPERTY_BOOL (accessibilityExposeAsButton, AccessibilityExposeAsButton)
+
 	DECLARE_STYLEDEF (customStyles)
 
 	// Button
@@ -126,7 +135,6 @@ public:
 	int getCurrentFrame () const override;
 	bool isOn () const override;
 	ThemeRenderer* getRenderer () override;
-	AccessibilityProvider* getAccessibilityProvider () override;
 };
 
 //************************************************************************************************
@@ -261,7 +269,7 @@ private:
 	class PopupTouchHandler;
 };
 
-DECLARE_VISUALSTYLE_CLASS (ToolButton)
+DECLARE_TYPELIB_ENTRY (ToolButton)
 
 } // namespace CCL
 

@@ -22,6 +22,7 @@
 #include "core/public/corestringbuffer.h"
 #include "core/public/corevector.h"
 #include "core/public/coresocketaddress.h"
+#include "core/platform/corefeatures.h"
 
 namespace Core {
 namespace Platform {
@@ -122,13 +123,70 @@ struct SocketAddressConverter
 		addresssize = size;
 		return true;
 	}
-	
+
 	template <typename T> T* as () { return reinterpret_cast<T*> (buffer); }
 
 protected:
 	bool toSocketAddress (Sockets::SocketAddress& dst);
 	bool fromSocketAddress (const Sockets::SocketAddress& src);
 };
+
+#if CORE_NETWORK_IMPLEMENTATION == CORE_FEATURE_UNIMPLEMENTED
+
+//************************************************************************************************
+// NetworkStub
+//************************************************************************************************
+
+class NetworkStub: public INetwork
+{
+public:
+	// INetwork
+	bool startup () { return true; }
+	void shutdown () {}
+	bool getLocalHostname (CString256& hostname) { return false; }
+	bool getLocalIPAddress (Sockets::IPAddress& address) { return false; }
+	bool getInterfaceNameForIP (CString32& interfaceName, const Sockets::IPAddress& ip) { return false; }
+	bool getLocalMACAddress (uint8 mac[6]) { return false; }
+	bool getLocalMACAddress (CString32& address) { return false; }
+	void getMACAddressString (CString32& address, const uint8 mac[6]) {}
+	bool getAddressByHost (Sockets::SocketAddress& address, CStringPtr hostname) { return false; }
+	bool getHostByAddress (CString256& hostname, const Sockets::SocketAddress& address) { return false; }
+	bool getAddressString (CString256& string, const Sockets::SocketAddress& address) { return false; }
+	bool getAddressFromString (Sockets::SocketAddress& address, CStringPtr string) { return false; }
+};
+
+//************************************************************************************************
+// Network stub instance
+//************************************************************************************************
+
+namespace Network
+{
+	inline INetwork& instance ()
+	{
+		static NetworkStub stub;
+		return stub;
+	}
+}
+
+//************************************************************************************************
+// AdapterIteratorStub
+//************************************************************************************************
+
+struct AdapterEntryStub {};
+
+class AdapterIteratorStub: public IAdapterIterator<AdapterEntryStub>
+{
+public:
+	// IAdapterIterator
+	const AdapterEntryStub* next () { return nullptr; }
+	bool matches (const AdapterEntryStub* entry) const { return false; }
+	bool getIPAddress (Sockets::IPAddress& address, const AdapterEntryStub* entry) const { return false; }
+	bool getIPSubnetMask (Sockets::IPAddress& address, const AdapterEntryStub* entry) const { return false; }
+};
+
+typedef AdapterIteratorStub AdapterIterator;
+
+#endif // CORE_NETWORK_IMPLEMENTATION == CORE_FEATURE_UNIMPLEMENTED
 
 } // namespace Platform
 } // namespace Core

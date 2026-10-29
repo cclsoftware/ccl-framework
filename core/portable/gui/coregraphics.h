@@ -29,7 +29,7 @@ class BitmapFont;
 
 #if DEBUG
 /** Dump coordinates to debug output. */
-void dumpRect (const Rect& rect, const char* string = nullptr);
+void dumpRect (const Rect& rect, CStringPtr string = nullptr);
 #endif
 
 //************************************************************************************************
@@ -178,7 +178,7 @@ public:
 
 	GraphicsRenderer (RectRef maxClipRect);
 
-	static const int kMaxMultilineStringLength = STRING_STACK_SPACE_MAX;
+	static const int kMaxMultilineStringLength = CORE_STRING_STACK_MAX;
 
 	// Graphics
 	bool setOrigin (PointRef point) override;

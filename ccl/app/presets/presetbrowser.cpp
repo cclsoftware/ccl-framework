@@ -464,7 +464,7 @@ PopupSelectorClient::Result CCL_API PresetBrowser::onMouseDown (const MouseEvent
 			acceptOnDoubleClick (UnknownPtr<IItemView> (deepest).isValid ());
 
 			// if a mouse down on a scrollbar occurs: ignore
-			if(ViewBox (deepest).getClassID () == CCL::ClassID::ScrollBar)
+			if(ViewBox (deepest).getClassID () == ClassID::ScrollBar)
 				return kIgnore;
 		}
 	}
@@ -574,7 +574,7 @@ void PresetBrowser::addSearch ()
 {
 	if(AutoPtr<IAttributeList> metaAttributes = createMetaInfo ())
 	{
-		CCL::UID classID;
+		UID classID;
 		PresetMetaAttributes (*metaAttributes).getClassID (classID);
 		setSearchProvider (NEW PresetSearchProvider (classID));
 		resultListHideCategories (true);

@@ -24,6 +24,7 @@ set (corelib_win_network_sources
 )
 
 set (corelib_win_source_files
+	${corelib_DIR}/platform/shared/coreplatformthread.cpp
 	${corelib_DIR}/platform/shared/posix/corefilesystem.posix.cpp
 	${corelib_DIR}/platform/win/coreatomicstack.win.cpp
 	${corelib_DIR}/platform/win/coredynamiclibrary.win.cpp

@@ -23,9 +23,12 @@
 
 #include "ccl/main/cclmodmain.h"
 
+#ifdef CCLNET_ASYNCDNSRESOLVER_ENABLED
+#include "ccl/network/asyncdnsresolver.h"
+#endif
 #include "ccl/network/network.h"
 #include "ccl/network/netdiscovery.h"
-#include "ccl/network/web/http/client.h"
+#include "ccl/network/web/webabstraction.h"
 
 #include "ccl/public/system/iexecutable.h"
 #include "ccl/public/plugins/iscriptingmanager.h"
@@ -72,27 +75,37 @@ static bool _InitializeNetworkFramework (bool state)
 {
 	if(state)
 	{
+		#ifdef CCLNET_ASYNCDNSRESOLVER_ENABLED
+		AsyncDNSResolver::instance ().initialize ();
+		#endif
+
 		System::GetNetwork ();
 		ASSERT (theNetwork != nullptr)
 		if(!theNetwork->startup ())
 		{
 			safe_release (theNetwork);
+			#ifdef CCLNET_ASYNCDNSRESOLVER_ENABLED
+			AsyncDNSResolver::instance ().terminate ();
+			#endif
 			return false;
 		}
 
-		// make sure singleton exists
-		Web::HTTP::ConnectionManager::instance ();
+		Web::WebEngine::instance ().startup ();
 	}
 	else
 	{
-		// make sure persistent connections are closed
-		Web::HTTP::ConnectionManager::instance ().terminate ();
+		if(Web::WebEngine::peekInstance ())
+			Web::WebEngine::instance ().shutdown ();
 
 		if(theNetwork)
 			theNetwork->shutdown ();
 
 		safe_release (theNetwork);
 		safe_release (theDiscoverHandler);
+
+		#ifdef CCLNET_ASYNCDNSRESOLVER_ENABLED
+		AsyncDNSResolver::instance ().terminate ();
+		#endif
 	}
 	return true;
 }
@@ -119,8 +132,8 @@ CCL_KERNEL_INIT_LEVEL (NetworkClasses, kFrameworkLevelFirst)
 
 	classFactory->setVersion (version);
 
-	// classes exported from cclnet must have namespace "Network"
-	Kernel::instance ().registerPublicClasses (*classFactory, "Network");
+	// classes exported from cclnet must have category "Network"
+	Kernel::instance ().registerPublicClasses (*classFactory, PLUG_CATEGORY_NETWORK_);
 
 	System::GetPlugInManager ().registerFactory (classFactory);
 	classFactory->release ();

@@ -158,7 +158,7 @@ protected:
 	bool checkUniqueId (StringRef id) const;
 
 	// Object
-	tbool CCL_API invokeMethod (CCL::Variant& returnValue, CCL::MessageRef msg) override;
+	tbool CCL_API invokeMethod (Variant& returnValue, MessageRef msg) override;
 };
 
 //////////////////////////////////////////////////////////////////////////////////////////////////

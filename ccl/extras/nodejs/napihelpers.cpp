@@ -19,6 +19,7 @@
 #include "ccl/extras/nodejs/napihelpers.h"
 
 #include "ccl/base/message.h"
+#include "ccl/base/storage/attributes.h"
 
 #include "ccl/public/system/threadsync.h"
 
@@ -50,7 +51,7 @@ private:
 	const Variant* args;
 	int argCount;
 	Variant result;
-	CCL::Threading::Signal signal;
+	Threading::Signal signal;
 };
 
 } // namespace NodeJS
@@ -119,7 +120,7 @@ napi_value* NAPIValue::operator & ()
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-void NAPIValue::setProperty (const char* name, const NAPIValue& property)
+void NAPIValue::setProperty (CStringPtr name, const NAPIValue& property)
 {
 	napi_status status = napi_set_named_property (environment, value, name, property);
 	assert (status == napi_ok);
@@ -184,15 +185,32 @@ Variant NAPIValue::toVariant () const
 
 	case napi_object:
 		{
+			// We only recognize either CCL objects wrapped into JavaScript objects or plain
+			// objects (POJO). Try to unwrap the object first. If that does not work then
+			// convert it to a list of attributes.
+
 			IUnknown* object = nullptr;
 			status = napi_unwrap (environment, value, reinterpret_cast<void**>(&object));
-			assert (status == napi_ok);
 
-			return Variant (object, true);
+			Variant result;
+			if(status == napi_ok)
+			{
+				result = object;
+				result.share ();
+			}
+			else
+			{
+				Attributes* attributes = createAttributesFromObject ();                     
+				result = static_cast<IObject*>(attributes);
+				result.share ();
+				attributes->release ();
+			}
+
+			return result;
 		}
 
 	case napi_function:
-		return Variant (static_cast<CCL::Scripting::IFunction*>(new NAPIFunction (environment, value)));
+		return Variant (static_cast<Scripting::IFunction*> (new NAPIFunction (environment, value)));
 
 	case napi_external:
 		return Variant ();
@@ -383,6 +401,46 @@ NAPIValue NAPIValue::fromObject (napi_env environment, IObject* object)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
+Attributes* NAPIValue::createAttributesFromObject () const
+{
+	napi_value propertyNames = nullptr;
+	napi_status status = napi_get_property_names (environment, value, &propertyNames);
+	ASSERT (status == napi_ok);
+
+	uint32_t length = 0;
+	status = napi_get_array_length (environment, propertyNames, &length);
+	ASSERT (status == napi_ok);
+
+	Attributes* attributes = NEW Attributes;
+	for(uint32_t i = 0; i < length; i++)
+	{
+		napi_value propertyName = nullptr;
+		status = napi_get_element (environment, propertyNames, i, &propertyName);
+		ASSERT (status == napi_ok);
+
+		size_t length = 0;
+		status = napi_get_value_string_utf8 (environment, propertyName, nullptr, 0, &length);
+		ASSERT (status == napi_ok);
+
+		char* strName = NEW char[length + 1];
+		status = napi_get_value_string_utf8 (environment, propertyName, strName, length + 1, &length);
+		ASSERT (status == napi_ok);
+
+		napi_value property = nullptr;
+		status = napi_get_property (environment, value, propertyName, &property);
+		ASSERT (status == napi_ok);
+
+		Variant propertyValue = NAPIValue (environment, property).toVariant ();
+		attributes->setAttribute (strName, propertyValue);
+
+		delete[] strName;
+	}
+
+	return attributes;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
 void NAPIValue::addObjectProperties (Core::Vector<napi_property_descriptor>& properties, const CCL::ITypeInfo& typeInfo)
 {
 	// Recursively add properties of base classes
@@ -453,7 +511,7 @@ napi_value NAPIValue::cclObjectInvokeMethod (napi_env environment, napi_callback
 
 	{
 		Message message;
-		message.setID (reinterpret_cast<const char*>(data));
+		message.setID (reinterpret_cast<CStringPtr>(data));
 		message.setArgCount (static_cast<int>(argc));
 
 		for(size_t i = 0; i < argc; i++)
@@ -485,7 +543,7 @@ napi_value NAPIValue::cclObjectGetProperty (napi_env environment, napi_callback_
 
 	{
 		Variant value;
-		if(object->getProperty (value, CString (reinterpret_cast<const char*>(data))))
+		if(object->getProperty (value, CString (reinterpret_cast<CStringPtr>(data))))
 			return NAPIValue::fromVariant (environment, value);
 		else
 			return NAPIValue::getUndefined (environment);
@@ -512,7 +570,7 @@ napi_value NAPIValue::cclObjectSetProperty (napi_env environment, napi_callback_
 
 	{
 		Variant value = NAPIValue (environment, argv).toVariant ();
-		if(!object->setProperty (reinterpret_cast<const char*>(data), value))
+		if(!object->setProperty (reinterpret_cast<CStringPtr>(data), value))
 			napi_throw_error (environment, nullptr, "cannot set property value");
 	}
 
@@ -1005,7 +1063,7 @@ void CCL::NodeJS::handleNAPIError (napi_env env, napi_status status)
 
 	if(!isPending)
 	{
-		const char* message = errorInfo->error_message ? errorInfo->error_message : "empty message";
+		CStringPtr message = errorInfo->error_message ? errorInfo->error_message : "empty message";
 		napi_throw_error (env, nullptr, message);
 	}
 }

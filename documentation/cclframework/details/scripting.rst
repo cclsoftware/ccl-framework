@@ -51,6 +51,14 @@ Composites
   DEFINE_METHOD_ARGR ("selectClass", "cid: UID | string", "bool")
 
 
+Nullable arguments
+
+.. code-block:: cpp
+
+  // Combine a type with "| null" to allow the script to pass "null":
+  DEFINE_METHOD_ARGS ("setOriginal", "original: Parameter | null")
+
+
 Variadic arguments
 
 .. code-block:: cpp

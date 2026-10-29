@@ -12,7 +12,7 @@
 // For more information, please visit ccl.dev.
 //
 // Filename    : ccl/gui/theme/renderer/dialoggrouprenderer.cpp
-// Description : Control Renderer
+// Description : DialogGroup Renderer
 //
 //************************************************************************************************
 
@@ -29,18 +29,19 @@ The style contains 2 images "Image" and "SecondaryImage", that can be selected v
 If the DialogGroup has a title, it is drawn at the top edge. */
 //************************************************************************************************
 
-BEGIN_VISUALSTYLE_CLASS (DialogGroup, VisualStyle, "DialogGroupStyle")
-	ADD_VISUALSTYLE_IMAGE  ("Image")			///< used when options "primary" is set (or as default)
-	ADD_VISUALSTYLE_IMAGE  ("SecondaryImage")	///< used when options "secondary" is set
-	ADD_VISUALSTYLE_METRIC ("headerheight")		///< height of text rectangle when title is drawn
-	ADD_VISUALSTYLE_METRIC ("headergap")		///< a gap between the header and body is left of "headergap" pixels
-	ADD_VISUALSTYLE_COLOR ("headerlinecolor")	///< color for simple divider line between header and body when there is no headergap
-END_VISUALSTYLE_CLASS (DialogGroup)
+DEFINE_TYPELIB_ENTRY_WITH_PARENT (DialogGroup, VisualStyle, "DialogGroupStyle", VISUALSTYLES_TYPELIB)
+BEGIN_TYPELIB_MEMBERS (DialogGroup)
+	ADD_TYPELIB_MEMBER_IMAGE ("Image") ///< used when options "primary" is set (or as default)
+	ADD_TYPELIB_MEMBER_IMAGE ("SecondaryImage") ///< used when options "secondary" is set
+	ADD_TYPELIB_MEMBER_METRIC ("headerheight") ///< height of text rectangle when title is drawn
+	ADD_TYPELIB_MEMBER_METRIC ("headergap") ///< a gap between the header and body is left of "headergap" pixels
+	ADD_TYPELIB_MEMBER_COLOR ("headerlinecolor") ///< color for simple divider line between header and body when there is no headergap
+END_TYPELIB_MEMBERS (DialogGroup)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-DialogGroupRenderer::DialogGroupRenderer (VisualStyle* visualStyle)
-:	ThemeRenderer (visualStyle)
+DialogGroupRenderer::DialogGroupRenderer (VisualStyle* visualStyle, View* owner)
+: ThemeRenderer (visualStyle, owner)
 {
 	image = visualStyle->getImage ("Image");
 	secondaryImage = visualStyle->getImage ("SecondaryImage");
@@ -50,15 +51,15 @@ DialogGroupRenderer::DialogGroupRenderer (VisualStyle* visualStyle)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void DialogGroupRenderer::draw (View* view, const UpdateRgn& updateRgn)
+void DialogGroupRenderer::draw (const UpdateRgn& updateRgn)
 {
-	StyleRef style = view->getStyle ();
+	StyleRef style = owner->getStyle ();
 	if(style.isOpaque ())
 	{
-		GraphicsPort port (view);
+		GraphicsPort port (owner);
 
 		Rect rect;
-		view->getClientRect (rect);
+		owner->getClientRect (rect);
 
 		IImage* frameImage = nullptr;
 		if(style.isCustomStyle (Styles::kDialogGroupAppearanceSecondary))
@@ -66,7 +67,7 @@ void DialogGroupRenderer::draw (View* view, const UpdateRgn& updateRgn)
 		else
 			frameImage = image;
 
-		Coord themeHeaderHeight = view->getTheme ().getThemeMetric (ThemeElements::kHeaderHeight);
+		Coord themeHeaderHeight = owner->getTheme ().getThemeMetric (ThemeElements::kHeaderHeight);
 		Coord headerheight = visualStyle->getMetric ("headerheight", themeHeaderHeight);
 
 		if(frameImage)
@@ -85,7 +86,7 @@ void DialogGroupRenderer::draw (View* view, const UpdateRgn& updateRgn)
 				else
 				{
 					port.drawImage (frameImage, Rect (0, 0, frameImage->getWidth (), frameImage->getHeight ()), rect);
-					if(headerlinecolor.getAlphaF () != 0.f)
+					if(headerlinecolor.isVisible ())
 					{
 						Rect bodyRect (rect);
 						bodyRect.top = headerheight;
@@ -101,24 +102,24 @@ void DialogGroupRenderer::draw (View* view, const UpdateRgn& updateRgn)
 		else
 			port.drawRect (rect, Pen (Colors::kBlack));
 
-		if(view->getTitle().isEmpty () == false)
+		if(owner->getTitle().isEmpty () == false)
 		{
 			rect.bottom = headerheight;
-			port.drawString (rect, view->getTitle (), visualStyle->getTextFont (), visualStyle->getTextBrush (), visualStyle->getTextAlignment ());
+			port.drawString (rect, owner->getTitle (), visualStyle->getTextFont (), visualStyle->getTextBrush (), visualStyle->getTextAlignment ());
 		}
 	}
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-int DialogGroupRenderer::hitTest (View* view, const Point& loc, Point* clickOffset)
+int DialogGroupRenderer::hitTest (PointRef where, Point* clickOffset)
 {
 	return 0;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool DialogGroupRenderer::getPartRect (const View* view, int partCode, CCL::Rect& rect)
+bool DialogGroupRenderer::getPartRect (Rect& rect, int partCode)
 {
 	return false;
 }

@@ -19,6 +19,7 @@
 #include "ccl/gui/controls/button.h"
 #include "ccl/gui/controls/swipehandler.h"
 #include "ccl/gui/controls/controlaccessibility.h"
+#include "ccl/gui/controls/textmodel.h"
 
 #include "ccl/gui/theme/renderer/buttonrenderer.h"
 #include "ccl/gui/touch/touchhandler.h"
@@ -240,16 +241,16 @@ class IntermediateButtonMouseHandler : public MouseHandler
 class ButtonSlideRenderer: public ButtonRenderer
 {
 public:
-	ButtonSlideRenderer (IImage* slideImage = nullptr)
-	: ButtonRenderer (nullptr),
+	ButtonSlideRenderer (IImage* slideImage, View* owner)
+	: ButtonRenderer (nullptr, owner),
 	  slideImage (slideImage)
 	{}
 
-	void draw (View* view, const UpdateRgn& updateRgn) override
-	{	
-		GraphicsPort port (view);
+	void draw (const UpdateRgn& updateRgn) override
+	{
+		GraphicsPort port (owner);
 		Rect rect;
-		view->getClientRect (rect);
+		owner->getClientRect (rect);
 		if(slideImage)
 		{
 			Rect src (0, 0, slideImage->getWidth (), slideImage->getHeight ());
@@ -293,7 +294,7 @@ public:
 
 				slideImage->setCurrentFrame (startState * framesPerState);
 
-				ButtonSlideRenderer* slideRenderer = NEW ButtonSlideRenderer (slideImage);
+				ButtonSlideRenderer* slideRenderer = NEW ButtonSlideRenderer (slideImage, button);
 				button->setRenderer (slideRenderer);
 			}
 		}
@@ -556,52 +557,36 @@ private:
 
 //************************************************************************************************
 // ButtonAccessibilityProvider
+/** Accessibility provider shared by Button and Toggle. */
 //************************************************************************************************
 
-class ButtonAccessibilityProvider: public ControlAccessibilityProvider,
-								   public IAccessibilityActionProvider
-{
-public:
-	DECLARE_CLASS_ABSTRACT (ButtonAccessibilityProvider, ControlAccessibilityProvider)
-
-	ButtonAccessibilityProvider (Button& owner);
-	
-	// ControlAccessibilityProvider
-	AccessibilityElementRole CCL_API getElementRole () const override;
-	void CCL_API getElementName (String& name) const override;
-
-	// IAccessibilityActionProvider
-	tresult CCL_API performAction () override;
-
-	CLASS_INTERFACE (IAccessibilityActionProvider, ControlAccessibilityProvider)
-
-protected:
-	Button& getButton () const;
-};
-
-//************************************************************************************************
-// ToggleAccessibilityProvider
-//************************************************************************************************
-
-class ToggleAccessibilityProvider: public ValueControlAccessibilityProvider,
+class ButtonAccessibilityProvider: public ValueControlAccessibilityProvider,
+								   public IAccessibilityActionProvider,
 								   public IAccessibilityToggleProvider
 {
 public:
-	DECLARE_CLASS_ABSTRACT (ToggleAccessibilityProvider, ValueControlAccessibilityProvider)
+	DECLARE_CLASS_ABSTRACT (ButtonAccessibilityProvider, ValueControlAccessibilityProvider)
 
-	ToggleAccessibilityProvider (Toggle& owner);
-	
+	ButtonAccessibilityProvider (Button& owner);
+
 	// ValueControlAccessibilityProvider
 	AccessibilityElementRole CCL_API getElementRole () const override;
+
+	// IAccessibilityActionProvider
+	tresult CCL_API performAction () override;
 
 	// IAccessibilityToggleProvider
 	tbool CCL_API isToggleOn () const override;
 	tresult CCL_API toggle () override;
 
-	CLASS_INTERFACE (IAccessibilityToggleProvider, ValueControlAccessibilityProvider)
+	CLASS_INTERFACES (ValueControlAccessibilityProvider)
 
 protected:
-	Toggle& getToggle () const;
+	Button& getButton () const;
+	bool exposesToggleCapability () const;
+
+	// ValueControlAccessibilityProvider
+	void getDefaultElementName (String& name) const override;
 };
 
 } // namespace CCL
@@ -641,10 +626,15 @@ DEFINE_CLASS_UID (Button, 0xf1f8ddfc, 0x6875, 0x437c, 0x8d, 0xda, 0x5b, 0x2b, 0x
 Button::Button (const Rect& size, IParameter* param, StyleRef style, StringRef title)
 : Control (size, param, style, title),
   titleParam (nullptr),
-  colorParam (nullptr)
+  colorParam (nullptr),
+  textModel (nullptr)
 {
 	wantsFocus (true);
 	setWheelEnabled (false);
+
+	AutoPtr<IMutableTextModel> model = NEW StringTextModel ();
+	model->fromParamString (title);
+	share_and_observe_unknown<ITextModel> (this, textModel, model);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -653,6 +643,7 @@ Button::~Button ()
 {
 	setTitleParam (nullptr);
 	setColorParam (nullptr);
+	share_and_observe_unknown<ITextModel> (this, textModel, nullptr);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -678,16 +669,40 @@ void Button::setTitleParam (IParameter* p)
 		ISubject::removeObserver (titleParam, this);
 		titleParam->release ();
 	}
-	
+
 	titleParam = p;
-	
+
 	if(titleParam)
 	{
 		titleParam->retain ();
 		ISubject::addObserver (titleParam, this);
-		
+
+		UnknownPtr<ITextModelProvider> provider (titleParam);
+		if(provider)
+		{
+			if(ITextModel* model = provider->getTextModel ())
+				share_and_observe_unknown<ITextModel> (this, textModel, model);
+		}
+		else
+		{
+			AutoPtr<IMutableTextModel> stringModel = NEW StringTextModel ();
+			share_and_observe_unknown<ITextModel> (this, textModel, stringModel);
+			titleParam->toString (title);
+			stringModel->fromParamString (title);
+		}
+
 		notify (UnknownPtr<ISubject> (titleParam), Message (kChanged));
 	}
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+const ITextLayout* Button::getTextLayout () const
+{
+	if(renderer)
+		return static_cast<ButtonRenderer*> (renderer)->getTextLayout ();
+
+	return nullptr;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -729,101 +744,10 @@ void Button::calcAutoSize (Rect& r)
 		return;
 	}
 
-	VisualStyle* buttonStyle = getRenderer ()->getVisualStyle ();
-
-	Rect textSize;
-	if(!title.isEmpty ())
-	{
-		Rect padding (2, 2, 2, 2);
-
-		if(buttonStyle)
-		{
-			Font::measureString (textSize, title, buttonStyle->getTextFont ());
-
-			buttonStyle->getPadding (padding);
-
-			ccl_lower_limit (padding.left, 2);
-			ccl_lower_limit (padding.right, 2);
-			ccl_lower_limit (padding.top, 2);
-			ccl_lower_limit (padding.bottom, 2);
-		}
-		else
-			Font::measureString (textSize, title, Font::getDefaultFont ());
-			
-		textSize.right  += padding.left + padding.right;
-		textSize.bottom += padding.top + padding.bottom;
-	}
-
-	IImage* buttonIcon = getIcon ();
-	if(!buttonIcon && buttonStyle)
-		buttonIcon = buttonStyle->getImage ("icon");
-
-	if(buttonIcon != nullptr)
-	{
-		Coord iconSpacing = buttonStyle->getMetric<Coord> ("spacing.icon", 3);
-		textSize.setWidth (textSize.getWidth () + iconSpacing + buttonIcon->getWidth ());
-		if(textSize.getHeight () < buttonIcon->getHeight ())
-			textSize.setHeight (buttonIcon->getHeight ());
-	}
-
-	auto useMinSize = [&](Rect& r)
-	{
-		r (0, 0, textSize.right, textSize.bottom);
-		
-		if(visualStyle == nullptr)
-		{
-			ccl_lower_limit (r.right,  getTheme ().getThemeMetric (ThemeElements::kButtonWidth));
-			ccl_lower_limit (r.bottom, getTheme ().getThemeMetric (ThemeElements::kButtonHeight));
-			
-			return true;
-		}
-		else
-		{
-			int minWidth = visualStyle->getMetric<int> ("buttonMinWidth", -1);
-			int minHeight = visualStyle->getMetric<int> ("buttonMinHeight", -1);
-			
-			if(visualStyle->getMetric<bool> ("useButtonMinSize", false) || minWidth != -1 || minHeight != -1)
-			{
-				if(minWidth == -1)
-					minWidth = getTheme ().getThemeMetric (ThemeElements::kButtonWidth);
-				
-				if(minHeight == -1)
-					minHeight = getTheme ().getThemeMetric (ThemeElements::kButtonHeight);
-				
-				r (0, 0, textSize.right, textSize.bottom);
-				ccl_lower_limit (r.right,  minWidth);
-				ccl_lower_limit (r.bottom, minHeight);
-				
-				return true;
-			}
-		}
-		return false;
-	};
-	   
-	if(useMinSize (r))
-	{
-		if(textSize.getWidth () > r.getWidth ())
-			r.setWidth (textSize.getWidth ());
-	}
-	else
-	{
-		IImage* image = visualStyle->getBackgroundImage ();
-		if(image == nullptr || style.isCustomStyle (Styles::kButtonLayoutIgnoreImageSize))
-		{
-			if(textSize.getWidth () > size.getWidth ())
-				r.setWidth (textSize.getWidth ());
-			if(textSize.getHeight () > size.getHeight ())
-				r.setHeight (textSize.getHeight ());
-		}
-		else
-		{
-			r.setWidth (image->getWidth ());
-			r.setHeight (image->getHeight ());
-
-			if(textSize.getWidth () > r.getWidth ())
-				r.setWidth (textSize.getWidth ());
-		}
-	}
+	ButtonRenderer* renderer = static_cast<ButtonRenderer*> (getRenderer ());
+	renderer->updateAtoms ();
+	r = rectFToInt (renderer->getSize ());
+	r.moveTo (Point (0, 0)); // ensure that setting right and bottom works as intended
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -964,7 +888,7 @@ ITouchHandler* Button::createTouchHandler (const TouchEvent& event)
 ThemeRenderer* Button::getRenderer ()
 {	
 	if(renderer == nullptr)
-		renderer = getTheme ().createRenderer (ThemePainter::kButtonRenderer, visualStyle);
+		renderer = getTheme ().createRenderer (ThemePainter::kButtonRenderer, visualStyle, this);
 	return renderer;
 }
 
@@ -1078,10 +1002,18 @@ void CCL_API Button::notify (ISubject* subject, MessageRef msg)
 	if(titleParam && msg == kChanged && isEqualUnknown (titleParam, subject))
 	{
 		titleParam->toString (title);
+		UnknownPtr<IMutableTextModel> model (textModel);
+		if(model)
+			model->fromParamString (title);
+
 		updateClient ();
 	}
 	else if(colorParam && isEqualUnknown (subject, colorParam))
+	{
 		invalidate ();
+		if(renderer)
+			renderer->invalidateStyleConditions ();
+	}
 	else
 		SuperClass::notify (subject, msg);
 }
@@ -1093,6 +1025,30 @@ AccessibilityProvider* Button::getAccessibilityProvider ()
 	if(!accessibilityProvider)
 		accessibilityProvider = NEW ButtonAccessibilityProvider (*this);
 	return accessibilityProvider;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+void Button::getStyleConditions (StyleConditionContext& conditions) const
+{
+	conditions.setCondition (ThemeNames::kOn, isOn ());
+
+	StyleRef style = getStyle ();
+	conditions.setCondition (ThemeNames::kLeft, style.isCommonStyle (Styles::kLeft));
+	conditions.setCondition (ThemeNames::kMiddle, style.isCommonStyle (Styles::kMiddle));
+	conditions.setCondition (ThemeNames::kRight, style.isCommonStyle (Styles::kRight));
+
+	SuperClass::getStyleConditions (conditions);
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+void Button::setTitle (StringRef title)
+{
+	SuperClass::setTitle (title);
+	UnknownPtr<IMutableTextModel> model (textModel);
+	if(model)
+		model->fromParamString (title);
 }
 
 //************************************************************************************************
@@ -1111,7 +1067,8 @@ DEFINE_CLASS_UID (Toggle, 0x72c02c75, 0x1d38, 0x44d6, 0xaa, 0x58, 0xce, 0xe0, 0x
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 Toggle::Toggle (const Rect& size, IParameter* param, StyleRef style, StringRef title)
-: Button (size, param, style, title)
+: Button (size, param, style, title),
+  accessibilityExposeAsButton (false)
 {}
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1171,17 +1128,8 @@ bool Toggle::isOn () const
 ThemeRenderer* Toggle::getRenderer ()
 {	
 	if(renderer == nullptr)
-		renderer = getTheme ().createRenderer (ThemePainter::kButtonRenderer, visualStyle);
+		renderer = getTheme ().createRenderer (ThemePainter::kButtonRenderer, visualStyle, this);
 	return renderer;
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
-AccessibilityProvider* Toggle::getAccessibilityProvider ()
-{
-	if(!accessibilityProvider)
-		accessibilityProvider = NEW ToggleAccessibilityProvider (*this);
-	return accessibilityProvider;
 }
 
 //************************************************************************************************
@@ -1266,7 +1214,8 @@ ThemeRenderer* MultiToggle::getRenderer ()
 		VisualStyle* vs = visualStyle;
 		if(!vs)
 			vs = getTheme ().getStandardStyle (ThemePainter::kButtonRenderer);
-		renderer = NEW MultiToggleRenderer (vs);
+
+		renderer = NEW MultiToggleRenderer (vs, this);
 	}
 	return renderer;
 }
@@ -1349,45 +1298,17 @@ void CheckBox::calcSizeLimits ()
 
 void CheckBox::calcAutoSize (Rect& r)
 {
-	VisualStyle* vs = getRenderer ()->getVisualStyle ();
-	if(vs && vs->getMetric<bool> ("buttonstyle", false))
+	if(renderer == nullptr)
 	{
-		Button::calcAutoSize (r);
-		return;
+		if(auto* renderer = ccl_cast<ButtonRenderer> (getRenderer ()))
+			renderer->updateAtoms ();
 	}
 
-	int height = getHeight ();
-	int width = getWidth ();
+	const ITextLayout* textLayout = nullptr;
+	if(auto* buttonRenderer = ccl_cast<ButtonRenderer> (renderer))
+		textLayout = buttonRenderer->getTextLayout ();
 
-	Font font;
-	if(vs)
-		font = vs->getTextFont ();
-
-	Rect titleRect;
-	Font::measureString (titleRect, getTitle (), font);
-	
-	Rect paddingRect;
-	if(vs)
-		vs->getPadding (paddingRect);
-	
-	int checkH = getTheme ().getThemeMetric (ThemeElements::kCheckBoxSize);
-	if(height == 0)
-		height = ccl_max (checkH, titleRect.getHeight ());
-	if(width == 0)
-	{
-		int checkW = checkH;
-		if(vs && vs->getBackgroundImage ())
-			checkW = vs->getBackgroundImage ()->getWidth ();
-
-		Coord titleWidth = 0;
-		if(!title.isEmpty ())
-			titleWidth = 2 + titleRect.getWidth () + 2;
-
-		int padding = (vs && vs->getMetric<bool> ("checkboxrightside", false)) ? paddingRect.right : paddingRect.left;
-		width = checkW + titleWidth + padding;
-	}
-
-	r (0, 0, width, height);
+	SuperClass::calcAutoSize (r);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1395,7 +1316,7 @@ void CheckBox::calcAutoSize (Rect& r)
 ThemeRenderer* CheckBox::getRenderer ()
 {	
 	if(renderer == nullptr)
-		renderer = getTheme ().createRenderer (ThemePainter::kCheckBoxRenderer, visualStyle);
+		renderer = getTheme ().createRenderer (ThemePainter::kCheckBoxRenderer, visualStyle, this);
 	return renderer;
 }
 
@@ -1422,7 +1343,7 @@ RadioButton::RadioButton (const Rect& size, IParameter* param, StyleRef style, S
 ThemeRenderer* RadioButton::getRenderer ()
 {	
 	if(renderer == nullptr)
-		renderer = getTheme ().createRenderer (ThemePainter::kRadioButtonRenderer, visualStyle);
+		renderer = getTheme ().createRenderer (ThemePainter::kRadioButtonRenderer, visualStyle, this);
 	return renderer;
 }
 
@@ -1503,15 +1424,16 @@ BEGIN_STYLEDEF (ToolButton::customStyles)
 	{"modetoggle",   Styles::kToolButtonBehaviorModeToggle},
 END_STYLEDEF
 
-BEGIN_VISUALSTYLE_CLASS (ToolButton, VisualStyle, "ToolButtonStyle")
-	ADD_VISUALSTYLE_METRIC  ("popup.offset.x")		///< an additional horizontal offset to the popup position
-	ADD_VISUALSTYLE_METRIC  ("popup.offset.y")		///< an additional vertical offset to the popup position
-	ADD_VISUALSTYLE_METRIC  ("popupstyle")			///< when "popupstyle" is true - the toolButton visualStyle is also used for the popup
-	ADD_VISUALSTYLE_STRING  ("decorform")			///< an optional "decorform" name identifying the form that decorates the popup
-	ADD_VISUALSTYLE_METRIC  ("popup.palette.right")	///< popup the palette on the right side (mode parameter must be a IPaletteProvider)
-	ADD_VISUALSTYLE_METRIC  ("popup.palette.bottom") ///< popup the palette on the bottom (mode parameter must be a IPaletteProvider)
-	ADD_VISUALSTYLE_METRIC  ("popup.extended") 		///< displays the popup as an extended menu instead of the default tree menu
-END_VISUALSTYLE_CLASS (ToolButton)
+DEFINE_TYPELIB_ENTRY_WITH_PARENT (ToolButton, VisualStyle, "ToolButtonStyle", VISUALSTYLES_TYPELIB)
+BEGIN_TYPELIB_MEMBERS (ToolButton)
+	ADD_TYPELIB_MEMBER_METRIC ("popup.offset.x")		///< an additional horizontal offset to the popup position
+	ADD_TYPELIB_MEMBER_METRIC ("popup.offset.y")		///< an additional vertical offset to the popup position
+	ADD_TYPELIB_MEMBER_METRIC ("popupstyle")			///< when "popupstyle" is true - the toolButton visualStyle is also used for the popup
+	ADD_TYPELIB_MEMBER_STRING ("decorform")				///< an optional "decorform" name identifying the form that decorates the popup
+	ADD_TYPELIB_MEMBER_METRIC ("popup.palette.right")	///< popup the palette on the right side (mode parameter must be a IPaletteProvider)
+	ADD_TYPELIB_MEMBER_METRIC ("popup.palette.bottom")	///< popup the palette on the bottom (mode parameter must be a IPaletteProvider)
+	ADD_TYPELIB_MEMBER_METRIC (StyleID::kExtendedPopup)	///< displays the popup as an extended menu instead of the default tree menu
+END_TYPELIB_MEMBERS (ToolButton)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1584,7 +1506,7 @@ void ToolButton::setModeParam (IParameter* p)
 ThemeRenderer* ToolButton::getRenderer ()
 {	
 	if(renderer == nullptr)
-		renderer = getTheme ().createRenderer (ThemePainter::kButtonRenderer, visualStyle);
+		renderer = getTheme ().createRenderer (ThemePainter::kButtonRenderer, visualStyle, this);
 	return renderer;
 }
 
@@ -1694,7 +1616,7 @@ void ToolButton::showModeMenu ()
 	}
 
 	CString menuType = MenuPresentation::kTree;
-	if(visualStyle && visualStyle->getMetric<bool> ("popup.extended", false))
+	if(visualStyle && visualStyle->getMetric<bool> (StyleID::kExtendedPopup, false))
 		menuType = MenuPresentation::kExtended;
 
 	Promise promise (popupSelector->popupAsync (modeParam, sizeInfo, menuType));
@@ -1862,6 +1784,8 @@ void CCL_API ToolButton::notify (ISubject* subject, MessageRef msg)
 			if(iconProvider && !style.isCustomStyle (Styles::kToolButtonAppearanceFixedIcon))
 			{
 				setIcon (iconProvider->getImage ());
+				if(renderer)
+					renderer->invalidateStyleConditions ();
 				updateClient ();
 			}
 		}
@@ -1919,12 +1843,12 @@ int ToolButton::getNumFrames () const
 // ButtonAccessibilityProvider
 //************************************************************************************************
 
-DEFINE_CLASS_ABSTRACT_HIDDEN (ButtonAccessibilityProvider, ControlAccessibilityProvider)
+DEFINE_CLASS_ABSTRACT_HIDDEN (ButtonAccessibilityProvider, ValueControlAccessibilityProvider)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 ButtonAccessibilityProvider::ButtonAccessibilityProvider (Button& owner)
-: ControlAccessibilityProvider (owner)
+: ValueControlAccessibilityProvider (owner)
 {}
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1936,6 +1860,29 @@ Button& ButtonAccessibilityProvider::getButton () const
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
+bool ButtonAccessibilityProvider::exposesToggleCapability () const
+{
+	Toggle* toggle = ccl_cast<Toggle> (&view);
+	return toggle && !toggle->isAccessibilityExposeAsButton ();
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+tresult CCL_API ButtonAccessibilityProvider::queryInterface (UIDRef iid, void** ptr)
+{
+	if(exposesToggleCapability ())
+	{
+		QUERY_INTERFACE (IAccessibilityToggleProvider)
+		QUERY_INTERFACE (IAccessibilityValueProvider)
+	}
+	else
+		QUERY_INTERFACE (IAccessibilityActionProvider)
+
+	return ControlAccessibilityProvider::queryInterface (iid, ptr);
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
 AccessibilityElementRole CCL_API ButtonAccessibilityProvider::getElementRole () const
 {
 	return AccessibilityElementRole::kButton;
@@ -1943,7 +1890,7 @@ AccessibilityElementRole CCL_API ButtonAccessibilityProvider::getElementRole () 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void CCL_API ButtonAccessibilityProvider::getElementName (String& name) const
+void ButtonAccessibilityProvider::getDefaultElementName (String& name) const
 {
 	if(view.getTitle ().isEmpty ())
 	{
@@ -1960,7 +1907,7 @@ void CCL_API ButtonAccessibilityProvider::getElementName (String& name) const
 			}
 		}
 	}
-	return SuperClass::getElementName (name);
+	return SuperClass::getDefaultElementName (name);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1971,43 +1918,17 @@ tresult CCL_API ButtonAccessibilityProvider::performAction ()
 	return kResultOk;
 }
 
-//************************************************************************************************
-// ToggleAccessibilityProvider
-//************************************************************************************************
-
-DEFINE_CLASS_ABSTRACT_HIDDEN (ToggleAccessibilityProvider, ValueControlAccessibilityProvider)
-
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-ToggleAccessibilityProvider::ToggleAccessibilityProvider (Toggle& owner)
-: ValueControlAccessibilityProvider (owner)
-{}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
-Toggle& ToggleAccessibilityProvider::getToggle () const
+tbool CCL_API ButtonAccessibilityProvider::isToggleOn () const
 {
-	return static_cast<Toggle&> (view);
+	return getButton ().isOn ();
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-AccessibilityElementRole CCL_API ToggleAccessibilityProvider::getElementRole () const
+tresult CCL_API ButtonAccessibilityProvider::toggle ()
 {
-	return AccessibilityElementRole::kButton;
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
-tbool CCL_API ToggleAccessibilityProvider::isToggleOn () const
-{
-	return getToggle ().isOn ();
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
-tresult CCL_API ToggleAccessibilityProvider::toggle ()
-{
-	getToggle ().push ();
+	getButton ().push ();
 	return kResultOk;
 }

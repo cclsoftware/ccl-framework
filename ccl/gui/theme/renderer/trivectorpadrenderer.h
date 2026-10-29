@@ -30,11 +30,12 @@ namespace CCL {
 class TriVectorPadRenderer: public ThemeRenderer
 {
 public:
-	TriVectorPadRenderer (VisualStyle* visualStyle);
+	TriVectorPadRenderer (VisualStyle* visualStyle, View* owner);
 
-	void draw (View* view, const UpdateRgn& updateRgn) override;
-	int hitTest (View* view, const Point& loc, Point* offset = nullptr) override;
-	bool getPartRect (const View* view, int partCode, Rect& rect) override;
+	// ThemeRenderer
+	void draw (const UpdateRgn& updateRgn) override;
+	int hitTest (PointRef where, Point* offset = nullptr) override;
+	bool getPartRect (Rect& rect, int partCode) override;
 
 protected:
 	SharedPtr<IImage> background;
@@ -51,15 +52,15 @@ protected:
 	Rect padding;
 	Rect hoverPadding;
 	
-	bool getHandleRect (const View* view, Rect& rect) const;
-	bool getTriangleRect (const View* view, Rect& rect) const;
-	bool getHoverTriangleRect (const View* view, Rect& rect) const;
-	bool getSnapPointRect (const View* view, int partCode, Rect& rect) const;
-	void drawTriangleShape (View* view);
+	bool getHandleRect (Rect& rect) const;
+	bool getTriangleRect (Rect& rect) const;
+	bool getHoverTriangleRect (Rect& rect) const;
+	bool getSnapPointRect (int partCode, Rect& rect) const;
+	void drawTriangleShape ();
 	int getFrameForSnapPointCode (int code) const;
 };
 
-DECLARE_VISUALSTYLE_CLASS (TriVectorPad)
+DECLARE_TYPELIB_ENTRY (TriVectorPad)
 
 } // namespace CCL
 

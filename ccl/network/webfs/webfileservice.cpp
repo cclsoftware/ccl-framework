@@ -78,7 +78,6 @@ public:
 	void CCL_API work () override;
 };
 
-
 //************************************************************************************************
 // GetDirectoryRequest
 //************************************************************************************************
@@ -144,10 +143,9 @@ CCL_EXPORT IWebFileService& CCL_API System::CCL_ISOLATED (GetWebFileService) ()
 // WebFileService
 //************************************************************************************************
 
-static const CString kUnmountFileServer ("unmountFileServer");
-
 DEFINE_CLASS_HIDDEN (WebFileService, Object)
 DEFINE_SINGLETON (WebFileService)
+static const CString kUnmountFileServer ("unmountFileServer");
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 

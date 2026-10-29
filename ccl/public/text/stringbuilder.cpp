@@ -41,7 +41,7 @@ WideCharString::~WideCharString ()
 
 const wchar_t* WideCharString::str () const
 {
-	return static_cast<const uchar*> (chars);
+	return static_cast<UStringPtr> (chars);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -271,7 +271,7 @@ String StringUtils::strip (StringRef string, bool (*filter) (uchar c))
 	String result;
 	StringWriter<64> resultWriter (result);
 	StringChars chars (string);
-	const uchar* stringPtr = chars;
+	UStringPtr stringPtr = chars;
 	for(int i = 0; stringPtr[i] != 0; i++)
 	{
 		if(filter (stringPtr[i]))

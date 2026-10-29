@@ -116,8 +116,7 @@ public:
 	tbool CCL_API canInsertData (ItemIndexRef index, int column, const IUnknownList& data, IDragSession* session, IView* targetView = nullptr) override;
 	tbool CCL_API insertData (ItemIndexRef index, int column, const IUnknownList& data, IDragSession* session) override;
 	void CCL_API viewAttached (IItemView* itemView) override;
-
-	void CCL_API notify (CCL::ISubject* subject, CCL::MessageRef msg) override;
+	void CCL_API notify (ISubject* subject, MessageRef msg) override;
 
 protected:
 	Browser& browser;
@@ -2035,18 +2034,36 @@ BrowserNode* Browser::findNode (StringID path, bool create, bool acceptAncestor)
 
 BrowserNode* Browser::findNodeWithBreadcrumbsPath (StringID path)
 {
+	MutableCString fullPath;
+
 	BrowserNode* topMostNodeParent = topMostNode ? topMostNode->getParent () : nullptr;
 	if(topMostNodeParent)
 	{
 		// expand to full path
-		MutableCString fullPath;
 		makePath (fullPath, topMostNodeParent);
 		fullPath.append ("/").append (path);
+	}
+	else
+		fullPath = path;
 
-		return findNode (fullPath, true);
+	BrowserNode* foundNode = foundNode = findNode (fullPath, true);
+	if(!foundNode && canSetRoot ())
+	{
+		// the specified node is not reachable under current treeRoot, try again from absolute root node
+		setTreeFocusNode (nullptr);
+
+		BrowserNode* top = getTopMostNode ();
+		if(top != getTreeRoot ())
+			setTreeRoot (top, true, true);
+
+		if(BrowserNode* newRoot = foundNode = findNode (fullPath, true, true))
+		{
+			setTreeRoot (newRoot, false, false);
+			foundNode = findNode (fullPath, true);
+		}
 	}
-	return findNode (path, true);
-	}
+	return foundNode;
+}
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -2650,7 +2667,7 @@ void CCL_API Browser::notify (ISubject* subject, MessageRef msg)
 		if(msg.getArgCount () >= 3 && msg[0] == "browserStates")
 			reorderBrowserState (msg[1], msg[2]);
 	}
-	else if(msg == CCL::Signals::kTabViewGetDataTarget)
+	else if(msg == Signals::kTabViewGetDataTarget)
 	{
 		if(msg.getArgCount () >= 2 && msg[0] == "browserStates")
 			if(IUnknown* dataTarget = getObject ("tabsDropTarget", ccl_iid<IDataTarget> ()))

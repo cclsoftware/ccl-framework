@@ -80,7 +80,7 @@ template <class T>
 class XHRClientCallback
 {
 public:
-	typedef CCL::Web::XHRCallback<T> Callback;
+	typedef Web::XHRCallback<T> Callback;
 };
 
 //************************************************************************************************

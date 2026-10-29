@@ -45,6 +45,7 @@ DEFINE_IID_ (IDocumentViewFactory, 0x771c1a3b, 0x833b, 0x4f97, 0x98, 0x0, 0x3d, 
 //************************************************************************************************
 
 DEFINE_CLASS_ABSTRACT_HIDDEN (DocumentClass, Object)
+DEFINE_CLASS_NAMESPACE (DocumentClass, NAMESPACE_CCL)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -236,6 +237,7 @@ bool Document::silentPreview = false;
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 DEFINE_CLASS (Document, Object)
+DEFINE_CLASS_NAMESPACE (Document, NAMESPACE_CCL)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 

@@ -42,6 +42,7 @@ class EditView: public UserControl,
 public:
 	DECLARE_CLASS (EditView, UserControl)
 	DECLARE_METHOD_NAMES (EditView)
+	DECLARE_PROPERTY_NAMES (EditView)
 
 	EditView (EditorComponent* component = nullptr, RectRef size = Rect (), StyleRef style = 0, StringRef title = nullptr);
 	~EditView ();
@@ -183,7 +184,7 @@ protected:
 	UserTooltipPopup& getEditTooltip ();
 	void updateToolHelp (const MouseEvent& event);
 
-	virtual CCL::String getItemType (Object* item);
+	virtual String getItemType (Object* item);
 	
 	// ISelectionViewer
 	void showSelection (bool redraw = true) override;

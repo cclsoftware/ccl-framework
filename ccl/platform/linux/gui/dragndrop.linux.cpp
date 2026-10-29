@@ -75,11 +75,14 @@ LinuxDragSession::LinuxDragSession (wl_data_offer* offer, const Vector<MutableCS
   dataOffer (offer),
   terminated (true)
 {
-	for(CStringRef mimeType : offeredMimeTypes)
-	{
-		if(mimeType == kUrlListMimeType || mimeType == DataDeviceHelper::getClipboardMimeType ())
-			mimeTypes.add (mimeType);
-	}
+	if(offeredMimeTypes.contains (kUrlListMimeType))
+		mimeTypes.add (kUrlListMimeType);
+
+	// receive text only once, prefer UTF-8
+	if(offeredMimeTypes.contains (DataDeviceHelper::getClipboardMimeType (true)))
+		mimeTypes.add (DataDeviceHelper::getClipboardMimeType (true));
+	else if(offeredMimeTypes.contains (DataDeviceHelper::getClipboardMimeType ()))
+		mimeTypes.add (DataDeviceHelper::getClipboardMimeType ());
 	if(offer)
 		convertNativeItems ();
 }
@@ -145,7 +148,10 @@ IAsyncOperation* CCL_API LinuxDragSession::dragAsync ()
 		wl_data_source_add_listener (dataSource, &listener, &listener);
 		
 		if(containsText)
+		{
+			wl_data_source_offer (dataSource, DataDeviceHelper::getClipboardMimeType (true));
 			wl_data_source_offer (dataSource, DataDeviceHelper::getClipboardMimeType ());
+		}
 		if(containsUrl)
 			wl_data_source_offer (dataSource, kUrlListMimeType);
 		
@@ -211,7 +217,7 @@ IAsyncOperation* CCL_API LinuxDragSession::dragAsync ()
 
 void LinuxDragSession::convertNativeItems ()
 {
-	bool acceptedText = false;
+	MutableCString textMimeType;
 	bool acceptedUrlList = false;
 	for(CStringRef mimeType : mimeTypes)
 	{
@@ -224,15 +230,11 @@ void LinuxDragSession::convertNativeItems ()
 		if(wl_display* display = WaylandClient::instance ().getDisplay ())
 			wl_display_roundtrip (display);
 		
+		// URL lists are percent-encoded, so UTF-8 is fine for them as well
+		TextEncoding encoding = mimeType == DataDeviceHelper::getClipboardMimeType () ? Text::kSystemEncoding : Text::kUTF8;
+
 		String data;
-		char buffer[STRING_STACK_SPACE_MAX];
-		while(true)
-		{
-			ssize_t bytesRead = ::read (fds[0], buffer, sizeof(buffer));
-			if(bytesRead <= 0)
-				break;
-			data.appendCString (Text::kSystemEncoding, buffer, int (bytesRead));
-		}
+		DataDeviceHelper::readText (data, fds[0], encoding);
 		::close (fds[0]);
 		
 		CCL_PRINTF ("Received data: %s \"%s\"\n", mimeType.str (), MutableCString (data, Text::kSystemEncoding).str ());
@@ -256,18 +258,18 @@ void LinuxDragSession::convertNativeItems ()
 				data = pos >= 0 ? data.subString (pos + 1) : "";
 			}
 		}
-		else if(mimeType == DataDeviceHelper::getClipboardMimeType ())
+		else if(DataDeviceHelper::isClipboardMimeType (mimeType))
 		{
 			Boxed::String* string = NEW Boxed::String (data);
 			items.add (string->asUnknown (), false);
-			acceptedText = true;
+			textMimeType = mimeType;
 		}
 	}
-	
+
 	if(acceptedUrlList)
 		preferredMimeType = kUrlListMimeType;
-	else if(acceptedText)
-		preferredMimeType = DataDeviceHelper::getClipboardMimeType ();
+	else if(!textMimeType.isEmpty ())
+		preferredMimeType = textMimeType;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -320,19 +322,19 @@ void LinuxDragSession::DragListener::onSendData (void* data, wl_data_source* dat
 			String string;
 		
 			MutableCString dataString;
-			const char* data = nullptr;
+			CStringPtr data = nullptr;
 			ssize_t length = 0;
 			if(url && LinuxDragSession::kUrlListMimeType == mimeType)
 			{
-				dataString = MutableCString (UrlUtils::toEncodedString (*url), Text::kSystemEncoding);
+				dataString = MutableCString (UrlUtils::toEncodedString (*url), Text::kUTF8);
 				dataString.append ("\n");
 				data = dataString.str ();
 				length = dataString.length ();
 
 			}
-			else if(Clipboard::instance ().toText (string, unk) && DataDeviceHelper::getClipboardMimeType () == mimeType)
+			else if(Clipboard::instance ().toText (string, unk) && DataDeviceHelper::isClipboardMimeType (mimeType))
 			{
-				dataString = MutableCString (string, Text::kSystemEncoding);
+				dataString = MutableCString (string, Text::kUTF8);
 				data = dataString.str ();
 				length = dataString.length ();
 			}

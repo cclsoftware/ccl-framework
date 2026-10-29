@@ -44,32 +44,68 @@
 	<Styles>
 
 		<Style name="TutorialViewer.IconColors" inherit="Standard.Button">
-			<Metric name="colorize.icon" value="1"/>
+			<?not:defined legacy-styles-enabled?>
+			<Color name="icon.color" color="hsl(0,0,20,100)"/>
+			<StyleCondition name="on">
+				<Color name="icon.color" color="hsl(0,0,20,100)"/>
+			</StyleCondition>
+			<StyleCondition name="mouseover">
+				<Color name="icon.color" color="hsl(0,0,60,100)"/>
+			</StyleCondition>
+			<StyleCondition name="pressed">
+				<Color name="icon.color" color="hsl(0,0,80,100)"/>
+			</StyleCondition>
+			<StyleCondition name="disabled">
+				<Color name="icon.color" color="hsl(0,0,60,100)"/>
+			</StyleCondition>
+			<?defined legacy-styles-enabled?>
 			<Color name="iconcolor" color="hsl(0,0,20,100)"/>
 			<Color name="iconcolor.mouseover" color="hsl(0,0,60,100)"/>
 			<Color name="iconcolor.pressed" color="hsl(0,0,80,100)"/>
 			<Color name="iconcolor.on" color="hsl(0,0,20,100)"/>
 			<Color name="iconcolor.disabled" color="hsl(0,0,60,100)"/>
+			<?defined?>
+			<Metric name="iconfillfactor" value="1"/>
 		</Style>
 		
 		<Style name="TutorialViewer.WindowCloseButton" inherit="TutorialViewer.IconColors" appstyle="true" override="true">
+			<?not:defined legacy-styles-enabled?>
+			<Image name="icon.image" image="WindowCloseIcon"/>
+			<?defined legacy-styles-enabled?>
 			<Image name="icon" image="WindowCloseIcon"/>
+			<?defined?>
 		</Style>
 		
 		<Style name="TutorialViewer.ArrowDoubleLeftButton" inherit="TutorialViewer.IconColors" appstyle="true" override="true">
+			<?not:defined legacy-styles-enabled?>
+			<Image name="icon.image" image="Standard/ArrowDoubleLeft"/>
+			<?defined legacy-styles-enabled?>
 			<Image name="icon" image="Standard/ArrowDoubleLeft"/>
+			<?defined?>
 		</Style>
 		
 		<Style name="TutorialViewer.ArrowLeftButton" inherit="TutorialViewer.IconColors" appstyle="true" override="true">
+			<?not:defined legacy-styles-enabled?>
+			<Image name="icon.image" image="Standard/ArrowLeft"/>
+			<?defined legacy-styles-enabled?>
 			<Image name="icon" image="Standard/ArrowLeft"/>
+			<?defined?>
 		</Style>
 		
 		<Style name="TutorialViewer.ArrowRightButton" inherit="TutorialViewer.IconColors" appstyle="true" override="true">
+			<?not:defined legacy-styles-enabled?>
+			<Image name="icon.image" image="Standard/ArrowRight"/>
+			<?defined legacy-styles-enabled?>
 			<Image name="icon" image="Standard/ArrowRight"/>
+			<?defined?>
 		</Style>
 		
 		<Style name="TutorialViewer.ArrowDoubleRightButton" inherit="TutorialViewer.IconColors" appstyle="true" override="true">
+			<?not:defined legacy-styles-enabled?>
+			<Image name="icon.image" image="Standard/ArrowDoubleRight"/>
+			<?defined legacy-styles-enabled?>
 			<Image name="icon" image="Standard/ArrowDoubleRight"/>
+			<?defined?>
 		</Style>
 
 		<!-- Slide base foreground color. -->
@@ -105,12 +141,20 @@
 
 		<!-- Solid color, semi-transparent background, used as windowframe. -->
 		<Style name="TutorialViewer.Background">
+			<?not:defined legacy-styles-enabled?>
+			<Image name="background.image" image="TutorialViewer.BackgroundImage"/>
+			<?defined legacy-styles-enabled?>
 			<Image name="background" image="TutorialViewer.BackgroundImage"/>
+			<?defined?>
 		</Style>
 		
 		<!-- Outline for Cover Content only (first slide) -->
 		<Style name="TutorialViewer.ContentCoverOutline">
+			<?not:defined legacy-styles-enabled?>
+			<Image name="background.image" image="TutorialViewer.OutlineImage"/>
+			<?defined legacy-styles-enabled?>
 			<Image name="background" image="TutorialViewer.OutlineImage"/>
+			<?defined?>
 		</Style>
 
 	</Styles>
@@ -148,7 +192,7 @@
 			<if property="hasCover" value="1">
 				<!-- Stack elements here so 'content' can span entire form (reminder: cover image is provided by step, i.e. 'content'). -->
 				<ImageView size="0,0,600,400" provider="cover">
-					<ImageView size="0,0,600,400" style="TutorialViewer.ContentCoverOutline"/>
+					<ImageView size="0,0,600,400" style="TutorialViewer.ContentCoverOutline" options="contentfill"/>
 					<ImageView rect="0,200,600,400" image="TutorialViewer.CoverMask">
 						<Vertical rect="0,0,600,200" margin="10">
 							<define textareawidth="540">
@@ -170,7 +214,7 @@
 			<!-- ******************************************************************************************** -->
 
 			<if property="hasCover" value="0">
-				<ImageView width="600" style="TutorialViewer.Background" attach="vfit">
+				<ImageView width="600" style="TutorialViewer.Background" options="contentfill" attach="vfit">
 					<!-- Reminder: Keep buttons outside vertical layout to have more vertical space for the content area. -->
 					<Button name="close" style="TutorialViewer.WindowCloseButton" size="544,10,60,24" options="hidefocus transparent" tooltip="Close"/>
 					<Vertical width="600" margin="10" attach="vfit">
@@ -214,7 +258,7 @@
 						<define textareawidth="280">
 							<View name="TutorialViewer.SkinContent.StepData.Text" attach="vcenter"/>
 						</define>
-						<ImageView width="190" height="280" provider="vertical" attach="hcenter vcenter" options="fitimage"/>
+						<ImageView width="190" height="280" provider="vertical" attach="hcenter vcenter" options="contentfit"/>
 					</Horizontal>
 				</if>
 			</if>
@@ -222,7 +266,7 @@
 				<if property="hasVerticalContentImage" value="0">
 					<!-- Horizontal image only: show image below text. -->
 					<Vertical attach="hcenter vcenter" spacing="10">
-						<ImageView width="500" height="160" provider="horizontal" attach="hcenter vcenter" options="fitimage"/>
+						<ImageView width="500" height="160" provider="horizontal" attach="hcenter vcenter" options="contentfit"/>
 						<define textareawidth="500">
 							<View name="TutorialViewer.SkinContent.StepData.Text" attach="vcenter"/>
 						</define>
@@ -236,10 +280,10 @@
 							<define textareawidth="260">
 								<View name="TutorialViewer.SkinContent.StepData.Text" attach="vcenter"/>
 							</define>
-							<ImageView width="190" height="200" provider="vertical" attach="hcenter vcenter" options="fitimage"/>
+							<ImageView width="190" height="200" provider="vertical" attach="hcenter vcenter" options="contentfit"/>
 						</Horizontal>
 						<!-- bottom row -->
-						<ImageView width="550" height="140" provider="horizontal" attach="hcenter vcenter" options="fitimage"/>
+						<ImageView width="550" height="140" provider="horizontal" attach="hcenter vcenter" options="contentfit"/>
 					</Vertical>
 				</if>
 			</if>

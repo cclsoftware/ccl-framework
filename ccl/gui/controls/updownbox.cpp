@@ -138,7 +138,7 @@ ThemeRenderer* UpDownButton::getRenderer ()
 		if(visualStyle && visualStyle->getBackgroundImage () || getIcon () || style.isTransparent ())
 			return Button::getRenderer ();
 		else
-			renderer = getTheme ().createRenderer (ThemePainter::kUpDownButtonRenderer, visualStyle);
+			renderer = getTheme ().createRenderer (ThemePainter::kUpDownButtonRenderer, visualStyle, this);
 	}
 	return renderer;
 }

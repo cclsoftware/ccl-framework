@@ -119,7 +119,7 @@ ValueBox::ValueBox (const Rect& size, IParameter* param, StyleRef style)
 ThemeRenderer* ValueBox::getRenderer ()
 {
 	if(renderer == nullptr)
-		renderer = getTheme ().createRenderer (ThemePainter::kValueBoxRenderer, visualStyle);
+		renderer = getTheme ().createRenderer (ThemePainter::kValueBoxRenderer, visualStyle, this);
 	return renderer;
 }
 

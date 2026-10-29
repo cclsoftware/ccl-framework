@@ -19,8 +19,9 @@
 #ifndef _ccl_skinelement_h
 #define _ccl_skinelement_h
 
-#include "ccl/base/typelib.h"
+#include "ccl/gui/guitypelib.h"
 
+#include "ccl/base/singleton.h"
 #include "ccl/base/collections/objectarray.h"
 
 #include "ccl/public/gui/framework/iskinmodel.h"
@@ -49,87 +50,6 @@ extern void SkinWarning (const SkinElements::Element* element, CStringRef warnin
 { CCL::MutableCString __warning; __warning.appendFormat (s, __VA_ARGS__); CCL::SkinWarning (e, __warning); }
 
 //************************************************************************************************
-// Skin Element Macros
-//************************************************************************************************
-
-#define DECLARE_SKIN_ELEMENT(Class, Parent) \
-DECLARE_CLASS (Class, Parent) \
-static SkinElements::MetaElement __skinClass; \
-const ITypeInfo* CCL_API getElementClass () const override { return &__skinClass; }
-
-#define DECLARE_SKIN_ELEMENT_ABSTRACT(Class, Parent) \
-DECLARE_CLASS_ABSTRACT (Class, Parent) \
-static SkinElements::MetaElement __skinClass;
-
-#define DECLARE_SKIN_ELEMENT_CLASS(Class, Parent) \
-class Class: public Parent \
-{ public: Class () {sorted = true;} DECLARE_SKIN_ELEMENT (Class, Parent) };
-
-#define DEFINE_SKIN_ENUMERATION(TagName, AttrName, styleDef) \
-static SkinElements::Enumeration UNIQUE_IDENT (__skinEnum) (TagName "." AttrName, nullptr, styleDef);
-
-#define DEFINE_SKIN_ENUMERATION_PARENT(TagName, AttrName, styleDef, ParentTagName, ParentAttrName) \
-static SkinElements::Enumeration UNIQUE_IDENT (__skinEnum) (TagName "." AttrName, ParentTagName "." ParentAttrName, styleDef);
-
-#define ADD_SKIN_ELEMENT_MEMBER(name, typeName) \
-Model::MemberDescription (name, ITypeInfo::kString, typeName),
-
-#define BEGIN_SKIN_ELEMENT_ATTRIBUTES(Class) \
-static Model::AttributeDescription __skinAttributes##Class[] = {
-
-#define ADD_SKIN_ELEMENT_ATTRIBUTE(Name, Value) \
-Model::AttributeDescription (Name, Value),
-
-#define END_SKIN_ELEMENT_ATTRIBUTES(Class) Model::AttributeDescription () }; \
-static SkinElements::MetaElement::AttributeModifier UNIQUE_IDENT (__skinattr) (Class::__skinClass, __skinAttributes##Class);
-
-// Elements can be members of one or more schemagroups and can have a childgroup.
-// All members of an element's childgroup are allowed as children of the element.
-// Schemagroups and childgroups are inherited from parent elements.
-// Every skin element is implicitly part of a schema group only containing the element itself
-// allowing the use of an element tag as childgroup.
-#define ADD_SKIN_SCHEMAGROUP_ATTRIBUTE(val) ADD_SKIN_ELEMENT_ATTRIBUTE("Class:SchemaGroups", val)
-#define ADD_SKIN_CHILDGROUP_ATTRIBUTE(val) ADD_SKIN_ELEMENT_ATTRIBUTE("Class:ChildGroup", val)
-
-#define BEGIN_SKIN_ELEMENT_WITH_MEMBERS(Class, Parent, TagName, GroupName, RelatedClass) \
-DEFINE_CLASS_HIDDEN (Class, Parent) \
-SkinElements::MetaElement Class::__skinClass (TagName, Class::__create, &Parent::__skinClass, false, GroupName); \
-static Model::MemberDescription __skinMembers##Class[] = {
-
-#define BEGIN_SKIN_ELEMENT_ABSTRACT_WITH_MEMBERS(Class, Parent, TagName, GroupName, RelatedClass) \
-DEFINE_CLASS_HIDDEN (Class, Parent) \
-SkinElements::MetaElement Class::__skinClass (TagName, Class::__create, &Parent::__skinClass, true, GroupName); \
-static Model::MemberDescription __skinMembers##Class[] = {
-
-#define BEGIN_SKIN_ELEMENT_BASE_WITH_MEMBERS(Class, Parent, TagName, GroupName) \
-DEFINE_CLASS_HIDDEN (Class, Parent) \
-SkinElements::MetaElement Class::__skinClass (TagName, Class::__create, 0, true, GroupName); \
-static Model::MemberDescription __skinMembers##Class[] = {
-
-#define END_SKIN_ELEMENT_WITH_MEMBERS(Class) Model::MemberDescription () }; \
-static SkinElements::MetaElement::MemberDescriptionModifier UNIQUE_IDENT (__skinmod) (Class::__skinClass, __skinMembers##Class);
-
-#define DEFINE_SKIN_ELEMENT(Class, Parent, TagName, GroupName, RelatedClass) \
-BEGIN_SKIN_ELEMENT_WITH_MEMBERS(Class, Parent, TagName, GroupName, RelatedClass) \
-END_SKIN_ELEMENT_WITH_MEMBERS(Class)
-
-#define DEFINE_SKIN_ELEMENT_ABSTRACT(Class, Parent, TagName, GroupName, RelatedClass) \
-BEGIN_SKIN_ELEMENT_ABSTRACT_WITH_MEMBERS(Class, Parent, TagName, GroupName, RelatedClass) \
-END_SKIN_ELEMENT_WITH_MEMBERS(Class)
-
-#define TYPE_BOOL CCL::TypeNames::kBool
-#define TYPE_STRING CCL::TypeNames::kString
-#define TYPE_FLOAT CCL::TypeNames::kFloat
-#define TYPE_INT CCL::TypeNames::kInt
-#define TYPE_ENUM CCL::TypeNames::kEnum
-#define TYPE_METRIC ("metric")
-#define TYPE_COLOR ("color")
-#define TYPE_RECT ("rect")
-#define TYPE_SIZE ("size")
-#define TYPE_POINT ("point")
-#define TYPE_POINT3D ("point3d")
-
-//************************************************************************************************
 // ISkinContext
 //************************************************************************************************
 
@@ -150,58 +70,38 @@ public:
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 namespace SkinElements {
-	
+
 class Element;
 
 //************************************************************************************************
-// MetaElement
-/** Represents a tag class in Skin XML. */
+// SkinElementLibrary
+/** The Skin Elements type library: the CCL::TypeLibrary singleton that every Skin XML tag class
+	and enumeration registers into. */
 //************************************************************************************************
 
-class MetaElement: public TypeInfoWithMembers
+class SkinElementLibrary: public TypeLibrary,
+						   public Singleton<SkinElementLibrary>
 {
 public:
-	MetaElement (CStringPtr name, Object* (*creator)(), const MetaElement* parentClass,
-				 bool isAbstract = false, CStringPtr groupName = nullptr);
+	SkinElementLibrary ();
 
 	constexpr static bool kTagsCaseSensitive = false; ///< case sensitivity of skin tags
 
-	static TypeLibrary& getTypeLibrary ();
-	static Element* createElement (CStringRef name);
+	/** Resolve every registered TypeLibClass's parent-type link by walking the real RTTI
+		parent chain until a registered ancestor is found. Call once, after all TypeLibClass
+		for this library have self-registered (see CCL_KERNEL_INIT_LEVEL in skinelement.cpp). */
+	void init ();
 
-	// TypeInfoWithMembers
-	int CCL_API getClassFlags () const override;
-	bool getDetails (ITypeInfoDetails& details) const override;
-
-protected:
-	Object* (*creator)();
-	bool isAbstract;
-	CStringPtr groupName;
-
-	Element* createElement () const;
-};
-
-//************************************************************************************************
-// Enumeration
-/** Represents an enumeration in Skin XML. */
-//************************************************************************************************
-
-class Enumeration: public EnumTypeInfo
-{
-public:
-	Enumeration (CStringPtr name, CStringPtr parentName, const StyleDef* def);
-
-	static const StyleDef* getStyleDef (CStringRef name, bool partialMatching = false);
-
-	// EnumTypeInfo
-	int CCL_API getEnumeratorCount () const override;
-	tbool CCL_API getEnumerator (MutableCString& name, Variant& value, int index) const override;
+	Element* createElement (CStringRef name) const;
+	const StyleDef* getStyleDef (CStringRef name, bool partialMatching = false) const;
 
 protected:
-	friend class SkinElementLibrary;
-	const StyleDef* def;
-	mutable int count;
+	const TypeLibClass* findByMetaClass (MetaClassRef metaClass) const;
 };
+
+inline SkinElementLibrary& getTypeLibrary () { return SkinElementLibrary::instance (); }
+
+#define SKIN_TYPELIB CCL::SkinElements::getTypeLibrary ()
 
 //************************************************************************************************
 // Element
@@ -210,12 +110,14 @@ This class is not used directly, but all other skin element classes inherit from
 //************************************************************************************************
 
 class Element: public ObjectArray,
+			   public ITypeLibReference,
 			   public ISkinElement,
 			   public ISkinElementChildren
 {
 public:
-	DECLARE_SKIN_ELEMENT (Element, ObjectArray)
-	
+	DECLARE_CLASS (Element, ObjectArray)
+	DECLARE_TYPELIB_CLASS (Element)
+
 	Element (CStringRef name = nullptr);
 
 	static bool isSkinWarningsEnabled ();
@@ -250,10 +152,10 @@ public:
 
 	virtual bool setAttributes (const SkinAttributes& a);
 	virtual bool getAttributes (SkinAttributes& a) const;
-	virtual void loadFinished (); ///< when element tag closes (after all childs are loaded)
+	virtual void loadFinished (); ///< when element tag closes (after all children are loaded)
 	virtual bool isOverrideEnabled () const; ///< silence warnings for intentional overrides
 
-	virtual void appendCharacterData (const uchar* data, int length);
+	virtual void appendCharacterData (UStringPtr data, int length);
 	
 	// Context information
 	virtual ISkinContext* getSkinContext () const;
@@ -266,7 +168,7 @@ public:
 	tbool CCL_API getSourceInfo (String& fileName, int32& lineNumber, IUrl* packageUrl = nullptr) const override; // ISkinElement
 	void CCL_API setSourceFile (StringRef fileName) override; // ISkinElement
 
-	CLASS_INTERFACE2 (ISkinElement, ISkinElementChildren, ObjectArray)
+	CLASS_INTERFACE3 (ITypeLibReference, ISkinElement, ISkinElementChildren, ObjectArray)
 
 	class SortingSuspender;
 
@@ -292,6 +194,22 @@ protected:
 	// ISkinElementChildren
 	tbool CCL_API addChildElement (ISkinElement* childElement, int index = -1) override;
 	tbool CCL_API removeChildElement (ISkinElement* childElement, int* oldIndex = nullptr) override;
+};
+
+//************************************************************************************************
+// SortedElement
+/** Base class for skin elements whose children are looked up by name rather than kept in document
+	order (e.g. flat resource/style/form containers) - keeps them stored sorted by name for fast
+	lookup (see Element::addChild/findElement). Not itself a skin XML tag, so it registers as a
+	plain (non-typelib) abstract class rather than via DECLARE_CLASS_ABSTRACT + DECLARE_TYPELIB_CLASS (Class). */
+//************************************************************************************************
+
+class SortedElement: public Element
+{
+public:
+	DECLARE_CLASS_ABSTRACT (SortedElement, Element)
+
+	SortedElement () { sorted = true; }
 };
 
 //************************************************************************************************

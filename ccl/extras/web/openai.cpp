@@ -417,6 +417,17 @@ void ResponseCreateParams::addInput (StringRef role, StringRef content)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
+void ResponseCreateParams::addInputItems (const Vector<ResponseInputItem>& items)
+{
+	for(int i = 0; i < items.count (); i++)
+	{
+		const ResponseInputItem& item = items[i];
+		addInput (item.role, item.content);
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
 void ResponseCreateParams::setTextJsonSchema (StringID name, const ResponseFormatJsonSchema& schema)
 {
 	Attributes format;

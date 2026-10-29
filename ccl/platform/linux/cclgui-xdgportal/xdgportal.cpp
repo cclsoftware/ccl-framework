@@ -142,8 +142,8 @@ tbool XdgPortalFileSelector::open (IPlatformFileSelectorObserver& newObserver, i
 	observer = &newObserver;
 	
 	std::map<std::string, sdbus::Variant> options;
-	options["filters"] = filters;
-	options["modal"] = true;
+	options["filters"] = sdbus::Variant (filters);
+	options["modal"] = sdbus::Variant (true);
 	
 	if(!CString (defaultSuffix).isEmpty ())
 	{
@@ -153,7 +153,7 @@ tbool XdgPortalFileSelector::open (IPlatformFileSelectorObserver& newObserver, i
 			{
 				if(CString (std::get<1> (glob).c_str ()).endsWith (defaultSuffix))
 				{
-					options["current_filter"] = filter;
+					options["current_filter"] = sdbus::Variant (filter);
 					break;
 				}
 			}
@@ -162,27 +162,27 @@ tbool XdgPortalFileSelector::open (IPlatformFileSelectorObserver& newObserver, i
 
 	if(!CString (initialDirectory).isEmpty ())
 	{
-		options["current_folder"] = initialDirectory;
+		options["current_folder"] = sdbus::Variant (initialDirectory);
 		Url selectedUrl;
 		selectedUrl.fromDisplayString (initialDirectory);
 		if(!CString (initialFileName).isEmpty ())
 			selectedUrl.descend (initialFileName, IUrl::kFile);
-		options["uris"] = { MutableCString (UrlFullString (selectedUrl), Text::kUTF8).str () };
+		options["uris"] = sdbus::Variant (MutableCString (UrlFullString (selectedUrl), Text::kUTF8).str ());
 	}
 
 	switch(fileMode)
 	{
 	case kFile :
-		options["directory"] = false;
-		options["multiple"] = false;
+		options["directory"] = sdbus::Variant (false);
+		options["multiple"] = sdbus::Variant (false);
 		break;
 	case kMultipleFiles :
-		options["directory"] = false;
-		options["multiple"] = true;
+		options["directory"] = sdbus::Variant (false);
+		options["multiple"] = sdbus::Variant (true);
 		break;
 	case kDirectory :
-		options["directory"] = true;
-		options["multiple"] = false;
+		options["directory"] = sdbus::Variant (true);
+		options["multiple"] = sdbus::Variant (false);
 		break;
 	}
 
@@ -296,7 +296,7 @@ void XdgPortalNotification::setVisible (tbool state)
 
 void XdgPortalNotification::setTitle (CStringPtr title)
 {
-	notificationInfo["title"] = title;
+	notificationInfo["title"] = sdbus::Variant (title);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -313,16 +313,16 @@ void XdgPortalNotification::showMessage (int alertType, CStringPtr message)
 	switch(alertType)
 	{
 	case kInformation :
-		notificationInfo["priority"] = "normal";
+		notificationInfo["priority"] = sdbus::Variant ("normal");
 		break;
 	case kWarning :
-		notificationInfo["priority"] = "high";
+		notificationInfo["priority"] = sdbus::Variant ("high");
 		break;
 	case kError :
-		notificationInfo["priority"] = "urgent";
+		notificationInfo["priority"] = sdbus::Variant ("urgent");
 		break;
 	}
-	notificationInfo["body"] = message;
+	notificationInfo["body"] = sdbus::Variant (message);
 
 	MutableCString id;
 	UID uid;

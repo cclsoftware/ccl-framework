@@ -146,7 +146,7 @@ public:
 			SolidBrush textBrush (vs.getTextBrush ());
 
 			BitmapGraphicsDevice port (bitmap);
-			headerRenderer->drawHeader (headerView, port, Rect (0, 0, colW, colH), column->getTitle (), textBrush, font);
+			headerRenderer->drawHeader (port, Rect (0, 0, colW, colH), column->getTitle (), textBrush, font);
 		}
 		AutoPtr<IDrawable> drawable = NEW ImageDrawable (bitmap, .8f);
 		headerSprite = Sprite::createSprite (headerView, drawable, columnRect);
@@ -237,6 +237,7 @@ public:
 	AccessibilityElementRole CCL_API getElementRole () const override;
 	tresult CCL_API getElementBounds (Rect& bounds, AccessibilityCoordSpace space) const override;
 	View* getView () const override;
+	int CCL_API getElementState () const override { return AccessibilityElementState::kEnabled; }
 
 private:
 	HeaderViewAccessibilityProvider& parent;
@@ -936,7 +937,7 @@ ColumnHeaderList* HeaderView::getColumnHeaders () const
 ThemeRenderer* HeaderView::getRenderer ()
 {
 	if(renderer == nullptr)
-		renderer = getTheme ().createRenderer (ThemePainter::kHeaderViewRenderer, visualStyle);
+		renderer = getTheme ().createRenderer (ThemePainter::kHeaderViewRenderer, visualStyle, this);
 	return renderer;
 }
 
@@ -993,7 +994,7 @@ void HeaderView::draw (const UpdateRgn& updateRgn)
 {
 	getRenderer ();
 	if(renderer)
-		renderer->draw (this, updateRgn);
+		renderer->draw (updateRgn);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////

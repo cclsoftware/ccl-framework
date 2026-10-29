@@ -149,7 +149,7 @@ ColoredBitmap::ColoredBitmap (IImage* source, ColorRef color)
   cachedColor (color),
   defaultColor (color)
 {
-	if(defaultColor.getAlphaF () == 0)
+	if(!defaultColor.isVisible ())
 		defaultColor = Colors::kBlack;
 }
 	
@@ -185,7 +185,7 @@ void ColoredBitmap::setColor (const Color& color)
 	{
 		modifiedImage = nullptr;
 		cachedColor = color;
-		if(cachedColor.getAlphaF () == 0)
+		if(!cachedColor.isVisible ())
 			cachedColor = defaultColor;
 	}
 }

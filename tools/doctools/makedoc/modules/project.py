@@ -2,22 +2,19 @@
 """Makedoc project module.
 """
 
+__copyright__ = "Copyright (c) 2026 CCL Software Licensing GmbH"
+
 import json
 import logging
 import os
 import pathlib
-import sys
 from dataclasses import dataclass
 from json import JSONDecodeError
 from typing import List, Optional, Dict
 
-__copyright__ = "Copyright (c) 2023 CCL Software Licensing GmbH"
+from ccl_extras import RepositoryContext
 
 from modules.buildenv import BuildEnvironment
-
-sys.path.append(os.path.abspath(os.path.dirname(os.path.abspath(__file__)) + "../../../../../ccl/extras/python"))
-
-from tools.repoinfo import RepositoryInfo
 
 
 @dataclass
@@ -157,11 +154,7 @@ class ProjectHandler:
         - meta repo context: use all 'documentation' folders provided by RepositoryInfo
         """
 
-        # CCL framework repo context.
-        doc_paths = [RepositoryInfo.get_ccl_documentation_path()]
-
-        # Optional: meta repo context.
-        if env.repo_info:
-            doc_paths = env.repo_info.get_paths(RepositoryInfo.CATEGORY_DOCUMENTATION)
-
-        return doc_paths
+        if env.repo_info.get_context() == RepositoryContext.META:
+            return env.repo_info.get_meta_documentation_paths()
+        else:
+            return [env.repo_info.get_framework_documentation_path()]

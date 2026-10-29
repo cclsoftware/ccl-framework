@@ -53,6 +53,7 @@ END_XSTRINGS
 //************************************************************************************************
 
 DEFINE_CLASS_HIDDEN (ProgressStep, Object)
+DEFINE_CLASS_NAMESPACE (ProgressStep, NAMESPACE_CCL)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -293,6 +294,17 @@ tbool CCL_API ProgressStep::reportWarning (StringRef text)
 		dlg->reportWarning (text);
 	return true;
 }
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+BEGIN_PROPERTY_NAMES (ProgressStep)
+	DEFINE_PROPERTY_TYPE ("canceled", ITypeInfo::kBool) // read only
+	DEFINE_PROPERTY_TYPE ("detailCount", ITypeInfo::kInt) // read only
+	DEFINE_PROPERTY_TYPE ("value", ITypeInfo::kFloat)
+	DEFINE_PROPERTY_TYPE ("text", ITypeInfo::kString)
+	DEFINE_PROPERTY_TYPE ("title", ITypeInfo::kString)
+	DEFINE_PROPERTY_TYPE ("cancelEnabled", ITypeInfo::kBool)
+END_PROPERTY_NAMES (ProgressStep)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -608,20 +620,28 @@ IProgressNotify* ProgressDialog::createStep (ProgressStep* parent)
 
 void ProgressDialog::addSubProgress (ProgressStep* step)
 {
+	bool stepListChanged = false;
+
 	if(progressListView && canAddStepView ())
 	{
 		View* view = step->createView ();
 		if(view)
+		{
 			progressListView->addView (view);
+			stepListChanged = true;
+		}
 	}
 
-	flushUpdates ();
+	bool windowResized = stepListChanged && window && window->checkChildSizeLimits ();
+	flushUpdates (windowResized);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 void ProgressDialog::removeSubProgress (ProgressStep* step)
 {
+	bool stepListChanged = false;
+
 	if(canRemoveStepView ())
 	{
 		if(progressListView)
@@ -631,6 +651,7 @@ void ProgressDialog::removeSubProgress (ProgressStep* step)
 				{
 					progressListView->removeView (view);
 					view->release ();
+					stepListChanged = true;
 					break;
 				}
 			EndFor
@@ -645,7 +666,8 @@ void ProgressDialog::removeSubProgress (ProgressStep* step)
 		step->setParent (nullptr);
 	}
 
-	flushUpdates ();
+	bool windowResized = stepListChanged && window && window->checkChildSizeLimits ();
+	flushUpdates (windowResized);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////

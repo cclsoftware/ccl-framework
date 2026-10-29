@@ -43,7 +43,8 @@ public:
 
 	// NativeTextControl
 	void updateText () override;
-	void getControlText (String& string) override;
+	void getControlText (String& string) const override;
+	int getControlTextLength () const override;
 	void setSelection (int start, int length) override;
 	void setScrollPosition (PointRef where) override;
 	Point getScrollPosition () const override;

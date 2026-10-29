@@ -12,7 +12,7 @@
 // For more information, please visit ccl.dev.
 //
 // Filename    : ccl/gui/theme/renderer/scrollbarrenderer.cpp
-// Description : Control Renderer
+// Description : ScrollBar Renderer
 //
 //************************************************************************************************
 
@@ -28,7 +28,12 @@ namespace CCL {
 class ScrollBar;
 class ScrollButton;
 class Image;
+
 struct ScrollBarDrawState;
+
+//************************************************************************************************
+// ScrollBarImages
+//************************************************************************************************
 
 struct ScrollBarImages
 {
@@ -45,14 +50,15 @@ struct ScrollBarImages
 class ScrollBarRenderer: public ThemeRenderer
 {	
 public:
-	ScrollBarRenderer (VisualStyle* visualStyle);
-
-	void draw (View* view, const UpdateRgn& updateRgn) override;
-	int hitTest (View* view, const Point& loc, Point* clickOffset) override;
-	bool getPartRect (const View* view, int partCode, CCL::Rect& rect) override;
+	ScrollBarRenderer (VisualStyle* visualStyle, View* owner);
 
 	bool getDrawState (ScrollBar* scrollBar, ScrollBarDrawState& state, ScrollBarImages& images) const;
 	void loadImages ();
+
+	// ThemeRenderer
+	void draw (const UpdateRgn& updateRgn) override;
+	int hitTest (PointRef where, Point* clickOffset = nullptr) override;
+	bool getPartRect (Rect& rect, int partCode) override;
 
 protected:
 	bool imagesLoaded;
@@ -66,7 +72,7 @@ protected:
 	ScrollBarImages& getImages (StyleRef style);
 };
 
-DECLARE_VISUALSTYLE_CLASS (ScrollBar)
+DECLARE_TYPELIB_ENTRY (ScrollBar)
 
 //************************************************************************************************
 // ScrollButtonRenderer
@@ -75,13 +81,14 @@ DECLARE_VISUALSTYLE_CLASS (ScrollBar)
 class ScrollButtonRenderer: public ThemeRenderer
 {	
 public:
-	ScrollButtonRenderer (VisualStyle* visualStyle);
+	ScrollButtonRenderer (VisualStyle* visualStyle, View* owner);
 
 	static void drawTriangleIcon (IGraphics& port, RectRef clientRect, int orientation); // see Alignment
 
-	void draw (View* view, const UpdateRgn& updateRgn) override;
-	int hitTest (View* view, const Point& loc, Point* clickOffset) override;
-	bool getPartRect (const View* view, int partCode, CCL::Rect& rect) override;
+	// ThemeRenderer
+	void draw (const UpdateRgn& updateRgn) override;
+	int hitTest (PointRef where, Point* clickOffset = nullptr) override;
+	bool getPartRect (Rect& rect, int partCode) override;
 
 protected:
 	void loadImages (ScrollButton* view);
@@ -92,7 +99,7 @@ protected:
 	SharedPtr<IImage> icon;
 };
 
-DECLARE_VISUALSTYLE_CLASS (ScrollButton)
+DECLARE_TYPELIB_ENTRY (ScrollButton)
 
 //************************************************************************************************
 // PageControlRenderer
@@ -101,12 +108,12 @@ DECLARE_VISUALSTYLE_CLASS (ScrollButton)
 class PageControlRenderer: public ThemeRenderer
 {	
 public:
-	PageControlRenderer (VisualStyle* visualStyle);
+	PageControlRenderer (VisualStyle* visualStyle, View* owner);
 
 	// ThemeRenderer
-	void draw (View* view, const UpdateRgn& updateRgn) override;
-	int hitTest (View* view, const Point& loc, Point* clickOffset) override;
-	bool getPartRect (const View* view, int partCode, CCL::Rect& rect) override;
+	void draw (const UpdateRgn& updateRgn) override;
+	int hitTest (PointRef where, Point* clickOffset = nullptr) override;
+	bool getPartRect (Rect& rect, int partCode) override;
 
 protected:
 	SharedPtr<IImage> background;
@@ -117,7 +124,7 @@ protected:
 	void loadImages ();
 };
 
-DECLARE_VISUALSTYLE_CLASS (PageControl)
+DECLARE_TYPELIB_ENTRY (PageControl)
 
 } // namespace CCL
 

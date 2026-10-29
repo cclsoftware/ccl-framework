@@ -34,7 +34,7 @@ namespace CCL {
 struct XmlEntity
 {
 	uchar character;
-	const char* entity;
+	CStringPtr entity;
 };
 
 static const XmlEntity standard_entities[] =
@@ -295,11 +295,11 @@ String XmlEntities::decode (StringRef text)
 // XmlEncodings
 //************************************************************************************************
 
-const char* XmlEncodings::getEncoding (TextEncoding encoding)
+CStringPtr XmlEncodings::getEncoding (TextEncoding encoding)
 {
 	ASSERT (encoding != Text::kUnknownEncoding)
 
-	static const struct { TextEncoding encoding; const char* xml; } knownXmlEncodings[] =
+	static const struct { TextEncoding encoding; CStringPtr xml; } knownXmlEncodings[] =
 	{
 		{Text::kASCII,		"US-ASCII"},
 		{Text::kISOLatin1,	"ISO-8859-1"},
@@ -308,7 +308,7 @@ const char* XmlEncodings::getEncoding (TextEncoding encoding)
 		{Text::kUTF16BE,	"UTF-16"}
 	};
 
-	const char* xmlEncoding = nullptr;
+	CStringPtr xmlEncoding = nullptr;
 	for(int i = 0; i < ARRAY_COUNT (knownXmlEncodings); i++)
 		if(encoding == knownXmlEncodings[i].encoding)
 		{

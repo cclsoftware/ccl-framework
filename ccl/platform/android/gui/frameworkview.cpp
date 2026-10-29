@@ -65,6 +65,7 @@ DEFINE_JNI_CLASS (FrameworkViewClass)
 	DEFINE_JNI_METHOD (getNativeViewPtr, "()J")
 	DEFINE_JNI_METHOD (getRectOnScreen, "()Landroid/graphics/Rect;")
 	DEFINE_JNI_METHOD (setSize, "(IIII)V")
+	DEFINE_JNI_METHOD (setActiveInputMethod, "(L" CCLGUI_CLASS_PREFIX "InputMethod;)V")
 	DEFINE_JNI_METHOD (accessibilityContentChanged, "(I)V")
 END_DEFINE_JNI_CLASS
 

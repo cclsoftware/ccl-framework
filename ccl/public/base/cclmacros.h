@@ -150,7 +150,7 @@ PROPERTY_STRING_METHODS (member, Method)
 /** Define mutable C-string member (by reference). */
 #define PROPERTY_MUTABLE_CSTRING(member, Method) \
 protected: CCL::MutableCString member; public: \
-void set##Method (const char* _cstr) { member = _cstr; } \
+void set##Method (CCL::CStringPtr _cstr) { member = _cstr; } \
 CCL::CStringRef get##Method () const { return member; }
 
 /** Define smart auto pointer member (by address). Takes ownership in ctor and set method. */

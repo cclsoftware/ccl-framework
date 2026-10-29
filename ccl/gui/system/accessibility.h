@@ -82,6 +82,7 @@ public:
 
 	static void getPaginationText (String& text, int currentPage, int totalPages);
 	static void getToggleText (String& text, bool isOn);
+	static void getTextInputHint (String& text);
 
 	template<typename Interface>
 	bool hasInterface () { return UnknownPtr<Interface> (asUnknown ()).isValid (); }

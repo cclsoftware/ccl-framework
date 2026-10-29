@@ -60,7 +60,7 @@ public:
 
 	// register additional classes to be stored
 	void registerClass (MetaClassRef metaClass);
-	void setMemberFlags (MetaClassRef metaClass, const char* memberName, int flags);
+	void setMemberFlags (MetaClassRef metaClass, CStringPtr memberName, int flags);
 
 	// add / update / remove items
 	void addItem (DataItem* item);	///< takes ownership
@@ -73,8 +73,8 @@ public:
 	// query
 	Iterator* query (MetaClassRef metaClass, Persistence::IExpression* condition = nullptr);
 	template <class T> Iterator* query (Persistence::IExpression* condition = nullptr);
-	void collectValues (IMutableArray& values, MetaClassRef metaClass, const char* memberName, Persistence::IExpression* condition = nullptr);
-	template <class T> void collectValues (IMutableArray& values, const char* memberName, Persistence::IExpression* condition = nullptr);
+	void collectValues (IMutableArray& values, MetaClassRef metaClass, CStringPtr memberName, Persistence::IExpression* condition = nullptr);
+	template <class T> void collectValues (IMutableArray& values, CStringPtr memberName, Persistence::IExpression* condition = nullptr);
 
 protected:
 	Url storeLocation;
@@ -103,7 +103,7 @@ inline UrlRef DataStore::getLocation () const
 template <class T> Iterator* DataStore::query (Persistence::IExpression* condition)
 { return query (ccl_typeid<T> (), condition); }
 
-template <class T> void DataStore::collectValues (IMutableArray& values, const char* memberName, Persistence::IExpression* condition)
+template <class T> void DataStore::collectValues (IMutableArray& values, CStringPtr memberName, Persistence::IExpression* condition)
 { collectValues (values, ccl_typeid<T> (), memberName, condition); }
 
 } // namespace CCL

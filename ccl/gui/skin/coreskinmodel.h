@@ -19,6 +19,7 @@
 #ifndef _ccl_coreskinmodel_h
 #define _ccl_coreskinmodel_h
 
+#include "ccl/public/base/itypelib.h"
 #include "ccl/public/gui/framework/iskineditsupport.h"
 #include "ccl/public/gui/graphics/iimage.h"
 
@@ -142,6 +143,7 @@ protected:
 //************************************************************************************************
 
 class CoreSkinElement: public Object,
+					   public ITypeLibReference,
 					   public ISkinElement
 {
 public:
@@ -155,6 +157,9 @@ public:
 	void setElementClass (const ITypeInfo* _elementClass) { elementClass = _elementClass; }
 	StringRef getSourceFile () const { return sourceFile; }
 
+	// ITypeLibReference
+	const ITypeInfo* CCL_API getReferencedType () const override { return elementClass; }
+
 	// ISkinElement
 	StringID CCL_API getName () const override { return name; }
 	void CCL_API setName (StringID _name) override { name = _name; }
@@ -167,10 +172,9 @@ public:
 	tbool CCL_API getAttributeValue (Variant& value, StringID name) const override { return attributes.getAttribute (value, name); }
 	void CCL_API setAttributeValue (StringID name, VariantRef value, int index = -1) override;
 	tbool CCL_API removeAttribute (StringID name, int* oldIndex = nullptr) override;
-	const ITypeInfo* CCL_API getElementClass () const override { return elementClass; }
 	void CCL_API clone (ISkinElement*& element) const override;
 
-	CLASS_INTERFACE (ISkinElement, Object)
+	CLASS_INTERFACE2 (ITypeLibReference, ISkinElement, Object)
 
 protected:
 	const ITypeInfo* elementClass;

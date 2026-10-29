@@ -42,6 +42,7 @@ IAsyncOperation* Dialog::showPlatformDialog (IWindow* parent)
 	makeNativePopupWindow (parent);
 	
 	attached (this);
+	initFocusView ();
 	show ();
 	
 	loopTerminated = false;
@@ -90,12 +91,12 @@ tbool CCL_API LinuxDialog::close ()
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void LinuxDialog::showWindow (bool state)
+void LinuxDialog::showWindow (bool state, bool activate)
 {
 	if(!style.isCustomStyle (Styles::kWindowAppearanceCustomFrame))
 		style.setCustomStyle (Styles::kWindowCombinedStyleDialog, true);
 	
-	LinuxWindow::showWindow (state);
+	LinuxWindow::showWindow (state, activate);
 
 	if(state)
 	{

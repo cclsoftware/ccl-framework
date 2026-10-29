@@ -102,6 +102,21 @@ public:
 	LineCap getLineCap () const		{ return style & kLineCapMask; }
 	LineJoin getLineJoin () const	{ return style & kLineJoinMask; }
 
+	bool isVisible () const
+	{
+		return color.isVisible () && width > 0.f;
+	}
+
+	float getOpacity () const
+	{
+		return color.getAlphaF ();
+	}
+
+	void setOpacity (float opacity)
+	{
+		color.setAlphaF (opacity);
+	}
+	
 	bool isEqual (PenRef pen) const 
 	{ 
 		return	pen.getStyle () == style && 

@@ -131,13 +131,6 @@ Scale* ScaleView::getScale () const
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void ScaleView::draw (const DrawEvent& event)
-{
-	//...
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
 bool ScaleView::getHelp (IHelpInfoBuilder& helpInfo, bool canDragZoom)
 {
 	if(canDragZoom)
@@ -158,7 +151,7 @@ void ScaleView::updateHelp (const MouseEvent& event)
 		AutoPtr<IHelpInfoBuilder> helpInfo;
 		if(event.eventType != MouseEvent::kMouseLeave)
 		{
-			helpInfo = ccl_new<IHelpInfoBuilder> (CCL::ClassID::HelpInfoBuilder);
+			helpInfo = ccl_new<IHelpInfoBuilder> (ClassID::HelpInfoBuilder);
 			if(getHelp (*helpInfo))
 				System::GetHelpManager ().showInfo (UnknownPtr<IPresentable> (helpInfo));
 		}

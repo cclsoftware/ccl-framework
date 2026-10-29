@@ -143,7 +143,7 @@ public:
 	// XmlContentParser
 	tresult CCL_API startElement (StringRef name, const IStringDictionary& attributes) override;
 	tresult CCL_API endElement (StringRef name) override;
-	tresult CCL_API characterData (const uchar* data, int length, tbool isCDATA) override;
+	tresult CCL_API characterData (UStringPtr data, int length, tbool isCDATA) override;
 
 protected:
 	XmlNode* root;
@@ -163,7 +163,7 @@ public:
 	// XmlTreeParser
 	tresult CCL_API startElement (StringRef name, const IStringDictionary& attributes) override;
 	tresult CCL_API endElement (StringRef name) override;
-	tresult CCL_API characterData (const uchar* data, int length, tbool isCDATA) override;
+	tresult CCL_API characterData (UStringPtr data, int length, tbool isCDATA) override;
 	tresult CCL_API processingInstruction (StringRef target, StringRef data) override;
 };
 
@@ -175,15 +175,16 @@ class XmlTreeExtractor: public XmlTreeParser
 {
 public:
 	XmlTreeExtractor ();
-	void addSupportedTag (CCL::StringRef tag) {supportedTags.add(tag);}
+
+	void addSupportedTag (StringRef tag) { supportedTags.add(tag); }
 
 	// XmlTreeExtractor
-	CCL::tresult CCL_API startElement (CCL::StringRef name, const CCL::IStringDictionary& attributes) override;
-	CCL::tresult CCL_API endElement (CCL::StringRef name) override;
-	CCL::tresult CCL_API characterData (const uchar* data, int length, tbool isCDATA) override;
+	tresult CCL_API startElement (StringRef name, const IStringDictionary& attributes) override;
+	tresult CCL_API endElement (StringRef name) override;
+	tresult CCL_API characterData (UStringPtr data, int length, tbool isCDATA) override;
 
 private:
-	CCL::Vector<CCL::String> supportedTags; 
+	Vector<CCL::String> supportedTags; 
 	int skippingDepth;
 };
 

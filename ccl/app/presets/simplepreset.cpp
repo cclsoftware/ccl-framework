@@ -146,7 +146,7 @@ tbool CCL_API SimplePreset::fromDescriptor (IPresetDescriptor& descriptor)
 tresult CCL_API SimplePreset::queryInterface (UIDRef iid, void** ptr)
 {
 	// support query for IUrl to make IConvertFilters work even if url was converted to preset before
-	if(CCL::ccl_iid<IUrl> ().equals (iid))
+	if(ccl_iid<IUrl> ().equals (iid))
 	{
 		AutoPtr<Url> pathCopy (NEW Url (path));
 		return pathCopy->queryInterface (iid, ptr);		

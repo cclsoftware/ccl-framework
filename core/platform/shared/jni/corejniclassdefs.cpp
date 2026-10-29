@@ -40,6 +40,18 @@ DEFINE_JNI_CLASS (List)
 END_DEFINE_JNI_CLASS
 
 //************************************************************************************************
+// java.util.Locale
+//************************************************************************************************
+
+DEFINE_JNI_CLASS (Locale)
+	DEFINE_JNI_STATIC_METHOD (forLanguageTag, "(Ljava/lang/String;)Ljava/util/Locale;")
+	DEFINE_JNI_STATIC_METHOD (getAvailableLocales, "()[Ljava/util/Locale;")
+	DEFINE_JNI_STATIC_METHOD (getDefault, "()Ljava/util/Locale;")
+	DEFINE_JNI_METHOD (getCountry, "()Ljava/lang/String;")
+	DEFINE_JNI_METHOD (getDisplayCountry, "(Ljava/util/Locale;)Ljava/lang/String;")
+END_DEFINE_JNI_CLASS
+
+//************************************************************************************************
 // java.util.Map
 //************************************************************************************************
 

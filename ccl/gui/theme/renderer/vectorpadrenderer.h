@@ -30,16 +30,14 @@ namespace CCL {
 class VectorPadRenderer: public ThemeRenderer
 {
 public:
-	VectorPadRenderer (VisualStyle* visualStyle);
+	VectorPadRenderer (VisualStyle* visualStyle, View* owner);
 
-	void draw (View* view, const UpdateRgn& updateRgn) override;
-	int hitTest (View* view, const Point& loc, Point* clickOffset) override;
-	bool getPartRect (const View* view, int partCode, Rect& rect) override;
+	// ThemeRenderer
+	void draw (const UpdateRgn& updateRgn) override;
+	int hitTest (PointRef where, Point* clickOffset = nullptr) override;
+	bool getPartRect (Rect& rect, int partCode) override;
 
-private:
-	bool getHandleRect (const View* view, Rect& rect);
-	void selectBackgroundFrame ();
-	
+private:	
 	SharedPtr<IImage> back;
 	SharedPtr<IImage> handle;
 	
@@ -55,9 +53,12 @@ private:
 	int handleSize;
 	bool drawLabels;
 	bool drawCrosshair;
+
+	bool getHandleRect (Rect& rect);
+	void selectBackgroundFrame ();
 };
 
-DECLARE_VISUALSTYLE_CLASS (VectorPad)
+DECLARE_TYPELIB_ENTRY (VectorPad)
 
 } // namespace CCL
 

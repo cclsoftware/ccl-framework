@@ -44,7 +44,7 @@ interface IUpdateCheckResult: IUnknown
 
 	virtual StringRef getErrorText () const = 0;
 	
-	virtual CCL::tbool CCL_API getAction (CCL::IUrl& url, CCL::String& title) const = 0;
+	virtual tbool CCL_API getAction (IUrl& url, String& title) const = 0;
 
 	DECLARE_IID (IUpdateCheckResult)
 
@@ -90,9 +90,9 @@ public:
 	// Commands
 	DECLARE_COMMANDS (ApplicationUpdater)
 	DECLARE_COMMAND_CATEGORY ("Help", Component)
-	bool onCheckUpdates (CCL::CmdArgs args);
-	bool onUpdateNow (CCL::CmdArgs args);
-	bool onViewReleaseNotes (CCL::CmdArgs args);
+	bool onCheckUpdates (CmdArgs args);
+	bool onUpdateNow (CmdArgs args);
+	bool onViewReleaseNotes (CmdArgs args);
 
 	// Component
 	tresult CCL_API terminate () override;
@@ -106,7 +106,7 @@ protected:
 	ContentDefinition appDefinition;
 	bool updateAvailable;
 
-	void onAppCheckCompleted (CCL::IAsyncOperation& operation);
+	void onAppCheckCompleted (IAsyncOperation& operation);
 	bool verifyResult (String& text, const IUpdateCheckResult& result) const;
 
 	void loadUpdaterConfiguration ();

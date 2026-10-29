@@ -69,6 +69,23 @@ macro (ccl_find_program var)
 	set (${var}_PROGRAM_CMAKE_REVISION_NUMBER ${CCL_CMAKE_REVISION_NUMBER} CACHE INTERNAL "" FORCE)
 endmacro ()
 
+# Find the Ninja executable and store its path in the NINJA cache variable.
+# The prebuilt binary shipped in tools/bin/${VENDOR_HOST_PLATFORM}/depot_tools takes precedence
+# over a Ninja installation found in PATH, so that all hosts use the same known-good version.
+# @param {BOOL} REQUIRED  [optional] Fail with an error if no Ninja executable was found.
+macro (ccl_find_ninja)
+	cmake_parse_arguments (ninja_params "REQUIRED" "" "" ${ARGN})
+
+	if (NOT NINJA)
+		ccl_find_program (NINJA NAMES "ninja" HINTS "${CCL_TOOLS_BINDIR}/${VENDOR_HOST_PLATFORM}/depot_tools" PATH_SUFFIXES "${CMAKE_HOST_SYSTEM_PROCESSOR}" DOC "Ninja executable")
+		mark_as_advanced (NINJA)
+	endif ()
+
+	if (NOT NINJA AND ninja_params_REQUIRED)
+		message (FATAL_ERROR "Could not find a Ninja executable.")
+	endif ()
+endmacro ()
+
 set (platformdir "${CMAKE_CURRENT_LIST_DIR}/../${VENDOR_PLATFORM}")
 set (platformdir2 "${CMAKE_CURRENT_LIST_DIR}/${VENDOR_PLATFORM}")
 get_filename_component (platformdir ${platformdir} ABSOLUTE)
@@ -431,7 +448,7 @@ macro (ccl_add_core_library target type)
 	endif ()
 	target_sources (${target_name} PRIVATE ${corelib_malloc_sources})
 	source_group ("source\\libs" FILES ${corelib_malloc_sources})
-	target_link_libraries (${target_name} PUBLIC corelib)
+	target_link_libraries (${target_name} PRIVATE corelib)
 	target_compile_definitions (${target_name} PRIVATE __DSP_NO_CCL_FRAMEWORK__)
 endmacro ()
 
@@ -445,6 +462,9 @@ macro (ccl_add_core_plugin_library target type)
 		)
 	endif()
 	ccl_export_symbols (${target} CoreGetClassInfoBundle)
+	if (COMMAND ccl_configure_core_plugin)
+		ccl_configure_core_plugin (${target})
+	endif ()
 endmacro ()
 
 # Add an application, preconfigured to match vendor guidelines.
@@ -505,6 +525,10 @@ macro (ccl_add_app target)
 	endif ()
 	
 	ccl_configure_target (${target} ${app_params_SUBDIR})
+
+	if (COMMAND ccl_configure_app)
+		ccl_configure_app (${target})
+	endif ()
 endmacro ()
 
 # Add an application using core, preconfigured to match vendor guidelines.
@@ -518,7 +542,7 @@ macro (ccl_add_core_app target)
 	ccl_add_app (${target} ${ARGN})
 	target_sources (${target} PRIVATE ${corelib_malloc_sources})
 	source_group ("source\\libs" FILES ${corelib_malloc_sources})
-	target_link_libraries (${target} PUBLIC corelib)
+	target_link_libraries (${target} PRIVATE corelib)
 	target_compile_definitions (${target} PRIVATE __DSP_NO_CCL_FRAMEWORK__)
 endmacro ()
 
@@ -694,6 +718,90 @@ macro (ccl_add_resources target)
 	if (COMMAND ccl_process_resources)
 		ccl_process_resources ("${target}" "${resource_params_CONFIG}" "${resource_params_PATH}" ${resources})
 	endif ()
+endmacro ()
+
+# Link resource files to a binary.
+# @param {STRING} target  Name of a target to add resources to.
+# @param {STRING} path  Subdirectory to place the resources in.
+# @param args  Resource files.
+macro (ccl_link_resources target config path)
+	set (resources ${ARGN})
+	cmake_path (CONVERT "${resources}" TO_CMAKE_PATH_LIST resources NORMALIZE)
+	
+	if (VENDOR_ENABLE_PARALLEL_BUILDS)
+		set (rc_base_dir "${CMAKE_BINARY_DIR}/rc/${target}")
+	else ()
+		set (rc_base_dir "${VENDOR_OUTPUT_DIRECTORY}/${VENDOR_PLATFORM}/${CMAKE_BUILD_TYPE}/rc/${target}")
+	endif ()
+	set (rc_dir "${rc_base_dir}/Resource")
+	set (rc_script "${rc_base_dir}/rc_${target}.cmake")
+	set (rc_zip "${rc_base_dir}/rc.zip")
+	set (rc_cpp_script "${rc_base_dir}/rc_${target}_c.cmake")
+	set (rc_cpp "${rc_base_dir}/rc.cpp")
+	
+	file (MAKE_DIRECTORY "${rc_dir}/${path}")
+	
+	string (TOLOWER "${config}" lowerconfig)
+	string (TOLOWER "${CMAKE_BUILD_TYPE}" buildtype)
+
+	get_property (${target}_processed_resource_files GLOBAL PROPERTY ${target}_processed_resource_files)
+
+	set (new_resources "")
+	foreach (resource_entry IN ITEMS ${resources})
+		if (NOT "${resource_entry}" IN_LIST  ${target}_processed_resource_files)
+			list (APPEND new_resources "${resource_entry}")
+		endif ()
+	endforeach ()
+
+	get_property (is_multi_config GLOBAL PROPERTY GENERATOR_IS_MULTI_CONFIG)
+
+	set (rc_file_created OFF)
+	ccl_check_file_created ("${rc_script}" rc_file_created)
+	if (new_resources AND NOT rc_file_created AND ("${config}" STREQUAL "" OR "${lowerconfig}" STREQUAL "${buildtype}" OR is_multi_config))
+		ccl_create_file_once ("${rc_script}" CONTENT "")
+	endif ()
+
+	foreach (resource_entry IN ITEMS ${new_resources})
+		file (APPEND "${rc_script}" "if (\"\${RESOURCE_CONFIG}\" STREQUAL \"${lowerconfig}\" OR \"\" STREQUAL \"${lowerconfig}\")\n\tfile (COPY \"${resource_entry}\" DESTINATION \"${rc_dir}/${path}\")\nendif ()\n")
+	endforeach ()	
+
+	if (new_resources AND ("${config}" STREQUAL "" OR "${lowerconfig}" STREQUAL "${buildtype}" OR is_multi_config))
+		if (NOT rc_file_created)
+			find_program (zip NAMES zip HINTS ${CCL_TOOLS_BINDIR} PATH_SUFFIXES ${VENDOR_HOST_PLATFORM})
+
+			add_custom_command (
+				OUTPUT "${rc_zip}"
+				COMMAND ${CMAKE_COMMAND} -E rm -Rf "${rc_dir}"
+				COMMAND ${CMAKE_COMMAND} -E make_directory "${rc_dir}"
+				COMMAND ${CMAKE_COMMAND} -DRESOURCE_CONFIG=$<LOWER_CASE:$<CONFIG>> -P "${rc_script}"
+				COMMAND ${CMAKE_COMMAND} -E rm -f "${rc_zip}"
+				COMMAND cd ${rc_dir} && ${zip} -rq0 "${rc_zip}" "./*" && cd ..
+				DEPENDS ${new_resources}
+				WORKING_DIRECTORY "${rc_base_dir}"
+			)
+
+			ccl_makebin_export (
+				INPUT "${rc_zip}"
+				OUTPUT "${rc_cpp}"
+				SCRIPT_FILE "${rc_cpp_script}"
+				PREFIX "CCLGetResource"
+				VARIABLE_NAME "kResourceData"
+				"${rc_cpp}" "${rc_zip}" "${rc_cpp_script}" "Resource"
+			)
+
+			target_sources (${target} PRIVATE "${rc_zip}" "${rc_cpp}")
+			source_group ("cmake\\resource" FILES "${rc_zip}" "${rc_cpp}")
+		else ()
+			add_custom_command (
+				OUTPUT "${rc_zip}" APPEND
+				DEPENDS ${new_resources}
+			)
+		endif ()
+
+		list (APPEND ${target}_processed_resource_files ${new_resources})
+	endif ()
+
+	set_property (GLOBAL PROPERTY ${target}_processed_resource_files "${${target}_processed_resource_files}")
 endmacro ()
 
 # Generate an export definition for a target.
@@ -1317,6 +1425,43 @@ function (ccl_print_variables)
 	endforeach ()
 endfunction ()
 
+# Prepare the arguments needed to configure an external CMake project with the Ninja generator on
+# Apple platforms, where the surrounding project is built with Xcode.
+# A project can keep the generator of the surrounding project by setting its
+# ${target}_EXTERNAL_PROJECT_GENERATOR variable before it is added.
+# @param {STRING} target  Name of the external project target to process.
+macro (ccl_setup_external_project_generator target)
+	if (APPLE AND NOT ${target}_EXTERNAL_PROJECT_GENERATOR)
+		ccl_find_ninja (REQUIRED)
+
+		set (${target}_EXTERNAL_PROJECT_GENERATOR "Ninja Multi-Config")
+		set (_${target}_generator CMAKE_GENERATOR "${${target}_EXTERNAL_PROJECT_GENERATOR}")
+
+		list (APPEND _${target}_options
+			"-DCMAKE_MAKE_PROGRAM=${NINJA}"
+			"-DCMAKE_OSX_DEPLOYMENT_TARGET=${CMAKE_OSX_DEPLOYMENT_TARGET}"
+		)
+
+		# The external project's steps run as Xcode script phases, which export a deployment target
+		# variable for every Apple platform. Clang refuses to compile then ("conflicting deployment
+		# targets"), so remove them and use the deployment target passed above.
+		set (_${target}_command "${CMAKE_COMMAND}" -E env
+			--unset=MACOSX_DEPLOYMENT_TARGET
+			--unset=IPHONEOS_DEPLOYMENT_TARGET
+			--unset=TVOS_DEPLOYMENT_TARGET
+			--unset=WATCHOS_DEPLOYMENT_TARGET
+			--unset=DRIVERKIT_DEPLOYMENT_TARGET
+			--unset=XROS_DEPLOYMENT_TARGET
+			"${CMAKE_COMMAND}"
+		)
+		list (APPEND _${target}_generator CMAKE_COMMAND "${_${target}_command}")
+	endif ()
+
+	if (NOT ${target}_EXTERNAL_PROJECT_GENERATOR)
+		set (${target}_EXTERNAL_PROJECT_GENERATOR "${CMAKE_GENERATOR}")
+	endif ()
+endmacro ()
+
 # Setup options for an external project.
 # @param {STRING} target  Name of the external project target to process.
 # @param {LIST} options  Options to add to the external project's CMake invocation.
@@ -1337,18 +1482,32 @@ macro (ccl_setup_external_project_options target options)
 		ccl_setup_external_project_platform_options (${target})
 	endif ()
 
+	ccl_setup_external_project_generator (${target})
+
 	list (APPEND ${target}_platform_options
 		"-DCMAKE_C_FLAGS=${CMAKE_C_FLAGS} ${${target}_c_flags}"
 		"-DCMAKE_CXX_FLAGS=${CMAKE_CXX_FLAGS} ${${target}_cxx_flags}"
+		"-DCMAKE_C_LINK_FLAGS=${CMAKE_C_LINK_FLAGS} ${${target}_c_link_flags}"
+		"-DCMAKE_CXX_LINK_FLAGS=${CMAKE_CXX_LINK_FLAGS} ${${target}_cxx_link_flags}"
 	)
 endmacro ()
 
-# Remove external project cache file when running without cache.
+# Remove external project cache file when running without cache or after the generator changed,
+# because CMake refuses to reconfigure an existing build directory with a different generator.
 # @param {STRING} target  Name of the external project target to process.
 macro (ccl_prepare_external_project_cache target)
     if (NOT DEFINED CACHE{_${target}_cached})
 		file (REMOVE "${${target}_CONFIG_DIR}/CMakeCache.txt")
 		set (_${target}_cached CACHE INTERNAL "Used for testing whether cache is used when configuring ${target}")
+    elseif (EXISTS "${${target}_CONFIG_DIR}/CMakeCache.txt")
+		file (STRINGS "${${target}_CONFIG_DIR}/CMakeCache.txt" _${target}_cached_generator REGEX "^CMAKE_GENERATOR:INTERNAL=")
+		string (REPLACE "CMAKE_GENERATOR:INTERNAL=" "" _${target}_cached_generator "${_${target}_cached_generator}")
+
+		if (NOT "${_${target}_cached_generator}" STREQUAL "${${target}_EXTERNAL_PROJECT_GENERATOR}")
+			message (STATUS "Reconfiguring ${target} with the ${${target}_EXTERNAL_PROJECT_GENERATOR} generator (was ${_${target}_cached_generator}).")
+			file (REMOVE "${${target}_CONFIG_DIR}/CMakeCache.txt")
+			file (REMOVE_RECURSE "${${target}_CONFIG_DIR}/CMakeFiles")
+		endif ()
     endif()
 endmacro ()
 
@@ -1381,6 +1540,7 @@ macro (ccl_add_external_project target sourcedir)
 			PREFIX "${_${target}_prefix}"
 			SOURCE_DIR  "${sourcedir}"
 			LIST_SEPARATOR "|"
+			${_${target}_generator}
 			CMAKE_ARGS --no-warn-unused-cli -Wno-dev ${_${target}_options} ${${target}_platform_options}
 			BUILD_BYPRODUCTS "${${target}_BUILD_BYPRODUCTS}"
 			BUILD_COMMAND "${target_params_BUILD_COMMAND}"
@@ -1395,6 +1555,7 @@ macro (ccl_add_external_project target sourcedir)
 			PREFIX "${_${target}_prefix}"
 			SOURCE_DIR  "${sourcedir}"
 			LIST_SEPARATOR "|"
+			${_${target}_generator}
 			CMAKE_ARGS --no-warn-unused-cli -Wno-dev ${_${target}_options} ${${target}_platform_options}
 			BUILD_BYPRODUCTS "${${target}_BUILD_BYPRODUCTS}"
 			INSTALL_COMMAND "${target_params_INSTALL_COMMAND}"
@@ -1408,6 +1569,7 @@ macro (ccl_add_external_project target sourcedir)
 			PREFIX "${_${target}_prefix}"
 			SOURCE_DIR  "${sourcedir}"
 			LIST_SEPARATOR "|"
+			${_${target}_generator}
 			CMAKE_ARGS --no-warn-unused-cli -Wno-dev ${_${target}_options} ${${target}_platform_options}
 			BUILD_BYPRODUCTS "${${target}_BUILD_BYPRODUCTS}"
 			LOG_CONFIGURE ON
@@ -1640,6 +1802,36 @@ macro (ccl_create_plugin_file module)
 	file (WRITE "${params_LOCATION}/${module}.plugin" "Lib=lib${module}.${extension}\n")
 endmacro ()
 
+# Collect the transitive closure of shared/module library dependencies.
+# @param {STRING} target  Root target to start the walk from.
+# @param {STRING} result_list  Name of the list variable to append resolved file paths to.
+macro (ccl_collect_shared_link_libraries target result_list)
+	set (shared_link_libraries_worklist "${target}")
+	set (shared_link_libraries_visited "")
+	while (shared_link_libraries_worklist)
+		list (POP_FRONT shared_link_libraries_worklist current_link_target)
+		if (NOT current_link_target IN_LIST shared_link_libraries_visited)
+			list (APPEND shared_link_libraries_visited "${current_link_target}")
+			if (TARGET ${current_link_target})
+				get_target_property (current_link_libraries ${current_link_target} LINK_LIBRARIES)
+				if (current_link_libraries)
+					foreach (lib IN LISTS current_link_libraries)
+						if (TARGET ${lib})
+							get_target_property (library_type ${lib} TYPE)
+							if (NOT library_type STREQUAL "INTERFACE_LIBRARY" AND NOT library_type STREQUAL "OBJECT_LIBRARY")
+								list (APPEND ${result_list} "$<TARGET_FILE:${lib}>")
+							endif ()
+							list (APPEND shared_link_libraries_worklist "${lib}")
+						elseif (EXISTS "${lib}")
+							list (APPEND ${result_list} "${lib}")
+						endif ()
+					endforeach ()
+				endif ()
+			endif ()
+		endif ()
+	endwhile ()
+endmacro ()
+
 # Include prebuilt targets if CCL_PREFER_PREBUILT_EXPORTS is ON.
 # Searches for a file named ${target}.cmake in ${CMAKE_BINARY_DIR}/exports or ${CCL_EXPORTS_PATH}.
 # @param {STRING} target  Name of the target to import.
@@ -1648,9 +1840,9 @@ endmacro ()
 # @param {STRING} ISOLATED  [optional] Append isolation postfix to search file name.
 macro (ccl_import_prebuilt_targets target)
 	if (CCL_PREFER_PREBUILT_EXPORTS)
-		cmake_parse_arguments (import_params "" "ISOLATED" "NAMES;HINTS" ${ARGN})
+		cmake_parse_arguments (import_params "ISOLATED;PLUGIN" "" "NAMES;HINTS" ${ARGN})
 		set (target_name "${target}")
-		if (import_params_ISOLATED)
+		if (import_params_ISOLATED AND CCL_ISOLATION_POSTFIX)
 			set (target_name "${target}.${CCL_ISOLATION_POSTFIX}")
 		endif ()
 		find_file (${target}_exports_file NAMES "${target_name}.cmake" ${import_params_NAMES} HINTS "${CMAKE_BINARY_DIR}/exports" ${import_params_HINTS} ${CCL_EXPORTS_PATH})
@@ -1662,6 +1854,12 @@ macro (ccl_import_prebuilt_targets target)
 				if (is_imported AND NOT is_global)
 					set_target_properties (${target} PROPERTIES IMPORTED_GLOBAL TRUE)
 				endif ()
+				if (import_params_PLUGIN)
+					set_target_properties (${target} PROPERTIES CCL_PLUGIN_LIBRARY ON)
+				endif ()
+			endif ()
+			if (PROJECT_VENDOR)
+				ccl_set_project_vendor (${PROJECT_VENDOR})
 			endif ()
 		endif ()
 	endif ()
@@ -1705,16 +1903,21 @@ endmacro ()
 # @param {STRING} subdir  Subdirectory of the extension library, e.g. plugins or dsp.
 # @param {STRING} extension  Name of the extension.
 macro (ccl_get_extension_library_path result subdir extension)
+	cmake_parse_arguments (extension_params "" "OUTPUT" "" ${ARGN})
 	if (NOT EXTENSIONS_BINARY_SUBDIRECTORY)
 		set (EXTENSIONS_BINARY_SUBDIRECTORY "${VENDOR_PLATFORM}")
 	endif ()
 	if (NOT REPOSITORY_EXTENSIONS_DIR)
 		set (REPOSITORY_EXTENSIONS_DIR "${REPOSITORY_ROOT}/extensions")
 	endif ()
-	if (NOT EXTENSIONS_DEPLOYMENT_DIR)
-		set (EXTENSIONS_DEPLOYMENT_DIR "${REPOSITORY_EXTENSIONS_DIR}/deployment")
+	set (extension_dir "${extension_params_OUTPUT}")
+	if (NOT extension_dir AND EXTENSIONS_DEPLOYMENT_DIR)
+		set (extension_dir "${EXTENSIONS_DEPLOYMENT_DIR}/${extension}")
 	endif ()
-	set (${result} "${EXTENSIONS_DEPLOYMENT_DIR}/${extension}/${subdir}/${EXTENSIONS_BINARY_SUBDIRECTORY}")
+	if (NOT extension_dir)
+		set (extension_dir "${REPOSITORY_EXTENSIONS_DIR}/deployment/${extension}")
+	endif ()
+	set (${result} "${extension_dir}/${subdir}/${EXTENSIONS_BINARY_SUBDIRECTORY}")
 endmacro ()
 
 # Preconfigure an extension library to match vendor guidelines.
@@ -1722,8 +1925,14 @@ endmacro ()
 # @param {STRING} target  Name of a target to configure.
 # @param {STRING} subdir  Subdirectory of the extension library, e.g. plugins or dsp.
 # @param {STRING} extension  Name of the extension.
+# @param {STRING} OUTPUT  [optional] Output path of the extension library.
 macro (ccl_extensions_configure_target target subdir extension)
-	ccl_get_extension_library_path (extension_dir "${subdir}" "${extension}")
+	cmake_parse_arguments (extension_params "" "OUTPUT" "" ${ARGN})
+	if (extension_params_OUTPUT)
+		ccl_get_extension_library_path (extension_dir "${subdir}" "${extension}" OUTPUT "${extension_params_OUTPUT}")
+	else ()
+		ccl_get_extension_library_path (extension_dir "${subdir}" "${extension}")
+	endif ()
 	if (MSVC)
 		# Disable Arm64X for extensions as they use per architecture subfolders
 		ccl_disable_arm64x (${target})

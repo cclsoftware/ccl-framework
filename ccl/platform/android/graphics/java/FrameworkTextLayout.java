@@ -40,17 +40,17 @@ class BaselineOffsetSpan extends MetricAffectingSpan
 		this.offset = offset;
 	}
 
-    @Override
-    public void updateDrawState (TextPaint textPaint)
+	@Override
+	public void updateDrawState (TextPaint textPaint)
 	{
-        textPaint.baselineShift += Math.round (textPaint.ascent () * offset);
-    }
+		textPaint.baselineShift += Math.round (textPaint.ascent () * offset);
+	}
 
-    @Override
-    public void updateMeasureState (@NonNull TextPaint textPaint)
+	@Override
+	public void updateMeasureState (@NonNull TextPaint textPaint)
 	{
-        textPaint.baselineShift += Math.round (textPaint.ascent () * offset);
-    }
+		textPaint.baselineShift += Math.round (textPaint.ascent () * offset);
+	}
 }
 
 //************************************************************************************************
@@ -66,17 +66,17 @@ class LetterSpacingSpan extends MetricAffectingSpan
 		this.spacing = spacing;
 	}
 
-    @Override
-    public void updateDrawState (TextPaint textPaint)
+	@Override
+	public void updateDrawState (TextPaint textPaint)
 	{
-        textPaint.setLetterSpacing (spacing);
-    }
+		textPaint.setLetterSpacing (spacing);
+	}
 
-    @Override
-    public void updateMeasureState (@NonNull TextPaint textPaint)
+	@Override
+	public void updateMeasureState (@NonNull TextPaint textPaint)
 	{
-        textPaint.setLetterSpacing (spacing);
-    }
+		textPaint.setLetterSpacing (spacing);
+	}
 }
 
 //************************************************************************************************
@@ -168,12 +168,17 @@ public class FrameworkTextLayout
 
 	public void setFontFace (int start, int end, String faceName)
 	{
+		start = Math.max (start, 0);
+		end = Math.min (end, spannable.length ());
+
 		spannable.setSpan (new TypefaceSpan (faceName), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 	}
 
 	public void setFontStyle (int start, int end, int style, boolean state)
 	{
-		//CCL.log ("setFontStyle (" + start + ", " + end + "): " + style + ", " + state);
+		start = Math.max (start, 0);
+		end = Math.min (end, spannable.length ());
+
 		int boldItalic = style & (GraphicsConstants.kFontStyleBold | GraphicsConstants.kFontStyleItalic);
 		if(boldItalic != 0)
 		{
@@ -214,8 +219,10 @@ public class FrameworkTextLayout
 
 	public void setFontSize (int start, int end, int size)
 	{
-		boolean isFullRange = start <= 0 && end >= spannable.length () - 1;
-		if(isFullRange)
+		start = Math.max (start, 0);
+		end = Math.min (end, spannable.length ());
+
+		if(start == 0 && end == spannable.length ())
 		{
 			removeSpansInRange (start, end, AbsoluteSizeSpan.class);
 			this.fontSize = size;
@@ -228,13 +235,18 @@ public class FrameworkTextLayout
 
 	public void setSpacing (int start, int end, float spacing)
 	{
+		start = Math.max (start, 0);
+		end = Math.min (end, spannable.length ());
+
 		spannable.setSpan (new LetterSpacingSpan (spacing), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 	}
 
 	public void setLineSpacing (int start, int end, float lineSpacing)
 	{
-		boolean isFullRange = start <= 0 && end >= spannable.length () - 1;
-		if(isFullRange)
+		start = Math.max (start, 0);
+		end = Math.min (end, spannable.length ());
+
+		if(start == 0 && end == spannable.length ())
 		{
 			// full text range is affected: remove all LineHeightSpans and recreate layout with the new spacing
 			removeSpansInRange (start, end, LineHeightSpan.class);
@@ -254,16 +266,34 @@ public class FrameworkTextLayout
 
 	public void setBaselineOffset (int start, int end, float offset)
 	{
+		start = Math.max (start, 0);
+		end = Math.min (end, spannable.length ());
+
 		spannable.setSpan (new BaselineOffsetSpan (offset), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 	}
 
 	public void setRelativeSize (int start, int end, float size)
 	{
+		start = Math.max (start, 0);
+		end = Math.min (end, spannable.length ());
+
 		spannable.setSpan (new RelativeSizeSpan (size), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+	}
+
+	public void clearFormatting (float fontSize, float lineSpacing)
+	{
+		removeSpansInRange (0, spannable.length (), Object.class);
+
+		this.fontSize = fontSize;
+		this.lineSpacing = lineSpacing;
+		createLayout ();
 	}
 
 	public void setTextColor (int start, int end, int color)
 	{
+		start = Math.max (start, 0);
+		end = Math.min (end, spannable.length ());
+
 		spannable.setSpan (new ForegroundColorSpan (color), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 	}
 
@@ -318,6 +348,23 @@ public class FrameworkTextLayout
 		path.computeBounds (size, true);
 	}
 	
+	public void getCharacterBounds (RectF bounds, int offset)
+	{
+		int length = spannable.length ();
+		if(offset == length || spannable.charAt (offset) == '\n')
+		{
+			Rect lineBounds = new Rect ();
+			layout.getLineBounds (layout.getLineForOffset (offset), lineBounds);
+
+			bounds.left = layout.getPrimaryHorizontal (offset);
+			bounds.top = lineBounds.top + yOffset;
+			bounds.right = bounds.left;
+			bounds.bottom = lineBounds.top + (lineBounds.bottom - lineBounds.top) / (offset == length ? 1 : lineSpacing) + yOffset;
+		}
+		else
+			getRangeBounds (bounds, offset, layout.getOffsetToRightOf (offset));
+	}
+	
 	public void getRangeBounds (RectF bounds, int start, int end)
 	{
 		Path path = new Path ();
@@ -331,8 +378,7 @@ public class FrameworkTextLayout
 	public int getOffsetForPosition (float x, float y)
 	{
 		int line = layout.getLineForVertical (Math.round (y));
-		int offset = layout.getOffsetForHorizontal (line, x);
-		return layout.getLineStart (line) + offset;
+		return layout.getOffsetForHorizontal (line, x);
 	}
 
 	public void draw (FrameworkGraphics graphics, float x, float y, int color, int options)

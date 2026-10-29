@@ -4,6 +4,21 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+#: audio/audioformatter.cpp
+msgctxt "Audio"
+msgid "%(1) samples"
+msgstr "%(1) 个采样"
+
+#: audio/audioformatter.cpp
+msgctxt "Audio"
+msgid "Mono"
+msgstr "单声道"
+
+#: audio/audioformatter.cpp
+msgctxt "Audio"
+msgid "Stereo"
+msgstr "立体声"
+
 #: extensions/backupmanager.cpp
 msgctxt "BackupManager"
 msgid "Backup"
@@ -313,6 +328,11 @@ msgstr "提取 %(1) 个产品密钥"
 msgctxt "PackageActions"
 msgid "Claim Product Key"
 msgstr "提取产品密钥"
+
+#: packages/installdatapackages.cpp
+msgctxt "PackageActions"
+msgid "Copy Product Key"
+msgstr "复制产品密钥"
 
 #: packages/unifiedpackageaction.cpp
 msgctxt "PackageActions"

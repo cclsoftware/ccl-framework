@@ -115,7 +115,7 @@ CCL::IAsyncOperation* StoreContextManager::requestProducts (const ConstVector<St
 	std::vector<hstring> productKinds = { L"Application", L"Durable" };
 	std::vector<hstring> storeIds;
 	for(StringRef id : productIds)
-		storeIds.push_back ((const uchar*) StringChars (id));
+		storeIds.push_back (StringChars (id).str ());
 
 	return NEW AsyncOperationWrapper<StoreProductQueryResult> (context.GetStoreProductsAsync (std::move (productKinds), std::move (storeIds)), [](const StoreProductQueryResult& result)
 	{
@@ -152,7 +152,7 @@ CCL::IAsyncOperation* StoreContextManager::purchaseProduct (StringRef productId)
 	transactions->add (return_shared<StoreTransaction> (transaction));
 	deferSignal (NEW Message (kTransactionsChanged));
 
-	Promise promise = Promise (NEW AsyncOperationWrapper<StorePurchaseResult> (context.RequestPurchaseAsync ((const uchar*)StringChars (productId)), [transaction](const StorePurchaseResult& result)
+	Promise promise = Promise (NEW AsyncOperationWrapper<StorePurchaseResult> (context.RequestPurchaseAsync (StringChars (productId).str ()), [transaction](const StorePurchaseResult& result)
 	{
 		switch(result.Status ())
 		{

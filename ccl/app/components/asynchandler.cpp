@@ -56,7 +56,7 @@ IAsyncOperation* AsyncCallHandler::performAsync (IAsyncCall* call, StringRef des
 	Variant result = performModal (call, description, title);
 	return AsyncOperation::createCompleted (result);
 #else
-	IProgressNotify* progress = ccl_new<IProgressNotify> (CCL::ClassID::ProgressDialog);
+	IProgressNotify* progress = ccl_new<IProgressNotify> (ClassID::ProgressDialog);
 	ASSERT (progress != 0)
 	if(!title.isEmpty ())
 		progress->setTitle (title);
@@ -85,7 +85,7 @@ IAsyncOperation* AsyncCallHandler::performAsync (IAsyncCall* call, StringRef des
 
 Variant AsyncCallHandler::performModal (IAsyncCall* call, StringRef description, StringRef title)
 {
-	AutoPtr<IProgressNotify> progress = ccl_new<IProgressNotify> (CCL::ClassID::ModalProgressDialog);
+	AutoPtr<IProgressNotify> progress = ccl_new<IProgressNotify> (ClassID::ModalProgressDialog);
 	ASSERT (progress != nullptr)
 	if(!title.isEmpty ())
 		progress->setTitle (title);

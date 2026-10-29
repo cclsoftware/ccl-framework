@@ -147,7 +147,7 @@ void WindowsPopupMenu::updateItem (MenuItem* item)
 
 	mi.fMask |= MIIM_STRING;
 	StringChars chars (title);
-	mi.dwTypeData = (LPTSTR)(const uchar*)chars;
+	mi.dwTypeData = (LPTSTR)chars.str ();
 	mi.cch = title.length ();
 
 	if(item->getIcon ())
@@ -344,7 +344,7 @@ void WindowsMenuBar::updateMenu (Menu* menu)
 	mi.cbSize = sizeof(MENUITEMINFO);
 	mi.fMask = MIIM_STRING;
 	StringChars chars (menu->getTitle ());
-	mi.dwTypeData = (LPTSTR)(const uchar*)chars;
+	mi.dwTypeData = (LPTSTR)chars.str ();
 	mi.cch = menu->getTitle ().length ();
 
 	::SetMenuItemInfo (handle, index, TRUE, &mi);

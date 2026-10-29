@@ -8,6 +8,10 @@ This document lists all third-party library dependencies used in the CCL cross-p
   - License: BSD 3-Clause
   - Copyright (c) 2006-2021 assimp team
 
+- **c-ares** - Asynchronous DNS resolution library
+  - License: MIT License
+  - Copyright (c) 1998 Massachusetts Institute of Technology, Copyright (c) 2007 - 2023 Daniel Stenberg with many contributors
+
 - **cmark** - CommonMark parsing and rendering library
   - License: BSD 2-Clause
   - Copyright (c) 2014 John MacFarlane
@@ -46,6 +50,10 @@ This document lists all third-party library dependencies used in the CCL cross-p
 - **mbedTLS** - TLS/SSL and cryptography implementation
   - License: Dual-licensed: Apache 2.0 OR GPL 2.0-or-later (user's choice)
 
+- **miniaudio** - Single-file audio playback/capture library
+  - License: Dual-licensed: Public Domain (Unlicense) OR MIT No Attribution
+  - Copyright 2025 David Reid
+
 - **Node.js** - JavaScript runtime integration (headers for CCL-based addons)
   - License: MIT License
   - Copyright Node.js contributors
@@ -55,6 +63,10 @@ This document lists all third-party library dependencies used in the CCL cross-p
 
 - **PCRE2** - Perl-Compatible Regular Expressions library
   - License: BSD 3-Clause
+
+- **QuickJS-ng** - Small and embeddable JavaScript engine
+  - License: MIT License
+  - Copyright (c) 2017-2026 Fabrice Bellard, Copyright (c) 2017-2024 Charlie Gordon, Copyright (c) 2023-2026 Ben Noordhuis, Copyright (c) 2023-2026 Saúl Ibarra Corretgé
 
 - **Skia** - 2D graphics engine (custom CCL branch)
   - License: BSD 3-Clause
@@ -102,4 +114,4 @@ This document lists all third-party library dependencies used in the CCL cross-p
 
 ---
 
-*Last updated: 2026-06-10*
+*Last updated: 2026-08-20*

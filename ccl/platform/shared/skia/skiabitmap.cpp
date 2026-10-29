@@ -152,7 +152,7 @@ SkSurface* SkiaBitmap::getSurface ()
 		GrRecordingContext* context = engine ? engine->getGPUContext () : nullptr;
 		if(context)
 			surface = SkSurfaces::RenderTarget (context, skgpu::Budgeted::kYes, imageInfo);
-		else
+		if(!surface)
 			surface = SkSurfaces::Raster (imageInfo);
 		if(!surface)
 			return nullptr;
@@ -303,12 +303,12 @@ tresult SkiaBitmap::draw (NativeGraphicsDevice& device, RectFRef src, RectFRef d
 	SkPaint paint;
 	if(mode)
 	{
-		if(mode->getInterpolationMode () == ImageMode::kInterpolationHighQuality)
+		if(mode->getInterpolationMode () == kImageInterpolationHighQuality)
 		{
 			// CatmullRom causes rendering issues on some Macs. Using default quality for now
 			// samplingOptions = SkSamplingOptions (SkCubicResampler::CatmullRom ());
 		}
-		else if(mode->getInterpolationMode () == ImageMode::kInterpolationPixelQuality)
+		else if(mode->getInterpolationMode () == kImageInterpolationPixelQuality)
 		{
 			constraint = SkCanvas::kStrict_SrcRectConstraint;
 			samplingOptions = SkSamplingOptions (SkFilterMode::kNearest, SkMipmapMode::kNone);

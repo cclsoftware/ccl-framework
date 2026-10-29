@@ -86,4 +86,17 @@ namespace CCL
 }
 #endif
 
+//************************************************************************************************
+// WebAssembly
+//************************************************************************************************
+
+#if CCL_PLATFORM_WASM
+#include "ccl/platform/wasm/gui/window.wasm.h"
+namespace CCL
+{
+	typedef WasmWindow NativeWindow;
+	typedef WasmDialog NativeDialog;
+}
+#endif
+
 #endif // _ccl_nativewindow_h

@@ -243,7 +243,6 @@ bool Win32Thread::join (uint32 milliseconds)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-ThreadPriorityHandler* ThreadPriorityHandler::customHandler = nullptr;
 bool Win32Thread::setSelfToRealTimePriority ()
 {
 	BOOL success = FALSE;

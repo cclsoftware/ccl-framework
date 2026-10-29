@@ -4,6 +4,21 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+#: audio/audioformatter.cpp
+msgctxt "Audio"
+msgid "%(1) samples"
+msgstr "%(1) 샘플"
+
+#: audio/audioformatter.cpp
+msgctxt "Audio"
+msgid "Mono"
+msgstr "모노"
+
+#: audio/audioformatter.cpp
+msgctxt "Audio"
+msgid "Stereo"
+msgstr "스테레오"
+
 #: extensions/backupmanager.cpp
 msgctxt "BackupManager"
 msgid "Backup"
@@ -313,6 +328,11 @@ msgstr "%(1) 제품 키 사용"
 msgctxt "PackageActions"
 msgid "Claim Product Key"
 msgstr "제품 키 취득"
+
+#: packages/installdatapackages.cpp
+msgctxt "PackageActions"
+msgid "Copy Product Key"
+msgstr "제품 키 복사"
 
 #: packages/unifiedpackageaction.cpp
 msgctxt "PackageActions"

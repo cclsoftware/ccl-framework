@@ -152,13 +152,6 @@ struct StringResult
 	#define FORMAT_INT64	"ll"
 #endif
 
-/** Max. size of string buffer on stack. */
-#if defined(CORE_PLATFORM_RTOS)
-	#define STRING_STACK_SPACE_MAX 512
-#else
-	#define STRING_STACK_SPACE_MAX 4096
-#endif
-
 //////////////////////////////////////////////////////////////////////////////////////////////////
 // ExitCode
 /** Process exit code. */

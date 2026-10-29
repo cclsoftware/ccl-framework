@@ -29,10 +29,78 @@
 #include "ccl/public/collections/vector.h"
 
 #include "ccl/base/singleton.h"
+#include "ccl/base/message.h"
 
 #include "core/text/coreutfcodec.h"
 
 #include <limits.h>
+
+namespace CCL {
+
+//************************************************************************************************
+// SkiaParagraphPainter
+/** Paints a paragraph without Skia's cache of drawn text blobs. The cache keeps an entry for each position
+	a blob is drawn at (unless the positions differ by whole pixels) and searches the entries of a blob linearly,
+	so drawing the same text layout at many positions takes quadratic time. */
+//************************************************************************************************
+
+class SkiaParagraphPainter: public skia::textlayout::ParagraphPainter
+{
+public:
+	SkiaParagraphPainter (SkCanvas& canvas)
+	: canvas (canvas)
+	{}
+
+	// ParagraphPainter
+	void drawTextBlob (const sk_sp<SkTextBlob>& blob, SkScalar x, SkScalar y, const SkPaintOrID& paint) override
+	{
+		const SkPaint* skPaint = std::get_if<SkPaint> (&paint);
+		ASSERT (skPaint)
+		if(blob && skPaint)
+			drawGlyphs (*blob, x, y, *skPaint);
+	}
+
+	void drawTextShadow (const sk_sp<SkTextBlob>& blob, SkScalar x, SkScalar y, SkColor color, SkScalar blurSigma) override
+	{
+		CCL_NOT_IMPL ("SkiaParagraphPainter::drawTextShadow ()")
+	}
+
+	void drawRect (const SkRect& rect, const SkPaintOrID& paint) override
+	{
+		const SkPaint* skPaint = std::get_if<SkPaint> (&paint);
+		ASSERT (skPaint)
+		if(skPaint)
+			canvas.drawRect (rect, *skPaint);
+	}
+
+	void drawFilledRect (const SkRect& rect, const DecorationStyle& decorationStyle) override
+	{
+		SkPaint paint (decorationStyle.skPaint ());
+		paint.setStroke (false);
+		canvas.drawRect (rect, paint);
+	}
+
+	void drawPath (const SkPath& path, const DecorationStyle& decorationStyle) override { canvas.drawPath (path, decorationStyle.skPaint ()); }
+	void drawLine (SkScalar x0, SkScalar y0, SkScalar x1, SkScalar y1, const DecorationStyle& decorationStyle) override { canvas.drawLine (x0, y0, x1, y1, decorationStyle.skPaint ()); }
+	void clipRect (const SkRect& rect) override { canvas.clipRect (rect); }
+	void translate (SkScalar dx, SkScalar dy) override { canvas.translate (dx, dy); }
+	void save () override { canvas.save (); }
+	void restore () override { canvas.restore (); }
+
+protected:
+	SkCanvas& canvas;
+
+	void drawGlyphs (const SkTextBlob& blob, SkScalar x, SkScalar y, const SkPaint& paint) const
+	{
+		// glyphs drawn without a blob are not cached by their position, their images are still cached
+		SkTextBlob::Iter iterator (blob);
+		SkTextBlob::Iter::ExperimentalRun run;
+		while(iterator.experimentalNext (&run))
+			canvas.drawGlyphs (run.count, run.glyphs, run.positions, SkPoint::Make (x, y), run.font, paint);
+	}
+};
+
+} // namespace CCL
 
 using namespace CCL;
 
@@ -47,7 +115,8 @@ DEFINE_SINGLETON (SkiaFontCache)
 SkiaFontCache::SkiaFontCache ()
 : fontManager (SkiaFontManagerFactory::createFontManager ()),
   fontCollection (sk_make_sp<skia::textlayout::FontCollection> ()),
-  entries (kMaxChacheEntries)
+  entries (kMaxChacheEntries),
+  fontChangesSupported (false)
 {
 	fontCollection->setDefaultFontManager (fontManager);
 }
@@ -91,6 +160,32 @@ SkFontStyle SkiaFontCache::toSkFontStyle (int style)
 	else if(isBold && isItalic)
 		return SkFontStyle::BoldItalic ();
 	return SkFontStyle::Normal ();
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+void SkiaFontCache::addWatcher (SkiaTextLayout& layout)
+{
+	ASSERT (fontChangesSupported)
+	watchers.add (&layout);
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+void SkiaFontCache::removeWatcher (SkiaTextLayout& layout)
+{
+	ASSERT (fontChangesSupported)
+	watchers.remove (&layout);
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+void SkiaFontCache::invalidate ()
+{
+	ASSERT (fontChangesSupported)
+	fontCollection->clearCaches ();
+	for(SkiaTextLayout* layout : watchers)
+		layout->setDirty ();
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -282,7 +377,18 @@ SkiaTextLayout::SkiaTextLayout ()
   restrictWidth (false),
   defaultColor (Colors::kBlack),
   spaceWidth (0)
-{}
+{
+	if(SkiaFontCache::instance ().isFontChangesSupported ())
+		SkiaFontCache::instance ().addWatcher (*this);
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+SkiaTextLayout::~SkiaTextLayout ()
+{
+	if(SkiaFontCache::instance ().isFontChangesSupported ())
+		SkiaFontCache::instance ().removeWatcher (*this);
+}
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -475,7 +581,6 @@ void SkiaTextLayout::updateTextBounds ()
 
 	const std::vector<skia::textlayout::TextBox>& bounds = paragraph->getRectsForRange (0, utf8Positions[originalText.length ()], skia::textlayout::RectHeightStyle::kTight, skia::textlayout::RectWidthStyle::kTight);
 	CoordF lineOffset = 0.f;
-	CoordF previousTop = 0.f;
 	for(const skia::textlayout::TextBox& bound : bounds)
 	{
 		RectF boundRect;
@@ -483,8 +588,7 @@ void SkiaTextLayout::updateTextBounds ()
 		if(bound.rect.isEmpty ())
 			continue;
 
-		lineOffset = bound.rect.top () - previousTop;
-		previousTop = bound.rect.top ();
+		lineOffset = bound.rect.height ();
 	}
 
 	if(originalText.endsWith ("\n") && !bounds.empty ())
@@ -563,6 +667,21 @@ void SkiaTextLayout::updateCharacterBounds ()
 		}
 	};
 
+	// Skia positions glyphs of rendered lines according to the paragraph's horizontal alignment.
+	// Lines without glyphs (e.g. an empty line after a trailing newline) fall back to this position.
+	CoordF emptyLineOffset = 0.f;
+	switch(alignment.getAlignH ())
+	{
+	case Alignment::kHCenter :
+		emptyLineOffset = boundingRect.getWidth () / 2.f;
+		break;
+	case Alignment::kRight :
+		emptyLineOffset = boundingRect.getWidth ();
+		break;
+	default : // left aligned
+		emptyLineOffset = 0.f;
+	}
+
 	auto addBounds = [&] (RectF rect, int lineNumber)
 	{
 		adjustLineHeight (rect);
@@ -584,7 +703,7 @@ void SkiaTextLayout::updateCharacterBounds ()
 			if(!characterBounds.isEmpty () && characterBounds.last ().bottom > newlineRect.top)
 				newlineRect.right = characterBounds.last ().right;
 			else
-				newlineRect.right = 0;
+				newlineRect.right = emptyLineOffset;
 
 			newlineRect.left = newlineRect.right;
 			adjustLineHeight (newlineRect);
@@ -619,29 +738,37 @@ void SkiaTextLayout::updateCharacterBounds ()
 	{
 		if(currentCharacter == '\n' && lastLineNumber + 1 < lineMetrics.size ())
 			lastLineNumber++;
-	
+
 		RectF rect;
-		rect.left = 0;
+		rect.left = emptyLineOffset;
 		rect.right = rect.left;
 		rect.top = lineMetrics[lastLineNumber].fBaseline - lineMetrics[lastLineNumber].fAscent;
 		rect.setHeight (lineMetrics[lastLineNumber].fAscent + lineMetrics[lastLineNumber].fDescent);
-	
+
 		CCL_PRINTF ("line metrics (%d): %f, %f, %f\n", lastLineNumber, lineMetrics[lastLineNumber].fBaseline, lineMetrics[lastLineNumber].fAscent, lineMetrics[lastLineNumber].fDescent)
-		
+
 		if(currentCharacter == ' ')
 		{
 			if(!characterBounds.isEmpty () && characterBounds.last ().bottom > rect.top)
 				rect.left = characterBounds.last ().right;
 			rect.setWidth (spaceWidth);
 		}
-		if(currentCharacter == '\t')
+		else if(currentCharacter == '\t')
 		{
 			if(!characterBounds.isEmpty () && characterBounds.last ().bottom > rect.top)
 				rect.left = characterBounds.last ().right;
 			rect.setWidth (spaceWidth * kTabSize);
 		}
-
-		SOFT_ASSERT (currentCharacter == ' ' || currentCharacter == '\t' || currentCharacter == '\n', "Unexpected non-printable character")
+		else if(currentCharacter != '\n')
+		{
+			// Non-rendered character (variation selector, ZWJ, combining mark, etc.)
+			// Place it at the same position as the previous character (zero width)
+			if(!characterBounds.isEmpty ())
+			{
+				rect.left = characterBounds.last ().right;
+				rect.right = rect.left;
+			}
+		}
 
 		addBounds (rect, lastLineNumber);
 	};
@@ -943,6 +1070,18 @@ tresult CCL_API SkiaTextLayout::setBaselineOffset (const Range& range, float off
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
+tresult CCL_API SkiaTextLayout::clearFormatting ()
+{
+	styles.empty ();
+	needUpdate = true;
+	imageBoundsChanged = true;
+	textBoundsChanged = true;
+	characterBoundsChanged = true;
+	return kResultOk;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
 tresult CCL_API SkiaTextLayout::setSuperscript (const Range& range)
 {
 	return setSuperscript (range, kSuperscriptSizeFactor, kSuperscriptBaselineFactor);
@@ -1052,6 +1191,9 @@ tresult CCL_API SkiaTextLayout::getBounds (RectF& bounds) const
 	bounds = textRect;
 	bounds.offset (offset);
 
+	// Rounding up keeps the text in the lines it was measured in.
+	bounds.setWidth (SkScalarCeilToScalar (bounds.getWidth ()));
+
 	return kResultOk;
 }
 
@@ -1160,7 +1302,26 @@ tresult CCL_API SkiaTextLayout::hitTest (int& textIndex, PointF& position) const
 		}
 	}
 	else if(endOfLine)
-		position = characterBounds[ccl_max (textIndex - 1, 0)].getRightTop ();
+	{
+		RectF previousBounds = characterBounds[ccl_max (textIndex - 1, 0)];
+		if(textIndex > 0 && previousBounds.bottom > position.y)
+		{
+			uchar character = originalText.at (textIndex - 1);
+			if(character == '\n')
+			{
+				textIndex--;
+				if(textIndex > 0)
+				{
+					character = originalText.at (textIndex - 1);
+					if(character == '\r')
+						textIndex--;
+				}
+			}
+			else if(characterBounds[textIndex].getCenter ().y > previousBounds.getCenter ().y + 1.f)
+				textIndex--;
+		}
+		position = characterBounds[textIndex].getRightTop ();
+	}
 	else if(position.x >= characterBounds[textIndex].left + (characterBounds[textIndex].right - characterBounds[textIndex].left) / 2.f)
 	{
 		position = characterBounds[textIndex].getRightTop ();
@@ -1230,23 +1391,37 @@ tresult CCL_API SkiaTextLayout::getTextBounds (IMutableRegion& bounds, const Ran
 	PointF offset;
 	getParagraphOffset (offset);
 
+	// enclosing rects of adjacent lines must not overlap, otherwise the region merges them
+	Coord previousBottom = kMinCoord;
+	auto addLineRect = [&] (RectFRef lineRect)
+	{
+		Rect enclosingRect (rectFToEnclosingInt (lineRect));
+		enclosingRect.top = ccl_max (enclosingRect.top, previousBottom);
+		bounds.addRect (enclosingRect);
+		previousBottom = enclosingRect.bottom;
+	};
+
 	RectF rect;
-	float lastBottom = 0;
+	bool hasLineRect = false;
 	for(int i = ccl_max (0, range.start); i < range.start + range.length && i < characterBounds.count (); i++)
 	{
-		if(characterBounds[i].top > lastBottom)
+		// adjacent lines can touch, compare the vertical center to detect a new line
+		if(hasLineRect && characterBounds[i].getCenter ().y >= rect.bottom)
 		{
 			if(rect.isEmpty ())
 				rect.setWidth (1);
 
 			rect.offset (offset.x, offset.y);
-			bounds.addRect (rectFToEnclosingInt (rect));
-			rect.setEmpty ();
+			addLineRect (rect);
+			hasLineRect = false;
 		}
-		if(rect.isEmpty ())
-			rect = characterBounds[i];
-		else
+		if(hasLineRect)
 			rect.join (characterBounds[i]);
+		else
+		{
+			rect = characterBounds[i];
+			hasLineRect = true;
+		}
 	}
 	if(rect.isEmpty ())
 		rect.setWidth (1);
@@ -1257,14 +1432,14 @@ tresult CCL_API SkiaTextLayout::getTextBounds (IMutableRegion& bounds, const Ran
 	rect.offset (offset.x, offset.y);
 
 	if(!rect.isEmpty ())
-		bounds.addRect (rectFToEnclosingInt (rect));
+		addLineRect (rect);
 
 	return kResultOk;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-tresult CCL_API SkiaTextLayout::getLineRange (Range& range, int textIndex) const
+tresult CCL_API SkiaTextLayout::getLineRange (Range& range, int textIndex, tbool includeNewline) const
 {
 	SkiaTextLayout* This = const_cast<SkiaTextLayout*> (this);
 
@@ -1310,14 +1485,35 @@ tresult CCL_API SkiaTextLayout::getLineRange (Range& range, int textIndex) const
 			range.length = i - range.start;
 			break;
 		}
+		CCL_PRINTF ("including character \"%s\" with dimensions (%f, %f)\n", MutableCString (originalText.subString (i, 1)).replace ('\n', '$').replace ('\r', '^').str (), characterBounds[i].getWidth (), characterBounds[i].getHeight ());
+	}
+
+	if(!includeNewline)
+	{
+		if(range.start >= 0 && range.length > 0)
+		{
+			uchar character = originalText.at (range.start + range.length - 1);
+			if(character == '\n')
+			{
+				range.length--;
+				if(range.length > 0)
+				{
+					character = originalText.at (range.start + range.length - 1);
+					if(character == '\r')
+						range.length--;
+				}
+			}
+			else if(characterBounds[range.start + range.length].getCenter ().y > textIndexY + 1.f)
+				range.length--;
+		}
 	}
 
 	if(range.length < 0 && range.start >= 0)
-		range.length = numCharacterBounds - range.start;
+		range.length = originalText.length () - range.start;
 
-	CCL_PRINTF ("line range (%d, %d): %s\n", range.start, range.length, MutableCString (originalText.subString (range.start, range.length)).replace ('\n', '$').str ());
+	CCL_PRINTF ("line range (%d, %d): %s\n", range.start, range.length, MutableCString (originalText.subString (range.start, range.length)).replace ('\n', '$').replace ('\r', '^').replace (' ', '_').str ());
 
-	return (range.start >= 0 && range.length > 0) ? kResultOk : kResultFailed;
+	return (range.start >= 0 && range.length >= 0) ? kResultOk : kResultFailed;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1377,15 +1573,11 @@ int SkiaTextLayout::findIndex (int utf8Position, const skia::textlayout::Paragra
 
 float SkiaTextLayout::getEndOfRange (const skia::textlayout::Paragraph::VisitorInfo* info) const
 {
-	SkPaint paint;
-	paint.setStyle (SkPaint::kStroke_Style);
-	paint.setStrokeWidth (0);
+	// the advance, like the paragraph layout (the glyph image can extend beyond it)
+	SkScalar advance = 0;
+	info->font.getWidths (info->glyphs + info->count - 1, 1, &advance);
 
-	SkRect glyphBounds;
-	info->font.getBounds (info->glyphs + info->count - 1, 1, &glyphBounds, &paint);
-	glyphBounds.offset (info->positions[info->count - 1] + info->origin);
-
-	return glyphBounds.x () + glyphBounds.width ();
+	return info->positions[info->count - 1].x () + info->origin.x () + advance;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1440,7 +1632,8 @@ void SkiaTextLayout::draw (SkCanvas& canvas, PointF position, Color textColor)
 	getParagraphOffset (offset);
 	blobPosition.offset (offset);
 
-	paragraph->paint (&canvas, blobPosition.x, blobPosition.y);
+	SkiaParagraphPainter painter (canvas);
+	paragraph->paint (&painter, blobPosition.x, blobPosition.y);
 
 #if DEBUG_TEXT_BOUNDS
 	SkPaint paint (SkColors::kRed);
@@ -1468,16 +1661,17 @@ void SkiaTextLayout::draw (SkCanvas& canvas, PointF position, Color textColor)
 	if(characterBoundsChanged)
 		updateCharacterBounds ();
 	
-	for(int i = 0; i < characterBounds.count (); i++)
+	SkPaint paint (SkColors::kCyan);
+	paint.setStyle (SkPaint::kStroke_Style);
+	for(RectF bounds : hitTestBounds)
 	{
-		SkPaint paint (SkColors::kCyan);
-		paint.setStyle (SkPaint::kStroke_Style);
-		RectF bounds = hitTestBounds[i];
 		bounds.offset (blobPosition);
 		canvas.drawRect (SkRect::MakeLTRB (bounds.left, bounds.top, bounds.right, bounds.bottom), paint);
+	}
 
-		paint.setColor (SkColors::kBlue);
-		bounds = characterBounds[i];
+	paint.setColor (SkColors::kBlue);
+	for(RectF bounds : characterBounds)
+	{
 		bounds.offset (blobPosition);
 		canvas.drawRect (SkRect::MakeLTRB (bounds.left, bounds.top, bounds.right, bounds.bottom), paint);
 	}

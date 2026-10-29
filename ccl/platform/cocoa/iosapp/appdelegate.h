@@ -1,7 +1,7 @@
 //************************************************************************************************
 //
 // This file is part of Crystal Class Library (R)
-// Copyright (c) 2025 CCL Software Licensing GmbH.
+// Copyright (c) 2026 CCL Software Licensing GmbH.
 // All Rights Reserved.
 //
 // Licensed for use under either:
@@ -29,11 +29,8 @@
 
 - (id)init;
 - (BOOL)application:(UIApplication*)application didFinishLaunchingWithOptions:(NSDictionary*)launchOptions;
-- (BOOL)application:(UIApplication*)app openURL:(NSURL*)url options:(NSDictionary<UIApplicationOpenURLOptionsKey, id>*)options;
-- (void)applicationDidBecomeActive:(UIApplication*)application;
-- (void)applicationWillResignActive:(UIApplication*)application;
-- (void)applicationDidEnterBackground:(UIApplication*)application;
-- (void)applicationWillEnterForeground:(UIApplication*)application;
+- (UISceneConfiguration*)application:(UIApplication*)application configurationForConnectingSceneSession:(UISceneSession*)connectingSceneSession options:(UISceneConnectionOptions*)options;
+- (void)application:(UIApplication*)application didDiscardSceneSessions:(NSSet<UISceneSession*>*)sceneSessions;
 - (void)applicationWillTerminate:(UIApplication*)application;
 - (void)receivedMemoryWarning:(NSNotification*)note;
 - (void)application:(UIApplication*)application handleEventsForBackgroundURLSession:(NSString*)identifier completionHandler:(void(^)(void))completionHandler;

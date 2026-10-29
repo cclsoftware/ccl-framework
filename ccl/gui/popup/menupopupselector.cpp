@@ -426,7 +426,7 @@ tbool CCL_API MenuPopupSelector::drawCell (ItemIndexRef index, int column, const
 		Coord left (info.rect.left);
 		const IVisualStyle& vs = itemView->getVisualStyle ();
 		Pen pen (vs.getColor ("menu.separatorcolor", vs.getColor ("separatorcolor", Colors::kTransparentBlack)));
-		if(pen.getColor ().getAlphaF () != 0)
+		if(pen.getColor ().isVisible ())
 		{
 			left = 0;
 			pen.setWidth (2);

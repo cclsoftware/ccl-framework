@@ -85,7 +85,7 @@ interface IPersistentStore: IUnknown
 	virtual tresult CCL_API registerClass (const ITypeInfo* typeInfo, TableMapping mapping = kDefaultMapping) = 0;
 
 	/** Define additional properties for a member of a registered class. */
-	virtual tresult CCL_API setMemberFlags (const ITypeInfo* typeInfo, const char* memberName, int flags) = 0;
+	virtual tresult CCL_API setMemberFlags (const ITypeInfo* typeInfo, CStringPtr memberName, int flags) = 0;
 
 	/** Set file location. */
 	virtual tresult CCL_API setLocation (UrlRef url) = 0;
@@ -109,7 +109,7 @@ interface IPersistentStore: IUnknown
 	virtual IUnknownIterator* CCL_API query (const ITypeInfo& typeInfo, IExpression* condition) = 0;
 
 	/** Collect all (distinct) value occurances of given class member with (optional) condition. */
-	virtual tresult CCL_API collectValues (IMutableArray& values, const ITypeInfo& typeInfo, const char* memberName, IExpression* condition) = 0;
+	virtual tresult CCL_API collectValues (IMutableArray& values, const ITypeInfo& typeInfo, CStringPtr memberName, IExpression* condition) = 0;
 
 	DECLARE_IID (IPersistentStore)
 };
@@ -136,13 +136,13 @@ DEFINE_IID (IPersistentOwner, 0x51CEA18E, 0xF7BF, 0x463B, 0x87, 0x6D, 0xE1, 0xEC
 interface IObjectState
 {
 	// set values in IPersistentObject::storeMembers ()
-	virtual void CCL_API set (const char* name, VariantRef value) = 0;
-	virtual void CCL_API setString (const char* name, StringRef value) = 0;
-	virtual void CCL_API setContainer (const char* name, const IContainer& container) = 0;
+	virtual void CCL_API set (CStringPtr name, VariantRef value) = 0;
+	virtual void CCL_API setString (CStringPtr name, StringRef value) = 0;
+	virtual void CCL_API setContainer (CStringPtr name, const IContainer& container) = 0;
 
 	// get values in IPersistentObject::restoreMembers ()
-	virtual VariantRef CCL_API get (const char* name) const = 0;
-	virtual IContainer* CCL_API getContainer (const char* name) const = 0;
+	virtual VariantRef CCL_API get (CStringPtr name) const = 0;
+	virtual IContainer* CCL_API getContainer (CStringPtr name) const = 0;
 };
 
 //************************************************************************************************

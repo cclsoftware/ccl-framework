@@ -63,7 +63,7 @@ public:
 	SubSurfaceWindow (LinuxWindow& parent);
 	
 	// LinuxWindow
-	void showWindow (bool state = true) override;
+	void showWindow (bool state = true, bool activate = true) override;
 	void CCL_API moveWindow (PointRef pos) override;
 	tbool CCL_API isVisible () const override;
 	tbool CCL_API isActive () const override;
@@ -108,7 +108,7 @@ public:
 	void update ();
 	
 	// SubSurfaceWindow
-	void showWindow (bool state = true) override;
+	void showWindow (bool state = true, bool activate = true) override;
 	void applySize (RectRef size) override;
 	tbool CCL_API close () override;
 	void handlePointerEvent (const InputHandler::PointerEvent& event) override;
@@ -308,14 +308,12 @@ float CCL_API LinuxWindow::getContentScaleFactor () const
 
 tbool CCL_API LinuxWindow::setContentScaleFactor (float factor)
 {
-	onDpiChanged (factor);
-	
-	return false;
+	return onDpiChanged (factor);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void LinuxWindow::onDpiChanged (float dpiFactor)
+bool LinuxWindow::onDpiChanged (float dpiFactor)
 {
 	if(windowContext.waylandSurface)
 	{
@@ -333,7 +331,9 @@ void LinuxWindow::onDpiChanged (float dpiFactor)
 				if(NativeWindowRenderTarget* target = getRenderTarget ())
 					target->onSize ();
 		}
+		return true;
 	}
+	return false;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -586,7 +586,7 @@ void LinuxWindow::onCompositorConnected ()
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void LinuxWindow::showWindow (bool state)
+void LinuxWindow::showWindow (bool state, bool _activate)
 {
 	if(hostedChildWindow != nullptr)
 	{
@@ -614,7 +614,7 @@ void LinuxWindow::showWindow (bool state)
 		bool wantsDecoration = (style.isCustomStyle (Styles::kWindowBehaviorSizable)
 									|| (style.isCustomStyle (Styles::kWindowAppearanceTitleBar) && !style.isCustomStyle (Styles::kWindowAppearanceCustomFrame))) 
 								&& !style.isCustomStyle (Styles::kWindowBehaviorPopupSelector);
-		bool wantsGrab = style.isCustomStyle (Styles::kWindowBehaviorPopupSelector);
+		bool wantsGrab = style.isCustomStyle (Styles::kWindowBehaviorPopupSelector) && _activate;
 		
 		bool isTopLevelWindow = !isEmbeddingChildWindow && parentWindow == nullptr;
 		isTopLevelWindow |= !style.isCustomStyle (Styles::kWindowBehaviorPopupSelector) && !style.isCustomStyle (Styles::kWindowBehaviorTooltip) && !style.isCustomStyle (Styles::kWindowBehaviorFloating);
@@ -815,6 +815,9 @@ void LinuxWindow::showWindow (bool state)
 	}
 
 	deferSignal (NEW Message (kSystemWindowChanged));
+
+	if(state && _activate)
+		activate ();
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1840,7 +1843,7 @@ SubSurfaceWindow::SubSurfaceWindow (LinuxWindow& parent)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void SubSurfaceWindow::showWindow (bool state)
+void SubSurfaceWindow::showWindow (bool state, bool activate)
 {
 	if(state && windowContext.waylandSurface == nullptr)
 	{
@@ -1986,7 +1989,7 @@ LinuxWindowDecoration::~LinuxWindowDecoration ()
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void LinuxWindowDecoration::showWindow (bool state)
+void LinuxWindowDecoration::showWindow (bool state, bool activate)
 {
 	if(state && windowContext.waylandSurface == nullptr)
 	{
@@ -1996,8 +1999,8 @@ void LinuxWindowDecoration::showWindow (bool state)
 	{
 		SignalSource::removeObserver (Signals::kGUI, this);
 	}
-	
-	SubSurfaceWindow::showWindow (state);
+
+	SubSurfaceWindow::showWindow (state, activate);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////

@@ -185,8 +185,8 @@ tbool CCL_API StandardFileInfo::setFile (UrlRef path)
 		if(System::GetFileSystem ().getFileInfo (fileInfo, path))
 		{
 			if(fileInfo.fileSize != -1) // -1: unknown size
-				fileSize = CCL::Format::ByteSize::print (fileInfo.fileSize);
-			dateModified = CCL::Format::DateTime::print (fileInfo.modifiedTime);
+				fileSize = Format::ByteSize::print (fileInfo.fileSize);
+			dateModified = Format::DateTime::print (fileInfo.modifiedTime);
 		}
 	}
 
@@ -205,7 +205,10 @@ tbool CCL_API StandardFileInfo::setFile (UrlRef path)
 tbool CCL_API StandardFileInfo::setDisplayAttributes (IImage* icon, StringRef title)
 {
 	if(icon)
+	{
+		UnknownPtr<IObject> (icon)->setProperty (IImage::kIsAdaptive, true);
 		fileIcon->setImage (icon);
+	}
 	if(!title.isEmpty ())
 		paramList.byTag (Tag::kFileName)->fromString (title);
 	return true;

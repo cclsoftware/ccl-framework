@@ -78,7 +78,7 @@ const int PackageIconCache::kCacheMaxDelay = 10; // days
 PackageIconCache::PackageIconCache ()
 : PersistentImageCache (Url (), kCacheTimeout, kCacheMaxDelay)
 {
-	System::GetSystem ().getLocation (basePath, CCL::System::kAppSettingsFolder);
+	System::GetSystem ().getLocation (basePath, System::kAppSettingsFolder);
 	basePath.descend (kIconCacheFolder, IUrl::kFolder);
 }
 

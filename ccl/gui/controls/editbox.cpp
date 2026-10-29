@@ -25,6 +25,7 @@
 #include "ccl/gui/windows/dialog.h"
 #include "ccl/gui/views/focusnavigator.h"
 #include "ccl/gui/touch/touchhandler.h"
+#include "ccl/gui/theme/renderer/editboxrenderer.h"
 #include "ccl/gui/commands.h"
 
 #include "ccl/base/message.h"
@@ -34,6 +35,8 @@
 #include "ccl/public/collections/stack.h"
 #include "ccl/public/systemservices.h"
 
+#include "ccl/public/math/mathprimitives.h"
+
 #include "ccl/public/guiservices.h"
 #include "ccl/public/gui/iparameter.h"
 #include "ccl/public/gui/iparamobserver.h"
@@ -42,7 +45,7 @@
 #include "ccl/public/gui/framework/abstractdraghandler.h"
 #include "ccl/public/gui/framework/itextmodel.h"
 
-#if CCL_PLATFORM_LINUX
+#if CCL_PLATFORM_DESKTOP || CCL_PLATFORM_WASM
 	#define EDITBOX_USE_NATIVE_CONTROL false
 #else
 	#define EDITBOX_USE_NATIVE_CONTROL true
@@ -214,8 +217,6 @@ BEGIN_STYLEDEF (EditBox::customStyles)
 	{"dialogedit",		Styles::kEditBoxBehaviorDialogEdit},
 	{"musthittext",		Styles::kEditBoxBehaviorMustHitText},
 	{"immediate",		Styles::kEditBoxBehaviorImmediate},
-	{"hidetext",		Styles::kEditBoxAppearanceHideText},
-	{"nowheel",  		Styles::kEditBoxBehaviorNoWheel},
 	{"nosuggestions",	Styles::kEditBoxBehaviorNoSuggestions},
 	{"noclearbutton",	Styles::kEditBoxBehaviorNoClearButton},
 	{"extended",		Styles::kEditBoxBehaviorExtended},
@@ -235,9 +236,29 @@ bool EditBox::isAnyEditing ()
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
+bool EditBox::isEditNavigationKey (const KeyEvent& event)
+{
+	switch(event.vKey)
+	{
+	case VKey::kEscape :
+	case VKey::kEnter :
+	case VKey::kReturn :
+	case VKey::kUp :
+	case VKey::kDown :
+	case VKey::kPageUp :
+	case VKey::kPageDown :
+	case VKey::kTab :
+	case VKey::kBackspace :
+		return true;
+	}
+	return false;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
 DEFINE_CLASS (EditBox, TextBox)
 DEFINE_CLASS_UID (EditBox, 0x49292662, 0xD30F, 0x4C11, 0xBA, 0x7B, 0xAF, 0x41, 0x77, 0xCC, 0x17, 0xAB)
-const Configuration::BoolValue EditBox::useNativeTextControl ("GUI.TextBox", "NativeControl", EDITBOX_USE_NATIVE_CONTROL);
+const Configuration::BoolValue EditBox::useNativeTextControl ("GUI.EditBox", "UseNativeControl", EDITBOX_USE_NATIVE_CONTROL);
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -246,6 +267,8 @@ EditBox::EditBox (const Rect& size, IParameter* param, StyleRef style, StringRef
   undoHandler (NEW UndoHandler (*this)),
   currentDragHandler (nullptr),
   dragSelectionRange (0, 0),
+  preeditCaretOffset (0),
+  preeditSelectionOffset (0),
   nativeControl (nullptr),
   returnKeyType (Styles::kReturnKeyDefault),
   keyboardType (Styles::kKeyboardTypeAutomatic),
@@ -258,11 +281,13 @@ EditBox::EditBox (const Rect& size, IParameter* param, StyleRef style, StringRef
   textLayoutInitialized (false),
   clickCount (0),
   latestClickTime (0.0),
-  selectionLocked (false)
+  selectionLocked (false),
+  displayOffset (0),
+  selectionUpdateNeeded (true)
 {
 	wantsFocus (true);
 	noFocusOnContextMenu (true);
-	setWheelEnabled (style.isCustomStyle (Styles::kEditBoxBehaviorNoWheel) == false);
+	setWheelEnabled (style.isCustomStyle (Styles::kTextBoxBehaviorNoWheel) == false);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -339,8 +364,10 @@ void EditBox::showCaret (bool state)
 
 void EditBox::resetTimer ()
 {
-	showCaret (isEditing () || style.isCustomStyle (Styles::kEditBoxBehaviorPermanentCaret));
-	startTimer (500, true);
+	bool editing = isEditing ();
+	showCaret (editing || style.isCustomStyle (Styles::kEditBoxBehaviorPermanentCaret));
+	if(editing && !shouldUseNativeControl ())
+		startTimer (500, true);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -351,6 +378,12 @@ void EditBox::attached (View* parent)
 
 	if(autofillType != Styles::kAutofillTypeNone)
 		AutofillManager::instance ().addClient (this);
+		
+	if(!shouldUseNativeControl ())
+		inputMethod = InputMethodManager::instance ().createInputMethod (*this);
+
+	if(textModel)
+		textModel->toDisplayString (plainTextCache);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -359,6 +392,11 @@ void EditBox::removed (View* parent)
 {
 	if(autofillType != Styles::kAutofillTypeNone)
 		AutofillManager::instance ().removeClient (this);
+
+	if(inputMethod.isValid () && isFocused ())
+		inputMethod->enable (false); // removed while focused, the focus is only killed afterwards
+
+	inputMethod.release ();
 
 	stopTimer ();
 	showCaret (false);
@@ -402,7 +440,7 @@ void EditBox::setNativeControl (NativeTextControl* toSet)
 ThemeRenderer* EditBox::getRenderer ()
 {
 	if(renderer == nullptr)
-		renderer = getTheme ().createRenderer (ThemePainter::kEditBoxRenderer, visualStyle);
+		renderer = getTheme ().createRenderer (ThemePainter::kEditBoxRenderer, visualStyle, this);
 
 	return renderer;
 }
@@ -440,8 +478,8 @@ NativeTextControl* EditBox::createNativeControl ()
 
 void EditBox::calculateNativeControlSize (Rect& size)
 {
-	getRenderer ()->getPartRect (this, kPartNativeControlArea, size);
-	
+	getRenderer ()->getPartRect (size, kPartNativeControlArea);
+
 	// use sizeLimits maxWidth if applicable and sizeMode hfit is set
 	if((getSizeMode () & View::SizeModes::kHFitSize) != 0)
 	{
@@ -459,9 +497,12 @@ void EditBox::calculateNativeControlSize (Rect& size)
 
 IEditControlHost* EditBox::getEditControlHost ()
 {
-	UnknownPtr<IEditControlHost> host (GetViewInterfaceUpwards<IEditControlHost> (this));
-	if(!host && getParameter ())
+	UnknownPtr<IEditControlHost> host;
+	if(getParameter ())
 		host = getParameter ()->getController ();
+	if(!host)
+		host = GetViewInterfaceUpwards<IEditControlHost> (this);
+
 	return host;
 }
 
@@ -475,6 +516,41 @@ bool EditBox::onFocus (const FocusEvent& event)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
+void EditBox::startEditing ()
+{
+	if(shouldUseNativeControl ())
+	{
+		ASSERT (nativeControl == nullptr)
+		if(!nativeControl && !inCreateNativeControl ())
+			setNativeControl (createNativeControl ());
+	}
+	else
+		updatePadding ();
+
+	paramFocused (true);
+	showCaret (true);
+
+	Window* window = getWindow ();
+	if(window && !window->shouldCollectUpdates ())
+		window->redraw ();
+
+	if(!shouldUseNativeControl () && currentDragHandler == nullptr)
+	{
+		if(!style.isCustomStyle (Styles::kTextBoxAppearanceMultiLine))
+		{
+			Variant start = plainTextCache.length ();
+			Variant length = -plainTextCache.length ();
+			(NEW Message (IParameter::kSetSelection, start, length))->post (this, -1);
+			initialSelectionPending (true);
+		}
+
+		if(inputMethod.isValid ())
+			inputMethod->enable (true);
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
 void EditBox::takeEditFocusInternal (bool state, bool directed)
 {
 	if(!shouldUseNativeControl () && state == isFocused ())
@@ -483,35 +559,8 @@ void EditBox::takeEditFocusInternal (bool state, bool directed)
 	if(state)
 	{
 		if(!style.isCustomStyle (Styles::kTextBoxBehaviorDoubleClickEdit) || inKeyDown || wantReopen || forceOpen)
-		{
-			if(!shouldUseNativeControl ())
-				updatePadding ();
+			startEditing ();
 
-			Rect r;
-			getClientRect (r);
-
-			Window* window = getWindow ();
-			if(window && !window->shouldCollectUpdates ())
-				window->redraw ();
-
-			ASSERT (nativeControl == nullptr)
-			if(!nativeControl && !inCreateNativeControl ())
-				setNativeControl (createNativeControl ());
-
-			paramFocused (true);
-			showCaret (true);
-
-			if(!shouldUseNativeControl () && currentDragHandler == nullptr)
-			{
-				setChanged ();
-				if(!style.isCustomStyle (Styles::kTextBoxAppearanceMultiLine))
-				{
-					Variant start = 0;
-					Variant length = plainTextCache.length ();
-					(NEW Message (IParameter::kSetSelection, start, length))->post (this, -1);
-				}
-			}
-		}
 		wantReopen = false;
 	}
 	else
@@ -523,9 +572,11 @@ void EditBox::takeEditFocusInternal (bool state, bool directed)
 			if(!nativeControl->isCanceled ())
 				nativeControl->submitText ();
 		}
-		else
-			setChanged ();
 
+		if(inputMethod.isValid ())
+			inputMethod->enable (false);
+
+		setPreeditText (String::kEmpty);
 		setNativeControl (nullptr);
 
 		Rect size (getSize ());
@@ -568,8 +619,8 @@ void EditBox::onSize (const Point& delta)
 	}
 	else
 	{
+		selectionUpdateNeeded = true;
 		updateCaretRect ();
-		updateSelection ();
 	}
 
 	if(autofillType != Styles::kAutofillTypeNone)
@@ -597,39 +648,9 @@ void EditBox::onMove (const Point& delta)
 
 	if(autofillType != Styles::kAutofillTypeNone && isAttached ())
 		AutofillManager::instance ().updateClient (this);
-}
 
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
-void EditBox::buildTextLayout ()
-{
-	SuperClass::buildTextLayout ();
-	
-	if(!shouldUseNativeControl () && !textLayoutInitialized)
-	{
-		TransactionScope scope (undoHandler, UndoHandler::ActionID::kInitialize);
-		textLayoutInitialized = true;
-	}
-
-	bool multiline = style.isCustomStyle (Styles::kTextBoxAppearanceMultiLine);
-	if(!multiline && textLayout)
-	{
-		RectF bounds;
-		textLayout->getBounds (bounds);
-		Rect rect = getTextRect ();
-		int newAlignH = getVisualStyle ().getTextAlignment ().getAlignH ();
-		if(bounds.getWidth () > rect.getWidth ())
-			newAlignH = Alignment::kLeft;
-
-		if(savedAlignment.getAlignH () != newAlignH)
-		{
-			savedAlignment.setAlignH (newAlignH);
-			SuperClass::buildTextLayout ();
-		}
-	}
-
-	updateCaretRect ();
-	updateSelection ();
+	if(inputMethod.isValid ())
+		inputMethod->visibleRectChanged ();
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -641,17 +662,30 @@ void EditBox::setCaretPosition (int textPosition, bool implicit)
 	if(selectionLocked)
 		return;
 
-	caretTextPosition = textPosition;
-	updateCaretRect ();
-	updateSelection ();
+	selectionUpdateNeeded = true;
+	if(preeditText.isEmpty ())
+		caretTextPosition = textPosition;
+	else
+		preeditCaretOffset = textPosition - caretTextPosition;
+
+	if(!implicit || inKeyDown)
+		updateDisplayOffset ();
+
 	if(!implicit)
 		lastExplicitCaretPosition = caretRect.getLeftTop ();
 
 	if(inKeyDown)
-		makeVisible (caretRect);
+	{
+		Rect visibleCaretRect (caretRect);
+		visibleCaretRect.offset (getTextRect ().getLeftTop () - Point (displayOffset, 0));
+		makeVisible (visibleCaretRect);
+	}
 
 	invalidate ();
 	resetTimer ();
+
+	if(inputMethod.isValid ())
+		inputMethod->selectionChanged ();
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -661,58 +695,114 @@ void EditBox::setSelectionPosition (int textPosition)
 	if(selectionLocked)
 		return;
 
-	selectionTextPosition = textPosition;
-	updateSelection ();
+	selectionUpdateNeeded = true;
+	if(preeditText.isEmpty ())
+		selectionTextPosition = textPosition;
+	else
+		preeditSelectionOffset = textPosition - selectionTextPosition;
+
 	invalidate ();
+
+	if(inputMethod.isValid ())
+		inputMethod->selectionChanged ();
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+void EditBox::updateDisplayOffset ()
+{
+	if(shouldUseNativeControl ())
+		return;
+
+	if(const ITextLayout* textLayout = getTextLayout ())
+	{
+		RectF bounds;
+		if(caretTextPosition >= 0 && textLayout->getCharacterBounds (bounds, caretTextPosition + preeditCaretOffset) == kResultOk)
+		{
+			caretRect = rectFToInt (bounds);
+			caretRect.setWidth (1);
+		}
+		else
+			caretRect.setEmpty ();
+
+		Rect r = getTextRect ();
+		if(style.isCustomStyle (Styles::kTextBoxAppearanceMultiLine))
+			displayOffset = 0;
+		else
+		{
+			Coord textWidth = r.getWidth ();
+			const Coord kOffsetShift = 20;
+			textLayout->getBounds (bounds);
+			Coord newDisplayOffset = displayOffset;
+			if(bounds.getWidth () <= textWidth)
+				newDisplayOffset = 0;
+			else
+			{
+				Coord maxOffset = Coord (bounds.getWidth () - textWidth);
+				if(caretRect.left - displayOffset <= 0)
+					newDisplayOffset = ccl_max (0, caretRect.left - kOffsetShift);
+				else if(caretRect.left - displayOffset >= textWidth)
+					newDisplayOffset = ccl_min (maxOffset, caretRect.left - (textWidth - kOffsetShift));
+				else if(displayOffset > maxOffset)
+					newDisplayOffset = maxOffset;
+			}
+
+			if(newDisplayOffset != displayOffset)
+				displayOffset = newDisplayOffset;
+		}
+	}
+	else
+	{
+		const IVisualStyle& vs = getVisualStyle ();
+
+		displayOffset = 0;
+		caretRect.setHeight (ceil (Font::measureLineHeight (vs.getTextFont ())));
+		caretRect.setWidth (1);
+
+		Rect r = getTextRect ();
+		Coord caretLeft = 0;
+		switch(vs.getTextAlignment ().getAlignH ())
+		{
+		case Alignment::kHCenter :
+			caretLeft = r.getWidth () / 2;
+			break;
+
+		case Alignment::kRight :
+			caretLeft = r.getWidth ();
+			break;
+		}
+
+		Coord caretTop = 0;
+		if(!style.isCustomStyle (Styles::kTextBoxAppearanceMultiLine))
+			caretTop = (r.getHeight () - caretRect.getHeight ()) / 2;
+
+		caretRect.moveTo (Point (caretLeft, caretTop));
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 void EditBox::updateCaretRect ()
 {
-	if(textLayout && !shouldUseNativeControl ())
+	if(caret)
 	{
-		bool multiline = style.isCustomStyle (Styles::kTextBoxAppearanceMultiLine);
-		Rect r = getTextRect ();
-		RectF bounds;
-		if(caretTextPosition >= 0 && textLayout->getCharacterBounds (bounds, caretTextPosition) == kResultOk)
-		{
-			caretRect = rectFToInt (bounds);
-			caretRect.setWidth (1);
-			if(!multiline)
-			{
-				Coord textWidth = r.getWidth ();
-				const Coord kOffsetShift = 20;
-				RectF bounds;
-				textLayout->getBounds (bounds);
-				Coord newDisplayOffset = displayOffset;
-				if(bounds.getWidth () <= textWidth)
-					newDisplayOffset = 0;
-				else
-				{
-					Coord maxOffset = Coord (bounds.getWidth () - textWidth);
-					if(caretRect.left - displayOffset <= 0)
-						newDisplayOffset = ccl_max (0, caretRect.left - kOffsetShift);
-					else if(caretRect.left - displayOffset >= textWidth)
-						newDisplayOffset = ccl_min (maxOffset, caretRect.left - (textWidth - kOffsetShift));
-					else if(displayOffset > maxOffset)
-						newDisplayOffset = maxOffset;
-				}
+		PointRef textPos = getTextRect ().getLeftTop ();
+		caret->move (Rect (caretRect).offset (textPos.x - displayOffset, textPos.y));
+	}
+}
 
-				if(newDisplayOffset != displayOffset)
-				{
-					displayOffset = newDisplayOffset;
-					setChanged ();
-				}
+//////////////////////////////////////////////////////////////////////////////////////////////////
 
-				caretRect.offset (-displayOffset, 0);
-			}
-		}
-		else
-			caretRect.setEmpty ();
+void EditBox::setCaretColor (ColorRef color)
+{
+	if(caret == nullptr)
+		return;
 
-		if(caret)
-			caret->move (Rect (caretRect).offset (r.getLeftTop ()));
+	SolidDrawable* caretShape = static_cast<SolidDrawable*> (caret->getDrawable ());
+	if(caretShape->getBrush ().getColor () != color)
+	{
+		caretShape->setBrush (SolidBrush (color));
+		caret->refresh ();
 	}
 }
 
@@ -724,24 +814,16 @@ void EditBox::updateSelection ()
 		return;
 
 	selection.setEmpty ();
+
+	const ITextLayout* textLayout = getTextLayout ();
 	if(textLayout && !shouldUseNativeControl () && isTextSelected ())
 	{
 		int left = ccl_min (caretTextPosition, selectionTextPosition);
 		int right = ccl_max (caretTextPosition, selectionTextPosition);
 		textLayout->getTextBounds (selection, {left, right - left});
-		if(displayOffset != 0)
-		{
-			Vector<Rect> offsetSelection;
-			for(Rect rect : selection.getRects ())
-			{
-				rect.offset (-displayOffset, 0);
-				offsetSelection.add (rect);
-			}
-			selection.setEmpty ();
-			for(RectRef rect : offsetSelection)
-				selection.addRect (rect);
-		}
 	}
+
+	selectionUpdateNeeded = false;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -783,8 +865,8 @@ void EditBox::dragSelection ()
 void EditBox::selectAll ()
 {
 	undoHandler->resetAction ();
-	setCaretPosition (0);
-	setSelectionPosition (plainTextCache.length ());
+	setCaretPosition (plainTextCache.length ());
+	setSelectionPosition (0);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -801,8 +883,8 @@ int EditBox::deleteSelectionInternal (int actionID)
 	int startPosition = ccl_min (caretTextPosition, selectionTextPosition);
 	int endPosition = ccl_max (caretTextPosition, selectionTextPosition);
 	int caretOffset = removeTextInternal (startPosition, endPosition - startPosition, actionID);
-	setCaretPosition (caretTextPosition - caretOffset);
-	setSelectionPosition (caretTextPosition);
+	setCaretPosition (startPosition);
+	setSelectionPosition (startPosition);
 
 	return caretOffset;
 }
@@ -866,10 +948,10 @@ bool EditBox::acceptClick (const MouseEvent& event)
 	if(!event.keys.isSet (KeyState::kLButton))
 		return false;
 
-	if(style.isCustomStyle (Styles::kEditBoxBehaviorMustHitText))
+	if(style.isCustomStyle (Styles::kEditBoxBehaviorMustHitText) && !isEditing ())
 	{
 		Rect r;
-		getRenderer ()->getPartRect (this, kPartTextExtent, r); 
+		getRenderer ()->getPartRect (r, kPartTextExtent); 
 		makeVisible (r);
 
 		// if text is too small (e.g. empty), accept click on left half
@@ -894,7 +976,12 @@ MouseHandler* EditBox::createMouseHandler (const MouseEvent& event)
 	}
 
 	if(!shouldUseNativeControl () && isEditing () && event.keys.isSet (KeyState::kLButton))
+	{
+		if(initialSelectionPending ())
+			return NEW NullMouseHandler (this);
+
 		return NEW EditBoxMouseHandler (this);
+	}
 
 	return SuperClass::createMouseHandler (event);
 }
@@ -920,8 +1007,6 @@ ITouchHandler* EditBox::createTouchHandler (const TouchEvent& event)
 	
 	if(style.isCustomStyle (Styles::kTextBoxBehaviorDoubleClickEdit))
 		handler->addRequiredGesture (GestureEvent::kDoubleTap);
-	else
-		handler->addRequiredGesture (GestureEvent::kSingleTap);
 	
 	return handler;
 }
@@ -932,8 +1017,7 @@ bool EditBox::onGesture (const GestureEvent& event)
 {
 	if(event.getType () == GestureEvent::kDoubleTap && style.isCustomStyle (Styles::kTextBoxBehaviorDoubleClickEdit))
 	{
-		setNativeControl (createNativeControl ());
-		paramFocused (true);
+		startEditing ();
 		return true;
 	}
 	return SuperClass::onGesture (event);
@@ -945,6 +1029,12 @@ bool EditBox::handleClick (const MouseEvent& event)
 {
 	if(!acceptClick (event))
 		return false;
+
+	if(initialSelectionPending ())
+	{
+		clickCount = 0;
+		return false;
+	}
 
 	int timesClicked = event.doubleClicked == 1 ? 2 : 1;
 	double currentTime = System::GetProfileTime ();
@@ -979,12 +1069,9 @@ bool EditBox::handleClick (const MouseEvent& event)
 				Rect r;
 				getClientRect (r);
 				makeVisible (r);
-
-				if(!nativeControl)
-					setNativeControl (createNativeControl ());
 			}
 
-			paramFocused (true);
+			startEditing ();
 		}
 
 		return true;
@@ -1008,7 +1095,7 @@ bool EditBox::onMouseDown (const MouseEvent& event)
 	{
 		if(style.isCustomStyle (Styles::kEditBoxBehaviorDragText))
 		{
-			for(RectRef rect : selection.getRects ())
+			for(RectRef rect : getSelection ())
 			{
 				if(rect.pointInside (event.where) && detectDrag (event))
 				{
@@ -1019,7 +1106,7 @@ bool EditBox::onMouseDown (const MouseEvent& event)
 		}
 	}
 
-	if(style.isCustomStyle (Styles::kTextBoxBehaviorDoubleClickEdit) && !isEditing () && !detectDoubleClick (event))
+	if(style.isCustomStyle (Styles::kTextBoxBehaviorDoubleClickEdit) && !isEditing () && event.keys.isSet (KeyState::kLButton) && !detectDoubleClick (event))
 	{
 		// pass through single click (derived class might behave different!)
 		if(myClass () == ccl_typeid<EditBox> ())
@@ -1032,8 +1119,12 @@ bool EditBox::onMouseDown (const MouseEvent& event)
 	if(handleClick (event))
 		return true;
 
-	View::onMouseDown (event);
-	return isEnabled (); // An editbox will always swallow the mouseclick, if it is enabled. Any action happens on focus event.
+	bool result = View::onMouseDown (event);
+
+	if(event.keys.isSet (KeyState::kLButton) && (isEditing () || !style.isCustomStyle (Styles::kEditBoxBehaviorMustHitText)))
+		result = isEnabled (); // An enabled editbox will usually swallow the left mouseclick. Any action happens on focus event.
+
+	return result;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1057,7 +1148,7 @@ bool EditBox::onMouseMove (const MouseEvent& event)
 	bool selectionHovered = false;
 	if(!shouldUseNativeControl () && isEditing ())
 	{
-		for(RectRef rect : selection.getRects ())
+		for(RectRef rect : getSelection ())
 		{
 			if(rect.pointInside (event.where))
 			{
@@ -1085,8 +1176,17 @@ bool EditBox::moveCaretTo (const Point& point, bool clearSelection)
 		int textPosition = 0;
 		PointF position (point.x, point.y);
 		position.offset (displayOffset - rect.left, -rect.top);
+		const ITextLayout* textLayout = getTextLayout ();
 		if(textLayout && textLayout->hitTest (textPosition, position) == kResultOk)
 		{
+			// Snap to grapheme boundary based on mouse position
+			int graphemePosition = snapToGraphemeBoundary (textPosition, position);
+			if(graphemePosition != textPosition)
+			{
+				ITextLayout::Range lineRange (0, 0);
+				if(textLayout->getLineRange (lineRange, textPosition, false) == kResultOk && lineRange.start + lineRange.length >= graphemePosition)
+					textPosition = graphemePosition;
+			}
 			setCaretPosition (textPosition);
 
 			if(clearSelection)
@@ -1103,6 +1203,7 @@ bool EditBox::moveCaretTo (const Point& point, bool clearSelection)
 
 void EditBox::selectWordOrLine (bool selectLine)
 {
+	const ITextLayout* textLayout = getTextLayout ();
 	if(textLayout == nullptr)
 		return;
 
@@ -1129,39 +1230,29 @@ bool EditBox::onContextMenu (const ContextMenuEvent& event)
 	if(shouldUseNativeControl ())
 		return Control::onContextMenu (event); // use OS context menu
 
-	if(isFocused ())
+	bool result = Control::onContextMenu (event);
+
+	if(isFocused () && style.isCustomStyle (Styles::kTextBoxBehaviorNoContextMenu) == false)
 	{
-		bool result = Control::onContextMenu (event);
-
-		if(style.isCustomStyle (Styles::kTextBoxBehaviorNoContextMenu) == false)
+		auto addEditCommand = [this,&event] (CStringRef name)
 		{
-			Rect r;
-			getRenderer ()->getPartRect (this, kPartTextExtent, r);
-			if(!r.isEmpty () && (event.wasKeyPressed || r.pointInside (event.where)))
-			{
-				auto addEditCommand = [this,&event] (CStringRef name)
-				{
-					CommandWithTitle command = CommandRegistry::find ("Edit", name);
-					event.contextMenu.addCommandItem (command, this);
-				};
+			CommandWithTitle command = CommandRegistry::find ("Edit", name);
+			event.contextMenu.addCommandItem (command, this);
+		};
 
-				event.contextMenu.addSeparatorItem ();
-				addEditCommand ("Cut");
-				addEditCommand ("Copy");
-				addEditCommand ("Paste");
-				addEditCommand ("Delete");
-				addEditCommand ("Select All");
-				event.contextMenu.addSeparatorItem ();
-				addEditCommand ("Undo");
-				addEditCommand ("Redo");
-				result = true; // avoid other items to appear
-			}
-		}
-
-		return result;
+		event.contextMenu.addSeparatorItem ();
+		addEditCommand ("Cut");
+		addEditCommand ("Copy");
+		addEditCommand ("Paste");
+		addEditCommand ("Delete");
+		addEditCommand ("Select All");
+		event.contextMenu.addSeparatorItem ();
+		addEditCommand ("Undo");
+		addEditCommand ("Redo");
+		result = true; // avoid other items to appear
 	}
-	else
-		return SuperClass::onContextMenu (event);
+
+	return result;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1175,17 +1266,23 @@ bool EditBox::onKeyDown (const KeyEvent& event)
 	selectionLocked = false;
 
 	// check for IEditControlHost interface: parent views or controller
-	IEditControlHost* host = getEditControlHost ();
-	if(host && host->onEditNavigation (event, this))
-		return true;
+	if(isEditNavigationKey (event))
+	{
+		IEditControlHost* host = getEditControlHost ();
+		if(host && host->onEditNavigation (event, this))
+			return true;
+	}
 
 	if(!shouldUseNativeControl ())
 	{
-		if(handleKeyDown (event))
-			return true;
+		if(isEditing ())
+		{
+			if(handleKeyDown (event))
+				return true;
 
-		if(tryEdit (event))
-			return true;
+			if(tryEdit (event))
+				return true;
+		}
 
 		if(FocusNavigator::instance ().onKeyDown (event))
 		{
@@ -1200,25 +1297,181 @@ bool EditBox::onKeyDown (const KeyEvent& event)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
+int EditBox::getNextGraphemePosition (int textPosition) const
+{
+	AutoPtr<IGraphemeIterator> iter = System::CreateGraphemeIterator (plainTextCache, textPosition);
+	return iter->next ();
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+int EditBox::getPreviousGraphemePosition (int textPosition) const
+{
+	AutoPtr<IGraphemeIterator> iter = System::CreateGraphemeIterator (plainTextCache, textPosition);
+	return iter->previous ();
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+int EditBox::getNextWordPosition (int textPosition) const
+{
+	const ITextLayout* textLayout = getTextLayout ();
+	if(textLayout == nullptr)
+		return getNextGraphemePosition (textPosition);
+
+	// skip the word, stop at the start of the next word
+	int position = textPosition;
+	for(int step = 0; step < 2 && position < plainTextCache.length (); step++)
+	{
+		ITextLayout::Range range (0, 0);
+		if(textLayout->getWordRange (range, position) != kResultOk || range.start + range.length <= position)
+		{
+			position = getNextGraphemePosition (position); // e.g. newline
+			break;
+		}
+
+		bool whitespace = Unicode::isWhitespace (plainTextCache[position]);
+		position = range.start + range.length;
+		if(whitespace)
+			break;
+	}
+	return position;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+int EditBox::getPreviousWordPosition (int textPosition) const
+{
+	const ITextLayout* textLayout = getTextLayout ();
+	if(textLayout == nullptr)
+		return getPreviousGraphemePosition (textPosition);
+
+	// skip whitespace, stop at the start of the word
+	int position = textPosition;
+	for(int step = 0; step < 2 && position > 0; step++)
+	{
+		ITextLayout::Range range (0, 0);
+		if(textLayout->getWordRange (range, position - 1) != kResultOk || range.length <= 0 || range.start >= position)
+		{
+			position = getPreviousGraphemePosition (position); // e.g. newline
+			break;
+		}
+
+		position = range.start;
+		if(!Unicode::isWhitespace (plainTextCache[position]))
+			break;
+	}
+	return position;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+bool EditBox::isWordModifier (const KeyEvent& event)
+{
+	#if CCL_PLATFORM_MAC || CCL_PLATFORM_IOS
+	return (event.state.getModifiers () & KeyState::kOption) != 0;
+	#else
+	return (event.state.getModifiers () & KeyState::kCommand) != 0;
+	#endif
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+int EditBox::snapToGraphemeBoundary (int textPosition) const
+{
+	// Snap position to nearest grapheme cluster boundary
+	if(textPosition <= 0 || textPosition >= plainTextCache.length ())
+		return textPosition;
+
+	// Find the start of the cluster containing this position
+	int clusterStart = getPreviousGraphemePosition (textPosition);
+	int clusterEnd = getNextGraphemePosition (clusterStart);
+
+	// If position is already at a boundary, return as-is
+	if(textPosition == clusterStart || textPosition == clusterEnd)
+		return textPosition;
+
+	// Position is inside a cluster - snap to the closest boundary
+	// If distances are equal (exact middle), prefer the end (forward direction)
+	int distanceToStart = textPosition - clusterStart;
+	int distanceToEnd = clusterEnd - textPosition;
+
+	return (distanceToStart < distanceToEnd) ? clusterStart : clusterEnd;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+int EditBox::snapToGraphemeBoundary (int textPosition, PointF position) const
+{
+	const ITextLayout* textLayout = getTextLayout ();
+	if(textLayout == nullptr)
+		return textPosition;
+
+	if(textPosition < 0 || textPosition >= plainTextCache.length ())
+		return textPosition;
+
+	// Get the bounds of the character at this position
+	RectF charBounds;
+	if(textLayout->getCharacterBounds (charBounds, textPosition) != kResultOk)
+		return textPosition;  // Fallback to no snapping
+
+	// Find the grapheme cluster starting at this position
+	int clusterEnd = getNextGraphemePosition (textPosition);
+
+	// If this is a single-character cluster, no adjustment needed
+	if(clusterEnd == textPosition + 1)
+		return textPosition;
+
+	// Check if click is in the right half of the character
+	float charMidpoint = charBounds.left + (charBounds.getWidth () / 2.0f);
+	bool clickedRightHalf = (position.x >= charMidpoint);
+
+	// If clicked on right half and there's a multi-character cluster, snap to end
+	if(clickedRightHalf && clusterEnd > textPosition)
+		return clusterEnd;
+
+	return textPosition;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+bool EditBox::moveCaretToCoord (CoordF layoutY, bool shiftDown)
+{
+	const ITextLayout* textLayout = getTextLayout ();
+	if(textLayout == nullptr)
+		return false;
+
+	PointF hitPosition (lastExplicitCaretPosition.x, layoutY);
+
+	int textPosition = 0;
+	if(textLayout->hitTest (textPosition, hitPosition) != kResultOk)
+		return false;
+
+	setCaretPosition (snapToGraphemeBoundary (textPosition), true);
+	if(!shiftDown)
+		setSelectionPosition (caretTextPosition);
+
+	return true;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
 bool EditBox::handleKeyDown (const KeyEvent& e)
 {
 	bool shiftDown = (e.state.getModifiers () & KeyState::kShift);
 	bool commandDown = (e.state.getModifiers () & KeyState::kCommand);
-	
+
 	switch(e.vKey)
 	{
 	case VKey::kLeft :
-		if(isTextSelected () && !shiftDown)
+		if(isTextSelected () && !shiftDown && !isWordModifier (e))
 		{
 			setCaretPosition (ccl_min (selectionTextPosition, caretTextPosition));
 			setSelectionPosition (caretTextPosition);
 		}
 		else if(caretTextPosition > 0)
 		{
-			if(caretTextPosition -1 > 0 && plainTextCache[caretTextPosition - 1] == '\n' && plainTextCache[caretTextPosition - 2] == '\r')
-				setCaretPosition (caretTextPosition - 2);
-			else
-				setCaretPosition (caretTextPosition - 1);
+			setCaretPosition (isWordModifier (e) ? getPreviousWordPosition (caretTextPosition) : getPreviousGraphemePosition (caretTextPosition));
 			if(!shiftDown)
 				setSelectionPosition (caretTextPosition);
 		}
@@ -1226,17 +1479,14 @@ bool EditBox::handleKeyDown (const KeyEvent& e)
 		return true;
 
 	case VKey::kRight :
-		if(isTextSelected () && !shiftDown)
+		if(isTextSelected () && !shiftDown && !isWordModifier (e))
 		{
 			setCaretPosition (ccl_max (selectionTextPosition, caretTextPosition));
 			setSelectionPosition (caretTextPosition);
 		}
 		else if(caretTextPosition < plainTextCache.length ())
 		{
-			if(caretTextPosition + 1 < plainTextCache.length () && plainTextCache[caretTextPosition] == '\r' && plainTextCache[caretTextPosition + 1] == '\n')
-				setCaretPosition (caretTextPosition + 2);
-			else
-				setCaretPosition (caretTextPosition + 1);
+			setCaretPosition (isWordModifier (e) ? getNextWordPosition (caretTextPosition) : getNextGraphemePosition (caretTextPosition));
 			if(!shiftDown)
 				setSelectionPosition (caretTextPosition);
 		}
@@ -1244,83 +1494,75 @@ bool EditBox::handleKeyDown (const KeyEvent& e)
 		return true;
 
 	case VKey::kUp :
-		if(textLayout && style.isCustomStyle (Styles::kTextBoxAppearanceMultiLine))
 		{
-			PointF newCaretPosition;
-			newCaretPosition.x = lastExplicitCaretPosition.x;
-
-			ITextLayout::Range lineRange (0, 0);
-			if(textLayout->getLineRange (lineRange, caretTextPosition) != kResultOk)
-				break;
-
-			int endOfPreviousLine = lineRange.start - 1;
-			if(endOfPreviousLine < 0)
+			const ITextLayout* textLayout = getTextLayout ();
+			if(textLayout && style.isCustomStyle (Styles::kTextBoxAppearanceMultiLine))
 			{
-				endOfPreviousLine = 0;
-				newCaretPosition.x = 0;
+				ITextLayout::Range lineRange (0, 0);
+				if(textLayout->getLineRange (lineRange, caretTextPosition) != kResultOk)
+					break;
+
+				int endOfPreviousLine = lineRange.start - 1;
+				if(endOfPreviousLine < 0)
+				{
+					// already on the first line: move to the very beginning, but keep the remembered column
+					setCaretPosition (0, true);
+					if(!shiftDown)
+						setSelectionPosition (caretTextPosition);
+				}
+				else
+				{
+					if(textLayout->getLineRange (lineRange, endOfPreviousLine) != kResultOk)
+						break;
+
+					RectF previousLineRect;
+					if(textLayout->getCharacterBounds (previousLineRect, lineRange.start) != kResultOk)
+						break;
+
+					moveCaretToCoord (previousLineRect.getCenter ().y, shiftDown);
+				}
+
+				undoHandler->resetAction ();
+				return true;
 			}
-			if(textLayout->getLineRange (lineRange, endOfPreviousLine) != kResultOk)
-				break;
-
-			RectF previousLineRect;
-			if(textLayout->getCharacterBounds (previousLineRect, lineRange.start) != kResultOk)
-				break;
-
-			newCaretPosition.y = previousLineRect.top + (previousLineRect.getHeight () / 2);
-
-			Rect rect = getTextRect ();
-			int textPosition = 0;
-			newCaretPosition.offset (displayOffset - rect.left, 0);
-			if(textLayout->hitTest (textPosition, newCaretPosition) == kResultOk)
-			{
-				setCaretPosition (textPosition, true);
-				if(!shiftDown)
-					setSelectionPosition (caretTextPosition);
-			}
-			undoHandler->resetAction ();
-			return true;
 		}
 		break;
 
 	case VKey::kDown :
-		if(textLayout && style.isCustomStyle (Styles::kTextBoxAppearanceMultiLine))
 		{
-			ITextLayout::Range lineRange (0, 0);
-			if(textLayout->getLineRange (lineRange, caretTextPosition) != kResultOk)
-				break;
-
-			int startOfNextLine = lineRange.start + lineRange.length;
-			if(textLayout->getLineRange (lineRange, startOfNextLine) != kResultOk)
-				break;
-
-			RectF nextLineRect;
-			if(textLayout->getCharacterBounds (nextLineRect, lineRange.start) != kResultOk)
-				break;
-
-			PointF newCaretPosition;
-			newCaretPosition.x = lastExplicitCaretPosition.x;
-			newCaretPosition.y = nextLineRect.top + (nextLineRect.getHeight () / 2);
-
-			Rect rect = getTextRect ();
-			int textPosition = 0;
-			newCaretPosition.offset (displayOffset - rect.left, 0);
-			if(textLayout->hitTest (textPosition, newCaretPosition) == kResultOk)
+			const ITextLayout* textLayout = getTextLayout ();
+			if(textLayout && style.isCustomStyle (Styles::kTextBoxAppearanceMultiLine))
 			{
+				ITextLayout::Range lineRange (0, 0);
+				if(textLayout->getLineRange (lineRange, caretTextPosition) != kResultOk)
+					break;
+
+				int startOfNextLine = lineRange.start + lineRange.length;
+				if(textLayout->getLineRange (lineRange, startOfNextLine) != kResultOk)
+					break;
+
+				RectF nextLineRect;
+				if(textLayout->getCharacterBounds (nextLineRect, lineRange.start) != kResultOk)
+					break;
+
 				if(startOfNextLine >= plainTextCache.length ())
-					textPosition = plainTextCache.length ();
+				{
+					// already on the last line: move to the very end, but keep the remembered column
+					setCaretPosition (plainTextCache.length (), true);
+					if(!shiftDown)
+						setSelectionPosition (caretTextPosition);
+				}
+				else
+					moveCaretToCoord (nextLineRect.getCenter ().y, shiftDown);
 
-				setCaretPosition (textPosition, true);
-				if(!shiftDown)
-					setSelectionPosition (caretTextPosition);
+				undoHandler->resetAction ();
+				return true;
 			}
-
-			undoHandler->resetAction ();
-			return true;
 		}
 		break;
 
 	case VKey::kHome :
-		if(textLayout)
+		if(const ITextLayout* textLayout = getTextLayout ())
 		{
 			if(commandDown)
 				setCaretPosition (0);
@@ -1339,23 +1581,106 @@ bool EditBox::handleKeyDown (const KeyEvent& e)
 		return true;
 
 	case VKey::kEnd :
-		if(textLayout)
+		if(const ITextLayout* textLayout = getTextLayout ())
 		{
 			if(commandDown)
 				setCaretPosition (plainTextCache.length ());
 			else
 			{
 				ITextLayout::Range lineRange (0, 0);
-				if(textLayout->getLineRange (lineRange, caretTextPosition) != kResultOk)
+				if(textLayout->getLineRange (lineRange, caretTextPosition, false) != kResultOk)
 					break;
 
-				setCaretPosition (lineRange.start + lineRange.length - 1);
+				setCaretPosition (lineRange.start + lineRange.length);
 			}
 			if(!shiftDown)
 				setSelectionPosition (caretTextPosition);
 		}
 		undoHandler->resetAction ();
 		return true;
+
+	case VKey::kPageUp :
+	case VKey::kPageDown :
+		{
+			const ITextLayout* textLayout = getTextLayout ();
+			if(textLayout && style.isCustomStyle (Styles::kTextBoxAppearanceMultiLine))
+			{
+				bool pageDown = (e.vKey == VKey::kPageDown);
+
+				Rect visible;
+				RectF caretBounds;
+				if(!getVisibleClient (visible) || textLayout->getCharacterBounds (caretBounds, caretTextPosition) != kResultOk)
+					break;
+
+				// the line at the far edge of the viewport becomes the line at the opposite edge
+				Rect textRect = getTextRect ();
+				Coord edge = pageDown ? visible.bottom - 1 : visible.top;
+				PointF edgePosition (0.f, CoordF(edge - textRect.top));
+
+				int anchorPosition = 0;
+				RectF anchorBounds;
+				if(textLayout->hitTest (anchorPosition, edgePosition) != kResultOk)
+					break;
+				if(textLayout->getCharacterBounds (anchorBounds, anchorPosition) != kResultOk)
+					break;
+
+				Coord anchorTop = textRect.top + coordFToInt (anchorBounds.top);
+				Coord anchorBottom = textRect.top + coordFToInt (anchorBounds.bottom);
+
+				if((pageDown && anchorBottom > visible.bottom) || (!pageDown && anchorTop < visible.top))
+				{
+					ITextLayout::Range lineRange (0, 0);
+					if(textLayout->getLineRange (lineRange, anchorPosition) != kResultOk)
+						break;
+
+					int fullyVisiblePosition = pageDown ? lineRange.start - 1 : lineRange.start + lineRange.length;
+					RectF fullyVisibleBounds;
+					if(fullyVisiblePosition >= 0 && fullyVisiblePosition <= plainTextCache.length () 
+						&& textLayout->getCharacterBounds (fullyVisibleBounds, fullyVisiblePosition) == kResultOk)
+					{
+						anchorTop = textRect.top + coordFToInt (fullyVisibleBounds.top);
+						anchorBottom = textRect.top + coordFToInt (fullyVisibleBounds.bottom);
+					}
+				}
+
+				RectF textBounds;
+				textLayout->getBounds (textBounds);
+
+				Coord pageTop = 0;
+				Coord pageBottom = 0;
+				if(pageDown)
+				{
+					pageTop = anchorTop;
+					pageBottom = ccl_max (pageTop + visible.getHeight (), textRect.top + coordFToInt (textBounds.bottom));
+				}
+				else
+				{
+					pageBottom = anchorBottom;
+					pageTop = pageBottom - visible.getHeight ();
+				}
+
+				Rect pageRect (visible.left, pageTop, visible.right, pageBottom);
+				Coord scrollDelta = pageRect.top - visible.top;
+				makeVisible (pageRect);
+
+				// the caret travels with the view, so it keeps its position on screen
+				CoordF targetY = caretBounds.getCenter ().y + scrollDelta;
+
+				if(targetY < textBounds.top || targetY > textBounds.bottom)
+				{
+					// past either end of the text: go there, but keep the remembered column
+					setCaretPosition (targetY < textBounds.top ? 0 : plainTextCache.length (), true);
+					if(!shiftDown)
+						setSelectionPosition (caretTextPosition);
+				}
+				else
+					moveCaretToCoord (targetY, shiftDown);
+
+				undoHandler->resetAction ();
+				return true;
+			}
+		}
+		break;
 
 	case VKey::kEscape :
 	case VKey::kEnter :
@@ -1371,14 +1696,13 @@ bool EditBox::handleKeyDown (const KeyEvent& e)
 				isMultiline = true;
 			#endif
 
-			bool nonDialogEdit = true;
-			if(style.isCustomStyle (Styles::kEditBoxBehaviorDialogEdit))
-				nonDialogEdit = false;
-
 			if(isMultiline == false || canceled)
 			{
+				if(!canceled)
+					submit (false, e.state);
+
 				killFocus ();
-				return true;
+				return canceled || !style.isCustomStyle (Styles::kEditBoxBehaviorDialogEdit); // dialog edit: don't swallow return/enter, let the dialog react
 			}
 		}
 		break;
@@ -1452,9 +1776,16 @@ bool EditBox::tryEdit (const KeyEvent& event)
 				return true;
 			}
 
-			int caretOffset = removeTextInternal (caretTextPosition, -1, actionID);
-			setCaretPosition (caretTextPosition - caretOffset);
-			setSelectionPosition (caretTextPosition);
+			// Delete entire grapheme cluster or word before caret
+			int prevPos = isWordModifier (event) ? getPreviousWordPosition (caretTextPosition) : getPreviousGraphemePosition (caretTextPosition);
+			int numChars = caretTextPosition - prevPos;
+			if(numChars > 0)
+			{
+				int textPosition = caretTextPosition;
+				int caretOffset = removeTextInternal (textPosition, -numChars, actionID);
+				setCaretPosition (textPosition - caretOffset);
+				setSelectionPosition (caretTextPosition);
+			}
 
 			return true;
 		}
@@ -1466,11 +1797,12 @@ bool EditBox::tryEdit (const KeyEvent& event)
 			return true;
 		}
 
+		// Delete entire grapheme cluster or word after caret
 		undoHandler->setDeferSaveCaretPosition ();
-		if(removeTextInternal (caretTextPosition, 1, int(UndoHandler::ActionID::kDeleteLeading)) != 0)
-			return true;
-
-		break;
+		int nextPos = isWordModifier (event) ? getNextWordPosition (caretTextPosition) : getNextGraphemePosition (caretTextPosition);
+		int numChars = nextPos - caretTextPosition;
+		removeTextInternal (caretTextPosition, numChars, int(UndoHandler::ActionID::kDeleteLeading));
+		return true;
 	}
 
 	if(event.isComposedCharValid () && (Unicode::isPrintable (event.composedCharacter) || (event.composedCharacter == '\t' && style.isCustomStyle (Styles::kTextBoxAppearanceMultiLine))))
@@ -1499,8 +1831,10 @@ void EditBox::insertTextInternal (StringRef text, int actionID)
 
 	deleteSelectionInternal (actionID);
 	TransactionScope scope (undoHandler, UndoHandler::ActionID(actionID));
-	int insertedCharacters = textModel->insertText (caretTextPosition, text, undoHandler->isUndoActive () ? 0 : IMutableTextModel::kMergeUndo);
-	setCaretPosition (caretTextPosition + insertedCharacters);
+	textModified (true);
+	int textPosition = caretTextPosition;
+	int insertedCharacters = textModel->insertText (textPosition, text, undoHandler->isUndoActive () ? 0 : IMutableTextModel::kMergeUndo);
+	setCaretPosition (textPosition + insertedCharacters);
 	setSelectionPosition (caretTextPosition);
 }
 
@@ -1536,6 +1870,7 @@ int EditBox::removeTextInternal (int textPosition, int length, int actionID)
 	if(!undoHandler->isUndoActive ())
 		options |= IMutableTextModel::kMergeUndo;
 
+	textModified (true);
 	int removedCharacters = textModel->removeText (textPosition, length, options);
 	if(selectionTextPosition > caretTextPosition)
 		return 0; // we return a caret offset. If selected text after the caret is removed, the caret stays where it is.
@@ -1556,10 +1891,18 @@ void EditBox::paramFocused (bool state)
 			{
 				editCount++;
 				selectionLocked = isTextSelected ();
-				setChanged (); // make sure to rebuild the text layout to not show a collapsed string when editing
 			}
 			else
+			{
 				editCount--;
+				stopTimer ();
+				initialSelectionPending (false);
+			}
+
+			// rebuild text layout to show a collapsed string when not editing
+			UnknownPtr<ISubject> subject (textModel);
+			if(subject)
+				subject->signal (Message (kChanged));
 
 			invalidate ();
 
@@ -1588,34 +1931,46 @@ void EditBox::paramFocused (bool state)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void EditBox::submit (bool check)
+void EditBox::submit (bool check, const KeyState& keys)
 {
-	if(IParameter* param = getTextParameter ())
+	bool modified = textModified ();
+	textModified (false);
+
+	IParameter* param = getTextParameter ();
+	if(param == nullptr)
+		return;
+
+	String modelString;
+	textModel->toParamString (modelString);
+	String paramString;
+	param->toString (paramString);
+
+	if(modelString == paramString && keys.isSet (KeyState::kShift|KeyState::kOption))
 	{
-		// set new parameter value
-		String modelString;
-		textModel->toParamString (modelString);
-		String paramString;
-		param->toString (paramString);
-		if(check && modelString == paramString)
-			return;
-
+		// when shift or option is pressed, notify controller even if text didn't change, to allow special functionality
 		param->beginEdit ();
-		param->fromString (modelString, true);
+		param->performUpdate ();
 		param->endEdit ();
-
-		// update text from parameter value (may have changed due to parameter validation)
-		param->toString (paramString);
-		textModel->fromParamString (paramString);
+		return;
 	}
+
+	if(!modified || (check && modelString == paramString))
+		return;
+
+	// set new parameter value
+	param->beginEdit ();
+	param->fromString (modelString, true);
+	param->endEdit ();
+
+	// update text from parameter value (may have changed due to parameter validation)
+	param->toString (paramString);
+	textModel->fromParamString (paramString);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 void EditBox::paramChanged ()
 {
-	setChanged ();
-
 	if(nativeControl)
 	{
 		if(nativeControl->isImmediateUpdate ())
@@ -1634,7 +1989,13 @@ void EditBox::paramChanged ()
 		nativeControl->updateText ();
 	}
 	else
+	{
+		int textLength = plainTextCache.length ();
+		caretTextPosition = ccl_min (caretTextPosition, textLength);
+		selectionTextPosition = ccl_min (selectionTextPosition, textLength);
+
 		SuperClass::paramChanged ();
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1643,6 +2004,8 @@ void CCL_API EditBox::notify (ISubject* subject, MessageRef msg)
 {
 	if(msg == IParameter::kSetSelection)
 	{
+		initialSelectionPending (false);
+
 		int start = msg[0];
 		int length = msg[1];
 		if(nativeControl)
@@ -1651,15 +2014,26 @@ void CCL_API EditBox::notify (ISubject* subject, MessageRef msg)
 		if(!shouldUseNativeControl ())
 		{
 			setCaretPosition (start);
-			if(length >= 0)
-				setSelectionPosition (start + length);
-			else
-				setSelectionPosition (caretTextPosition);
+			setSelectionPosition (start + length);
 		}
 	}
 
+	if(msg == kChanged && isEqualUnknown (subject, getTextParameter ()))
+		textModified (false);
+
 	bool isImmediate = style.isCustomStyle (Styles::kEditBoxBehaviorImmediate);
 	bool textModelChanged = msg == kChanged && textModel && isEqualUnknown (subject, textModel);
+	if(textModelChanged)
+	{
+		String oldText = plainTextCache;
+		textModel->toDisplayString (plainTextCache);
+		if(oldText != plainTextCache)
+		{
+			selectionUpdateNeeded = true;
+			if(inputMethod.isValid ())
+				inputMethod->textChanged ();
+		}
+	}
 
 	if(msg == IParameter::kRequestFocus)
 	{
@@ -1687,16 +2061,20 @@ void CCL_API EditBox::notify (ISubject* subject, MessageRef msg)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void EditBox::getCaretRect (Rect& rect) const
+const ConstVector<Rect>& EditBox::getSelection ()
 {
-	rect = caretRect;
+	if(selectionUpdateNeeded)
+		updateSelection ();
+
+	return selection.getRects ();
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-const ConstVector<Rect>& EditBox::getSelection () const
+void CCL_API EditBox::setSelection (int caret, int selection)
 {
-	return selection.getRects ();
+	setCaretPosition (caret);
+	setSelectionPosition (selection);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1722,52 +2100,43 @@ tbool CCL_API EditBox::interpretCommand (const CommandMsg& msg)
 	if(shouldUseNativeControl () || !isEditing ())
 		return SuperClass::interpretCommand (msg);
 
-	if(msg.category == "Edit")
+	if(msg.category == "Edit" && !msg.checkOnly ())
 	{
 		if(msg.name == "Undo")
 		{
-			if(!msg.checkOnly ())
-				undoHandler->undo ();
-			return undoHandler->canUndo ();
-		}
-		if(msg.name == "Redo")
-		{
-			if(!msg.checkOnly ())
-				undoHandler->redo ();
-			return undoHandler->canRedo ();
-		}
-
-		if(msg.name == "Paste")
-		{
-			if(!msg.checkOnly ())
-				paste ();
+			undoHandler->undo ();
 			return true;
 		}
-		if(msg.name == "Select All")
+		else if(msg.name == "Redo")
 		{
-			if(!msg.checkOnly ())
-				selectAll ();
+			undoHandler->redo ();
 			return true;
 		}
-
-		if(!isTextSelected ())
-			return false;
-
+		else if(msg.name == "Paste")
+		{
+			paste ();
+			return true;
+		}
+		else if(msg.name == "Select All")
+		{
+			selectAll ();
+			return true;
+		}
 		if(msg.name == "Delete")
 		{
-			if(!msg.checkOnly ())
+			if(isTextSelected ())
 				deleteSelection ();
 			return true;
 		}
-		if(msg.name == "Cut")
+		else if(msg.name == "Cut")
 		{
-			if(!msg.checkOnly ())
+			if(isTextSelected ())
 				cutSelection ();
 			return true;
 		}
-		if(msg.name == "Copy")
+		else if(msg.name == "Copy")
 		{
-			if(!msg.checkOnly ())
+			if(isTextSelected ())
 				copySelection ();
 			return true;
 		}
@@ -1797,6 +2166,153 @@ void EditBox::receiveAutofillText (StringRef text)
 	removeText (plainTextCache.length ());
 	insertText (text);
 	submit (true);
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+void EditBox::modifyDisplayString (String& displayString) const
+{
+	if(caretTextPosition >= 0 && !preeditText.isEmpty ())
+		displayString.insert (caretTextPosition, preeditText);
+
+	SuperClass::modifyDisplayString (displayString);
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+void EditBox::modifyLayout (ITextLayout& textLayout) const
+{
+	if(caretTextPosition >= 0 && !preeditText.isEmpty ())
+		textLayout.setFontStyle ({caretTextPosition, preeditText.length ()}, Font::Styles::kUnderline, true);
+
+	SuperClass::modifyLayout (textLayout);
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+const IView* CCL_API EditBox::getInputView () const
+{
+	return this;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+int CCL_API EditBox::getTextLength () const 
+{
+	return plainTextCache.length ();
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+tresult CCL_API EditBox::getText (String& result, int start, int length) const
+{
+	if(start < 0 || start > plainTextCache.length ())
+		return kResultInvalidArgument;
+	if(length > plainTextCache.length () - start)
+		return kResultInvalidArgument;
+
+	if(length < 0)
+		result = plainTextCache;
+	else 
+		result = plainTextCache.subString (start, length);
+	return kResultOk;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+void CCL_API EditBox::getSelection (int& caret, int& selection, SelectionDomain selectionDomain) const
+{
+	switch(selectionDomain)
+	{
+	default :
+	case kSelectionOriginal :
+		caret = ccl_min (caretTextPosition, plainTextCache.length ());
+		selection = ccl_min (selectionTextPosition, plainTextCache.length ());
+		break;
+
+	case kSelectionPreedit :
+		caret = preeditCaretOffset;
+		selection = preeditSelectionOffset;
+		break;
+
+	case kSelectionMerged :
+		caret = ccl_min (caretTextPosition, plainTextCache.length ()) + preeditCaretOffset;
+		selection = ccl_min (selectionTextPosition, plainTextCache.length ()) + preeditSelectionOffset;
+		break;
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+tresult CCL_API EditBox::getCaretRect (Rect& caretRect) const
+{
+	if(!caret.isValid ())
+		return kResultFailed;
+	caretRect = caret->getSize ();
+	return kResultOk;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+int CCL_API EditBox::getInputType () const
+{
+	return getEffectiveKeyboardType ();
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+int CCL_API EditBox::getInputFlags () const
+{
+	int flags = 0;
+	if(style.isCustomStyle (Styles::kTextBoxBehaviorPasswordEdit))
+		set_flag<int> (flags, ITextInputClient::kSensitiveData);
+	if(style.isCustomStyle (Styles::kTextBoxAppearanceMultiLine))
+		set_flag<int> (flags, ITextInputClient::kMultiline);
+	return flags;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+void CCL_API EditBox::getPreeditText (String& text) const
+{
+	text = preeditText;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+void CCL_API EditBox::setPreeditText (StringRef text)
+{
+	preeditText = text;
+	preeditCaretOffset = preeditText.length ();
+	preeditSelectionOffset = preeditText.length ();
+
+	UnknownPtr<ISubject> subject (textModel);
+	if(subject)
+		subject->signal (Message (kChanged));
+	invalidate ();
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+void CCL_API EditBox::applyText (StringRef text)
+{
+	insertTextInternal (text, int(UndoHandler::ActionID::kType));
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+void CCL_API EditBox::deleteText (int beforeLength, int afterLength)
+{
+	removeTextInternal (caretTextPosition - beforeLength, beforeLength + afterLength, int(UndoHandler::ActionID::kType));
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+void CCL_API EditBox::replaceText (StringRef text, int start, int length)
+{
+	removeTextInternal (start, length, int(UndoHandler::ActionID::kCut));
+	setCaret (start);
+	insertTextInternal (text, int(UndoHandler::ActionID::kPaste));
 }
 
 //************************************************************************************************
@@ -1874,7 +2390,7 @@ void EditBox::UndoHandler::applyCaretPosition (int caretPosition)
 
 bool EditBox::UndoHandler::canUndo () const
 {
-	if(undoStack.count () < 2)
+	if(undoStack.isEmpty ())
 		return false;
 	return true;
 }
@@ -1896,6 +2412,7 @@ bool EditBox::UndoHandler::undo ()
 		return false;
 
 	redoStack.push (undoStack.pop ());
+	editBox.textModified (true);
 	if(editBox.textModel && editBox.textModel->undo ())
 	{
 		applyCaretPosition (redoStack.peek ().firstCaretPosition);
@@ -1913,6 +2430,7 @@ bool EditBox::UndoHandler::redo ()
 	if(canRedo () == false)
 		return false;
 
+	editBox.textModified (true);
 	if(editBox.textModel && editBox.textModel->redo ())
 	{
 		applyCaretPosition (redoStack.peek ().lastCaretPosition);
@@ -2002,69 +2520,70 @@ bool NativeTextControl::handleKeyDown (const KeyEvent& e)
 {
 	GUI.hideTooltip ();
 
-	switch(e.vKey)
+	if(EditBox::isEditNavigationKey (e))
 	{
-	case VKey::kEscape :
-	case VKey::kEnter :
-	case VKey::kReturn :
+		switch(e.vKey)
 		{
-			canceled = (e.vKey == VKey::kEscape) ? true : false;
-				
-			bool isMultiline = false;
-
-			 // on iOS, always close keyboard on "return"/"go"/"done"/... (no linefeed functionality in the multiline case)
-			#if !CCL_PLATFORM_IOS
-			if(TextBox* textBox = ccl_cast<TextBox> (&owner))
-				if(textBox->getStyle ().isCustomStyle (Styles::kTextBoxAppearanceMultiLine))
-					isMultiline = true;
-			#endif
-
-			bool nonDialogEdit = true;
-			if(EditBox* editBox = ccl_cast<EditBox> (&owner))
-				if(editBox->getStyle ().isCustomStyle (Styles::kEditBoxBehaviorDialogEdit))
-					nonDialogEdit = false;
-
-			if(isMultiline == false || canceled)
+		case VKey::kEscape :
+		case VKey::kEnter :
+		case VKey::kReturn :
 			{
-				if(nonDialogEdit == false)
-					if(Dialog* dialog = ccl_cast<Dialog> (owner.getWindow ()))
-					{
-						// pass key to the dialog
-						dialog->onKeyDown (e);
+				canceled = (e.vKey == VKey::kEscape) ? true : false;
+
+				bool isMultiline = false;
+
+				 // on iOS, always close keyboard on "return"/"go"/"done"/... (no linefeed functionality in the multiline case)
+				#if !CCL_PLATFORM_IOS
+				if(TextBox* textBox = ccl_cast<TextBox> (&owner))
+					if(textBox->getStyle ().isCustomStyle (Styles::kTextBoxAppearanceMultiLine))
+						isMultiline = true;
+				#endif
+
+				bool nonDialogEdit = true;
+				if(EditBox* editBox = ccl_cast<EditBox> (&owner))
+					if(editBox->getStyle ().isCustomStyle (Styles::kEditBoxBehaviorDialogEdit))
+						nonDialogEdit = false;
+
+				if(isMultiline == false || canceled)
+				{
+					if(nonDialogEdit == false)
+						if(Dialog* dialog = ccl_cast<Dialog> (owner.getWindow ()))
+						{
+							// pass key to the dialog
+							dialog->onKeyDown (e);
+							return true;
+						}
+
+					if(owner.onKeyDown (e))
 						return true;
-					}
 
-				if(owner.onKeyDown (e))
-					return true;
-
-				owner.killFocus (); // kills this!!!
-				return false;
+					owner.killFocus (); // kills this!!!
+					return false;
+				}
+				else if(isMultiline)
+				{
+					if(owner.onKeyDown (e))
+						return true;
+				}
 			}
-			else if(isMultiline)
-			{
-				if(owner.onKeyDown (e))
-					return true;
-			}
-		}
-		break;
-
-	case VKey::kUp :
-	case VKey::kDown :
-	case VKey::kPageUp :
-	case VKey::kPageDown :
-	case VKey::kTab :
-	case VKey::kBackspace :
-		if(owner.onKeyDown (e))
-			return true;
-
-		if(owner.getStyle ().isCustomStyle (Styles::kTextBoxAppearanceMultiLine)) // no focus navigation here...
 			break;
 
-		CCL_FALLTHROUGH
-	default :
+		default :
+			if(owner.onKeyDown (e))
+				return true;
+
+			if(owner.getStyle ().isCustomStyle (Styles::kTextBoxAppearanceMultiLine)) // no focus navigation here...
+				break;
+
+			if(FocusNavigator::instance ().onKeyDown (e))
+				return true;
+			break;
+		}
+	}
+	else
+	{
 		if(FocusNavigator::instance ().onKeyDown (e))
 			return true;
-		break;
 	}
 
 	// allow commands with function keys
@@ -2149,7 +2668,7 @@ void NativeTextControl::submitText ()
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void NativeTextControl::getControlText (String& string)
+void NativeTextControl::getControlText (String& string) const
 {}
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -2163,6 +2682,32 @@ bool NativeTextControl::isCanceled ()
 
 void NativeTextControl::setSelection (int start, int length)
 {}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+int NativeTextControl::getControlTextLength () const
+{
+	String text;
+	getControlText (text);
+	return text.length ();
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+void NativeTextControl::getSelectionPositions (int& caret, int& anchor, int start, int length) const
+{
+	int textLength = getControlTextLength ();
+	caret = ccl_bound (start, 0, textLength);
+	anchor = ccl_bound (start + length, 0, textLength);
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+void NativeTextControl::selectAll ()
+{
+	int textLength = getControlTextLength ();
+	setSelection (textLength, -textLength);
+}
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -2227,13 +2772,16 @@ tbool CCL_API EditBox::TextDragHandler::dragEnter (const DragEvent& event)
 tbool CCL_API EditBox::TextDragHandler::dragOver (const DragEvent& event)
 {
 	Rect rect = editBox.getTextRect ();
-	if(editBox.textLayout != nullptr && rect.pointInside (event.where))
+	const ITextLayout* textLayout = editBox.getTextLayout ();
+	if(textLayout != nullptr && rect.pointInside (event.where))
 	{
 		int textPosition = 0;
 		PointF position (event.where.x, event.where.y);
 		position.offset (editBox.displayOffset - rect.left, -rect.top);
-		if(editBox.textLayout->hitTest (textPosition, position) == kResultOk)
+		if(textLayout->hitTest (textPosition, position) == kResultOk)
 		{
+			// Snap to grapheme boundary based on drag position
+			textPosition = editBox.snapToGraphemeBoundary (textPosition, position);
 			editBox.setCaretPosition (textPosition);
 			editBox.setSelectionPosition (textPosition);
 		}
@@ -2287,6 +2835,15 @@ tbool CCL_API EditBox::TextDragHandler::drop (const DragEvent& event)
 {
 	editBox.currentDragHandler = nullptr;
 	return AbstractDragHandler::drop (event);
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+void CCL_API EditBox::getTextBounds (IMutableRegion& bounds, int start, int length)
+{
+	const ITextLayout* textLayout = getTextLayout ();
+	if(textLayout)
+		textLayout->getTextBounds (bounds, {start, length});
 }
 
 //************************************************************************************************

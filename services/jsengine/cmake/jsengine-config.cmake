@@ -9,7 +9,7 @@
 # Licensed for use under either:
 #  1. a Commercial License provided by CCL Software Licensing GmbH, or
 #  2. GNU Affero General Public License v3.0 (AGPLv3).
-# 
+#
 # You must choose and comply with one of the above licensing options.
 # For more information, please visit ccl.dev.
 #
@@ -21,12 +21,6 @@
 include_guard (DIRECTORY)
 
 find_package (ccl REQUIRED COMPONENTS cclbase ccltext cclsystem)
-find_package (spidermonkey)
-
-if (NOT spidermonkey_FOUND)
-	message (NOTICE "Skipping jsengine service. Missing dependency: spidermonkey")
-	return ()
-endif ()
 
 ccl_find_path (jsengine_DIR NAMES "source/jsengine.h" HINTS "${CMAKE_CURRENT_LIST_DIR}/.." DOC "JavaScript service directory")
 
@@ -45,20 +39,61 @@ ccl_add_plugin_library (jsengine
 )
 ccl_add_test (jsengine)
 
+set (JSENGINE_BACKEND_DEFAULT "spidermonkey")
+set (JSENGINE_BACKEND "${JSENGINE_BACKEND_DEFAULT}" CACHE STRING "jsengine backend implementation")
+set_property (CACHE JSENGINE_BACKEND PROPERTY STRINGS spidermonkey quickjs)
+
+if (JSENGINE_BACKEND STREQUAL "spidermonkey")
+	find_package (spidermonkey)
+	if (spidermonkey_FOUND)
+		set (jsengine_backend_libs ${spidermonkey_LIBRARIES})
+	else ()
+		message (NOTICE "Missing dependency: spidermonkey. Trying quickjs instead.")
+		set (JSENGINE_BACKEND "quickjs")
+		set (JSENGINE_BACKEND "quickjs" CACHE STRING "jsengine backend implementation" FORCE)
+	endif ()
+endif ()
+
+if (JSENGINE_BACKEND STREQUAL "quickjs")
+	find_package (quickjs)
+	if (NOT quickjs_FOUND)
+		message (NOTICE "Skipping jsengine service. Missing dependency: quickjs")
+		return ()
+	endif ()
+	set (jsengine_backend_libs ${QUICKJS_LIBRARY})
+endif ()
+
 set_target_properties (jsengine PROPERTIES USE_FOLDERS ON FOLDER "services/ccl")
 
+# No jsdebugcontext.quickjs.* here: quickjs-ng ships no built-in debugger/inspector to build one on.
+list (APPEND jsengine_quickjs_source_files
+	${jsengine_DIR}/source/quickjs/jscontext.quickjs.cpp
+	${jsengine_DIR}/source/quickjs/jscontext.quickjs.h
+	${jsengine_DIR}/source/quickjs/jscrossthread.quickjs.cpp
+	${jsengine_DIR}/source/quickjs/jscrossthread.quickjs.h
+	${jsengine_DIR}/source/quickjs/jsengine.quickjs.cpp
+	${jsengine_DIR}/source/quickjs/jsengine.quickjs.h
+)
+
+list (APPEND jsengine_spidermonkey_source_files
+	${jsengine_DIR}/source/spidermonkey/jscontext.spidermonkey.cpp
+	${jsengine_DIR}/source/spidermonkey/jscontext.spidermonkey.h
+	${jsengine_DIR}/source/spidermonkey/jscrossthread.spidermonkey.cpp
+	${jsengine_DIR}/source/spidermonkey/jscrossthread.spidermonkey.h
+	${jsengine_DIR}/source/spidermonkey/jsdebugcontext.spidermonkey.cpp
+	${jsengine_DIR}/source/spidermonkey/jsdebugcontext.spidermonkey.h
+	${jsengine_DIR}/source/spidermonkey/jsengine.spidermonkey.cpp
+	${jsengine_DIR}/source/spidermonkey/jsengine.spidermonkey.h
+	${jsengine_DIR}/source/spidermonkey/jsinclude.spidermonkey.h
+)
+
 list (APPEND jsengine_source_files
-	${jsengine_DIR}/source/jsclassregistry.cpp
 	${jsengine_DIR}/source/jsclassregistry.h
-	${jsengine_DIR}/source/jscontext.cpp
-	${jsengine_DIR}/source/jscontext.h
-	${jsengine_DIR}/source/jscrossthread.cpp
-	${jsengine_DIR}/source/jscrossthread.h
-	${jsengine_DIR}/source/jsdebugcontext.cpp
-	${jsengine_DIR}/source/jsdebugcontext.h
-	${jsengine_DIR}/source/jsengine.cpp
+	${jsengine_DIR}/source/jscontextbase.cpp
+	${jsengine_DIR}/source/jscontextbase.h
 	${jsengine_DIR}/source/jsengine.h
-	${jsengine_DIR}/source/jsinclude.h
+	${jsengine_DIR}/source/jsenginebase.cpp
+	${jsengine_DIR}/source/jsenginebase.h
 	${jsengine_DIR}/source/jstest.cpp
 	${jsengine_DIR}/source/jstest.h
 	${jsengine_DIR}/source/plugmain.cpp
@@ -74,25 +109,41 @@ list (APPEND jsengine_ccl_sources
 	${CCL_DIR}/public/plugins/stubobject.cpp
 )
 
-list (APPEND jsengine_resource_files
-	${jsengine_DIR}/debug/daphandler.js
-)
+if (JSENGINE_BACKEND STREQUAL "spidermonkey")
+	list (APPEND jsengine_resource_files
+		${jsengine_DIR}/debug/daphandler.js
+	)
+endif ()
 
 source_group (TREE ${jsengine_DIR}/source PREFIX "source" FILES ${jsengine_source_files})
 source_group ("cmake" FILES ${CMAKE_CURRENT_LIST_FILE})
 source_group (TREE ${jsengine_DIR}/debug PREFIX "resource" FILES ${jsengine_resource_files})
 
 list (APPEND jsengine_sources ${jsengine_source_files} ${jsengine_ccl_sources} ${CMAKE_CURRENT_LIST_FILE})
+if (JSENGINE_BACKEND STREQUAL "quickjs")
+	list (APPEND jsengine_sources ${jsengine_quickjs_source_files})
+else ()
+	list (APPEND jsengine_sources ${jsengine_spidermonkey_source_files})
+endif ()
 
 ccl_add_resources (jsengine ${jsengine_resources})
 ccl_add_resources (jsengine ${jsengine_resource_files})
 target_sources (jsengine PRIVATE ${jsengine_sources})
-target_compile_definitions (jsengine PRIVATE "STATIC_JS_API" "NIGHTLY_BUILD")
-target_link_libraries (jsengine PRIVATE cclbase ccltext cclsystem ${spidermonkey_LIBRARIES})
+
+if (JSENGINE_BACKEND STREQUAL "quickjs")
+	target_compile_definitions (jsengine PRIVATE "JSENGINE_USE_QUICKJS=1")
+else ()
+	target_compile_definitions (jsengine PRIVATE "JSENGINE_USE_QUICKJS=0" "STATIC_JS_API" "NIGHTLY_BUILD")
+	if (VENDOR_ENABLE_DEBUG_SPIDERMONKEY)
+		add_compile_definitions (ENABLE_DEBUG_SPIDERMONKEY)
+	endif ()
+endif ()
+
+target_link_libraries (jsengine PRIVATE cclbase ccltext cclsystem ${jsengine_backend_libs})
 
 ccl_export_target (jsengine)
 if (CCL_SYSTEM_INSTALL)
-	install (TARGETS jsengine 
+	install (TARGETS jsengine
 		EXPORT ccl-targets DESTINATION "${CCL_LIBRARY_DESTINATION}"
 		LIBRARY DESTINATION "${CCL_PLUGINS_DESTINATION}"
 		COMPONENT services_${VENDOR_NATIVE_COMPONENT_SUFFIX}
@@ -103,8 +154,4 @@ if (CCL_SYSTEM_INSTALL)
 elseif (VENDOR_PLUGINS_RUNTIME_DIRECTORY)
 	install (TARGETS jsengine LIBRARY DESTINATION ${VENDOR_PLUGINS_RUNTIME_DIRECTORY} FRAMEWORK DESTINATION ${VENDOR_PLUGINS_RUNTIME_DIRECTORY}
 							  FRAMEWORK DESTINATION ${VENDOR_PLUGINS_RUNTIME_DIRECTORY})
-endif ()
-
-if (VENDOR_ENABLE_DEBUG_SPIDERMONKEY)
-	add_compile_definitions (ENABLE_DEBUG_SPIDERMONKEY)
 endif ()

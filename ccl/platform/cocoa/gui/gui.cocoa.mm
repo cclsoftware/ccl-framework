@@ -497,14 +497,24 @@ void CocoaUserInterface::runModalLoop (IWindow* _window, tbool& loopTerminated)
 				{
 					if(window->getStyle ().isCustomStyle (Styles::kWindowBehaviorPopupSelector))
 					{
-						KeyEvent key;
-						VKey::fromSystemEvent (key, SystemEvent (nsEvent));
-						switch (key.eventType)
+						// an input method needs the event to pass through its text input context
+						if([nsEvent window] == nsWindow && [[nsWindow firstResponder] conformsToProtocol:@protocol(NSTextInputClient)])
 						{
-							case KeyEvent::kKeyDown:
-								window->onKeyDown (key);
-							case KeyEvent::kKeyUp:
-								window->onKeyUp (key);
+							[nsWindow sendEvent:nsEvent];
+						}
+						else
+						{
+							KeyEvent key;
+							VKey::fromSystemEvent (key, SystemEvent (nsEvent));
+							switch (key.eventType)
+							{
+								case KeyEvent::kKeyDown:
+									window->onKeyDown (key);
+									break;
+								case KeyEvent::kKeyUp:
+									window->onKeyUp (key);
+									break;
+							}
 						}
 						nsEvent = nil;
 					}

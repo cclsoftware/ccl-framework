@@ -94,6 +94,7 @@ bool Loader::load (const Storage& storage)
 //************************************************************************************************
 
 DEFINE_CLASS_HIDDEN (Registry, Object)
+DEFINE_CLASS_NAMESPACE (Registry, NAMESPACE_CCL)
 DEFINE_SINGLETON (Registry)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -242,7 +243,7 @@ tbool CCL_API Registry::getProperty (Variant& var, MemberID propertyId) const
 
 BEGIN_METHOD_NAMES (Registry)
 	//DEFINE_METHOD_NAME ("setValue")
-	DEFINE_METHOD_NAME ("getValue")
+	DEFINE_METHOD_ARGR ("getValue", "section: string, key: string", "variant")
 END_METHOD_NAMES (Registry)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////

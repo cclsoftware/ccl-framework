@@ -88,7 +88,7 @@ void DragControl::beforeDrag (const MouseEvent& event)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void DragControl::prepareDrag (CCL::IDragSession& session)
+void DragControl::prepareDrag (IDragSession& session)
 {
 	if(getSource ())
 		session.setSource (getSource ());
@@ -146,7 +146,7 @@ bool DragControl::checkArmed (const MouseEvent& event)
 
 void DragControl::doDrag (int inputDevice)
 {
-	AutoPtr<IDragSession> session = ccl_new<IDragSession> (CCL::ClassID::DragSession);
+	AutoPtr<IDragSession> session = ccl_new<IDragSession> (ClassID::DragSession);
 	ASSERT (session != nullptr)
 	session->setInputDevice (inputDevice);
 
@@ -171,13 +171,13 @@ void DragControl::updateHelp (const MouseEvent& event)
 	if(event.eventType != MouseEvent::kMouseLeave)
 	{
 		if(helpCollection == nullptr)
-			helpCollection = ccl_new<IHelpInfoCollection> (CCL::ClassID::HelpInfoCollection);
+			helpCollection = ccl_new<IHelpInfoCollection> (ClassID::HelpInfoCollection);
 		
 		MutableCString helpId (dragTooltip);
 		AutoPtr<IHelpInfoBuilder> helpInfo = return_shared (helpCollection->getInfo (helpId));
 		if(helpInfo == nullptr)
 		{
-			helpInfo = ccl_new<IHelpInfoBuilder> (CCL::ClassID::HelpInfoBuilder);
+			helpInfo = ccl_new<IHelpInfoBuilder> (ClassID::HelpInfoBuilder);
 			helpInfo->addOption (getModifier () | KeyState::kDrag, nullptr, dragTooltip);
 			helpCollection->addInfo (helpId, helpInfo);
 		}

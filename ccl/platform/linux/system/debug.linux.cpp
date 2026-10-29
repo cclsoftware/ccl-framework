@@ -90,8 +90,8 @@ static bool AmIBeingDebugged(void)
 	if(statusFd < 0)
 		return false;
 	
-    char buffer[STRING_STACK_SPACE_MAX];
-	ssize_t bytesRead = ::read (statusFd, buffer, STRING_STACK_SPACE_MAX - 1);
+    char buffer[CORE_STRING_STACK_MAX];
+	ssize_t bytesRead = ::read (statusFd, buffer, CORE_STRING_STACK_MAX - 1);
 	if(bytesRead <= 0)
 		return false;
 	buffer[bytesRead] = '\0';

@@ -44,7 +44,8 @@ DECLARE_JNI_CLASS (TextControl, CCLGUI_CLASS_PREFIX "TextControl")
 	DECLARE_JNI_METHOD (void, remove)
 	DECLARE_JNI_METHOD (void, updateText, jstring)
 	DECLARE_JNI_METHOD (jstring, getControlText)
-	DECLARE_JNI_METHOD (void, setSelectionRange, int, int)
+	DECLARE_JNI_METHOD (int, length)
+	DECLARE_JNI_METHOD (void, setSelection, int, int)
 	DECLARE_JNI_METHOD (void, setSize, int, int, int, int)
 	DECLARE_JNI_METHOD (void, setVisualStyle, jobject, float, int, int, int)
 END_DECLARE_JNI_CLASS (TextControl)
@@ -55,7 +56,8 @@ DEFINE_JNI_CLASS (TextControl)
 	DEFINE_JNI_METHOD (remove, "()V")
 	DEFINE_JNI_METHOD (updateText, "(Ljava/lang/String;)V")
 	DEFINE_JNI_METHOD (getControlText, "()Ljava/lang/String;")
-	DEFINE_JNI_METHOD (setSelectionRange, "(II)V")
+	DEFINE_JNI_METHOD (length, "()I")
+	DEFINE_JNI_METHOD (setSelection, "(II)V")
 	DEFINE_JNI_METHOD (setSize, "(IIII)V")
 	DEFINE_JNI_METHOD (setVisualStyle, "(Landroid/graphics/Typeface;FIII)V")
 END_DEFINE_JNI_CLASS
@@ -77,7 +79,8 @@ public:
 
 	// NativeTextControl
 	void updateText () override;
-	void getControlText (String& string) override;
+	void getControlText (String& string) const override;
+	int getControlTextLength () const override;
 	void setSelection (int start, int length) override;
 	void setSize (RectRef clientRect) override;
 	void updateVisualStyle () override;
@@ -126,7 +129,7 @@ AndroidTextControl::AndroidTextControl (Control& owner, RectRef clientRect, int 
 	TextControl.show (textControl);
 
 	if(!owner.getStyle ().isCustomStyle (Styles::kTextBoxAppearanceMultiLine))
-		setSelection (0, -1); // select all
+		selectAll ();
 
 	owner.takeFocus ();
 }
@@ -155,7 +158,7 @@ void AndroidTextControl::updateText ()
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void AndroidTextControl::getControlText (String& string)
+void AndroidTextControl::getControlText (String& string) const
 {
 	JniAccessor jni;
 	LocalStringRef text (jni, TextControl.getControlText (textControl));
@@ -164,9 +167,20 @@ void AndroidTextControl::getControlText (String& string)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
+int AndroidTextControl::getControlTextLength () const
+{
+	return TextControl.length (textControl);
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
 void AndroidTextControl::setSelection (int start, int length)
 {
-	TextControl.setSelectionRange (textControl, start, length);
+	int caret = 0;
+	int anchor = 0;
+	getSelectionPositions (caret, anchor, start, length);
+
+	TextControl.setSelection (textControl, anchor, caret);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -181,12 +195,9 @@ void AndroidTextControl::setSize (RectRef clientRect)
 	{
 		const IVisualStyle& visualStyle = getVisualStyle ();
 
-		Rect stringSize;
-		Font::measureString (stringSize, "Xgjpq", visualStyle.getTextFont ()); // todo: add any taller character you know
-
 		// add margin for system-side decorations like underlines and
 		// center the minHeight rect vertically with rounding (up)
-		Coord minHeight = ceil (stringSize.bottom * 1.10);
+		Coord minHeight = ceil (Font::measureLineHeight (visualStyle.getTextFont ()) * 1.10);
 
 		rect.top += (Coord) ccl_round<0> (rect.getHeight () / 2.f) - (Coord) ccl_round<0> (minHeight / 2.f);
 		rect.setHeight (minHeight);

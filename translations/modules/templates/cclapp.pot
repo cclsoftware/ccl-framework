@@ -1023,6 +1023,11 @@ msgctxt "PlugInManagement"
 msgid "Last Used"
 msgstr ""
 
+#: ./application.cpp
+msgctxt "Command"
+msgid "Legal Information"
+msgstr ""
+
 #: ./options/mainoption.cpp
 msgctxt "UserOption"
 msgid "Light Mode"

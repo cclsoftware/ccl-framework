@@ -61,10 +61,10 @@ bool TimeTest::run (ITestContext& testContext)
 	double secondsAfterWaiting = SystemClock::getSeconds ();
 	if(secondsAfterWaiting <= seconds)
 	{
-		char message[STRING_STACK_SPACE_MAX];
-		snprintf (message, STRING_STACK_SPACE_MAX, "Time before waiting for two seconds: %f", seconds);
+		char message[CORE_STRING_STACK_MAX];
+		snprintf (message, CORE_STRING_STACK_MAX, "Time before waiting for two seconds: %f", seconds);
 		CORE_TEST_MESSAGE (message)
-		snprintf (message, STRING_STACK_SPACE_MAX, "Time after waiting for two seconds: %f", secondsAfterWaiting);
+		snprintf (message, CORE_STRING_STACK_MAX, "Time after waiting for two seconds: %f", secondsAfterWaiting);
 		CORE_TEST_MESSAGE (message)
 		CORE_TEST_FAILED ("SystemClock::getSeconds did not increment after waiting for two seconds.")
 		return false;

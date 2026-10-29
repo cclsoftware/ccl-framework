@@ -108,7 +108,7 @@ tresult CCL_API XmlContentParser::endElement (StringRef name)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-tresult CCL_API XmlContentParser::characterData (const uchar* data, int length, tbool isCDATA)
+tresult CCL_API XmlContentParser::characterData (UStringPtr data, int length, tbool isCDATA)
 {
 	return kResultOk;
 }

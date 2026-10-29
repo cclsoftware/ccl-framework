@@ -117,7 +117,7 @@ public:
 	using SelectionList::SelectionList;
 
 	// SelectionList
-	CCL::MetaClassRef getType () const override { return CCL::ccl_typeid<Type> (); }
+	MetaClassRef getType () const override { return ccl_typeid<Type> (); }
 };
 
 //************************************************************************************************
@@ -259,7 +259,7 @@ protected:
 // Selection inline
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-template <class T> CCL::Iterator* Selection::newIterator () const
+template <class T> Iterator* Selection::newIterator () const
 { return newIterator (ccl_typeid<T> ()); }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////

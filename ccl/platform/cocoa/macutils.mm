@@ -62,6 +62,28 @@ namespace MacUtils {
 // Path conversion
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
+bool toFileSystemRepresentation (char pathBuffer[], int bufferSize, StringRef path)
+{
+	if(pathBuffer == nullptr || bufferSize <= 0)
+		return false;
+
+	NSString* nsPath = [path.createNativeString<NSString*> () autorelease];
+	if(nsPath == nil)
+	{
+		pathBuffer[0] = 0;
+		return false;
+	}
+
+	if(![nsPath getFileSystemRepresentation:pathBuffer maxLength:bufferSize])
+	{
+		pathBuffer[0] = 0;
+		return false;
+	}
+	return true;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
 bool urlFromCFURL (IUrl& url, CFURLRef cfUrlRef, int type)
 {
 	if(cfUrlRef == 0)
@@ -97,10 +119,11 @@ bool urlFromNSUrl (IUrl& url, const NSURL* nsUrl, int type, bool storeBookmark)
 		String urlString;
 		urlString.appendNativeString ([nsUrl path]);
 		urlString.normalize (Text::kNormalizationC);
+
 		url.fromNativePath (StringChars (urlString), type);
 		if(System::GetSystem ().isProcessSandboxed () && storeBookmark)
 		{
-			[nsUrl startAccessingSecurityScopedResource];				
+			[nsUrl startAccessingSecurityScopedResource];
 			NSError* error = nil;
 			NSURLBookmarkCreationOptions options = 0;
 			#if CCL_PLATFORM_MAC
@@ -165,12 +188,19 @@ bool urlToNSUrl (const IUrl& url, NSURL*& nsUrl, int type)
 			nsUrl = [NSURL URLByResolvingBookmarkData:bookmark options:bookMarkoptions relativeToURL:nil bookmarkDataIsStale:&isStale error:&error];
 
 			BOOL isInconsistent = YES;
-			
+
 			if(nsUrl != nil)
 			{
-				NSMutableString* normalizedPath = [NSMutableString stringWithString:[nsUrl path]];
-				::CFStringNormalize ((CFMutableStringRef)normalizedPath, kCFStringNormalizationFormC);
-				isInconsistent = ![normalizedPath isEqualToString:filePath];
+				NSURL* canonicalResolvedUrl = [[nsUrl URLByResolvingSymlinksInPath] URLByStandardizingPath];
+				NSURL* canonicalExpectedUrl = [[[NSURL fileURLWithPath:filePath] URLByResolvingSymlinksInPath] URLByStandardizingPath];
+				
+				NSMutableString* normalizedResolvedPath = [NSMutableString stringWithString:[canonicalResolvedUrl path]];
+				NSMutableString* normalizedExpectedPath = [NSMutableString stringWithString:[canonicalExpectedUrl path]];
+
+				::CFStringNormalize ((CFMutableStringRef)normalizedResolvedPath, kCFStringNormalizationFormC);
+				::CFStringNormalize ((CFMutableStringRef)normalizedExpectedPath, kCFStringNormalizationFormC);
+
+				isInconsistent = ![normalizedResolvedPath isEqualToString:normalizedExpectedPath];
 			}
 			
 			BOOL couldNotBeResolved = nsUrl == nil;

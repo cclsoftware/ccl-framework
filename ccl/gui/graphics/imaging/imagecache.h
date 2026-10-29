@@ -105,7 +105,7 @@ public:
 	static IImage* createModifiedImage (IImage* source, BitmapFilter* ownedFilter);
 
 	// IImageCache
-	IImage* CCL_API lookup (IImage* image, ColorRef color, tbool drawAsTemplate = false) override;
+	IImage* CCL_API lookup (IImage* image, ColorRef color) override;
 
 	CLASS_INTERFACE (IImageCache, Object)
 

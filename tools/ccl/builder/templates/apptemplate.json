@@ -9,7 +9,8 @@
 		"mac",
 		"ios",
 		"android",
-		"linux"
+		"linux",
+		"wasm"
 	],
 	"variables":
 	[
@@ -124,6 +125,11 @@
 			"source": "apptemplate/cmake/apptemplate.android.cmake",
 			"destination": "@Destination/cmake/apptemplate.android.cmake",
 			"platform": "android"
+		},
+		{
+			"source": "apptemplate/cmake/apptemplate.wasm.cmake",
+			"destination": "@Destination/cmake/apptemplate.wasm.cmake",
+			"platform": "wasm"
 		},
 		{
 			"source": "apptemplate/packaging/linux",

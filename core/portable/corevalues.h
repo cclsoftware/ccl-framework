@@ -190,7 +190,7 @@ public:
 
 private:
 	static const int kMaxObservers = 2;
-	Core::FixedSizeVector<IValueObserver*, kMaxObservers> observerList;
+	FixedSizeVector<IValueObserver*, kMaxObservers> observerList;
 	bool dirty;
 };
 

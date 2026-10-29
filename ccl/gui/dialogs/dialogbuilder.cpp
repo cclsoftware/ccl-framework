@@ -196,7 +196,7 @@ public:
 
 	void CCL_API notify (ISubject* subject, MessageRef msg) override
 	{
-		if(msg == PopupSelector::kPopupClosed)
+		if(msg == IPopupSelector::kPopupClosed)
 		{
 			// notify command handler if menu has been canceled
 			bool canceled = popupSelector->getPopupResult () == IPopupSelectorClient::kCancel;
@@ -343,9 +343,10 @@ DEFINE_CLASS_UID (DialogBuilder, 0x352f4422, 0x89bc, 0x437c, 0x99, 0x77, 0x82, 0
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-BEGIN_VISUALSTYLE_CLASS (DialogBuilder, VisualStyle, "DialogBuilderStyle")
-	ADD_VISUALSTYLE_METRIC  ("noDialogFrame")				///< overrides the global configuration variable GUI.StandardDialog.UseDialogFrame for a dialog
-END_VISUALSTYLE_CLASS (DialogBuilder)
+DEFINE_TYPELIB_ENTRY_WITH_PARENT (DialogBuilder, VisualStyle, "DialogBuilderStyle", VISUALSTYLES_TYPELIB)
+BEGIN_TYPELIB_MEMBERS (DialogBuilder)
+	ADD_TYPELIB_MEMBER_METRIC ("noDialogFrame") ///< overrides the global configuration variable GUI.StandardDialog.UseDialogFrame for a dialog
+END_TYPELIB_MEMBERS (DialogBuilder)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -893,7 +894,7 @@ View* DialogBuilder::createParameterControl (IParameter* param)
 		rect.setWidth (100);
 		rect.setHeight (getTheme ().getThemeMetric (ThemeElements::kTextBoxHeight));
 		control = NEW ColorBox (rect, param);
-		control->addView (NEW SelectBox (rect, param, StyleFlags (Styles::kTransparent|Styles::kBorder, Styles::kSelectBoxAppearanceHideText|Styles::kSelectBoxAppearanceHideFocus)));
+		control->addView (NEW SelectBox (rect, param, StyleFlags (Styles::kTransparent|Styles::kBorder, Styles::kTextBoxAppearanceHideText|Styles::kSelectBoxAppearanceHideFocus)));
 		break;
 
 	case IParameter::kImage :
@@ -901,12 +902,14 @@ View* DialogBuilder::createParameterControl (IParameter* param)
 		rect.setHeight (22);
 		control = NEW DialogGroup (rect, StyleFlags (0, Styles::kDialogGroupAppearanceSecondary));
 		{
-			rect.contract (2);
-			ImageView* imageView = NEW ImageView (nullptr, rect, StyleFlags (0, Styles::kImageViewAppearanceFitImage));
+			Rect imageRect (rect);
+			imageRect.contract (3);
+			ImageView* imageView = NEW ImageView (nullptr, imageRect, StyleFlags (0, Styles::kImageViewAppearanceContentFit));
 			imageView->setImageProvider (UnknownPtr<IImageProvider> (param));
-			rect.moveTo (Point ());
-			imageView->addView (NEW SelectBox (rect, param, StyleFlags (Styles::kTransparent|Styles::kBorder, Styles::kSelectBoxAppearanceHideText|Styles::kSelectBoxAppearanceHideFocus|Styles::kSelectBoxAppearanceHideButton|Styles::kSelectBoxAppearanceHideImage)));
 			control->addView (imageView);
+
+			rect.contract (2);
+			control->addView (NEW SelectBox (rect, param, StyleFlags (Styles::kTransparent|Styles::kBorder, Styles::kTextBoxAppearanceHideText|Styles::kSelectBoxAppearanceHideFocus|Styles::kSelectBoxAppearanceHideButton|Styles::kSelectBoxAppearanceHideImage)));
 		}
 		break;
 

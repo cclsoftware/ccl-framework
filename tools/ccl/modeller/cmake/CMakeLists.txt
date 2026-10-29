@@ -50,7 +50,24 @@ endif ()
 
 list (APPEND modeller_source_files
 	${CMAKE_CURRENT_LIST_DIR}/../source/appversion.h
-	${CMAKE_CURRENT_LIST_DIR}/../source/modellermain.cpp
+	${CMAKE_CURRENT_LIST_DIR}/../source/cclmodellermain.cpp
+	${CMAKE_CURRENT_LIST_DIR}/../source/cclmodeller.cpp
+	${CMAKE_CURRENT_LIST_DIR}/../source/cclmodeller.h
+	${CMAKE_CURRENT_LIST_DIR}/../source/classscanner.cpp
+	${CMAKE_CURRENT_LIST_DIR}/../source/classscanner.h
+	${CMAKE_CURRENT_LIST_DIR}/../source/docscanner.cpp
+	${CMAKE_CURRENT_LIST_DIR}/../source/docscanner.h
+	${CMAKE_CURRENT_LIST_DIR}/../source/macrocallscanner.cpp
+	${CMAKE_CURRENT_LIST_DIR}/../source/macrocallscanner.h
+	${CMAKE_CURRENT_LIST_DIR}/../source/sourcefiletraverser.cpp
+	${CMAKE_CURRENT_LIST_DIR}/../source/sourcefiletraverser.h
+	${CMAKE_CURRENT_LIST_DIR}/../source/sourcelexer.cpp
+	${CMAKE_CURRENT_LIST_DIR}/../source/sourcelexer.h
+	${CMAKE_CURRENT_LIST_DIR}/../source/sourcelocation.h
+	${CMAKE_CURRENT_LIST_DIR}/../source/symbolresolver.cpp
+	${CMAKE_CURRENT_LIST_DIR}/../source/symbolresolver.h
+	${CMAKE_CURRENT_LIST_DIR}/../source/typelibscanner.cpp
+	${CMAKE_CURRENT_LIST_DIR}/../source/typelibscanner.h
 )
 
 list (APPEND modeller_ccl_sources

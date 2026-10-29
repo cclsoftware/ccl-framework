@@ -31,16 +31,17 @@ namespace SkinElements {
 
 //************************************************************************************************
 // ControlElement
-/** Base class for all controls. 
-A control is a user interface element, that operates on a parameter in a defined way. 
-The name attribute of a control refers to the name of the parameter, that the controller must supply, 
-when the user interfaces is constructed from the skin description. Instead of a parameter, a control can also trigger a command. */
+/** Base class for all controls.
+A control is a user interface element that operates on a parameter in a defined way.
+The name attribute of a control refers to the name of the parameter that the controller must supply
+when the user interface is constructed from the skin description. Instead of a parameter, a control can also trigger a command. */
 //************************************************************************************************
 
 class ControlElement: public ViewElement
 {
 public:
-	DECLARE_SKIN_ELEMENT (ControlElement, ViewElement)
+	DECLARE_CLASS (ControlElement, ViewElement)
+	DECLARE_TYPELIB_CLASS (ControlElement)
 
 	PROPERTY_MUTABLE_CSTRING (commandCategory, CommandCategory)
 	PROPERTY_MUTABLE_CSTRING (commandName, CommandName)
@@ -64,7 +65,8 @@ public:
 class ButtonElement: public ControlElement
 {
 public:
-	DECLARE_SKIN_ELEMENT (ButtonElement, ControlElement)
+	DECLARE_CLASS (ButtonElement, ControlElement)
+	DECLARE_TYPELIB_CLASS (ButtonElement)
 
 	PROPERTY_MUTABLE_CSTRING (imageName, ImageName)
 	PROPERTY_MUTABLE_CSTRING (iconName, IconName)
@@ -89,7 +91,8 @@ protected:
 class DialogButtonElement: public ButtonElement
 {
 public:
-	DECLARE_SKIN_ELEMENT (DialogButtonElement, ButtonElement)
+	DECLARE_CLASS (DialogButtonElement, ButtonElement)
+	DECLARE_TYPELIB_CLASS (DialogButtonElement)
 
 	DialogButtonElement ();
 
@@ -117,11 +120,17 @@ protected:
 class ToggleElement: public ButtonElement
 {
 public:
-	DECLARE_SKIN_ELEMENT (ToggleElement, ButtonElement)
+	DECLARE_CLASS (ToggleElement, ButtonElement)
+	DECLARE_TYPELIB_CLASS (ToggleElement)
+
+	ToggleElement ();
+
+	PROPERTY_BOOL (accessibilityExposeAsButton, AccessibilityExposeAsButton)
 
 	// ViewElement
 	View* createView (const CreateArgs& args, View* view) override;
 	bool setAttributes (const SkinAttributes& a) override;
+	bool getAttributes (SkinAttributes& a) const override;
 	bool appendOptions (String& string) const override;
 };
 
@@ -132,7 +141,8 @@ public:
 class MultiToggleElement: public ToggleElement
 {
 public:
-	DECLARE_SKIN_ELEMENT (MultiToggleElement, ToggleElement)
+	DECLARE_CLASS (MultiToggleElement, ToggleElement)
+	DECLARE_TYPELIB_CLASS (MultiToggleElement)
 	
 	// ViewElement
 	bool setAttributes (const SkinAttributes& a) override;
@@ -146,7 +156,8 @@ public:
 class CheckBoxElement: public ToggleElement
 {
 public:
-	DECLARE_SKIN_ELEMENT (CheckBoxElement, ToggleElement)
+	DECLARE_CLASS (CheckBoxElement, ToggleElement)
+	DECLARE_TYPELIB_CLASS (CheckBoxElement)
 
 	PROPERTY_MUTABLE_CSTRING (mixedIconName, MixedIconName)
 
@@ -167,7 +178,8 @@ protected:
 class RadioButtonElement: public ButtonElement
 {
 public:
-	DECLARE_SKIN_ELEMENT (RadioButtonElement, ButtonElement)
+	DECLARE_CLASS (RadioButtonElement, ButtonElement)
+	DECLARE_TYPELIB_CLASS (RadioButtonElement)
 
 	PROPERTY_STRING (value, Value)
 
@@ -187,7 +199,8 @@ protected:
 class ToolButtonElement: public RadioButtonElement
 {
 public:
-	DECLARE_SKIN_ELEMENT (ToolButtonElement, RadioButtonElement)
+	DECLARE_CLASS (ToolButtonElement, RadioButtonElement)
+	DECLARE_TYPELIB_CLASS (ToolButtonElement)
 	
 	ToolButtonElement ();
 	
@@ -209,7 +222,8 @@ public:
 class ValueControlElement: public ControlElement
 {
 public:
-	DECLARE_SKIN_ELEMENT_ABSTRACT (ValueControlElement, ControlElement)
+	DECLARE_CLASS_ABSTRACT (ValueControlElement, ControlElement)
+	DECLARE_TYPELIB_CLASS (ValueControlElement)
 	PROPERTY_MUTABLE_CSTRING (colorName, ColorName)
 	
 	// ViewElement
@@ -225,7 +239,8 @@ public:
 class ValueBarElement: public ValueControlElement
 {
 public:
-	DECLARE_SKIN_ELEMENT (ValueBarElement, ValueControlElement)
+	DECLARE_CLASS (ValueBarElement, ValueControlElement)
+	DECLARE_TYPELIB_CLASS (ValueBarElement)
 
 	PROPERTY_MUTABLE_CSTRING (imageName, ImageName)
 	
@@ -245,7 +260,8 @@ protected:
 class ProgressBarElement: public ValueBarElement
 {
 public:
-	DECLARE_SKIN_ELEMENT (ProgressBarElement, ValueBarElement)
+	DECLARE_CLASS (ProgressBarElement, ValueBarElement)
+	DECLARE_TYPELIB_CLASS (ProgressBarElement)
 
 	// ViewElement
 	View* createView (const CreateArgs& args, View* view) override;
@@ -258,7 +274,8 @@ public:
 class ActivityIndicatorViewElement: public ProgressBarElement
 {
 public:
-	DECLARE_SKIN_ELEMENT (ActivityIndicatorViewElement, ProgressBarElement)
+	DECLARE_CLASS (ActivityIndicatorViewElement, ProgressBarElement)
+	DECLARE_TYPELIB_CLASS (ActivityIndicatorViewElement)
 
 	// ViewElement
 	View* createView (const CreateArgs& args, View* view) override;
@@ -271,7 +288,8 @@ public:
 class SliderElement: public ValueControlElement
 {
 public:
-	DECLARE_SKIN_ELEMENT (SliderElement, ValueControlElement)
+	DECLARE_CLASS (SliderElement, ValueControlElement)
+	DECLARE_TYPELIB_CLASS (SliderElement)
 
 	SliderElement ();
 
@@ -295,7 +313,8 @@ protected:
 class RangeSliderElement: public SliderElement
 {
 public:
-	DECLARE_SKIN_ELEMENT (RangeSliderElement, SliderElement)
+	DECLARE_CLASS (RangeSliderElement, SliderElement)
+	DECLARE_TYPELIB_CLASS (RangeSliderElement)
 	
 	PROPERTY_MUTABLE_CSTRING (paramName2, ParamName2)
 	
@@ -314,7 +333,8 @@ public:
 class KnobElement: public SliderElement
 {
 public:
-	DECLARE_SKIN_ELEMENT (KnobElement, SliderElement)
+	DECLARE_CLASS (KnobElement, SliderElement)
+	DECLARE_TYPELIB_CLASS (KnobElement)
 
 	PROPERTY_MUTABLE_CSTRING (referenceName, ReferenceName)
 	
@@ -333,7 +353,8 @@ public:
 class VectorPadElement: public ValueControlElement
 {
 public:
-	DECLARE_SKIN_ELEMENT (VectorPadElement, ValueControlElement)
+	DECLARE_CLASS (VectorPadElement, ValueControlElement)
+	DECLARE_TYPELIB_CLASS (VectorPadElement)
 
 	PROPERTY_MUTABLE_CSTRING (yName, YName)
 
@@ -350,7 +371,8 @@ public:
 class TriVectorPadElement: public VectorPadElement
 {
 public:
-	DECLARE_SKIN_ELEMENT (TriVectorPadElement, VectorPadElement)
+	DECLARE_CLASS (TriVectorPadElement, VectorPadElement)
+	DECLARE_TYPELIB_CLASS (TriVectorPadElement)
 
 	PROPERTY_MUTABLE_CSTRING (zName, ZName)
 
@@ -368,7 +390,8 @@ public:
 class TextBoxElement: public ControlElement
 {
 public:
-	DECLARE_SKIN_ELEMENT (TextBoxElement, ControlElement)
+	DECLARE_CLASS (TextBoxElement, ControlElement)
+	DECLARE_TYPELIB_CLASS (TextBoxElement)
 
 	TextBoxElement ();
 
@@ -393,7 +416,8 @@ protected:
 class EditBoxElement: public TextBoxElement
 {
 public:
-	DECLARE_SKIN_ELEMENT (EditBoxElement, TextBoxElement)
+	DECLARE_CLASS (EditBoxElement, TextBoxElement)
+	DECLARE_TYPELIB_CLASS (EditBoxElement)
 
 	EditBoxElement ();
 
@@ -425,7 +449,8 @@ protected:
 class TextEditorElement: public EditBoxElement
 {
 public:
-	DECLARE_SKIN_ELEMENT (TextEditorElement, EditBoxElement)
+	DECLARE_CLASS (TextEditorElement, EditBoxElement)
+	DECLARE_TYPELIB_CLASS (TextEditorElement)
 
 	TextEditorElement ();
 
@@ -447,7 +472,8 @@ private:
 class ValueBoxElement: public EditBoxElement
 {
 public:
-	DECLARE_SKIN_ELEMENT (ValueBoxElement, EditBoxElement)
+	DECLARE_CLASS (ValueBoxElement, EditBoxElement)
+	DECLARE_TYPELIB_CLASS (ValueBoxElement)
 
 	ValueBoxElement ();
 	
@@ -466,7 +492,8 @@ public:
 class SelectBoxElement: public TextBoxElement
 {
 public:
-	DECLARE_SKIN_ELEMENT (SelectBoxElement, TextBoxElement)
+	DECLARE_CLASS (SelectBoxElement, TextBoxElement)
+	DECLARE_TYPELIB_CLASS (SelectBoxElement)
 
 	SelectBoxElement ();
 
@@ -487,7 +514,8 @@ public:
 class ComboBoxElement: public SelectBoxElement
 {
 public:
-	DECLARE_SKIN_ELEMENT (ComboBoxElement, SelectBoxElement)
+	DECLARE_CLASS (ComboBoxElement, SelectBoxElement)
+	DECLARE_TYPELIB_CLASS (ComboBoxElement)
 	
 	ComboBoxElement ();
 
@@ -509,7 +537,8 @@ public:
 class SegmentBoxElement: public ControlElement
 {
 public:
-	DECLARE_SKIN_ELEMENT (SegmentBoxElement, ControlElement)
+	DECLARE_CLASS (SegmentBoxElement, ControlElement)
+	DECLARE_TYPELIB_CLASS (SegmentBoxElement)
 
 	// ViewElement
 	bool setAttributes (const SkinAttributes& a) override;
@@ -525,7 +554,8 @@ public:
 class ColorBoxElement: public ControlElement
 {
 public:
-	DECLARE_SKIN_ELEMENT (ColorBoxElement, ControlElement)
+	DECLARE_CLASS (ColorBoxElement, ControlElement)
+	DECLARE_TYPELIB_CLASS (ColorBoxElement)
 
 	ColorBoxElement ();
 
@@ -545,7 +575,8 @@ public:
 class UpDownButtonElement: public ButtonElement
 {
 public:
-	DECLARE_SKIN_ELEMENT (UpDownButtonElement, ButtonElement)
+	DECLARE_CLASS (UpDownButtonElement, ButtonElement)
+	DECLARE_TYPELIB_CLASS (UpDownButtonElement)
 
 	// ViewElement
 	bool setAttributes (const SkinAttributes& a) override;
@@ -559,7 +590,8 @@ public:
 class UpDownBoxElement: public ControlElement
 {
 public:
-	DECLARE_SKIN_ELEMENT (UpDownBoxElement, ControlElement)
+	DECLARE_CLASS (UpDownBoxElement, ControlElement)
+	DECLARE_TYPELIB_CLASS (UpDownBoxElement)
 
 	// ViewElement
 	bool setAttributes (const SkinAttributes& a) override;
@@ -573,7 +605,8 @@ public:
 class SwipeBoxElement: public ControlElement
 {
 public:
-	DECLARE_SKIN_ELEMENT (SwipeBoxElement, ControlElement)
+	DECLARE_CLASS (SwipeBoxElement, ControlElement)
+	DECLARE_TYPELIB_CLASS (SwipeBoxElement)
 
 	PROPERTY_MUTABLE_CSTRING (targetClass, TargetClass)
 
@@ -590,7 +623,8 @@ public:
 class DividerElement: public ControlElement
 {
 public:
-	DECLARE_SKIN_ELEMENT (DividerElement, ControlElement)
+	DECLARE_CLASS (DividerElement, ControlElement)
+	DECLARE_TYPELIB_CLASS (DividerElement)
 
 	DividerElement ();
 
@@ -610,7 +644,8 @@ public:
 class AlignViewElement: public ControlElement
 {
 public:
-	DECLARE_SKIN_ELEMENT (AlignViewElement, ControlElement)
+	DECLARE_CLASS (AlignViewElement, ControlElement)
+	DECLARE_TYPELIB_CLASS (AlignViewElement)
 
 	PROPERTY_MUTABLE_CSTRING (persistenceID, PersistenceID)
 
@@ -629,7 +664,8 @@ public:
 class ScrollBarElement: public ControlElement
 {
 public:
-	DECLARE_SKIN_ELEMENT (ScrollBarElement, ControlElement)
+	DECLARE_CLASS (ScrollBarElement, ControlElement)
+	DECLARE_TYPELIB_CLASS (ScrollBarElement)
 
 	// ViewElement
 	bool setAttributes (const SkinAttributes& a) override;
@@ -644,7 +680,8 @@ public:
 class ScrollButtonElement: public ScrollBarElement
 {
 public:
-	DECLARE_SKIN_ELEMENT (ScrollButtonElement, ScrollBarElement)
+	DECLARE_CLASS (ScrollButtonElement, ScrollBarElement)
+	DECLARE_TYPELIB_CLASS (ScrollButtonElement)
 
 	ScrollButtonElement ();
 
@@ -662,7 +699,8 @@ public:
 class PageControlElement: public ScrollBarElement
 {
 public:
-	DECLARE_SKIN_ELEMENT (PageControlElement, ScrollBarElement)
+	DECLARE_CLASS (PageControlElement, ScrollBarElement)
+	DECLARE_TYPELIB_CLASS (PageControlElement)
 
 	// ViewElement
 	View* createView (const CreateArgs& args, View* view) override;
@@ -675,7 +713,8 @@ public:
 class ScrollPickerElement: public ControlElement
 {
 public:
-	DECLARE_SKIN_ELEMENT (ScrollPickerElement, ControlElement)
+	DECLARE_CLASS (ScrollPickerElement, ControlElement)
+	DECLARE_TYPELIB_CLASS (ScrollPickerElement)
 	
 	PROPERTY_MUTABLE_CSTRING (applyName, ApplyName)
 	
@@ -692,7 +731,8 @@ public:
 class TabViewElement: public ControlElement
 {
 public:
-	DECLARE_SKIN_ELEMENT (TabViewElement, ControlElement)
+	DECLARE_CLASS (TabViewElement, ControlElement)
+	DECLARE_TYPELIB_CLASS (TabViewElement)
 
 	PROPERTY_MUTABLE_CSTRING (persistenceID, PersistenceID)
 

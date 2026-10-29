@@ -24,98 +24,67 @@
 #include "ccl/platform/linux/gui/window.linux.h"
 #include "ccl/platform/linux/wayland/subsurface.h"
 
+#include "ccl/platform/shared/skia/skialayer.h"
 #include "ccl/platform/shared/skia/skiadevice.h"
 
 #include "ccl/gui/graphics/imaging/offscreen.h"
-#include "ccl/gui/system/animation.h"
 
 namespace CCL {
 namespace Linux {
 
 //************************************************************************************************
-// SkiaLayer
+// LinuxSkiaLayer
 //************************************************************************************************
 
-class SkiaLayer: public NativeGraphicsLayer,
-				 public WaylandObject
+class LinuxSkiaLayer: public SkiaLayer,
+				 	  public WaylandObject
 {
 public:
-	DECLARE_CLASS (SkiaLayer, NativeGraphicsLayer)
+	DECLARE_CLASS (LinuxSkiaLayer, SkiaLayer)
 	
-	SkiaLayer ();
-	~SkiaLayer ();
+	LinuxSkiaLayer ();
+	~LinuxSkiaLayer ();
 	
 	PROPERTY_BOOL (frameRequested, FrameRequested)
 
-	// NativeGraphicsLayer
-	tresult CCL_API construct (IUnknown* content, RectRef bounds = Rect (), int mode = 0, float contentScaleFactor = 1.f) override;
-	tresult CCL_API setContent (IUnknown* content) override;
+	// SkiaLayer
 	tresult CCL_API placeAbove (IGraphicsLayer* layer, IGraphicsLayer* sibling) override;
 	tresult CCL_API placeBelow (IGraphicsLayer* layer, IGraphicsLayer* sibling) override;
-	void CCL_API setSize (Coord width, Coord height) override;
 	void CCL_API setContentScaleFactor (float factor) override;
-	void CCL_API setUpdateNeeded () override;
-	void CCL_API setUpdateNeeded (RectRef rect) override;
-	void CCL_API suspendTiling (tbool suspend, const Rect* visibleRect) override;
 	tresult CCL_API flush () override;
-	void CCL_API setOffset (PointRef offset) override;
-	void CCL_API setOffsetX (float offsetX) override;
-	void CCL_API setOffsetY (float offsetY) override;
-	void CCL_API setMode (int mode) override;
-	void CCL_API setOpacity (float opacity) override;
-	void CCL_API setTransform (TransformRef transform) override;
 	tresult CCL_API addSublayer (IGraphicsLayer* layer) override;
 	tresult CCL_API removeSublayer (IGraphicsLayer* layer) override;
-	tresult CCL_API addAnimation (StringID propertyId, const IAnimation* animation) override;
-	tresult CCL_API removeAnimation (StringID propertyId) override;
-	tbool CCL_API getPresentationProperty (Variant& value, StringID propertyId) const override;
-	void CCL_API setBackColor (const Color& color) override;
-	
+
 	// WaylandObject
 	void onCompositorDisconnected () override;
 	void onCompositorConnected () override;
 	
 protected:
-	SharedPtr<IUnknown> content;
 	AutoPtr<LinuxLayerRenderTarget> renderTarget;
 	SubSurface<>* subSurface;
-	
-	AutoPtr<Bitmap> contentBitmap;
-	Color backColor;
-	
-	int mode;
-	
-	Rect size;
-	Rect contentRect;
-	Rect dirtyRect;
-	Point offset;
-	float contentScaleFactor;
-	float opacity;
-	SkMatrix transformMatrix;
-	bool needCanvasUpdate;
 	
 	tresult show ();
 	void hide ();
 	virtual Surface* getSurface ();
 	virtual Surface* getParentSurface ();
 	void drawContent ();
-	virtual Rect getClipRect ();
-	void checkSize ();
-	void updatePosition ();
 	void destroySurface ();
-	void requestCanvasUpdate ();
-	virtual void requestFrame (bool deep = false);
 	void hidePendingSublayers ();
+
+	// SkiaLayer
+	void checkSize () override;
+	void updatePosition () override;
+	void requestFrame (bool deep = false) override;
 };
 
 //************************************************************************************************
 // SkiaRootLayer
 //************************************************************************************************
 
-class SkiaRootLayer: public SkiaLayer
+class SkiaRootLayer: public LinuxSkiaLayer
 {
 public:
-    DECLARE_CLASS (SkiaRootLayer, SkiaLayer)
+    DECLARE_CLASS (SkiaRootLayer, LinuxSkiaLayer)
 
 	SkiaRootLayer ();
 	~SkiaRootLayer ();
@@ -128,7 +97,7 @@ public:
 protected:
 	Window* window;
 
-	// SkiaLayer
+	// LinuxSkiaLayer
 	Surface* getParentSurface () override;
 	Surface* getSurface () override;
 	Rect getClipRect () override;
@@ -150,41 +119,35 @@ IGraphicsLayer* SkiaLayerFactory::createLayer (UIDRef classID)
 	if(classID == ClassID::RootLayer)
 		return NEW SkiaRootLayer;
 	if(classID == ClassID::GraphicsLayer)
-		return NEW SkiaLayer;
+		return NEW LinuxSkiaLayer;
 	if(classID == ClassID::TiledLayer)
-		return NEW SkiaLayer; // not yet implemented
+		return NEW LinuxSkiaLayer; // not yet implemented
 	return nullptr;
 }
 
 //************************************************************************************************
-// SkiaLayer
+// LinuxSkiaLayer
 //************************************************************************************************
 
-DEFINE_CLASS_HIDDEN (SkiaLayer, NativeGraphicsLayer)
+DEFINE_CLASS_HIDDEN (LinuxSkiaLayer, SkiaLayer)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-SkiaLayer::SkiaLayer ()
-: contentScaleFactor (1.f),
-  subSurface (nullptr),
-  opacity (1.f),
-  needCanvasUpdate (false),
-  backColor (Colors::kTransparentBlack),
+LinuxSkiaLayer::LinuxSkiaLayer ()
+: subSurface (nullptr),
   frameRequested (false)
-{
-	setDeferredRemoval (true);
-}
+{}
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-SkiaLayer::~SkiaLayer ()
+LinuxSkiaLayer::~LinuxSkiaLayer ()
 {
 	hide ();
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void SkiaLayer::destroySurface ()
+void LinuxSkiaLayer::destroySurface ()
 {
 	renderTarget.release ();
 	subSurface->destroySurface ();
@@ -194,16 +157,16 @@ void SkiaLayer::destroySurface ()
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-Surface* SkiaLayer::getSurface ()
+Surface* LinuxSkiaLayer::getSurface ()
 {
 	return subSurface;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-Surface* SkiaLayer::getParentSurface ()
+Surface* LinuxSkiaLayer::getParentSurface ()
 {
-	SkiaLayer* parentLayer = unknown_cast<SkiaLayer> (getParentLayer ());
+	LinuxSkiaLayer* parentLayer = unknown_cast<LinuxSkiaLayer> (getParentLayer ());
 	if(parentLayer == nullptr)
 		return nullptr;
 	
@@ -212,20 +175,7 @@ Surface* SkiaLayer::getParentSurface ()
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-tresult CCL_API SkiaLayer::construct (IUnknown* newContent, RectRef bounds, int newMode, float factor)
-{
-	mode = newMode;
-	content = newContent;
-	contentScaleFactor = factor;
-	contentRect.setSize (bounds.getSize ());
-	offset = bounds.getLeftTop ();
-	
-	return kResultOk;
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
-tresult SkiaLayer::show ()
+tresult LinuxSkiaLayer::show ()
 {
 	Surface* parentSurface = getParentSurface ();
 	if(parentSurface != nullptr)
@@ -245,7 +195,7 @@ tresult SkiaLayer::show ()
 
 			renderTarget->setContentScaleFactor (contentScaleFactor);
 
-			for(SkiaLayer* layer : iterate_as<SkiaLayer> (sublayers))
+			for(LinuxSkiaLayer* layer : iterate_as<LinuxSkiaLayer> (sublayers))
 			{
 				if(layer->getSurface () != nullptr && !layer->renderTarget.isValid ())
 					layer->show ();
@@ -267,11 +217,11 @@ tresult SkiaLayer::show ()
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void SkiaLayer::hide ()
+void LinuxSkiaLayer::hide ()
 {
 	WaylandClient::instance ().unregisterObject (*this);
 	
-	for(SkiaLayer* layer : iterate_as<SkiaLayer> (sublayers))
+	for(LinuxSkiaLayer* layer : iterate_as<LinuxSkiaLayer> (sublayers))
 		layer->hide ();
 
 	renderTarget.release ();
@@ -282,44 +232,27 @@ void SkiaLayer::hide ()
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void SkiaLayer::onCompositorDisconnected ()
+void LinuxSkiaLayer::onCompositorDisconnected ()
 {
 	hide ();
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void SkiaLayer::onCompositorConnected ()
+void LinuxSkiaLayer::onCompositorConnected ()
 {
 	show ();
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-tresult CCL_API SkiaLayer::setContent (IUnknown* newContent)
-{
-	content = newContent;
-	UnknownPtr<IGraphicsLayerContent> layerContent (content);
-	if(layerContent != nullptr)
-		setUpdateNeeded ();
-	else
-	{
-		dirtyRect = contentRect.getSize ();
-		requestCanvasUpdate ();
-	}
-
-	return kResultOk;
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
-tresult CCL_API SkiaLayer::placeAbove (IGraphicsLayer* _layer, IGraphicsLayer* _sibling)
+tresult CCL_API LinuxSkiaLayer::placeAbove (IGraphicsLayer* _layer, IGraphicsLayer* _sibling)
 {
 	tresult result = SuperClass::placeAbove (_layer, _sibling);
 	if(result == kResultOk)
 	{
-		SkiaLayer* layer = unknown_cast<SkiaLayer> (_layer);
-		SkiaLayer* sibling = unknown_cast<SkiaLayer> (_sibling);
+		LinuxSkiaLayer* layer = unknown_cast<LinuxSkiaLayer> (_layer);
+		LinuxSkiaLayer* sibling = unknown_cast<LinuxSkiaLayer> (_sibling);
 		if(layer == nullptr || sibling == nullptr)
 			return kResultInvalidArgument;
 
@@ -331,13 +264,13 @@ tresult CCL_API SkiaLayer::placeAbove (IGraphicsLayer* _layer, IGraphicsLayer* _
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-tresult CCL_API SkiaLayer::placeBelow (IGraphicsLayer* _layer, IGraphicsLayer* _sibling)
+tresult CCL_API LinuxSkiaLayer::placeBelow (IGraphicsLayer* _layer, IGraphicsLayer* _sibling)
 {
 	tresult result = SuperClass::placeBelow (_layer, _sibling);
 	if(result == kResultOk)
 	{
-		SkiaLayer* layer = unknown_cast<SkiaLayer> (_layer);
-		SkiaLayer* sibling = unknown_cast<SkiaLayer> (_sibling);
+		LinuxSkiaLayer* layer = unknown_cast<LinuxSkiaLayer> (_layer);
+		LinuxSkiaLayer* sibling = unknown_cast<LinuxSkiaLayer> (_sibling);
 		if(layer == nullptr || sibling == nullptr)
 			return kResultInvalidArgument;
 
@@ -349,72 +282,24 @@ tresult CCL_API SkiaLayer::placeBelow (IGraphicsLayer* _layer, IGraphicsLayer* _
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void CCL_API SkiaLayer::setSize (Coord width, Coord height)
-{
-	if(width == contentRect.getWidth () && height == contentRect.getHeight ())
-		return;
-	
-	contentRect.setSize (Point (width, height));
-	checkSize ();
-	for(SkiaLayer* layer : iterate_as<SkiaLayer> (sublayers))
-		layer->checkSize ();
-	requestCanvasUpdate ();
-	
-	if(unknown_cast<Bitmap> (content) == nullptr)
-		contentBitmap.release ();
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
-void CCL_API SkiaLayer::setContentScaleFactor (float factor)
+void CCL_API LinuxSkiaLayer::setContentScaleFactor (float factor)
 {
 	if(factor == contentScaleFactor)
 		return;
-	contentScaleFactor = factor;
 	
 	if(renderTarget)
 		renderTarget->setContentScaleFactor (factor);
 
-	if(unknown_cast<Bitmap> (content) == nullptr)
-		contentBitmap.release ();
-
-	setUpdateNeeded ();
-
-	for(SkiaLayer* layer : iterate_as<SkiaLayer> (sublayers))
-		layer->setContentScaleFactor (contentScaleFactor);
+	SuperClass::setContentScaleFactor (factor);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void CCL_API SkiaLayer::setUpdateNeeded ()
-{
-	setUpdateNeeded (contentRect.getSize ());
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
-void CCL_API SkiaLayer::setUpdateNeeded (RectRef rect)
-{
-	if(!unknown_cast<Image> (content))
-		dirtyRect.join (rect);
-	requestFrame ();
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
-void SkiaLayer::requestCanvasUpdate ()
-{
-	needCanvasUpdate = true;
-	requestFrame ();
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
-void SkiaLayer::requestFrame (bool deep)
+void LinuxSkiaLayer::requestFrame (bool deep)
 {
 	if(deep && !sublayers.isEmpty ())
 	{
-		for(SkiaLayer* layer : iterate_as<SkiaLayer> (sublayers))
+		for(LinuxSkiaLayer* layer : iterate_as<LinuxSkiaLayer> (sublayers))
 			layer->requestFrame (true);
 		return;
 	}
@@ -428,36 +313,30 @@ void SkiaLayer::requestFrame (bool deep)
 
 	if(renderTarget)
 		frameRequested = true;
-	SkiaLayer* parentLayer = unknown_cast<SkiaLayer> (getParentLayer ());
+	LinuxSkiaLayer* parentLayer = unknown_cast<LinuxSkiaLayer> (getParentLayer ());
 	if(parentLayer)
 		parentLayer->requestFrame ();
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void CCL_API SkiaLayer::suspendTiling (tbool suspend, const Rect* visibleRect)
+void LinuxSkiaLayer::hidePendingSublayers ()
 {
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
-void SkiaLayer::hidePendingSublayers ()
-{
-	ForEach (removedSublayers, SkiaLayer, subLayer)
+	ForEach (removedSublayers, LinuxSkiaLayer, subLayer)
 		subLayer->hide ();
 	EndFor
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-tresult CCL_API SkiaLayer::flush ()
+tresult CCL_API LinuxSkiaLayer::flush ()
 {
 	hidePendingSublayers ();
 	removePendingSublayers ();
 
 	frameRequested = false;
 
-	for(SkiaLayer* layer : iterate_as<SkiaLayer> (sublayers))
+	for(LinuxSkiaLayer* layer : iterate_as<LinuxSkiaLayer> (sublayers))
 	{
 		if(layer->frameRequested)
 			layer->flush ();
@@ -485,64 +364,11 @@ tresult CCL_API SkiaLayer::flush ()
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void CCL_API SkiaLayer::setOffset (PointRef newOffset)
-{
-	offset = newOffset;
-	updatePosition ();
-	requestCanvasUpdate ();
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
-void CCL_API SkiaLayer::setOffsetX (float offsetX)
-{
-	offset.x = offsetX;
-	updatePosition ();
-	requestCanvasUpdate ();
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
-void CCL_API SkiaLayer::setOffsetY (float offsetY)
-{
-	offset.y = offsetY;
-	updatePosition ();
-	requestCanvasUpdate ();
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
-void CCL_API SkiaLayer::setMode (int newMode)
-{
-	mode = newMode;
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
-void CCL_API SkiaLayer::setOpacity (float newOpacity)
-{
-	if(opacity != newOpacity)
-	{
-		opacity = newOpacity;
-		requestCanvasUpdate ();
-	}
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
-void CCL_API SkiaLayer::setTransform (TransformRef t)
-{
-	transformMatrix = SkMatrix::MakeAll (t.a0, t.b0, t.t0, t.a1, t.b1, t.t1, 0, 0, 1);
-	requestCanvasUpdate ();
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
-tresult CCL_API SkiaLayer::addSublayer (IGraphicsLayer* layer)
+tresult CCL_API LinuxSkiaLayer::addSublayer (IGraphicsLayer* layer)
 {
 	tresult result = SuperClass::addSublayer (layer);
 
-	SkiaLayer* skiaLayer = unknown_cast<SkiaLayer> (layer);
+	LinuxSkiaLayer* skiaLayer = unknown_cast<LinuxSkiaLayer> (layer);
 
 	if(skiaLayer != nullptr)
 	{
@@ -552,7 +378,7 @@ tresult CCL_API SkiaLayer::addSublayer (IGraphicsLayer* layer)
 		{
 			if(subSurface != nullptr)
 				skiaLayer->subSurface->placeAbove (*subSurface);
-			for(SkiaLayer* sibling : iterate_as<SkiaLayer> (sublayers))
+			for(LinuxSkiaLayer* sibling : iterate_as<LinuxSkiaLayer> (sublayers))
 			{
 				if(sibling == skiaLayer)
 					continue;
@@ -567,7 +393,7 @@ tresult CCL_API SkiaLayer::addSublayer (IGraphicsLayer* layer)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-tresult CCL_API SkiaLayer::removeSublayer (IGraphicsLayer* layer)
+tresult CCL_API LinuxSkiaLayer::removeSublayer (IGraphicsLayer* layer)
 {
 	tresult result = SuperClass::removeSublayer (layer);
 	requestCanvasUpdate ();
@@ -575,48 +401,8 @@ tresult CCL_API SkiaLayer::removeSublayer (IGraphicsLayer* layer)
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
-	
-tresult CCL_API SkiaLayer::addAnimation (StringID propertyId, const IAnimation* newAnimation)
-{
-	tresult result = kResultInvalidArgument;
 
-	const Animation* animation = Animation::cast<Animation> (newAnimation);
-	if(!animation)
-		return result;
-	
-	AutoPtr<Animation> animationCopy = ccl_cast<Animation> (animation->clone ());
-	if(animationCopy)
-		result = AnimationManager::instance ().addAnimation (this, propertyId, animationCopy);
-	
-	return result;
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
-tresult CCL_API SkiaLayer::removeAnimation (StringID propertyId)
-{
-	tresult result = AnimationManager::instance ().removeAnimation (this, propertyId);
-	return result;
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
-tbool CCL_API SkiaLayer::getPresentationProperty (Variant& value, StringID propertyId) const
-{
-	return false;
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
-void CCL_API SkiaLayer::setBackColor (const Color& color)
-{
-	backColor = color;
-	requestCanvasUpdate ();
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
-void SkiaLayer::drawContent ()
+void LinuxSkiaLayer::drawContent ()
 {
 	if(dirtyRect.isEmpty () && !needCanvasUpdate)
 		return;
@@ -713,28 +499,7 @@ void SkiaLayer::drawContent ()
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-Rect SkiaLayer::getClipRect ()
-{
-	SkiaLayer* parentLayer = unknown_cast<SkiaLayer> (getParentLayer ());
-	if(parentLayer == nullptr)
-		return contentRect.getSize ();
-
-	Rect clipRect;
-	if(get_flag<int> (mode, kClipToBounds))
-	{
-		clipRect = contentRect;
-		clipRect.offset (offset.x, offset.y);
-		clipRect.bound (parentLayer->getClipRect ());
-		clipRect.offset (-offset.x, -offset.y);
-	}
-	else
-		clipRect = parentLayer->getClipRect ();
-	return clipRect;
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
-void SkiaLayer::checkSize ()
+void LinuxSkiaLayer::checkSize ()
 {
 	if(!renderTarget.isValid ())
 		return;
@@ -753,7 +518,7 @@ void SkiaLayer::checkSize ()
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void SkiaLayer::updatePosition ()
+void LinuxSkiaLayer::updatePosition ()
 {
 	if(subSurface)
 	{
@@ -768,7 +533,7 @@ void SkiaLayer::updatePosition ()
 // SkiaRootLayer
 //************************************************************************************************
 
-DEFINE_CLASS_HIDDEN (SkiaRootLayer, SkiaLayer)
+DEFINE_CLASS_HIDDEN (SkiaRootLayer, LinuxSkiaLayer)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 

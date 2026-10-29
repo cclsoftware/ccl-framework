@@ -88,6 +88,7 @@ END_XSTRINGS
 BEGIN_COMMANDS (Application)
 	DEFINE_COMMAND ("File",			"Quit",					Application::onQuit)
 	DEFINE_COMMAND ("Help",			"About",				Application::onAbout)
+	DEFINE_COMMAND_("Help",			"Legal Information",	Application::onLegalInformation, CommandFlags::kHidden)
 	DEFINE_COMMAND_("Help",			"Contents",				Application::onHelp, CommandFlags::kGlobal)
 	DEFINE_COMMAND_("Help",			"Context Help",			Application::onHelp, CommandFlags::kGlobal)
 	DEFINE_COMMAND ("Help",			"Keyboard Shortcuts",	Application::onCommandsHelp)
@@ -169,6 +170,7 @@ String Application::getWebLink (StringID id, String* title)
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 DEFINE_CLASS (Application, Component)
+DEFINE_CLASS_NAMESPACE (Application, NAMESPACE_CCL)
 DEFINE_STRINGID_MEMBER_ (Application, kAppMenuName, "applicationMenu")
 IMPLEMENT_COMMANDS (Application, Component)
 
@@ -228,7 +230,9 @@ Application::~Application ()
 	System::GetCommandTable ().removeHandler (&root);
 
 	root.unloadTheme ();
-	root.unloadStrings ();
+
+	if(LocalString::hasTable () == true) // only if loadStrings() has been called
+		root.unloadStrings ();
 
 	System::GetObjectTable ().unregisterObject (root.asUnknown ());
 }
@@ -605,31 +609,6 @@ IDragHandler* CCL_API Application::createDragHandler (const DragEvent& event, IV
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-IView* Application::createAboutView ()
-{
-	return getTheme ()->createView ("AboutApplication", this->asUnknown ());
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
-void Application::showAbout ()
-{
-	static bool aboutDialogOpen = false;
-	if(aboutDialogOpen) // suppress if dialog already open
-		return;
-
-	if(IView* view = createAboutView ())
-	{
-		aboutDialogOpen = true;
-		Promise (DialogBox ()->runDialogAsync (view)).then ([&] (IAsyncOperation& op)
-			{
-				aboutDialogOpen = false;
-			});
-	}
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
 void Application::onRestartRequested (MessageRef msg)
 {
 	auto requestRestart = [this] ()
@@ -764,6 +743,15 @@ tbool CCL_API Application::requestQuit ()
 	if(System::GetDesktop ().closePopupAndDeferCommand (this, CommandMsg ("File", "Quit")))
 		return true;
 
+	// close modal dialogs first (ensure we leave the modal callstack of a dialog before trying to quit)
+	// requestQuit will be called again via onQuit
+	if(System::GetDesktop ().isInMode (IDesktop::kModalMode))
+	{
+		if(!System::GetDesktop ().isInMode (IDesktop::kProgressMode))
+			System::GetDesktop ().closeModalWindowsAndDeferCommand (this, CommandMsg ("File", "Quit"));
+		return false;
+	}
+
 	root.setQuitRequested (true);
 	if(!root.canTerminate ())
 	{
@@ -786,6 +774,42 @@ tbool CCL_API Application::isQuitRequested () const
 {
 	auto& root = RootComponent::instance ();
 	return root.isQuitRequested ();
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+void Application::showAbout ()
+{
+	static bool aboutDialogOpen = false;
+	if(aboutDialogOpen) // suppress if dialog already open
+		return;
+
+	if(IView* view = getTheme ()->createView ("AboutApplication", this->asUnknown ()))
+	{
+		aboutDialogOpen = true;
+		Promise (DialogBox ()->runDialogAsync (view)).then ([&] (IAsyncOperation& op)
+			{
+				aboutDialogOpen = false;
+			});
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+void Application::showLegalInformation ()
+{
+	static bool legalDialogOpen = false;
+	if(legalDialogOpen) // suppress if dialog already open
+		return;
+
+	if(IView* view = getTheme ()->createView ("LegalInformation", this->asUnknown ()))
+	{
+		legalDialogOpen = true;
+		Promise (DialogBox ()->runDialogAsync (view)).then ([&] (IAsyncOperation& op)
+			{
+				legalDialogOpen = false;
+			});
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -817,6 +841,17 @@ bool Application::onAbout (CmdArgs args)
 		return true;
 
 	showAbout ();
+	return true;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+bool Application::onLegalInformation (CmdArgs args)
+{
+	if(args.checkOnly ())
+		return true;
+
+	showLegalInformation ();
 	return true;
 }
 
@@ -939,6 +974,12 @@ bool Application::onNavigationBack (CmdArgs args)
 {
 	return false; // only to help overriding in derived application classes
 }
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+BEGIN_PROPERTY_NAMES (Application)
+	DEFINE_PROPERTY_CLASS_ ("Configuration", "Registry", ITypeInfo::kReadOnly)
+END_PROPERTY_NAMES (Application)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 

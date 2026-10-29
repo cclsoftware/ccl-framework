@@ -45,10 +45,12 @@ interface IUIValue: IUnknown
 		kRectF,
 		kPointF3D,
 		kPointF4D,
-		kTransform3D
+		kTransform3D,
+		kPen,
+		kBrush
 	};
 
-	virtual void CCL_API reset () = 0;
+	virtual void CCL_API reset (Type newType = kNil) = 0;
 
 	virtual tbool CCL_API copyFrom (const IUIValue* value) = 0;
 
@@ -97,6 +99,14 @@ interface IUIValue: IUnknown
 	virtual void CCL_API fromTransform3D (Transform3DRef t) = 0;
 
 	virtual tbool CCL_API toTransform3D (Transform3D& t) const = 0;
+
+	virtual void CCL_API fromPen (PenRef p) = 0;
+
+	virtual tbool CCL_API toPen (Pen& p) const = 0;
+
+	virtual void CCL_API fromBrush (BrushRef b) = 0;
+
+	virtual tbool CCL_API toBrush (Brush& b) const = 0;
 
 	DECLARE_IID (IUIValue)
 

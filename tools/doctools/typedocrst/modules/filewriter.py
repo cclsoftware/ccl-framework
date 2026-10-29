@@ -8,13 +8,10 @@ from typing import List
 from modules.typedocjson import *
 from modules.model import Model
 from modules.parser import ParserConfig
-from modules.printer import ShortcutListPrinter
-from modules.elements import ObjectBuilder
-import os
+from modules import controller
+from modules.printer import Printer
 
-from modules.rstprinter import RstPrinter
-
-__copyright__ = "Copyright (c) 2023 CCL Software Licensing GmbH"
+__copyright__ = "Copyright (c) 2026 CCL Software Licensing GmbH"
 
 
 @dataclass
@@ -26,24 +23,18 @@ class TocTreeEntry:
 class FileWriter:
 
     @staticmethod
-    def write_index(model, file_in: pathlib.Path, file_out: pathlib.Path, toc_tree_files: List[TocTreeEntry]) -> None:
+    def write_index(model: Model, printer: Printer, file_in: pathlib.Path, file_out: pathlib.Path,
+                    toc_tree_files: List[TocTreeEntry]) -> None:
         """ Write index (summary) file. """
-
-        project_index_str = ObjectBuilder.create_file_object(model.root_object, model).to_rst()
-        if not project_index_str:
-            logging.error("failed to create output from input file %s " % file_in)
-            return
-
-        # the document title results from the typedoc config project name
-        result = RstPrinter.anchor(model.get_root_anchor())
-        result += project_index_str
-
-        # include toc-tree for navigation purpose in both html and pdf use case
-        result += RstPrinter.h2("Index")
 
         # create new list of filenames sorted by object name
         filenames = [entry.filename for entry in sorted(toc_tree_files, key=lambda k: k.name)]
-        result += RstPrinter.toctree(filenames, 1, False)
+
+        index_vm = controller.build_index(model, model.root_object, filenames)
+        result = printer.render_index(index_vm)
+        if not result:
+            logging.error("failed to create output from input file %s " % file_in)
+            return
 
         with file_out.open('w+') as fp:
             fp.write(result)
@@ -56,7 +47,8 @@ class FileWriter:
         return file_name.lower().replace(" ", "")
 
     @staticmethod
-    def write_object_file(model: Model, config: ParserConfig, obj: JSONObject, obj_full_name: str) -> str:
+    def write_object_file(model: Model, printer: Printer, config: ParserConfig, obj: JSONObject,
+                          obj_full_name: str) -> str:
         """
         Create a single file for 'obj', interpreted as a top level object.
         Intended for use with classes or interfaces.
@@ -74,8 +66,9 @@ class FileWriter:
         toc_tree_entry_filename = FileWriter.build_unique_file_name(data_namespace, object_kind_string, object_name)
         file_path = pathlib.Path(out_path, toc_tree_entry_filename + ".rst")
 
-        # generate file content, assume TopLevelFileObject structure
-        rst_string = ObjectBuilder.create_file_object(obj, model).to_rst()
+        # generate file content
+        file_vm = controller.build_file(model, obj)
+        rst_string = printer.render_file(file_vm)
 
         with file_path.open('w+') as fp:
             fp.write(rst_string)
@@ -84,9 +77,10 @@ class FileWriter:
         return toc_tree_entry_filename
 
     @staticmethod
-    def write_shortcut_list(model: Model, file_in: pathlib.Path, file_out: pathlib.Path) -> None:
+    def write_shortcut_list(model: Model, printer: Printer, file_in: pathlib.Path, file_out: pathlib.Path) -> None:
 
-        data_str = ShortcutListPrinter.print(model)
+        rows = controller.build_shortcut_rows(model)
+        data_str = printer.render_shortcuts(rows)
         if not data_str:
             logging.error(f"failed to create output from input file {file_in}")
             return
@@ -103,8 +97,9 @@ class RecursiveObjectFileWriter:
     in different object trees.
     """
 
-    def __init__(self, model: Model, config: ParserConfig) -> None:
+    def __init__(self, model: Model, printer: Printer, config: ParserConfig) -> None:
         self.model = model
+        self.printer = printer
         self.config = config
 
     @staticmethod
@@ -123,7 +118,7 @@ class RecursiveObjectFileWriter:
             return
 
         # export to file, save file name for toc tree
-        toc_tree_entry = FileWriter.write_object_file(self.model, self.config, obj, full_name)
+        toc_tree_entry = FileWriter.write_object_file(self.model, self.printer, self.config, obj, full_name)
         if toc_tree_entry:
             toc_tree_list.append(
                 TocTreeEntry(

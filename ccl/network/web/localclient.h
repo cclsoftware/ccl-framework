@@ -38,7 +38,7 @@ public:
 	static LocalClient* create (StringID protocol);
 
 	// WebClient
-	tresult CCL_API connect (StringRef hostname) override;
+	tresult CCL_API connect (StringRef hostname, IProgressNotify* progress = nullptr) override;
 	int CCL_API getLastStatus () override;
 	tresult CCL_API downloadData (StringRef remotePath, IStream& localStream, IWebHeaderCollection* headers = nullptr,
 								  IProgressNotify* progress = nullptr) override;

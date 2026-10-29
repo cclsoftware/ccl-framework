@@ -51,7 +51,9 @@ namespace Model {
 // Model::Attributes
 //************************************************************************************************
 
-DEFINE_STRINGID (kClassDocGroup, "Class:DocGroup") ///< class documentation group
+const CStringPtr kClassDocGroup = "Class:DocGroup";			///< class documentation group
+const CStringPtr kClassChildGroup = "Class:ChildGroup";		///< class child group
+const CStringPtr kClassSchemaGroups = "Class:SchemaGroups";	///< class schema groups
 
 //************************************************************************************************
 // Model::MemberDescription
@@ -148,6 +150,24 @@ interface CCL_NOVTABLE ITypeLibrary: IUnknown
 };
 
 DEFINE_IID (ITypeLibrary, 0x25ca4b07, 0x72b2, 0x46d9, 0xa5, 0x9f, 0xc5, 0xb3, 0x98, 0xb4, 0xc3, 0xbf)
+
+//************************************************************************************************
+// ITypeLibReference
+/** Minimal interface for a runtime instance with a corresponding type library class.
+	\ingroup ccl_base */
+//************************************************************************************************
+
+interface CCL_NOVTABLE ITypeLibReference: IUnknown
+{
+	/** Get the type library class this instance corresponds to. Note that this is different from
+		the type information returned via IObject, as it corresponds to the public type library entry
+		rather than the underlying implementation class. */
+	virtual const ITypeInfo* CCL_API getReferencedType () const = 0;
+
+	DECLARE_IID (ITypeLibReference)
+};
+
+DEFINE_IID (ITypeLibReference, 0x71578cea, 0xe6c5, 0x45b5, 0x86, 0x51, 0x30, 0xf8, 0x57, 0x9f, 0x2b, 0x4a)
 
 } // namespace CCL
 

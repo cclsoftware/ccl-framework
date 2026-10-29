@@ -26,7 +26,7 @@ namespace CCL {
 // StringEntry
 //************************************************************************************************
 
-StringEntry::StringEntry (const char* _cString, OwnerHint hint)
+StringEntry::StringEntry (CStringPtr _cString, OwnerHint hint)
 : cString (_cString),
   ownCString (hint == kTake)
 {
@@ -78,7 +78,7 @@ bool StringEntry::equals (const StringEntry& other) const
 // UnicodeStringEntry
 //************************************************************************************************
 
-UnicodeStringEntry::UnicodeStringEntry (const char* cString, StringRef theString, OwnerHint hint)
+UnicodeStringEntry::UnicodeStringEntry (CStringPtr cString, StringRef theString, OwnerHint hint)
 : StringEntry (cString, hint),
   theString (theString)
 {}

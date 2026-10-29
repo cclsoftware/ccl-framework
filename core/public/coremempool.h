@@ -23,9 +23,6 @@
 #include "core/public/corelinkedlist.h"
 
 #define CORE_MEMORYPOOL_DEADLAND_FILL DEBUG // Enable memory checking in debug builds
-#if CTL_RTOS
-#define CORE_MEMORYPOOL_LAZY_INITIALIZATION 1 // Lazy memory pool initialization
-#endif
 
 namespace Core {
 
@@ -57,8 +54,7 @@ class MemoryPoolInitializer
 		Entry (): pool (0), init (0), arg (0) {}
 	};
 
-	static const int kMaxLazyPoolCount = 16;
-	Entry entries[kMaxLazyPoolCount];
+	Entry entries[CORE_MEMORYPOOL_COUNT_MAX];
 	int entryCount;
 
 public:
@@ -74,7 +70,7 @@ public:
 
 	void add (void* pool, InitFunction init, uint32 arg)
 	{
-		ASSERT (entryCount < kMaxLazyPoolCount)
+		ASSERT (entryCount < CORE_MEMORYPOOL_COUNT_MAX)
 		Entry& e = entries[entryCount++];
 		e.pool = pool;
 		e.init = init;

@@ -78,7 +78,7 @@ public:
 
 protected:
 	static String kDocumentComponent;
-	static CCL::Configuration::BoolValue applyCustomization;
+	static Configuration::BoolValue applyCustomization;
 
 	class FileList;
 

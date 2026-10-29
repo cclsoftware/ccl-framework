@@ -12,65 +12,58 @@
 // For more information, please visit ccl.dev.
 //
 // Filename    : ccl/gui/theme/renderer/selectboxrenderer.cpp
-// Description : Control Renderer
+// Description : SelectBox Renderer
 //
 //************************************************************************************************
 
 #ifndef _ccl_selectboxrenderer_h
 #define _ccl_selectboxrenderer_h
 
-#include "ccl/gui/theme/renderer/compositedrenderer.h"
-#include "ccl/gui/theme/textscaler.h"
-#include "ccl/public/gui/framework/styleflags.h"
+#include "ccl/gui/theme/renderer/bivrenderer.h"
 
 namespace CCL {
-
-interface IColorParam;
 
 //************************************************************************************************
 // SelectBoxRenderer
 //************************************************************************************************
 
-class SelectBoxRenderer: public CompositedRenderer
-{	
+class SelectBoxRenderer: public BIVRenderer
+{
 public:
-	SelectBoxRenderer (VisualStyle* visualStyle);
+	DECLARE_CLASS_ABSTRACT (SelectBoxRenderer, BIVRenderer)
 
-	void draw (View* view, const UpdateRgn& updateRgn) override;
-	int hitTest (View* view, const Point& loc, Point* clickOffset) override;
-	bool getPartRect (const View* view, int partCode, CCL::Rect& rect) override;
+	SelectBoxRenderer (VisualStyle* visualStyle, View* owner);
+
+	// BIVRenderer
+	void applyVisualStyle (RenderAtomTransaction& transaction) override;
+	void updateAtoms () override;
+	void draw (const UpdateRgn& updateRgn) override;
+	int hitTest (PointRef where, Point* clickOffset = nullptr) override;
+	bool getPartRect (Rect& rect, int partCode) override;
 
 protected:
-	SharedPtr<IImage> background;
-	SharedPtr<IImage> button;
-	SharedPtr<IImage> states;
-	float imageFillSize;
-	float buttonFillSize;
-	float textColorThreshold;
-	Rect padding;
-	Color textColor;
-	Color textColorOn;
-	Color textColorBright;
-	Color textColorDisabled;
-	Color textColorMouseOver;
-	Color contextColor;
-	Color contextColorOn;
+	float buttonFill;			///< select button size relative to the control, 0 = use the size of the image
 	bool hideText;
 	bool hideButton;
 	bool hideImage;
-	bool buttonBeneath;
-	bool leadingButton;
-	bool trailingButton;
-	bool hasOffState;
-	TextScaler textScaler;
-	bool initialized;
-	
-	void initialize (StyleRef style, const View* view);	
-	bool needsBrightText (IColorParam* colorParam) const;
+	bool showValueText;
+	Coord fitTextSpace;			///< display space the value text was last collapsed against, -1 when unknown
+
+	#if LEGACY_STYLES_SUPPORTED
+	float valueImageFill;		///< value image size relative to the control, 0 = fit it into the value area
+	#endif
+
+	bool isOnState () const;
+	int getElementStateFrame (const Image& image) const;
+	int getBackgroundFrame (const Image& image) const;
+	void setButtonAlignment (AlignmentRef alignment);
+	bool updateValueImage ();
+	void updateValueBrush ();
+	void checkFitTextSpace ();
 };
 
-DECLARE_VISUALSTYLE_CLASS (SelectBox)
+DECLARE_TYPELIB_ENTRY (SelectBox)
 
 } // namespace CCL
 
-#endif // _ccl_theme_h
+#endif // _ccl_selectboxrenderer_h

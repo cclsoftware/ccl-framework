@@ -122,6 +122,7 @@ ccl_list_append_once (cclbase_api_headers
 	${CCL_DIR}/base/memorypool.h
 	${CCL_DIR}/base/message.h
 	${CCL_DIR}/base/metaclass.h
+	${CCL_DIR}/base/typelibmacros.h
 	${CCL_DIR}/base/object.h
 	${CCL_DIR}/base/objectconverter.h
 	${CCL_DIR}/base/objectmacros.h
@@ -159,7 +160,6 @@ ccl_list_append_once (cclbase_api_headers
 	${CCL_DIR}/base/storage/settings.h
 	${CCL_DIR}/base/storage/storableobject.h
 	${CCL_DIR}/base/storage/storage.h
-	${CCL_DIR}/base/storage/stringtemplate.h
 	${CCL_DIR}/base/storage/textfile.h
 	${CCL_DIR}/base/storage/textparser.h
 	${CCL_DIR}/base/storage/url.h
@@ -175,6 +175,10 @@ ccl_list_append_once (cclbase_api_headers
 	${CCL_DIR}/base/trigger.h
 	${CCL_DIR}/base/typelib.h
 	${CCL_DIR}/base/unittest.h
+)
+
+ccl_list_append_once (cclbase_generated_headers
+	${CCL_DIR}/meta/generated/cpp/xmlinstructions-generated.h
 )
 
 ccl_list_append_once (cclbase_public_source_files
@@ -273,7 +277,6 @@ ccl_list_append_once (cclbase_source_files
 	${CCL_DIR}/base/storage/protocolhandler.cpp
 	${CCL_DIR}/base/storage/settings.cpp
 	${CCL_DIR}/base/storage/storableobject.cpp
-	${CCL_DIR}/base/storage/stringtemplate.cpp
 	${CCL_DIR}/base/storage/textfile.cpp
 	${CCL_DIR}/base/storage/textparser.cpp
 	${CCL_DIR}/base/storage/url.cpp
@@ -293,6 +296,7 @@ ccl_list_append_once (cclbase_source_files
 # set up project folder structure
 if (NOT CMAKE_CURRENT_SOURCE_DIR STREQUAL cclbase_SOURCE_DIR)
 	source_group ("source\\main" FILES ${cclbase_main_sources})
+	source_group (TREE ${CCL_DIR}/meta/generated/cpp PREFIX "generated" FILES ${cclbase_generated_headers})
 	source_group (TREE ${CCL_DIR}/public PREFIX "public" FILES ${cclbase_public_sources} ${cclbase_public_source_files} ${cclbase_public_headers})
 	source_group (TREE ${CCL_DIR}/base PREFIX "source" FILES ${cclbase_source_files} ${cclbase_api_headers})
 	source_group ("cmake" FILES ${CMAKE_CURRENT_LIST_FILE})
@@ -323,10 +327,12 @@ if (NOT TARGET ${cclbase})
 
 	cmake_path (RELATIVE_PATH CCL_REPOSITORY_ROOT BASE_DIRECTORY "${REPOSITORY_ROOT}" OUTPUT_VARIABLE ccl_framework_dir)
 
-	set_source_files_properties (${CCL_DIR}/base/development.cpp PROPERTIES COMPILE_DEFINITIONS "CCL_TOPLEVEL_DIRECTORY=\"${REPOSITORY_ROOT}\"")
+	if (NOT CCL_SYSTEM_INSTALL)
+		set_source_files_properties (${CCL_DIR}/base/development.cpp PROPERTIES COMPILE_DEFINITIONS "CCL_TOPLEVEL_DIRECTORY=\"${REPOSITORY_ROOT}\"")
+	endif ()
 
 	target_sources (${cclbase} PRIVATE ${cclbase_sources} ${CMAKE_CURRENT_LIST_FILE})
-	ccl_target_headers (${cclbase} INSTALL ${CCL_SYSTEM_INSTALL} DESTINATION ${CCL_PUBLIC_HEADERS_DESTINATION} BASE_DIRS ${CCL_DIR} FILES ${cclbase_public_headers} ${cclbase_api_headers})
+	ccl_target_headers (${cclbase} INSTALL ${CCL_SYSTEM_INSTALL} DESTINATION ${CCL_PUBLIC_HEADERS_DESTINATION} BASE_DIRS ${CCL_DIR} FILES ${cclbase_public_headers} ${cclbase_api_headers} ${cclbase_generated_headers})
 	
 	target_compile_definitions (${cclbase} PRIVATE ${corelib_COMPILE_DEFINITIONS} PUBLIC "CCL_FRAMEWORK_DIRECTORY=\"${ccl_framework_dir}/\"")
 	target_link_libraries (${cclbase} INTERFACE corelib)

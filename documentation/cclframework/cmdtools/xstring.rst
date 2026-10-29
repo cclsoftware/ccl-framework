@@ -713,6 +713,11 @@ Production example: this is the model definition for the built-in `<Skin>` forma
         "kind": "attribute",
         "name": "placeholder"
       },
+      // Parse accessibility.title attribute from any element.
+      {
+        "kind": "attribute",
+        "name": "accessibility.title"
+      },
       // Parse command.name attribute from any element but
       // use "Command" as scope (overrides model level 'parent'
       // scope rule).
@@ -787,6 +792,12 @@ Production example: this is the model definition for the built-in `<Skin>` forma
 
 Version history
 ===============
+
+Changelog v1.2.2
+----------------
+
+* added support for "accessibility.title" attribute in Skin XML
+
 
 Changelog v1.2.1
 ----------------

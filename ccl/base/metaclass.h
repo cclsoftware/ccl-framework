@@ -53,7 +53,7 @@ public:
 
 //************************************************************************************************
 // MetaClass
-/** Runtime meta class for library objects.  \ingroup ccl_base  */
+/** Runtime meta class for framework objects.  \ingroup ccl_base  */
 //************************************************************************************************
 
 class MetaClass: public AbstractTypeInfo

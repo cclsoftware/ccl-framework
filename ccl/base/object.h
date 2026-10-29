@@ -70,6 +70,10 @@ class Object: public Unknown,
 			  public IObject
 {
 public:
+	#if CCL_DEBUG_INTERNAL
+	~Object ();
+	#endif
+
 	// Type Information
 	DECLARE_BASE_CLASS (Object)
 
@@ -117,7 +121,6 @@ protected:
 	#if CCL_DEBUG_INTERNAL
 	static constexpr int kDebugFlagObserver = 1<<1;
 	static constexpr int kDebugFlagHasObserver = 1<<2;	
-	~Object ();
 	#endif
 	
 	/** Cancel deferred signals and posted messages. */
@@ -178,7 +181,7 @@ inline Class* unknown_cast (const IUnknown* unk)
 	return ccl_cast<Class> (obj);
 }
 
-/** Cast interface to object pointer. Specialization for CCL::Object (for performance) */
+/** Cast interface to object pointer. Specialization for Object (for performance) */
 template <>
 inline Object* unknown_cast<Object> (const IUnknown* unk)
 {

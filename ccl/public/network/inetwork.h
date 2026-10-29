@@ -44,8 +44,10 @@ interface INetwork: IUnknown
 	/** Get IP address of first active adapter on this computer. */
 	virtual tresult CCL_API getLocalIPAddress (IPAddress& address) = 0;
 
-	/** Retrieve address of specified host name. */
-	virtual tresult CCL_API getAddressByHost (SocketAddress& address, StringRef hostname) = 0;
+	/** Retrieve address of specified host name. Lookup is asynchronous internally and aborted when 
+	    timeout exceeds or canceled via progress interface. */
+	virtual tresult CCL_API getAddressByHost (SocketAddress& address, StringRef hostname,
+											   int timeout = kDefaultDnsTimeout, IProgressNotify* progress = nullptr) = 0;
 
 	/** Perform name resolution from an address to the host name. */
 	virtual tresult CCL_API getHostByAddress (String& hostname, const SocketAddress& address) = 0;
@@ -66,12 +68,15 @@ interface INetwork: IUnknown
 										   ProtocolType protocol) = 0;
 
 	/** Open network stream. */
-	virtual IStream* CCL_API openStream (const SocketAddress& address, 
-										 ProtocolType protocol) = 0;
+	virtual IStream* CCL_API openStream (const SocketAddress& address,
+										 ProtocolType protocol,
+										 int timeout = kDefaultConnectTimeout,
+										 IProgressNotify* progress = nullptr) = 0;
 
 	/** Open SSL stream. */
-	virtual IStream* CCL_API openSSLStream (const IPAddress& address, 
-											StringRef peerName, 
+	virtual IStream* CCL_API openSSLStream (const IPAddress& address,
+											StringRef peerName,
+											int timeout = kDefaultConnectTimeout,
 											IProgressNotify* progress = nullptr) = 0;
 
 	/** Determines the state of multiple sockets. On return, the lists will be filled with the matching sockets only. */

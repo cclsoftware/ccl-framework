@@ -155,8 +155,8 @@ public:
 	void empty ();
 
 	VS_FIXEDFILEINFO* getFixedFileInfo () const;
-	bool getStringFileInfo (String& result, const char* which) const;
-	String getStringFileInfo (const char* which) const;
+	bool getStringFileInfo (String& result, CStringPtr which) const;
+	String getStringFileInfo (CStringPtr which) const;
 	bool toAttributes (IAttributeList& attributes) const;
 
 protected:
@@ -1106,7 +1106,7 @@ VS_FIXEDFILEINFO* VersionInfo::getFixedFileInfo () const
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool VersionInfo::getStringFileInfo (String& result, const char* which) const
+bool VersionInfo::getStringFileInfo (String& result, CStringPtr which) const
 {
 	result.empty ();
 	if(data != nullptr)
@@ -1119,7 +1119,7 @@ bool VersionInfo::getStringFileInfo (String& result, const char* which) const
 
 		void* ptr = nullptr;
 		UINT length = 0;
-		if(::VerQueryValue (data, (LPWSTR)(const uchar*)StringChars (name), &ptr, &length) && ptr != nullptr)
+		if(::VerQueryValue (data, (LPWSTR)StringChars (name).str (), &ptr, &length) && ptr != nullptr)
 		{
 			result.append ((uchar*)ptr);
 			return true;
@@ -1130,7 +1130,7 @@ bool VersionInfo::getStringFileInfo (String& result, const char* which) const
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-String VersionInfo::getStringFileInfo (const char* which) const
+String VersionInfo::getStringFileInfo (CStringPtr which) const
 {
 	String result;
 	getStringFileInfo (result, which);

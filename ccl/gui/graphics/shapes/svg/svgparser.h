@@ -129,7 +129,7 @@ public:
 	// XmlContentParser
 	tresult CCL_API startElement (StringRef name, const IStringDictionary& attributes) override;
 	tresult CCL_API endElement (StringRef name) override;
-	tresult CCL_API characterData (const uchar* data, int length, tbool isCDATA) override;
+	tresult CCL_API characterData (UStringPtr data, int length, tbool isCDATA) override;
 
 	static SVG::Length parseLength (StringRef value);
 	static bool parseLength (StringRef string, SVG::Length& value);

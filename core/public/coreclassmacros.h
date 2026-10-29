@@ -75,7 +75,7 @@ void set##Method (bool __state = true) { member = __state; }
 /** Define C-string buffer member (by reference). */
 #define PROPERTY_CSTRING_BUFFER(size, member, Method) \
 protected: Core::CStringBuffer<size> member; public: \
-void set##Method (const char* _cstr) { member = _cstr; } \
+void set##Method (Core::CStringPtr _cstr) { member = _cstr; } \
 const Core::CStringBuffer<size>& get##Method () const { return member; }
 
 #endif // _coreclassmacros_h

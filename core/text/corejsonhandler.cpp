@@ -19,12 +19,6 @@
 #include "corejsonhandler.h"
 #include "coreutfcodec.h"
 
-#if CTL_RTOS // platform doesn't support double precision, i.e. sizeof(double) equals sizeof(float)
-#define CORE_DOUBLE_AS_FLOAT 1
-#else
-#define CORE_DOUBLE_AS_FLOAT 0
-#endif
-
 #define SKIP_COMMENTS 1	// text parser can skip C-style comments (otherwise comments are not allowed and result in errors)
 #define PRESERVE_FLOATS 1 // write whole-number floats as "xxx.0" in JSON, to distinguish them from integers
 

@@ -235,7 +235,7 @@ void ValueBar::updateClient ()
 ThemeRenderer* ValueBar::getRenderer ()
 {
 	if(renderer == nullptr)
-		renderer = getTheme ().createRenderer (ThemePainter::kValueBarRenderer, visualStyle);
+		renderer = getTheme ().createRenderer (ThemePainter::kValueBarRenderer, visualStyle, this);
 	return renderer;
 }
 
@@ -257,7 +257,7 @@ ProgressBar::ProgressBar (const Rect& size, IParameter* param, StyleRef style)
 ThemeRenderer* ProgressBar::getRenderer ()
 {
 	if(renderer == nullptr)
-		renderer = getTheme ().createRenderer (ThemePainter::kProgressBarRenderer, visualStyle);
+		renderer = getTheme ().createRenderer (ThemePainter::kProgressBarRenderer, visualStyle, this);
 	return renderer;
 }
 

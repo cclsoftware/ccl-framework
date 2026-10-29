@@ -358,9 +358,9 @@ Theme::~Theme ()
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-ThemeRenderer* Theme::createRenderer (int which, VisualStyle* visualStyle) const
+ThemeRenderer* Theme::createRenderer (int which, VisualStyle* visualStyle, View* owner) const
 {
-	return painter->createRenderer (which, visualStyle);
+	return painter->createRenderer (which, visualStyle, owner);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -675,11 +675,11 @@ DEFINE_CLASS_ABSTRACT_HIDDEN (ThemeRenderer, Object)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void ThemeRenderer::update (View* view, const UpdateInfo& info)
+void ThemeRenderer::update (const UpdateInfo& info)
 {
-	Rect r; 
-	view->getClientRect (r);
-	view->View::updateClient (r); 
+	Rect r;
+	owner->getClientRect (r);
+	owner->View::updateClient (r); 
 }
 
 //************************************************************************************************
@@ -757,7 +757,7 @@ ThemePainter::ThemePainter (Theme* theme)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-ThemeRenderer* ThemePainter::createRenderer (int which, VisualStyle* visualStyle) const
+ThemeRenderer* ThemePainter::createRenderer (int which, VisualStyle* visualStyle, View* owner) const
 {
 	ThemeRenderer* renderer = nullptr;
 
@@ -770,59 +770,59 @@ ThemeRenderer* ThemePainter::createRenderer (int which, VisualStyle* visualStyle
 	switch(which)
 	{
 	case kSliderRenderer :
-		return NEW SliderRenderer (visualStyle);
+		return NEW SliderRenderer (visualStyle, owner);
 	case kScrollBarRenderer :
-		return NEW ScrollBarRenderer (visualStyle);
+		return NEW ScrollBarRenderer (visualStyle, owner);
 	case kScrollButtonRenderer :
-		return NEW ScrollButtonRenderer (visualStyle);
+		return NEW ScrollButtonRenderer (visualStyle, owner);
 	case kPageControlRenderer :
-		return NEW PageControlRenderer (visualStyle);
+		return NEW PageControlRenderer (visualStyle, owner);
 	case kValueBarRenderer :
-		return NEW ValueBarRenderer (visualStyle);
+		return NEW ValueBarRenderer (visualStyle, owner);
 	case kProgressBarRenderer :
-		return NEW ProgressBarRenderer (visualStyle);
+		return NEW ProgressBarRenderer (visualStyle, owner);
 	case kTextBoxRenderer :
-		return NEW TextBoxRenderer (visualStyle);
+		return NEW TextBoxRenderer (visualStyle, owner);
 	case kEditBoxRenderer :
-		return NEW EditBoxRenderer (visualStyle);
+		return NEW EditBoxRenderer (visualStyle, owner);
 	case kComboBoxRenderer :
-		return NEW ComboBoxRenderer (visualStyle);
+		return NEW ComboBoxRenderer (visualStyle, owner);
 	case kSelectBoxRenderer :
-		return NEW SelectBoxRenderer (visualStyle);
+		return NEW SelectBoxRenderer (visualStyle, owner);
 	case kButtonRenderer :
-		return NEW ButtonRenderer (visualStyle);
+		return NEW ButtonRenderer (visualStyle, owner);
 	case kTabViewRenderer:
-		return NEW TabViewRenderer (visualStyle);
+		return NEW TabViewRenderer (visualStyle, owner);
 	case kHeaderViewRenderer :
-		return NEW HeaderViewRenderer (visualStyle);
+		return NEW HeaderViewRenderer (visualStyle, owner);
 	case kDividerRenderer :
-		return NEW DividerRenderer (visualStyle);
+		return NEW DividerRenderer (visualStyle, owner);
 	case kBackgroundRenderer :
-		return NEW BackgroundRenderer (visualStyle);
+		return NEW BackgroundRenderer (visualStyle, owner);
 	case kDialogGroupRenderer :
-		return NEW DialogGroupRenderer (visualStyle);
+		return NEW DialogGroupRenderer (visualStyle, owner);
 	case kLabelRenderer :
-		return NEW LabelRenderer (visualStyle);
+		return NEW LabelRenderer (visualStyle, owner);
 	case kCheckBoxRenderer :
-		return NEW CheckBoxRenderer (visualStyle);
+		return NEW CheckBoxRenderer (visualStyle, owner);
 	case kRadioButtonRenderer:
-		return NEW RadioButtonRenderer (visualStyle);
+		return NEW RadioButtonRenderer (visualStyle, owner);
 	case kKnobRenderer:
-		return NEW KnobRenderer (visualStyle);
+		return NEW KnobRenderer (visualStyle, owner);
 	case kVectorPadRenderer :
-		return NEW VectorPadRenderer (visualStyle);
+		return NEW VectorPadRenderer (visualStyle, owner);
 	case kTriVectorPadRenderer:
-		return NEW TriVectorPadRenderer (visualStyle);
+		return NEW TriVectorPadRenderer (visualStyle, owner);
 	case kValueBoxRenderer :
-		return NEW ValueBoxRenderer (visualStyle);
+		return NEW ValueBoxRenderer (visualStyle, owner);
 	case kUpDownButtonRenderer :
-		return NEW UpDownButtonRenderer (visualStyle);
+		return NEW UpDownButtonRenderer (visualStyle, owner);
 	case kRangeSliderRenderer :
-		return NEW RangeSliderRenderer (visualStyle);
+		return NEW RangeSliderRenderer (visualStyle, owner);
 	case kScrollPickerRenderer :
-		return NEW ScrollPickerRenderer (visualStyle);
+		return NEW ScrollPickerRenderer (visualStyle, owner);
 	case kMenuBarRenderer :
-		return NEW MenuBarRenderer (visualStyle);
+		return NEW MenuBarRenderer (visualStyle, owner);
 	}
 
 	CCL_NOT_IMPL ("Renderer not found!")
@@ -845,7 +845,7 @@ tresult CCL_API ThemePainter::drawElement (IGraphics& graphics, RectRef rect, Th
 			index = image->getFrameIndex (isOn ? stateNamesOn[ThemeElements::kNormal] : stateNames[ThemeElements::kNormal]);
 
 		if(id == kTreeViewExpandButton || id == kTreeViewExpandButtonOn)
-			ImageResolutionSelector::draw (graphics, image, rect, ImageResolutionSelector::kAllowZoom, index);
+			ImageResolutionSelector::draw (graphics, image, rect, ImageResolutionSelector::kFitCover, index);
 		else
 		{
 			image->setCurrentFrame (index);
@@ -874,13 +874,16 @@ tresult CCL_API ThemePainter::drawElement (IGraphics& graphics, RectRef rect, Th
 tresult CCL_API ThemePainter::drawBestMatchingFrame (IGraphics& graphics, IImage* image, RectRef rect, const ImageMode* mode, ColorRef contextColor, tbool scaleAlways) const
 {
 	Image* drawable = unknown_cast<Image> (image);
-	ImageResolutionSelector s (drawable, rect, (scaleAlways != 0) ? ImageResolutionSelector::kAllowZoom : 0);
-	
-	if(drawable->getIsAdaptive () || drawable->getIsTemplate ())
+	ImageResolutionSelector s (drawable, rect, (scaleAlways != 0) ? ImageResolutionSelector::kFitCover : ImageResolutionSelector::kFitShrink);
+
+	if(s.bestImage)
+	{
+		// carry the template/adaptive flags over to the selected frame
+		s.bestImage->setIsTemplate (drawable->getIsTemplate ());
+		s.bestImage->setIsAdaptive (drawable->getIsAdaptive ());
 		image = ModifiedImageCache::instance ().lookup (s.bestImage, contextColor);
-	else
-		image = s.bestImage;
-	
+	}
+
 	graphics.drawImage (image, s.srcRect, s.dstRect, mode);
 	return kResultOk;
 }

@@ -145,6 +145,13 @@ void MetalMacWindowRenderTarget::onSize ()
 
 void MetalMacWindowRenderTarget::onRender ()
 {
+	auto presentIfVisibleAndOverdue = [this] ()
+	{
+		// the display link of a hidden window is paused, its drawables might not be recycled
+		if([[hostView window] occlusionState] & NSWindowOcclusionStateVisible)
+			presentIfOverdue ();
+	};
+
 	// according to Apple documentation, clipping of overlapping sibling views is not handled at all by Cocoa -> so we need to take care of this
 	NSView* parentView = [hostView superview];
 	if([parentView isKindOfClass:[CCL_ISOLATED (ContentView) class]])
@@ -193,10 +200,12 @@ void MetalMacWindowRenderTarget::onRender ()
 			}
 			MetalWindowRenderTarget::onRender ();
 			canvas->restore ();
+			presentIfVisibleAndOverdue ();
 			return;
 		}
 	}
 	MetalWindowRenderTarget::onRender ();
+	presentIfVisibleAndOverdue ();
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////

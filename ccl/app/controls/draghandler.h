@@ -60,6 +60,9 @@ public:
 	virtual bool prepare (const IUnknownList& items, IDragSession* session = nullptr); ///< adds items, builds sprite; returns true if objects were added
 	virtual void postProcessData () {} ///< called when data get's passed to an IDataTarget; a chance to finalize things that you don't want in the prepare phase (e.g. creating files)
 
+	void completeDataItems (const IUnknownList& items, IUnknown* context);
+	PROPERTY_BOOL (ignoreFolderLimit, IgnoreFolderLimit)
+
 	// Child DragHandler
 	PROPERTY_AUTO_POINTER (IDragHandler, childDragHandler, ChildDragHandler)
 	PROPERTY_OBJECT (Point, childOffset, ChildOffset) // if child dragHandler has a different view: offset from our view to the child's view
@@ -80,6 +83,7 @@ protected:
 	IView* view;
 	SpriteBuilder spriteBuilder;
 	UnknownList data;
+	bool folderFilesSkipped;
 	static bool inChildDragEnter;
 
 	void updateHelp ();
@@ -179,7 +183,7 @@ public:
 	PROPERTY_BOOL (blockSourceDragHandler, BlockSourceDragHandler)
 
 	// DragHandler
-	bool getHelp (CCL::IHelpInfoBuilder& helpInfo) override;
+	bool getHelp (IHelpInfoBuilder& helpInfo) override;
 	tbool CCL_API hasVisualFeedback () const override;
 	tbool CCL_API dragEnter (const DragEvent& event) override;
 	tbool CCL_API dragOver (const DragEvent& event) override;
@@ -244,13 +248,17 @@ inline void DragDataExtractor::construct (const IUnknownList& data, IDragSession
 		context = session->getSource ();
 
 		if((dragHandler = unknown_cast<TDragHandler> (session->getDragHandler ())))
+		{
 			dragHandler->retain ();
+			dragHandler->completeDataItems (data, context);
+		}
 	}
 
 	if(!dragHandler)
 	{
 		// create new handler and feed data
 		dragHandler = NEW TDragHandler;
+		dragHandler->setIgnoreFolderLimit (true);
 		dragHandler->addDataItems (data, context);
 	}
 	dragHandler->postProcessData ();
@@ -269,13 +277,17 @@ inline void DragDataExtractor::construct (const IUnknownList& data, IDragSession
 		context = session->getSource ();
 
 		if((dragHandler = unknown_cast<TDragHandler> (session->getDragHandler ())))
+		{
 			dragHandler->retain ();
+			dragHandler->completeDataItems (data, context);
+		}
 	}
 
 	if(!dragHandler)
 	{
 		// create new handler and feed data
 		dragHandler = NEW TDragHandler (0, arg);
+		dragHandler->setIgnoreFolderLimit (true);
 		dragHandler->addDataItems (data, context);
 	}
 	dragHandler->postProcessData ();

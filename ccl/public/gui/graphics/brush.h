@@ -104,6 +104,11 @@ public:
 		return *this;
 	}
 
+	bool isVisible () const
+	{
+		return color.isVisible () || gradient != nullptr;
+	}
+
 	bool isEqual (BrushRef other) const
 	{
 		return	type == other.type && 

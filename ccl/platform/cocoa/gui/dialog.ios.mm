@@ -440,14 +440,8 @@ void IOSDialog::updateSize ()
 	rect.setWidth (bounds.size.width);
 	rect.setHeight (bounds.size.height);
 
-	Point pos (bounds.origin.x, bounds.origin.y);
-
-	if(getStyle ().isCustomStyle (Styles::kWindowBehaviorPopupSelector))
-	{
-		CGRect screenRelativeFrame = [view convertRect:view.bounds toView:nil];
-		pos.x += screenRelativeFrame.origin.x;
-		pos.y += screenRelativeFrame.origin.y;
-	}
+	CGRect screenRelativeFrame = [view convertRect:view.bounds toView:nil];
+	Point pos (screenRelativeFrame.origin.x, screenRelativeFrame.origin.y);
 
 	rect.moveTo (pos);
 

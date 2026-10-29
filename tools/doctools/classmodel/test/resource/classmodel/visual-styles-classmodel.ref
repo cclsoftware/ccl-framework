@@ -39,7 +39,7 @@ BorderStyle
 
 Draws either the "background" image if availble, or the "backcolor".
 
-See also: [:ref:`Border <skin-elements-classmodel-class-Border>`] 
+See also: [:ref:`Border <skin-elements-classmodel-class-Border>`]
 
 **Attributes (10)**
 
@@ -84,17 +84,15 @@ When an image is used, an additonal background color "backcolor.on" or "backcolo
 When no image is specified, a rectangular frame in color "forecolor" can be drawn with option "border".
 For the content, a padding can be specified. The content can be an "icon", "title" or both.
 
-See also: [:ref:`Button <skin-elements-classmodel-class-Button>`] 
+See also: [:ref:`Button <skin-elements-classmodel-class-Button>`]
 
-**Attributes (60)**
+**Attributes (59)**
 
 * **animation.filmstrip** (*image*): an animation filmstrip could be used to show intermediate button states - the visualstyle is responisble to define the appropriate animiation triggers for the phase property
 * **backcolor.off** (*color*): background color drawn underneath button image when button is switched off (even when a colorParam is used)
 * **backcolor.on** (*color*): background color drawn underneath button image when button is switched on (overwritten by opaque colorParam color)
 * **backcolor.radius** (*metric*): radius for backcolor / forcolor
 * **backcolor.transparent** (*color*): background color drawn underneath button image when button is switched off (when colorParam color is transparent)
-* **buttonMinHeight** (*metric*): use minimal button height
-* **buttonMinWidth** (*metric*): use minimal button width
 * **colorize.icon** (*metric*): set to use "iconcolor" / "iconcolor.on" to colorize the icon (checkmark of CheckBox is always colorized!)
 * **fill.icon** (*metric*): scalable icons (shapes/svgs) are resized to fill out the button size (aspectratio is kept) value: ]0-1]
 * **icon** (*image*): fallback when no icon at the button is defined
@@ -113,6 +111,8 @@ See also: [:ref:`Button <skin-elements-classmodel-class-Button>`]
 * **left** (*image*): used instead of "background" image when button has option "left"
 * **lightadapt.icon** (*metric*): set to use "iconcolor" / "iconcolor.on" to modify the icon and adapt the luminance of dark/light pixels to the iconcolor
 * **middle** (*image*): used instead of "background" image when button has option "middle"
+* **minheight** (*metric*): use minimal button height
+* **minwidth** (*metric*): use minimal button width
 * **padding** (*metric*): padding for icon & title, used if one of the paddings for left, top, right, bottom is not specified
 * **padding.bottom** (*metric*): bottom padding for title and/or icon
 * **padding.left** (*metric*): left padding for title and/or icon
@@ -138,7 +138,6 @@ See also: [:ref:`Button <skin-elements-classmodel-class-Button>`]
 * **textcolor.transparent** (*color*): "textcolor.transparent" is used when "colorize.icon" is set and the current color from colorparam is transparent
 * **textcolor.transparentOn** (*color*): "textcolor.transparent" is used when "colorize.icon" is set, the parameter is on and the current color from colorparam is transparent
 * **textshiftdown** (*metric*): the text baseline will be offsetted by one pixel if the button is on
-* **useButtonMinSize** (*metric*): use minimal button size (uses theme size as default)
 
 
 Inherited from [:ref:`BasicStyle <visual-styles-classmodel-class-BasicStyle>`]
@@ -168,9 +167,9 @@ CheckBoxStyle
 
 Draws an image that shows the parameter state (typically a checkmark) and an additional title besides the image.
 
-See also: [:ref:`CheckBox <skin-elements-classmodel-class-CheckBox>`] 
+See also: [:ref:`CheckBox <skin-elements-classmodel-class-CheckBox>`]
 
-**Attributes (63)**
+**Attributes (62)**
 
 * **buttonstyle** (*metric*): if this is set ("1"), the control is drawn like a button
 * **checkboxrightside** (*metric*): if this is set ("1"), the checkbox is drawn algined to the right side of the view rect
@@ -184,8 +183,6 @@ Inherited from [:ref:`ButtonStyle <visual-styles-classmodel-class-ButtonStyle>`]
 * **backcolor.on** (*color*): background color drawn underneath button image when button is switched on (overwritten by opaque colorParam color)
 * **backcolor.radius** (*metric*): radius for backcolor / forcolor
 * **backcolor.transparent** (*color*): background color drawn underneath button image when button is switched off (when colorParam color is transparent)
-* **buttonMinHeight** (*metric*): use minimal button height
-* **buttonMinWidth** (*metric*): use minimal button width
 * **colorize.icon** (*metric*): set to use "iconcolor" / "iconcolor.on" to colorize the icon (checkmark of CheckBox is always colorized!)
 * **fill.icon** (*metric*): scalable icons (shapes/svgs) are resized to fill out the button size (aspectratio is kept) value: ]0-1]
 * **icon** (*image*): fallback when no icon at the button is defined
@@ -204,6 +201,8 @@ Inherited from [:ref:`ButtonStyle <visual-styles-classmodel-class-ButtonStyle>`]
 * **left** (*image*): used instead of "background" image when button has option "left"
 * **lightadapt.icon** (*metric*): set to use "iconcolor" / "iconcolor.on" to modify the icon and adapt the luminance of dark/light pixels to the iconcolor
 * **middle** (*image*): used instead of "background" image when button has option "middle"
+* **minheight** (*metric*): use minimal button height
+* **minwidth** (*metric*): use minimal button width
 * **padding** (*metric*): padding for icon & title, used if one of the paddings for left, top, right, bottom is not specified
 * **padding.bottom** (*metric*): bottom padding for title and/or icon
 * **padding.left** (*metric*): left padding for title and/or icon
@@ -229,7 +228,6 @@ Inherited from [:ref:`ButtonStyle <visual-styles-classmodel-class-ButtonStyle>`]
 * **textcolor.transparent** (*color*): "textcolor.transparent" is used when "colorize.icon" is set and the current color from colorparam is transparent
 * **textcolor.transparentOn** (*color*): "textcolor.transparent" is used when "colorize.icon" is set, the parameter is on and the current color from colorparam is transparent
 * **textshiftdown** (*metric*): the text baseline will be offsetted by one pixel if the button is on
-* **useButtonMinSize** (*metric*): use minimal button size (uses theme size as default)
 
 
 Inherited from [:ref:`BasicStyle <visual-styles-classmodel-class-BasicStyle>`]
@@ -264,7 +262,7 @@ When no image is specified, it is filled in "backcolor, and a rectangular frame 
 
 The "button" image is drawn at the right. The remaining space shows the text field to edit the parameter value with an optional padding.
 
-See also: [:ref:`ComboBox <skin-elements-classmodel-class-ComboBox>`] 
+See also: [:ref:`ComboBox <skin-elements-classmodel-class-ComboBox>`]
 
 **Attributes (15)**
 
@@ -307,7 +305,7 @@ A dialog group draws a background image and optional title.
 The style contains 2 images "Image" and "SecondaryImage", that can be selected via the option "primary" or "secondary".
 If the DialogGroup has a title, it is drawn at the top edge.
 
-See also: [:ref:`DialogGroup <skin-elements-classmodel-class-DialogGroup>`] 
+See also: [:ref:`DialogGroup <skin-elements-classmodel-class-DialogGroup>`]
 
 **Attributes (14)**
 
@@ -344,7 +342,7 @@ DividerStyle
 
 A divider draws a background image, and optionally a handle centered on top.
 
-See also: [:ref:`Divider <skin-elements-classmodel-class-Divider>`] 
+See also: [:ref:`Divider <skin-elements-classmodel-class-Divider>`]
 
 **Attributes (13)**
 
@@ -411,7 +409,7 @@ EditBoxStyle
 
 An EditBox is drawn just like a TextBox.
 
-See also: [:ref:`EditBox <skin-elements-classmodel-class-EditBox>`] 
+See also: [:ref:`EditBox <skin-elements-classmodel-class-EditBox>`]
 
 **Attributes (29)**
 
@@ -502,7 +500,7 @@ Inherited from [:ref:`BasicStyle <visual-styles-classmodel-class-BasicStyle>`]
 ImageViewStyle
 ==============
 
-See also: [:ref:`ImageView <skin-elements-classmodel-class-ImageView>`] 
+See also: [:ref:`ImageView <skin-elements-classmodel-class-ImageView>`]
 
 **Attributes (18)**
 
@@ -599,7 +597,7 @@ Inherited from [:ref:`BasicStyle <visual-styles-classmodel-class-BasicStyle>`]
 KnobStyle
 =========
 
-See also: [:ref:`Knob <skin-elements-classmodel-class-Knob>`] 
+See also: [:ref:`Knob <skin-elements-classmodel-class-Knob>`]
 
 **Attributes (38)**
 
@@ -660,7 +658,7 @@ LabelStyle
 
 A label draws it's title using the style's "textfont", "textcolor", and "textalignment" (for single line text) or "textoptions" (for multiline text).
 
-See also: [:ref:`Label <skin-elements-classmodel-class-Label>`] 
+See also: [:ref:`Label <skin-elements-classmodel-class-Label>`]
 
 **Attributes (9)**
 
@@ -827,7 +825,7 @@ PageControlStyle
 
 A PageControl draws a row of dots, with one dot per scroll page.
 
-See also: [:ref:`PageControl <skin-elements-classmodel-class-PageControl>`] 
+See also: [:ref:`PageControl <skin-elements-classmodel-class-PageControl>`]
 
 **Attributes (11)**
 
@@ -891,7 +889,7 @@ ProgressBarStyle
 
 A Progres bar draws a bar that reflects the parameter value over a background.
 
-See also: [:ref:`ProgressBar <skin-elements-classmodel-class-ProgressBar>`] 
+See also: [:ref:`ProgressBar <skin-elements-classmodel-class-ProgressBar>`]
 
 **Attributes (11)**
 
@@ -925,7 +923,7 @@ RangeSliderStyle
 
 A Range Slider draws two handle moving over a background.
 
-See also: [:ref:`RangeSlider <skin-elements-classmodel-class-RangeSlider>`] 
+See also: [:ref:`RangeSlider <skin-elements-classmodel-class-RangeSlider>`]
 
 **Attributes (13)**
 
@@ -994,7 +992,7 @@ A Scrollbar indicates the scrolling position of a scroll view.
 
 A scroll bar has a background, up/down buttons (vertical) and a handle (thumb).
 
-See also: [:ref:`ScrollBar <skin-elements-classmodel-class-ScrollBar>`] 
+See also: [:ref:`ScrollBar <skin-elements-classmodel-class-ScrollBar>`]
 
 **Attributes (22)**
 
@@ -1037,7 +1035,7 @@ Inherited from [:ref:`BasicStyle <visual-styles-classmodel-class-BasicStyle>`]
 ScrollButtonStyle
 =================
 
-See also: [:ref:`ScrollButton <skin-elements-classmodel-class-ScrollButton>`] 
+See also: [:ref:`ScrollButton <skin-elements-classmodel-class-ScrollButton>`]
 
 **Attributes (17)**
 
@@ -1191,7 +1189,7 @@ An image "states" can be used to show a different frame for (integer) each param
 The "button" image is drawn at the right (can be changed with option "leadingbutton").
 The remaining space shows the text representation of the parameter, with an optional "padding".
 
-See also: [:ref:`SelectBox <skin-elements-classmodel-class-SelectBox>`] 
+See also: [:ref:`SelectBox <skin-elements-classmodel-class-SelectBox>`]
 
 **Attributes (24)**
 
@@ -1238,7 +1236,7 @@ SliderStyle
 
 A Slider draws handle moving over a background.
 
-See also: [:ref:`Slider <skin-elements-classmodel-class-Slider>`] 
+See also: [:ref:`Slider <skin-elements-classmodel-class-Slider>`]
 
 **Attributes (29)**
 
@@ -1288,7 +1286,7 @@ Inherited from [:ref:`BasicStyle <visual-styles-classmodel-class-BasicStyle>`]
 TabViewStyle
 ============
 
-See also: [:ref:`TabView <skin-elements-classmodel-class-TabView>`] 
+See also: [:ref:`TabView <skin-elements-classmodel-class-TabView>`]
 
 **Attributes (21)**
 
@@ -1338,7 +1336,7 @@ When no image is specified, it is filled in "backcolor, and a rectangular frame 
 
 The text is drawn with an optional "padding".
 
-See also: [:ref:`TextBox <skin-elements-classmodel-class-TextBox>`] 
+See also: [:ref:`TextBox <skin-elements-classmodel-class-TextBox>`]
 
 **Attributes (21)**
 
@@ -1381,7 +1379,7 @@ Inherited from [:ref:`BasicStyle <visual-styles-classmodel-class-BasicStyle>`]
 ToolButtonStyle
 ===============
 
-See also: [:ref:`ToolButton <skin-elements-classmodel-class-ToolButton>`] 
+See also: [:ref:`ToolButton <skin-elements-classmodel-class-ToolButton>`]
 
 **Attributes (14)**
 
@@ -1481,7 +1479,7 @@ Inherited from [:ref:`BasicStyle <visual-styles-classmodel-class-BasicStyle>`]
 TriVectorPadStyle
 =================
 
-See also: [:ref:`TriVectorPad <skin-elements-classmodel-class-TriVectorPad>`] 
+See also: [:ref:`TriVectorPad <skin-elements-classmodel-class-TriVectorPad>`]
 
 **Attributes (23)**
 
@@ -1525,7 +1523,7 @@ Inherited from [:ref:`BasicStyle <visual-styles-classmodel-class-BasicStyle>`]
 UpDownButtonStyle
 =================
 
-See also: [:ref:`UpDownButton <skin-elements-classmodel-class-UpDownButton>`] 
+See also: [:ref:`UpDownButton <skin-elements-classmodel-class-UpDownButton>`]
 
 **Attributes (9)**
 
@@ -1559,7 +1557,7 @@ Displays a value as a horizontal or verical bar.
 
 If no image is specified, "forecolor" and "backcolor" are used to draw the bar and the background as a filled rectangle.
 
-See also: [:ref:`ValueBar <skin-elements-classmodel-class-ValueBar>`] 
+See also: [:ref:`ValueBar <skin-elements-classmodel-class-ValueBar>`]
 
 **Attributes (14)**
 
@@ -1596,7 +1594,7 @@ ValueBoxStyle
 
 Drawn like an EditBox.
 
-See also: [:ref:`ValueBox <skin-elements-classmodel-class-ValueBox>`] 
+See also: [:ref:`ValueBox <skin-elements-classmodel-class-ValueBox>`]
 
 **Attributes (29)**
 
@@ -1652,7 +1650,7 @@ Inherited from [:ref:`BasicStyle <visual-styles-classmodel-class-BasicStyle>`]
 VectorPadStyle
 ==============
 
-See also: [:ref:`VectorPad <skin-elements-classmodel-class-VectorPad>`] 
+See also: [:ref:`VectorPad <skin-elements-classmodel-class-VectorPad>`]
 
 **Attributes (17)**
 

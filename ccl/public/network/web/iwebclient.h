@@ -43,7 +43,7 @@ interface IWebClient: IUnknown
 	virtual void CCL_API setCredentials (IWebCredentials* credentials) = 0;
 
 	/** Connect to given host. */
-	virtual tresult CCL_API connect (StringRef hostname) = 0;
+	virtual tresult CCL_API connect (StringRef hostname, IProgressNotify* progress = nullptr) = 0;
 
 	/** Disconnect from host. */
 	virtual tresult CCL_API disconnect () = 0;

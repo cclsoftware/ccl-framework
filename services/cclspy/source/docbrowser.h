@@ -49,7 +49,6 @@ public:
 
 	// Component
 	void CCL_API notify (ISubject* subject, CCL::MessageRef msg) override;
-	CCL::tbool CCL_API paramChanged (CCL::IParameter* param) override;
 
 protected:
 	CCL::ClassModelBrowser* classBrowser;
@@ -59,8 +58,6 @@ protected:
 	bool scanDone;
 
 	void scanModels ();
-	void saveModels ();
-	void scanCode ();
 
 	// IObject
 	CCL::tbool CCL_API getProperty (CCL::Variant& var, MemberID propertyId) const override;

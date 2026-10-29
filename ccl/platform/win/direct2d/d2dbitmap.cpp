@@ -458,10 +458,10 @@ tresult D2DBitmap::draw (NativeGraphicsDevice& device, RectFRef src, RectFRef ds
 	if(mode != nullptr)
 	{
 		opacity = mode->getAlphaF ();
-		if(mode->getInterpolationMode () == ImageMode::kInterpolationHighQuality)
+		if(mode->getInterpolationMode () == kImageInterpolationHighQuality)
 			interpolationMode = D2D1_INTERPOLATION_MODE_HIGH_QUALITY_CUBIC;	
 		
-		else if(mode->getInterpolationMode () == ImageMode::kInterpolationPixelQuality)
+		else if(mode->getInterpolationMode () == kImageInterpolationPixelQuality)
 			interpolationMode = D2D1_INTERPOLATION_MODE_NEAREST_NEIGHBOR;
 	}
 

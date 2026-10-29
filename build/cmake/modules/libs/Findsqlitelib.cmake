@@ -85,3 +85,13 @@ endif ()
 
 set (SQLITE_LIBRARY sqlitelib)
 
+if (sqlite_lib_sourcedir AND EXISTS "${sqlite_lib_sourcedir}/sqlite_cfg.h")
+    file (STRINGS "${sqlite_lib_sourcedir}/sqlite_cfg.h" line REGEX "^#define PACKAGE_VERSION \".*\"$")
+	string (REGEX REPLACE "^#define PACKAGE_VERSION \"(.*)\"$" "\\1" sqlitelib_VERSION "${line}")
+endif ()
+
+include (FindPackageHandleStandardArgs)
+find_package_handle_standard_args (sqlitelib
+	REQUIRED_VARS SQLITE_LIBRARY
+	VERSION_VAR sqlitelib_VERSION
+)

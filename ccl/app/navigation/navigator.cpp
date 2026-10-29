@@ -440,7 +440,7 @@ void Navigator::notify (ISubject* subject, MessageRef msg)
 	}
 	else if(msg == "updateCommandLinks")
 		updateCommandLinks ();
-	else if(msg == CCL::Signals::kTabViewCanReorder)
+	else if(msg == Signals::kTabViewCanReorder)
 	{
 		if(msg.getArgCount () >= 4 && msg[0] == "commandLinks")
 		{

@@ -49,7 +49,7 @@ namespace Styles
 
 //************************************************************************************************
 // PopupBox
-/** Shows a temporary pop-up view when clicked. 
+/** Shows a temporary popup view when clicked.
 On a mouse click, a PopupBox opens a view in a temporary modal popup window.
 The view is created from the skin using the specified "form.name". The "popup" attribute 
 specifies the alignment of the popup menu relative to the PopupBox. The popup will close when 
@@ -89,6 +89,7 @@ public:
 
 	// Control
 	StringRef getHelpIdentifier () const override;
+	View* findFocusView (const MouseEvent& event) override;
 	View* enterMouse (const MouseEvent& event, View* currentMouseView) override;
 	bool onMouseEnter (const MouseEvent& event) override;
 	bool onMouseMove (const MouseEvent& event) override;

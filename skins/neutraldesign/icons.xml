@@ -7,13 +7,13 @@
 				<ShapeColorMapping name="rgb(235,235,235)" color="@Main.IconColor"/>
 			</ShapeImage>
 			<ShapeImage name="mouseover" url="images/svgs/StandardPlusIcon.svg" template="true">
-				<ShapeColorMapping name="rgb(235,235,235)" color="@Main.LabelColor.Primary"/>
+				<ShapeColorMapping name="rgb(235,235,235)" color="@Main.LabelColorPrimary"/>
 			</ShapeImage>
 			<ShapeImage name="pressed" url="images/svgs/StandardPlusIcon.svg" template="true">
-				<ShapeColorMapping name="rgb(235,235,235)" color="@Main.LabelColor.Primary"/>
+				<ShapeColorMapping name="rgb(235,235,235)" color="@Main.LabelColorPrimary"/>
 			</ShapeImage>
 			<ShapeImage name="disabled" url="images/svgs/StandardPlusIcon.svg" template="true">
-				<ShapeColorMapping name="rgb(235,235,235)" color="@Main.LabelColor.Disabled"/>
+				<ShapeColorMapping name="rgb(235,235,235)" color="@Main.LabelColorDisabled"/>
 			</ShapeImage>
 		</Image>
 		
@@ -22,13 +22,13 @@
 				<ShapeColorMapping name="rgb(235,235,235)" color="@Main.IconColor"/>
 			</ShapeImage>
 			<ShapeImage name="mouseover" url="images/svgs/StandardMinusIcon.svg" template="true">
-				<ShapeColorMapping name="rgb(235,235,235)" color="@Main.LabelColor.Primary"/>
+				<ShapeColorMapping name="rgb(235,235,235)" color="@Main.LabelColorPrimary"/>
 			</ShapeImage>
 			<ShapeImage name="pressed" url="images/svgs/StandardMinusIcon.svg" template="true">
-				<ShapeColorMapping name="rgb(235,235,235)" color="@Main.LabelColor.Primary"/>
+				<ShapeColorMapping name="rgb(235,235,235)" color="@Main.LabelColorPrimary"/>
 			</ShapeImage>
 			<ShapeImage name="disabled" url="images/svgs/StandardMinusIcon.svg" template="true">
-				<ShapeColorMapping name="rgb(235,235,235)" color="@Main.LabelColor.Disabled"/>
+				<ShapeColorMapping name="rgb(235,235,235)" color="@Main.LabelColorDisabled"/>
 			</ShapeImage>
 		</Image>
 		
@@ -37,10 +37,10 @@
 				<ShapeColorMapping name="rgb(235,235,235)" color="@Main.IconColor"/>
 			</ShapeImage>
 			<ShapeImage name="mouseover" url="images/svgs/StandardFolderIcon.svg" template="true">
-				<ShapeColorMapping name="rgb(235,235,235)" color="@Main.LabelColor.Primary"/>
+				<ShapeColorMapping name="rgb(235,235,235)" color="@Main.LabelColorPrimary"/>
 			</ShapeImage>
 			<ShapeImage name="pressed" url="images/svgs/StandardFolderIcon.svg" template="true">
-				<ShapeColorMapping name="rgb(235,235,235)" color="@Main.LabelColor.Primary"/>
+				<ShapeColorMapping name="rgb(235,235,235)" color="@Main.LabelColorPrimary"/>
 			</ShapeImage>
 		</Image>
 		
@@ -49,10 +49,10 @@
 				<ShapeColorMapping name="rgb(235,235,235)" color="@Main.IconColor"/>
 			</ShapeImage>
 			<ShapeImage name="mouseover" url="images/svgs/StandardMoreMenuIcon.svg" template="true">
-				<ShapeColorMapping name="rgb(235,235,235)" color="@Main.LabelColor.Primary"/>
+				<ShapeColorMapping name="rgb(235,235,235)" color="@Main.LabelColorPrimary"/>
 			</ShapeImage>
 			<ShapeImage name="pressed" url="images/svgs/StandardMoreMenuIcon.svg" template="true">
-				<ShapeColorMapping name="rgb(235,235,235)" color="@Main.LabelColor.Primary"/>
+				<ShapeColorMapping name="rgb(235,235,235)" color="@Main.LabelColorPrimary"/>
 			</ShapeImage>
 		</Image>
 		
@@ -61,13 +61,13 @@
 				<ShapeColorMapping name="rgb(235,235,235)" color="@Main.IconColor"/>
 			</ShapeImage>
 			<ShapeImage name="mouseover" url="images/svgs/StandardHomeIcon.svg" template="true">
-				<ShapeColorMapping name="rgb(235,235,235)" color="@Main.LabelColor.Primary"/>
+				<ShapeColorMapping name="rgb(235,235,235)" color="@Main.LabelColorPrimary"/>
 			</ShapeImage>
 			<ShapeImage name="pressed" url="images/svgs/StandardHomeIcon.svg" template="true">
-				<ShapeColorMapping name="rgb(235,235,235)" color="@Main.LabelColor.Primary"/>
+				<ShapeColorMapping name="rgb(235,235,235)" color="@Main.LabelColorPrimary"/>
 			</ShapeImage>
 			<ShapeImage name="disabled"	url="images/svgs/StandardHomeIcon.svg" template="true">
-				<ShapeColorMapping name="rgb(235,235,235)" color="@Main.IconColor.Disabled"/>
+				<ShapeColorMapping name="rgb(235,235,235)" color="@Main.IconColorDisabled"/>
 			</ShapeImage>
 		</Image>
 		
@@ -76,10 +76,10 @@
 				<ShapeColorMapping name="rgb(0,173,248)" color="@Main.IconColor"/>
 			</ShapeImage>
 			<ShapeImage name="mouseover" url="images/svgs/StandardArrowLeft.svg" template="true">
-				<ShapeColorMapping name="rgb(0,173,248)" color="@Main.LabelColor.Primary"/>
+				<ShapeColorMapping name="rgb(0,173,248)" color="@Main.LabelColorPrimary"/>
 			</ShapeImage>
 			<ShapeImage name="pressed" url="images/svgs/StandardArrowLeft.svg" template="true">
-				<ShapeColorMapping name="rgb(0,173,248)" color="@Main.LabelColor.Primary.NoInvert"/>
+				<ShapeColorMapping name="rgb(0,173,248)" color="@Main.LabelColorPrimaryNoInvert"/>
 			</ShapeImage>
 		</Image>
 		
@@ -88,10 +88,10 @@
 				<ShapeColorMapping name="rgb(0,173,248)" color="@Main.IconColor"/>
 			</ShapeImage>
 			<ShapeImage name="mouseover" url="images/svgs/StandardArrowRight.svg" template="true">
-				<ShapeColorMapping name="rgb(0,173,248)" color="@Main.LabelColor.Primary"/>
+				<ShapeColorMapping name="rgb(0,173,248)" color="@Main.LabelColorPrimary"/>
 			</ShapeImage>
 			<ShapeImage name="pressed" url="images/svgs/StandardArrowRight.svg" template="true">
-				<ShapeColorMapping name="rgb(0,173,248)" color="@Main.LabelColor.Primary.NoInvert"/>
+				<ShapeColorMapping name="rgb(0,173,248)" color="@Main.LabelColorPrimaryNoInvert"/>
 			</ShapeImage>
 		</Image>
 		
@@ -100,10 +100,10 @@
 				<ShapeColorMapping name="rgb(0,173,248)" color="@Main.IconColor"/>
 			</ShapeImage>
 			<ShapeImage name="mouseover" url="images/svgs/StandardArrowDoubleLeft.svg" template="true">
-				<ShapeColorMapping name="rgb(0,173,248)" color="@Main.LabelColor.Primary"/>
+				<ShapeColorMapping name="rgb(0,173,248)" color="@Main.LabelColorPrimary"/>
 			</ShapeImage>
 			<ShapeImage name="pressed" url="images/svgs/StandardArrowDoubleLeft.svg" template="true">
-				<ShapeColorMapping name="rgb(0,173,248)" color="@Main.LabelColor.Primary.NoInvert"/>
+				<ShapeColorMapping name="rgb(0,173,248)" color="@Main.LabelColorPrimaryNoInvert"/>
 			</ShapeImage>
 		</Image>
 		
@@ -112,10 +112,10 @@
 				<ShapeColorMapping name="rgb(0,173,248)" color="@Main.IconColor"/>
 			</ShapeImage>
 			<ShapeImage name="mouseover" url="images/svgs/StandardArrowDoubleRight.svg" template="true">
-				<ShapeColorMapping name="rgb(0,173,248)" color="@Main.LabelColor.Primary"/>
+				<ShapeColorMapping name="rgb(0,173,248)" color="@Main.LabelColorPrimary"/>
 			</ShapeImage>
 			<ShapeImage name="pressed" url="images/svgs/StandardArrowDoubleRight.svg" template="true">
-				<ShapeColorMapping name="rgb(0,173,248)" color="@Main.LabelColor.Primary.NoInvert"/>
+				<ShapeColorMapping name="rgb(0,173,248)" color="@Main.LabelColorPrimaryNoInvert"/>
 			</ShapeImage>
 		</Image>
 		
@@ -124,13 +124,13 @@
 				<ShapeColorMapping name="rgb(0,173,248)" color="@Main.IconColor"/>
 			</ShapeImage>
 			<ShapeImage name="mouseover" url="images/svgs/StandardFolderArrowRight.svg" template="true">
-				<ShapeColorMapping name="rgb(0,173,248)" color="@Main.LabelColor.Primary"/>
+				<ShapeColorMapping name="rgb(0,173,248)" color="@Main.LabelColorPrimary"/>
 			</ShapeImage>
 			<ShapeImage name="normalOn" url="images/svgs/StandardFolderArrowDown.svg" template="true">
 				<ShapeColorMapping name="rgb(0,173,248)" color="@Main.IconColor"/>
 			</ShapeImage>
 			<ShapeImage name="mouseoverOn" url="images/svgs/StandardFolderArrowDown.svg" template="true">
-				<ShapeColorMapping name="rgb(0,173,248)" color="@Main.LabelColor.Primary"/>
+				<ShapeColorMapping name="rgb(0,173,248)" color="@Main.LabelColorPrimary"/>
 			</ShapeImage>
 		</Image>
 		
@@ -139,13 +139,13 @@
 				<ShapeColorMapping name="rgb(0,173,248)" color="@Main.IconColor"/>
 			</ShapeImage>
 			<ShapeImage name="mouseoverOn" url="images/svgs/StandardFolderArrowUp.svg" template="true">
-				<ShapeColorMapping name="rgb(0,173,248)" color="@Main.LabelColor.Primary"/>
+				<ShapeColorMapping name="rgb(0,173,248)" color="@Main.LabelColorPrimary"/>
 			</ShapeImage>
 			<ShapeImage name="normal" url="images/svgs/StandardFolderArrowDown.svg" template="true">
 				<ShapeColorMapping name="rgb(0,173,248)" color="@Main.IconColor"/>
 			</ShapeImage>
 			<ShapeImage name="mouseover" url="images/svgs/StandardFolderArrowDown.svg" template="true">
-				<ShapeColorMapping name="rgb(0,173,248)" color="@Main.LabelColor.Primary"/>
+				<ShapeColorMapping name="rgb(0,173,248)" color="@Main.LabelColorPrimary"/>
 			</ShapeImage>
 		</Image>
 		
@@ -154,16 +154,30 @@
 				<ShapeColorMapping name="rgb(235,235,235)" color="@Main.IconColor"/>
 			</ShapeImage>
 			<ShapeImage name="mouseover" url="images/svgs/StandardWrenchIcon.svg" template="true">
-				<ShapeColorMapping name="rgb(235,235,235)" color="@Main.LabelColor.Primary"/>
+				<ShapeColorMapping name="rgb(235,235,235)" color="@Main.LabelColorPrimary"/>
 			</ShapeImage>
 			<ShapeImage name="pressed" url="images/svgs/StandardWrenchIcon.svg" template="true">
-				<ShapeColorMapping name="rgb(235,235,235)" color="@Main.LabelColor.Primary.NoInvert"/>
+				<ShapeColorMapping name="rgb(235,235,235)" color="@Main.LabelColorPrimaryNoInvert"/>
 			</ShapeImage>
 			<ShapeImage name="disabled" url="images/svgs/StandardWrenchIcon.svg" template="true">
-				<ShapeColorMapping name="rgb(235,235,235)" color="@Main.IconColor.Disabled"/>
+				<ShapeColorMapping name="rgb(235,235,235)" color="@Main.IconColorDisabled"/>
 			</ShapeImage>
 		</Image>
-		
+
+		<Image name="RefreshIcon" template="true">
+			<ShapeImage name="normal" url="images/svgs/StandardRefreshIcon.svg" template="true">
+				<ShapeColorMapping name="rgb(235,235,235)" color="@Main.IconColor"/>
+			</ShapeImage>
+			<ShapeImage name="mouseover" url="images/svgs/StandardRefreshIcon.svg" template="true">
+				<ShapeColorMapping name="rgb(235,235,235)" color="@Main.LabelColorPrimary"/>
+			</ShapeImage>
+			<ShapeImage name="pressed" url="images/svgs/StandardRefreshIcon.svg" template="true">
+				<ShapeColorMapping name="rgb(235,235,235)" color="@Main.LabelColorPrimary"/>
+			</ShapeImage>
+			<ShapeImage name="disabled"	url="images/svgs/StandardRefreshIcon.svg" template="true">
+				<ShapeColorMapping name="rgb(235,235,235)" color="@Main.IconColorDisabled"/>
+			</ShapeImage>
+		</Image>
 	</Resources>
 	
 </Skin>

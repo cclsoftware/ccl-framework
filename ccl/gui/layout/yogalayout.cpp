@@ -261,15 +261,16 @@ void YogaLayoutItem::onChildSized (View* childView, const Point& delta)
 		
 		child->setHasNewLayout (true);
 		
-		// reset node width/height
+		// reset node width/height so it gets re-measured on next layout; also needed for hfit
+		// nodes, whose flexItemData is never isAuto() (see FlexLayoutItem::initialize())
 		bool isAttachedToExternalLayout = getView ()->isAttached () && isRoot ();
 		bool hfit = getView ()->getSizeMode () & IView::kHFitSize;
 		bool vfit = getView ()->getSizeMode () & IView::kVFitSize;
 
-		if((!isAttachedToExternalLayout || hfit) && flexItemData.width.isAuto ())
+		if(hfit || (!isAttachedToExternalLayout && flexItemData.width.isAuto ()))
 			YGNodeStyleSetWidthAuto (node);
-	
-		if((!isAttachedToExternalLayout || vfit) && flexItemData.height.isAuto ())
+
+		if(vfit || (!isAttachedToExternalLayout && flexItemData.height.isAuto ()))
 			YGNodeStyleSetHeightAuto (node);
 
 		YogaNode::setHasNewLayout (true);

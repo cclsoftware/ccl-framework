@@ -85,7 +85,7 @@ public:
 
 	DECLARE_STYLEDEF (commonStyles)
 	DECLARE_STYLEDEF (resizeStyles)
-	DECLARE_STYLEDEF (propertyNames)
+	DECLARE_STYLEDEF (attributeNames)
 	DECLARE_METHOD_NAMES (View)
 
 	//////////////////////////////////////////////////////////////////////////////////////////////
@@ -142,7 +142,9 @@ public:
 	float CCL_API getZoomFactor () const override;							///< IView
 
 	int getWidth () const;
+	void setWidth (int newWidth);
 	int getHeight () const;
+	void setHeight (int newHeight);
 
 	void setPosition (const Point& pos);
 	Point& getPosition (Point& pos) const;
@@ -241,7 +243,7 @@ public:
 	//////////////////////////////////////////////////////////////////////////////////////////////
 
 	virtual bool isEnabled () const;
-	void enable (bool state);
+	virtual void enable (bool state);
 
 	virtual bool onMouseDown (const MouseEvent& event);
 	virtual bool onMouseUp (const MouseEvent& event);
@@ -256,7 +258,7 @@ public:
 	virtual bool onContextMenu (const ContextMenuEvent& event);
 
 	int getMouseState () const;
-	bool setMouseState (int state);
+	virtual bool setMouseState (int state, bool invalidate = true);
 	
 	PROPERTY_FLAG (mouseState, kMouseDown, isMouseDown)
 	PROPERTY_FLAG (mouseState, kMouseOver, isMouseOver)
@@ -305,6 +307,10 @@ public:
 
 	void setAccessibilityEnabled (bool state);
 	bool isAccessibilityEnabled () const;
+
+	void setAccessibilityTitle (StringRef title);
+	StringRef getAccessibilityTitle () const;
+
 	virtual AccessibilityProvider* getAccessibilityProvider ();
 	virtual AccessibilityProvider* getParentAccessibilityProvider ();
 
@@ -325,7 +331,7 @@ public:
 
 	virtual View* enterMouse (const MouseEvent& event, View* currentMouseView);	///< internal!
 	View* dragEnter (const DragEvent& event);			///< internal!
-	View* findFocusView (const MouseEvent& event);		///< internal!
+	virtual View* findFocusView (const MouseEvent& event);	///< internal!
 	View* findTooltipView (const MouseEvent& event);	///< internal!
 	bool tryMouseHandler (const MouseEvent& event);		///< internal!
 
@@ -339,9 +345,10 @@ public:
 
 	// Object
 	void CCL_API addObserver (IObserver* observer) override;
+	void CCL_API notify (ISubject* subject, MessageRef msg) override;
 
 	#if DEBUG
-	void log (const char* indent = nullptr, int direction = 0);   // 1 childs, -1 parent, 0 just this
+	void log (CStringPtr indent = nullptr, int direction = 0);   // 1 childs, -1 parent, 0 just this
 	#endif
 
 	static Theme& getDefaultTheme ();
@@ -349,6 +356,7 @@ public:
 
 	struct StyleModifier;
 
+	DECLARE_STRINGID_MEMBER (kCheckFitSize)
 	CLASS_INTERFACE3 (IView, IViewChildren, IGraphicsLayerContent, Object)
 
 protected:
@@ -392,6 +400,7 @@ protected:
 	String name;
 	String title;
 	String tooltip;
+	String accessibilityTitle;
 	StyleFlags style;
 	int sizeMode;
 	int mouseState;
@@ -425,6 +434,7 @@ protected:
 
 	virtual void passDownSizeLimits ();
 	void checkFitSize ();
+	void deferCheckFitSize ();
 	void checkInvalidate (const Point& delta);
 	void propertyChanged (StringID propertyId);
 	IGraphicsLayer* addGraphicsSublayer (IUnknown* content);
@@ -563,31 +573,33 @@ template <class T> T* GetViewInterfaceUpwards (View* view) { return (T*) GetView
 // View inline
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-inline View* View::getParent () const					{ return parent; }
-template <class T> T* View::getParent () const			{ return (T*) getParent (ccl_typeid<T> ());}
-inline Iterator* View::newIterator () const				{ return views.newIterator (); }
-inline View* View::getFirst () const					{ return (View*)views.getFirst (); }
-inline View* View::getLast () const						{ return (View*)views.getLast (); }
-inline int View::index (View* view)	const				{ return views.index(view); }
-inline View* View::getChild (int index)                 { return (View*)views.at (index); }
-inline int View::getWidth () const						{ return size.getWidth (); }
-inline int View::getHeight () const						{ return size.getHeight (); }
-inline int View::getSizeMode () const					{ return sizeMode; }
-inline void View::setSizeMode (int flags)				{ sizeMode = flags; }
-inline StringRef View::getName () const					{ return name; }
-inline StringRef View::getTitle () const				{ return title; }
-inline StyleRef View::getStyle () const					{ return style; }
-inline bool View::hasVisualStyle () const				{ return visualStyle != nullptr; }
-inline VisualStyle* View::getVisualStyleDirect () const { return visualStyle; }
-inline void View::setTooltip (StringRef _tooltip)		{ tooltip = _tooltip; }
-inline StringRef View::getTooltip () const				{ return tooltip; }
-inline bool View::isEnabled () const					{ return (privateFlags & kDisabled) == 0; }
-inline void View::enable (bool state)					{ if(state) privateFlags &= ~kDisabled; else privateFlags |= kDisabled; }
-inline bool View::isResizing () const					{ return (privateFlags & kResizing) != 0; }
-inline bool View::isSizeModeDisabled () const			{ return (sizeMode & kAttachDisabled) != 0; }
-inline bool View::isLayerBackingEnabled () const		{ return (privateFlags & kLayerBacking) != 0; }
-inline IGraphicsLayer* View::getGraphicsLayer () const	{ return graphicsLayer; }
-inline bool View::isAccessibilityEnabled () const		{ return (privateFlags & kAccessible) != 0; }
+inline View* View::getParent () const						{ return parent; }
+template <class T> T* View::getParent () const				{ return (T*) getParent (ccl_typeid<T> ());}
+inline Iterator* View::newIterator () const					{ return views.newIterator (); }
+inline View* View::getFirst () const						{ return (View*)views.getFirst (); }
+inline View* View::getLast () const							{ return (View*)views.getLast (); }
+inline int View::index (View* view)	const					{ return views.index(view); }
+inline View* View::getChild (int index)						{ return (View*)views.at (index); }
+inline int View::getWidth () const							{ return size.getWidth (); }
+inline int View::getHeight () const							{ return size.getHeight (); }
+inline int View::getSizeMode () const						{ return sizeMode; }
+inline void View::setSizeMode (int flags)					{ sizeMode = flags; }
+inline StringRef View::getName () const						{ return name; }
+inline StringRef View::getTitle () const					{ return title; }
+inline StyleRef View::getStyle () const						{ return style; }
+inline bool View::hasVisualStyle () const					{ return visualStyle != nullptr; }
+inline VisualStyle* View::getVisualStyleDirect () const 	{ return visualStyle; }
+inline void View::setTooltip (StringRef _tooltip)			{ tooltip = _tooltip; }
+inline StringRef View::getTooltip () const					{ return tooltip; }
+inline bool View::isEnabled () const						{ return (privateFlags & kDisabled) == 0; }
+inline void View::enable (bool state)						{ if(state) privateFlags &= ~kDisabled; else privateFlags |= kDisabled; }
+inline bool View::isResizing () const						{ return (privateFlags & kResizing) != 0; }
+inline bool View::isSizeModeDisabled () const				{ return (sizeMode & kAttachDisabled) != 0; }
+inline bool View::isLayerBackingEnabled () const			{ return (privateFlags & kLayerBacking) != 0; }
+inline IGraphicsLayer* View::getGraphicsLayer () const		{ return graphicsLayer; }
+inline bool View::isAccessibilityEnabled () const			{ return (privateFlags & kAccessible) != 0; }
+inline void View::setAccessibilityTitle (StringRef _title)	{ accessibilityTitle = _title; }
+inline StringRef View::getAccessibilityTitle () const		{ return accessibilityTitle; }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 // SizeLimitsMemento inline

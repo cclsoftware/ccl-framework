@@ -52,7 +52,7 @@ public:
 			return;
 
 		MenuBarControl* menuBar = (MenuBarControl*)view;
-		int partCode = menuBar->getRenderer ()->hitTest (menuBar, current.where, nullptr);
+		int partCode = menuBar->getRenderer ()->hitTest (current.where, nullptr);
 		if(partCode >= MenuBarControl::kPartFirstMenu && partCode <= MenuBarControl::kPartLastMenu)
 		{
 			menuBar->mouseDown (current);
@@ -136,7 +136,7 @@ void MenuBarControl::draw (const UpdateRgn& updateRgn)
 {
 	ThemeRenderer* renderer = getRenderer ();
 	if(renderer)
-		renderer->draw (this, updateRgn);
+		renderer->draw (updateRgn);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -145,7 +145,7 @@ void MenuBarControl::calcAutoSize (Rect& r)
 {
 	ThemeRenderer* renderer = getRenderer ();
 	if(renderer)
-		renderer->getPartRect (this, kPartBar, r);
+		renderer->getPartRect (r, kPartBar);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -153,7 +153,7 @@ void MenuBarControl::calcAutoSize (Rect& r)
 ThemeRenderer* MenuBarControl::getRenderer ()
 {
 	if(renderer == nullptr)
-		renderer = getTheme ().createRenderer (ThemePainter::kMenuBarRenderer, visualStyle);
+		renderer = getTheme ().createRenderer (ThemePainter::kMenuBarRenderer, visualStyle, this);
 	return renderer;
 }
 
@@ -189,7 +189,7 @@ void MenuBarControl::activateMenu (int index)
 			
 		PopupSizeInfo sizeInfo (this, PopupSizeInfo::kCanFlipParentEdge);
 		Rect rect;
-		getRenderer ()->getPartRect (this, kPartFirstMenu + index, rect);
+		getRenderer ()->getPartRect (rect, kPartFirstMenu + index);
 		sizeInfo.where = rect.getLeftBottom ();
 
 		ScopedVar<MenuBarControl*> scope (activeControl, this);
@@ -269,9 +269,9 @@ int MenuBarControl::getActiveIndex () const
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-int MenuBarControl::findMenu (const Point& loc)
+int MenuBarControl::findMenu (PointRef where)
 {
-	int partCode = getRenderer ()->hitTest (this, loc, nullptr);
+	int partCode = getRenderer ()->hitTest (where, nullptr);
 	if(partCode >= kPartFirstMenu && partCode <= kPartLastMenu)
 		return partCode - kPartFirstMenu;
 	return -1;
@@ -340,7 +340,7 @@ bool MenuBarControl::onMouseMove (const MouseEvent& event)
 	if(now - lastKeyEventTime < 100)
 		return true;
 
-	int partCode = getRenderer ()->hitTest (this, event.where, nullptr);
+	int partCode = getRenderer ()->hitTest (event.where, nullptr);
 	bool isOverMenu = partCode >= kPartFirstMenu && partCode <= kPartLastMenu;
 
 	if(isOverMenu)
@@ -403,7 +403,7 @@ void MenuBarControl::invalidateMenu (int index)
 		return;
 	
 	Rect rect;
-	getRenderer ()->getPartRect (this, kPartFirstMenu + index, rect);
+	getRenderer ()->getPartRect (rect, kPartFirstMenu + index);
 	invalidate (rect);
 }
 
@@ -411,7 +411,7 @@ void MenuBarControl::invalidateMenu (int index)
 
 bool MenuBarControl::mouseDown (const MouseEvent& event)
 {
-	int partCode = getRenderer ()->hitTest (this, event.where, nullptr);
+	int partCode = getRenderer ()->hitTest (event.where, nullptr);
 	if(partCode >= kPartFirstMenu && partCode <= kPartLastMenu)
 	{
 		onMouseMove (event);
@@ -425,7 +425,7 @@ bool MenuBarControl::mouseDown (const MouseEvent& event)
 
 bool MenuBarControl::mouseUp (const MouseEvent& event)
 {
-	int partCode = getRenderer ()->hitTest (this, event.where, nullptr);
+	int partCode = getRenderer ()->hitTest (event.where, nullptr);
 	if(partCode >= kPartFirstMenu && partCode <= kPartLastMenu)
 	{
 		activateMenu (partCode - kPartFirstMenu);
@@ -439,7 +439,7 @@ bool MenuBarControl::mouseUp (const MouseEvent& event)
 
 MouseHandler* MenuBarControl::createMouseHandler (const MouseEvent& event)
 {
-	int partCode = getRenderer ()->hitTest (this, event.where, nullptr);
+	int partCode = getRenderer ()->hitTest (event.where, nullptr);
 	if(partCode >= kPartFirstMenu && partCode <= kPartLastMenu)
 	{
 		SharedPtr<MenuBarControl> keeper (this);

@@ -75,8 +75,8 @@ void Win32DynamicLibrary::unload ()
 
 void Win32DynamicLibrary::addSearchPath (CStringPtr dir)
 {
-	uchar dirUTF16[MAX_PATH] = {0};
-	Core::Text::UTFFunctions::decodeUTF8String (dirUTF16, MAX_PATH, dir, ConstString (dir).length ());
+	uchar dirUTF16[MAX_PATH] = {};
+	Text::UTFFunctions::decodeUTF8String (dirUTF16, MAX_PATH, dir, ConstString (dir).length ());
 	if(::SetDefaultDllDirectories (LOAD_LIBRARY_SEARCH_DEFAULT_DIRS))
 	{
 		DLL_DIRECTORY_COOKIE cookie = ::AddDllDirectory (dirUTF16);

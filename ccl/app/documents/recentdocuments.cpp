@@ -528,7 +528,7 @@ IView* CCL_API RecentDocuments::createView (StringID name, VariantRef data, cons
 				ViewBox imageView (ClassID::ImageView, bounds);
 				AutoPtr<IImage> icon (FileIcons::instance ().createIcon (*url));
 				imageView.setAttribute (kImageViewBackground, icon);
-				imageView.setStyle (StyleFlags (0, Styles::kImageViewAppearanceFitImage));
+				imageView.setStyle (StyleFlags (0, Styles::kImageViewAppearanceContentFit));
 				return imageView;
 			}
 			else if(name.contains (".age"))

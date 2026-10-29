@@ -100,7 +100,7 @@ protected:
 	Menu* menu;
 	ObjectArray subContextMenus;
 	AutoPtr<PopupSelector> popupSelector;
-	CCL::SignalSink controlSink;
+	SignalSink controlSink;
 
 	static ContextPopupMenu* nonModalInstance;
 

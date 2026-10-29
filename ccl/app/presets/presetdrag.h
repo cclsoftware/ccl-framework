@@ -47,18 +47,19 @@ public:
 	PresetDragHandler (IView* view = nullptr);
 	PresetDragHandler (UserControl& control);
 
+	PROPERTY_SHARED_AUTO (IObjectFilter, presetFilter, PresetFilter)
+
 	static bool extractClass (PlugInClass& plugClass, IPreset& preset);
 	static bool extractClass (PlugInClass& plugClass, IPresetMediator& presetMediator);
 	static bool extractClass (PlugInClass& plugClass, IAttributeList& metaInfo);
 
 	void addCategoryHeader (StringRef category, StringRef header); ///< header strings for preset categories
-	bool prepare (const IUnknownList& items, const IObjectFilter* presetFilter = nullptr, StringRef title = String::kEmpty);
+	bool prepare (const IUnknownList& items, IObjectFilter* presetFilter = nullptr, StringRef title = String::kEmpty);
 
 	IPreset* getFirstPreset () const;
 	bool hasAcceptedPreset () const;
 
 protected:
-	const IObjectFilter* presetFilter;
 	ObjectList categoryHeaders;
 
 	IPreset* preparePreset (IUnknown& item);
@@ -157,7 +158,7 @@ class PresetFileTypeFilter: public FileTypeFilter,
 {
 public:
 	// IObjectFilter
-	CCL::tbool CCL_API matches (IUnknown* object) const override;
+	tbool CCL_API matches (IUnknown* object) const override;
 
 	CLASS_INTERFACE (IObjectFilter, FileTypeFilter)
 };

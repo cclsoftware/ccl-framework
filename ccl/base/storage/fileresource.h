@@ -70,6 +70,8 @@ protected:
 	Url path;
 	int openCount;
 
+	void ensureClose ();
+
 	virtual bool openFile (int mode) = 0;
 	virtual bool createFile (int mode) = 0;
 	virtual bool closeFile () = 0;
@@ -82,6 +84,8 @@ protected:
 class FileStreamResource: public FileResource
 {
 public:
+	DECLARE_CLASS_ABSTRACT (FileStreamResource, FileResource)
+
 	FileStreamResource ();
 	FileStreamResource (UrlRef path);
 	FileStreamResource (const FileStreamResource&);

@@ -30,6 +30,7 @@ using namespace CCL;
 //************************************************************************************************
 
 DEFINE_CLASS_HIDDEN (UserControl, Object)
+DEFINE_CLASS_NAMESPACE (UserControl, NAMESPACE_CCL)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -79,6 +80,7 @@ IAccessibilityProvider* CCL_API UserControl::getCustomAccessibilityProvider () c
 //************************************************************************************************
 
 DEFINE_CLASS_HIDDEN (UserControl::MouseHandler, Object)
+DEFINE_CLASS_NAMESPACE (UserControl::MouseHandler, NAMESPACE_CCL)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -164,7 +166,7 @@ tbool CCL_API UserControl::TouchMouseHandler::trigger (const TouchEvent& event)
 		// create autoScroller if required
 		if(!autoScroller && (mouseHandler->getFlags () & IMouseHandler::kAutoScroll))
 		{
-			autoScroller = ccl_new<IAutoScroller> (CCL::ClassID::AutoScroller);
+			autoScroller = ccl_new<IAutoScroller> (ClassID::AutoScroller);
 			autoScroller->construct (view);
 		}
 
@@ -218,6 +220,10 @@ tbool CCL_API UserControl::GestureHandler::onGesture (const GestureEvent& event)
 //********************************************************************************************
 // UserControl::AccessibilityProvider
 //********************************************************************************************
+
+DEFINE_CLASS_ABSTRACT_HIDDEN (UserControl::AccessibilityProvider, Object)
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
 
 UserControl::AccessibilityProvider::AccessibilityProvider (UserControl& control)
 : control (control)

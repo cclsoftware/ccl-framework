@@ -155,7 +155,7 @@ tbool CCL_API Format::Bipolar::scanString (Variant& value, StringRef string) con
 // Format::Duration
 //************************************************************************************************
 
-DEFINE_FORMATTER_FACTORY (Format::Duration, "System.Duration")
+DEFINE_FORMATTER_FACTORY (Format::Duration, Format::kDuration)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -192,17 +192,17 @@ Format::Duration::Duration (ILocaleInfo::TimeUnit defaultUnit)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-tbool CCL_API Format::Duration::printString (CCL::String& string, CCL::VariantRef value) const
+tbool CCL_API Format::Duration::printString (String& string, VariantRef value) const
 { string = print (value, compactMode); return true; }
 
-tbool CCL_API Format::Duration::scanString (CCL::Variant& value, CCL::StringRef string) const
+tbool CCL_API Format::Duration::scanString (Variant& value, StringRef string) const
 { return scan (value, string, defaultUnit); }
 
 //************************************************************************************************
 // Format::ByteSize
 //************************************************************************************************
 
-DEFINE_FORMATTER_FACTORY (Format::ByteSize, "System.ByteSize")
+DEFINE_FORMATTER_FACTORY (Format::ByteSize, Format::kByteSize)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -246,7 +246,7 @@ bool Format::ByteSize::scan (Variant& value, StringRef string, double base)
 // Format::SIByteSize
 //************************************************************************************************
 
-DEFINE_FORMATTER_FACTORY (Format::SIByteSize, "System.SIByteSize")
+DEFINE_FORMATTER_FACTORY (Format::SIByteSize, Format::kSIByteSize)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -270,7 +270,7 @@ bool Format::SIByteSize::scan (Variant& value, StringRef string)
 // Format::BytesPerSecond
 //************************************************************************************************
 
-DEFINE_FORMATTER_FACTORY (Format::BytesPerSecond, "System.BytesPerSecond")
+DEFINE_FORMATTER_FACTORY (Format::BytesPerSecond, Format::kBytesPerSecond)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -291,11 +291,22 @@ bool Format::BytesPerSecond::scan (Variant& value, StringRef string)
 	return false;
 }
 
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+String Format::BytesPerSecond::printAccessible (VariantRef value)
+{
+	const ILocaleInfo& locale = System::GetLocaleManager ().getCurrentLocale ();
+
+	String string;
+	locale.printBytesPerSecond (string, value, ILocaleInfo::kAccessibleByteUnit);
+	return string;
+}
+
 //************************************************************************************************
 // Format::SIBytesPerSecond
 //************************************************************************************************
 
-DEFINE_FORMATTER_FACTORY (Format::SIBytesPerSecond, "System.SIBytesPerSecond")
+DEFINE_FORMATTER_FACTORY (Format::SIBytesPerSecond, Format::kSIBytesPerSecond)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -350,13 +361,13 @@ bool Format::Percent::scan (Variant& value, StringRef string)
 // Format::PercentFloat
 //************************************************************************************************
 
-DEFINE_FORMATTER_FACTORY (Format::PercentFloat, "System.PercentFloat")
+DEFINE_FORMATTER_FACTORY (Format::PercentFloat, Format::kPercentFloat)
 
 //************************************************************************************************
 // Format::PercentInt
 //************************************************************************************************
 
-DEFINE_FORMATTER_FACTORY (Format::PercentInt, "System.PercentInt")
+DEFINE_FORMATTER_FACTORY (Format::PercentInt, Format::kPercentInt)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -386,14 +397,24 @@ bool Format::PercentInt::scan (Variant& value, StringRef string)
 // Format::Int
 //************************************************************************************************
 
-DEFINE_FORMATTER_FACTORY (Format::Int, "System.Int")
+DEFINE_FORMATTER_FACTORY (Format::Int, Format::kInt)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-String Format::Int::print (VariantRef value)
+Format::Int::Int (StringRef label)
+: label (label)
+{}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+String Format::Int::print (VariantRef value, StringRef label)
 {
 	int64 intValue = ccl_to_int (value.asDouble ());
-	return String ().appendIntValue (intValue);	
+	String result;
+	result.appendIntValue (intValue);
+	if(!label.isEmpty ())
+		result << " " << label;
+	return result;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -407,6 +428,59 @@ bool Format::Int::scan (Variant& value, StringRef string)
 		return true;
 	}
 	return false;
+}
+
+//************************************************************************************************
+// Format::Float
+//************************************************************************************************
+
+DEFINE_FORMATTER_FACTORY (Format::Float, Format::kFloat)
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+Format::Float::Float (int numDecimalDigits, StringRef label)
+: numDecimalDigits (numDecimalDigits),
+  label (label)
+{}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+String Format::Float::print (VariantRef value, int numDecimalDigits, StringRef label)
+{
+	String string;
+	if(numDecimalDigits <= 0)
+		string.appendIntValue (value.asInt ());
+	else
+		string.appendFloatValue (value.asFloat (), numDecimalDigits);
+	if(!label.isEmpty ())
+		string << " " << label;
+	return string;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+bool Format::Float::scan (Variant& value, StringRef string)
+{
+	double floatValue = 0.;
+	if(string.getFloatValue (floatValue) == false)
+		return false;	
+	value = floatValue;
+	return true;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+tbool CCL_API Format::Float::printString (String& string, VariantRef value) const
+{
+	string = print (value, numDecimalDigits, label);
+	return true;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+tbool CCL_API Format::Float::scanString (Variant& value, StringRef string) const
+{ 
+	return scan (value, string);
 }
 
 //************************************************************************************************
@@ -442,7 +516,7 @@ bool Format::FourCharID::scan (Variant& value, StringRef string)
 // Format::DateTime
 //************************************************************************************************
 
-DEFINE_FORMATTER_FACTORY (Format::DateTime, "System.DateTime")
+DEFINE_FORMATTER_FACTORY (Format::DateTime, Format::kDateTime)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -480,7 +554,7 @@ bool Format::DateTime::scan (CCL::DateTime& dateTime, StringRef string)
 // Format::PortableDateTime
 //************************************************************************************************
 
-DEFINE_FORMATTER_FACTORY (Format::PortableDateTime, "System.PortableDateTime")
+DEFINE_FORMATTER_FACTORY (Format::PortableDateTime, Format::kPortableDateTime)
 CStringPtr Format::PortableDateTime::formatString = "%04d/%02d/%02d %02d:%02d:%02d.%03d";
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -517,7 +591,7 @@ bool Format::PortableDateTime::scan (CCL::DateTime& dateTime, StringRef string)
 // Format::ISODateTime
 //************************************************************************************************
 
-DEFINE_FORMATTER_FACTORY (Format::ISODateTime, "System.ISODateTime")
+DEFINE_FORMATTER_FACTORY (Format::ISODateTime, Format::kISODateTime)
 CStringPtr Format::ISODateTime::formatString = "%04d-%02d-%02dT%02d:%02d:%02d";
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -556,7 +630,7 @@ bool Format::ISODateTime::scan (CCL::DateTime& dateTime, StringRef string)
 // Format::TimeAgo
 //************************************************************************************************
 
-DEFINE_FORMATTER_FACTORY (Format::TimeAgo, "System.TimeAgo")
+DEFINE_FORMATTER_FACTORY (Format::TimeAgo, Format::kTimeAgo)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -603,7 +677,7 @@ bool Format::TimeAgo::scan (Variant& value, StringRef string)
 // Format::TimeAhead
 //************************************************************************************************
 
-DEFINE_FORMATTER_FACTORY (Format::TimeAhead, "System.TimeAhead")
+DEFINE_FORMATTER_FACTORY (Format::TimeAhead, Format::kTimeAhead)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -655,7 +729,7 @@ Format::StringList::StringList ()
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void Format::StringList::appendString (CCL::StringRef string)
+void Format::StringList::appendString (StringRef string)
 {
 	strings.add (string);
 }
@@ -676,7 +750,7 @@ void Format::StringList::removeAll ()
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-tbool CCL_API Format::StringList::printString (CCL::String& string, CCL::VariantRef value) const
+tbool CCL_API Format::StringList::printString (String& string, VariantRef value) const
 {
 	int idx = value.asInt ();
 	if(idx < strings.count ())
@@ -689,7 +763,7 @@ tbool CCL_API Format::StringList::printString (CCL::String& string, CCL::Variant
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-CCL::tbool CCL_API Format::StringList::scanString (CCL::Variant& value, CCL::StringRef string) const
+tbool CCL_API Format::StringList::scanString (Variant& value, StringRef string) const
 {
 	for(int i = 0; i < strings.count (); i++)
 	{
@@ -706,7 +780,7 @@ CCL::tbool CCL_API Format::StringList::scanString (CCL::Variant& value, CCL::Str
 // Format::Offset
 //************************************************************************************************
 
-DEFINE_FORMATTER_FACTORY (Format::Offset, "System.PlusOne")
+DEFINE_FORMATTER_FACTORY (Format::Offset, Format::kOffset1)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 

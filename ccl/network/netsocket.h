@@ -26,13 +26,13 @@
 #include "core/network/coresocket.h"
 #include "ccl/public/base/ccldefpop.h"
 
-#define kNetworkTextEncoding Text::kSystemEncoding	///< C-String encoding for host names, etc.
-
 namespace CCL {
 namespace Net {
 
 using Core::Sockets::SocketID;
 using Core::Sockets::SocketIDSet;
+
+#define kNetworkTextEncoding Text::kSystemEncoding	///< C-String encoding for host names, etc.
 
 //************************************************************************************************
 // BaseSocket
@@ -45,9 +45,15 @@ public:
 	CLASS_INTERFACE (ISocket, Unknown)
 
 protected:
-	static CCL::tresult handleError (Core::Sockets::Socket& coreSocket, const char* debugMessage);
-	static CCL::tresult translateErrorCode (int nativeError);
-	static CCL::String getErrorString (int nativeError);
+	static constexpr int kPollSlice = 100;
+	static const CStringPtr kConnectError;
+	static const CStringPtr kNonBlockError;
+
+	static tresult connect (Core::Sockets::Socket& socket, const SocketAddress& address, int deadline, IProgressNotify* progress, CStringPtr socketName);
+	static tresult handleError (Core::Sockets::Socket& coreSocket, CStringPtr debugMessage);
+	static tresult translateErrorCode (int nativeError);
+	static String getErrorString (int nativeError);
+	static bool getResultString (String& result, tresult error);
 };
 
 //************************************************************************************************
@@ -63,7 +69,7 @@ public:
 	SocketID getDescriptor () const;
 
 	// ISocket
-	tresult CCL_API connect (const SocketAddress& address) override;
+	tresult CCL_API connect (const SocketAddress& address, int timeout = kDefaultConnectTimeout, IProgressNotify* progress = nullptr) override;
 	tresult CCL_API disconnect () override;
 	tbool CCL_API isConnected () override;
 	tresult CCL_API getPeerAddress (SocketAddress& address) override;
@@ -95,7 +101,7 @@ protected:
 
 	Core::Sockets::Socket coreSocket;
 
-	CCL::tresult handleError (const char* debugMessage);
+	tresult handleError (CStringPtr debugMessage);
 };
 
 } // namespace Net

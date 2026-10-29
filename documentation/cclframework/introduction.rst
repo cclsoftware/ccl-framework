@@ -4,24 +4,26 @@ Introduction
 
 .. _ccl-introduction:
 
-Welcome to Crystal Class Library\ |reg| (CCL), a cross-platform framework for desktop, mobile, and embedded application development in C++. As of 2026, the following target platforms are supported:
+Welcome to Crystal Class Library\ |reg| (CCL), a cross-platform framework for developing applications for desktop, mobile, embedded, and browser environments in C++. As of 2026, CCL supports the following target platforms:
 
-- Windows (based on Win32)
-- macOS and iOS/iPadOS (based on Cocoa)
-- Linux (using Wayland)
+- Windows
+- macOS
+- iOS/iPadOS
+- Linux
 - Android
+- WebAssembly
 
-You can think of CCL as a unified virtual operating system. Instead of using platform-specific APIs and UI elements, applications are based on an additional abstract layer to make them portable between OS platforms. For example, you can develop and debug most of a mobile app for iOS/iPadOS on a PC using Visual Studio or VS Code, or release an application for all supported platforms simultaneously with little overhead.
+You can think of CCL as a unified virtual operating system. Rather than relying directly on platform-specific APIs and UI elements, applications use an additional abstraction layer that helps make them portable across operating systems. For example, you can develop and debug most of a mobile app for iOS/iPadOS or Android on a PC using Visual Studio or VS Code. You can also release an application for multiple supported platforms with little additional effort.
 
-The code esthetics of CCL is inspired by Java. It is using camel case instead of snake case like some popular C++ libraries. Code and documentation are written in American English. Many concepts used in CCL will be familiar if you have worked with other application frameworks like .NET, MFC, Qt, etc. before. However, there are some differences you need to learn and be aware of. 
+CCL's coding style is inspired by Java. It uses camel case rather than snake case, as used by some popular C++ libraries. Code and documentation are written in American English. Many concepts in CCL will be familiar if you have worked with other application frameworks such as .NET or Qt. However, CCL also has some distinct concepts and conventions that you will need to learn.
 
 ======================
 A short history lesson
 ======================
 
-The first version of CCL was created by Matthias Juwan in 1999. The framework is distributed and maintained by CCL Software Licensing GmbH. PreSonus is a contributor since 2009.
+The first version of CCL was created by Matthias Juwan in 1999. The framework is distributed and maintained by CCL Software Licensing GmbH, with PreSonus contributing to its development since 2009.
 
-The code is evolving continuously to adapt to new requirements. In 2012, parts of the framework were moved into the Core Library to allow reuse and sharing of code with RTOS-based platforms. By adding iOS as first mobile platform the same year, the framework was extended with features like multi-touch input and hardware-accelerated graphical animations. 
+CCL continues to evolve to meet new requirements. In 2012, parts of the framework were moved into the Core Library to enable code reuse and sharing with RTOS-based platforms. That same year, iOS became the first mobile platform supported by CCL, bringing features such as multi-touch input and hardware-accelerated graphical animations. With version 5.2, CCL can also target browser environments using WebAssembly.
 
 For more information and licensing terms and conditions, please visit `ccl.dev <https://ccl.dev>`_.
 
@@ -29,39 +31,47 @@ For more information and licensing terms and conditions, please visit `ccl.dev <
 Basic structure
 ===============
 
-The framework is divided into several libraries, some are linked statically to the application and some dynamically.
+The framework is divided into several libraries, some of which are linked statically into the application, while others are loaded dynamically.
 
 Dynamic libraries
-=================
+-----------------
 
-- **ccltext**: everything related to Unicode strings, XML, localization support, etc.
-- **cclsystem**: basics like file system access, multithreading and synchronization, IPC, plug-in loading, etc.
-- **cclgui**: everything needed for a graphical user interface, XML-based skins, etc.
-- **cclnet**: support for sockets, TCP, UDP, HTTP, etc.
-- **cclsecurity**: crypthographic cipher algorithms, etc.
+- **ccltext**: Unicode strings, XML, localization, and related functionality.
+- **cclsystem**: File system access, multithreading and synchronization, inter-process communication, plug-in loading, and other system services.
+- **cclgui**: Graphical user interface functionality, including XML-based skins.
+- **cclnet**: Network communication, including sockets, TCP, UDP, and HTTP.
+- **cclsecurity**: Cryptographic algorithms and related security functionality.
 
 Static libraries
-================
+----------------
 
-- **cclbase**: provides RTTI, collections, persistence, etc. (linked into all other libs, except **ccltext**)
-- **cclapp**: application component classes and parameters, etc.
+- **cclbase**: Runtime type information (RTTI), collections, persistence, and other fundamental functionality. Linked into all other libraries except **ccltext**.
+- **cclapp**: Application component classes, parameters, and related application-level functionality.
 
-The reason for this separation is simple. A large-scale desktop or mobile application needs a certain level of modularity to stay maintainable for a longer period of time and certain features are split into plug-ins. The plug-ins also want to make use of the framework and instead of compiling the same code into all binaries multiple times, the majority of the framework itself is linked and loaded dynamically.
+Why this separation?
+--------------------
 
-Another architectural reason is that in a large code base you don't want everyone in the team to mess with the fundamentals shared by all applications and e.g. create several versions of a class which might easily fit into a single, unified multi-purpose class. Dynamic linking sets a hard limit between the foundation and the application code.
+Larger applications and ecosystems need a certain level of modularity to remain maintainable over time. One way to achieve this is to move functionality into plug-ins rather than continually adding it to a single, monolithic application. These plug-ins also need access to the framework. By linking most of the framework dynamically, CCL avoids compiling the same framework code into multiple binaries.
 
-That said, you'll notice that you sometimes cannot derive your own classes directly from framework classes via C++ inheritance. The good thing is, in general you don't have to and CCL provides alternative concepts which often result in better structured code. We'll follow up on that below.
+There is another architectural reason for this separation. In a large codebase, the fundamentals shared by all applications need to remain consistent. You don't want different teams independently implementing slightly different versions of a class when a single, unified, multi-purpose class would suffice. Dynamic linking helps establish a clear boundary between the shared framework and application-specific code.
+
+CCL deliberately maintains this boundary at the API level. As a result, you cannot always derive your own classes directly from framework classes using C++ inheritance. This is an architectural choice rather than an inherent limitation. Instead, CCL provides alternative ways to extend and customize framework functionality, often resulting in better-structured code. We'll explore these concepts in the following sections.
 
 =================
 Interface concept
 =================
 
-CCL heavily uses the interface concept as found in `COM <https://en.wikipedia.org/wiki/Component_Object_Model>`_, `XPCOM <https://en.wikipedia.org/wiki/XPCOM>`_, `UNO <https://www.openoffice.org/udk/>`_, etc. At the C++ language level, interfaces are abstract classes with pure virtual methods only without any data members. The basic interface :cref:`CCL::IUnknown` provides methods for reference counting (retain/release) and a query mechanism to obtain additional purpose-specific interfaces of an object (queryInterface). On the semantic level, an interface can be seen like a contract that is obligatory to all classes implementing it. The implementation details of a class are hidden and they don't matter to the caller who can see the interface only - the caller can simply rely on the contract.
+CCL makes extensive use of the interface concept, as found in `COM <https://en.wikipedia.org/wiki/Component_Object_Model>`_, `XPCOM <https://en.wikipedia.org/wiki/XPCOM>`_, `UNO <https://www.openoffice.org/udk/>`_, and similar component models. In CCL, interfaces are represented in C++ by abstract classes containing only pure virtual methods and no data members.
 
-Interfaces also help with ABI-compatibility between multiple dynamically linked binaries. The ABI (Application Binary Interface) is the memory layout of your class at runtime. An application would simply crash if calls between modules aren't compatible on this lower level if e.g. members of a class are added or removed. Interfaces provide the required stability. They remain stable between framework releases, some of them are even marked frozen for eternity. Like with any other rule, there are exceptions here as well. If binary compatibility is lost, the framework revision is incremented and all related binaries have to be recompiled. This doesn't happen very often, though.
+The fundamental interface :cref:`CCL::IUnknown` provides methods for reference counting (``retain`` and ``release``) and a query mechanism (``queryInterface``) for obtaining additional purpose-specific interfaces supported by an object.
 
-Interface names are prefixed with 'I' like 'IUnknown'. They are identified with 16 byte globally unique identifiers
-(`GUID <http://en.wikipedia.org/wiki/Globally_unique_identifier>`_).
+Conceptually, an interface defines a contract that every implementing class must fulfill. The implementation details remain hidden from the caller, which interacts with the object exclusively through its interfaces and can rely on the contracts they define.
+
+Interfaces also help maintain ABI (Application Binary Interface) compatibility between dynamically linked binaries. The ABI defines how compiled code interacts at the binary level, including object layouts, calling conventions, and method calls. Changes to a class's layout or other ABI-relevant details can make independently compiled modules incompatible, potentially causing crashes or other failures.
+
+By exposing stable interfaces rather than implementation classes, CCL helps preserve binary compatibility across framework releases. Interface definitions are kept stable, and some interfaces are designated as frozen, meaning they must remain binary-compatible indefinitely. There are exceptions, however. If binary compatibility is broken, the framework ABI revision is incremented, and all dependent binaries must be recompiled.
+
+Interface names are prefixed with ``I``, as in ``IUnknown``. Each interface is identified by a 16-byte globally unique identifier (`GUID <https://en.wikipedia.org/wiki/Globally_unique_identifier>`_).
 
 ==================
 Allocating objects

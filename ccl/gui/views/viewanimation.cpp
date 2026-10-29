@@ -32,10 +32,10 @@
 namespace CCL {
 
 //************************************************************************************************
-// AnimatorBase::LayerAdder
+// ViewAnimator::LayerAdder
 //************************************************************************************************
 
-class AnimatorBase::LayerAdder: public Object,
+class ViewAnimator::LayerAdder: public Object,
 								public IAnimationCompletionHandler
 {
 public:
@@ -85,10 +85,10 @@ protected:
 };
 
 //************************************************************************************************
-// AnimatorBase::LayerRemover
+// ViewAnimator::LayerRemover
 //************************************************************************************************
 
-class AnimatorBase::LayerRemover: public Object,
+class ViewAnimator::LayerRemover: public Object,
 								  public IAnimationCompletionHandler
 {
 public:
@@ -244,13 +244,17 @@ void ViewAnimationHandler::registerSelf (bool state)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-tresult CCL_API ViewAnimationHandler::addAnimation (IObject* target, StringID propertyId, const IAnimation* prototype)
+tresult CCL_API ViewAnimationHandler::addAnimation (IObject* target, StringID propertyId, const IAnimation* prototype,
+													int options)
 {
 	// delegate to graphics layer associated with view
 	if(View* view = unknown_cast<View> (target))
 		if(IGraphicsLayer* layer = view->getGraphicsLayer ())
 			if(isLayerProperty (propertyId))
+			{
+				ASSERT (options == 0) // no options supported
 				return layer->addAnimation (propertyId, prototype);
+			}
 
 	return kResultFalse;
 }
@@ -268,37 +272,11 @@ tresult CCL_API ViewAnimationHandler::removeAnimation (IObject* target, StringID
 	return kResultFalse;
 }
 
-//************************************************************************************************
-// AnimatorBase
-//************************************************************************************************
-
-AnimatorBase::AnimatorBase (View* parentView, float contentScaleFactor)
-: parentView (parentView),
-  contentScaleFactor (contentScaleFactor),
-  duration (.25),
-  timingType (kTimingEaseInOut),
-  parentLayer (nullptr)
-{}
-
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-IGraphicsLayer* AnimatorBase::addClippingLayer (IGraphicsLayer* parentLayer, PointRef offset, Coord width, Coord height)
+tresult CCL_API ViewAnimationHandler::removeTarget (IObject* target)
 {
-	IGraphicsLayer* clippingLayer = NativeGraphicsEngine::instance ().createGraphicsLayer (ClassID::GraphicsLayer);
-	clippingLayer->construct (nullptr, Rect (offset.x, offset.y, Point (width, height)), IGraphicsLayer::kClipToBounds, contentScaleFactor);
-	parentLayer->addSublayer (clippingLayer);
-	return clippingLayer;
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
-IGraphicsLayer* AnimatorBase::createLayerForImage (IImage* image, int mode)
-{
-	AutoPtr<IGraphicsLayer> layer;
-	if(image != nullptr)
-		if(layer = NativeGraphicsEngine::instance ().createGraphicsLayer (ClassID::GraphicsLayer))
-			layer->construct (image, Rect (0, 0, image->getWidth (), image->getHeight ()), mode, contentScaleFactor);
-	return layer.detach ();
+	return kResultFalse;
 }
 
 //************************************************************************************************
@@ -370,8 +348,12 @@ DEFINE_CLASS_ABSTRACT_HIDDEN (ViewAnimator, Object)
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 ViewAnimator::ViewAnimator (View* parentView, TransitionType transitionType, float contentScaleFactor)
-: AnimatorBase (parentView, contentScaleFactor),
+: parentView (parentView),
   transitionType (transitionType),
+  contentScaleFactor (contentScaleFactor),
+  duration (.25),
+  timingType (kTimingEaseInOut),
+  parentLayer (nullptr),
   fromLayerParent (nullptr),
   ignoreAlpha (true)
 {}
@@ -439,6 +421,27 @@ void ViewAnimator::snipToView (View* toView, const Rect* rect)
 		setIgnoreAlpha (false);
 
 	toImage = ViewScreenCapture ().takeScreenshot (toView, rect);
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+IGraphicsLayer* ViewAnimator::addClippingLayer (IGraphicsLayer* parentLayer, PointRef offset, Coord width, Coord height)
+{
+	IGraphicsLayer* clippingLayer = NativeGraphicsEngine::instance ().createGraphicsLayer (ClassID::GraphicsLayer);
+	clippingLayer->construct (nullptr, Rect (offset.x, offset.y, Point (width, height)), IGraphicsLayer::kClipToBounds, contentScaleFactor);
+	parentLayer->addSublayer (clippingLayer);
+	return clippingLayer;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+IGraphicsLayer* ViewAnimator::createLayerForImage (IImage* image, int mode)
+{
+	AutoPtr<IGraphicsLayer> layer;
+	if(image != nullptr)
+		if(layer = NativeGraphicsEngine::instance ().createGraphicsLayer (ClassID::GraphicsLayer))
+			layer->construct (image, Rect (0, 0, image->getWidth (), image->getHeight ()), mode, contentScaleFactor);
+	return layer.detach ();
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -797,152 +800,4 @@ tbool CCL_API ViewAnimator::setTransitionProperty (StringID propertyId, VariantR
 tbool CCL_API ViewAnimator::setProperty (MemberID propertyId, const Variant& var)
 {
 	return setTransitionProperty (propertyId, var);
-}
-
-//************************************************************************************************
-// LayoutAnimator::ViewItem
-//************************************************************************************************
-
-struct LayoutAnimator::ViewItem: public Object
-{
-	ObservedPtr<View> view;
-	AutoPtr<IImage> fromImage;
-	AutoPtr<IImage> toImage;
-	IGraphicsLayer* fromLayer;
-	IGraphicsLayer* toLayer;
-	Rect fromRect;
-	Rect toRect;
-	
-	ViewItem ()
-	: fromLayer (nullptr), toLayer (nullptr)
-	{}
-};
-
-//************************************************************************************************
-// LayoutAnimator
-//************************************************************************************************
-
-LayoutAnimator* LayoutAnimator::create (View* parentView)
-{
-	if(Window* window = parentView->getWindow ()) // view must be attached
-		if(NativeGraphicsEngine::instance ().hasGraphicsLayers ())
-			return NEW LayoutAnimator (parentView, window->getContentScaleFactor ());
-	return nullptr;
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
-LayoutAnimator::LayoutAnimator (View* parentView, float contentScaleFactor)
-: AnimatorBase (parentView, contentScaleFactor)
-{
-	items.objectCleanup ();
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
-void LayoutAnimator::snipOldViews ()
-{
-	ForEachViewFast (*parentView, view)
-		ViewItem* item = NEW ViewItem;
-		item->view = view;
-		item->fromRect = view->getSize ();
-		item->fromImage = ViewScreenCapture ().takeScreenshot (view);
-		if(item->fromImage)
-			item->fromLayer = createLayerForImage (item->fromImage);
-		items.add (item);
-	EndFor
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
-void LayoutAnimator::snipNewViews ()
-{
-	ForEach (items, ViewItem, item)
-		if(item->view && item->view->isAttached ())
-		{
-			item->toRect = item->view->getSize ();
-			item->toImage = ViewScreenCapture ().takeScreenshot (item->view);
-			if(item->toImage)
-				item->toLayer = createLayerForImage (item->toImage);
-		}
-		else
-		{
-			// todo: view disappeared
-		}
-	EndFor
-	
-	// todo: check for views without items (appeared)
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
-bool LayoutAnimator::makeTransition ()
-{
-	Point parentOffset;
-	parentLayer = parentView->getParentLayer (parentOffset);
-	ASSERT (parentLayer != nullptr)
-	if(parentLayer == nullptr)
-		return false;
-		
-	clippingLayer = addClippingLayer (parentLayer, parentOffset, parentView->getWidth (), parentView->getHeight ());
-	parentLayer->flush ();
-
-	AutoPtr<AnimationCompletionHandlerList> completionHandler (NEW AnimationCompletionHandlerList);
-
-	AnimationDescription description;
-	description.timingType = timingType;
-	description.duration = duration;
-
-	ForEach (items, ViewItem, item)
-		if(item->fromRect == item->toRect)
-			continue;
-			
-		double scaleX = item->toRect.getWidth () / ccl_max (1, item->fromRect.getWidth ());
-		double scaleY = item->toRect.getHeight () / ccl_max (1, item->fromRect.getHeight ());
-
-		// apply transform and fade animations to old and new layer
-		auto makeAnimations = [&] (IGraphicsLayer* layer, float fadeStart, float fadeEnd)
-		{
-			if(!layer)
-				return;
-
-			TransformAnimation transform;
-			transform.setDescription (description);
-		
-			layer->setOffset (item->fromRect.getLeftTop ());
-			clippingLayer->addSublayer (layer);
-			
-			// grow / shrink from old to new size (same for old and new)
-			if(scaleX != 1)
-				transform.addScalingX (1, scaleX);
-			if(scaleY != 1)
-				transform.addScalingY (1, scaleY);
-			
-			// move fro old to new position
-			transform.addTranslationX (item->fromRect.left, item->toRect.left);
-			transform.addTranslationY (item->fromRect.top, item->toRect.top);
-
-			// fade in / out
-			BasicAnimation fade;
-			fade.setDescription (description);
-			fade.setStartValue (fadeStart);
-			fade.setEndValue (fadeEnd);
-	
-			if(completionHandler.isValid ())
-			{
-				completionHandler->addCompletionHandler (LayerRemover::create (parentLayer, clippingLayer));
-				transform.setCompletionHandler (completionHandler);
-				completionHandler = nullptr; // only once
-			}
-
-			layer->addAnimation (IGraphicsLayer::kOpacity, fade.asInterface ());
-			layer->addAnimation (IGraphicsLayer::kTransform, transform.asInterface ());
-		};
-	
-		makeAnimations (item->fromLayer, 1.f, 0.2f);
-		makeAnimations (item->toLayer, 0.2f, 1.f);
-	EndFor
-		
-	parentLayer->flush ();
-	return true;
 }

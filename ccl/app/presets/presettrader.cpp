@@ -105,7 +105,7 @@ void PresetTrader::runFileSelector (UnknownList& urls, int fileSelectorType, Str
 {
 	if(!fileTypes.getContent ().isEmpty ())
 	{
-		AutoPtr<IFileSelector> fs (ccl_new<IFileSelector> (CCL::ClassID::FileSelector));
+		AutoPtr<IFileSelector> fs (ccl_new<IFileSelector> (ClassID::FileSelector));
 
 		if(fileType)
 			fs->addFilter (*fileType);
@@ -388,7 +388,7 @@ bool PresetTrader::onLoadPreset (CmdArgs args)
 			AutoPtr<IAttributeList> componentMetaInfo (presetComponent.createMetaInfo ());
 			collectFileTypes (false);
 
-			AutoPtr<IFileSelector> fs (ccl_new<IFileSelector> (CCL::ClassID::FileSelector));
+			AutoPtr<IFileSelector> fs (ccl_new<IFileSelector> (ClassID::FileSelector));
 			VectorForEach (fileTypes.getContent (), const FileType&, type)
 				fs->addFilter (type);
 			EndFor

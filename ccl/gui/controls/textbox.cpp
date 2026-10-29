@@ -24,6 +24,7 @@
 #include "ccl/gui/graphics/textlayoutbuilder.h"
 #include "ccl/gui/graphics/nativegraphics.h"
 #include "ccl/gui/theme/thememanager.h"
+#include "ccl/gui/theme/renderer/textboxrenderer.h"
 
 #include "ccl/public/gui/framework/itextmodel.h"
 #include "ccl/public/text/translation.h"
@@ -32,7 +33,7 @@
 #include "ccl/app/params.h"
 
 namespace CCL {
-	
+
 //************************************************************************************************
 // TextBoxAccessibilityProvider
 //************************************************************************************************
@@ -64,245 +65,6 @@ BEGIN_XSTRINGS ("TextBox")
 END_XSTRINGS
 
 //************************************************************************************************
-// StringTextModel
-//************************************************************************************************
-
-class StringTextModel: public Object,
-					   public AbstractTextModel
-{
-public:
-	StringTextModel ()
-	: wasObserved (false)
-	{}
-
-	// ITextModel
-	void CCL_API toDisplayString (String& string) const override
-	{
-		string = getDataString ();
-	}
-
-	int CCL_API insertText (int textIndex, StringRef text, IMutableTextModel::EditOptions options) override
-	{
-		if(textIndex < 0 || textIndex > getDataString ().length ())
-		{
-			ASSERT (false)
-			return 0;
-		}
-
-		if(!(options & IMutableTextModel::kMergeUndo))
-			saveUndoState ();
-
-		getDataString ().insert (textIndex, text);
-		onChanged ();
-		return text.length ();
-	}
-
-	int CCL_API removeText (int textIndex, int length, IMutableTextModel::EditOptions options) override
-	{
-		if(!verifyRemoveTextIndex (textIndex, length))
-			return 0;
-
-		if(!(options & IMutableTextModel::kMergeUndo))
-			saveUndoState ();
-
-		getDataString ().remove (textIndex, length);
-		onChanged ();
-		return length;
-	}
-
-	tbool CCL_API undo () override
-	{
-		if(undoIndex <= 0)
-			return false;
-
-		--undoIndex;
-		onChanged ();
-		return true;
-	}
-
-	tbool CCL_API redo () override
-	{
-		if(undoIndex >= undoStack.count () - 1)
-			return false;
-
-		++undoIndex;
-		onChanged ();
-		return true;
-	}
-
-	void CCL_API fromParamString (StringRef string) override
-	{
-		if(getDataString () != string)
-		{
-			undoStack.setCount (0);
-			undoIndex = -1;
-			getDataString () = string;
-			onChanged ();
-		}
-	}
-
-	void CCL_API toParamString (String& string) const override
-	{
-		string = getDataString ();
-	}
-
-	void CCL_API addObserver (IObserver* observer) override
-	{
-		wasObserved = true;
-		Object::addObserver (observer);
-	}
-
-	CLASS_INTERFACE2 (ITextModel, IMutableTextModel, Object)
-
-protected:
-	static bool verifyRemoveTextIndex (int& index, int& length)
-	{
-		if(length < 0)
-		{
-			length = -length;
-			index -= length;
-		}
-
-		if(index < 0)
-		{
-			ASSERT (false)
-			length += index;
-			index = 0;
-		}
-
-		return length > 0;
-	}
-
-	StringRef getDataString () const
-	{
-		return const_cast<StringTextModel*> (this)->getDataString ();
-	}
-
-	String& getDataString ()
-	{
-		if(undoIndex < 0)
-		{
-			undoIndex = 0;
-			undoStack.add ("");
-		}
-		return undoStack.at (undoIndex);
-	}
-
-	virtual void onChanged ()
-	{
-		if(wasObserved) // skip useless lookup in SignalHandler if nobody cares (e.g. inside TextBox constructor)
-			signal (Message (kChanged));
-	}
-
-private:
-	Vector<String> undoStack;
-	int undoIndex = -1;
-	bool wasObserved;
-
-	void saveUndoState ()
-	{
-		// copy data string since setCount potentially reallocates memory and invalidates the reference
-		String dataString (getDataString ());
-		undoStack.setCount (++undoIndex);
-		undoStack.add (dataString);
-	}
-};
-
-//************************************************************************************************
-// MarkupTextModel
-//************************************************************************************************
-
-class MarkupTextModel: public StringTextModel
-{
-public:
-	MarkupTextModel (IView& view)
-	: view (view)
-	{}
-
-	// ITextModel
-	void CCL_API toDisplayString (String& string) const override
-	{
-		string = getMarkupParser ().getPlainText ();
-	}
-
-	void CCL_API updateLayout (ITextLayout& textLayout) const override
-	{
-		TextLayoutBuilder builder (textLayout);
-		getMarkupParser ().applyFormatting (builder);
-	}
-
-	int CCL_API insertText (int textIndex, StringRef text, IMutableTextModel::EditOptions options) override
-	{
-		String escapedText (text);
-		MarkupTags::escapePlainText (escapedText);
-		int markupIndex = getMarkupParser ().getMarkupPosition (textIndex, true);
-		StringTextModel::insertText (markupIndex, escapedText, options);
-		return text.length ();
-	}
-
-	int CCL_API removeText (int textIndex, int length, IMutableTextModel::EditOptions options) override
-	{
-		if(!verifyRemoveTextIndex (textIndex, length))
-			return 0;
-
-		int markupStart = getMarkupParser ().getMarkupPosition (textIndex, false);
-		int markupEnd = getMarkupParser ().getMarkupPosition (textIndex + length, true);
-		int markupLength = markupEnd - markupStart;
-		StringTextModel::removeText (markupStart, markupLength, options);
-		return length;
-	}
-
-private:
-	mutable AutoPtr<MarkupParser> markupParser;
-	mutable bool markupDirty = false;
-	IView& view;
-
-	MarkupParser& getMarkupParser () const
-	{
-		if(markupParser == nullptr)
-			markupParser = NEW MarkupParser (getDataString ());
-		else if(markupDirty)
-			markupParser->parse (getDataString ());
-
-		markupDirty = false;
-
-		return *markupParser;
-	}
-
-	// StringTextModel
-	void onChanged () override
-	{
-		markupDirty = true;
-		StringTextModel::onChanged ();
-	}
-};
-
-//************************************************************************************************
-// PasswordTextModel
-//************************************************************************************************
-
-class PasswordTextModel: public StringTextModel
-{
-public:
-	// ITextModel
-	void CCL_API toDisplayString (String& string) const override
-	{
-		String blindText (kPasswordReplacementString, getDataString ().length ());
-		string = blindText;
-	}
-
-	void CCL_API copyText (String& text, int textIndex = 0, int length = -1) const override
-	{
-		// not allowed
-	}
-
-public:
-	static const String kPasswordReplacementString;
-};
-
-const String PasswordTextModel::kPasswordReplacementString (Text::kUTF8, u8"\u25CF");
-
-//************************************************************************************************
 // TextBox
 //************************************************************************************************
 
@@ -312,6 +74,8 @@ BEGIN_STYLEDEF (TextBox::customStyles)
 	{"nocontextmenu",	Styles::kTextBoxBehaviorNoContextMenu},
 	{"scaletext",		Styles::kTextBoxAppearanceScaleText},
 	{"markup",			Styles::kTextBoxAppearanceMarkupEnabled},
+	{"hidetext",		Styles::kTextBoxAppearanceHideText},
+	{"nowheel",			Styles::kTextBoxBehaviorNoWheel},
 END_STYLEDEF
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -330,14 +94,12 @@ StringRef TextBox::getPasswordReplacementString ()
 
 TextBox::TextBox (const Rect& size, IParameter* param, StyleRef style, StringRef title)
 : Control (size, param ? param : (IParameter*)AutoPtr<IParameter> (NEW StringParam), style, title),
-  changed (true),
   textModel (nullptr),
   labelParam (nullptr),
   colorParam (nullptr),
   showFullTextAsTooltip (-1),
   textTrimMode (Font::kTrimModeDefault),
   explicitMaxWidth (kMaxCoord),
-  displayOffset (0),
   constructed (false),
   savedAlignment (Alignment::kLeft),
   alignmentInitialized (false)
@@ -394,14 +156,15 @@ void TextBox::createTextModel ()
 	if(!model)
 	{
 		if(style.isCustomStyle (Styles::kTextBoxAppearanceMarkupEnabled))
-			model = NEW MarkupTextModel (*this);
+			model = NEW MarkupTextModel ();
 		else if(style.isCustomStyle (Styles::kTextBoxBehaviorPasswordEdit))
 			model = NEW PasswordTextModel ();
 		else
 			model = NEW StringTextModel ();
 	}
 
-	setTextModel (model);
+	AutoPtr<ProxyTextModel> textBoxModel = NEW ProxyTextModel (this, model);
+	setTextModel (textBoxModel);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -409,6 +172,48 @@ void TextBox::createTextModel ()
 IParameter* TextBox::getTextParameter () const
 {
 	return getParameter ();
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+void TextBox::modifyDisplayString (String& displayString) const
+{
+	if(labelParam && !isEditing ())
+	{
+		String label;
+		labelParam->toString (label);
+		if(!label.isEmpty ())
+		{
+			if(!displayString.isEmpty ())
+				displayString << " ";
+			displayString << label;
+		}
+	}
+
+	if(privateFlags & kMeasuringFitWidth)
+		return;
+
+	if(!style.isCustomStyle (Styles::kTextBoxAppearanceMultiLine) && style.isCustomStyle (Styles::kTextBoxAppearanceFitText))
+	{
+		String fullText (displayString);
+
+		Coord textSpace = style.isVertical () ? getDisplayHeight () : getDisplayWidth ();
+		if(!isEditing () && textSpace > 0)
+			Font::collapseString (displayString, textSpace, getVisualStyle ().getTextFont (), textTrimMode);
+
+		// if truncated, set full text as tooltip
+		if(showFullTextAsTooltip)
+		{
+			if(showFullTextAsTooltip == -1) // first time check: an explicit tooltip suppresses this behavior
+			{
+				showFullTextAsTooltip = tooltip.isEmpty () ? 1 : 0;
+				if(!showFullTextAsTooltip)
+					return;
+			}
+	
+			const_cast<TextBox*> (this)->setTooltip ((displayString == fullText) ? String::kEmpty : fullText);
+		}
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -485,129 +290,21 @@ MouseCursor* TextBox::getTextCursor () const
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void TextBox::buildTextLayout ()
+const ITextLayout* TextBox::getTextLayout () const
 {
-	const IVisualStyle& vs = getVisualStyle ();
-	bool scaleText = style.isCustomStyle (Styles::kTextBoxAppearanceScaleText);
-	bool multiline = style.isCustomStyle (Styles::kTextBoxAppearanceMultiLine);
-	bool markup = style.isCustomStyle (Styles::kTextBoxAppearanceMarkupEnabled);
+	if(auto* textBoxRenderer = ccl_cast<TextBoxRenderer> (renderer))
+		return textBoxRenderer->getTextLayout ();
 
-	ASSERT (textModel)
-	String displayText (getText ());
-
-	Rect rect (getTextRect ());
-	Font font (vs.getTextFont ().zoom (getZoomFactor ()));
-	TextFormat textFormat (vs.getTextFormat ());
-
-	if(!alignmentInitialized)
-	{
-		savedAlignment = vs.getTextFormat ().getAlignment ();
-		alignmentInitialized = true;
-	}
-
-	textFormat.setAlignment (savedAlignment);
-
-	if(scaleText && rect.getSize () != Point (kMaxCoord, kMaxCoord) && !isEditing ())
-		textScaler.scaleTextFont (font, rect, displayText, markup ? TextScaler::kMarkupText : 0);
-
-	if(textModel)
-	{
-		textLayout = NativeGraphicsEngine::instance ().createTextLayout ();
-		textLayout->construct (displayText, rect.getWidth (), rect.getHeight (), font, multiline ? ITextLayout::kMultiLine : ITextLayout::kSingleLine, textFormat);
-		textModel->updateLayout (*textLayout);
-	}
+	return nullptr;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void TextBox::buildFullText (String& text) const
+void TextBox::getText (String& text) const
 {
-	text = plainTextCache;
-	if(labelParam)
-	{
-		String label;
-		labelParam->toString (label);
-		if(!label.isEmpty ())
-		{
-			if(!text.isEmpty ())
-				text << " ";
-			text << label;
-		}
-	}
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
-void TextBox::buildText (String& text) const
-{
-	if(!style.isCustomStyle (Styles::kTextBoxAppearanceMultiLine) && style.isCustomStyle (Styles::kTextBoxAppearanceFitText))
-	{
-		String fullText (text);
-
-		Coord textSpace = style.isVertical () ? getDisplayHeight () : getDisplayWidth ();
-		
-		if(style.isCustomStyle (Styles::kTextBoxAppearanceScaleText))
-		{
-			static constexpr float kFitTextFactorAfterScaling = 1.16f;
-			textSpace = ccl_to_int (textSpace * kFitTextFactorAfterScaling);
-		}
-
-		if(!isEditing () && textSpace > 0)
-			Font::collapseString (text, textSpace, getVisualStyle ().getTextFont (), textTrimMode);
-
-		// if truncated, set full text as tooltip
-		if(showFullTextAsTooltip)
-		{
-			if(showFullTextAsTooltip == -1) // first time check: an explicit tooltip suppresses this behavior
-			{
-				showFullTextAsTooltip = tooltip.isEmpty () ? 1 : 0;
-				if(!showFullTextAsTooltip)
-					return;
-			}
-	
-			const_cast<TextBox*> (this)->setTooltip ((text == fullText) ? String::kEmpty : fullText);
-		}
-	}
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
-ITextLayout* TextBox::getTextLayout ()
-{
-	if(changed)
-	{
-		String oldDisplayedText ((sizeMode & kHFitSize) ? displayedText : String::kEmpty); // only needed for kHFitSize
-
-		buildTextLayout ();
-		if(textLayout)
-		{
-			changed = false;
-			if((sizeMode & kHFitSize) && displayedText != oldDisplayedText)
-				deferFitSizeCheck ();
-		}
-	}
-	return textLayout;
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
-StringRef TextBox::getText ()
-{
-	if(changed)
-	{
-		ASSERT (textModel)
-		if(textModel)
-			textModel->toDisplayString (plainTextCache);
-
-		String oldDisplayedText ((sizeMode & kHFitSize) ? displayedText : String::kEmpty); // only needed for kHFitSize
-
-		buildFullText (displayedText);
-		buildText (displayedText);
-		if((sizeMode & kHFitSize) && displayedText != oldDisplayedText)
-			deferFitSizeCheck ();
-	}
-
-	return displayedText;
+	text.empty ();
+	if(IMutableTextModel* model = getTextModel ())
+		model->toDisplayString (text);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -644,7 +341,6 @@ inline void TextBox::triggerFitSizeCheck ()
 
 void TextBox::paramChanged ()
 {
-	setChanged ();
 	triggerFitSizeCheck ();
 	SuperClass::paramChanged ();
 }
@@ -655,7 +351,6 @@ void TextBox::attached (View* parent)
 {
 	SuperClass::attached (parent);
 	updatePadding ();
-	updateTextScaler ();
 	triggerFitSizeCheck ();
 }
 
@@ -665,11 +360,9 @@ void TextBox::onVisualStyleChanged ()
 {
 	SuperClass::onVisualStyleChanged ();
 	updatePadding ();
-	updateTextScaler ();
 	if(isAttached ())
 	{
 		alignmentInitialized = false;
-		buildTextLayout ();
 		invalidate ();
 	}
 }
@@ -686,44 +379,25 @@ void CCL_API TextBox::notify (ISubject* subject, MessageRef msg)
 			String string;
 			textParam->toString (string);
 			textModel->fromParamString (string);
+			deferCheckFitSize ();
 			SuperClass::notify (subject, msg);
 		}
 		else if(labelParam && isEqualUnknown (subject, labelParam))
 			paramChanged ();
 		else if(colorParam && isEqualUnknown (subject, colorParam))
-			invalidate ();
-		else if(textModel && isEqualUnknown (subject, textModel))
 		{
-			textLayout.release (); // let model create new layout on next getTextLayout / buildTextLayout
-			setChanged ();
 			invalidate ();
+			if(renderer)
+				renderer->invalidateStyleConditions ();
 		}
+		else if(textModel && isEqualUnknown (subject, textModel))
+			invalidate ();
 		else
 			SuperClass::notify (subject, msg);
 	}
 	else if(msg == ITextModel::kRequestLayoutUpdate && isEqualUnknown (subject, textModel))
 	{
-		if(textLayout)
-		{
-			// let model update the existing layout
-			textModel->updateLayout (*textLayout);
-			invalidate ();
-		}
-	}
-	else if(msg == "checkFitSize")
-	{
-		if(style.isCustomStyle (Styles::kTextBoxAppearanceMultiLine))
-		{
-			Point oldSize (getSize ().getSize ());
-			checkFitSize ();
-			if(getSize ().getSize () != oldSize)
-			{
-				Rect rect = getTextRect ();
-				resizeLayout (rect);
-			}
-		}
-		else
-			checkFitSize ();
+		invalidate ();
 	}
 	else
 		SuperClass::notify (subject, msg);
@@ -731,21 +405,20 @@ void CCL_API TextBox::notify (ISubject* subject, MessageRef msg)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void TextBox::deferFitSizeCheck ()
-{
-	(NEW Message ("checkFitSize"))->post (this, -1);
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
 void CCL_API TextBox::setSize (RectRef newSize, tbool invalidate)
 {
-	if(invalidate && size != newSize)
+	if(size != newSize)
 	{
 		Rect rect = getTextRect (newSize);
-		resizeLayout (rect);
+		if(auto* textBoxRenderer = ccl_cast<TextBoxRenderer> (renderer))
+		{
+			textBoxRenderer->setSize (rectIntToF (rect));
+
+			if(invalidate)
+				this->invalidate ();
+		}
 	}
-	
+
 	SuperClass::setSize (newSize, invalidate);
 }
 
@@ -754,9 +427,6 @@ void CCL_API TextBox::setSize (RectRef newSize, tbool invalidate)
 void TextBox::onSize (const Point& delta)
 {
 	bool multiLine = style.isCustomStyle (Styles::kTextBoxAppearanceMultiLine);
-	bool fitText = style.isCustomStyle (Styles::kTextBoxAppearanceFitText);
-	bool scaleText = style.isCustomStyle (Styles::kTextBoxAppearanceScaleText);
-
 	if(isAttached ())
 	{
 		bool mustInvalidate = style.isBorder ();
@@ -771,21 +441,15 @@ void TextBox::onSize (const Point& delta)
 				Alignment align = getVisualStyle ().getTextAlignment ();
 				mustInvalidate = multiLine || ((align.align & Alignment::kHMask) != Alignment::kLeft);
 			}
-
-			// the collapsed text may change
-			if(!multiLine && (fitText || scaleText))
-				setChanged ();
 		}
 
 		if(mustInvalidate)
 			invalidate ();
 	}
-	else if(fitText || scaleText)
-		setChanged ();
 
 	if(multiLine && (sizeMode & kFitSize) == kVFitSize && delta.x != 0)
 	{
-		deferFitSizeCheck ();  // must calc height for given width and resizeLayout
+		deferCheckFitSize ();  // must calc height for given width and resizeLayout
 	}
 
 	SuperClass::onSize (delta);
@@ -796,7 +460,7 @@ void TextBox::onSize (const Point& delta)
 ThemeRenderer* TextBox::getRenderer ()
 {
 	if(renderer == nullptr)
-		renderer = getTheme ().createRenderer (ThemePainter::kTextBoxRenderer, visualStyle);
+		renderer = getTheme ().createRenderer (ThemePainter::kTextBoxRenderer, visualStyle, this);
 	return renderer;
 }
 
@@ -809,30 +473,13 @@ void TextBox::updatePadding ()
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void TextBox::updateTextScaler ()
-{
-	textScaler.setExplicitMaximalFontSize (getVisualStyle ().getMetric<float> ("scaletext.maxfont", 100));
-	textScaler.setExplicitMinimalFontSize (getVisualStyle ().getMetric<float> ("scaletext.minfont", 6));
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
-void TextBox::resizeLayout (RectRef size)
-{
-	if(textLayout == nullptr || changed)
-		return;
-
-	if(textLayout->resize (size.getWidth (), size.getHeight ()) != kResultOk)
-		setChanged ();
-
-	invalidate ();
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
 void TextBox::calcAutoSize (Rect& r)
 {
-	if(getTextLayout () == nullptr) // creates text layout if changed
+	if(auto* renderer = ccl_cast<TextBoxRenderer> (getRenderer ()))
+		renderer->updateAtoms ();
+
+	const ITextLayout* textLayout = getTextLayout ();
+	if(textLayout == nullptr)
 	{
 		SuperClass::calcAutoSize (r);
 		return;
@@ -844,7 +491,9 @@ void TextBox::calcAutoSize (Rect& r)
 	if(bounds.getWidth () > explicitMaxWidth)
 	{
 		bounds.setWidth (explicitMaxWidth);
-		resizeLayout (bounds);
+		if(auto* textBoxRenderer = ccl_cast<TextBoxRenderer> (renderer))
+			textBoxRenderer->setSize (rectIntToF (bounds));
+
 		textLayout->getBounds (bounds);
 	}
 
@@ -870,7 +519,7 @@ void TextBox::calcAutoSize (Rect& r)
 
 	if(!style.isCustomStyle (Styles::kTextBoxAppearanceMultiLine))
 	{
-		if(!plainTextCache.isEmpty ())
+		if(!textLayout->getText ().isEmpty ())
 		{
 			if(getHeight () != 0)
 				r.bottom = getHeight ();
@@ -901,7 +550,10 @@ Coord TextBox::getHFitWidth () const
 {
 	Rect measureStringRect;
 	String fullText;
-	buildFullText (fullText);
+	{
+		ScopedFlag<kMeasuringFitWidth> scope (ccl_const_cast (this)->privateFlags); // measure the full text, not the collapsed one
+		getText (fullText);
+	}
 	Font::measureString (measureStringRect, fullText, getVisualStyle ().getTextFont ());
 	return measureStringRect.getWidth () + padding.left + padding.right;
 }
@@ -910,12 +562,13 @@ Coord TextBox::getHFitWidth () const
 
 bool TextBox::tryModelEditText (const MouseEvent& event)
 {
-	if(textModel && textLayout)
+	if(auto* textBoxRenderer = ccl_cast<TextBoxRenderer> (renderer))
 	{
 		IMutableTextModel::InteractionInfo interactionInfo = { this, event };
-		if(textModel->onTextInteraction (*textLayout, interactionInfo))
+		if(textBoxRenderer->onTextInteraction (interactionInfo))
 			return true;
 	}
+
 	return false;
 }
 
@@ -935,10 +588,12 @@ bool TextBox::onContextMenu (const ContextMenuEvent& event)
 {
 	bool result = SuperClass::onContextMenu (event);
 
-	if(style.isCustomStyle (Styles::kTextBoxBehaviorNoContextMenu) == false && getText ().isEmpty () == false)
+	String text;
+	getText (text);
+	if(style.isCustomStyle (Styles::kTextBoxBehaviorNoContextMenu) == false && text.isEmpty () == false)
 	{
 		Rect r;
-		getRenderer ()->getPartRect (this, kPartTextExtent, r);
+		getRenderer ()->getPartRect (r, kPartTextExtent);
 		if(!r.isEmpty () && (event.wasKeyPressed || r.pointInside (event.where)))
 		{
 			event.contextMenu.addSeparatorItem ();
@@ -1030,13 +685,6 @@ Rect TextBox::getTextRect (RectRef size) const
 bool TextBox::isEditing () const
 {
 	return false;
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
-void TextBox::setChanged ()
-{
-	changed = true;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////

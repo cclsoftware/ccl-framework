@@ -51,6 +51,8 @@ public:
 
 protected:
 	View& view;
+
+	virtual void getDefaultElementName (String& name) const;
 };
 
 //************************************************************************************************

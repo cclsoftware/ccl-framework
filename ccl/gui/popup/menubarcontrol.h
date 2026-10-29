@@ -53,7 +53,7 @@ public:
 	int countMenus () const;
 	Menu* getMenu (int index) const;
 	int findMenu (uchar character) const;
-	int findMenu (const Point& loc);
+	int findMenu (PointRef where);
 
 	void activateMenu (int index);
 	int getActiveIndex () const;

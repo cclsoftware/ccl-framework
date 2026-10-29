@@ -12,7 +12,7 @@
 // For more information, please visit ccl.dev.
 //
 // Filename    : ccl/gui/theme/renderer/backgroundrenderer.cpp
-// Description : Control Renderer
+// Description : Background Renderer
 //
 //************************************************************************************************
 
@@ -30,11 +30,12 @@ namespace CCL {
 class BackgroundRenderer: public ThemeRenderer
 {
 public:
-	BackgroundRenderer (VisualStyle* visualStyle);
+	BackgroundRenderer (VisualStyle* visualStyle, View* owner);
 	
-	void draw (View* view, const UpdateRgn& updateRgn) override;
-	int hitTest (View* view, const Point& loc, Point* clickOffset) override;
-	bool getPartRect (const View* view, int partCode, CCL::Rect& rect) override;
+	// ThemeRenderer
+	void draw (const UpdateRgn& updateRgn) override;
+	int hitTest (PointRef where, Point* clickOffset = nullptr) override;
+	bool getPartRect (Rect& rect, int partCode) override;
 
 protected:
 	SharedPtr<IImage> dialogImage;
@@ -42,7 +43,7 @@ protected:
 	SolidBrush backBrush;
 };
 
-DECLARE_VISUALSTYLE_CLASS (Background)
+DECLARE_TYPELIB_ENTRY (Background)
 
 } // namespace CCL
 

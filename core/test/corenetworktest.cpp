@@ -60,7 +60,7 @@ bool NetworkTest::run (ITestContext& testContext)
 		CORE_TEST_FAILED ("Could not get an IP address by hostname")
 	}
 
-	CStringBuffer<STRING_STACK_SPACE_MAX> message;
+	CStringBuffer<CORE_STRING_STACK_MAX> message;
 	message.appendFormat ("IP address of %s is %d.%d.%d.%d.", hostname, address.ip.address[0], address.ip.address[1], address.ip.address[2], address.ip.address[3]);
 	CORE_TEST_MESSAGE (message);
 

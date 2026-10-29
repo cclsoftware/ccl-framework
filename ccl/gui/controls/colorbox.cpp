@@ -127,7 +127,7 @@ void ColorBox::draw (const UpdateRgn& updateRgn)
 		if(colorParam)
 		{
 			colorParam->getColor (backColor);
-			if(backColor.getAlphaF () == 0)
+			if(!backColor.isVisible ())
 				backColor = vs.getColor ("defaultColor", backColor);
 			else if(!param->isEnabled ())
 				backColor.setAlphaF (.5f);
@@ -148,7 +148,7 @@ void ColorBox::draw (const UpdateRgn& updateRgn)
 			if(!coloredBackground)
 				coloredBackground = NEW ColoredBitmap (background, vs.getBackColor ());
 			
-			if(backColor.getAlphaF () == 0)
+			if(!backColor.isVisible ())
 				backColor = vs.getBackColor ();
 			
 			float luminance = backColor.getLuminance ();
@@ -156,7 +156,7 @@ void ColorBox::draw (const UpdateRgn& updateRgn)
 			backColor.addBrightness (luminanceDiff);
 			
 			Color alphaBlendColor = visualStyle->getColor ("color.alphablend", Colors::kTransparentBlack);
-			if(alphaBlendColor.getAlphaF () != 0)
+			if(alphaBlendColor.isVisible ())
 				backColor.alphaBlend (alphaBlendColor, alphaBlendColor.getAlphaF ());
 			
 			coloredBackground->setColor (backColor);
@@ -191,7 +191,7 @@ void ColorBox::draw (const UpdateRgn& updateRgn)
 
 			bool hilite = selectParam && selectParam->getValue () == selectParam->getMax ();
 			if(hilite)
-				pen.setColor (vs.getHiliteColor ());
+				pen.setColor (vs.getHighlightColor ());
 
 			bool isFrameDirty = true;
 			Rect innerRect (rect);

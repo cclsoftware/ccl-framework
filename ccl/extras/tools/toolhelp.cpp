@@ -67,7 +67,7 @@ PackFolderOptions& PackFolderOptions::fromString (StringID string)
 
 DEFINE_CLASS (ToolHelper, Object)
 DEFINE_CLASS_UID (ToolHelper, 0xa440d062, 0x2ef2, 0x4764, 0xa5, 0xfd, 0x38, 0x12, 0x5a, 0x19, 0x97, 0x15)
-DEFINE_CLASS_NAMESPACE (ToolHelper, "Host")
+DEFINE_CLASS_CATEGORY (ToolHelper, PLUG_CATEGORY_HOST_)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 

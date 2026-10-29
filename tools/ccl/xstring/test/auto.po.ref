@@ -23,6 +23,11 @@ msgctxt "Menu"
 msgid "About $APPNAME"
 msgstr ""
 
+#: ./skinform.xml
+msgctxt "TestForm"
+msgid "Accessible Button Name"
+msgstr ""
+
 #: ./menu.xml
 msgctxt "Menu"
 msgid "Activate Purchased Items"
@@ -228,3 +233,7 @@ msgctxt "TestFormat"
 msgid "Tooltip 2"
 msgstr ""
 
+#: ./skinform.xml
+msgctxt "TestForm"
+msgid "Translated Attribute in define tag"
+msgstr ""

@@ -70,6 +70,7 @@ public:
 	PROPERTY_VARIABLE (Color, disabledTextColor, DisabledTextColor)
 	PROPERTY_VARIABLE (Color, headerTextColor, HeaderTextColor)
 	PROPERTY_VARIABLE (Color, selectedTextColor, SelectedTextColor)
+	PROPERTY_VARIABLE (Color, valueTextColor, ValueTextColor)
 	PROPERTY_VARIABLE (Coord, normalIconSize, NormalIconSize)
 	PROPERTY_VARIABLE (Coord, largeIconSize, LargeIconSize)
 	PROPERTY_VARIABLE (Color, iconColor, IconColor)
@@ -84,16 +85,19 @@ public:
 	PROPERTY_VARIABLE (Coord, closeIconWidth, CloseIconWidth)
 	PROPERTY_VARIABLE (Coord, checkMarkWidth, CheckMarkWidth)
 	PROPERTY_VARIABLE (Coord, fixedSubMenuWidth, FixedSubMenuWidth)
+	PROPERTY_VARIABLE (Coord, valueWidthLimit, ValueWidthLimit)
 	PROPERTY_SHARED_AUTO (IImage, checkMarkIcon, CheckMarkIcon)
 	PROPERTY_SHARED_AUTO (IImage, selectionBarImage, SelectionBarImage)
 	PROPERTY_SHARED_AUTO (IImage, menuArrowIcon, MenuArrowIcon)
 	PROPERTY_SHARED_AUTO (IImage, closeIcon, CloseIcon)
+	PROPERTY_BOOL (fitIconSize, FitIconSize)
 
 	void updateStyle (const IVisualStyle& visualStyle);
 
 	PROPERTY_VARIABLE (Coord, maxViewWidth, MaxViewWidth)
 	PROPERTY_VARIABLE (Coord, maxTitleWidth, MaxTitleWidth)
 	PROPERTY_VARIABLE (Coord, maxKeyWidth, MaxKeyWidth)
+	PROPERTY_VARIABLE (Coord, maxValueWidth, MaxValueWidth)
 	PROPERTY_BOOL (checkMarkNeeded, CheckMarkNeeded)
 	PROPERTY_BOOL (iconSpaceNeeded, iconSpaceNeeded)
 	void recalc (const Menu& menu);
@@ -134,19 +138,20 @@ protected:
 		Coord rowCount;
 
 		ItemMetrics ()
-		: type (kRegular), width (0), height (0), 
+		: type (kRegular), width (0), height (0),
 		  checkPos (0), iconPos (0), iconWidth (0), titlePos (0), keyPos (0), arrowPos (0), rowCount (1)
 		{}
 	};
 
 	void getItemMetrics (ItemMetrics& metrics, const MenuItem& item) const;
 	Color getItemTextColor (const MenuItem& item, int state) const;
+	Color getValueTextColor (const MenuItem& item, int state) const;
 	void drawItemBackground (IGraphics& graphics, RectRef itemSize, const MenuItem& item, int state, bool parentOfCurrentSubMenu) const;
 	void drawSeparatorBottom (IGraphics& graphics, RectRef itemSize) const;
 	void drawMenuArrow (IGraphics& graphics, RectRef itemSize, bool enabled, int state, bool drawBackArrow = false) const;
 };
 
-DECLARE_VISUALSTYLE_CLASS (MenuControl)
+DECLARE_TYPELIB_ENTRY (MenuControl)
 
 //************************************************************************************************
 // MenuControl
@@ -196,7 +201,7 @@ protected:
 	Point initialMousePos;
 	SharedPtr<VisualStyle> menuStyle;
 
-	bool popup (const Point& where, View* view = nullptr);
+	IAsyncOperation* popup (const Point& where, View* view = nullptr);
 	void trackItem (Window* window, PointRef mousePos);
 	void suspendMouseTracking ();
 	void closeAllInternal (KeyState keyState);
@@ -204,7 +209,7 @@ protected:
 	virtual ClientView* getActiveClientView ();
 	virtual Window* findActiveMouseWindow ();
 	virtual View* findActiveMouseView (Window* mouseWindow, PointRef mousePos);
-	
+
 	// Object
 	void CCL_API notify (ISubject* subject, MessageRef msg) override;
 
@@ -367,7 +372,8 @@ public:
 	int getFirstVisibleColumn () const;
 	int getBackButtonColumn () const;
 	void addColumn (CompactMenuControl* control);
-	void removeColumn (int index = -1); ///< -1: deepest
+	bool removeColumn (int index = -1); ///< -1: deepest
+	bool closeDeepestMenu () { return removeColumn (-1); }
 
 	CompactMenuControl* createMenuControl (Menu* menu, CompactMenuControl* parentControl);
 
@@ -404,10 +410,13 @@ private:
 // CompactMenuControl
 //************************************************************************************************
 
-class CompactMenuControl: public MenuControl
+class CompactMenuControl: public MenuControl,
+						  public ICompactMenuControl
+
 {
 public:
 	DECLARE_CLASS (CompactMenuControl, MenuControl)
+	DECLARE_METHOD_NAMES (CompactMenuControl)
 
 	CompactMenuControl (Menu* menu = nullptr, VisualStyle* menuStyle = nullptr);
 
@@ -426,6 +435,12 @@ public:
 	Window* findActiveMouseWindow () override;
 	MenuControl::ClientView* getActiveClientView () override;
 	void CCL_API notify (ISubject* subject, MessageRef msg) override;
+	tbool CCL_API invokeMethod (Variant& returnValue, MessageRef msg) override;	
+
+	// ICompactMenuControl
+	tbool CCL_API closeDeepestMenu () override;
+
+	CLASS_INTERFACE (ICompactMenuControl, MenuControl)
 };
 
 //************************************************************************************************
@@ -528,9 +543,11 @@ class CompactMenuControl::BackButton: public CompactMenuControl::HeaderButton
 public:
 	DECLARE_CLASS_ABSTRACT (BackButton, HeaderButton)
 
-	BackButton (MenuItemPainter* painter = nullptr, Menu* menu = nullptr);
+	BackButton (MenuItemPainter* painter = nullptr, Menu* menu = nullptr, bool fullAreaActive = false);
 
 private:
+	bool fullAreaActive = false;
+
 	// CompactMenuControl::HeaderButton
 	Rect getActiveArea (RectRef itemSize) const override;
 	bool onNavigate (const KeyEvent& event) override;

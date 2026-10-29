@@ -50,7 +50,7 @@ struct TranslationEntry: StringEntry
 {
 	Vector<TranslatedText> translations;
 	
-	TranslationEntry (const char* cString = nullptr, OwnerHint hint = kNoCopy)
+	TranslationEntry (CStringPtr cString = nullptr, OwnerHint hint = kNoCopy)
 	: StringEntry (cString, hint)
 	{}
 

@@ -163,7 +163,7 @@ tbool CCL_API ConsoleComponent::redirect (IConsole* console)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-tbool CCL_API ConsoleComponent::writeLine (const char* text)
+tbool CCL_API ConsoleComponent::writeLine (CStringPtr text)
 {
 	return writeLine (String (text));
 }
@@ -292,7 +292,7 @@ tbool CCL_API ConsoleComponent::paramChanged (IParameter* param)
 	}
 	else if(param->getName () == "export")
 	{
-		AutoPtr<IFileSelector> fs = ccl_new<IFileSelector> (CCL::ClassID::FileSelector);
+		AutoPtr<IFileSelector> fs = ccl_new<IFileSelector> (ClassID::FileSelector);
 		ASSERT (fs != nullptr)
 		FileType fileType;
 		listModel->getEvents ().getFormat (fileType);

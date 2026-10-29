@@ -23,6 +23,7 @@
 #include "core/portable/coresingleton.h"
 
 #include "core/system/coredebug.h"
+#include "core/system/corethread.h"
 
 #include <openssl/err.h>
 
@@ -219,7 +220,13 @@ int OpenSSLContext::flushRead ()
 		while(offset < bytesReadFromSSL)
 		{
 			int bytesWrittenToSocket = 0;
-			if(ioHandler->write (static_cast<const char*> (sslBuffer.getAddress ()) + offset, bytesReadFromSSL, bytesWrittenToSocket) != kSSLSuccess)
+			SSLResult writeResult = ioHandler->write (static_cast<const char*> (sslBuffer.getAddress ()) + offset, bytesReadFromSSL - offset, bytesWrittenToSocket);
+			if(writeResult == kSSLWouldBlock)
+			{
+				Threads::CurrentThread::sleep (1);
+				continue;
+			}
+			if(writeResult != kSSLSuccess)
 				return -1;
 			offset += bytesWrittenToSocket;
 		}

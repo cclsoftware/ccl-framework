@@ -28,6 +28,8 @@
 #include "nodejs/include/node_api.h"
 
 namespace CCL {
+class Attributes;
+
 namespace NodeJS {
 
 //*************************************************************************************************
@@ -46,10 +48,10 @@ public:
 	operator napi_value () const;
 	napi_value* operator & ();
 	
-	void setProperty (const char* name, const NAPIValue& property);
+	void setProperty (CStringPtr name, const NAPIValue& property);
 	Variant toVariant () const;
 
-	static NAPIValue wrap (napi_env environment, void *object, napi_finalize finalizeCallback);
+	static NAPIValue wrap (napi_env environment, void* object, napi_finalize finalizeCallback);
 	template<class Type> Type* unwrap () const;
 
 	static NAPIValue getNull (napi_env environment);
@@ -66,6 +68,8 @@ public:
 private:
 	napi_env environment;
 	napi_value value;
+
+	Attributes* createAttributesFromObject () const;
 
 	static void addObjectProperties (Vector<napi_property_descriptor>& properties, const ITypeInfo& typeInfo);
 	static napi_value cclObjectInvokeMethod (napi_env env, napi_callback_info info);

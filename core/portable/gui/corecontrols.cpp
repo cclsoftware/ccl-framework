@@ -607,11 +607,19 @@ void Control::drawFocusFrame (const DrawEvent& e)
 
 Button::Button (RectRef size, Parameter* p)
 : Control (size, p),
-  down (false)
+  down (false),
+  titleParam (nullptr)
 {
 	wantsTouch (true);
 	wantsFocus (false);
 	isTransparent (false);
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+Button::~Button ()
+{
+	setTitleParam (nullptr);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -634,12 +642,36 @@ void Button::setAttributes (const Attributes& a)
 	setIcon (ViewAttributes::getBitmap (a, ViewAttributes::kIcon));
 	setTitle (a.getString (ViewAttributes::kTitle));
 
+	ConstString titleParamName (a.getString (ViewAttributes::kTitleName));
+	if(!titleParamName.isEmpty ())
+	{
+		ViewController* controller = ViewBuilder::instance ().getCurrentController ();
+		ASSERT (controller)
+		if(controller)
+			titleParam = reinterpret_cast<Parameter*> (controller->getObjectForView (titleParamName, kParamType));
+
+		ASSERT (titleParam)
+		setTitleParam (titleParam);
+		updateTitle ();
+	}
+
 	if(size.isEmpty ())
 	{
 		Rect newSize = size;
 		if(ViewAttributes::autoSizeToBitmap (newSize, image.getBitmap ()))
 			setSize (newSize);
 	}
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+void Button::setTitleParam (Parameter* p)
+{
+	if(titleParam)
+		titleParam->removeObserver (this);
+	titleParam = p;
+	if(titleParam)
+		titleParam->addObserver (this);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -690,6 +722,30 @@ void Button::getHandledGestures (GestureVector& gestures, PointRef where)
 	gestures.add (kGestureSingleTap|kGesturePriorityNormal);
 	gestures.add (kGestureLongPress|kGesturePriorityNormal);
 	gestures.add (kGestureSwipe|kGesturePriorityNormal);
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+void Button::paramChanged (Parameter* p, int msg)
+{
+	Control::paramChanged (p, msg);
+
+	if(msg == Parameter::kChanged)
+	{
+		if(p == titleParam)
+			updateTitle ();
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+void Button::updateTitle ()
+{
+	if(titleParam)
+	{
+		titleParam->toString (title.getBuffer (), title.getSize ());
+		invalidate ();
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////

@@ -705,7 +705,7 @@ HRESULT IEWebBrowserControl::EventHandler::Invoke (InvokeArgs& args)
 			ConvertedVariant v (args.getArg (1));
 			VariantString urlString (v);
 			Url url (urlString);
-			bool accepted = url.getProtocol ().isEmpty () || url.getProtocol ().compare (CCLSTR ("file"), false) == 0;
+			bool accepted = url.getProtocol ().isEmpty () || url.getProtocol ().compare (CCLSTR ("file"), false) == Text::kEqual;
 			if(accepted == false)
 			{
 				VARIANT& cancel = args.getArg (6);

@@ -134,11 +134,11 @@ LinuxFileStream::LinuxFileStream (LinuxNativeFileSystem* fileSystem, void* file,
 
 tbool CCL_API LinuxFileStream::getPath (IUrl& path)
 { 
-	char filePath[STRING_STACK_SPACE_MAX] = {0};
+	char filePath[CORE_STRING_STACK_MAX] = {0};
 	MutableCString fdPath ("/proc/self/fd/");
 	fdPath.appendInteger (intFromPointer (file));
 	ssize_t length = ::readlink (fdPath, filePath, ARRAY_COUNT (filePath));
-	if(length > 0 && length + 1 < STRING_STACK_SPACE_MAX)
+	if(length > 0 && length + 1 < CORE_STRING_STACK_MAX)
 	{
 		filePath[length] = 0;
 		return path.fromPOSIXPath (filePath, IUrl::kFile);

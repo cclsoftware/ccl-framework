@@ -31,6 +31,8 @@
 using namespace CCL;
 using namespace MacOS;
 
+#define ROLE provider->getEffectiveProvider ().getElementRole ()
+
 //************************************************************************************************
 // AccessibilityScrollbar
 //************************************************************************************************
@@ -96,6 +98,9 @@ static const AccessibilityScrollDirection kVerticalOrientation = AccessibilitySc
 - (BOOL)accessibilityShowContextMenu; // registered as custom action
 - (BOOL)accessibilityShowContextMenuWithOptions:(BOOL)checkonly;
 
+// NSObject
+- (BOOL)respondsToSelector:(SEL)aSelector;
+
 // NSAccessibility protocol
 - (NSArray*)accessibilityChildren;
 - (NSAccessibilityRole)accessibilityRole;
@@ -114,6 +119,7 @@ static const AccessibilityScrollDirection kVerticalOrientation = AccessibilitySc
 - (BOOL)accessibilityPerformIncrement;
 - (BOOL)accessibilityPerformDecrement;
 - (BOOL)accessibilityPerformShowMenu;
+- (BOOL)accessibilityPerformPick;
 - (BOOL)accessibilityPerformConfirm;
 - (id)accessibilityHorizontalScrollBar;
 - (id)accessibilityVerticalScrollBar;
@@ -139,7 +145,7 @@ static const AccessibilityScrollDirection kVerticalOrientation = AccessibilitySc
 	if(!provider)
 		return @"";
 
-	AccessibilityElementRole role = provider->getEffectiveProvider ().getElementRole ();
+	AccessibilityElementRole role = ROLE;
 	
 	switch(role)
 	{
@@ -219,7 +225,7 @@ static const AccessibilityScrollDirection kVerticalOrientation = AccessibilitySc
 	{
 		provider = _provider;
 
-		if(provider->getEffectiveProvider ().getElementRole () == AccessibilityElementRole::kRoot)
+		if(ROLE == AccessibilityElementRole::kRoot)
 			rootView = YES;
 
 		else if(UnknownPtr<IAccessibilityScrollProvider> scroll = provider->getEffectiveProvider ().asUnknown ())
@@ -337,7 +343,7 @@ static const AccessibilityScrollDirection kVerticalOrientation = AccessibilitySc
 	if(!provider)
 		return nullptr;
 
-	if(UnknownPtr<CCL::IAccessibilityValueProvider> valueProvider = provider->getValueProvider ().asUnknown ())
+	if(UnknownPtr<IAccessibilityValueProvider> valueProvider = provider->getValueProvider ().asUnknown ())
 	{
 		String value;
 		tresult result = valueProvider->getValue (value);
@@ -345,7 +351,7 @@ static const AccessibilityScrollDirection kVerticalOrientation = AccessibilitySc
 			return [value.createNativeString<NSString*> () autorelease];
 	}
 
-	if(UnknownPtr<CCL::IAccessibilityToggleProvider> toggleProvider = provider->getValueProvider ().asUnknown ())
+	if(UnknownPtr<IAccessibilityToggleProvider> toggleProvider = provider->getValueProvider ().asUnknown ())
 	{
 		String label;
 		AccessibilityProvider::getToggleText (label, toggleProvider->isToggleOn ());
@@ -424,7 +430,7 @@ static const AccessibilityScrollDirection kVerticalOrientation = AccessibilitySc
 	if(!provider)
 		return NSAccessibilityUnknownRole;
 
-	AccessibilityElementRole role = provider->getEffectiveProvider ().getElementRole ();
+	AccessibilityElementRole role = ROLE;
 			
 	switch(role)
 	{
@@ -483,7 +489,7 @@ static const AccessibilityScrollDirection kVerticalOrientation = AccessibilitySc
 	if(!provider)
 		return NO;
 
-	AccessibilityElementRole role = provider->getEffectiveProvider ().getElementRole ();
+	AccessibilityElementRole role = ROLE;
 	if(role == AccessibilityElementRole::kGroup)
 	{
 		String label;
@@ -507,7 +513,7 @@ static const AccessibilityScrollDirection kVerticalOrientation = AccessibilitySc
 	if(!provider)
 		return NO;
 
-	AccessibilityElementRole role = provider->getEffectiveProvider ().getElementRole ();
+	AccessibilityElementRole role = ROLE;
 	if(role == AccessibilityElementRole::kGroup || role == AccessibilityElementRole::kList || role == AccessibilityElementRole::kRoot)
 		return NO;
 
@@ -523,7 +529,7 @@ static const AccessibilityScrollDirection kVerticalOrientation = AccessibilitySc
 	if(!provider)
 		return [NSNumber numberWithFloat:0.0];
 
-	if(UnknownPtr<CCL::IAccessibilityExpandCollapseProvider> expandProvider = provider->getEffectiveProvider ().asUnknown ())
+	if(UnknownPtr<IAccessibilityExpandCollapseProvider> expandProvider = provider->getEffectiveProvider ().asUnknown ())
 	{
 		if(expandProvider->isExpanded ())
 			return [NSNumber numberWithFloat:1.0];
@@ -586,10 +592,9 @@ static const AccessibilityScrollDirection kVerticalOrientation = AccessibilitySc
 	if(!provider)
 		return NO;
 
-	AccessibilityElementRole role = provider->getEffectiveProvider ().getElementRole ();
-	if(role == AccessibilityElementRole::kComboBox) // VoiceOver triggers Confirm action when hitting VO+Space to open the dialog
+	if([self allowConfirm])
 	{
-		if(UnknownPtr<CCL::IAccessibilityExpandCollapseProvider> expandProvider = provider->getEffectiveProvider ().asUnknown ())
+		if(UnknownPtr<IAccessibilityExpandCollapseProvider> expandProvider = provider->getEffectiveProvider ().asUnknown ())
 			return expandProvider->expand (true) == kResultOk ? YES : NO;
 		#if DEBUG_LOG
 		NSLog (@"accessibilityPerformConfirm: Element %@ has no expand provider. Confirm ignored.", [self getRoleString]);
@@ -605,12 +610,11 @@ static const AccessibilityScrollDirection kVerticalOrientation = AccessibilitySc
 	if(!provider)
 		return NO;
 
-	AccessibilityElementRole role = provider->getEffectiveProvider ().getElementRole ();
-	if(role == AccessibilityElementRole::kButton || role == AccessibilityElementRole::kComboBox || role == AccessibilityElementRole::kMenuItem || role == AccessibilityElementRole::kMenu || role == AccessibilityElementRole::kDataItem)
+	if([self allowPress])
 	{
-		if(UnknownPtr<CCL::IAccessibilityActionProvider> actionProvider = provider->getEffectiveProvider ().asUnknown ())
+		if(UnknownPtr<IAccessibilityActionProvider> actionProvider = provider->getEffectiveProvider ().asUnknown ())
 			return actionProvider->performAction () == kResultOk ? YES : NO;
-		else if(UnknownPtr<CCL::IAccessibilityToggleProvider> toggleProvider = provider->getEffectiveProvider ().asUnknown ())
+		else if(UnknownPtr<IAccessibilityToggleProvider> toggleProvider = provider->getEffectiveProvider ().asUnknown ())
 			return toggleProvider->toggle () == kResultOk ? YES : NO;
 		#if DEBUG_LOG
 		NSLog (@"accessibilityPerformPress: Element %@ has no ActionProvider or ToggleProvider. Press ignored.", [self getRoleString]);
@@ -628,15 +632,15 @@ static const AccessibilityScrollDirection kVerticalOrientation = AccessibilitySc
 		return NO;
 
 	tresult result = kResultFailed;
-	if(UnknownPtr<CCL::IAccessibilityValueProvider> valueProvider = provider->getValueProvider ().asUnknown ())
+	if(UnknownPtr<IAccessibilityValueProvider> valueProvider = provider->getValueProvider ().asUnknown ())
 	{
 		result = valueProvider->increment ();
 		NSAccessibilityPostNotification(self, NSAccessibilityValueChangedNotification);
 	}
 	else if(UnknownPtr<IAccessibilityScrollProvider> scroll = provider->getEffectiveProvider ().asUnknown ())
 	{
-		if(scroll->canScroll(AccessibilityScrollDirection::kUp))
-		   return kResultOk == scroll->scroll (AccessibilityScrollDirection::kUp, AccessibilityScrollAmount::kStep);
+		if(scroll->canScroll(AccessibilityScrollDirection::kDown))
+		   return kResultOk == scroll->scroll (AccessibilityScrollDirection::kDown, AccessibilityScrollAmount::kStep);
 		if(scroll->canScroll(AccessibilityScrollDirection::kRight))
 		   return kResultOk == scroll->scroll (AccessibilityScrollDirection::kRight, AccessibilityScrollAmount::kStep);
 	}
@@ -652,15 +656,15 @@ static const AccessibilityScrollDirection kVerticalOrientation = AccessibilitySc
 		return NO;
 
 	tresult result = kResultFailed;
-	if(UnknownPtr<CCL::IAccessibilityValueProvider> valueProvider = provider->getValueProvider ().asUnknown ())
+	if(UnknownPtr<IAccessibilityValueProvider> valueProvider = provider->getValueProvider ().asUnknown ())
 	{
 		result = valueProvider->decrement ();
 		NSAccessibilityPostNotification(self, NSAccessibilityValueChangedNotification);
 	}
 	else if(UnknownPtr<IAccessibilityScrollProvider> scroll = provider->getEffectiveProvider ().asUnknown ())
 	{
-		if(scroll->canScroll(AccessibilityScrollDirection::kDown))
-		   return kResultOk == scroll->scroll (AccessibilityScrollDirection::kDown, AccessibilityScrollAmount::kStep);
+		if(scroll->canScroll(AccessibilityScrollDirection::kUp))
+		   return kResultOk == scroll->scroll (AccessibilityScrollDirection::kUp, AccessibilityScrollAmount::kStep);
 		if(scroll->canScroll(AccessibilityScrollDirection::kLeft))
 		   return kResultOk == scroll->scroll (AccessibilityScrollDirection::kLeft, AccessibilityScrollAmount::kStep);
 	}
@@ -778,14 +782,17 @@ static const AccessibilityScrollDirection kVerticalOrientation = AccessibilitySc
 - (NSArray<NSAccessibilityCustomAction*>*)accessibilityCustomActions;
 {
 	if(!customActions)
+		customActions = [[NSMutableArray alloc] initWithCapacity:1];
+
+	[customActions removeAllObjects];
+
+	if([self accessibilityShowContextMenuWithOptions:true])
 	{
-		if([self accessibilityShowContextMenuWithOptions:true])
-		{
-			customActions = [[NSMutableArray alloc] initWithCapacity:1];
-			NSAccessibilityCustomAction *action = [[NSAccessibilityCustomAction alloc] initWithName:@"show menu" target:self selector:@selector(accessibilityShowContextMenu)];
-			[customActions addObject:action];
-		}
+		customActions = [[NSMutableArray alloc] initWithCapacity:1];
+		NSAccessibilityCustomAction *action = [[NSAccessibilityCustomAction alloc] initWithName:@"show menu" target:self selector:@selector(accessibilityShowContextMenu)];
+		[customActions addObject:action];
 	}
+
 	return customActions;
 }
 
@@ -793,7 +800,7 @@ static const AccessibilityScrollDirection kVerticalOrientation = AccessibilitySc
 
 - (BOOL)isAccessibilitySelectorAllowed:(SEL)selector
 {
-	if(selector == @selector(accessibilityShowContextMenu))
+	if(selector == @selector(accessibilityShowContextMenu) && [customActions count] > 0)
 		return YES;
 
 	return [super isAccessibilitySelectorAllowed:selector];
@@ -825,6 +832,65 @@ static const AccessibilityScrollDirection kVerticalOrientation = AccessibilitySc
 		return self;
 	else
 		return nil;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+- (BOOL)allowPress
+{
+	if(!provider)
+		return NO;
+
+	AccessibilityElementRole role = ROLE;
+	return ROLE == AccessibilityElementRole::kButton || role == AccessibilityElementRole::kComboBox || role == AccessibilityElementRole::kMenuItem || role == AccessibilityElementRole::kMenu || role == AccessibilityElementRole::kDataItem;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+- (BOOL)allowConfirm
+{
+	if(!provider)
+		return NO;
+
+	return ROLE == AccessibilityElementRole::kComboBox; // VoiceOver triggers Confirm action when hitting VO+Space to open the dialog
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+- (BOOL)respondsToSelector:(SEL)aSelector
+{
+	if(!provider)
+		return [super respondsToSelector:aSelector];
+
+	if(aSelector == @selector(accessibilityPerformPick) || aSelector == @selector(accessibilityPerformShowMenu))
+		return NO;
+
+	if(aSelector == @selector(accessibilityPerformConfirm))
+		return [self allowConfirm];
+
+	if(aSelector == @selector(accessibilityPerformPress))
+		return [self allowPress];
+
+	if(aSelector == @selector(accessibilityShowContextMenu))
+		return [self accessibilityShowContextMenuWithOptions:true];
+
+	if(aSelector == @selector(accessibilityPerformIncrement) || aSelector == @selector(accessibilityPerformDecrement))
+	{
+		if(UnknownPtr<IAccessibilityValueProvider> valueProvider = provider->getValueProvider ().asUnknown ())
+			return YES;
+		if(UnknownPtr<IAccessibilityScrollProvider> scroll = provider->getEffectiveProvider ().asUnknown ())
+			return YES;
+		return NO;
+	}
+
+	if(aSelector == @selector(isAccessibilityExpanded))
+	{
+		if(UnknownPtr<IAccessibilityExpandCollapseProvider> expandProvider = provider->getEffectiveProvider ().asUnknown ())
+			return YES;
+		return NO;
+	}
+
+	return [super respondsToSelector:aSelector];
 }
 
 @end

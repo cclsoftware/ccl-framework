@@ -24,7 +24,7 @@
 
 namespace CCL {
 
-DECLARE_VISUALSTYLE_CLASS (SceneView3D)
+DECLARE_TYPELIB_ENTRY (SceneView3D)
 
 } // namespace CCL
 
@@ -221,10 +221,11 @@ tresult CCL_API UserView3D::getContentProperty (Variant& value, ContentProperty3
 // SceneView3D
 //************************************************************************************************
 
-BEGIN_VISUALSTYLE_CLASS (SceneView3D, VisualStyle, "SceneView3DStyle")
-	ADD_VISUALSTYLE_STRING  ("camera")
-	ADD_VISUALSTYLE_METRIC  ("multisamplingfactor")
-END_VISUALSTYLE_CLASS (SceneView3D)
+DEFINE_TYPELIB_ENTRY_WITH_PARENT (SceneView3D, VisualStyle, "SceneView3DStyle", VISUALSTYLES_TYPELIB)
+BEGIN_TYPELIB_MEMBERS (SceneView3D)
+	ADD_TYPELIB_MEMBER_STRING ("camera")
+	ADD_TYPELIB_MEMBER_METRIC ("multisamplingfactor")
+END_TYPELIB_MEMBERS (SceneView3D)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 

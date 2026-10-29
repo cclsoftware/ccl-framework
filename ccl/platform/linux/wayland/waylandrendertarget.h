@@ -46,10 +46,10 @@ protected:
 	public:
 		WaylandMutableRegion (WaylandRenderTarget& target);
 		
-		void addRect (RectRef rect, bool requestFrame);
+		PROPERTY_BOOL (updatesSuspended, UpdatesSuspended)
 
 		// MutableRegion
-		void CCL_API addRect (RectRef rect);
+		void CCL_API addRect (RectRef rect) override;
 		
 	private:
 		WaylandRenderTarget& target;

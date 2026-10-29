@@ -296,7 +296,6 @@ static CCL::CommandRegistrar UNIQUE_IDENT (CommandRegistrar) (category, name, fl
 // Command Dispatcher
 //************************************************************************************************
 
-
 /** Command dispatch table entry. */
 template <class T>
 struct CommandDispatchEntry

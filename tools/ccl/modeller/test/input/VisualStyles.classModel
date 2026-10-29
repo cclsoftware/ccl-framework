@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Model.ClassRepository xmlns:x="https://ccl.dev/xml" name="Visual Styles">
+	<List x:id="classes">
+		<Model.Class name="TestButton">
+			<List x:id="members">
+				<Model.Member name="highlightColor" type="void"/>
+				<Model.Member name="spacing" type="void"/>
+				<Model.Member name="outline" type="void"/>
+			</List>
+		</Model.Class>
+	</List>
+</Model.ClassRepository>

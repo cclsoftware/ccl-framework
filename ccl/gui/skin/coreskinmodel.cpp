@@ -1086,7 +1086,7 @@ SkinAttributeType CCL_API CoreSkinEditSupport::getAttributeType (ISkinElement* _
 {
 	auto element = unknown_cast<CoreSkinElement> (_element);
 	auto viewElement = ccl_cast<CoreSkinViewElement> (element);
-	auto controlClass = viewElement ? unknown_cast<CoreControlClass> (viewElement->getElementClass ()) : nullptr;
+	auto controlClass = viewElement ? unknown_cast<CoreControlClass> (viewElement->getReferencedType ()) : nullptr;
 
 	if(attributeName.endsWith ("color") || attributeName.endsWith ("color.disabled") || attributeName.endsWith ("color.on"))
 		return SkinAttributeTypes::kColor;
@@ -1131,7 +1131,7 @@ SkinAttributeType CCL_API CoreSkinEditSupport::getAttributeType (ISkinElement* _
 tbool CCL_API CoreSkinEditSupport::isVariantOrTabView (ISkinViewElement* _viewElement) const
 {
 	auto viewElement = unknown_cast<CoreSkinViewElement> (_viewElement);
-	auto elementClass = viewElement ? viewElement->getElementClass () : nullptr;
+	auto elementClass = viewElement ? viewElement->getReferencedType () : nullptr;
 	return elementClass ? CString (elementClass->getClassName ()) == Core::Skin::ViewClasses::kVariantView : false;
 }
 
@@ -1141,7 +1141,7 @@ tbool CCL_API CoreSkinEditSupport::canHaveChildViews (ISkinViewElement* _viewEle
 {
 	auto viewElement = unknown_cast<CoreSkinViewElement> (_viewElement);
 	auto containerViewClass = CoreSkinTypeLibrary::instance ().getContainerViewClass ();
-	return viewElement && ccl_is_base_of (containerViewClass, viewElement->getElementClass ());
+	return viewElement && ccl_is_base_of (containerViewClass, viewElement->getReferencedType ());
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1149,7 +1149,7 @@ tbool CCL_API CoreSkinEditSupport::canHaveChildViews (ISkinViewElement* _viewEle
 ISkinViewElement* CCL_API CoreSkinEditSupport::getReferencedForm (ISkinViewElement* _viewElement) const
 {
 	auto viewElement = unknown_cast<CoreSkinViewElement> (_viewElement);
-	auto controlClass = viewElement ? unknown_cast<CoreControlClass> (viewElement->getElementClass ()) : nullptr;
+	auto controlClass = viewElement ? unknown_cast<CoreControlClass> (viewElement->getReferencedType ()) : nullptr;
 	if(controlClass)
 	{
 		if(controlClass->isBaseClass ())
@@ -1220,7 +1220,7 @@ tbool CCL_API CoreSkinEditSupport::drawFormBackground (IGraphics& graphics, ISki
 tbool CCL_API CoreSkinEditSupport::drawViewElement (IGraphics& graphics, ISkinViewElement* _viewElement) const
 {
 	auto viewElement = unknown_cast<CoreSkinViewElement> (_viewElement);
-	auto controlClass = viewElement ? unknown_cast<CoreControlClass> (viewElement->getElementClass ()) : nullptr;
+	auto controlClass = viewElement ? unknown_cast<CoreControlClass> (viewElement->getReferencedType ()) : nullptr;
 	if(!controlClass || controlClass->isBaseClass ())
 		return false;
 

@@ -28,7 +28,7 @@ interface IParameter;
 //************************************************************************************************
 // IController
 /**	A controller implements the backend logic for user interaction.
-	It provides parameters and other objects used by GUI widgets. 
+	It provides parameters and other objects used by UI controls. 
 	\ingroup gui_skin */
 //************************************************************************************************
 
@@ -37,7 +37,7 @@ interface IController: IUnknown
 	/** Get number of parameters. */
 	virtual int CCL_API countParameters () const = 0;
 
-	/** Get parameter by index. */
+	/** Get parameter at index. */
 	virtual IParameter* CCL_API getParameterAt (int index) const = 0;
 
 	/** Get parameter by name. */

@@ -215,17 +215,21 @@ class MacroParser:
         self.sources = sources
         self.conditions = conditions
 
-    def run(self) -> List[Macro]:
-        """Parse scan_path recursively, process included files."""
+    def run(self) -> Optional[List[Macro]]:
+        """Parse scan_path recursively, process included files.
+        Returns None if any source file could not be parsed.
+        """
 
         result: List[Macro] = list()
+        succeeded = True
         for source in self.sources:
             try:
                 self._parse_file(source, result)
-            except OSError as e:
+            except (OSError, UnicodeDecodeError) as e:
                 logging.error(f"could not parse file '{source.path}': {e}")
+                succeeded = False
 
-        return result
+        return result if succeeded else None
 
     @staticmethod
     def _append_macro(macros: List[Macro], macro_text_raw: str, source: Source) -> None:
@@ -244,7 +248,7 @@ class MacroParser:
 
         condition_handler = ConditionalStatementHandler(filepath, self.conditions)
 
-        with filepath.open(mode="r") as file:
+        with filepath.open(mode="r", encoding="utf-8-sig") as file:
             logging.info(f"parsing file '{filepath}'")
 
             lines = file.readlines()
@@ -276,14 +280,14 @@ class MacroParser:
                         MacroParser._append_macro(macros, line, source)
                     # Multi-line
                     elif line.endswith("\\"):
-                        macro += line
+                        macro += MacroParser._strip_line_continuation(line)
                     else:
                         logging.warning(f"unexpected line {line}")
                     continue
 
                 # Multiline macro, line ends on '\'.
                 if macro and line.endswith("\\"):
-                    macro += line
+                    macro += MacroParser._strip_line_continuation(line)
                     continue
 
                 # Last line of a macro, does not end on '\' character.
@@ -300,13 +304,19 @@ class MacroParser:
                     continue
 
     @staticmethod
+    def _strip_line_continuation(line: str) -> str:
+        """Replace trailing macro linebreak '\\' with a whitespace. Other
+        backslashes (e.g. escape sequences in string literals) are kept.
+        """
+        return line[:-1] + " "
+
+    @staticmethod
     def _cleanup_sourcecode(parsed_text: str) -> str:
         result = parsed_text
 
-        # (1) Remove tabs, (2) replace newlines, (3) replace macro linebreak '\'
+        # (1) Remove tabs, (2) replace newlines
         result = result.replace("\t", " ")
         result = result.replace("\n", " ")
-        result = result.replace("\\", " ")
 
         # Consolidate superfluous whitespaces to single whitespaces.
         while "  " in result:

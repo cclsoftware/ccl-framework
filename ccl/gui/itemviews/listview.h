@@ -79,7 +79,7 @@ protected:
 	ItemSize itemSize[Styles::kNumListViewTypes];
 };
 
-DECLARE_VISUALSTYLE_CLASS (ListStyle)
+DECLARE_TYPELIB_ENTRY (ListStyle)
 
 //************************************************************************************************
 // ListView

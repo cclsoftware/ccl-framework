@@ -10,6 +10,7 @@ CCL in Detail
    components
    phases
    android
+   wasm
    filesystem_urls
    virtualfilesystem
    plugins

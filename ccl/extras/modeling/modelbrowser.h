@@ -30,7 +30,7 @@ namespace CCL {
 // ClassModelBrowser
 //************************************************************************************************
 
-class ClassModelBrowser: public CCL::Browser
+class ClassModelBrowser: public Browser
 {
 public:
 	DECLARE_CLASS_ABSTRACT (ClassModelBrowser, Browser)

@@ -22,6 +22,7 @@
 #include "ccl/base/object.h"
 
 #include "ccl/public/text/cclstring.h"
+#include "ccl/public/plugins/pluginst.h"
 #include "ccl/public/devices/ideviceenumerator.h"
 
 namespace CCL {
@@ -61,12 +62,13 @@ protected:
 //************************************************************************************************
 
 class DeviceEnumerator: public Object,
-						public IDeviceEnumerator
+						public IDeviceEnumerator,
+						public PluginInstance
 {
 public:
 	DECLARE_CLASS_ABSTRACT (DeviceEnumerator, Object)
 
-	CLASS_INTERFACE (IDeviceEnumerator, Object)
+	CLASS_INTERFACE2 (IDeviceEnumerator, IPluginInstance, Object)
 };
 
 } // namespac CCL

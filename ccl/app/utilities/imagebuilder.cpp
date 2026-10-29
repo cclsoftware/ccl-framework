@@ -59,7 +59,7 @@ IImage* ImageBuilder::createBitmapCopy (IImage* sourceImage)
 
 	AutoPtr<IImage> destImage = GraphicsFactory::createBitmap (sourceImage->getWidth (), sourceImage->getHeight (), pixelFormat, scaleFactor);
 	AutoPtr<IGraphics> g = GraphicsFactory::createBitmapGraphics (destImage);
-	ImageMode mode (1.f, ImageMode::kInterpolationHighQuality);
+	ImageMode mode (1.f, kImageInterpolationHighQuality);
 	g->drawImage (sourceImage, Point (), &mode);
 
 	return destImage.detach ();
@@ -78,7 +78,7 @@ IImage* ImageBuilder::createSizedImage (IImage* sourceImage, int width, int heig
 
 	AutoPtr<IImage> destImage = GraphicsFactory::createBitmap (width, height, IBitmap::kRGBAlpha, scaleFactor);
 	AutoPtr<IGraphics> g = GraphicsFactory::createBitmapGraphics (destImage);
-	ImageMode mode (1.f, ImageMode::kInterpolationHighQuality);
+	ImageMode mode (1.f, kImageInterpolationHighQuality);
 	g->drawImage (sourceImage, srcRect, dstRect, &mode);
 	
 	return destImage.detach ();
@@ -99,7 +99,7 @@ IImage* ImageBuilder::createBlurredImage (IImage* source, float blurFactor, int 
 	{
 		Rect src (0, 0, source->getWidth (), source->getHeight ());
 		Rect dst (Rect (0, 0, width, height));
-		ImageMode mode (1.0f, ImageMode::kInterpolationHighQuality);
+		ImageMode mode (1.0f, kImageInterpolationHighQuality);
 		limitedSourceGraphics->drawImage (source, src, dst, &mode);
 	}
 	

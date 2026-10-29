@@ -138,6 +138,7 @@ LRESULT CALLBACK CCLDialogWindowClassProc (HWND hwnd, UINT msg, WPARAM wParam, L
 LRESULT CALLBACK CCLMessageWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam); // window.win.cpp
 LRESULT CALLBACK CCLTransparentWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam); // transparentwindow.win.cpp
 void InitIEBrowserEmulationVersion (); // webbrowserview.win.cpp
+bool IsWebView2EnabledAndInstalled (); // webbrowserview2.win.cpp
 
 HINSTANCE g_hMainInstance = nullptr;
 HWND g_hMessageWindow = nullptr;
@@ -298,7 +299,8 @@ bool WindowsUserInterface::startupPlatform (ModuleRef module)
 
 	if(ownProcess == true)
 	{
-		InitIEBrowserEmulationVersion ();
+		if(IsWebView2EnabledAndInstalled () == false)
+			InitIEBrowserEmulationVersion ();
 
 		// register for system suspend/resume notifications
 		DEVICE_NOTIFY_SUBSCRIBE_PARAMETERS dnsp = {powerManagementCallback, this};

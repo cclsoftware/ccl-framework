@@ -25,11 +25,34 @@
 #include "ccl/base/storage/storage.h"
 #include "ccl/base/storage/settings.h"
 
+#include "ccl/public/base/iarrayobject.h"
+#include "ccl/public/gui/iparamprovider.h"
+
 using namespace CCL;
 
 //************************************************************************************************
 // ParamContainer
 //************************************************************************************************
+
+UIDRef ParamContainer::toParameterClass (ParameterType type)
+{
+	switch(type)
+	{
+	case kParamTypeInteger : return ClassID::IntParam;
+	case kParamTypeFloat : return ClassID::FloatParam;
+	case kParamTypeString : return ClassID::StringParam;
+	case kParamTypeList : return ClassID::ListParam;
+	case kParamTypeCommand : return ClassID::CommandParam;
+	case kParamTypeColor : return ClassID::ColorParam;
+	case kParamTypeImage : return ClassID::ImageProvider;
+	case kParamTypeScroll : return ClassID::ScrollParam;
+	case kParamTypeTextModel : return ClassID::TextModelProvider;
+	default :
+		return ClassID::Parameter;
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
 
 DEFINE_CLASS (ParamContainer, Object)
 DEFINE_CLASS_NAMESPACE (ParamContainer, NAMESPACE_CCL)
@@ -287,15 +310,97 @@ void ParamContainer::enableAll (bool state)
 
 void ParamContainer::addParametersFrom (const ParamContainer& container)
 {
-	VectorForEachFast (container.params, IParameter*, p)
-		if(Object* obj = unknown_cast<Object> (p))
+	VectorForEachFast (container.params, IParameter*, _p)
+		if(Parameter* otherParam = unknown_cast<Parameter> (_p))
 		{
-			UnknownPtr<IParameter> newParam (static_cast<IObject*> (obj->clone ()));
-			add (newParam, p->getTag ());
+			Parameter* newParam = static_cast<Parameter*> (otherParam->clone ());
+			add (newParam, otherParam->getTag ());
 		}
 	EndFor
+}
 
-	// todo: copy arrays?
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+void ParamContainer::addParameters (const IParameterDefinitionProvider& provider)
+{
+	int paramCount = provider.countParameters ();
+	for(int paramIndex = 0; paramIndex < paramCount; paramIndex++)
+	{
+		ParameterDefinition definition;
+		provider.getParameterAt (definition, paramIndex);
+
+		IParameter* p = nullptr;
+		if(!definition.className.isEmpty ())
+			p = Parameter::createInstance (definition.className);
+		if(p == nullptr)
+			p = newParameter (toParameterClass (definition.type));
+		ASSERT (p != nullptr)
+		if(!p)
+			continue;
+
+		if(definition.flags != 0)
+			for(int flagIndex = 0; flagIndex <= kLastParameterFlag; flagIndex++)
+			{
+				int mask = 1 << flagIndex;
+				if(get_flag (mask, definition.flags))
+					p->setState (mask, true);
+			}
+
+		p->setName (definition.name);
+		p->setTitle (definition.title);
+
+		if(definition.type == kParamTypeList)
+		{
+			UnknownPtr<IArrayObject> listEntries (definition.data.asUnknown ());
+			UnknownPtr<IListParameter> listParam (p);
+			if(listEntries.isValid () && listParam.isValid ())
+			{
+				int numEntries = listEntries->getArrayLength ();
+				for(int entryIndex = 0; entryIndex < numEntries; entryIndex++)
+				{
+					Variant entryValue;
+					listEntries->getArrayElement (entryValue, entryIndex);
+					if(entryValue.isString ())
+						listParam->appendString (entryValue.asString ());
+					else
+						listParam->appendValue (entryValue);
+				}
+			}
+		}
+		else if(definition.type == kParamTypeInteger || definition.type == kParamTypeFloat)
+		{
+			p->setMin (definition.minValue);
+			p->setMax (definition.maxValue);
+
+			if(definition.precision.asInt () > 0)
+				p->setPrecision (definition.precision);
+		}
+		
+		p->setDefaultValue (definition.defaultValue);
+		p->setValue (definition.defaultValue);
+
+		if(!definition.curveName.isEmpty ())
+		{
+			AutoPtr<IParamCurve> curve = ParamCurveFactory::instance ().create (definition.curveName);
+
+			if(InterpolatorCurve* interpolator = unknown_cast<InterpolatorCurve> (curve))
+				interpolator->setRange (definition.minValue, definition.maxValue, definition.midValue);
+
+			p->setCurve (curve);
+		}
+
+		if(!definition.unitName.isEmpty ())
+		{
+			AutoPtr<IFormatter> formatter = FormatterFactory::create (definition.unitName);
+
+			if(UnknownPtr<IFormatterRange> formatterRange = formatter.as_plain ())
+				formatterRange->setRange (definition.minValue, definition.maxValue);
+
+			p->setFormatter (formatter);
+		}
+
+		add (p, definition.tag);
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////

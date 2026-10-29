@@ -87,6 +87,7 @@ struct ComVariant: VARIANT
 	static bool convert (VARIANT& comVariant, const CCL::Variant& cclVariant);
 	static bool fromInt32Vector (VARIANT& comVariant, const CCL::Vector<LONG>& values);
 	static bool fromDoubleVector (VARIANT& comVariant, const CCL::Vector<double>& values);
+	static bool fromBool (VARIANT& comVariant, bool value);
 	static bool takeSafeArray (VARIANT& comVariant, SAFEARRAY* safeArray, VARTYPE type);
 
 	bool toVariant (CCL::Variant& v) const;

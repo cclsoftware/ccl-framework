@@ -28,6 +28,11 @@ msgctxt "TransferManager"
 msgid "%(1) of %(2)"
 msgstr ""
 
+#: ./audio/audioformatter.cpp
+msgctxt "Audio"
+msgid "%(1) samples"
+msgstr ""
+
 #: ./packages/packagemanager.cpp
 msgctxt "PackageManager"
 msgid "%(2)/%(3) %(1)"
@@ -161,6 +166,11 @@ msgstr ""
 #: ./packages/packagemanager.cpp
 msgctxt "PackageManager"
 msgid "Contains %(1) items"
+msgstr ""
+
+#: ./packages/installdatapackages.cpp
+msgctxt "PackageActions"
+msgid "Copy Product Key"
 msgstr ""
 
 #: ./web/transfermanagerui.cpp
@@ -414,6 +424,11 @@ msgctxt "PackageManager"
 msgid "Minimal Installation"
 msgstr ""
 
+#: ./audio/audioformatter.cpp
+msgctxt "Audio"
+msgid "Mono"
+msgstr ""
+
 #: ./packages/packagefilter.cpp
 msgctxt "PackageFilter"
 msgid "Name"
@@ -592,6 +607,11 @@ msgstr ""
 #: ./packages/packagefilter.cpp
 msgctxt "PackageFilter"
 msgid "State"
+msgstr ""
+
+#: ./audio/audioformatter.cpp
+msgctxt "Audio"
+msgid "Stereo"
 msgstr ""
 
 #: ./packages/packagefilter.cpp

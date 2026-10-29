@@ -50,6 +50,7 @@ BEGIN_XSTRINGS ("Accessibility")
 	XSTRING (Pagination, "Page %(1) of %(2)")
 	XSTRING (On, "On")
 	XSTRING (Off, "Off")
+	XSTRING (TextInput, "Text input")
 END_XSTRINGS
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -166,6 +167,14 @@ void AccessibilityProvider::getToggleText (String& text, bool isOn)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
+void AccessibilityProvider::getTextInputHint (String& text)
+{
+	text.empty ();
+	text.append (XSTR (TextInput));
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
 DEFINE_CLASS_ABSTRACT_HIDDEN (AccessibilityProvider, Object)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -233,6 +242,7 @@ void AccessibilityProvider::disconnect ()
 		child->disconnect ();
 		child->setParentProvider (nullptr);
 	}
+	children.removeAll ();
 
 	if(platformProvider)
 	{
@@ -264,8 +274,7 @@ IView* CCL_API AccessibilityProvider::getIView () const
 
 bool AccessibilityManager::isEnabled ()
 {
-	// work in progress...
-	#if (PLATFORM_ACCESSIBILITYMANAGER_AVAILABLE && (DEBUG || CCL_PLATFORM_IOS || CCL_PLATFORM_ANDROID))
+	#if PLATFORM_ACCESSIBILITYMANAGER_AVAILABLE
 	static Configuration::BoolValue enabled ("CCL.Accessibility", "Enabled", false);
 	return enabled;
 	#else
@@ -337,7 +346,6 @@ void AccessibilityManager::setViewRelation (View* view, AccessibilityRelation re
 			relationEntry->childId = childId;
 		else
 			entry->relations.add ({relation, childId});
-
 	}
 }
 
@@ -390,6 +398,11 @@ AccessibilityProvider& AccessibilityManager::getValueProvider (AccessibilityProv
 
 AccessibilityProvider& AccessibilityManager::getLabelProvider (AccessibilityProvider& provider) const
 {
+	// an explicit accessibility title wins over a label relation
+	View* view = provider.getView ();
+	if(view && !view->getAccessibilityTitle ().isEmpty ())
+		return provider;
+
 	if(AccessibilityProvider* labelProvider = findRelatedProvider (&provider, AccessibilityRelation::kLabel))
 		return *labelProvider;
 	return provider;

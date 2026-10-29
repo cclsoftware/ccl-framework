@@ -60,11 +60,11 @@ IUnknown* CCL_API Iterator::nextUnknown ()
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 BEGIN_METHOD_NAMES (Iterator)
-	DEFINE_METHOD_NAME ("done")
+	DEFINE_METHOD_ARGR ("done", "", "bool")
 	DEFINE_METHOD_NAME ("first")
 	DEFINE_METHOD_NAME ("last")
-	DEFINE_METHOD_NAME ("next")
-	DEFINE_METHOD_NAME ("previous")
+	DEFINE_METHOD_ARGR ("next", "", "Object")
+	DEFINE_METHOD_ARGR ("previous", "", "Object")
 END_METHOD_NAMES (Iterator)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -105,6 +105,7 @@ tbool CCL_API Iterator::invokeMethod (Variant& returnValue, MessageRef msg)
 //************************************************************************************************
 
 DEFINE_CLASS_ABSTRACT_HIDDEN (Container, Object)
+DEFINE_CLASS_NAMESPACE (Container, NAMESPACE_CCL)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -204,7 +205,7 @@ bool Container::save (const Storage& storage) const
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 BEGIN_PROPERTY_NAMES (Container)
-	DEFINE_PROPERTY_NAME ("count")
+	DEFINE_PROPERTY_TYPE ("count", ITypeInfo::kInt | ITypeInfo::kReadOnly)
 END_PROPERTY_NAMES (Container)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -222,8 +223,8 @@ tbool CCL_API Container::getProperty (Variant& var, MemberID propertyId) const
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 BEGIN_METHOD_NAMES (Container)
-	DEFINE_METHOD_ARGR ("at", "index", "Object")
-	DEFINE_METHOD_ARGR ("findEqual", "object_or_string", "Object")
+	DEFINE_METHOD_ARGR ("at", "index: int", "Object")
+	DEFINE_METHOD_ARGR ("findEqual", "object_or_string: Object | string", "Object")
 	DEFINE_METHOD_ARGR ("newIterator", nullptr, "Iterator")
 END_METHOD_NAMES (Container)
 

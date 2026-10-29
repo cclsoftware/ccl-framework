@@ -156,10 +156,10 @@ public:
 	MetaClassRegistry& getClassRegistry ();
 
 	/** Register public classes in factory. */
-	bool registerPublicClasses (ClassFactory& factory, CStringPtr categoryName = nullptr, ClassFilter* filter = nullptr);
+	bool registerPublicClasses (ClassFactory& factory, CStringPtr categoryName, ClassFilter* filter = nullptr);
 
 	/** Register single meta class in factory. */
-	void registerClass (ClassFactory& factory, MetaClassRef mc);
+	void registerPublicClass (ClassFactory& factory, MetaClassRef mc);
 
 private:
 	friend struct KernelInitializer;

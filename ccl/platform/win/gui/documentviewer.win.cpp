@@ -490,7 +490,7 @@ bool AcrobatPDFViewer::doTransaction (StringID command)
 {
 	ASSERT (hConversation != 0)
 
-	const char* data = command.str ();
+	CStringPtr data = command.str ();
 	DWORD size = command.length () + 1;
 
 	DWORD result = 0;
@@ -506,7 +506,7 @@ bool AcrobatPDFViewer::doTransaction (StringRef command)
 	ASSERT (hConversation != 0)
 
 	StringChars chars (command);
-	const uchar* data = chars;
+	UStringPtr data = chars;
 	DWORD size = (command.length () + 1) * 2;
 
 	DWORD result = 0;

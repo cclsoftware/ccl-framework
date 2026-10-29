@@ -25,6 +25,7 @@ set (ccltext_exports
 	${CCL_EXPORT_PREFIX}CreateStringDictionary${CCL_EXPORT_POSTFIX}
 	${CCL_EXPORT_PREFIX}ParseVariantString${CCL_EXPORT_POSTFIX}
 	${CCL_EXPORT_PREFIX}CreateRegularExpression${CCL_EXPORT_POSTFIX}
+	${CCL_EXPORT_PREFIX}CreateGraphemeIterator${CCL_EXPORT_POSTFIX}
 	${CCL_EXPORT_PREFIX}CreateMutableCString${CCL_EXPORT_POSTFIX}
 	${CCL_EXPORT_PREFIX}GetConstantCString${CCL_EXPORT_POSTFIX}
 	${CCL_EXPORT_PREFIX}CreateCStringDictionary${CCL_EXPORT_POSTFIX}
@@ -40,7 +41,9 @@ set (ccltext_exports
 	${CCL_EXPORT_PREFIX}UBJsonWrite${CCL_EXPORT_POSTFIX}
 	${CCL_EXPORT_PREFIX}CreateDataTransformer${CCL_EXPORT_POSTFIX}
 	${CCL_EXPORT_PREFIX}CreateTransformStream${CCL_EXPORT_POSTFIX}
+	${CCL_EXPORT_PREFIX}Crc16${CCL_EXPORT_POSTFIX}
 	${CCL_EXPORT_PREFIX}Crc32${CCL_EXPORT_POSTFIX}
+	${CCL_EXPORT_PREFIX}Hash${CCL_EXPORT_POSTFIX}
 	${CCL_EXPORT_PREFIX}CreateTextStreamer${CCL_EXPORT_POSTFIX}
 	${CCL_EXPORT_PREFIX}CreateTextWriter${CCL_EXPORT_POSTFIX}
 	core_malloc
@@ -121,6 +124,7 @@ ccl_list_append_once (ccltext_source_files
 	${CCL_DIR}/text/strings/cstringbuffer.h
 	${CCL_DIR}/text/strings/formatparser.cpp
 	${CCL_DIR}/text/strings/formatparser.h
+	${CCL_DIR}/text/strings/graphemeiterator.h
 	${CCL_DIR}/text/strings/jsonhandler.cpp
 	${CCL_DIR}/text/strings/jsonhandler.h
 	${CCL_DIR}/text/strings/regularexpression.cpp
@@ -144,6 +148,7 @@ ccl_list_append_once (ccltext_source_files
 	${CCL_DIR}/text/strings/unicodestring.cpp
 	${CCL_DIR}/text/strings/unicodestring.h
 
+	${CCL_DIR}/text/hash.cpp
 	${CCL_DIR}/text/textservices.cpp
 
 	${CCL_DIR}/text/transform/encodings/baseencoding.cpp

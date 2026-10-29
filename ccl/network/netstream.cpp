@@ -27,8 +27,6 @@
 using namespace CCL;
 using namespace Net;
 
-#define kDefaultTimeout 60000 // 1 minute
-
 //************************************************************************************************
 // NetworkStream
 //************************************************************************************************
@@ -108,6 +106,7 @@ int CCL_API NetworkStream::read (void* buffer, int size)
 
 	int bytesRead = 0;
 	int64 timeToCancel = 0;
+	CCL_PRINTF ("Network stream beginning to read with timeout %d...\n", timeout)
 	while(bytesRead < size)
 	{
 		int result = socket->receive ((char*)buffer + bytesRead, size - bytesRead);
@@ -147,6 +146,7 @@ int CCL_API NetworkStream::read (void* buffer, int size)
 			System::ThreadSleep (1);
 		}
 	}
+	CCL_PRINTF ("Network stream read done: %d\n", bytesRead)
 	return bytesRead;
 }
 

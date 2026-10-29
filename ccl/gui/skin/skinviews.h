@@ -30,7 +30,7 @@ namespace SkinElements {
 
 //************************************************************************************************
 // VariantElement
-/** Dynamically selects one of it's child elements.
+/** Dynamically selects one of its child elements.
 A Variant has always only one (or none) of its child elements attached as a child view.
 The active child can selected via a numeric parameter or a property of the controller.
 
@@ -47,7 +47,7 @@ The active child can selected via a numeric parameter or a property of the contr
 	<Label title="Variant 1"/>    <!-- shown when indexValue is 1 -->
 </Variant>
 
-<!-- Example 3: A boolean parameter switches a view/on/off -->
+<!-- Example 3: A boolean parameter switches a view on/off -->
 <Variant name="boolValue" attach="fitsize">
 	<Label title="Variant"/>    <!-- shown when boolValue is true -->
 </Variant>
@@ -58,7 +58,8 @@ The active child can selected via a numeric parameter or a property of the contr
 class VariantElement: public ViewElement
 {
 public:
-	DECLARE_SKIN_ELEMENT (VariantElement, ViewElement)
+	DECLARE_CLASS (VariantElement, ViewElement)
+	DECLARE_TYPELIB_CLASS (VariantElement)
 
 	VariantElement ();
 
@@ -81,7 +82,8 @@ public:
 class LabelElement: public ViewElement
 {
 public:
-	DECLARE_SKIN_ELEMENT (LabelElement, ViewElement)
+	DECLARE_CLASS (LabelElement, ViewElement)
+	DECLARE_TYPELIB_CLASS (LabelElement)
 
 	// ViewElement
 	bool setAttributes (const SkinAttributes& a) override;
@@ -96,7 +98,8 @@ public:
 class HeadingElement: public LabelElement
 {
 public:
-	DECLARE_SKIN_ELEMENT (HeadingElement, LabelElement)
+	DECLARE_CLASS (HeadingElement, LabelElement)
+	DECLARE_TYPELIB_CLASS (HeadingElement)
 
 	HeadingElement ();
 
@@ -114,7 +117,8 @@ public:
 class PictureElement: public ImageViewElement
 {
 public:
-	DECLARE_SKIN_ELEMENT (PictureElement, ImageViewElement)
+	DECLARE_CLASS (PictureElement, ImageViewElement)
+	DECLARE_TYPELIB_CLASS (PictureElement)
 
 	// ViewElement
 	View* createView (const CreateArgs& args, View* view) override;
@@ -127,7 +131,8 @@ public:
 class PopupBoxElement: public ViewElement
 {
 public:
-	DECLARE_SKIN_ELEMENT (PopupBoxElement, ViewElement)
+	DECLARE_CLASS (PopupBoxElement, ViewElement)
+	DECLARE_TYPELIB_CLASS (PopupBoxElement)
 
 	PopupBoxElement ();
 
@@ -148,7 +153,8 @@ public:
 class DialogGroupElement: public ViewElement
 {
 public:
-	DECLARE_SKIN_ELEMENT (DialogGroupElement, ViewElement)
+	DECLARE_CLASS (DialogGroupElement, ViewElement)
+	DECLARE_TYPELIB_CLASS (DialogGroupElement)
 
 	// ViewElement
 	bool setAttributes (const SkinAttributes& a) override;
@@ -166,7 +172,8 @@ The name attribute specifies the name of a form that is used to create the targe
 class TargetElement: public ViewElement
 {
 public:
-	DECLARE_SKIN_ELEMENT (TargetElement, ViewElement)
+	DECLARE_CLASS (TargetElement, ViewElement)
+	DECLARE_TYPELIB_CLASS (TargetElement)
 
 	TargetElement (ViewElement* parent);
 	TargetElement ();
@@ -180,13 +187,14 @@ public:
 // ScrollHeaderElement
 /** Specifies the header view of a scroll view.
 The <ScrollHeader> tag can only appear as child of a <ScrollView> tag.
-The name attribute specifies the name of a form that is used to create the target view. */
+The name attribute specifies the name of a form that is used to create the header view. */
 //************************************************************************************************
 
 class ScrollHeaderElement: public TargetElement
 {
 public:
-	DECLARE_SKIN_ELEMENT (ScrollHeaderElement, TargetElement)
+	DECLARE_CLASS (ScrollHeaderElement, TargetElement)
+	DECLARE_TYPELIB_CLASS (ScrollHeaderElement)
 
 	ScrollHeaderElement (ViewElement* parent);
 	ScrollHeaderElement ();
@@ -199,7 +207,8 @@ public:
 class ScrollViewElement: public ViewElement
 {
 public:
-	DECLARE_SKIN_ELEMENT (ScrollViewElement, ViewElement)
+	DECLARE_CLASS (ScrollViewElement, ViewElement)
+	DECLARE_TYPELIB_CLASS (ScrollViewElement)
 
 	ScrollViewElement ();
 	~ScrollViewElement ();
@@ -228,7 +237,8 @@ private:
 class ItemViewElement: public ScrollViewElement
 {
 public:
-	DECLARE_SKIN_ELEMENT_ABSTRACT (ItemViewElement, ScrollViewElement)
+	DECLARE_CLASS_ABSTRACT (ItemViewElement, ScrollViewElement)
+	DECLARE_TYPELIB_CLASS (ItemViewElement)
 
 	PROPERTY_OBJECT (StyleFlags, scrollOptions, ScrollOptions)
 	PROPERTY_MUTABLE_CSTRING (headerStyleName, HeaderStyleName)
@@ -253,7 +263,8 @@ protected:
 class ListViewElement: public ItemViewElement
 {
 public:
-	DECLARE_SKIN_ELEMENT (ListViewElement, ItemViewElement)
+	DECLARE_CLASS (ListViewElement, ItemViewElement)
+	DECLARE_TYPELIB_CLASS (ListViewElement)
 
 	ListViewElement ();
 
@@ -277,7 +288,8 @@ protected:
 class TreeViewElement: public ItemViewElement
 {
 public:
-	DECLARE_SKIN_ELEMENT (TreeViewElement, ItemViewElement)
+	DECLARE_CLASS (TreeViewElement, ItemViewElement)
+	DECLARE_TYPELIB_CLASS (TreeViewElement)
 
 protected:
 	// ItemViewElement
@@ -292,7 +304,8 @@ protected:
 class DropBoxElement: public ItemViewElement
 {
 public:
-	DECLARE_SKIN_ELEMENT (DropBoxElement, ItemViewElement)
+	DECLARE_CLASS (DropBoxElement, ItemViewElement)
+	DECLARE_TYPELIB_CLASS (DropBoxElement)
 
 protected:
 	// ItemViewElement
@@ -307,7 +320,8 @@ protected:
 class WebViewElement: public ViewElement
 {
 public:
-	DECLARE_SKIN_ELEMENT (WebViewElement, ViewElement)
+	DECLARE_CLASS (WebViewElement, ViewElement)
+	DECLARE_TYPELIB_CLASS (WebViewElement)
 
 	// ViewElement
 	bool setAttributes (const SkinAttributes& a) override;
@@ -321,7 +335,8 @@ public:
 class CommandBarViewElement: public ViewElement
 {
 public:
-	DECLARE_SKIN_ELEMENT (CommandBarViewElement, ViewElement)
+	DECLARE_CLASS (CommandBarViewElement, ViewElement)
+	DECLARE_TYPELIB_CLASS (CommandBarViewElement)
 
 	PROPERTY_MUTABLE_CSTRING (itemFormName, ItemFormName)
 	PROPERTY_MUTABLE_CSTRING (contextMenuFormName, ContextMenuFormName)

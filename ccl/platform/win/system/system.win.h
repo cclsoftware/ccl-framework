@@ -88,7 +88,7 @@ inline void formatSystemDebugMessage (String& string, HRESULT hr)
 	::FormatMessageA (FORMAT_MESSAGE_ALLOCATE_BUFFER|FORMAT_MESSAGE_FROM_SYSTEM|FORMAT_MESSAGE_IGNORE_INSERTS,
 					  nullptr, hr, MAKELANGID(LANG_ENGLISH, SUBLANG_ENGLISH_US), (LPSTR)&lpMsgBuf, 0, nullptr);
 	string.empty ();
-	string.appendASCII ((const char*)lpMsgBuf);
+	string.appendASCII ((CStringPtr)lpMsgBuf);
 	::LocalFree (lpMsgBuf);
 }
 #endif

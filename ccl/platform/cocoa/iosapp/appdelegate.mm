@@ -1,7 +1,7 @@
 //************************************************************************************************
 //
 // This file is part of Crystal Class Library (R)
-// Copyright (c) 2025 CCL Software Licensing GmbH.
+// Copyright (c) 2026 CCL Software Licensing GmbH.
 // All Rights Reserved.
 //
 // Licensed for use under either:
@@ -17,8 +17,7 @@
 //************************************************************************************************
 
 #include "ccl/platform/cocoa/iosapp/appdelegate.h"
-#include "ccl/platform/cocoa/iosapp/mainviewcontroller.h"
-#include "ccl/platform/cocoa/macutils.h"
+#include "ccl/platform/cocoa/iosapp/scenedelegate.h"
 
 #include "ccl/gui/gui.h"
 
@@ -27,8 +26,6 @@
 
 #include "ccl/base/message.h"
 #include "ccl/base/signalsource.h"
-#include "ccl/base/storage/settings.h"
-#include "ccl/base/storage/url.h"
 
 using namespace CCL;
 
@@ -63,74 +60,28 @@ using namespace CCL;
 {
 	if(IApplicationProvider* appStartup = GUI.getApplicationProvider ())
 		appStartup->onInit ();
-		
-	// Create the window (full screen size, including status bar area)
-	CGRect screenSize = [[UIScreen mainScreen] bounds];
-	self.window = [[[UIWindow alloc] initWithFrame:screenSize] autorelease];
-	self.window.autoresizesSubviews = YES;
-	self.window.backgroundColor = [UIColor blackColor];
-	
+
 	// hook in to memory warnings...
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector (receivedMemoryWarning:) name:UIApplicationDidReceiveMemoryWarningNotification object:nil];
-			 	
-	// Add the main view controller's view to the window and display.
-	// The UIWindow will resize it to fill the screen except the status bar area 
-    self.window.rootViewController = [[[CCL_ISOLATED (MainViewController) alloc] init] autorelease];
-    [self.window makeKeyAndVisible];
-	
-	// init orientation
-	UIInterfaceOrientation platformOrientation = [[UIApplication sharedApplication] statusBarOrientation];
-	CCL::OrientationType orientation = UIInterfaceOrientationIsPortrait (platformOrientation) ? CCL::Styles::kPortrait : CCL::Styles::kLandscape;
-	GUI.setInterfaceOrientation (orientation);
 
+	// window creation and UI setup happen per-scene, see SceneDelegate's scene:willConnectToSession:options:
 	return YES;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-- (BOOL)application:(UIApplication*)app openURL:(NSURL*)url options:(NSDictionary<UIApplicationOpenURLOptionsKey, id>*)options;
+- (UISceneConfiguration*)application:(UIApplication*)application configurationForConnectingSceneSession:(UISceneSession*)connectingSceneSession options:(UISceneConnectionOptions*)options
 {
-	if(url)
-	{
-		Url cclUrl;
-		MacUtils::urlFromNSUrl (cclUrl, url, IUrl::kFile, true);
-		if(auto application = GUI.getApplication ())
-			if(application->openFile (cclUrl))
-			   return YES;
-	}
-	
-	return NO;
+	// scenes are configured entirely in code so there is no UIApplicationSceneManifest in Info.plist
+	UISceneConfiguration* configuration = [[[UISceneConfiguration alloc] initWithName:@"Default Configuration" sessionRole:connectingSceneSession.role] autorelease];
+	configuration.delegateClass = [CCL_ISOLATED (SceneDelegate) class];
+	return configuration;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-- (void)applicationDidBecomeActive:(UIApplication*)application
+- (void)application:(UIApplication*)application didDiscardSceneSessions:(NSSet<UISceneSession*>*)sceneSessions
 {
-	GUI.onAppStateChanged (IApplication::kAppActivated);
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
-- (void)applicationWillResignActive:(UIApplication*)application
-{
-	Settings::autoSaveAll ();
-	GUI.onAppStateChanged (IApplication::kAppDeactivated);
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
-- (void)applicationDidEnterBackground:(UIApplication*)application
-{
-	if([self suspendsInBackground])
-		GUI.onAppStateChanged (IApplication::kAppSuspended);
-
-}
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
-- (void)applicationWillEnterForeground:(UIApplication*)application
-{
-	if([self suspendsInBackground])
-		GUI.onAppStateChanged (IApplication::kAppResumed);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////

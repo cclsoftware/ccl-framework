@@ -89,8 +89,21 @@ interface ITextLayout: IUnknown
 	/** Set line spacing for given text range. */
 	virtual tresult CCL_API setLineSpacing (const Range& range, float lineSpacing) = 0;
 
+	/** Set baseline up (positive offset) or down (negative offset) to shift text vertically. */
+	virtual tresult CCL_API setBaselineOffset (const Range& range, float offset) = 0;
+
+	/** Set superscript for text range. */
+	virtual tresult CCL_API setSuperscript (const Range& range) = 0;
+
+	/** Set subscript for text range. */
+	virtual tresult CCL_API setSubscript (const Range& range) = 0;
+
 	/** Set color for given text range. */
 	virtual tresult CCL_API setTextColor (const Range& range, Color color) = 0;
+
+	/** Clear all range formatting previously applied via the setters above,
+		restoring the plain font/style the layout was constructed with. */
+	virtual tresult CCL_API clearFormatting () = 0;
 
 	/** Get bounding rectangle of formatted text. */
 	virtual tresult CCL_API getBounds (Rect& bounds) const = 0;
@@ -114,7 +127,7 @@ interface ITextLayout: IUnknown
 	virtual tresult CCL_API getTextBounds (IMutableRegion& bounds, const Range& range) const = 0;
 
 	/** Get the text range of the line at the given text position, possibly ending with a newline character. */
-	virtual tresult CCL_API getLineRange (Range& range, int textIndex) const = 0;
+	virtual tresult CCL_API getLineRange (Range& range, int textIndex, tbool includeNewline = true) const = 0;
 
 	/** Get the text range of the word at the given text position. If textIndex is between words,
 		the range refers to the characters inbetween. The range does not include newlines. */
@@ -123,15 +136,6 @@ interface ITextLayout: IUnknown
 	/** Get the text range of the line at the given text position not considering layout line breaks but only
 		explicit linebreaks by newline characters. The range does not include the newline character. */
 	virtual tresult CCL_API getExplicitLineRange (Range& range, int textIndex) const = 0;
-
-	/** Set baseline up (positive offset) or down (negative offset) to shift text vertically. */
-	virtual tresult CCL_API setBaselineOffset (const Range& range, float offset) = 0;
-
-	/** Set superscript for text range. */
-	virtual tresult CCL_API setSuperscript (const Range& range) = 0;
-
-	/** Set subscript for text range. */
-	virtual tresult CCL_API setSubscript (const Range& range) = 0;
 
 	DECLARE_IID (ITextLayout)
 };

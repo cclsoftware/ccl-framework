@@ -73,23 +73,17 @@ void WaylandRenderTarget::onContentScaleFactorChanged (float factor)
 //************************************************************************************************
 
 WaylandRenderTarget::WaylandMutableRegion::WaylandMutableRegion (WaylandRenderTarget& target)
-: target (target)
+: target (target),
+  updatesSuspended (false)
 {}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
-void WaylandRenderTarget::WaylandMutableRegion::addRect (RectRef rect, bool requestFrame)
-{
-	MutableRegion::addRect (rect);
-	if(target.listener && requestFrame)
-		target.listener->requestFrame ();
-}
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 void WaylandRenderTarget::WaylandMutableRegion::addRect (RectRef rect)
 {
-	addRect (rect, true);
+	MutableRegion::addRect (rect);
+	if(target.listener && !updatesSuspended)
+		target.listener->requestFrame ();
 }
 
 //************************************************************************************************

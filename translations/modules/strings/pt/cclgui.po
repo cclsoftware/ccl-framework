@@ -19,6 +19,11 @@ msgctxt "Accessibility"
 msgid "Page %(1) of %(2)"
 msgstr "Página %(1) de %(2)"
 
+#: system/accessibility.cpp
+msgctxt "Accessibility"
+msgid "Text input"
+msgstr "Entrada de texto"
+
 #: dialogs/alert.cpp
 msgctxt "Alert"
 msgid "Cancel"

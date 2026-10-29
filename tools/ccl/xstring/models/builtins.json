@@ -72,6 +72,10 @@
 				},
 				{
 					"kind": "attribute",
+					"name": "accessibility.title"
+				},
+				{
+					"kind": "attribute",
 					"name": "command.name",
 					"scope":
 					{

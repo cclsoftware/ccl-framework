@@ -25,19 +25,15 @@ ccl_list_append_once (cclextras_modeling_headers
 	${CCL_DIR}/extras/modeling/classmodel.h
 	${CCL_DIR}/extras/modeling/classrepository.h
 	${CCL_DIR}/extras/modeling/cplusplus.h
-	${CCL_DIR}/extras/modeling/docscanner.h
 	${CCL_DIR}/extras/modeling/modelbrowser.h
 	${CCL_DIR}/extras/modeling/modelinspector.h
-	${CCL_DIR}/extras/modeling/modeltool.h
 )
 
 ccl_list_append_once (cclextras_modeling_sources
 	${CCL_DIR}/extras/modeling/classmodel.cpp
 	${CCL_DIR}/extras/modeling/classrepository.cpp
-	${CCL_DIR}/extras/modeling/docscanner.cpp
 	${CCL_DIR}/extras/modeling/modelbrowser.cpp
 	${CCL_DIR}/extras/modeling/modelinspector.cpp
-	${CCL_DIR}/extras/modeling/modeltool.cpp
 )
 
 set (cclextras-modeling "cclextras-modeling")

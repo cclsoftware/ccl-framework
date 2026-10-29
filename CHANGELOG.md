@@ -1,5 +1,62 @@
 # Changelog
 
+**CCL 5.2.0 (2026-10-29)**
+
+*New features and improvements:*
+
+- Support for WebAssembly
+- Reusable audio runtime infrastructure
+- Text input method support on all platforms
+- Extended EditBox now enabled by default on desktop platforms
+- JavaScript | QuickJS-NG engine alternative to SpiderMonkey
+- Divider | Improved double-click behavior with ScrollViews
+- Menu | Additional menu item value attribute
+- Accessibility | Parameter value formatting for screen reader
+- Accessibility | Expose Toggle as Button ("accessibility.button")
+- Accessibility | Override title announced by accessibility tools ("accessibility.title")
+- ICredentialManager | Asynchronous credential access
+- ISystemShell | Support for system permissions
+- ITextLayout | New method to clear formatting
+- UrlUtils | Helper method to check for absolute paths
+- Extensions | Allow apps to add additional development locations
+- Refactoring | AtomRenderer using RenderAtoms for controls
+- Refactoring | Generalized parameter definitions
+- Refactoring | Generalized 'Skin Elements' and 'Visual Styles' type library macros
+- Refactoring | Consolidated CRC16/32 and Hash function in textservices.h
+- Refactoring | Consolidated meta class definitions (namespaces/categories)
+- Refactoring | Use semantic string types (CStringPtr/UStringPtr) consistently
+- CLI Tools | Static class model export via cclmodeller ("-staticexport" option)
+- CLI Tools | Format option for cclmakeguid (inline, braces, etc.)
+- Core Library | New configuration header file coreconfiguration.h
+- Core Library | Title parameter for Button class ("titlename" in JSON)
+- Windows | WebView2 integration completed and enabled by default
+- Windows | Improved Bluetooth LE robustness
+- iOS | Deployment target set to 15.3
+- iOS | Migration to UIScene-based Lifecycle
+- Linux | Support for Ubuntu 26.04
+- Linux | Use cursor-shape protocol for themed mouse cursor
+- Linux | Distribution name and version included in system information
+
+*The following issues have been fixed:*
+
+- Network | Potential hang with DNS resolution (c-ares now enabled by default)
+- MenuControl | Issues with submenus on mobile platforms
+- App with modal dialogs open can crash in Application::requestQuit
+- Graphics Layers | Replaced animations not updated correctly
+- ProgressDialog | Multi-step progress doesn't resize instantly
+- MutableCString | Use-after-clone issue in trimWhitespace() corrupting shared buffers
+- Accessibility (Windows) | Narrator navigation not working for groups
+- Accessibility (Windows) | Disabled state of accessible items sometimes incorrect
+- Accessibility (Windows) | Actions exposed by accessible elements sometimes incorrect
+- Windows DirectWrite | Multiline text wraps too early
+- Windows Direct2D | Rounded rectangles have bulgy corners in certain situations
+- macOS | Context menu missing with CTRL-click
+- macOS/iOS | POSIX functions called in NFC normalization rather than NFD
+- Skia | Unnecessary line breaks in text layout in certain situations
+- Skia/Quartz | Some SVG paths not rendered correctly
+- Linux | TLS stream corruption on partial socket writes
+- Linux | Initial focus missing in dialogs
+
 **CCL 5.1.2 (2026-08-14)**
 
 *New features and improvements:*

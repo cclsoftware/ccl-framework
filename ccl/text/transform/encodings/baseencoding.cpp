@@ -34,9 +34,9 @@ using namespace CCL;
 // BaseTransformer
 //************************************************************************************************
 
-const char* BaseTransformer::kAlphabet16 = "=0123456789ABCDEF";
-const char* BaseTransformer::kAlphabet32 = "=ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
-const char* BaseTransformer::kAlphabet64 = "=ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+CStringPtr BaseTransformer::kAlphabet16 = "=0123456789ABCDEF";
+CStringPtr BaseTransformer::kAlphabet32 = "=ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
+CStringPtr BaseTransformer::kAlphabet64 = "=ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 

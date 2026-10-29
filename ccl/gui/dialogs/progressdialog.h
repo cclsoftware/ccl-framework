@@ -49,6 +49,7 @@ class ProgressStep: public Object,
 public:
 	DECLARE_CLASS (ProgressStep, Object)
 	DECLARE_METHOD_NAMES (ProgressStep)
+	DECLARE_PROPERTY_NAMES (ProgressStep)
 
 	ProgressStep (ProgressStep* parent = nullptr);
 

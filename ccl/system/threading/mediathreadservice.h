@@ -72,7 +72,7 @@ public:
 	CLASS_INTERFACE (IMediaTimer, Object)
 
 protected:
-	CCL::MutableCString name;
+	MutableCString name;
 	IMediaTimerTask& task;
 	uint32 period;
 	int timerID;

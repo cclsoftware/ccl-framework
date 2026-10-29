@@ -49,10 +49,13 @@ public:
 
 	TextCompletionComponent (StringRef name = nullptr);
 
+	static constexpr CStringPtr kEditStringName = "editString";
+
 	String getEditString () const;
 	void setEditString (StringRef string, bool suspendAutoComplete = true);
 
 	bool hasEditFocus () const;
+	bool isEditStringView (IView* view) const;
 	void focusEdit (bool cursorToEnd = false);
 	void closeCompletionList ();
 	void appendCharacter (uchar c);
@@ -61,8 +64,14 @@ public:
 
 protected:
 	bool autoCompleteSuspended;
+	bool navigatingCompletions;
+	bool completionsOpen;
 
 	void updateEditCursor ();
+
+	bool hasOpenCompletions () const;
+	void navigateCompletions (bool forward);
+	void acceptCompletion ();
 
 	virtual void onTextEdited (StringRef editString);
 	virtual void onCompletionSelected (StringRef string);
@@ -71,7 +80,7 @@ protected:
 	// Component
 	tbool CCL_API paramChanged (IParameter* param) override;
 	void CCL_API notify (ISubject* subject, MessageRef msg) override;
-	CCL::tbool CCL_API getProperty (CCL::Variant& var, MemberID propertyId) const override;
+	tbool CCL_API getProperty (Variant& var, MemberID propertyId) const override;
 
 private:
 	ListParam* completionList;

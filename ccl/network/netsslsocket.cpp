@@ -22,6 +22,7 @@
 #include "ccl/public/text/cstring.h"
 
 #include "ccl/public/base/iprogress.h"
+#include "ccl/public/system/cclerror.h"
 #include "ccl/public/systemservices.h"
 
 using namespace CCL;
@@ -60,18 +61,14 @@ void SSLSocket::setPeerName (StringRef peerName)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-tresult CCL_API SSLSocket::connect (const SocketAddress& address)
+tresult CCL_API SSLSocket::connect (const SocketAddress& address, int timeout, IProgressNotify* progress)
 {
-	return connect (address, nullptr);
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
-tresult SSLSocket::connect (const SocketAddress& address, CCL::IProgressNotify* progress)
-{
-	if(!coreSSLSocket.connect (address))
-		return handleError ("SSL Socket connect failed");
-
+	int64 deadline = System::GetSystemTicks () + timeout;
+	tresult result = BaseSocket::connect (coreSSLSocket, address, deadline, progress, "SSL Socket");
+	if(result != kResultOk)
+		return result;
+		
+	// TCP connect succeeded. Now perform the TLS handshake, bounded by the same deadline
 	while(1)
 	{
 		SSLResult result = coreSSLSocket.handshake ();
@@ -79,6 +76,13 @@ tresult SSLSocket::connect (const SocketAddress& address, CCL::IProgressNotify* 
 		{
 			if(progress && progress->isCanceled ())
 				return kResultAborted;
+			if(System::GetSystemTicks () >= deadline)
+			{
+				String message;
+				if(getResultString (message, kResultConnectionTimeOut))
+					ccl_raise (message, kResultConnectionTimeOut);
+				return kResultConnectionTimeOut;
+			}
 
 			System::ThreadSleep (1);
 		}
@@ -233,7 +237,7 @@ void SSLSocket::setLastResult (SSLResult result)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-tresult SSLSocket::handleError (const char* debugMessage)
+tresult SSLSocket::handleError (CStringPtr debugMessage)
 {
 	return BaseSocket::handleError (coreSSLSocket, debugMessage);
 }

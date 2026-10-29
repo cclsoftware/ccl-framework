@@ -33,7 +33,7 @@ namespace CCL {
 namespace ClassID
 {
 	/** SQLite database engine class identifer. */
-	DEFINE_CID (SQLite, 0xDA833DD2, 0x7AC8, 0x423F, 0x89, 0xB7, 0xE9, 0xB5, 0x49, 0x0B, 0x04, 0x90);
+	DEFINE_CID (SQLite, 0xDA833DD2, 0x7AC8, 0x423F, 0x89, 0xB7, 0xE9, 0xB5, 0x49, 0x0B, 0x04, 0x90)
 }
 
 interface IMemoryStream;
@@ -74,7 +74,7 @@ interface IConnection: IUnknown
 	virtual IStatement* CCL_API createStatement (StringRef sql) = 0;
 
 	/** Create a statement object from an UTF8 string. */
-	virtual IStatement* CCL_API createStatement (const char* sqlUTF8) = 0;
+	virtual IStatement* CCL_API createStatement (CStringPtr sqlUTF8) = 0;
 
 	//////////////////////////////////////////////////////////////////////////////////////////////
 	// Execute SQL statements with no variables
@@ -84,13 +84,13 @@ interface IConnection: IUnknown
 	virtual tbool CCL_API execute (StringRef sql) = 0;
 
 	/** Execute an SQL statement (UTF8) that has no result data. */
-	virtual tbool CCL_API execute (const char* sqlUTF8) = 0;
+	virtual tbool CCL_API execute (CStringPtr sqlUTF8) = 0;
 
 	/** Execute an SQL statement with a single result. */
 	virtual tbool CCL_API execute (StringRef sql, Variant& result) = 0;
 
 	/** Execute an SQL statement (UTF8) with a single result. */
-	virtual tbool CCL_API execute (const char* sqlUTF8, Variant& result) = 0;
+	virtual tbool CCL_API execute (CStringPtr sqlUTF8, Variant& result) = 0;
 
 	//////////////////////////////////////////////////////////////////////////////////////////////
 	// Transactions
@@ -107,13 +107,13 @@ interface IConnection: IUnknown
 	//////////////////////////////////////////////////////////////////////////////////////////////
 
 	/** Check if the database has a table with that name. */
-	virtual tbool CCL_API hasTable (const char* name) = 0;
+	virtual tbool CCL_API hasTable (CStringPtr name) = 0;
 
 	/** Check if the database has a table with the given column. */
-	virtual tbool CCL_API hasColumn (const char* table, const char* column) = 0;
+	virtual tbool CCL_API hasColumn (CStringPtr table, CStringPtr column) = 0;
 
 	/** Check if the database has a table with that name. */
-	virtual tbool CCL_API hasView (const char* name) = 0;
+	virtual tbool CCL_API hasView (CStringPtr name) = 0;
 
 	/** Get description of the last error. Returns true if there was an error. */
 	virtual tbool CCL_API getLastError (String& message) = 0;
@@ -143,7 +143,7 @@ interface IStatement: IUnknown
 	virtual void CCL_API bindVariable (int index, StringRef value) = 0;
 
 	/** Bind a variable to a value. Index starts at 0. */
-	virtual void CCL_API bindVariable (int index, const char* string) = 0;
+	virtual void CCL_API bindVariable (int index, CStringPtr string) = 0;
 
 	/** Bind a variable to a value. Index starts at 0. */
 	virtual void CCL_API bindVariable (int index, int64 value) = 0;
@@ -196,10 +196,10 @@ interface IResultSet: IUnknown
 	virtual int CCL_API countColumns () = 0;
 
 	/** Get the name of a column given by index. */
-	virtual const char* CCL_API getColumnName (int index) = 0;
+	virtual CStringPtr CCL_API getColumnName (int index) = 0;
 
 	/** Get the indx of a column given by name. */
-	virtual int CCL_API getColumnIndex (const char* columnName) = 0;
+	virtual int CCL_API getColumnIndex (CStringPtr columnName) = 0;
 
 	//////////////////////////////////////////////////////////////////////////////////////////////
 	// Iterate through rows
@@ -225,7 +225,7 @@ interface IResultSet: IUnknown
 	virtual void CCL_API getStringValue (int column, String& string) = 0;
 
 	/** Get column value as C-String */
-	virtual const char* CCL_API getStringValue (int column) = 0;
+	virtual CStringPtr CCL_API getStringValue (int column) = 0;
 
 	/** Check if column value is Null */
 	virtual tbool CCL_API isNull (int column) = 0;

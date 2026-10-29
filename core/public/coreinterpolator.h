@@ -146,8 +146,15 @@ public:
 		float range;
 	};
 
+	struct BreakPointData
+	{
+		int numPoints;
+		const BreakPoint* points;
+	};
+
 	/** First and last points need to be minRange / maxRange. */
 	SegmentInterpolator (int numPoints, const BreakPoint points[]);
+	SegmentInterpolator (const BreakPointData& data);
 
 	// Interpolator
 	void setRange (float minRange, float maxRange, float midRange = 1.f) override;

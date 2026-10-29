@@ -101,7 +101,7 @@ private:
 	bool getPurchaseProductId (String& productId, jobject purchase) const;
 	CCL::PurchaseState determinePurchaseState (BillingResult result, PurchaseState purchaseState) const;
 
-	CCL::LicenseVerificationResult verifyLicense (jobject purchase) const;
+	LicenseVerificationResult verifyLicense (jobject purchase) const;
 };
 
 } // namespace Android

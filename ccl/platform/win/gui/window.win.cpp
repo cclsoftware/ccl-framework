@@ -711,23 +711,21 @@ void CCL_API Win32Window::invalidate (RectRef rect)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void Win32Window::showWindow (bool state)
+void Win32Window::showWindow (bool state, bool activate)
 {
 	if(state)
 	{
-		::ShowWindow ((HWND)handle, SW_SHOW);
+		::ShowWindow ((HWND)handle, SW_SHOWNA);
 		::UpdateWindow ((HWND)handle);
-
-		// don't automatically give focus to a child window (e.g. plug-in), it must be activated explicitely
-		bool isChildWindow = GetWindowLong ((HWND)handle, GWL_STYLE) & WS_CHILD;
-		if(!isChildWindow)
-			::SetFocus ((HWND)handle); // for mouse wheel
 
 		updateSize (); // seems necessary, size was not always correct here.
 
 		// apply top-most option
 		if(style.isCustomStyle (Styles::kWindowBehaviorTopMost))
 			Win32::SetAlwaysOnTop ((HWND)handle, true);
+
+		if(activate)
+			this->activate ();
 	}
 	else
 	{
@@ -965,6 +963,11 @@ void CCL_API Win32Window::activate ()
 	}
 
 	::SetActiveWindow ((HWND)handle);
+
+	// don't automatically give focus to a child window (e.g. plug-in), it must be activated explicitely
+	bool isChildWindow = GetWindowLong ((HWND)handle, GWL_STYLE) & WS_CHILD;
+	if(!isChildWindow)
+		::SetFocus ((HWND)handle); // for mouse wheel
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////

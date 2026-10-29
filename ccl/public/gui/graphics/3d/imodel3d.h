@@ -285,9 +285,6 @@ interface IModel3D: IClassAllocator
 
 	IMaterial3D* getFirstMaterial () const;
 	void setMaterialForGeometries (IMaterial3D* material);
-
-private:
-	template <typename IFace, UIDRef cid> IFace* create ();
 };
 
 DEFINE_IID (IModel3D, 0x609d444b, 0x97e2, 0x4705, 0x86, 0xec, 0x8c, 0x5f, 0x18, 0x11, 0x80, 0x2e)
@@ -324,14 +321,6 @@ inline void IGeometry3D::copyFrom (const IGeometrySource3D& source)
 //////////////////////////////////////////////////////////////////////////////////////////////////
 // IModel3D
 //////////////////////////////////////////////////////////////////////////////////////////////////
-
-template <typename IFace, UIDRef cid>
-IFace* IModel3D::create ()
-{
-	AutoPtr<IFace> instance;
-	createInstance (cid, ccl_iid<IFace> (), instance.as_ppv ());
-	return instance.detach ();
-}
 
 inline IGeometry3D* IModel3D::createGeometry ()
 { return create<IGeometry3D, ClassID::Geometry3D> (); }

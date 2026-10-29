@@ -87,6 +87,8 @@ SystemShell::~SystemShell ()
 	SOFT_ASSERT (pendingOperations.isEmpty (), "System Shell operations not completed.")
 	pendingOperations.removeAll ();
 
+	ASSERT (permissionProviderList.isEmpty ())
+
 	cancelSignals ();
 }
 
@@ -188,6 +190,60 @@ IAsyncOperation* CCL_API SystemShell::startBrowserAuthentication (UrlRef url, St
 	tresult result = openUrl (url);
 	operation->setState (result == kResultOk ? IAsyncInfo::kStarted : IAsyncInfo::kFailed);	
 	return operation;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+tresult CCL_API SystemShell::registerPermissionProvider (ISystemPermissionProvider* provider)
+{
+	if(provider == nullptr || permissionProviderList.contains (provider))
+		return kResultInvalidArgument;
+
+	permissionProviderList.add (provider);
+	return kResultOk;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+tresult CCL_API SystemShell::unregisterPermissionProvider (ISystemPermissionProvider* provider)
+{
+	if(provider == nullptr || permissionProviderList.contains (provider) == false)
+		return kResultInvalidArgument;
+
+	permissionProviderList.remove (provider);
+	return kResultOk;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+ISystemPermissionProvider& CCL_API SystemShell::getPermissions ()
+{
+	return *this;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+PermissionState CCL_API SystemShell::getPermissionState (StringID permissionId)
+{
+	for(ISystemPermissionProvider* provider : permissionProviderList)
+	{
+		PermissionState state = provider->getPermissionState (permissionId);
+		if(state != System::kPermissionUnknown)
+			return state;
+	}
+	return System::kPermissionUnknown;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+IAsyncOperation* CCL_API SystemShell::requestPermission (StringID permissionId)
+{
+	for(ISystemPermissionProvider* provider : permissionProviderList)
+	{
+		if(IAsyncOperation* op = provider->requestPermission (permissionId))
+			return op;
+	}
+	return AsyncOperation::createCompleted (System::kPermissionUnknown);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////

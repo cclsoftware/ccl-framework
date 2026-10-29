@@ -109,7 +109,7 @@ public:
 	}
 
 	// PropertyHandler
-	bool draw  (VariantRef value, const DrawInfo& info) override
+	bool draw (VariantRef value, const DrawInfo& info) override
 	{
 		Rect r (info.rect);
 		r.setWidth (r.getHeight ());
@@ -120,7 +120,7 @@ public:
 
 		String string;
 		toString (string, value);
-		if(c.getAlphaF () == 1 && string.length () == 9 && string.endsWith (CCLSTR ("FF")))
+		if(c.isOpaque () && string.length () == 9 && string.endsWith (CCLSTR ("FF")))
 			string.truncate (7); // remove unneccessary trailing alpha FF
 
 		Coord left = r.right + 3;

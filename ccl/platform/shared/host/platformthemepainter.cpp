@@ -80,7 +80,7 @@ bool PlatformThemePainter::getSystemFont (Font& font, ThemeFontID which) const
 {	
 	if(platformTheme)
 	{
-		char stringBuffer[STRING_STACK_SPACE_MAX] = {0};
+		char stringBuffer[CORE_STRING_STACK_MAX] = {0};
 		StringResult fontName (stringBuffer, sizeof(stringBuffer));
 		if(!platformTheme->getFont (fontName, which))
 			return false;

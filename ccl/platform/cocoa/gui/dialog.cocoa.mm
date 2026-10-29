@@ -216,8 +216,11 @@ IAsyncOperation* Dialog::showPlatformDialog (IWindow* parent)
 	show ();
 	
 	if(parentWindow)
-		if(EditBox* editBox = unknown_cast<EditBox> (parentWindow->getFocusIView ()))
-		   editBox->killFocus ();
+	{
+		EditBox* editBox = unknown_cast<EditBox> (parentWindow->getFocusIView ());
+		if(editBox && editBox->shouldUseNativeControl ())
+			editBox->killFocus ();
+	}
 	
 	loopTerminated = 0;
 	GUI.runModalLoop (this, loopTerminated);

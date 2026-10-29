@@ -149,7 +149,7 @@ WindowsTextControl::WindowsTextControl (Control& owner, const Rect& clientRect, 
 	setSize (clientRect);
 
 	if(!isMultiLine)
-		setSelection (0, -1); // select all
+		selectAll ();
 
 	::ShowWindow ((HWND)handle, SW_SHOW);
 	::SetFocus ((HWND)handle);
@@ -206,9 +206,9 @@ void WindowsTextControl::updateText ()
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void WindowsTextControl::getControlText (String& string)
+void WindowsTextControl::getControlText (String& string) const
 {
-	#define kWindowTextLimit STRING_STACK_SPACE_MAX
+	#define kWindowTextLimit CORE_STRING_STACK_MAX
 	int length = ::GetWindowTextLength ((HWND)handle);
 	if(length == 0) // empty text
 	{
@@ -231,10 +231,21 @@ void WindowsTextControl::getControlText (String& string)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
+int WindowsTextControl::getControlTextLength () const
+{
+	return ::GetWindowTextLength ((HWND)handle);
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
 void WindowsTextControl::setSelection (int start, int length)
 {
-	int end = length < 0 ? -1 : start + length;
-	::SendMessage ((HWND)handle, EM_SETSEL, start, end);
+	int caret = 0;
+	int anchor = 0;
+	getSelectionPositions (caret, anchor, start, length);
+
+	// the caret is placed at the end position
+	::SendMessage ((HWND)handle, EM_SETSEL, anchor, caret);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -292,10 +303,7 @@ void WindowsTextControl::setSize (RectRef clientRect)
 	const IVisualStyle& visualStyle = getVisualStyle ();
 	if(!owner.getStyle ().isCustomStyle (Styles::kTextBoxAppearanceMultiLine))
 	{
-		Rect stringSize;
-		Font::measureString (stringSize, "Xgjpq", visualStyle.getTextFont ()); // todo: add any taller character you know
-
-		Coord minHeight = stringSize.bottom;
+		Coord minHeight = Font::measureLineHeight (visualStyle.getTextFont ());
 		if(owner.getStyle ().isCommonStyle (Styles::kBorder))
 			minHeight += 2;
 
@@ -404,7 +412,7 @@ EventResult WindowsTextControl::handleEvent (SystemEvent& e)
 		}
 		break;
 
-	case WM_CHAR:
+	case WM_CHAR :
 		{
 			KeyEvent keyEvent;
 			VKey::fromSystemEvent (keyEvent, e);

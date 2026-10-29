@@ -202,7 +202,7 @@ protected:
 class ObjectFilterChain: public ObjectFilter
 {
 public:
-	ObjectFilterChain& addFilter (CCL::IObjectFilter* filter) // filter treated shared
+	ObjectFilterChain& addFilter (IObjectFilter* filter) // filter treated shared
 	{ 
 		filters.add (filter); 
 		return *this;

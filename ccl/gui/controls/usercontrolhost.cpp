@@ -25,7 +25,9 @@
 #include "ccl/gui/windows/window.h"
 
 #include "ccl/base/kernel.h"
+#include "ccl/base/message.h"
 #include "ccl/base/storage/settings.h"
+#include "ccl/public/collections/unknownlist.h"
 
 namespace CCL {
 
@@ -39,11 +41,11 @@ public:
 	DECLARE_CLASS_ABSTRACT (UserControlHostAccessibilityProvider, ViewAccessibilityProvider)
 
 	UserControlHostAccessibilityProvider (UserControlHost& owner);
+	~UserControlHostAccessibilityProvider ();
 
 	// ViewAccessibilityProvider
 	AccessibilityElementRole CCL_API getElementRole () const override;
-	AccessibilityProvider* findElementProvider (AccessibilityDirection direction) const override;
-	AccessibilityProvider* findElementProviderAt (PointRef pos, AccessibilityCoordSpace space) const override;
+	void CCL_API notify (ISubject* subject, MessageRef msg) override;
 
 	CLASS_INTERFACES (ViewAccessibilityProvider)
 
@@ -55,8 +57,60 @@ protected:
 
 	IAccessibilityProvider* getCustomProvider () const
 	{
-		return getHost ().getUserControl ()->getCustomAccessibilityProvider ();
+		if(IUserControl* control = getHost ().getUserControl ())
+			return control->getCustomAccessibilityProvider ();
+		return nullptr;
 	}
+
+	void populateChildren ();
+	void wrapChild (IAccessibilityProvider& child);
+};
+
+//************************************************************************************************
+// UserControlChildAccessibilityProvider
+/** Wraps an externally-implemented IAccessibilityProvider into an AccessibilityProvider. */
+//************************************************************************************************
+
+class UserControlChildAccessibilityProvider: public AccessibilityProvider,
+											 public IAccessibilitySelectionProvider,
+											 public IAccessibilitySelectionContainerProvider
+{
+public:
+	DECLARE_CLASS_ABSTRACT (UserControlChildAccessibilityProvider, AccessibilityProvider)
+
+	UserControlChildAccessibilityProvider (IAccessibilityProvider& wrapped, UserControlHost& host);
+
+	IAccessibilityProvider& getWrapped () const { return *wrappedProvider; }
+
+	// AccessibilityProvider
+	void CCL_API getElementName (String& name) const override;
+	int CCL_API getElementState () const override;
+	AccessibilityElementRole CCL_API getElementRole () const override;
+	tresult CCL_API getElementBounds (Rect& bounds, AccessibilityCoordSpace space) const override;
+	tresult CCL_API setElementFocus () override;
+	tresult CCL_API makeVisible (tbool relaxed = false) override;
+	View* getView () const override;
+	AccessibilityProvider* findElementProvider (AccessibilityDirection direction) const override;
+	AccessibilityProvider* findElementProviderAt (PointRef pos, AccessibilityCoordSpace space) const override;
+
+	// IAccessibilitySelectionProvider
+	tbool CCL_API isSelected () const override;
+	tresult CCL_API select (tbool state, int flags) override;
+	tresult CCL_API getPosition (int& index, int& total) const override;
+	IAccessibilityProvider* CCL_API getSelectionContainerProvider () const override;
+
+	// IAccessibilitySelectionContainerProvider
+	tresult CCL_API getSelectionProviders (IUnknownList& selection) const override;
+	tbool CCL_API isSelectionRequired () const override;
+	tbool CCL_API canSelectMultiple () const override;
+
+	CLASS_INTERFACES (AccessibilityProvider)
+
+protected:
+	SharedPtr<IAccessibilityProvider> wrappedProvider;
+	UserControlHost& host;
+	
+	AccessibilityProvider* translate (IAccessibilityProvider* provider) const;
 };
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -122,8 +176,9 @@ UserControlHost::UserControlHost ()
 
 UserControlHost::~UserControlHost ()
 {
-	if(userControl)
-		userControl->release ();
+	makeAccessibilityProvider (false);
+
+	safe_release (userControl);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -527,15 +582,28 @@ DEFINE_CLASS_ABSTRACT_HIDDEN (UserControlHostAccessibilityProvider, ViewAccessib
 
 UserControlHostAccessibilityProvider::UserControlHostAccessibilityProvider (UserControlHost& owner)
 : ViewAccessibilityProvider (owner)
-{}
+{
+	if(IAccessibilityProvider* customProvider = getCustomProvider ())
+		ISubject::addObserver (customProvider, this);
+
+	populateChildren ();
+}
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-tresult CCL_API UserControlHostAccessibilityProvider::queryInterface (CCL::UIDRef iid, void** ptr)
+UserControlHostAccessibilityProvider::~UserControlHostAccessibilityProvider ()
+{
+	if(IAccessibilityProvider* customProvider = getCustomProvider ())
+		ISubject::removeObserver (customProvider, this);
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+tresult CCL_API UserControlHostAccessibilityProvider::queryInterface (UIDRef iid, void** ptr)
 {
 	if(SuperClass::queryInterface (iid, ptr) == kResultOk)
 		return kResultOk;
-	
+
 	if(IAccessibilityProvider* customProvider = getCustomProvider ())
 		return customProvider->queryInterface (iid, ptr);
 
@@ -554,39 +622,280 @@ AccessibilityElementRole CCL_API UserControlHostAccessibilityProvider::getElemen
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-AccessibilityProvider* UserControlHostAccessibilityProvider::findElementProvider (AccessibilityDirection direction) const
+void CCL_API UserControlHostAccessibilityProvider::notify (ISubject* subject, MessageRef msg)
 {
-	AccessibilityProvider* result = nullptr;
-	
-	IAccessibilityProvider* customProvider = getCustomProvider ();
-	if(customProvider)
+	if(msg == IAccessibilityProvider::kChildProviderAdded)
 	{
-		switch(direction)
+		if(UnknownPtr<IAccessibilityProvider> child = msg[0].asUnknown ())
+			wrapChild (*child);
+	}
+	else if(msg == IAccessibilityProvider::kChildProviderRemoved)
+	{
+		if(UnknownPtr<IAccessibilityProvider> child = msg[0].asUnknown ())
 		{
-		case AccessibilityDirection::kFirstChild : CCL_FALLTHROUGH
-		case AccessibilityDirection::kLastChild :
-			result = unknown_cast<AccessibilityProvider> (customProvider->findElementIProvider (direction));
+			ArrayForEachReverse (getChildren (), UserControlChildAccessibilityProvider, adapter)
+				if(&adapter->getWrapped () == static_cast<IAccessibilityProvider*> (child))
+					removeChildProvider (adapter);
+			EndFor
 		}
 	}
-
-	if(result == nullptr)
-		result = SuperClass::findElementProvider (direction);
-
-	return result;
+	else
+		SuperClass::notify (subject, msg);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-AccessibilityProvider* UserControlHostAccessibilityProvider::findElementProviderAt (PointRef pos, AccessibilityCoordSpace space) const
+void UserControlHostAccessibilityProvider::populateChildren ()
 {
-	AccessibilityProvider* result = nullptr;
-	
 	IAccessibilityProvider* customProvider = getCustomProvider ();
-	if(customProvider)
-		result = unknown_cast<AccessibilityProvider> (customProvider->findElementIProviderAt (pos, space));
-	
-	if(result == nullptr)
-		result = SuperClass::findElementProviderAt (pos, space);
+	if(!customProvider)
+		return;
 
-	return result;
+	IAccessibilityProvider* child = customProvider->findElementIProvider (AccessibilityDirection::kFirstChild);
+	while(child)
+	{
+		auto* adapter = NEW UserControlChildAccessibilityProvider (*child, getHost ());
+		children.add (adapter);
+		adapter->setParentProvider (this);
+		child = child->findElementIProvider (AccessibilityDirection::kNextSibling);
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+void UserControlHostAccessibilityProvider::wrapChild (IAccessibilityProvider& child)
+{
+	AutoPtr<UserControlChildAccessibilityProvider> adapter = NEW UserControlChildAccessibilityProvider (child, getHost ());
+	addChildProvider (adapter);
+}
+
+//************************************************************************************************
+// UserControlChildAccessibilityProvider
+//************************************************************************************************
+
+DEFINE_CLASS_ABSTRACT_HIDDEN (UserControlChildAccessibilityProvider, AccessibilityProvider)
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+UserControlChildAccessibilityProvider::UserControlChildAccessibilityProvider (IAccessibilityProvider& wrapped, UserControlHost& host)
+: wrappedProvider (&wrapped),
+  host (host)
+{}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+tresult CCL_API UserControlChildAccessibilityProvider::queryInterface (UIDRef iid, void** ptr)
+{
+	if(ccl_iid<IAccessibilityActionProvider> ().equals (iid))
+		return getWrapped ().queryInterface (iid, ptr);
+	if(ccl_iid<IAccessibilitySelectionProvider> ().equals (iid) && UnknownPtr<IAccessibilitySelectionProvider> (&getWrapped ()).isValid ())
+		QUERY_INTERFACE (IAccessibilitySelectionProvider)
+	if(ccl_iid<IAccessibilitySelectionContainerProvider> ().equals (iid) && UnknownPtr<IAccessibilitySelectionContainerProvider> (&getWrapped ()).isValid ())
+		QUERY_INTERFACE (IAccessibilitySelectionContainerProvider)
+	return SuperClass::queryInterface (iid, ptr);
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+void CCL_API UserControlChildAccessibilityProvider::getElementName (String& name) const
+{
+	getWrapped ().getElementName (name);
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+int CCL_API UserControlChildAccessibilityProvider::getElementState () const
+{
+	return getWrapped ().getElementState ();
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+AccessibilityElementRole CCL_API UserControlChildAccessibilityProvider::getElementRole () const
+{
+	return getWrapped ().getElementRole ();
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+tresult CCL_API UserControlChildAccessibilityProvider::getElementBounds (Rect& bounds, AccessibilityCoordSpace space) const
+{
+	return getWrapped ().getElementBounds (bounds, space);
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+tresult CCL_API UserControlChildAccessibilityProvider::setElementFocus ()
+{
+	SharedPtr<UserControlChildAccessibilityProvider> lifeGuard (this);
+	return getWrapped ().setElementFocus ();
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+tresult CCL_API UserControlChildAccessibilityProvider::makeVisible (tbool relaxed)
+{
+	SharedPtr<UserControlChildAccessibilityProvider> lifeGuard (this);
+	return getWrapped ().makeVisible (relaxed);
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+View* UserControlChildAccessibilityProvider::getView () const
+{
+	return &host;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+AccessibilityProvider* UserControlChildAccessibilityProvider::findElementProvider (AccessibilityDirection direction) const
+{
+	switch(direction)
+	{
+	case AccessibilityDirection::kParent :
+		return getParentProvider ();
+
+	case AccessibilityDirection::kNextSibling :
+	case AccessibilityDirection::kPreviousSibling :
+		if(AccessibilityProvider* parent = getParentProvider ())
+		{
+			const ObjectArray& siblings = parent->getChildren ();
+			int index = siblings.index (this);
+			ASSERT (index != -1)
+			index += (direction == AccessibilityDirection::kNextSibling) ? 1 : -1;
+			if(siblings.isValidIndex (index))
+				return static_cast<AccessibilityProvider*> (siblings.at (index));
+		}
+		return nullptr;
+
+	case AccessibilityDirection::kFirstChild :
+		return children.isEmpty () ? nullptr : static_cast<AccessibilityProvider*> (children.first ());
+
+	case AccessibilityDirection::kLastChild :
+		return children.isEmpty () ? nullptr : static_cast<AccessibilityProvider*> (children.last ());
+	}
+	return nullptr;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+AccessibilityProvider* UserControlChildAccessibilityProvider::findElementProviderAt (PointRef pos, AccessibilityCoordSpace space) const
+{
+	ASSERT (space == AccessibilityCoordSpace::kScreen)
+	if(space != AccessibilityCoordSpace::kScreen)
+		return nullptr;
+
+	ReverseIterator iter (children.newIterator ());
+	while(auto* provider = ccl_cast<AccessibilityProvider> (iter.next ()))
+	{
+		Rect rect;
+		provider->getElementBounds (rect, space);
+		if(!rect.pointInside (pos))
+			continue;
+
+		if(AccessibilityProvider* result = provider->findElementProviderAt (pos, space))
+			return result;
+
+		if(provider->getElementRole () != AccessibilityElementRole::kGroup)
+			return provider;
+	}
+	return nullptr;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+AccessibilityProvider* UserControlChildAccessibilityProvider::translate (IAccessibilityProvider* provider) const
+{
+	if(!provider)
+		return nullptr;
+
+	AccessibilityProvider* parent = getParentProvider ();
+
+	if(provider == host.getUserControl ()->getCustomAccessibilityProvider ())
+		return parent;
+
+	if(parent)
+	{
+		ArrayForEach (parent->getChildren (), UserControlChildAccessibilityProvider, adapter)
+			if(&adapter->getWrapped () == provider)
+				return adapter;
+		EndFor
+	}
+
+	return nullptr;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+tbool CCL_API UserControlChildAccessibilityProvider::isSelected () const
+{
+	if(UnknownPtr<IAccessibilitySelectionProvider> selection = UnknownPtr<IAccessibilitySelectionProvider> (&getWrapped ()))
+		return selection->isSelected ();
+	return false;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+tresult CCL_API UserControlChildAccessibilityProvider::select (tbool state, int flags)
+{
+	SharedPtr<UserControlChildAccessibilityProvider> lifeGuard (this);
+	if(UnknownPtr<IAccessibilitySelectionProvider> selection = UnknownPtr<IAccessibilitySelectionProvider> (&getWrapped ()))
+		return selection->select (state, flags);
+	return kResultNotImplemented;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+tresult CCL_API UserControlChildAccessibilityProvider::getPosition (int& index, int& total) const
+{
+	if(UnknownPtr<IAccessibilitySelectionProvider> selection = UnknownPtr<IAccessibilitySelectionProvider> (&getWrapped ()))
+		return selection->getPosition (index, total);
+	return kResultNotImplemented;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+IAccessibilityProvider* CCL_API UserControlChildAccessibilityProvider::getSelectionContainerProvider () const
+{
+	if(UnknownPtr<IAccessibilitySelectionProvider> selection = UnknownPtr<IAccessibilitySelectionProvider> (&getWrapped ()))
+		if(IAccessibilityProvider* container = selection->getSelectionContainerProvider ())
+			return translate (container);
+	return nullptr;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+tresult CCL_API UserControlChildAccessibilityProvider::getSelectionProviders (IUnknownList& selection) const
+{
+	if(UnknownPtr<IAccessibilitySelectionContainerProvider> container = UnknownPtr<IAccessibilitySelectionContainerProvider> (&getWrapped ()))
+	{
+		AutoPtr<UnknownList> wrappedSelectionOwner = NEW UnknownList ();
+		UnknownList* wrappedSelection = wrappedSelectionOwner;
+		container->getSelectionProviders (*wrappedSelection);
+		ForEachUnknown (*wrappedSelection, item)
+			if(UnknownPtr<IAccessibilityProvider> itemProvider = item)
+				if(AccessibilityProvider* translated = translate (itemProvider))
+					selection.add (translated->asUnknown (), true);
+		EndFor
+		return kResultOk;
+	}
+	return kResultNotImplemented;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+tbool CCL_API UserControlChildAccessibilityProvider::isSelectionRequired () const
+{
+	if(UnknownPtr<IAccessibilitySelectionContainerProvider> container = UnknownPtr<IAccessibilitySelectionContainerProvider> (&getWrapped ()))
+		return container->isSelectionRequired ();
+	return false;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+tbool CCL_API UserControlChildAccessibilityProvider::canSelectMultiple () const
+{
+	if(UnknownPtr<IAccessibilitySelectionContainerProvider> container = UnknownPtr<IAccessibilitySelectionContainerProvider> (&getWrapped ()))
+		return container->canSelectMultiple ();
+	return false;
 }

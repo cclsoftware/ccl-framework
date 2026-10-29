@@ -49,7 +49,7 @@
 
 using namespace CCL;
 
-static kern_return_t findService (io_iterator_t* matchingServices, const char* bsdName);
+static kern_return_t findService (io_iterator_t* matchingServices, CStringPtr bsdName);
 static kern_return_t getNetworkAddressAndName (io_iterator_t iterator, UInt8* macAddress, String& name);
 static kern_return_t getDiskName (io_iterator_t iterator, String& name);
 
@@ -764,16 +764,16 @@ void CCL::ApplicationSearcher::find (StringRef filter)
 		[search appendString:@"&&("];
 		bool first = true;
 		ForEachStringToken (filter, CCLSTR (",;"), token)
-			if(!token.endsWith (CCLSTR (".app")))
-				token.append (CCLSTR (".app"));
-		
+			if(token.endsWith (CCLSTR (".app")))
+				token.truncate (token.length () - 4);
+
 			if(first)
 				first = false;
 			else
 				[search appendString:@"||"];
-			[search appendString:@"kMDItemFSName LIKE[c] \""];
+			[search appendString:@"kMDItemFSName LIKE[c] \"*"];
 			[search appendString:[token.createNativeString<NSString*> () autorelease]];
-			[search appendString:@"\""];
+			[search appendString:@"*.app\""];
 		EndFor
 		[search appendString:@")"];
 	}
@@ -810,12 +810,16 @@ void CCL::ApplicationSearcher::find (StringRef filter)
 				CFURLRef cfUrl = (CFURLRef)[NSURL fileURLWithPath:nsPath];
 				NSDictionary* nsDictionary = [(NSDictionary*)CFBundleCopyInfoDictionaryInDirectory (cfUrl) autorelease];
 				version.appendNativeString ([nsDictionary objectForKey:@"CFBundleShortVersionString"]);
-				
+				String bundleIdentifier;
+				bundleIdentifier.appendNativeString ([nsDictionary objectForKey:(NSString*)kCFBundleIdentifierKey]);
+
 				AutoPtr<Attributes> attr = NEW Attributes;
 				attr->set (Meta::kPackageExecutable, executablePath);
 				attr->set (Meta::kPackageName, fileName);
 				if(!version.isEmpty ())
 					attr->set (Meta::kPackageVersion, version);
+				if(!bundleIdentifier.isEmpty ())
+					attr->set (Meta::kPackageID, bundleIdentifier);
 				resultList.add (attr->asUnknown (), true);
 			}
 			setState (kCompleted);
@@ -829,7 +833,7 @@ void CCL::ApplicationSearcher::find (StringRef filter)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-static kern_return_t findService (io_iterator_t *matchingServices, const char* bsdName)
+static kern_return_t findService (io_iterator_t *matchingServices, CStringPtr bsdName)
 {
 	mach_port_t masterPort;
 	kern_return_t kernResult = IOMasterPort (MACH_PORT_NULL, &masterPort);

@@ -13,8 +13,6 @@ mark_as_advanced (tuio_DIR)
 ccl_add_library (tuio SHARED)
 
 list (APPEND tuio_SOURCES
-    ${tuio_DIR}/FlashSender.cpp
-	${tuio_DIR}/FlashSender.h
 	${tuio_DIR}/LibExport.h
 	${tuio_DIR}/OneEuroFilter.cpp
 	${tuio_DIR}/OneEuroFilter.h

@@ -351,6 +351,8 @@ void ApplicationUpdater::setAppDefinition (const ContentDefinition& _appDefiniti
 		#define PLATFORM_EXTENSION ".linux-arm64"
 	#elif (CCL_PLATFORM_LINUX && CCL_PLATFORM_INTEL)
 		#define PLATFORM_EXTENSION ".linux"
+	#elif (CCL_PLATFORM_WASM)
+		#define PLATFORM_EXTENSION ".wasm"
 	#else
 		#error Unsupported platform!
 	#endif

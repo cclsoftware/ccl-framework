@@ -51,6 +51,7 @@ ccl_list_append_once (corelib_public_headers
 	${corelib_DIR}/public/coreclassbundle.h
 	${corelib_DIR}/public/coreclassmacros.h
 	${corelib_DIR}/public/coreclibrary.h
+	${corelib_DIR}/public/coreconfiguration.h
 	${corelib_DIR}/public/corecontainer.h
 	${corelib_DIR}/public/coredatetime.h
 	${corelib_DIR}/public/coredefpush.h
@@ -105,6 +106,11 @@ ccl_list_append_once (corelib_public_headers
 	${corelib_DIR}/public/devices/coregattcentral.h
 	${corelib_DIR}/public/devices/coregattperipheral.h
 	${corelib_DIR}/public/devices/coreusbhid.h
+	${corelib_DIR}/public/audio/coreaudiodata.h
+	${corelib_DIR}/public/audio/coreaudiodatatypes.h
+	${corelib_DIR}/public/audio/coreaudioiodata.h
+	${corelib_DIR}/public/audio/coreaudiometerdata.h
+	${corelib_DIR}/public/audio/coreaudiospeakers.h
 )
 
 ccl_list_append_once (corelib_generated_headers
@@ -197,10 +203,16 @@ ccl_list_append_once (corelib_api_headers
 	${corelib_DIR}/system/corezipfileformat.impl.h
 
 	${corelib_DIR}/text/coreattributehandler.h
+	${corelib_DIR}/text/coregraphemeiterator.h
 	${corelib_DIR}/text/corejsonhandler.h
 	${corelib_DIR}/text/coretexthelper.h
 	${corelib_DIR}/text/coreutfcodec.h
 	
+	${corelib_DIR}/extras/audio/coreaudiodataops.h
+	${corelib_DIR}/extras/audio/coreaudiointerpolator.h
+	${corelib_DIR}/extras/audio/coreaudiometerballistics.h
+	${corelib_DIR}/extras/audio/coreaudiovectorops.h
+
 	${corelib_DIR}/extras/tools/bin2c.h
 )
 
@@ -248,10 +260,10 @@ ccl_list_append_once (corelib_source_files
 	${corelib_DIR}/system/coreatomicstack.cpp
 	${corelib_DIR}/system/coredebug.cpp
 
+	${corelib_DIR}/text/coregraphemeiterator.cpp
 	${corelib_DIR}/text/corejsonhandler.cpp
 	${corelib_DIR}/text/coretexthelper.cpp
 	${corelib_DIR}/text/coreutfcodec.cpp
-	${corelib_DIR}/text/coreutfcodec.h
 )
 
 # set up project folder structure
@@ -283,7 +295,12 @@ if (NOT TARGET corelib)
 		${CMAKE_CURRENT_LIST_FILE}
 	)
 
-	target_link_libraries (corelib PUBLIC ${ZLIB_LIBRARIES} ${PNG_LIBRARIES})
+	target_link_libraries (corelib PRIVATE ${ZLIB_LIBRARIES} ${PNG_LIBRARIES})
+
+	foreach (include_dir IN ITEMS ${ZLIB_INCLUDE_DIRS})
+		target_include_directories (corelib PUBLIC $<BUILD_INTERFACE:${include_dir}>)
+	endforeach ()
+
 	if (PROJECT_DEBUG_SUFFIX)
 		set_target_properties (corelib ${ZLIB_LIBRARIES} ${PNG_LIBRARIES} PROPERTIES DEBUG_POSTFIX ${PROJECT_DEBUG_SUFFIX})
 	endif ()

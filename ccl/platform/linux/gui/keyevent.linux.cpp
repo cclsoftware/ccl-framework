@@ -103,7 +103,7 @@ KeyMapping keyMap[] =
 	{XKB_KEY_F21,	kF21},
 	{XKB_KEY_F22,	kF22},
 	{XKB_KEY_F23,	kF23},
-	{XKB_KEY_F24,	kF24}	
+	{XKB_KEY_F24,	kF24}
 };
 
 int getKeyMappingSize ()

@@ -428,7 +428,7 @@ XmlNode* XmlTreeParser::createNode (StringRef name)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-tresult CCL_API XmlTreeParser::startElement (StringRef name, const CCL::IStringDictionary& attributes)
+tresult CCL_API XmlTreeParser::startElement (StringRef name, const IStringDictionary& attributes)
 {
 	XmlNode* child = createNode (name);
 	ASSERT (child != nullptr)
@@ -467,7 +467,7 @@ tresult CCL_API XmlTreeParser::endElement (StringRef name)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-tresult CCL_API XmlTreeParser::characterData (const uchar* data, int length, tbool isCDATA)
+tresult CCL_API XmlTreeParser::characterData (UStringPtr data, int length, tbool isCDATA)
 {
 	if(!current || !isTextEnabled ())
 		return kResultOk;
@@ -518,7 +518,7 @@ tresult CCL_API XmlTreeParserWithPI::endElement (StringRef name)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-tresult CCL_API XmlTreeParserWithPI::characterData (const uchar* data, int length, tbool isCDATA)
+tresult CCL_API XmlTreeParserWithPI::characterData (UStringPtr data, int length, tbool isCDATA)
 {
 	if(skipping)
 		return kResultOk;
@@ -536,7 +536,7 @@ XmlTreeExtractor::XmlTreeExtractor ()
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-CCL::tresult CCL_API XmlTreeExtractor::startElement (CCL::StringRef name, const CCL::IStringDictionary& attributes)
+tresult CCL_API XmlTreeExtractor::startElement (StringRef name, const IStringDictionary& attributes)
 {
 	if(skippingDepth > 0)
 	{
@@ -556,7 +556,7 @@ CCL::tresult CCL_API XmlTreeExtractor::startElement (CCL::StringRef name, const 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-CCL::tresult CCL_API XmlTreeExtractor::endElement (CCL::StringRef name)
+tresult CCL_API XmlTreeExtractor::endElement (StringRef name)
 {	
 	if(skippingDepth > 0)
 	{
@@ -569,7 +569,7 @@ CCL::tresult CCL_API XmlTreeExtractor::endElement (CCL::StringRef name)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-CCL::tresult CCL_API XmlTreeExtractor::characterData (const uchar* data, int length, tbool isCDATA)
+tresult CCL_API XmlTreeExtractor::characterData (UStringPtr data, int length, tbool isCDATA)
 {
 	if(skippingDepth > 0)
 		return kResultOk;

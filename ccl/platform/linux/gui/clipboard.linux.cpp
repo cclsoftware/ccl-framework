@@ -114,7 +114,8 @@ bool LinuxClipboard::setNativeText (StringRef text)
 	if(dataSource)
 	{
 		wl_data_source_add_listener (dataSource, &listener, &listener);
-		sourceText = MutableCString (text, Text::kSystemEncoding);
+		sourceText = MutableCString (text, Text::kUTF8);
+		wl_data_source_offer (dataSource, DataDeviceHelper::getClipboardMimeType (true));
 		wl_data_source_offer (dataSource, DataDeviceHelper::getClipboardMimeType ());
 		wl_data_device_set_selection (dataDevice, dataSource, client.getSerial ());
 		
@@ -166,9 +167,9 @@ LinuxClipboard::ClipboardListener::ClipboardListener (LinuxClipboard& clipboard)
 void LinuxClipboard::ClipboardListener::onSendData (void* data, wl_data_source* dataSource, CStringPtr mimeType, int32_t fd)
 {
 	ClipboardListener* This = static_cast<ClipboardListener*> (data);
-	if(This->clipboard.dataSource == dataSource && DataDeviceHelper::getClipboardMimeType () == mimeType)
+	if(This->clipboard.dataSource == dataSource && DataDeviceHelper::isClipboardMimeType (mimeType))
 	{
-		const char* clipboardData = This->clipboard.sourceText.str ();
+		CStringPtr clipboardData = This->clipboard.sourceText.str ();
 		ssize_t length = This->clipboard.sourceText.length ();
 
 		ssize_t bytesWritten = 0;

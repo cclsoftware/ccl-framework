@@ -89,13 +89,13 @@ protected:
 	static void translateException (unsigned int exceptionCode, LPEXCEPTION_POINTERS exceptionInfo);
 	int findModulesInCallStack (NativePath modules[], int maxCount, LPEXCEPTION_POINTERS exceptionInfo);
 
-	void reportUnexpectedBehavior (const uchar* modulePath);
+	void reportUnexpectedBehavior (UStringPtr modulePath);
 
 	void flush ();
 
 	// SafetyManager
 	void enableCrashRecovery (bool state) override;
-	void CCL_API reportException (void* exceptionInformation, const uchar* systemDumpFile) override;
+	void CCL_API reportException (void* exceptionInformation, UStringPtr systemDumpFile) override;
 	tbool CCL_API handleException () override;
 	tresult CCL_API checkStability () override;
 };
@@ -154,7 +154,7 @@ void WindowsSafetyManager::enableCrashRecovery (bool state)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void CCL_API WindowsSafetyManager::reportException (void* exceptionInformation, const uchar* systemDumpFile)
+void CCL_API WindowsSafetyManager::reportException (void* exceptionInformation, UStringPtr systemDumpFile)
 {
 	if(findModuleCausingException (modulePaths[0], static_cast<LPEXCEPTION_POINTERS> (exceptionInformation)) || systemDumpFile != nullptr)
 	{
@@ -210,7 +210,7 @@ tresult CCL_API WindowsSafetyManager::checkStability ()
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void WindowsSafetyManager::reportUnexpectedBehavior (const uchar* modulePath)
+void WindowsSafetyManager::reportUnexpectedBehavior (UStringPtr modulePath)
 {
 	{
 		Threading::ScopedLock guard (exceptionLock);

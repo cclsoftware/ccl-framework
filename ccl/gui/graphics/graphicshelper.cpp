@@ -56,7 +56,7 @@ CCL_EXPORT Internal::IGraphicsHelper& CCL_API System::CCL_ISOLATED (GetGraphicsH
 
 struct ColorDesc
 {
-	const char* name;
+	CStringPtr name;
 	const Color color;
 };
 
@@ -261,6 +261,90 @@ EnumTypeInfo& GraphicsHelper::getDefaultColors ()
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
+float GraphicsHelper::getBrushOpacity (BrushRef brush)
+{
+	if(ColorGradient* colorGradient = unknown_cast<ColorGradient> (brush.getGradient ()))
+		return colorGradient->getOpacity ();
+	else
+		return brush.getColor ().getAlphaF ();
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+void GraphicsHelper::setBrushOpacity (Brush& brush, float newOpacity, OpacityMode mode)
+{
+	if(ColorGradient* colorGradient = unknown_cast<ColorGradient> (brush.getGradient ()))
+	{
+		// Note that opacity is always multiplied with color alpha later when creating native gradient
+		colorGradient->setOpacity (mode == OpacityMode::kMultiply ? 
+								   colorGradient->getOpacity () * newOpacity :
+								   newOpacity);
+	}
+	else
+	{
+		Color c (brush.getColor ());
+		c.setAlphaF (mode == OpacityMode::kMultiply ? c.getAlphaF () * newOpacity : newOpacity);
+		brush.setColor (c);
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+void GraphicsHelper::blendBrushes (Brush& result, BrushRef start, BrushRef end, float t)
+{
+	if(start.getType () == Brush::kSolid && end.getType () == Brush::kSolid)
+	{
+		result = SolidBrush (Color::linearGradient (start.getColor (), end.getColor (), t));
+		return;
+	}
+
+	ColorGradient* startGradient = unknown_cast<ColorGradient> (start.getGradient ());
+	ColorGradient* endGradient = unknown_cast<ColorGradient> (end.getGradient ());
+
+	// a solid brush blended with a gradient is treated as a two-stop gradient of that color,
+	// matching the geometry/type of the other (real) gradient
+	AutoPtr<ColorGradient> solidAsStart, solidAsEnd;
+	if(startGradient == nullptr)
+	{
+		if(endGradient)
+			solidAsStart = endGradient->cloneWithSolidColor (start.getColor ());
+
+		startGradient = solidAsStart;
+	}
+	if(endGradient == nullptr)
+	{
+		if(startGradient)
+			solidAsEnd = startGradient->cloneWithSolidColor (end.getColor ());
+
+		endGradient = solidAsEnd;
+	}
+
+	if(startGradient == nullptr || endGradient == nullptr)
+	{
+		result = end;
+		return;
+	}
+
+	AutoPtr<ColorGradient> blended;
+	if(LinearColorGradient* startLinear = ccl_cast<LinearColorGradient> (startGradient))
+		blended = NEW LinearColorGradient (*startLinear);
+	else if(RadialColorGradient* startRadial = ccl_cast<RadialColorGradient> (startGradient))
+		blended = NEW RadialColorGradient (*startRadial);
+	else
+	{
+		result = end;
+		return;
+	}
+
+	endGradient->blendInto (*blended, t);
+	if(blended)
+		result = GradientBrush (blended);
+	else
+		result = end;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
 tbool CCL_API GraphicsHelper::Color_fromCString (Color& This, CStringPtr _cString)
 {
 	CString cString (_cString);
@@ -400,14 +484,14 @@ const Font& CCL_API GraphicsHelper::Font_getDefaultFont ()
 {
 	#if CCL_PLATFORM_WINDOWS
 	static const Font defaultFont ("MS Shell Dlg", 12, Font::kNormal);
-	#elif CCL_PLATFORM_IOS
+	#elif CCL_PLATFORM_IOS || CCL_PLATFORM_MAC 
 	static const Font defaultFont ("System Font", 12, Font::kNormal);
 	#elif CCL_PLATFORM_ANDROID
 	static const Font defaultFont ("Roboto", 12, Font::kNormal);
-	#elif CCL_PLATFORM_LINUX
+	#elif CCL_PLATFORM_WASM
+	static const Font defaultFont ("Open Sans", 12, Font::kNormal);
+	#else // CCL_PLATFORM_LINUX
 	static const Font defaultFont ("sans-serif", 12, Font::kNormal);
-	#else // CCL_PLATFORM_MAC
-	static const Font defaultFont ("System Font", 12, Font::kNormal);
 	#endif
 	return defaultFont;
 }
@@ -917,10 +1001,23 @@ UIValue::UIValue ()
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void CCL_API UIValue::reset ()
+UIValue::~UIValue ()
 {
-	type = kNil;
-	::memset (&data, 0, sizeof(data));
+	reset ();
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+void CCL_API UIValue::reset (Type newType)
+{
+	if(type != newType)
+	{
+		if(type == kBrush)
+			reinterpret_cast<Brush&> (data.brush).setGradient (nullptr);
+
+		type = newType;
+		::memset (&data, 0, sizeof(data));
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -931,8 +1028,13 @@ tbool CCL_API UIValue::copyFrom (const IUIValue* value)
 	if(v == nullptr)
 		return false;
 
-	type = v->type;
-	data = v->data;
+	if(v->type == kBrush)
+		fromBrush (v->asBrushRef ());
+	else
+	{
+		reset (v->type);
+		data = v->data;
+	}
 	return true;
 }
 
@@ -947,7 +1049,7 @@ UIValue::Type CCL_API UIValue::getType () const
 
 void CCL_API UIValue::fromPoint (PointRef p)
 {
-	type = kPoint;
+	reset (kPoint);
 	reinterpret_cast<Point&> (data.point) = p;
 }
 
@@ -966,7 +1068,7 @@ tbool CCL_API UIValue::toPoint (Point& p) const
 
 void CCL_API UIValue::fromRect (RectRef r)
 {
-	type = kRect;
+	reset (kRect);
 	reinterpret_cast<Rect&> (data.rect) = r;
 }
 
@@ -985,7 +1087,7 @@ tbool CCL_API UIValue::toRect (Rect& r) const
 
 void CCL_API UIValue::fromTransform (TransformRef t)
 {
-	type = kTransform;
+	reset (kTransform);
 	reinterpret_cast<Transform&> (data.transform) = t;
 }
 
@@ -1004,7 +1106,7 @@ tbool CCL_API UIValue::toTransform (Transform& t) const
 
 void CCL_API UIValue::fromColor (ColorRef c)
 {
-	type = kColor;
+	reset (kColor);
 	reinterpret_cast<Color&> (data.color) = c;
 }
 
@@ -1023,7 +1125,7 @@ tbool CCL_API UIValue::toColor (Color& color) const
 
 void CCL_API UIValue::fromColorF (ColorFRef c)
 {
-	type = kColorF;
+	reset (kColorF);
 	reinterpret_cast<ColorF&> (data.colorF) = c;
 }
 
@@ -1042,7 +1144,7 @@ tbool CCL_API UIValue::toColorF (ColorF& color) const
 
 void CCL_API UIValue::fromPointF (PointFRef p)
 {
-	type = kPointF;
+	reset (kPointF);
 	reinterpret_cast<PointF&> (data.pointF) = p;
 }
 
@@ -1061,7 +1163,7 @@ tbool CCL_API UIValue::toPointF (PointF& p) const
 
 void CCL_API UIValue::fromRectF (RectFRef r)
 {
-	type = kRectF;
+	reset (kRectF);
 	reinterpret_cast<RectF&> (data.rectF) = r;
 }
 
@@ -1080,7 +1182,7 @@ tbool CCL_API UIValue::toRectF (RectF& r) const
 
 void CCL_API UIValue::fromPointF3D (PointF3DRef p)
 {
-	type = kPointF3D;
+	reset (kPointF3D);
 	reinterpret_cast<PointF3D&> (data.pointF3d) = p;
 }
 
@@ -1099,7 +1201,7 @@ tbool CCL_API UIValue::toPointF3D (PointF3D& p) const
 
 void CCL_API UIValue::fromPointF4D (PointF4DRef p)
 {
-	type = kPointF4D;
+	reset (kPointF4D);
 	reinterpret_cast<PointF4D&> (data.pointF4d) = p;
 }
 
@@ -1118,7 +1220,7 @@ tbool CCL_API UIValue::toPointF4D (PointF4D& p) const
 
 void CCL_API UIValue::fromTransform3D (Transform3DRef t)
 {
-	type = kTransform3D;
+	reset (kTransform3D);
 	data.transform3d = t;
 }
 
@@ -1130,5 +1232,44 @@ tbool CCL_API UIValue::toTransform3D (Transform3D& t) const
 		return false;
 
 	t = asTransform3DRef ();
+	return true;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+void CCL_API UIValue::fromPen (PenRef p)
+{
+	reset (kPen);
+	reinterpret_cast<Pen&> (data.pen) = p;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+tbool CCL_API UIValue::toPen (Pen& p) const
+{
+	if(type != kPen)
+		return false;
+
+	p = asPenRef ();
+	return true;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+void CCL_API UIValue::fromBrush (BrushRef b)
+{
+	reset (kBrush);
+	// goes through Brush::operator=, which retains the gradient
+	reinterpret_cast<Brush&> (data.brush) = b;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+tbool CCL_API UIValue::toBrush (Brush& b) const
+{
+	if(type != kBrush)
+		return false;
+
+	b = asBrushRef ();
 	return true;
 }

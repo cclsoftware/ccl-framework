@@ -1,6 +1,12 @@
+.. include:: ../../reference/skin-elements-classmodel.ref.rst
+
 ##########
 Workspaces
 ##########
+
+.. note::
+
+  This is application-level window management - multiple windows, panels, and switchable layouts. If you're just placing controls on a single form, you don't need any of this; it only matters once an app has to arrange several windows or let the user switch between layouts.
 
 ********
 Overview
@@ -46,11 +52,11 @@ The group attribute of a window class determines in which workspace frames of a 
   </WindowClasses>
 
 The window manager of the application maintains a parameter for each window class that reflects the
-open/closed state of the window class. It can be used to toggle it.
+open/closed state of the window class. It can be used to toggle it (see :ref:`Parameter Binding and Addressing<parameter_binding>` for the ``://`` path syntax).
 
 .. code-block:: xml
 
-  <Toggle name="://WindowManager/MyClass"/>
+  <Toggle name="object://WindowManager/MyClass"/>
 
 ***********************
 Perspectives and Frames 
@@ -62,8 +68,6 @@ The "groups" attribute is a list of group names from window classes, separated b
 
 Complex arrangements can be built with horizontal or vertical frame groups, which will create a layout container for their contained frames.
 An empty frame (or a frame group with only empty frames) collapses to an empty size, so it doesn't take any space in the perspective.
-
-When the application wants to open a window class
 
 .. code-block:: xml
 
@@ -79,7 +83,7 @@ Popup Frame
 ===========
 
 A frame with the option "popup" opens in a separate floating popup window (not in the frame structure of the perspective view tree).
-Workspaces often have a least one "popup multiple" frame as target for all floating window content.
+Workspaces often have at least one "popup multiple" frame as target for all floating window content.
 "multiple" here means that each matching window class will open in a new window, instead of replacing content in the existing popup window.
 
 .. code-block:: xml
@@ -93,17 +97,17 @@ Detached Frame
 
 A frame with the options "popup detached" is a target for detaching a window class.
 This can be used for a window class that appears in a frame of the regular perspective view tree by default, but can optionally be detached into a separate window.
-The workspace maintains the detached state and uses it to determine if  the window class content should appear in a regular frame or in a detached window.
+The workspace maintains the detached state and uses it to determine if the window class content should appear in a regular frame or in a detached window.
 
 ==============
 Embedded Frame
 ==============
 
 An embedded frame defines a sub tree of frames that can appear in the form of a parent class.
-The |xml.class.EmbeddedFrame| element must appear in two places: placed inside the form of a "parent" window class
+The |xml.class.embeddedframe| element must appear in two places: placed inside the form of a "parent" window class
 and placed in the root frame of a perspective with the same name and a parent class. It defines a separate subtree of frames.
 
-When a window class is about to be opened, the workspace system ensures that the parent class, whose view contains the EmbeddeFrame view gets opened first.
+When a window class is about to be opened, the workspace system ensures that the parent class, whose view contains the EmbeddedFrame view, gets opened first.
 
 .. code-block:: xml
 
@@ -137,7 +141,7 @@ In a form description, these parameters can be addressed via the "CustomParams" 
   </Perspective>
 
   <!-- address via "CustomParams" controller of a perspective: -->
-  <Divider name="://Workspace/myWorkspaceID/MyPerspective/CustomParams/myParam"/>
+  <Divider name="object://Workspace/myWorkspaceID/MyPerspective/CustomParams/myParam"/>
 
 *******************************
 Hosting a Workspace in a Window
@@ -150,7 +154,7 @@ The view tree created by the currently selected perspective will be inserted int
 Application Workspace
 =====================
 
-An application skin can have multiple workspaces. If a workspace with the applicationID exists, it used as application workspace that provides the content of the main application window.
+An application skin can have multiple workspaces. If a workspace with the applicationID exists, it is used as application workspace that provides the content of the main application window.
 The framework then automatically creates a PerspectiveContainer view for it that fills the application window.
 To customize this, the application skin can define a form "ApplicationWindow" that must contain a view called "PerspectiveContainer" (and optionally adds other elements like decors).
 
@@ -164,12 +168,12 @@ To customize this, the application skin can define a form "ApplicationWindow" th
 Other Workspaces
 ================
 
-To show the content of another workspace, we can reference the workspace as controller and let it create its PerspectiveContainer: 
+To show the content of another workspace, reference it as controller and let it create its PerspectiveContainer: 
 
 .. code-block:: xml
 
   <Form name="SomeForm">
-    <using controller="://Workspace/MyWorkspace">
+    <using controller="object://Workspace/MyWorkspace">
       <View name="PerspectiveContainer" size="0,0,1024,720" attach="all"/>
     </using>
   </Form>

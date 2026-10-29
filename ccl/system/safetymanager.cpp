@@ -53,9 +53,9 @@ public:
 
 	void getActiveUnstableModules (IUnknownList& modules) const;
 
-	void onCrash (const uchar* crashingModulePath, const uchar* crashDumpFile);
-	void onCallingModule (const uchar* callingModulePath);
-	void onUnexpectedBehavior (const uchar* modulePath);
+	void onCrash (UStringPtr crashingModulePath, UStringPtr crashDumpFile);
+	void onCallingModule (UStringPtr callingModulePath);
+	void onUnexpectedBehavior (UStringPtr modulePath);
 	void onShutdown ();
 
 	bool tryCleanup (bool reinitialize = true, bool ignoreUnstable = false);
@@ -298,7 +298,7 @@ tresult CCL_API SafetyManager::checkStability ()
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void CCL_API SafetyManager::reportException (void* exceptionInformation, const uchar* systemDumpFile)
+void CCL_API SafetyManager::reportException (void* exceptionInformation, UStringPtr systemDumpFile)
 {}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -333,7 +333,7 @@ void SafetyManager::enableCrashRecovery (bool state)
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void SafetyManager::reportCrash (const uchar* crashingModule, const uchar* systemDumpFile)
+void SafetyManager::reportCrash (UStringPtr crashingModule, UStringPtr systemDumpFile)
 {
 	if(crashReport)
 		crashReport->onCrash (crashingModule, systemDumpFile);
@@ -341,7 +341,7 @@ void SafetyManager::reportCrash (const uchar* crashingModule, const uchar* syste
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void SafetyManager::reportCallingModule (const uchar* callingModule)
+void SafetyManager::reportCallingModule (UStringPtr callingModule)
 {
 	if(crashReport)
 		crashReport->onCallingModule (callingModule);
@@ -349,7 +349,7 @@ void SafetyManager::reportCallingModule (const uchar* callingModule)
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void SafetyManager::reportUnexpectedBehavior (const uchar* modulePath)
+void SafetyManager::reportUnexpectedBehavior (UStringPtr modulePath)
 {
 	if(crashReport)
 		crashReport->onUnexpectedBehavior (modulePath);
@@ -785,7 +785,7 @@ void SafetyManager::CrashReport::initializeLogFile ()
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void SafetyManager::CrashReport::onCrash (const uchar* crashingModulePath, const uchar* systemDumpFile)
+void SafetyManager::CrashReport::onCrash (UStringPtr crashingModulePath, UStringPtr systemDumpFile)
 {
 	crashed = true;
 
@@ -811,7 +811,7 @@ void SafetyManager::CrashReport::onCrash (const uchar* crashingModulePath, const
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void SafetyManager::CrashReport::onCallingModule (const uchar* callingModulePath)
+void SafetyManager::CrashReport::onCallingModule (UStringPtr callingModulePath)
 {
 	Threading::ScopedLock guard (actionLock);
 
@@ -829,7 +829,7 @@ void SafetyManager::CrashReport::onCallingModule (const uchar* callingModulePath
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void SafetyManager::CrashReport::onUnexpectedBehavior (const uchar* modulePath)
+void SafetyManager::CrashReport::onUnexpectedBehavior (UStringPtr modulePath)
 {
 	ASSERT (System::IsInMainThread ())
 	if(!System::IsInMainThread ())

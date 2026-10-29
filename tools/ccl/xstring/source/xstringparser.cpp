@@ -51,7 +51,7 @@ public:
 	// XmlTreeParser
 	CCL::tresult CCL_API startElement (CCL::StringRef name, const CCL::IStringDictionary& attributes) override;
 	CCL::tresult CCL_API endElement (CCL::StringRef name) override;
-	CCL::tresult CCL_API characterData (const CCL::uchar* data, int length, CCL::tbool isCDATA) override;
+	CCL::tresult CCL_API characterData (CCL::UStringPtr data, int length, CCL::tbool isCDATA) override;
 	CCL::tresult CCL_API processingInstruction (CCL::StringRef target, CCL::StringRef data) override;
 
 protected:
@@ -97,7 +97,7 @@ tresult CCL_API TranslationXmlTreeParser::endElement (StringRef name)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-tresult CCL_API TranslationXmlTreeParser::characterData (const uchar* data, int length, tbool isCDATA)
+tresult CCL_API TranslationXmlTreeParser::characterData (UStringPtr data, int length, tbool isCDATA)
 {
 	if(skipping)
 		return kResultOk;

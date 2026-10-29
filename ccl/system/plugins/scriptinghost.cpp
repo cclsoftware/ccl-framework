@@ -128,6 +128,25 @@ const ScriptingHost::ResultsList::ResultDef ScriptingHost::ResultsList::resultLi
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
+// Use DEFINE_PROPERTY_CLASS over DEFINE_PROPERTY_TYPE to allow custom tresult type
+// being exported to classmodel, type would have to be ITypeInfo::kInt otherwise
+BEGIN_PROPERTY_NAMES (ScriptingHost::ResultsList)
+	DEFINE_PROPERTY_CLASS ("kResultOk", "tresult")
+	DEFINE_PROPERTY_CLASS ("kResultTrue", "tresult")
+	DEFINE_PROPERTY_CLASS ("kResultFalse", "tresult")
+	DEFINE_PROPERTY_CLASS ("kResultNotImplemented", "tresult")
+	DEFINE_PROPERTY_CLASS ("kResultNoInterface", "tresult")
+	DEFINE_PROPERTY_CLASS ("kResultInvalidPointer", "tresult")
+	DEFINE_PROPERTY_CLASS ("kResultFailed", "tresult")
+	DEFINE_PROPERTY_CLASS ("kResultUnexpected", "tresult")
+	DEFINE_PROPERTY_CLASS ("kResultClassNotFound", "tresult")
+	DEFINE_PROPERTY_CLASS ("kResultOutOfMemory", "tresult")
+	DEFINE_PROPERTY_CLASS ("kResultInvalidArgument", "tresult")
+	DEFINE_PROPERTY_CLASS ("kResultWrongThread", "tresult")
+END_PROPERTY_NAMES (ScriptingHost::ResultsList)
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
 tbool CCL_API ScriptingHost::ResultsList::getProperty (Variant& var, MemberID propertyId) const
 {
 	for(int i = 0; i < ARRAY_COUNT (resultList); i++)
@@ -309,15 +328,15 @@ tbool CCL_API ScriptingHost::Signals::invokeMethod (Variant& returnValue, Messag
 }
 
 //************************************************************************************************
-// ScriptingHost::ScriptableIO
+// ScriptingHost::ScriptIO
 //************************************************************************************************
 
-DEFINE_CLASS (ScriptingHost::ScriptableIO, Object)
-DEFINE_CLASS_NAMESPACE (ScriptingHost::ScriptableIO, NAMESPACE_CCL)
+DEFINE_CLASS (ScriptingHost::ScriptIO, Object)
+DEFINE_CLASS_NAMESPACE (ScriptingHost::ScriptIO, NAMESPACE_CCL)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-BEGIN_METHOD_NAMES (ScriptingHost::ScriptableIO)
+BEGIN_METHOD_NAMES (ScriptingHost::ScriptIO)
 	DEFINE_METHOD_NAME ("File")
 	DEFINE_METHOD_ARGR ("findFiles", "startPoint, searchPattern", "Iterator")
 	DEFINE_METHOD_ARGR ("openTextFile", "path, [encoding]", "TextFile")
@@ -329,11 +348,11 @@ BEGIN_METHOD_NAMES (ScriptingHost::ScriptableIO)
 	DEFINE_METHOD_ARGR ("openPackage", "path", "PackageFile")
 	DEFINE_METHOD_ARGR ("createPackage", "path, [mimeType]", "PackageFile")
 	DEFINE_METHOD_ARGR ("getDevelopmentFileLocation", "root: string, relativePath: string", "Url")
-END_METHOD_NAMES (ScriptingHost::ScriptableIO)
+END_METHOD_NAMES (ScriptingHost::ScriptIO)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-tbool CCL_API ScriptingHost::ScriptableIO::invokeMethod (Variant& returnValue, MessageRef msg)
+tbool CCL_API ScriptingHost::ScriptIO::invokeMethod (Variant& returnValue, MessageRef msg)
 {
 	if(msg == "File")
 	{
@@ -511,7 +530,7 @@ ScriptingHost::ScriptingHost ()
   resultsList (NEW ResultsList),
   console (NEW Console),
   signals (NEW Signals),
-  scriptableIO (NEW ScriptableIO),
+  scriptIO (NEW ScriptIO),
   children (NEW ObjectTable)
 {}
 
@@ -523,7 +542,7 @@ ScriptingHost::~ScriptingHost ()
 	resultsList->release ();
 	console->release ();
 	signals->release ();
-	scriptableIO->release ();
+	scriptIO->release ();
 	children->release ();
 }
 
@@ -560,7 +579,7 @@ BEGIN_PROPERTY_NAMES (ScriptingHost)
 	DEFINE_PROPERTY_CLASS_ ("Signals", "ScriptingHost.Signals", CCL::ITypeInfo::kReadOnly)
 	DEFINE_PROPERTY_CLASS_ ("Locales", "LocaleManager", CCL::ITypeInfo::kReadOnly)
 	DEFINE_PROPERTY_CLASS_ ("SystemInfo", "SystemInformation", CCL::ITypeInfo::kReadOnly)
-	DEFINE_PROPERTY_CLASS_ ("IO", "ScriptingHost.ScriptableIO", CCL::ITypeInfo::kReadOnly)
+	DEFINE_PROPERTY_CLASS_ ("IO", "ScriptingHost.ScriptIO", CCL::ITypeInfo::kReadOnly)
 	DEFINE_PROPERTY_CLASS_ ("FileTypes", "FileTypeRegistry", CCL::ITypeInfo::kReadOnly)
 END_PROPERTY_NAMES (ScriptingHost)
 
@@ -615,7 +634,7 @@ tbool CCL_API ScriptingHost::getProperty (Variant& var, MemberID propertyId) con
 	}
 	else if(propertyId == "IO")
 	{
-		var = ccl_as_unknown (scriptableIO);
+		var = ccl_as_unknown (scriptIO);
 		return true;
 	}
 	else if(propertyId == "FileTypes")

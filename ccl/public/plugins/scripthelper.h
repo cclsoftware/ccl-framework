@@ -78,7 +78,7 @@ public:
 			if(Text::isUTF16Encoding (sourceEncoding))
 			{
 				length = ccl_min (length, kMaxSize - 1);
-				const uchar* data = value.getUCharData ();
+				UStringPtr data = value.getUCharData ();
 				uchar mask = 0x7F; // ASCII character range
 				if(encoding == Text::kISOLatin1) // ISOLatin1 and UTF16 are also numerically identical from 0x80 to 0xFF
 					mask = 0XFF;
@@ -101,7 +101,7 @@ public:
 			ASSERT (stringValue)
 			ASSERT (Text::isValidCStringEncoding (stringValue->getEncoding ()))
 			int safeLength = ccl_min (length, kMaxSize - 1);
-			const char* data = stringValue->getCharData ();
+			CStringPtr data = stringValue->getCharData ();
 			for(int i = 0; i < safeLength; i++)
 				buffer[i] = data[i];
 			buffer[safeLength] = 0;
@@ -124,7 +124,7 @@ public:
 protected:
 	TextEncoding encoding;
 	
-	const char* getData () const
+	CStringPtr getData () const
 	{
 		if(stringValue)
 			return stringValue->getCharData ();
@@ -157,7 +157,7 @@ public:
 			else if(Text::isValidCStringEncoding (sourceEncoding))
 			{
 				length = ccl_min (length, kMaxSize - 1);
-				const char* data = value.getCharData ();
+				CStringPtr data = value.getCharData ();
 				char mask = 0x7F;
 				if(sourceEncoding == Text::kISOLatin1)
 					mask = char (0xFF);
@@ -180,7 +180,7 @@ public:
 	}
 
 protected:
-	const uchar* getData () const
+	UStringPtr getData () const
 	{
 		if(stringValue)
 			return stringValue->getUCharData ();

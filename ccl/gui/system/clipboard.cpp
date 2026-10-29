@@ -185,7 +185,7 @@ bool Clipboard::toText (String& text, IUnknown* object)
 		ASSERT (ms.isValid ())
 		if(ms)
 		{
-			const uchar* chars = (uchar*)ms->getMemoryAddress ();
+			UStringPtr chars = (uchar*)ms->getMemoryAddress ();
 			int length = ms->getBytesWritten ()/sizeof(uchar);
 
 			// remove BOM

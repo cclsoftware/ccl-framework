@@ -80,7 +80,8 @@ interface ILocaleInfo: IUnknown
 
 	enum PrintByteFlags ///< used with printByteSize() and printBytesPerSecond()
 	{
-		kSIByteUnit = 1<<0	///< use SI byte units based on power of 10
+		kSIByteUnit = 1<<0,			///< use SI byte units based on power of 10
+		kAccessibleByteUnit = 1<<1	///< format unit for screen reader
 	};
 
 	virtual tresult CCL_API printByteSize (String& result, double byteSize, int flags = 0) const = 0;

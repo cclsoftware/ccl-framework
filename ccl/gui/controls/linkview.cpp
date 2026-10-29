@@ -48,30 +48,15 @@ public:
 	{}
 
 	void onRelease (bool canceled) override
-	{ 
+	{
 		if(canceled)
 			return;
 
 		if(!view->isInsideClient (current.where))
 			return;
 
-		LinkView* linkView = (LinkView*)view;
-		Url url;
-		if(linkView->getUrl (url))
-		{
-			INavigator* navigator = linkView->getNavigator ();
-			if(navigator)
-				navigator->navigateDeferred (url);
-			else
-			{
-				if(url.isFolder () && System::GetFileSystem ().isLocalFile (url))
-					System::GetSystemShell ().showFile (url);
-				else
-					System::GetSystemShell ().openUrl (url);
-			}
-		}
-		else
-			linkView->push ();
+		auto* linkView = static_cast<LinkView*> (view);
+		linkView->push ();
 	}
 };
 
@@ -187,6 +172,28 @@ INavigator* LinkView::getNavigator () const
 		v = v->getParent ();
 	}
 	return nullptr;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+void CCL_API LinkView::push ()
+{
+	Url resolvedUrl;
+	if(!getUrl (resolvedUrl))
+	{
+		SuperClass::push ();
+		return;
+	}
+
+	if(INavigator* navigator = getNavigator ())
+		navigator->navigateDeferred (resolvedUrl);
+	else
+	{
+		if(resolvedUrl.isFolder () && System::GetFileSystem ().isLocalFile (resolvedUrl))
+			System::GetSystemShell ().showFile (resolvedUrl);
+		else
+			System::GetSystemShell ().openUrl (resolvedUrl);
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////

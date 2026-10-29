@@ -36,6 +36,7 @@
 #ifndef ZWP_LINUX_DMABUF_V1_DESTROY_SINCE_VERSION
 #include "linux-dmabuf-unstable-v1-client-protocol.h"
 #endif
+#include "cursor-shape-v1-client-protocol.h"
 
 #ifdef XDG_ACTIVATION_V1_DESTROY_SINCE_VERSION
 #define WAYLAND_USE_XDG_ACTIVATION 1
@@ -67,6 +68,14 @@ struct xdg_wm_dialog_v1;
 #define WAYLAND_SEAT_VERSION WL_POINTER_AXIS_VALUE120_SINCE_VERSION
 #else
 #define WAYLAND_SEAT_VERSION 7
+#endif
+
+#ifndef WP_CURSOR_SHAPE_MANAGER_V1_GET_POINTER_SINCE_VERSION
+#define WAYLAND_USE_CURSOR_SHAPE 0
+struct wp_cursor_shape_manager_v1;
+struct wp_cursor_shape_device_v1;
+#else
+#define WAYLAND_USE_CURSOR_SHAPE 1
 #endif
 
 #include "ccl/public/base/ccldefpop.h"

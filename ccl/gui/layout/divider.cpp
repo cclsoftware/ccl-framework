@@ -22,12 +22,15 @@
 #include "ccl/gui/layout/anchorlayout.h"
 #include "ccl/gui/layout/directions.h"
 #include "ccl/gui/views/mousehandler.h"
+#include "ccl/gui/views/scrollview.h"
 #include "ccl/gui/windows/window.h"
 #include "ccl/gui/theme/renderer/dividerrenderer.h"
 #include "ccl/gui/layout/dividergroup.h"
 #include "ccl/gui/layout/layoutprimitives.h"
 
 #include "ccl/base/boxedtypes.h"
+
+#include "ccl/public/base/irecognizer.h"
 
 #include "ccl/public/gui/framework/controlsignals.h"
 #include "ccl/public/gui/framework/viewfinder.h"
@@ -322,7 +325,7 @@ Divider::Divider (const Rect& size, IParameter* param, StyleRef style)
 ThemeRenderer* Divider::getRenderer ()
 {
 	if(renderer == nullptr)
-		renderer = getTheme ().createRenderer (ThemePainter::kDividerRenderer, visualStyle);
+		renderer = getTheme ().createRenderer (ThemePainter::kDividerRenderer, visualStyle, this);
 	return renderer;
 }
 
@@ -346,6 +349,11 @@ MouseHandler* Divider::createMouseHandler (const MouseEvent& event)
 		// quick fix: other dividers are not synced in onMove due to the kMouseDown check
 		if(style.isCustomStyle (Styles::kDividerBehaviorSlave))
 			return NEW NullMouseHandler (this);
+
+		// toggle between minimum position and content size (modifier keys still perform the extreme jumps below)
+		if(!event.keys.isSet (KeyState::kCommand) && !event.keys.isSet (KeyState::kShift))
+			if(jumpToScrollContentFit ())
+				return NEW NullMouseHandler (this);
 
 		// jump to extreme positions on double click; default: up/left, toggle with shift; center with command
 		int direction = event.keys.isSet (KeyState::kCommand) ? 0 : (event.keys.isSet (KeyState::kShift) ? 1 : -1);
@@ -510,7 +518,7 @@ void Divider::onSize (const Point& delta)
 {
 	SuperClass::onSize (delta);
 
-	if(getRenderer ()->needsRedraw (this, delta))
+	if(getRenderer ()->needsRedraw (delta))
 		invalidate ();
 }
 
@@ -805,6 +813,98 @@ void Divider::jump (int direction, bool canInvert)
 	// try other direction if nothing happened
 	if(canInvert && getPosition () == oldPos)
 		moveBy (-delta);
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+/*static*/ ScrollView* Divider::findScrollView (View& view)
+{
+	AutoPtr<IRecognizer> recognizer (Recognizer::create ([] (IUnknown* object) { return unknown_cast<ScrollView> (object) != nullptr; }));
+	return ccl_cast<ScrollView> (view.findView (*recognizer));
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+template<class Direction>
+Coord Divider::calcScrollContentFitDelta (ScrollView& scrollView)
+{
+	if(!scrollView.isAttached ())
+		return 0; // view tree has changed meanwhile
+
+	// how much longer must the scroll view become, so that its content is completely visible?
+	Rect wanted;
+	scrollView.calcAutoSize (wanted);
+
+	// the scroll view takes any additional space of its view (the surrounding decoration has a fixed size)
+	return Direction::getLength (wanted) - Direction::getLength (scrollView.getSize ());
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+bool Divider::jumpToScrollContentFit ()
+{
+	return getStyle ().isCommonStyle (Styles::kVertical) ? jumpToScrollContentFit<VerticalDirection> () : jumpToScrollContentFit<HorizontalDirection> ();
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+template<class Direction>
+bool Divider::jumpToScrollContentFit ()
+{
+	Context context;
+	if(!context.find<Direction> (*this))
+		return false;
+
+	// the view that is adapted to its content is the one that does not fill the remaining space
+	bool useLeftView = context.leftItem->fillFactor == 0.f && context.rightItem->fillFactor != 0.f;
+	if(!useLeftView && !(context.rightItem->fillFactor == 0.f && context.leftItem->fillFactor != 0.f))
+		return false; // cannot tell which side to adapt
+
+	// the content size is taken from the scroll view inside that view
+	// (hold it, flushing signals below can rebuild the view tree)
+	SharedPtr<ScrollView> scrollView (findScrollView (useLeftView ? *context.leftView : *context.rightView));
+	if(!scrollView)
+		return false;
+
+	// nothing is missing (delta <= 0) and there is no space left over worth a movement
+	constexpr Coord kFitTolerance = 2;
+	auto contentFits = [&] (Coord delta) { return delta <= 0 && delta >= -kFitTolerance; };
+
+	Coord contentDelta = calcScrollContentFitDelta<Direction> (*scrollView);
+
+	if(contentFits (contentDelta))
+	{
+		// content is already visible: collapse the view to its minimum
+		Limits limits (this);
+		limits.include<Direction> (context);
+		if(!limits.canMove ())
+			return false;
+
+		param->beginEdit ();
+		moveBy (useLeftView ? limits.minDiff : limits.maxDiff);
+		param->endEdit (); // save layout state (see onManipulationDone)
+		return true;
+	}
+
+	param->beginEdit ();
+	{
+		Window::UpdateCollector uc (getWindow ()); // one redraw for all steps
+
+		// the scroll view gets the additional space, its siblings keep their size. But while the view is
+	 	// collapsed, those siblings are squeezed too (a separator line for example) and take their space
+	 	// back as soon as the view grows. A second run applies the difference that appears this way,
+		// where all sizes are settled and the calculation is exact.
+		constexpr int kRunCount = 2;
+		for(int run = 0; run < kRunCount && !contentFits (contentDelta); run++)
+		{
+			moveBy (useLeftView ? contentDelta : -contentDelta);
+
+			System::GetSignalHandler ().flush (); // let deferred layout work happen before measuring again
+			contentDelta = calcScrollContentFitDelta<Direction> (*scrollView);
+		}
+	}
+	param->endEdit (); // save layout state (see onManipulationDone)
+	return true;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////

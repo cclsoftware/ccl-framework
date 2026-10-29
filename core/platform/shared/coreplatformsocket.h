@@ -21,6 +21,19 @@
 
 #include "core/public/corestringbuffer.h"
 #include "core/public/coresocketaddress.h"
+#include "core/platform/corefeatures.h"
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+// Global socket function stub
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+#if CORE_SOCKET_IMPLEMENTATION == CORE_FEATURE_UNIMPLEMENTED
+
+#define INVALID_SOCKET -1
+
+inline int socket (int addressFamily, int type, int protocol) { return INVALID_SOCKET; }
+
+#endif // CORE_SOCKET_IMPLEMENTATION == CORE_FEATURE_UNIMPLEMENTED
 
 namespace Core {
 namespace Platform {
@@ -39,8 +52,9 @@ struct ISocket
 
 	virtual bool connect (const Sockets::SocketAddress& address) = 0;
 	virtual bool disconnect () = 0;
-	virtual bool isConnected () const = 0;	
-	
+	virtual bool isConnected () const = 0;
+	virtual int getConnectStatus (int timeout) const = 0;
+
 	virtual bool bind (const Sockets::SocketAddress& address) = 0;
 	virtual bool listen (int maxConnections) = 0;
 	virtual SocketID accept () = 0;
@@ -91,6 +105,95 @@ namespace SocketSets
 {
 	int select (SocketID highestSocket, ISocketIDSet* readList, ISocketIDSet* writeList, ISocketIDSet* errorList, int timeout);
 }
+
+#if CORE_SOCKET_IMPLEMENTATION == CORE_FEATURE_UNIMPLEMENTED
+
+#define SOCKET_ERROR -1
+
+#define ENETDOWN 100
+#define ENETUNREACH 101
+#define EHOSTDOWN 112
+#define EADDRINUSE 98
+#define ENETRESET 102
+#define ECONNRESET 104
+#define ECONNABORTED 103
+#define ENOTCONN 107
+#define ESHUTDOWN 108
+#define ETIMEDOUT 110
+#define ECONNREFUSED 111
+#define EISCONN 106
+#define ENOBUFS 105
+
+//************************************************************************************************
+// SocketStub
+//************************************************************************************************
+
+class SocketStub: public ISocket
+{
+public:
+	SocketStub (SocketID socket) {}
+	SocketStub (Sockets::AddressFamily addressFamily, Sockets::SocketType type, Sockets::ProtocolType protocol) {}
+
+	// ISocket
+	SocketID getDescriptor () const override { return INVALID_SOCKET; }
+	bool connect (const Sockets::SocketAddress& address) override { return false; }
+	bool disconnect () override { return false; }
+	bool isConnected () const override { return false; }
+	int getConnectStatus (int timeout) const override { return SOCKET_ERROR; }
+	bool bind (const Sockets::SocketAddress& address) override { return false; }
+	bool listen (int maxConnections) override { return false; }
+	SocketID accept () override { return INVALID_SOCKET; }
+	bool getPeerAddress (Sockets::SocketAddress& address) const override { return false; }
+	bool getLocalAddress (Sockets::SocketAddress& address) const override { return false; }
+	bool setOption (int option, int value) override { return false; }
+	bool getOption (int& value, int option) const override { return false; }
+	bool joinMulticastGroup (const Sockets::IPAddress& groupAddress, const Sockets::IPAddress& adapterAddress) override { return false; }
+	bool leaveMulticastGroup (const Sockets::IPAddress& groupAddress, const Sockets::IPAddress& adapterAddress) override { return false; }
+	bool isReadable (int timeout = 0) const override { return false; }
+	bool isWritable (int timeout = 0) const override { return false; }
+	bool isAnyError (int timeout = 0) const override { return false; }
+	int send (const void* buffer, int size, int flags = 0) override { return SOCKET_ERROR; }
+	int sendAll (const void* buffer, int size, int flags = 0) override { return SOCKET_ERROR; }
+	int receive (void* buffer, int size, int flags = 0) override { return SOCKET_ERROR; }
+	int getBytesAvailable (int& bytesAvailable) override { return SOCKET_ERROR; }
+	int sendTo (const void* buffer, int size, const Sockets::SocketAddress& address, int flags = 0) override { return SOCKET_ERROR; }
+	int receiveFrom (void* buffer, int size, Sockets::SocketAddress& address, int flags = 0) override { return SOCKET_ERROR; }
+	int getErrorCode () const override { return 0; }
+	bool wouldBlockOperation (bool writeDirection) const override { return false; }
+};
+
+typedef SocketStub Socket;
+
+//************************************************************************************************
+// SocketIDSetStub
+//************************************************************************************************
+
+class SocketIDSetStub: public ISocketIDSet
+{
+public:
+	struct DummySet { int dummy; };
+
+	SocketIDSetStub (const DummySet&) {}
+
+	// ISocketIDSet
+	void set (SocketID index) override {}
+	void clear (SocketID index) override {}
+	bool isSet (SocketID index) override { return false; }
+	void zero () override {}
+};
+
+typedef SocketIDSetStub SocketIDSet;
+
+//************************************************************************************************
+// SocketSets stub implementation
+//************************************************************************************************
+
+namespace SocketSets
+{
+	inline int select (SocketID highestSocket, ISocketIDSet* readList, ISocketIDSet* writeList, ISocketIDSet* errorList, int timeout) { return SOCKET_ERROR; }
+}
+
+#endif // CORE_SOCKET_IMPLEMENTATION == CORE_FEATURE_UNIMPLEMENTED
 
 } // namespace Platform
 } // namespace Core

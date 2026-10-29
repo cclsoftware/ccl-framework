@@ -546,14 +546,6 @@ WindowsGattCentralService::~WindowsGattCentralService ()
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void WindowsGattCentralService::cancelConnectionAttempt ()
-{
-	if(getCharacteristicsOperation && getCharacteristicsOperation.Status () == WinRTAsyncStatus::Started)
-		getCharacteristicsOperation.Cancel ();
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
 void CCL_API WindowsGattCentralService::notify (ISubject* subject, MessageRef msg)
 {
 	CCL_PRINTF ("[%s] %s\n", __func__, msg.getID ().str ());
@@ -675,7 +667,9 @@ WindowsGattCentralDevice::WindowsGattCentralDevice (WindowsGattCentral* central,
   identifier (nullptr),
   name (nullptr),
   manufacturerData (manufacturerData),
-  connectionState (kConnectionStateUnavailable)
+  connectionState (kConnectionStateUnavailable),
+  requestServicesRemainingRetries (0),
+  requestServicesRetryDelayMs (kRequestServicesRetryInitialDelayMs)
 {
 	fromBluetoothAddressOperation = WinRTBluetoothLEDevice::FromBluetoothAddressAsync (bluetoothAddress, bluetoothAddressType);
 	fromBluetoothAddressOperation.Completed ({this, &WindowsGattCentralDevice::onFromBluetoothAddressCompleted});
@@ -690,6 +684,13 @@ WindowsGattCentralDevice::~WindowsGattCentralDevice ()
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
+ConnectionState WindowsGattCentralDevice::getConnectionState () const
+{
+	return connectionState;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
 uint64 WindowsGattCentralDevice::getBluetoothAddress () const
 {
 	return bluetoothAddress;
@@ -697,49 +698,58 @@ uint64 WindowsGattCentralDevice::getBluetoothAddress () const
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-ErrorCode WindowsGattCentralDevice::requestServices ()
+ErrorCode WindowsGattCentralDevice::connect ()
 {
-	if(!services.isEmpty ())
-	{
-		central->notifyGattServicesAvailable (this);
-		return kError_NoError;
-	}
+	// Windows doesn't provide an explicit connect method, so we initiate the connection by requesting the GATT services
+	// A following getServicesAsync call becomes trivial (and synchronous) as a result
 
-	if(getGattServicesOperation && getGattServicesOperation.Status () == WinRTAsyncStatus::Started)
+	ASSERT (connectionState == kConnectionStateDisconnected)
+	if(connectionState != kConnectionStateDisconnected)
 		return kError_InvalidState;
 
-	TRY
-	{
-		getGattServicesOperation = winrtDevice.GetGattServicesAsync (winrt::Windows::Devices::Bluetooth::BluetoothCacheMode::Uncached);
-		getGattServicesOperation.Completed ({this, &WindowsGattCentralDevice::onGetGattServicesCompleted});
-	}
-	EXCEPT
-	{
-		CCL_WARN ("Exception on getting Gatt services", 0)
-		return kError_Failed;
-	}
-
-	return kError_NoError;
+	connectionState = kConnectionStateConnecting;
+	requestServicesRemainingRetries = kRequestServicesRetryCount;
+	requestServicesRetryDelayMs = kRequestServicesRetryInitialDelayMs;
+	return requestServices ();
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void WindowsGattCentralDevice::cancelConnectionAttempt ()
+void WindowsGattCentralDevice::disconnect ()
 {
 	CCL_PRINTF ("[%s]\n", __func__);
-	if(getGattServicesOperation && getGattServicesOperation.Status () == WinRTAsyncStatus::Started)
-		getGattServicesOperation.Cancel ();
 
-	for(WindowsGattCentralService* service : services)
-		service->cancelConnectionAttempt ();
+	ASSERT (connectionState == kConnectionStateConnected || connectionState == kConnectionStateConnecting)
+
+	// Cancel any scheduled connection retry attempt
+	cancelSignals ();
+
+	// Cancel any ongoing connection attempt
+	if(getGattServicesOperation != nullptr)
+	{
+		ASSERT (connectionState == kConnectionStateConnecting)
+		getGattServicesOperation.Cancel ();
+		getGattServicesOperation = nullptr;
+	}
+
+	deleteServices ();
+	connectionState = kConnectionStateDisconnected;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 void CCL_API WindowsGattCentralDevice::notify (ISubject* subject, MessageRef msg)
 {
-	CCL_PRINTF ("[%s] %s\n", __func__, msg.getID ().str ());
-	if(msg == "getGattServicesCompleted")
+	if(msg == "requestServices")
+	{
+		if(connectionState == kConnectionStateConnecting && services.isEmpty ())
+		{
+			ErrorCode error = requestServices ();
+			if(error != kError_NoError)
+				central->notifyConnectCompleted (this, error);
+		}
+	}
+	else if(msg == "getGattServicesCompleted")
 	{
 		ASSERT (msg.getArgCount () == 1)
 		if(auto argument = TypedMessageArgument<WinRTGattDeviceServicesResult>::cast (msg[0]))
@@ -753,7 +763,7 @@ void CCL_API WindowsGattCentralDevice::notify (ISubject* subject, MessageRef msg
 	}
 	else if(msg == "connectionStatusChanged")
 	{
-		central->notifyConnectionStatusChanged (this, winrtDevice.ConnectionStatus ());
+		handleConnectionStatusChanged ();
 	}
 	else
 	{
@@ -884,11 +894,16 @@ void WindowsGattCentralDevice::onFromBluetoothAddressCompleted (WinRTIAsyncOpera
 
 void WindowsGattCentralDevice::onGetGattServicesCompleted (WinRTIAsyncOperation<WinRTGattDeviceServicesResult> op, const WinRTAsyncStatus status)
 {
-	CCL_PRINTF ("[%s] status = %i\n", __func__, status);
-	if(status == WinRTAsyncStatus::Completed && op.GetResults () != nullptr)
-		(NEW Message ("getGattServicesCompleted", TypedMessageArgument<WinRTGattDeviceServicesResult>::make (op.GetResults ())))->post (this);
-	else
-		getGattServicesOperation = nullptr;
+	if(status == WinRTAsyncStatus::Canceled)
+		return;
+
+	// GetResults() must not be called if status is WinRTAsyncStatus::Error
+	// handleGetGattServicesCompleted() maps a null result to kError_Failed and retries
+	WinRTGattDeviceServicesResult result = nullptr;
+	if(status == WinRTAsyncStatus::Completed)
+		result = op.GetResults ();
+
+	(NEW Message ("getGattServicesCompleted", TypedMessageArgument<WinRTGattDeviceServicesResult>::make (result)))->post (this);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -908,7 +923,7 @@ void WindowsGattCentralDevice::handleFromBluetoothAddressCompleted (const WinRTB
 
 	if(winrtDevice != nullptr)
 	{
-		setConnectionState (kConnectionStateDisconnected);
+		connectionState = kConnectionStateDisconnected;
 
 		this->winrtDevice = winrtDevice;
 		identifier = String (this->winrtDevice.DeviceId ().c_str ());
@@ -927,22 +942,109 @@ void WindowsGattCentralDevice::handleFromBluetoothAddressCompleted (const WinRTB
 
 void WindowsGattCentralDevice::handleGetGattServicesCompleted (const WinRTGattDeviceServicesResult& result)
 {
+	ASSERT (connectionState == kConnectionStateConnecting)
+	if(connectionState != kConnectionStateConnecting)
+		return;
+
 	ASSERT (services.isEmpty ())
-	ErrorCode errorCode = toErrorCode (result.Status ());
 
-	if(errorCode == kError_NoError)
+	ErrorCode errorCode = (result != nullptr) ? toErrorCode (result.Status ()) : kError_Failed;
+
+	// Success: notify the observers
+	if(errorCode == kError_NoError && result.Services ().Size () > 0)
 	{
-		auto winrtServices = result.Services ();
-		int numServices = winrtServices.Size ();
-
+		int numServices = result.Services ().Size ();
+		CCL_PRINTF ("[%s] found %i services\n", __func__, numServices)
 		services.resize (numServices);
 		for(int i = 0; i < numServices; i++)
-			services.add (NEW WindowsGattCentralService (winrtServices.GetAt (i)));
+			services.add (NEW WindowsGattCentralService (result.Services ().GetAt (i)));
+
+		getGattServicesOperation = nullptr;
+		connectionState = kConnectionStateConnected;
+		central->notifyConnectCompleted (this, kError_NoError);
+		return;
 	}
 
 	getGattServicesOperation = nullptr;
 
-	central->notifyGattServicesAvailable (this);
+	// Failure: retry
+	if(requestServicesRemainingRetries > 0)
+	{
+		CCL_PRINTF ("[%s] retrying in (%i ms, %i retries left)\n", __func__, requestServicesRetryDelayMs, requestServicesRemainingRetries)
+		(NEW Message ("requestServices"))->post (this, requestServicesRetryDelayMs);
+		requestServicesRemainingRetries--;
+		requestServicesRetryDelayMs = int(requestServicesRetryDelayMs * kRequestServicesRetryDelayFactor);
+	}
+	// Failure: give up
+	else
+	{
+		CCL_PRINTF ("[%s] failed\n", __func__)
+		connectionState = kConnectionStateDisconnected;
+		central->notifyConnectCompleted (this, kError_Failed);
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+void WindowsGattCentralDevice::handleConnectionStatusChanged ()
+{
+	if(winrtDevice == nullptr)
+		return;
+
+	WinRTBluetoothConnectionStatus status = winrtDevice.ConnectionStatus ();
+
+	// The connection has been established
+	if(connectionState == kConnectionStateConnecting && status == WinRTBluetoothConnectionStatus::Connected)
+	{
+		CCL_PRINTF ("[%s] established connection with %ls\n", __func__, winrtDevice.Name ().c_str ());
+		// Ignore, the connection has been initiated by requesting the services
+		// When the services callback returns, the connection state changes to connected
+		return;
+	}
+
+	// The connection has been lost
+	if(connectionState == kConnectionStateConnected && status == WinRTBluetoothConnectionStatus::Disconnected)
+	{
+		CCL_PRINTF ("[%s] lost connection with %ls\n", __func__, winrtDevice.Name ().c_str ());
+		connectionState = kConnectionStateDisconnected;
+		central->notifyConnectionLost (this);
+		return;
+	}
+
+	// The connection has been established unsolicitedly (e.g. by pairing the device)
+	if(connectionState == kConnectionStateDisconnected && status == WinRTBluetoothConnectionStatus::Connected)
+	{
+		CCL_PRINTF ("[%s] unsolicitedly established connection with %ls\n", __func__, winrtDevice.Name ().c_str ());
+		return;
+	}
+
+	ASSERT (false)
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+ErrorCode WindowsGattCentralDevice::requestServices ()
+{
+	ASSERT (connectionState == kConnectionStateConnecting)
+	ASSERT (getGattServicesOperation == nullptr)
+	ASSERT (services.isEmpty ())
+	if(connectionState != kConnectionStateConnecting || getGattServicesOperation != nullptr || !services.isEmpty ())
+		return kError_InvalidState;
+
+	TRY
+	{
+		getGattServicesOperation = winrtDevice.GetGattServicesAsync (winrt::Windows::Devices::Bluetooth::BluetoothCacheMode::Uncached);
+		getGattServicesOperation.Completed ({this, &WindowsGattCentralDevice::onGetGattServicesCompleted});
+	}
+	EXCEPT
+	{
+		CCL_WARN ("Exception on getting Gatt services", 0)
+		connectionState = kConnectionStateDisconnected;
+		getGattServicesOperation = nullptr;
+		return kError_Failed;
+	}
+
+	return kError_NoError;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -970,6 +1072,9 @@ WindowsGattCentral::WindowsGattCentral ()
 
 WindowsGattCentral::~WindowsGattCentral ()
 {
+	receivedRevoker.revoke ();
+	stoppedRevoker.revoke ();
+
 	stopScanning ();
 	cancelSignals ();
 	cleanupDevices ();
@@ -986,7 +1091,7 @@ void WindowsGattCentral::close (WindowsGattCentralDevice* device)
 		{
 			observers.notify (&IGattCentralObserver::onDeviceRemoved, device);
 			device->close ();
-			delete device;
+			device->release ();
 			devices.removeAt (index);
 		}
 	}
@@ -1006,49 +1111,16 @@ void WindowsGattCentral::notifyDeviceFound (WindowsGattCentralDevice* device)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void WindowsGattCentral::notifyConnectionStatusChanged (WindowsGattCentralDevice* device, WinRTBluetoothConnectionStatus status)
+void WindowsGattCentral::notifyConnectionLost (WindowsGattCentralDevice* device)
 {
-	CCL_PRINTF ("[%s] %s (state: %i): %s\n", __func__, device->getName (), device->getConnectionState (),
-				(status == WinRTBluetoothConnectionStatus::Connected) ? "Connected" : "Disconnected");
-
-	if(device->getConnectionState () == kConnectionStateConnecting)
-	{
-		// ignore, the connection has been initiated by requesting the services
-		// when the services callback returns, the connection state changes to connected
-	}
-	else if(status == WinRTBluetoothConnectionStatus::Connected)
-	{
-		if(device->getConnectionState () == kConnectionStateDisconnected)
-		{
-			// the connection has been established automatically
-			device->setConnectionState (kConnectionStateConnected);
-			observers.notify (&IGattCentralObserver::onConnectionRestored, device);
-		}
-		else
-		{
-			ASSERT (false); // invalid state
-		}
-	}
-	else if(device->getConnectionState () == kConnectionStateConnected)
-	{
-		// the connection has been terminated automatically
-		device->setConnectionState (kConnectionStateDisconnected);
-		close (device);
-	}
-	else
-	{
-		ASSERT (false); // invalid state
-	}
+	(NEW Message ("closeDevice", ccl_as_unknown (device)))->post (this);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void WindowsGattCentral::notifyGattServicesAvailable (WindowsGattCentralDevice* device)
+void WindowsGattCentral::notifyConnectCompleted (WindowsGattCentralDevice* device, ErrorCode error)
 {
-	ASSERT (device->getConnectionState () == kConnectionStateConnecting)
-	device->setConnectionState (kConnectionStateConnected);
-
-	observers.notify (&IGattCentralObserver::onConnectCompleted, device, kError_NoError);
+	observers.notify (&IGattCentralObserver::onConnectCompleted, device, error);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1058,7 +1130,7 @@ void CCL_API WindowsGattCentral::notify (ISubject* subject, MessageRef msg)
 	if(msg == "advertisementReceived")
 	{
 		ASSERT (msg.getArgCount () == 1)
-		if(auto argument = TypedMessageArgument<WinRTBluetoothLEAdvertisementReceivedEventArgs>::cast (msg[0]))
+		if(auto* argument = TypedMessageArgument<WinRTBluetoothLEAdvertisementReceivedEventArgs>::cast (msg[0]))
 			handleAdvertisementReceived (argument->getPayload ());
 	}
 	else if(msg == "scanningStarted")
@@ -1068,6 +1140,12 @@ void CCL_API WindowsGattCentral::notify (ISubject* subject, MessageRef msg)
 	else if(msg == "scanningStopped")
 	{
 		observers.notify (&IGattCentralObserver::onScanningStopped);
+	}
+	else if(msg == "closeDevice")
+	{
+		ASSERT (msg.getArgCount () == 1)
+		if(auto* device = unknown_cast<WindowsGattCentralDevice> (msg[0]))
+			close (device);
 	}
 	else
 	{
@@ -1200,7 +1278,7 @@ void WindowsGattCentral::handleAdvertisementReceived (const WinRTBluetoothLEAdve
 	const auto& winrtManufacturerData = args.Advertisement ().ManufacturerData ();
 	for(int i = 0; i < winrtManufacturerData.Size (); i++)
 	{
-		const auto& data = winrtManufacturerData.GetAt (0).Data ();
+		const auto& data = winrtManufacturerData.GetAt (i).Data ();
 		manufacturerData.append (reinterpret_cast<char*> (data.data ()), data.Length ());
 	}
 
@@ -1213,21 +1291,13 @@ void WindowsGattCentral::handleAdvertisementReceived (const WinRTBluetoothLEAdve
 
 ErrorCode WindowsGattCentral::connectAsync (IGattCentralDevice* device, tbool autoReconnect)
 {
-	// TODO: autoReconnect:
-	// GattSession.MaintainConnection
-
 	if(device == nullptr)
 		return kError_InvalidArgument;
 
 	WindowsGattCentralDevice* windowsDevice = static_cast<WindowsGattCentralDevice*> (device);
-	ASSERT (windowsDevice != nullptr && devices.contains (windowsDevice))
+	ASSERT (devices.contains (windowsDevice))
 
-	ASSERT (windowsDevice->getConnectionState () == kConnectionStateDisconnected)
-	if(windowsDevice->getConnectionState () != kConnectionStateDisconnected)
-		return kError_InvalidState;
-
-	windowsDevice->setConnectionState (kConnectionStateConnecting);
-	return windowsDevice->requestServices ();
+	return windowsDevice->connect ();
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1238,14 +1308,10 @@ ErrorCode WindowsGattCentral::disconnectAsync (IGattCentralDevice* device)
 		return kError_ItemNotFound;
 
 	WindowsGattCentralDevice* windowsDevice = static_cast<WindowsGattCentralDevice*> (device);
-	// ASSERT (windowsDevice != nullptr && devices.contains (windowsDevice))
+	ASSERT (devices.contains (windowsDevice))
 
-	ASSERT (windowsDevice->getConnectionState () == kConnectionStateConnected ||
-			windowsDevice->getConnectionState () == kConnectionStateConnecting)
-	if(windowsDevice->getConnectionState () == kConnectionStateConnecting)
-		windowsDevice->cancelConnectionAttempt ();
+	windowsDevice->disconnect ();
 
-	windowsDevice->setConnectionState (kConnectionStateDisconnected);
 	observers.notify (&IGattCentralObserver::onDisconnectCompleted, device, kError_NoError);
 	return kError_NoError;
 }

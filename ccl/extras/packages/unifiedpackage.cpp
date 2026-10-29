@@ -249,7 +249,7 @@ END_METHOD_NAMES (UnifiedPackage)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-tbool CCL_API UnifiedPackage::invokeMethod (CCL::Variant& returnValue, CCL::MessageRef msg)
+tbool CCL_API UnifiedPackage::invokeMethod (Variant& returnValue, MessageRef msg)
 {
 	if(msg == "isLocalPackage")
 	{

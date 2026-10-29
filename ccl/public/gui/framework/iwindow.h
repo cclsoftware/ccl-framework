@@ -130,7 +130,7 @@ interface IWindow: IWindowBase
 	//////////////////////////////////////////////////////////////////////////////////////////////
 
 	/** Show window. */
-	virtual void CCL_API show () = 0;
+	virtual void CCL_API show (tbool activate = true) = 0;
 	
 	/** Hide window. */
 	virtual void CCL_API hide () = 0;
@@ -347,6 +347,9 @@ interface IDesktop: IUnknown
 
 	/** Try to close all modal dialog windows. */
 	virtual tbool CCL_API closeModalWindows () = 0;
+
+	/** Try to close all modal dialog windows, defer the command until the outermost dialog is destroyed and return true. */
+	virtual tbool CCL_API closeModalWindowsAndDeferCommand (ICommandHandler* handler, const CommandMsg& cmd) = 0;
 
 	/** Flush updates and handle events for any open progress windows. */
 	virtual void CCL_API flushUpdatesWithProgressWindows (IView* caller = nullptr) = 0;

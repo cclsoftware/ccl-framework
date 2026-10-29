@@ -157,7 +157,7 @@ public:
 	PROPERTY_CSTRING_BUFFER (16, method, Method)
 	bool isGET () const { return method == HTTP::kGET; }
 	bool isPOST () const { return method == HTTP::kPOST; }
-	PROPERTY_CSTRING_BUFFER (STRING_STACK_SPACE_MAX, path, Path)
+	PROPERTY_CSTRING_BUFFER (CORE_STRING_STACK_MAX, path, Path)
 	const HeaderList& getHeaders () const { return headers; }
 
 	void reset ();

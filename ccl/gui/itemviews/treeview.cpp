@@ -306,12 +306,13 @@ DEFINE_CLASS_HIDDEN (TreeStyle, ItemStyle)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-BEGIN_VISUALSTYLE_CLASS (TreeStyle, ItemStyle, "TreeViewStyle")
-	ADD_VISUALSTYLE_METRIC ("itemInset")	///< inset (in pixels) per tree depth level
-	ADD_VISUALSTYLE_METRIC ("iconSize")		///< size of item icons (same width & height)
-	ADD_VISUALSTYLE_METRIC ("expandSize")	///< size of expand symbol (same width & height)
-	ADD_VISUALSTYLE_METRIC ("leafInset")	///< additional inset for leaf items
-END_VISUALSTYLE_CLASS (TreeStyle)
+DEFINE_TYPELIB_ENTRY_WITH_PARENT (TreeStyle, ItemStyle, "TreeViewStyle", VISUALSTYLES_TYPELIB)
+BEGIN_TYPELIB_MEMBERS (TreeStyle)
+	ADD_TYPELIB_MEMBER_METRIC ("itemInset") ///< inset (in pixels) per tree depth level
+	ADD_TYPELIB_MEMBER_METRIC ("iconSize") ///< size of item icons (same width & height)
+	ADD_TYPELIB_MEMBER_METRIC ("expandSize") ///< size of expand symbol (same width & height)
+	ADD_TYPELIB_MEMBER_METRIC ("leafInset") ///< additional inset for leaf items
+END_TYPELIB_MEMBERS (TreeStyle)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 

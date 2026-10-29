@@ -30,7 +30,7 @@ class AndroidSafetyManager: public SafetyManager
 protected:
 	// SafetyManager
 	void enableCrashRecovery (bool state) override;
-	void CCL_API reportException (void* exceptionInformation, const uchar* systemDumpFile) override;
+	void CCL_API reportException (void* exceptionInformation, UStringPtr systemDumpFile) override;
 };
 
 } // namespace CCL
@@ -52,7 +52,7 @@ void AndroidSafetyManager::enableCrashRecovery (bool state)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void CCL_API AndroidSafetyManager::reportException (void* exceptionInformation, const uchar* systemDumpFile)
+void CCL_API AndroidSafetyManager::reportException (void* exceptionInformation, UStringPtr systemDumpFile)
 {
 	// TODO
 }

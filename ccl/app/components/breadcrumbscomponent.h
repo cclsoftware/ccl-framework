@@ -38,7 +38,7 @@ class BreadcrumbsComponent: public Component
 public:
 	DECLARE_CLASS_ABSTRACT (BreadcrumbsComponent, Component)
 
-	BreadcrumbsComponent (CCL::StringRef name = CCLSTR ("Breadcrumbs"));
+	BreadcrumbsComponent (StringRef name = CCLSTR ("Breadcrumbs"));
 	~BreadcrumbsComponent ();
 
 	void setPath (StringRef path, StringRef displayPath = nullptr, bool forceUpdate = false);

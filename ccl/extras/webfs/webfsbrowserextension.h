@@ -42,7 +42,7 @@ public:
 	bool onUpload (CmdArgs args, VariantRef data);
 
 	// IBrowserExtension
-	CCL::tresult CCL_API extendBrowserNodeMenu (IBrowserNode* node, IContextMenu& menu, IUnknownList* selectedNodes) override;
+	tresult CCL_API extendBrowserNodeMenu (IBrowserNode* node, IContextMenu& menu, IUnknownList* selectedNodes) override;
 
 	CLASS_INTERFACE (IBrowserExtension, Object)
 };

@@ -162,7 +162,7 @@ IString* CCL_API UnicodeCFString::cloneString () const
 // Constant (immutable) string methods
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-tresult UnicodeCFString::makeConstant (const char* asciiString)
+tresult UnicodeCFString::makeConstant (CStringPtr asciiString)
 {
 	// TODO: use immutable CFString here???
 	return appendCString (Text::kASCII, asciiString);
@@ -207,7 +207,7 @@ tresult CCL_API UnicodeCFString::getChars (CharData& data) const
 	{
 		#if TRY_USE_POINTER
 		// currently (OSX 10.10), this returns always null
-		data.text = (const uchar*)CFStringGetCStringPtr (myCFString, kCFStringEncodingUnicode);
+		data.text = (UStringPtr)CFStringGetCStringPtr (myCFString, kCFStringEncodingUnicode);
 		if(data.text == NULL) 
 		{	
 		#endif
@@ -241,7 +241,7 @@ tresult CCL_API UnicodeCFString::releaseChars (CharData& data) const
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-tresult CCL_API UnicodeCFString::copyTo (uchar* charBuffer, int bufferSize) const
+tresult CCL_API UnicodeCFString::copyTo (uchar charBuffer[], int bufferSize) const
 {
 	if(!charBuffer || bufferSize <= 0)
 		return kResultInvalidArgument;
@@ -259,7 +259,7 @@ tresult CCL_API UnicodeCFString::copyTo (uchar* charBuffer, int bufferSize) cons
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-tresult CCL_API UnicodeCFString::toCString (TextEncoding encoding, char* cString, int cStringSize, int* bytesWritten) const
+tresult CCL_API UnicodeCFString::toCString (TextEncoding encoding, char cString[], int cStringSize, int* bytesWritten) const
 {
 	if(!Text::isValidCStringEncoding (encoding) || !cString || cStringSize <= 0)
 		return kResultInvalidArgument;
@@ -288,7 +288,7 @@ tresult CCL_API UnicodeCFString::toCString (TextEncoding encoding, char* cString
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-tresult CCL_API UnicodeCFString::toPascalString (TextEncoding encoding, unsigned char* pString, int pStringSize) const
+tresult CCL_API UnicodeCFString::toPascalString (TextEncoding encoding, unsigned char pString[], int pStringSize) const
 {
 	if(!pString || pStringSize <= 0)
 		return kResultInvalidArgument;
@@ -314,7 +314,7 @@ tbool CCL_API UnicodeCFString::equals (const IString* otherString) const
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-tbool CCL_API UnicodeCFString::equalsChars (const uchar* charBuffer, int count) const
+tbool CCL_API UnicodeCFString::equalsChars (UStringPtr charBuffer, int count) const
 {
 	return compareChars (charBuffer, count) == Text::kEqual;
 }
@@ -350,7 +350,7 @@ int CCL_API UnicodeCFString::compare (const IString* _otherString, int flags) co
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-int CCL_API UnicodeCFString::compareChars (const uchar* charBuffer, int count) const
+int CCL_API UnicodeCFString::compareChars (UStringPtr charBuffer, int count) const
 {
 	// ATTENTION: This function *must not* allocate temporary heap memory!
 	if(cfString && charBuffer)
@@ -487,7 +487,7 @@ void UnicodeCFString::updatePrivate ()
 // Mutable string methods
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-tresult CCL_API UnicodeCFString::assignChars (const uchar* charBuffer, int count)
+tresult CCL_API UnicodeCFString::assignChars (UStringPtr charBuffer, int count)
 {
 	releaseInternal ();
 	return appendChars (charBuffer, count);
@@ -495,7 +495,7 @@ tresult CCL_API UnicodeCFString::assignChars (const uchar* charBuffer, int count
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-tresult CCL_API UnicodeCFString::appendCString (TextEncoding encoding, const char* cString, int count)
+tresult CCL_API UnicodeCFString::appendCString (TextEncoding encoding, CStringPtr cString, int count)
 {
 	if(!Text::isValidCStringEncoding (encoding))
 		return kResultInvalidArgument;
@@ -541,7 +541,7 @@ tresult CCL_API UnicodeCFString::appendCString (TextEncoding encoding, const cha
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-tresult CCL_API UnicodeCFString::appendPascalString (TextEncoding encoding, const unsigned char* pString)
+tresult CCL_API UnicodeCFString::appendPascalString (TextEncoding encoding, const unsigned char pString[])
 {
 	if(pString && pString[0])
 	{
@@ -554,7 +554,7 @@ tresult CCL_API UnicodeCFString::appendPascalString (TextEncoding encoding, cons
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-tresult CCL_API UnicodeCFString::appendChars (const uchar* charBuffer, int count)
+tresult CCL_API UnicodeCFString::appendChars (UStringPtr charBuffer, int count)
 {
 	if(Text::isEmpty (charBuffer) || count == 0)
 		return kResultOk;

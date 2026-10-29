@@ -42,6 +42,13 @@ constexpr tresult kResultConnectionTimeOut  = static_cast<tresult>(0x80010060L);
 constexpr tresult kResultConnectionRefused  = static_cast<tresult>(0x80010061L);  ///< Attempt to connect failed (WSAECONNREFUSED)
 constexpr tresult kResultSocketError        = static_cast<tresult>(0x80010000L);  ///< An unspecified socket error
 
+//////////////////////////////////////////////////////////////////////////////////////////////////
+/** Network timeout constants */
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+constexpr int kDefaultConnectTimeout = 15000; ///< Default timeout (in ms) for a connect() call before it is aborted.
+constexpr int kDefaultDnsTimeout = 8000; ///< Default timeout (in ms) for DNS lookup before it is aborted.
+
 //************************************************************************************************
 // ISocket
 /** Network socket interface. */
@@ -54,7 +61,8 @@ interface ISocket: IUnknown
 	//////////////////////////////////////////////////////////////////////////////////////////////
 
 	/** Establish connection to specified host. */
-	virtual tresult CCL_API connect (const SocketAddress& address) = 0;
+	virtual tresult CCL_API connect (const SocketAddress& address, int timeout = kDefaultConnectTimeout,
+									  IProgressNotify* progress = nullptr) = 0;
 
 	/** Close socket connection. */
 	virtual tresult CCL_API disconnect () = 0;

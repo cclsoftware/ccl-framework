@@ -134,7 +134,7 @@ protected:
 	BlockLayoutNode* getLayoutNode (BlockContentNode* contentNode) const;
 };
 
-DECLARE_VISUALSTYLE_CLASS (BlockView)
+DECLARE_TYPELIB_ENTRY (BlockView)
 
 //************************************************************************************************
 // BlockSelection 

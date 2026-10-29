@@ -75,7 +75,7 @@ install (FILES
 	COMPONENT public_headers
 )
 
-foreach (service bluetoothservice cclspy dapservice jsengine modelimporter3d sqlite usbservice)
+foreach (service audioservice bluetoothservice cclspy dapservice jsengine modelimporter3d sqlite usbservice)
 	if (TARGET "${service}")
 		file (WRITE ${CMAKE_CURRENT_BINARY_DIR}/${service}-config.cmake "
 			if (${service}_FIND_REQUIRED)

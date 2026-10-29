@@ -283,6 +283,45 @@
 		},
 
 		{
+			"name": "ccl-wasm-base",
+			"hidden": true,
+			"inherits": "ccl-base",
+			"displayName": "WebAssembly (Emscripten)",
+			"description": "Build using Emscripten SDK for WebAssembly",
+			"generator": "Ninja",
+			"cacheVariables":
+			{
+				"VENDOR_PLATFORM": "wasm",
+				"CMAKE_CROSSCOMPILING": "TRUE",
+				"CMAKE_TOOLCHAIN_FILE": "$env{EMSDK}/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake",
+				"CMAKE_FIND_ROOT_PATH_MODE_INCLUDE": "NEVER",
+				"CMAKE_FIND_ROOT_PATH_MODE_LIBRARY": "BOTH",
+				"CMAKE_FIND_ROOT_PATH_MODE_PACKAGE": "BOTH",
+				"VENDOR_USE_CCACHE": "ON"
+			}
+		},
+		{
+			"name": "ccl-wasm-debug",
+			"hidden": true,
+			"inherits": "ccl-wasm-base",
+			"binaryDir": "${sourceDir}/build/wasm/Debug",
+			"cacheVariables":
+			{
+				"CMAKE_BUILD_TYPE": "Debug"
+			}
+		},
+		{
+			"name": "ccl-wasm-release",
+			"hidden": true,
+			"inherits": "ccl-wasm-base",
+			"binaryDir": "${sourceDir}/build/wasm/Release",
+			"cacheVariables":
+			{
+				"CMAKE_BUILD_TYPE": "Release"
+			}
+		},
+
+		{
 			"name": "ccl-zephyr",
 			"hidden": true,
 			"displayName": "Zephyr",
@@ -384,6 +423,19 @@
 			"displayName": "Android",
 			"description": "Android build using Android Studio",
 			"inherits": ["vendor-(Vendor ID)-base", "ccl-android"]
+		},
+
+		{
+			"name": "wasm-debug",
+			"displayName": "WebAssembly (Emscripten) Debug",
+			"description": "Build using Emscripten SDK for WebAssembly",
+			"inherits": ["vendor-(Vendor ID)-base", "ccl-wasm-debug"]
+		},
+		{
+			"name": "wasm-release",
+			"displayName": "WebAssembly (Emscripten) Release",
+			"description": "Build using Emscripten SDK for WebAssembly",
+			"inherits": ["vendor-(Vendor ID)-base", "ccl-wasm-release"]
 		}
 	],
 	"buildPresets":

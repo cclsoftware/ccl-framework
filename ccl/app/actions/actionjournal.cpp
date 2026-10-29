@@ -175,7 +175,7 @@ const LogBuffer& ActionJournal::getLogBuffer () const
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void ActionJournal::logAction (const char* prefix, const Action* action)
+void ActionJournal::logAction (CStringPtr prefix, const Action* action)
 {
 	if(signalSuspended)
 		return;

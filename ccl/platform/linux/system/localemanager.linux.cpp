@@ -18,17 +18,15 @@
 
 #define DEBUG_LOG 0
 
-#include "ccl/system/localization/localemanager.h"
+#include "ccl/platform/shared/posix/system/localemanager.posix.h"
 
 #include "ccl/platform/linux/interfaces/iinputlocale.h"
 
-#include "ccl/base/storage/settings.h"
 #include "ccl/base/storage/url.h"
 
 #include "ccl/public/text/language.h"
 #include "ccl/public/system/inativefilesystem.h"
 #include "ccl/public/systemservices.h"
-#include "ccl/public/cclversion.h"
 
 #include <langinfo.h>
 #include <locale>
@@ -42,17 +40,14 @@ namespace CCL {
 // LinuxLocaleManager
 //************************************************************************************************
 
-class LinuxLocaleManager: public LocaleManager,
+class LinuxLocaleManager: public PosixLocaleManager,
 						  public Linux::IInputLocale
 {
 public:
 	LinuxLocaleManager ();
 	~LinuxLocaleManager ();
 	
-	DECLARE_STRINGID_MEMBER (kUserLanguage)
-	DECLARE_STRINGID_MEMBER (kLanguagePack)
-	
-	// LocaleManager
+	// PosixLocaleManager
 	StringID CCL_API getSystemLanguage () const override;
 	StringID CCL_API getInputLanguage () const override;
 	StringID CCL_API getSystemRegion () const override;
@@ -61,60 +56,22 @@ public:
 
 	// IInputLocale
 	void CCL_API setKeyMap (xkb_keymap* keyMap) override;
-	const char* CCL_API getInputLocale () const override;
+	CStringPtr CCL_API getInputLocale () const override;
 	
-	CLASS_INTERFACE (IInputLocale, LocaleManager)
+	CLASS_INTERFACE (IInputLocale, PosixLocaleManager)
 	
 protected:
-	static const String kSettingsFileName;
-	
 	mutable FixedSizeVector<xkb_keysym_t, 256> keySymsEnglishUS; // keysyms in English-US layout for key codes 0..255
 	mutable xkb_keymap* currentKeyMap;
 	mutable xkb_context* xkbContext;
 	
-	mutable MutableCString userLanguage;
-	mutable String languagePack;	
-	
 	locale_t systemLocale;
 	
-	void storeSettings () const;
-	void restoreSettings () const;
-
 	void getSystemLanguageCode (MutableCString& language) const;
 	
-	// LocaleManager
-	bool getNativeUserLanguage (MutableCString& language) const override;
-	void setNativeUserLanguage (StringID language) override;
-	void setNativeLanguagePack (StringRef pathString) override;
-	bool getNativeLanguagePack (String& pathString) const override;
+	// PosixLocaleManager
 	void collectGeographicRegions (GeographicRegionList& list) const override;
 };
-
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
-static StringID getPrimaryLanguageCode (const char* _langid)
-{
-	CString langid (_langid);
-	if(langid.startsWith ("en")) return LanguageCode::English;
-	if(langid.startsWith ("de")) return LanguageCode::German;
-	if(langid.startsWith ("fr")) return LanguageCode::French;
-	if(langid.startsWith ("es")) return LanguageCode::Spanish;
-	if(langid.startsWith ("it")) return LanguageCode::Italian;
-	if(langid.startsWith ("pt")) return LanguageCode::Portuguese;
-	if(langid.startsWith ("ja")) return LanguageCode::Japanese;
-	if(langid.startsWith ("zh")) return LanguageCode::Chinese;
-	return LanguageCode::Neutral;
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
-static StringID getSubLanguageCode (const char* _langid)
-{
-	CString langid (_langid);
-	if(langid.startsWith ("en_DE")) return LanguageCode::GermanDE;
-	if(langid.startsWith ("en_US")) return LanguageCode::EnglishUS;
-	return getPrimaryLanguageCode (_langid);
-}
 
 } // namespace CCL
 
@@ -126,11 +83,6 @@ using namespace CCL;
 
 DEFINE_EXTERNAL_SINGLETON (LocaleManager, LinuxLocaleManager)
 
-const String LinuxLocaleManager::kSettingsFileName = "LocaleManager";
-
-DEFINE_STRINGID_MEMBER_ (LinuxLocaleManager, kUserLanguage, "userLanguage")
-DEFINE_STRINGID_MEMBER_ (LinuxLocaleManager, kLanguagePack, "languagePack")
-	
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 LinuxLocaleManager::LinuxLocaleManager ()
@@ -213,40 +165,6 @@ CStringPtr CCL_API LinuxLocaleManager::getInputLocale () const
 	if(systemLocale)
 		return systemLocale->__names[LC_CTYPE];
 	return nullptr;
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
-bool LinuxLocaleManager::getNativeUserLanguage (MutableCString& language) const
-{
-	restoreSettings ();
-	language = userLanguage;
-	return !userLanguage.isEmpty ();
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
-void LinuxLocaleManager::setNativeUserLanguage (StringID language)
-{
-	userLanguage = language;
-	storeSettings ();
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
-bool LinuxLocaleManager::getNativeLanguagePack (String& pathString) const
-{
-	restoreSettings ();
-	pathString = languagePack;
-	return !languagePack.isEmpty ();
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
-void LinuxLocaleManager::setNativeLanguagePack (StringRef pathString)
-{
-	languagePack = pathString;
-	storeSettings ();
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -365,31 +283,4 @@ void CCL_API LinuxLocaleManager::setKeyMap (xkb_keymap* keyMap)
 		xkb_keymap_ref (currentKeyMap);
 		CCL_PRINTF ("Received new keymap: %s\n", xkb_keymap_layout_get_name (keyMap, 0));
 	}
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
-void LinuxLocaleManager::storeSettings () const
-{
-	XmlSettings settings (kSettingsFileName);
-	settings.init ("", CCL_SETTINGS_NAME, kSettingsFileName);
-	settings.removeAll ();
-	
-	Attributes& a = settings.getAttributes (kSettingsFileName);
-	a.set (kUserLanguage, userLanguage, Text::kUTF8);
-	a.set (kLanguagePack, languagePack);
-
-	settings.flush ();
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
-void LinuxLocaleManager::restoreSettings () const
-{
-	XmlSettings settings (kSettingsFileName);
-	settings.init ("", CCL_SETTINGS_NAME, kSettingsFileName);
-	settings.restore ();
-	Attributes& a = settings.getAttributes (kSettingsFileName);
-	a.get (userLanguage, kUserLanguage, Text::kUTF8);
-	a.get (languagePack, kLanguagePack);
 }

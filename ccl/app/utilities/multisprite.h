@@ -95,8 +95,8 @@ protected:
 // MultiDrawable
 //************************************************************************************************
 
-class MultiDrawable: public CCL::Object,
-					 public CCL::AbstractDrawable
+class MultiDrawable: public Object,
+					 public AbstractDrawable
 {
 public:
 	struct DrawItem: public IntrusiveLink<DrawItem>

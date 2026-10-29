@@ -78,14 +78,14 @@ protected:
 // InspectorComponent::SimpleEditor
 //************************************************************************************************
 
-class InspectorComponent::SimpleEditor: public CCL::Component
+class InspectorComponent::SimpleEditor: public Component
 {
 public:
 	SimpleEditor (StringRef name, StringID formName);
 
 	// Component
-	bool save (const CCL::Storage& storage) const override;
-	CCL::IView* CCL_API createView (StringID name, VariantRef data, const CCL::Rect& bounds) override;
+	bool save (const Storage& storage) const override;
+	IView* CCL_API createView (StringID name, VariantRef data, const Rect& bounds) override;
 
 private:
 	MutableCString formName;

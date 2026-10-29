@@ -24,55 +24,22 @@
 #include "ccl/public/systemservices.h"
 #include "ccl/public/cclversion.h"
 
+#include "ccl/meta/generated/cpp/xmlinstructions-generated.h"
+
 using namespace CCL;
-
-//////////////////////////////////////////////////////////////////////////////////////////////////
-// XML Processing Instructions
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
-#define PI_NESTING_PREFIX			"nested:"
-#define PI_INVERT_PREFIX			"not:"
-
-#define PI_TARGET_PLATFORM			"platform"
-
-#define PI_TARGET_PLATFORMARCH		"platform_arch"
-#define PI_PLATFORMARCH_WIN_X86		"win_x86"
-#define PI_PLATFORMARCH_WIN_X64		"win_x64"
-#define PI_PLATFORMARCH_WIN_ARM64	"win_arm64"
-#define PI_PLATFORMARCH_MAC_X64		"mac_x64"
-#define PI_PLATFORMARCH_MAC_ARM64	"mac_arm64"
-#define PI_PLATFORMARCH_IOS_ARM64	"ios_arm64"
-#define PI_PLATFORMARCH_ANDR_X86	"android_x86"
-#define PI_PLATFORMARCH_ANDR_X64	"android_x64"
-#define PI_PLATFORMARCH_ANDR_ARM	"android_arm"
-#define PI_PLATFORMARCH_ANDR_ARM64	"android_arm64"
-#define PI_PLATFORMARCH_LINUX_X86	"linux_x86"
-#define PI_PLATFORMARCH_LINUX_X64	"linux_x64"
-#define PI_PLATFORMARCH_LINUX_ARM64	"linux_arm64"
-
-#define PI_TARGET_PLATFORM64		"platform64"
-#define PI_TARGET_DESKTOPPLATFORM	"desktop_platform"
-
-#define PI_TARGET_CONFIG			"config"
-#define PI_CONFIG_DEBUG				"debug"
-#define PI_CONFIG_RELEASE			"release"
-
-#define PI_TARGET_LANGUAGE			"language"
-
-#define PI_TARGET_DEFINED			"defined"
 
 //************************************************************************************************
 // XmlProcessingInstructionHandler
 //************************************************************************************************
 
-const char* XmlProcessingInstructionHandler::getPlatform ()
+CStringPtr XmlProcessingInstructionHandler::getPlatform ()
 {
 	return CCL_PLATFORM_ID_CURRENT;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-const char* XmlProcessingInstructionHandler::getPlatformArchitecture ()
+CStringPtr XmlProcessingInstructionHandler::getPlatformArchitecture ()
 {
 	#if CCL_PLATFORM_WINDOWS
 		#if defined(CCL_PLATFORM_INTEL)
@@ -116,6 +83,8 @@ const char* XmlProcessingInstructionHandler::getPlatformArchitecture ()
 		#elif defined(CCL_PLATFORM_ARM)
 			return PI_PLATFORMARCH_MAC_ARM64;
 		#endif
+	#elif CCL_PLATFORM_WASM
+		return PI_PLATFORMARCH_WASM;
 	#else
 		#error unknown platform
 	#endif
@@ -123,7 +92,7 @@ const char* XmlProcessingInstructionHandler::getPlatformArchitecture ()
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-const char* XmlProcessingInstructionHandler::getConfiguration (int processingOptions)
+CStringPtr XmlProcessingInstructionHandler::getConfiguration (int processingOptions)
 {
 #if DEBUG
 	if(processingOptions & kForceReleaseConfiguration)
@@ -150,8 +119,9 @@ void XmlProcessingInstructionHandler::handleInstruction (StringRef _target, Stri
 	MutableCString data (_data);
 	bool oldState = skipping;
 
-	// simple handling of nested instructions
-	// TODO: implement real stack!
+	// A nested instruction (with data) keeps skipping if the enclosing block is skipped and saves the state of
+	// the enclosing block, a nested instruction without data ends it and restores that state.
+	// A plain instruction replaces the current block and ends all nesting.
 	bool nested = false;
 	const CString kNestingPrefix (PI_NESTING_PREFIX);
 	if(target.startsWith (kNestingPrefix))
@@ -159,6 +129,19 @@ void XmlProcessingInstructionHandler::handleInstruction (StringRef _target, Stri
 		nested = true;
 		target = target.subString (kNestingPrefix.length ());
 	}
+
+	if(nested)
+	{
+		if(data.isEmpty ())
+		{
+			skipping = skippingStack.isEmpty () ? false : skippingStack.pop ();
+			return;
+		}
+
+		skippingStack.push (oldState);
+	}
+	else
+		skippingStack.removeAll ();
 
 	bool invert = false;
 	const CString kInvertPrefix (PI_INVERT_PREFIX);
@@ -225,7 +208,7 @@ bool XmlProcessingInstructionHandler::isDefined (StringRef query) const
 	ASSERT (query.index (" ") == -1) // only single tokens allowed
 
 	String definitions;
-	Configuration::Registry::instance ().getValue (definitions, "XML.Parsers", "definitions");
+	Configuration::Registry::instance ().getValue (definitions, Configuration::kXmlParsers, Configuration::kDefinitions);
 	if(definitions.contains (query))
 		return true;
 

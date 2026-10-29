@@ -54,7 +54,8 @@ public:
 
 	// NativeTextControl
 	void updateText ();
-	void getControlText (String& string);
+	void getControlText (String& string) const;
+	int getControlTextLength () const;
 	void setSelection (int start, int length);
 	void setScrollPosition (PointRef where);
 	Point getScrollPosition () const;
@@ -403,7 +404,7 @@ IOSNativeTextControl::IOSNativeTextControl (Control& owner, const Rect& clientRe
 	[textField becomeFirstResponder];
 
 	if(!owner.getStyle ().isCustomStyle (Styles::kTextBoxAppearanceMultiLine))
-		setSelection (0, -1); // select all
+		selectAll ();
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -461,7 +462,7 @@ void IOSNativeTextControl::updateText ()
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void IOSNativeTextControl::getControlText (String& text)
+void IOSNativeTextControl::getControlText (String& text) const
 {
 	if(textField != nil)
 		text.appendNativeString ([textField text]);
@@ -469,20 +470,27 @@ void IOSNativeTextControl::getControlText (String& text)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
+int IOSNativeTextControl::getControlTextLength () const
+{
+	if(textField == nil)
+		return 0;
+
+	return int([[textField text] length]);
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
 void IOSNativeTextControl::setSelection (int start, int length)
 {	
-	UITextRange* selection = nil;
-	if(start != -1)
-	{
-		UITextPosition* startPosition = [textField positionFromPosition:[textField beginningOfDocument] offset:start];
-		UITextPosition* endPosition = nil;
-		if(length == -1)
-			endPosition = [textField endOfDocument];
-		else
-			endPosition = [textField positionFromPosition: startPosition offset:length];
-		selection = [textField textRangeFromPosition:startPosition toPosition:endPosition];
-	}
-	[textField setSelectedTextRange:selection];
+	int caret = 0;
+	int anchor = 0;
+	getSelectionPositions (caret, anchor, start, length);
+
+	// a text range has no direction
+	UITextPosition* beginning = [textField beginningOfDocument];
+	UITextPosition* startPosition = [textField positionFromPosition:beginning offset:ccl_min (caret, anchor)];
+	UITextPosition* endPosition = [textField positionFromPosition:beginning offset:ccl_max (caret, anchor)];
+	[textField setSelectedTextRange:[textField textRangeFromPosition:startPosition toPosition:endPosition]];
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////

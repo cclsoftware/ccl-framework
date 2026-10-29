@@ -12,7 +12,7 @@
 // For more information, please visit ccl.dev.
 //
 // Filename    : ccl/gui/theme/renderer/valuebarrenderer.h
-// Description : Control Renderer
+// Description : ValueBar Renderer
 //
 //************************************************************************************************
 
@@ -20,6 +20,7 @@
 #define _ccl_valuebarrenderer_h
 
 #include "ccl/gui/theme/renderer/compositedrenderer.h"
+
 #include "ccl/gui/graphics/imaging/imagecache.h"
 
 namespace CCL {
@@ -33,11 +34,12 @@ interface IColorParam;
 class ValueBarRenderer: public CompositedRenderer
 {
 public:
-	ValueBarRenderer (VisualStyle* visualStyle);
+	ValueBarRenderer (VisualStyle* visualStyle, View* owner);
 
-	void draw (View* view, const UpdateRgn& updateRgn) override;
-	int hitTest (View* view, const Point& loc, Point* clickOffset) override;
-	bool getPartRect (const View* view, int partCode, CCL::Rect& rect) override;
+	// CompositedRenderer
+	void draw (const UpdateRgn& updateRgn) override;
+	int hitTest (PointRef where, Point* clickOffset = nullptr) override;
+	bool getPartRect (Rect& rect, int partCode) override;
 
 protected:
 	mutable CachedImage valueBarImage;
@@ -58,7 +60,7 @@ protected:
 	Rect getSourceRect (View* view, RectRef dstRect) const;
 };
 
-DECLARE_VISUALSTYLE_CLASS (ValueBar)
+DECLARE_TYPELIB_ENTRY (ValueBar)
 
 //************************************************************************************************
 // ProgressBarRenderer
@@ -67,11 +69,12 @@ DECLARE_VISUALSTYLE_CLASS (ValueBar)
 class ProgressBarRenderer: public CompositedRenderer
 {	
 public:
-	ProgressBarRenderer (VisualStyle* visualStyle);
+	ProgressBarRenderer (VisualStyle* visualStyle, View* owner);
 
-	void draw (View* view, const UpdateRgn& updateRgn) override;
-	int hitTest (View* view, const Point& loc, Point* clickOffset) override;
-	bool getPartRect (const View* view, int partCode, CCL::Rect& rect) override;
+	// CompositedRenderer
+	void draw (const UpdateRgn& updateRgn) override;
+	int hitTest (PointRef where, Point* clickOffset = nullptr) override;
+	bool getPartRect (Rect& rect, int partCode) override;
 
 protected:
 	CachedImage background;
@@ -79,7 +82,7 @@ protected:
 	CachedImage indicator;
 };
 
-DECLARE_VISUALSTYLE_CLASS (ProgressBar)
+DECLARE_TYPELIB_ENTRY (ProgressBar)
 
 } // namespace CCL
 

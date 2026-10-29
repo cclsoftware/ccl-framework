@@ -2,28 +2,23 @@
 """Makedoc configwriter module.
 """
 
+__copyright__ = "Copyright (c) 2026 CCL Software Licensing GmbH"
+
 import json
 import logging
 import os
 import pathlib
-import sys
 from dataclasses import dataclass
 from datetime import datetime
 
 from typing import List, Optional
 
+from ccl_extras import RepositoryContext
 from jinja2 import Environment, FileSystemLoader
 
 from modules.buildenv import BuildEnvironment
 from modules.pathutil import format_path
-from modules.tools import ToolHelper, Tools
-
-sys.path.append(os.path.abspath(os.path.dirname(os.path.abspath(__file__)) + "../../../../../ccl/extras/python"))
-
-from tools.repoinfo import RepositoryInfo
-
-__copyright__ = "Copyright (c) 2023 CCL Software Licensing GmbH"
-
+from modules.tools import Tools
 
 @dataclass
 class VendorConfig:
@@ -90,14 +85,10 @@ class SphinxConfigWriter(TemplateWriter):
         In meta repo context, look in all build/identities provided by repo.json.
         """
 
-        # Default: CCL framework repo context.
-        identity_folders: List[pathlib.Path] = [
-            RepositoryInfo.get_ccl_build_identities_path()
-        ]
-
-        # Meta repo context.
-        if self.env.repo_info:
-            identity_folders = self.env.repo_info.get_paths(RepositoryInfo.CATEGORY_IDENTITIES)
+        if self.env.repo_info.get_context() == RepositoryContext.META:
+            identity_folders = self.env.repo_info.get_meta_identities_paths()
+        else:
+            identity_folders = [self.env.repo_info.get_framework_identities_path()]
 
         display_paths = [str(p) for p in identity_folders]
         logging.info(f"using identity folders: {display_paths}")

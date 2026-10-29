@@ -195,7 +195,7 @@ void ObjectTable::getObjectNames (IPropertyCollector& collector)
 
 		ITypeInfo::PropertyDefinition prop { nullptr };
 		prop.name = e->getName ();
-		prop.type = CCL::ITypeInfo::kVoid | CCL::ITypeInfo::kReadOnly;	// all entries are read-only properties
+		prop.type = ITypeInfo::kVoid|ITypeInfo::kReadOnly; // all entries are read-only properties
 		collector.addProperty (prop);
 	EndFor
 }

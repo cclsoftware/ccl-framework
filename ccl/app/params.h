@@ -19,6 +19,8 @@
 #ifndef _ccl_params_h
 #define _ccl_params_h
 
+#include "ccl/app/paramcurve.h"
+
 #include "ccl/base/message.h"
 #include "ccl/base/collections/objectlist.h"
 #include "ccl/base/collections/objectarray.h"
@@ -28,9 +30,6 @@
 #include "ccl/public/gui/framework/iparametermenu.h"
 #include "ccl/public/gui/framework/ipalette.h"
 #include "ccl/public/gui/framework/itextmodel.h"
-
-namespace Core {
-class Interpolator; }
 
 namespace CCL {
 
@@ -60,6 +59,9 @@ public:
 	int CCL_API getType () const override;
 	StringID CCL_API getName () const override;
 	void CCL_API setName (StringID name) override;
+	tbool CCL_API getTitle (String& title, int flags = 0) const override;
+	void CCL_API setTitle (StringRef title) override;
+
 	tbool CCL_API isEnabled () const override;
 	void CCL_API enable (tbool state) override;
 	tbool CCL_API getState (int mask) const override;
@@ -108,6 +110,7 @@ public:
 	void CCL_API getString (String& string, VariantRef value) const override;
 	void CCL_API toString (String& string) const override;
 	void CCL_API fromString (StringRef string, tbool update = false) override;
+	void CCL_API toAccessibleString (String& string) const override;
 
 	void rangeChanged (); ///< explicit signal if min/max/list changed (not in interface)
 
@@ -130,6 +133,7 @@ protected:
 	int flags;
 	int visualState;
 	MutableCString name;
+	String title;
 	IParamObserver* controller;
 	IParamCurve* curve;
 	IFormatter* formatter;
@@ -505,6 +509,7 @@ class ColorParam: public Parameter,
 {
 public:
 	DECLARE_CLASS (ColorParam, Parameter)
+	DECLARE_PROPERTY_NAMES (ColorParam)
 
 	ColorParam (StringID name = nullptr);
 	~ColorParam ();
@@ -609,119 +614,6 @@ public:
 
 private:
 	ITextModel* textModel;
-};
-
-//************************************************************************************************
-// ParamCurve
-/** Base class for parameter curves. */
-//************************************************************************************************
-
-class ParamCurve: public Object,
-				  public IParamCurve
-{
-public:
-	DECLARE_CLASS_ABSTRACT (ParamCurve, Object)
-
-	// IParamCurve
-	double CCL_API getRelativeValue (double startValue, double endValue, double linearValue) const override;
-	CStringPtr CCL_API getFactoryName () const override;
-
-	CLASS_INTERFACE (IParamCurve, Object)
-};
-
-//************************************************************************************************
-// ConcaveCurve
-//************************************************************************************************
-
-class ConcaveCurve: public ParamCurve
-{
-public:
-	DECLARE_CLASS (ConcaveCurve, ParamCurve)
-
-	// IParamCurve
-	double CCL_API displayToNormalized (double linearValue) const override;
-	double CCL_API normalizedToDisplay (double curveValue) const override;
-};
-
-//************************************************************************************************
-// ConvexCurve
-//************************************************************************************************
-
-class ConvexCurve: public ParamCurve
-{
-public:
-	DECLARE_CLASS (ConvexCurve, ParamCurve)
-
-	// IParamCurve
-	double CCL_API displayToNormalized (double linearValue) const override;
-	double CCL_API normalizedToDisplay (double curveValue) const override;
-};
-
-//************************************************************************************************
-// InterpolatorCurve
-/** Wrapper for Core::Interpolator. */
-//************************************************************************************************
-
-class InterpolatorCurve: public ParamCurve
-{
-public:
-	DECLARE_CLASS (InterpolatorCurve, ParamCurve)
-
-	InterpolatorCurve (Core::Interpolator* interpolator = nullptr); ///< takes ownership!
-	~InterpolatorCurve ();
-
-	float getMinRange () const;
-	float getMaxRange () const;
-	float getMidRange () const;
-	
-	void setRange (float minRange, float maxRange, float midRange = 1.f);
-
-	// ParamCurve
-	double CCL_API displayToNormalized (double linearValue) const override;
-	double CCL_API normalizedToDisplay (double curveValue) const override;
-	double CCL_API getRelativeValue (double startValue, double endValue, double linearValue) const override;
-	CStringPtr CCL_API getFactoryName () const override;
-
-protected:
-	Core::Interpolator* interpolator;
-	Core::Interpolator* normalizer;
-
-	void setInterpolator (Core::Interpolator* interpolator = nullptr);
-};
-
-//************************************************************************************************
-// ParamCurveFactory
-//************************************************************************************************
-
-class ParamCurveFactory
-{
-public:
-	static ParamCurveFactory& instance ();
-	
-	IParamCurve* create (StringID name);
-
-	typedef IParamCurve* (*CreateFunc) ();
-	void add (StringID name, CreateFunc createFunc);
-
-	template <class Type> 
-	void addCurve (StringID name) { add (name, createCurve<Type>); }
-
-protected:
-	struct CurveClass
-	{
-		MutableCString name;
-		CreateFunc createFunc;
-
-		CurveClass (StringID name = nullptr, CreateFunc createFunc = nullptr)
-		: name (name),
-		  createFunc (createFunc)
-		{}
-	};
-
-	Vector<CurveClass> classes;
-
-	template <class Type> 
-	static IParamCurve* createCurve () { return NEW Type; }
 };
 
 //////////////////////////////////////////////////////////////////////////////////////////////////

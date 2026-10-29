@@ -150,7 +150,7 @@ public:
 	void registerAppLaunchReport (int64 evaluationPeriod);
 	void registerDocumentUsageReport (int64 evaluationPeriod);
 	void registerPageUsageReport (int64 evaluationPeriod, const StringList& perspectiveIds);
-	void registerViewOpenReport (int64 evaluationPeriod);
+	void registerViewOpenReport (int64 evaluationPeriod, const StringList& windowClassIds = {});
 	void registerFileExportReport (int64 evaluationPeriod);
 	void registerUserInputReport (int64 evaluationPeriod);
 	void registerCommandUsageReport (int64 evaluationPeriod);

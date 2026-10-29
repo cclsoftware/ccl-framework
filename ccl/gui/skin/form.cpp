@@ -190,7 +190,8 @@ void CCL_API Form::reload ()
 		View* savedParent = parent;
 		if(parent)
 		{
-			removed (parent);
+			if(isAttached())
+				removed (parent);
 			parent = nullptr;
 		}
 
@@ -200,7 +201,7 @@ void CCL_API Form::reload ()
 		wizard->createChildElements (skinElement, controller, this, skinElement);
 
 		parent = savedParent;
-		if(parent)
+		if(parent && isAttached ())
 			attached (parent);
 
 		tbool autoH = skinSize.getWidth () <= 0;
@@ -316,11 +317,19 @@ void FormDelegateView::sizeChild (View* view)
 
 void FormDelegateView::attached (View* parent)
 {
+	CCL_PRINTF ("%sFormDelegateView %s %x attached %s\n", CCL_INDENT, formName.str (), this, isAttachedInternal () ? "- was already attached!" : "")
+	CCL_ADD_INDENT (2)
+
+	if(isAttachedInternal () && !style.isCustomStyle (Styles::kFormDelegateViewBehaviorDeferredRemove|Styles::kFormDelegateViewBehaviorKeepView))
+	{
+		removeAll ();
+
+		if(!hasExplicitSizeLimits ())
+			resetSizeLimits ();
+	}
+
 	SuperClass::attached (parent);
 	isAttachedInternal (true);
-
-	CCL_PRINTF ("%sFormDelegateView %s %x attached\n", CCL_INDENT, formName.str (), this)
-	CCL_ADD_INDENT (2)
 
 	ASSERT (getChildren ().isEmpty () || style.isCustomStyle (Styles::kFormDelegateViewBehaviorDeferredRemove|Styles::kFormDelegateViewBehaviorKeepView))
 

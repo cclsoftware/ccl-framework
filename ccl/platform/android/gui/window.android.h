@@ -58,7 +58,7 @@ public:
 	bool isAttached () override;
 	float getContentScaleFactor () const override;
 	void makeNativePopupWindow (IWindow* parent) override;
-	void showWindow (bool state) override;
+	void showWindow (bool state = true, bool activate = true) override;
 	tbool CCL_API close () override;
 	void setWindowSize (Rect& size) override;
 	void CCL_API moveWindow (PointRef pos) override;

@@ -156,7 +156,7 @@ protected:
 class FormatReader: public FormatParser
 {
 public:
-	FormatReader (const uchar* source, Variant args[], int argCount);
+	FormatReader (UStringPtr source, Variant args[], int argCount);
 
 	int getReadCount () const { return numArgsRead; }
 
@@ -165,7 +165,7 @@ public:
 	bool onFormat (const Text::FormatDef& def) override;
 
 protected:
-	const uchar* source;
+	UStringPtr source;
 	int sourceIndex;
 	Variant* args;
 	int argCount;
@@ -188,7 +188,7 @@ DEFINE_IID_ (IUnicodeStringInternal, 0xba41bd76, 0x4a6d, 0x4b84, 0xbb, 0xce, 0x6
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void UnicodeString::makeFormatString (TempString format, const char* prefix, int value, const char* suffix)
+void UnicodeString::makeFormatString (TempString format, CStringPtr prefix, int value, CStringPtr suffix)
 {
 	::strcpy (format, prefix);
 	TempString numString;
@@ -418,12 +418,12 @@ void CCL_API UnicodeString::substitute (int flags)
 	if(!chars.text)
 		return;
 
-	const uchar* original = chars.text;
+	UStringPtr original = chars.text;
 	int originalLength = getLength ();
 	int maxSubstituteLength = 2 * originalLength + 1; // replace one char by up to two chars
 	
 	uchar* substituteBuffer = nullptr;
-	static const int kMaxStackLength = STRING_STACK_SPACE_MAX;
+	static const int kMaxStackLength = CORE_STRING_STACK_MAX;
 	uchar stackBuffer[kMaxStackLength];
 	VectorDeleter<uchar> substituteDeleter (nullptr);
 	if(maxSubstituteLength <= kMaxStackLength)
@@ -671,7 +671,7 @@ bool FormatWriter::onFormat (const FormatDef& def)
 // FormatReader
 //************************************************************************************************
 
-FormatReader::FormatReader (const uchar* source, Variant args[], int argCount)
+FormatReader::FormatReader (UStringPtr source, Variant args[], int argCount)
 : source (source),
   sourceIndex (0),
   args (args),

@@ -1078,7 +1078,7 @@ void GestureRecognition::onTouchEnded (const TouchInfo& touchInfo)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-tbool GestureRecognition::isRecognizing (const GestureInfo* gesture) const
+bool GestureRecognition::isRecognizing (const GestureInfo* gesture) const
 {
 	VectorForEachFast (recognizers, Recognizer*, recognizer)
 		if(recognizer->getGestureInfo () == gesture)

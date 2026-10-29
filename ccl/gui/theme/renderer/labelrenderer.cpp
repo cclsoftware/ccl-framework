@@ -29,13 +29,12 @@ using namespace CCL;
 /** A label draws it's title using the style's "textfont", "textcolor", and "textalignment" (for single line text) or "textoptions" (for multiline text). */
 //************************************************************************************************
 
-BEGIN_VISUALSTYLE_CLASS (Label, VisualStyle, "LabelStyle")
-END_VISUALSTYLE_CLASS (Label)
+DEFINE_TYPELIB_ENTRY_WITH_PARENT (Label, VisualStyle, "LabelStyle", VISUALSTYLES_TYPELIB)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-LabelRenderer::LabelRenderer (VisualStyle* visualStyle)
-: ThemeRenderer (visualStyle)
+LabelRenderer::LabelRenderer (VisualStyle* visualStyle, View* owner)
+: ThemeRenderer (visualStyle, owner)
 {
 	if(visualStyle)
 	{
@@ -48,10 +47,10 @@ LabelRenderer::LabelRenderer (VisualStyle* visualStyle)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void LabelRenderer::draw (View* view, const UpdateRgn& updateRgn)
+void LabelRenderer::draw (const UpdateRgn& updateRgn)
 {
-	GraphicsPort port (view);
-	StyleRef style = view->getStyle ();
+	GraphicsPort port (owner);
+	StyleRef style = owner->getStyle ();
 	
 	if(style.isOpaque ())
 	{
@@ -59,10 +58,10 @@ void LabelRenderer::draw (View* view, const UpdateRgn& updateRgn)
 			port.fillRect (updateRgn.bounds, visualStyle->getBackBrush ());
 	}
 
-	if(ITextLayout* textLayout = ((Label*)view)->getTextLayout ())
+	if(ITextLayout* textLayout = (static_cast<Label*> (owner))->getTextLayout ())
 	{
 		Rect rect;
-		view->getClientRect (rect);
+		owner->getClientRect (rect);
 
 		if(style.isVertical ())
 		{
@@ -84,14 +83,14 @@ void LabelRenderer::draw (View* view, const UpdateRgn& updateRgn)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-int LabelRenderer::hitTest (View* view, const Point& loc, Point* clickOffset)
+int LabelRenderer::hitTest (PointRef where, Point* clickOffset)
 {
 	return 0;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool LabelRenderer::getPartRect (const View* view, int partCode, CCL::Rect& rect)
+bool LabelRenderer::getPartRect (Rect& rect, int partCode)
 {
 	return false;
 }

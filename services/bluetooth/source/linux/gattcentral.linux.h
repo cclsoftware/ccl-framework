@@ -44,6 +44,18 @@
 namespace CCL {
 namespace Bluetooth {
 
+#if SDBUS_CPP_VERSION == 2
+using SDBusError = std::optional<sdbus::Error>;
+using SDBusInterfaceName = sdbus::InterfaceName;
+using SDBusMemberName = sdbus::MemberName;
+using SDBusPropertyName = sdbus::PropertyName;
+#else
+using SDBusError = const sdbus::Error*;
+using SDBusInterfaceName = std::string;
+using SDBusMemberName = std::string;
+using SDBusPropertyName = std::string;
+#endif
+
 using namespace Core::Bluetooth;
 
 class LinuxGattCentral;
@@ -76,8 +88,8 @@ private:
 	sdbus::PendingAsyncCall writeOperation;
 
 	// GattDescriptor1_proxy
-	void onReadValueReply (const std::vector<uint8_t>& value, const sdbus::Error* error) override;
-	void onWriteValueReply (const sdbus::Error* error) override;
+	void onReadValueReply (const std::vector<uint8_t>& value, SDBusError error) override;
+	void onWriteValueReply (SDBusError error) override;
 };
 
 //************************************************************************************************
@@ -107,7 +119,11 @@ public:
 	Core::ErrorCode unsubscribeAsync () override;
 
 	// GattCharacteristic1_proxy
+	#if SDBUS_CPP_VERSION == 2
+	sdbus::ObjectPath getObjectPath () const { return DBusProxy<org::bluez::GattCharacteristic1_proxy>::getProxy ().getObjectPath (); }
+	#else
 	using DBusProxy<org::bluez::GattCharacteristic1_proxy>::getObjectPath;
+	#endif
 	using DBusProxy<org::bluez::GattCharacteristic1_proxy>::dbusSupport;
 
 	DEFINE_OBSERVER (IGattCentralCharacteristicObserver)
@@ -124,11 +140,13 @@ private:
 	void deleteDescriptors ();
 
 	// GattCharacteristic1_proxy
-	void onReadValueReply (const std::vector<uint8_t>& value, const sdbus::Error* error) override;
-	void onWriteValueReply (const sdbus::Error* error) override;
-	void onStartNotifyReply (const sdbus::Error* error) override;
-	void onStopNotifyReply (const sdbus::Error* error) override;
-	void onPropertiesChanged (const std::string& interfaceName, const std::map<std::string, sdbus::Variant>& changed_properties, const std::vector<std::string>& invalidated_properties) override;
+	void onReadValueReply (const std::vector<uint8_t>& value, SDBusError error) override;
+	void onWriteValueReply (SDBusError error) override;
+	void onStartNotifyReply (SDBusError error) override;
+	void onStopNotifyReply (SDBusError error) override;
+
+	// Properties_proxy
+	void onPropertiesChanged (const SDBusInterfaceName& interfaceName, const std::map<SDBusMemberName, sdbus::Variant>& changed_properties, const std::vector<SDBusMemberName>& invalidated_properties) override;
 };
 
 //************************************************************************************************
@@ -147,6 +165,13 @@ public:
 
 	void addCharacteristic (const sdbus::ObjectPath& path);
 	LinuxGattCentralCharacteristic* findCharacteristicByPath (const sdbus::ObjectPath& path) const;
+
+	// GattService1_proxy
+	#if SDBUS_CPP_VERSION == 2
+	sdbus::ObjectPath getObjectPath () const { return DBusProxy<org::bluez::GattService1_proxy>::getProxy ().getObjectPath (); }
+	#else
+	using DBusProxy<org::bluez::GattService1_proxy>::getObjectPath;
+	#endif
 
 	// IGattCentralService
 	const UIDBytes& getServiceId () const override;
@@ -187,7 +212,11 @@ public:
 	const ObjectArray& getServices () const;
 
 	// Device1_proxy
+	#if SDBUS_CPP_VERSION == 2
+	sdbus::ObjectPath getObjectPath () const { return DBusProxy<org::bluez::Device1_proxy>::getProxy ().getObjectPath (); }
+	#else
 	using DBusProxy<org::bluez::Device1_proxy>::getObjectPath;
+	#endif
 
 	// IGattCentralDevice
 	CStringPtr getIdentifier () const override;
@@ -216,11 +245,11 @@ private:
 	void deleteServices ();
 
 	// Properties_proxy
-	void onPropertiesChanged (const std::string& interfaceName, const std::map<std::string, sdbus::Variant>& changed_properties, const std::vector<std::string>& invalidated_properties) override;
+	void onPropertiesChanged (const SDBusInterfaceName& interfaceName, const std::map<SDBusMemberName, sdbus::Variant>& changed_properties, const std::vector<SDBusMemberName>& invalidated_properties) override;
 
 	// Device1_proxy
-	void onConnectReply (const sdbus::Error* error) override;
-	void onDisconnectReply (const sdbus::Error* error) override;
+	void onConnectReply (SDBusError error) override;
+	void onDisconnectReply (SDBusError error) override;
 };
 
 //************************************************************************************************
@@ -235,8 +264,8 @@ public:
 
 	static constexpr CStringPtr kObjectPath = "/";
 
-	void onInterfacesAdded (const sdbus::ObjectPath& path, const std::map<std::string, std::map<std::string, sdbus::Variant>>& interfaces) override;
-	void onInterfacesRemoved (const sdbus::ObjectPath& path, const std::vector<std::string>& interfaces) override;
+	void onInterfacesAdded (const sdbus::ObjectPath& path, const std::map<SDBusInterfaceName, std::map<SDBusMemberName, sdbus::Variant>>& interfaces) override;
+	void onInterfacesRemoved (const sdbus::ObjectPath& path, const std::vector<SDBusInterfaceName>& interfaces) override;
 
 private:
 	LinuxGattCentral& central;

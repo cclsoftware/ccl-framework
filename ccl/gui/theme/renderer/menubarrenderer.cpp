@@ -28,17 +28,18 @@ const int MenuBarRenderer::kMenuHeight = 20;
 const int MenuBarRenderer::kMenuMargin = 10;
 const int MenuBarRenderer::kMenuSpacing = 0;
 
-BEGIN_VISUALSTYLE_CLASS (MenuBarControl, VisualStyle, "MenuBarControlStyle")
-	ADD_VISUALSTYLE_IMAGE  ("menuButton")		///< background for menu buttons
-	ADD_VISUALSTYLE_METRIC ("menuHeight")		///< height of menu buttons
-	ADD_VISUALSTYLE_COLOR  ("activecolor")		///< used to draw instead of "backcolor" for the active menu (when no button image available)
-	ADD_VISUALSTYLE_COLOR  ("activetextcolor")	///< used instead of "textcolor" for the active menu
-END_VISUALSTYLE_CLASS (MenuBarControl)
+DEFINE_TYPELIB_ENTRY_WITH_PARENT (MenuBarControl, VisualStyle, "MenuBarControlStyle", VISUALSTYLES_TYPELIB)
+BEGIN_TYPELIB_MEMBERS (MenuBarControl)
+	ADD_TYPELIB_MEMBER_IMAGE ("menuButton") ///< background for menu buttons
+	ADD_TYPELIB_MEMBER_METRIC ("menuHeight") ///< height of menu buttons
+	ADD_TYPELIB_MEMBER_COLOR ("activecolor") ///< used to draw instead of "backcolor" for the active menu (when no button image available)
+	ADD_TYPELIB_MEMBER_COLOR ("activetextcolor") ///< used instead of "textcolor" for the active menu
+END_TYPELIB_MEMBERS (MenuBarControl)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-MenuBarRenderer::MenuBarRenderer (VisualStyle* visualStyle)
-: ThemeRenderer (visualStyle)
+MenuBarRenderer::MenuBarRenderer (VisualStyle* visualStyle, View* owner)
+: ThemeRenderer (visualStyle, owner)
 {
 	background = visualStyle->getImage ("background");
 	button = visualStyle->getImage ("menuButton");
@@ -78,10 +79,10 @@ Coord MenuBarRenderer::calcMenuWidth (StringRef label, IImage* icon, FontRef fon
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-int MenuBarRenderer::hitTest (View* view, const Point& loc, Point* clickOffset)
+int MenuBarRenderer::hitTest (PointRef where, Point* clickOffset)
 {
-	MenuBarControl* menuBar = (MenuBarControl*)view;
-	int index = findMenu (menuBar, loc);
+	MenuBarControl* menuBar = static_cast<MenuBarControl*> (owner);
+	int index = findMenu (menuBar, where);
 	if(index >= 0)
 	{
 		index += MenuBarControl::kPartFirstMenu;
@@ -92,7 +93,7 @@ int MenuBarRenderer::hitTest (View* view, const Point& loc, Point* clickOffset)
 	Rect clientRect;
 	menuBar->getClientRect (clientRect);
 	clientRect.setHeight (menuHeight);
-	if(clientRect.pointInside (loc))
+	if(clientRect.pointInside (where))
 		return MenuBarControl::kPartBar;
 
 	return MenuBarControl::kPartNone;
@@ -100,13 +101,13 @@ int MenuBarRenderer::hitTest (View* view, const Point& loc, Point* clickOffset)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool MenuBarRenderer::getPartRect (const View* view, int partCode, Rect& rect)
+bool MenuBarRenderer::getPartRect (Rect& rect, int partCode)
 {
-	MenuBarControl* menuBar = (MenuBarControl*)view;
+	MenuBarControl* menuBar = static_cast<MenuBarControl*> (owner);
 
-	view->getClientRect (rect);
+	owner->getClientRect (rect);
 	rect.setHeight (menuHeight);
-	
+
 	if(partCode == MenuBarControl::kPartBar)
 		return true;
 
@@ -134,13 +135,13 @@ bool MenuBarRenderer::getPartRect (const View* view, int partCode, Rect& rect)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-int MenuBarRenderer::findMenu (MenuBarControl* menuBar, const Point& loc)
+int MenuBarRenderer::findMenu (MenuBarControl* menuBar, PointRef where)
 {
 	Rect rect;
 	menuBar->getClientRect (rect);
 	rect.setHeight (menuHeight);
 
-	if(!rect.pointInside (loc))
+	if(!rect.pointInside (where))
 		return -1;
 
 	Font menuFont (visualStyle->getTextFont ());
@@ -150,7 +151,7 @@ int MenuBarRenderer::findMenu (MenuBarControl* menuBar, const Point& loc)
 		Coord width = calcMenuWidth (menuBar, i, menuFont);
 		rect.setWidth (width);
 
-		if(rect.pointInside (loc))
+		if(rect.pointInside (where))
 			return i;
 		
 		rect.offset (menuSpacing + width, 0);
@@ -160,10 +161,10 @@ int MenuBarRenderer::findMenu (MenuBarControl* menuBar, const Point& loc)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-void MenuBarRenderer::draw (View* view, const UpdateRgn& updateRgn)
+void MenuBarRenderer::draw (const UpdateRgn& updateRgn)
 {
-	MenuBarControl* menuBar = (MenuBarControl*)view;
-	GraphicsPort port (view);
+	MenuBarControl* menuBar = static_cast<MenuBarControl*> (owner);
+	GraphicsPort port (owner);
 	Font textFont (visualStyle->getTextFont ());
 	SolidBrush textBrush = visualStyle->getTextBrush ();
 
@@ -174,7 +175,7 @@ void MenuBarRenderer::draw (View* view, const UpdateRgn& updateRgn)
 		args.focusMenuIndex = menuBar->getFocusMenu ();
 
 	Rect clientRect;
-	view->getClientRect (clientRect);
+	owner->getClientRect (clientRect);
 	clientRect.setHeight (menuHeight);
 
 	if(background)
@@ -203,9 +204,9 @@ void MenuBarRenderer::draw (View* view, const UpdateRgn& updateRgn)
 		drawMenu (args, menuRect, i, i == activeIndex, label, icon);
 
 		menuRect.offset (menuSpacing + width, 0);
-	}	
+	}
 
-	view->View::draw (updateRgn);
+	owner->View::draw (updateRgn);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////

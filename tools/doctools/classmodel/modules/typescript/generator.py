@@ -13,7 +13,7 @@ from modules.classmodel.elementfilter import ElementFilter
 from modules.typescript.builder import DeclarationBuilder, DtsElementFilter
 from modules.typescript.elements import Printable
 
-__copyright__ = "Copyright (c) 2023 CCL Software Licensing GmbH"
+__copyright__ = "Copyright (c) 2026 CCL Software Licensing GmbH"
 
 
 class TypeScriptGenerator:
@@ -33,9 +33,8 @@ class TypeScriptGenerator:
         for model_file in input_model_files:
             logging.info("processing file %s" % model_file)
 
-            # TODO: future improvement, use own parser, do not depend on rst converter parser
             # No use for element filters here, typedoc generator uses own filter
-            p = Parser(ref_prefix="", external_files_path="", model=model, element_filter=ElementFilter())
+            p = Parser(model=model, element_filter=ElementFilter())
             p.parse_file(model_file)
 
         ####################################################
@@ -62,7 +61,7 @@ class TypeScriptGenerator:
         template_file = self.json_config.get("template", "")
         if template_file:
             template_file_path = pathlib.Path(os.getcwd(), template_file)
-            with template_file_path.open(mode="r") as f:
+            with template_file_path.open(mode="r", newline="") as f:
                 template = Template(f.read())
                 dts_str = template.render(typings=dts_str)
 
@@ -74,5 +73,5 @@ class TypeScriptGenerator:
         if not out_dir.exists():
             out_dir.mkdir(parents=True, exist_ok=True)
 
-        with output_file.open(mode="w", encoding="utf-8") as f:
+        with output_file.open(mode="w", encoding="utf-8", newline="") as f:
             f.write(dts_str)

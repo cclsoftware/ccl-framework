@@ -10,3 +10,4 @@ CCL Maintainer Guide
   classmodelupdates
   scripttools
   generatedtypings
+  wasmplatform

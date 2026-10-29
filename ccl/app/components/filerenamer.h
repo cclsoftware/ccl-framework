@@ -47,7 +47,7 @@ public:
 	PROPERTY_STRING (initialName, InitialName) ///< initially offered name in the dialog (optional, default: oldName)
 	
 	bool runDialog (StringRef title);	///< show rename dialog until succeeded or canceled
-	CCL::IAsyncOperation* runDialogAsync (StringRef title);
+	IAsyncOperation* runDialogAsync (StringRef title);
 	bool tryRename (StringRef newName = nullptr);	///< trigger renaming without dialog
 	
  	StringRef getNewName () const;
